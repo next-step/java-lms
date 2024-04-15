@@ -55,6 +55,7 @@ create table session (
     start_date timestamp,
     end_date timestamp,
     status varchar(255),
+    is_recruiting boolean not null,
     number_of_students int,
     max_number_of_students int,
     price bigint,

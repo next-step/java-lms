@@ -5,18 +5,20 @@ import nextstep.courses.domain.enums.SessionStatus;
 public class SessionInfos {
     private final SessionDate sessionDate;
     private SessionStatus sessionStatus;
+    private boolean isRecruiting;
 
-    public static SessionInfos createWithReadyStatus(SessionDate sessionDate) {
-        return new SessionInfos(sessionDate, SessionStatus.READY);
+    public static SessionInfos createWithDefault(SessionDate sessionDate) {
+        return new SessionInfos(sessionDate, SessionStatus.READY, false);
     }
 
-    public static SessionInfos createWithStatus(SessionDate sessionDate, SessionStatus sessionStatus) {
-        return new SessionInfos(sessionDate, sessionStatus);
+    public static SessionInfos createFromData(SessionDate sessionDate, SessionStatus sessionStatus, boolean isRecruiting) {
+        return new SessionInfos(sessionDate, sessionStatus, isRecruiting);
     }
 
-    private SessionInfos(SessionDate sessionDate, SessionStatus sessionStatus) {
+    private SessionInfos(SessionDate sessionDate, SessionStatus sessionStatus, boolean isRecruiting) {
         this.sessionDate = sessionDate;
         this.sessionStatus = sessionStatus;
+        this.isRecruiting = isRecruiting;
     }
 
     public SessionDate getSessionDate() {
@@ -28,10 +30,10 @@ public class SessionInfos {
     }
 
     public void startRecruit() {
-        sessionStatus = SessionStatus.RECRUITING;
+        isRecruiting = true;
     }
 
     public boolean isStatusNotRecruiting() {
-        return sessionStatus != SessionStatus.RECRUITING;
+        return !isRecruiting;
     }
 }

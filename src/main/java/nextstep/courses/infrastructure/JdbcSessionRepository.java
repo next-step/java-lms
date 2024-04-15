@@ -27,6 +27,7 @@ public class JdbcSessionRepository implements SessionRepository {
             ", s.max_number_of_students as maxNumberOfStudents" +
             ", s.price as price" +
             ", s.type as type" +
+            ", s.is_recruiting as isRecruiting" +
             ", cii.id as coverImageId" +
             ", cii.size as coverImageSize" +
             ", cii.width as coverImageWidth" +
@@ -87,7 +88,8 @@ public class JdbcSessionRepository implements SessionRepository {
                 "status", sessionStatus.name(),
                 "number_of_students", session.getNumberOfStudents(),
                 "cover_image_info_id", coverImageInfo.getId(),
-                "type", sessionType.getType()
+                "type", sessionType.getType(),
+                "is_recruiting", session.isRecruiting()
         );
     }
 
@@ -127,9 +129,10 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     private SessionInfos makeSessionInfo(ResultSet rs, String type) throws SQLException {
-        return SessionInfos.createWithStatus(
+        return SessionInfos.createFromData(
                 SessionDate.of(toLocalDateTime(rs.getTimestamp("startDate")), toLocalDateTime(rs.getTimestamp("endDate"))),
-                SessionStatus.findBySessionStr(rs.getString("status")).orElseThrow()
+                SessionStatus.findByStatusStr(rs.getString("status")).orElseThrow(),
+                rs.getBoolean("is_recruiting")
         );
     }
 

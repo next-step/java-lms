@@ -56,4 +56,8 @@ abstract public class Session {
     public SessionType getType() {
         return sessionType;
     }
+
+    public boolean isRecruiting() {
+        return sessionInfos.isStatusNotRecruiting();
+    }
 }

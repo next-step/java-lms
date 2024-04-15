@@ -45,7 +45,7 @@ public class SessionRepositoryTest {
 
         PaySession session = PaySession.createNewInstance(
                 new Course(),
-                SessionInfos.createWithReadyStatus(sessionDate),
+                SessionInfos.createWithDefault(sessionDate),
                 20,
                 savedCoverImageInfo,
                 20000L
