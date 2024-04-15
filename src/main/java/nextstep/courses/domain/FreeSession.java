@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.enums.SessionType;
 import nextstep.payments.domain.Payment;
 
 public class FreeSession extends Session {
@@ -14,7 +15,7 @@ public class FreeSession extends Session {
     }
 
     private FreeSession(Long id, Course course, SessionInfos sessionInfos, int numberOfStudents, CoverImageInfo coverImageInfo) {
-        super(id, course, sessionInfos, numberOfStudents, coverImageInfo);
+        super(id, course, sessionInfos, SessionType.FREE, numberOfStudents, coverImageInfo);
     }
 
     @Override

@@ -129,8 +129,7 @@ public class JdbcSessionRepository implements SessionRepository {
     private SessionInfos makeSessionInfo(ResultSet rs, String type) throws SQLException {
         return SessionInfos.createWithStatus(
                 SessionDate.of(toLocalDateTime(rs.getTimestamp("startDate")), toLocalDateTime(rs.getTimestamp("endDate"))),
-                SessionStatus.findBySessionStr(rs.getString("status")).orElseThrow(),
-                SessionType.findByTypeStr(type).orElseThrow()
+                SessionStatus.findBySessionStr(rs.getString("status")).orElseThrow()
         );
     }
 

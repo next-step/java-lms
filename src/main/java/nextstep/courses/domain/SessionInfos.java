@@ -1,25 +1,22 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.enums.SessionStatus;
-import nextstep.courses.domain.enums.SessionType;
 
 public class SessionInfos {
     private final SessionDate sessionDate;
     private SessionStatus sessionStatus;
-    private final SessionType sessionType;
 
-    public static SessionInfos createWithReadyStatus(SessionDate sessionDate, SessionType sessionType) {
-        return new SessionInfos(sessionDate, SessionStatus.READY, sessionType);
+    public static SessionInfos createWithReadyStatus(SessionDate sessionDate) {
+        return new SessionInfos(sessionDate, SessionStatus.READY);
     }
 
-    public static SessionInfos createWithStatus(SessionDate sessionDate, SessionStatus sessionStatus, SessionType sessionType) {
-        return new SessionInfos(sessionDate, sessionStatus, sessionType);
+    public static SessionInfos createWithStatus(SessionDate sessionDate, SessionStatus sessionStatus) {
+        return new SessionInfos(sessionDate, sessionStatus);
     }
 
-    private SessionInfos(SessionDate sessionDate, SessionStatus sessionStatus, SessionType sessionType) {
+    private SessionInfos(SessionDate sessionDate, SessionStatus sessionStatus) {
         this.sessionDate = sessionDate;
         this.sessionStatus = sessionStatus;
-        this.sessionType = sessionType;
     }
 
     public SessionDate getSessionDate() {
@@ -28,10 +25,6 @@ public class SessionInfos {
 
     public SessionStatus getSessionStatus() {
         return sessionStatus;
-    }
-
-    public SessionType getSessionType() {
-        return sessionType;
     }
 
     public void startRecruit() {

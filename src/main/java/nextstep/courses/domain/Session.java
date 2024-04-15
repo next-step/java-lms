@@ -9,14 +9,16 @@ abstract public class Session {
     protected final Course course;
 
     protected final SessionInfos sessionInfos;
+    protected SessionType sessionType;
 
     protected int numberOfStudents;
     protected CoverImageInfo coverImageInfo;
 
-    protected Session(Long id, Course course, SessionInfos sessionInfos, int numberOfStudents, CoverImageInfo coverImageInfo) {
+    protected Session(Long id, Course course, SessionInfos sessionInfos, SessionType sessionType, int numberOfStudents, CoverImageInfo coverImageInfo) {
         this.id = id;
         this.course = course;
         this.sessionInfos = sessionInfos;
+        this.sessionType = sessionType;
         this.numberOfStudents = numberOfStudents;
         this.coverImageInfo = coverImageInfo;
     }
@@ -52,6 +54,6 @@ abstract public class Session {
     }
 
     public SessionType getType() {
-        return sessionInfos.getSessionType();
+        return sessionType;
     }
 }

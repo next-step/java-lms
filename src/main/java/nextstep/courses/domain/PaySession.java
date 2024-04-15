@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.enums.SessionType;
 import nextstep.payments.domain.Payment;
 
 public class PaySession extends Session {
@@ -19,7 +20,7 @@ public class PaySession extends Session {
     }
 
     private PaySession(Long id, Course course, SessionInfos sessionInfos, int numberOfStudents, int maxNumberOfStudents, CoverImageInfo coverImageInfo, Long price) {
-        super(id, course, sessionInfos, numberOfStudents, coverImageInfo);
+        super(id, course, sessionInfos, SessionType.PAY, numberOfStudents, coverImageInfo);
         this.price = price;
         this.maxNumberOfStudents = maxNumberOfStudents;
     }

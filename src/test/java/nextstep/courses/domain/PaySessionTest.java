@@ -22,7 +22,7 @@ public class PaySessionTest {
         payment = new Payment("1", 123L, 1L, 0L);
         paySession = PaySession.createNewInstance(
                 new Course(),
-                SessionInfos.createWithReadyStatus(SessionDate.of(LocalDateTime.now(), LocalDateTime.now()), SessionType.PAY),
+                SessionInfos.createWithReadyStatus(SessionDate.of(LocalDateTime.now(), LocalDateTime.now())),
                 2,
                 CoverImageInfo.createNewInstance(1000L, "jpg", 300L, 200L),
                 2000L

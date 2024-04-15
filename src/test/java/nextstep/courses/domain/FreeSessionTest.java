@@ -24,8 +24,7 @@ public class FreeSessionTest {
                 new Course(),
                 SessionInfos.createWithStatus(
                         SessionDate.of(LocalDateTime.now(), LocalDateTime.now()),
-                        SessionStatus.READY,
-                        SessionType.FREE
+                        SessionStatus.READY
                 ),
                 CoverImageInfo.createNewInstance(1000L, "jpg", 300L, 200L)
         );
