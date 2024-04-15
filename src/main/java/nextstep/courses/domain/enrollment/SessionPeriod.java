@@ -10,19 +10,19 @@ public class SessionPeriod {
     private final LocalDateTime endAt;
 
     public SessionPeriod(LocalDateTime startAt, LocalDateTime endAt) {
-        validateDuration(startAt, endAt);
+        validate(startAt, endAt);
         this.startAt = startAt;
         this.endAt = endAt;
     }
 
-    private void validateDuration(LocalDateTime startAt, LocalDateTime endAt) {
-        if (!isValidAtRange(startAt, endAt)) {
+    private void validate(LocalDateTime startAt, LocalDateTime endAt) {
+        if (invalidRange(startAt, endAt)) {
             throw new SessionPeriodRangeException(startAt, endAt);
         }
     }
 
-    private boolean isValidAtRange(LocalDateTime startAt, LocalDateTime endAt) {
-        return startAt.isBefore(endAt);
+    private boolean invalidRange(LocalDateTime startAt, LocalDateTime endAt) {
+        return endAt.isBefore(startAt);
     }
 
     public LocalDateTime getStartAt() {
