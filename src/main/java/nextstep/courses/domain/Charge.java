@@ -9,7 +9,7 @@ public class Charge {
         this.price = 0;
     }
 
-    public Charge(ChargeStatus chargeStatus, int price){
+    public Charge(ChargeStatus chargeStatus, int price) {
         chargeStatus.validate(price);
         this.chargeStatus = chargeStatus;
         this.price = price;

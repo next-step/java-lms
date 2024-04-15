@@ -10,8 +10,8 @@ class EnrollmentTest {
 
     @DisplayName("성공 - 수강 신청 테스트")
     @Test
-    void create_enrollment_test(){
-        Enrollment enrollment = new Enrollment(SessionStatus.ENROLLING,50);
+    void create_enrollment_test() {
+        Enrollment enrollment = new Enrollment(SessionStatus.ENROLLING, 50);
         enrollment.enroll(UserTest.JAVAJIGI);
     }
 

@@ -13,9 +13,9 @@ class ImagePixelTest {
             "100 : 200",
             "300 : 100",
             "400 : 500",
-            }, delimiter = ':')
+    }, delimiter = ':')
     void image_pixel_fail_test(int width, int height) {
         assertThatIllegalArgumentException().isThrownBy((() ->
-                new ImagePixel(width,height)));
+                new ImagePixel(width, height)));
     }
 }

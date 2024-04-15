@@ -14,17 +14,18 @@ public class Students {
         this.students = new ArrayList<>();
     }
 
-    public void enroll(User student){
+    public void enroll(User student) {
         if (students.contains(student)) {
             throw new IllegalArgumentException(ALREADY_ENROLLMENT_ERROR_MESSAGE);
         }
         students.add(student);
     }
 
-    public boolean isOversize(int capacity){
+    public boolean isOversize(int capacity) {
         return capacity < students.size();
     }
-    public boolean isFull(int capacity){
+
+    public boolean isFull(int capacity) {
         return capacity == students.size();
     }
 }

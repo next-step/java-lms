@@ -10,6 +10,6 @@ class ImageCoverTest {
     @Test
     void image_size_fail_test() {
         assertThatIllegalArgumentException().isThrownBy((() ->
-                        new ImageCover(5, 300, 200, "jpg")));
+                new ImageCover(5, 300, 200, "jpg")));
     }
 }

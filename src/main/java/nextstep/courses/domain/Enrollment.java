@@ -17,7 +17,7 @@ public class Enrollment {
     }
 
     public Enrollment(SessionStatus sessionStatus, int capacity, Students students) {
-        if (students.isOversize(capacity)){
+        if (students.isOversize(capacity)) {
             throw new IllegalArgumentException(MAX_CAPACITY_ERROR_MESSAGE);
         }
         this.sessionStatus = sessionStatus;
@@ -25,8 +25,8 @@ public class Enrollment {
         this.students = students;
     }
 
-    public void enroll(User student){
-        if (!sessionStatus.isEnrolling()){
+    public void enroll(User student) {
+        if (!sessionStatus.isEnrolling()) {
             throw new IllegalArgumentException(ENROLLMENT_ERROR_MESSAGE);
         }
 

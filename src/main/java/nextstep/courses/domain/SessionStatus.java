@@ -5,7 +5,7 @@ public enum SessionStatus {
     ENROLLING,
     FINISH;
 
-    public boolean isEnrolling(){
+    public boolean isEnrolling() {
         return this == ENROLLING;
     }
 }

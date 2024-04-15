@@ -6,8 +6,8 @@ public enum ChargeStatus {
 
     public static final String PRICE_OF_FREE_SESSION_ERROR_MESSAGE = "무료 강의의 가격은 0원 입니다.";
 
-    public void validate(int price){
-        if (isFree() && price > 0){
+    public void validate(int price) {
+        if (isFree() && price > 0) {
             throw new IllegalArgumentException(PRICE_OF_FREE_SESSION_ERROR_MESSAGE);
         }
     }

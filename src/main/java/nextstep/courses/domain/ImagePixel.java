@@ -24,14 +24,14 @@ public class ImagePixel {
     }
 
     private void validHeight(int height) {
-        if (height < MIN_HEIGHT){
-            throw new IllegalArgumentException(String.format(HEIGHT_SIZE_ERROR_MESSAGE,MIN_HEIGHT));
+        if (height < MIN_HEIGHT) {
+            throw new IllegalArgumentException(String.format(HEIGHT_SIZE_ERROR_MESSAGE, MIN_HEIGHT));
         }
     }
 
     private void validWidth(int width) {
-        if (width < MIN_WIDTH){
-            throw new IllegalArgumentException(String.format(WIDTH_SIZE_ERROR_MESSAGE,MIN_WIDTH));
+        if (width < MIN_WIDTH) {
+            throw new IllegalArgumentException(String.format(WIDTH_SIZE_ERROR_MESSAGE, MIN_WIDTH));
         }
     }
 
