@@ -43,9 +43,13 @@ public class CoverImageInfo {
 		if (height < MIN_IMAGE_HEIGHT) {
 			throw new IllegalArgumentException(IMAGE_HEIGHT_UNDER_MESSAGE);
 		}
-		if (WIDTH_RATE * height != HEIGHT_RATE * width) {
+		if (isCorrectImageRate(width, height)) {
 			throw new IllegalArgumentException(IMAGE_WRONG_RATE_MESSAGE);
 		}
+	}
+
+	private static boolean isCorrectImageRate(int width, int height) {
+		return WIDTH_RATE * height != HEIGHT_RATE * width;
 	}
 
 	private void validationImageSize(int size) {
