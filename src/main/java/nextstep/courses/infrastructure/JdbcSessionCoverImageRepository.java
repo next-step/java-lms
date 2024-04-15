@@ -3,12 +3,13 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.image.SessionCoverImage;
 import nextstep.courses.infrastructure.engine.SessionCoverImageRepository;
 import nextstep.courses.infrastructure.util.LocalDateTimeConverter;
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static java.time.LocalTime.now;
 
@@ -22,27 +23,34 @@ public class JdbcSessionCoverImageRepository implements SessionCoverImageReposit
     }
 
     @Override
-    public int save(SessionCoverImage coverImage) {
+    public int[] saveAll(List<SessionCoverImage> coverImages) {
         String sql = "insert into session_cover_image (session_id, size, width, height, extension, created_at) " +
                 "values (?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, coverImage.getSessionId(),
-                coverImage.getFileSize().get(),
-                coverImage.getSize().getWidth(),
-                coverImage.getSize().getHeight(),
-                coverImage.getExtension().get(),
-                now());
+        return jdbcTemplate.batchUpdate(sql, batchArgs(coverImages));
+    }
+
+    private List<Object[]> batchArgs(List<SessionCoverImage> coverImages) {
+        List<Object[]> batchArgs = new ArrayList<>();
+
+        for (SessionCoverImage image : coverImages) {
+            Object[] args = new Object[]{
+                    image.getSessionId(),
+                    image.getFileSize().get(),
+                    image.getSize().getWidth(), image.getSize().getHeight(),
+                    image.getExtension().get(), now()
+            };
+            batchArgs.add(args);
+        }
+        return Collections.unmodifiableList(batchArgs);
     }
 
     @Override
-    public Optional<SessionCoverImage> findById(Long id) {
+    public List<SessionCoverImage> findAllBySessionId(Long sessionId) {
         String sql = "select id, session_id, size, width, height, extension, created_at, updated_at " +
                 "from session_cover_image " +
-                "where id = ?";
-        try {
-            return Optional.of(jdbcTemplate.queryForObject(sql, coverImageRowMapper(), id));
-        } catch (IncorrectResultSizeDataAccessException exception) {
-            return Optional.empty();
-        }
+                "where session_id = ?";
+
+        return jdbcTemplate.query(sql, coverImageRowMapper(), sessionId);
     }
 
     private RowMapper<SessionCoverImage> coverImageRowMapper() {
