@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.enums.SessionStatus;
+import nextstep.courses.domain.enums.SessionType;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,12 +20,13 @@ public class PaySessionTest {
     @BeforeEach
     void setUp() {
         payment = new Payment("1", 123L, 1L, 0L);
-        paySession = PaySession.builder()
-                .sessionDate(SessionDate.of(LocalDateTime.now(), LocalDateTime.now()))
-                .sessionStatus(SessionStatus.READY)
-                .price(2000L)
-                .maxNumberOfStudents(2)
-                .build();
+        paySession = PaySession.createNewInstance(
+                new Course(),
+                SessionInfos.createWithReadyStatus(SessionDate.of(LocalDateTime.now(), LocalDateTime.now()), SessionType.PAY),
+                2,
+                CoverImageInfo.createNewInstance(1000L, "jpg", 300L, 200L),
+                2000L
+        );
     }
 
     @Test

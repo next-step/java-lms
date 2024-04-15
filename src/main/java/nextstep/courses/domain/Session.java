@@ -7,30 +7,24 @@ import nextstep.payments.domain.Payment;
 abstract public class Session {
     protected final Long id;
     protected final Course course;
-    protected final SessionDate sessionDate;
-    protected SessionStatus sessionStatus;
+
+    protected final SessionInfos sessionInfos;
+
     protected int numberOfStudents;
     protected CoverImageInfo coverImageInfo;
-    protected final SessionType type;
 
-    protected Session(Long id, Course course, SessionDate sessionDate, int numberOfStudents, CoverImageInfo coverImageInfo, SessionType type) {
-        this(id, course, sessionDate, SessionStatus.READY, numberOfStudents, coverImageInfo, type);
-    }
-
-    protected Session(Long id, Course course, SessionDate sessionDate, SessionStatus sessionStatus, int numberOfStudents, CoverImageInfo coverImageInfo, SessionType type) {
+    protected Session(Long id, Course course, SessionInfos sessionInfos, int numberOfStudents, CoverImageInfo coverImageInfo) {
         this.id = id;
         this.course = course;
-        this.sessionDate = sessionDate;
-        this.sessionStatus = sessionStatus;
+        this.sessionInfos = sessionInfos;
         this.numberOfStudents = numberOfStudents;
         this.coverImageInfo = coverImageInfo;
-        this.type = type;
     }
 
     abstract public void enroll(Payment payment);
 
     public void startRecruit() {
-        sessionStatus = SessionStatus.RECRUITING;
+        sessionInfos.startRecruit();
     }
 
     public boolean hasNumberOfStudents(int targetCount) {
@@ -42,11 +36,11 @@ abstract public class Session {
     public Course getCourse() {return course;}
 
     public SessionDate getSessionDate() {
-        return sessionDate;
+        return sessionInfos.getSessionDate();
     }
 
     public SessionStatus getSessionStatus() {
-        return sessionStatus;
+        return sessionInfos.getSessionStatus();
     }
 
     public int getNumberOfStudents() {
@@ -58,6 +52,6 @@ abstract public class Session {
     }
 
     public SessionType getType() {
-        return type;
+        return sessionInfos.getSessionType();
     }
 }

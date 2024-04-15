@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.enums.SessionStatus;
+import nextstep.courses.domain.enums.SessionType;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,10 +20,15 @@ public class FreeSessionTest {
 
     @BeforeEach
     void setUp() {
-        freeSession = FreeSession.builder()
-                .sessionDate(SessionDate.of(LocalDateTime.now(), LocalDateTime.now()))
-                .sessionStatus(SessionStatus.READY)
-                .build();
+        freeSession = FreeSession.createNewInstance(
+                new Course(),
+                SessionInfos.createWithStatus(
+                        SessionDate.of(LocalDateTime.now(), LocalDateTime.now()),
+                        SessionStatus.READY,
+                        SessionType.FREE
+                ),
+                CoverImageInfo.createNewInstance(1000L, "jpg", 300L, 200L)
+        );
 
         payment = new Payment("1", 123L, 1L, 0L);
     }

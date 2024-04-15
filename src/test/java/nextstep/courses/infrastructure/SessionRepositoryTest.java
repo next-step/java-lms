@@ -1,7 +1,6 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
-import nextstep.courses.domain.enums.SessionStatus;
 import nextstep.courses.domain.enums.SessionType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -32,12 +31,8 @@ public class SessionRepositoryTest {
     void setUp() {
         sessionRepository = new JdbcSessionRepository(jdbcTemplate, dataSource);
         CoverImageInfoRepository coverImageInfoRepository = new JdbcCoverImageInfoRepository(jdbcTemplate, dataSource);
-        CoverImageInfo coverImageInfo = CoverImageInfo.builder()
-                .size(1000L)
-                .width(300L)
-                .height(200L)
-                .imageType("jpg")
-                .build();
+        CoverImageInfo coverImageInfo = CoverImageInfo.createNewInstance(1000L, "jpg", 300L, 200L);
+
         Long savedCoverImageInfoId = coverImageInfoRepository.saveAndGetId(coverImageInfo);
         savedCoverImageInfo = coverImageInfoRepository.findById(savedCoverImageInfoId);
     }
@@ -48,14 +43,13 @@ public class SessionRepositoryTest {
         // given
         SessionDate sessionDate = SessionDate.of(LocalDateTime.of(2024, 04, 07, 10, 11), LocalDateTime.now());
 
-        PaySession session = PaySession.builder()
-                .sessionDate(sessionDate)
-                .price(20000L)
-                .sessionStatus(SessionStatus.READY)
-                .maxNumberOfStudents(20)
-                .coverImageInfo(savedCoverImageInfo)
-                .type(SessionType.PAY)
-                .build();
+        PaySession session = PaySession.createNewInstance(
+                new Course(),
+                SessionInfos.createWithReadyStatus(sessionDate, SessionType.PAY),
+                20,
+                savedCoverImageInfo,
+                20000L
+        );
 
         Long savedId = sessionRepository.saveSessionAndGetId(session);
 
