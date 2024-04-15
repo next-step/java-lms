@@ -3,6 +3,7 @@ package nextstep.session.domain;
 import nextstep.common.domain.BaseEntity;
 import nextstep.common.domain.DeleteHistory;
 import nextstep.session.dto.StudentVO;
+import nextstep.session.type.SessionApprovedType;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ public class Student {
     private final Long id;
     private final Long sessionId;
     private final String userId;
+    private SessionApprovedType approved;
     private final BaseEntity baseEntity;
 
     public Student(NsUser nsUser) {
@@ -20,7 +22,7 @@ public class Student {
     }
 
     public Student(String userId) {
-        this(0L, 0L, userId, new BaseEntity());
+        this(0L, 0L, userId, SessionApprovedType.PENDING, new BaseEntity());
     }
 
     public Student(long sessionId, NsUser nsUser) {
@@ -28,21 +30,22 @@ public class Student {
     }
 
     public Student(long sessionId, String userId) {
-        this(0L, sessionId, userId, new BaseEntity());
+        this(0L, sessionId, userId, SessionApprovedType.PENDING, new BaseEntity());
     }
 
-    public Student(Long id, Long sessionId, NsUser nsUser, BaseEntity baseEntity) {
-        this(id, sessionId, nsUser.getUserId(), baseEntity);
+    public Student(Long id, Long sessionId, NsUser nsUser, String approved, BaseEntity baseEntity) {
+        this(id, sessionId, nsUser.getUserId(), SessionApprovedType.valueOf(approved), baseEntity);
     }
 
-    public Student(Long id, Long sessionId, String userId, boolean deleted, LocalDateTime createdAt, LocalDateTime lastModifiedAt) {
-        this(id, sessionId, userId, new BaseEntity(deleted, createdAt, lastModifiedAt));
+    public Student(Long id, Long sessionId, String userId, boolean deleted, String approved, LocalDateTime createdAt, LocalDateTime lastModifiedAt) {
+        this(id, sessionId, userId, SessionApprovedType.valueOf(approved), new BaseEntity(deleted, createdAt, lastModifiedAt));
     }
 
-    public Student(Long id, Long sessionId, String userId, BaseEntity baseEntity) {
+    public Student(Long id, Long sessionId, String userId, SessionApprovedType approved, BaseEntity baseEntity) {
         this.id = id;
         this.sessionId = sessionId;
         this.userId = userId;
+        this.approved = approved;
         this.baseEntity = baseEntity;
     }
 
@@ -63,6 +66,7 @@ public class Student {
                 this.id,
                 this.sessionId,
                 this.userId,
+                this.approved.toString(),
                 this.baseEntity.isDeleted(),
                 this.baseEntity.getCreatedAt(),
                 this.baseEntity.getLastModifiedAt()
@@ -72,5 +76,21 @@ public class Student {
     public DeleteHistory delete(NsUser requestUser) {
         this.baseEntity.delete(LocalDateTime.now());
         return DeleteHistory.createStudent(this.id, requestUser, LocalDateTime.now());
+    }
+
+    public void approve() {
+        if (this.approved.equals(SessionApprovedType.APPROVED)) {
+            throw new IllegalArgumentException("이미 승인 상태입니다.");
+        }
+
+        this.approved = SessionApprovedType.APPROVED;
+    }
+
+    public void deny() {
+        if (this.approved.equals(SessionApprovedType.CANCELED)) {
+            throw new IllegalArgumentException("이미 거절 상태입니다.");
+        }
+
+        this.approved = SessionApprovedType.CANCELED;
     }
 }

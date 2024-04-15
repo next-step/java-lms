@@ -13,7 +13,6 @@ public class SessionVO {
     private final int enrolled;
     private final long price;
     private final String tutorId;
-    private final long coverId;
     private final String sessionName;
     private final boolean deleted;
     private final LocalDateTime createdAt;
@@ -21,7 +20,7 @@ public class SessionVO {
 
     public SessionVO(
             long id, LocalDateTime startDate, LocalDateTime endDate, String sessionStatus, long courseId,
-            int maxCapacity, int enrolled, long price, String tutorId, long coverId, String sessionName,
+            int maxCapacity, int enrolled, long price, String tutorId, String sessionName,
             boolean deleted, LocalDateTime createdAt, LocalDateTime lastModifiedAt
     ) {
         this.id = id;
@@ -33,7 +32,6 @@ public class SessionVO {
         this.enrolled = enrolled;
         this.price = price;
         this.tutorId = tutorId;
-        this.coverId = coverId;
         this.sessionName = sessionName;
         this.deleted = deleted;
         this.createdAt = createdAt;
@@ -74,10 +72,6 @@ public class SessionVO {
 
     public String getTutorId() {
         return tutorId;
-    }
-
-    public long getCoverId() {
-        return coverId;
     }
 
     public String getSessionName() {

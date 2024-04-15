@@ -14,7 +14,11 @@ public interface SessionRepository {
 
     int updateSessionBasicProperties(long sessionId, SessionUpdateBasicPropertiesVO sessionUpdateBasicPropertiesVO);
 
-    void updateCover(long sessionId, long oldCoverId, Cover newCover);
-
     void delete(long sessionId);
+
+    long addCover(long sessionId, Cover cover);
+
+    void approveStudent(long sessionId, Student student);
+
+    void denyStudent(long sessionId, Student student);
 }

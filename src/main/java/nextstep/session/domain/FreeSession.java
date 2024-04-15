@@ -9,13 +9,14 @@ import nextstep.session.dto.SessionVO;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class FreeSession implements Session {
 
     public static final int FREE_PRICE = 0;
     private final long id;
     private Duration duration;
-    private Cover cover;
+    private Covers covers;
     private SessionStatus sessionStatus;
     private SessionName sessionName;
     private final long courseId;
@@ -31,7 +32,7 @@ public class FreeSession implements Session {
     ) {
         this.id = id;
         this.duration = duration;
-        this.cover = cover;
+        this.covers = new Covers(List.of(cover));
         this.sessionStatus = SessionStatus.create();
         this.sessionName = new SessionName(sessionName);
         this.courseId = courseId;
@@ -48,7 +49,24 @@ public class FreeSession implements Session {
     ) {
         this.id = id;
         this.duration = duration;
-        this.cover = cover;
+        this.covers = new Covers(List.of(cover));
+        this.sessionStatus = sessionStatus;
+        this.sessionName = new SessionName(sessionName);
+        this.courseId = courseId;
+        this.capacity = Capacity.create(Integer.MAX_VALUE);
+        this.price = new Price(FREE_PRICE);
+        this.tutor = tutor;
+        this.students = students;
+        this.baseEntity = baseEntity;
+    }
+
+    public FreeSession(
+            long id, Duration duration, Covers covers, SessionStatus sessionStatus, String sessionName,
+            long courseId, Tutor tutor, Students students, BaseEntity baseEntity
+    ) {
+        this.id = id;
+        this.duration = duration;
+        this.covers = covers;
         this.sessionStatus = sessionStatus;
         this.sessionName = new SessionName(sessionName);
         this.courseId = courseId;
@@ -69,10 +87,14 @@ public class FreeSession implements Session {
         this.sessionStatus = this.sessionStatus.toPreviousStatus();
     }
 
-    private void validateReadyStatus() {
-        if (!this.sessionStatus.onReady()) {
-            throw new SessionException("강의가 준비중인 상태가 아닙니다. 변경 불가능합니다.");
-        }
+    @Override
+    public void changeEnroll() {
+        this.sessionStatus = this.sessionStatus.changeEnroll();
+    }
+
+    @Override
+    public void changeNotEnroll() {
+        this.sessionStatus = this.sessionStatus.changeNotEnroll();
     }
 
     @Override
@@ -104,7 +126,6 @@ public class FreeSession implements Session {
                 this.capacity.getEnrolled(),
                 this.price.getPrice(),
                 this.tutor.getTutorId(),
-                this.cover.getId(),
                 this.sessionName.getSessionName(),
                 this.baseEntity.isDeleted(),
                 this.baseEntity.getCreatedAt(),
@@ -113,8 +134,8 @@ public class FreeSession implements Session {
     }
 
     @Override
-    public Cover getCover() {
-        return this.cover;
+    public Covers getCovers() {
+        return this.covers;
     }
 
     @Override
@@ -127,7 +148,7 @@ public class FreeSession implements Session {
         validateCanDeleteForSessionStatus();
         DeleteHistoryTargets deleteHistoryTargets = new DeleteHistoryTargets();
 
-        deleteHistoryTargets.addFirst(this.cover.delete(requestUser));
+        deleteHistoryTargets.add(this.covers.deleteAll(requestUser));
         deleteHistoryTargets.add(this.students.deleteAll(requestUser));
 
         this.baseEntity.delete(LocalDateTime.now());
@@ -139,5 +160,24 @@ public class FreeSession implements Session {
         if (!this.sessionStatus.onReady()) {
             throw new SessionException("준비 상태에서만 세션을 삭제할 수 있습니다.");
         }
+    }
+
+    @Override
+    public void approveStudent(Student student) {
+        students.findStudent(student)
+                .orElseThrow(() -> new IllegalArgumentException("해당 학생이 존재하지 않습니다."))
+                .approve();
+    }
+
+    @Override
+    public void denyStudent(Student student) {
+        students.findStudent(student)
+                .orElseThrow(() -> new IllegalArgumentException("해당 학생이 존재하지 않습니다."))
+                .deny();
+    }
+
+    @Override
+    public void addCover(Cover cover) {
+        this.covers.add(cover);
     }
 }

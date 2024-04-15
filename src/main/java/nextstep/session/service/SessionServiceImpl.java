@@ -7,7 +7,6 @@ import nextstep.session.domain.*;
 import nextstep.session.dto.SessionUpdateBasicPropertiesVO;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
@@ -37,12 +36,6 @@ public class SessionServiceImpl implements SessionService {
         return sessionRepository.updateSessionBasicProperties(sessionId, sessionUpdateDto);
     }
 
-    @Transactional
-    @Override
-    public void updateCover(long sessionId, long oldCoverId, Cover newCover, NsUser requestUser) {
-        sessionRepository.updateCover(sessionId, oldCoverId, newCover);
-    }
-
     @Override
     public Session apply(long sessionId, Payment payment, Student student) {
         Session targetSession = findById(sessionId);
@@ -68,5 +61,21 @@ public class SessionServiceImpl implements SessionService {
 
         sessionRepository.delete(sessionId);
         deleteHistoryService.saveAll(deleteHistoryTargets.asList());
+    }
+
+    @Override
+    public void approveStudent(long sessionId, Student student) {
+        Session session = sessionRepository.findById(sessionId);
+        session.approveStudent(student);
+
+        sessionRepository.approveStudent(sessionId, student);
+    }
+
+    @Override
+    public void denyStudent(long sessionId, Student student) {
+        Session session = sessionRepository.findById(sessionId);
+        session.denyStudent(student);
+
+        sessionRepository.denyStudent(sessionId, student);
     }
 }

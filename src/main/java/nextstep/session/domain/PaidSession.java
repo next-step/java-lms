@@ -9,12 +9,13 @@ import nextstep.session.dto.SessionVO;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class PaidSession implements Session {
 
     private final long id;
     private Duration duration;
-    private Cover cover;
+    private Covers covers;
     private SessionStatus sessionStatus;
     private SessionName sessionName;
     private final long courseId;
@@ -30,7 +31,7 @@ public class PaidSession implements Session {
     ) {
         this.id = id;
         this.duration = duration;
-        this.cover = cover;
+        this.covers = new Covers(List.of(cover));
         this.sessionStatus = SessionStatus.create();
         this.sessionName = new SessionName(sessionName);
         this.courseId = courseId;
@@ -47,7 +48,24 @@ public class PaidSession implements Session {
     ) {
         this.id = id;
         this.duration = duration;
-        this.cover = cover;
+        this.covers = new Covers(List.of(cover));
+        this.sessionStatus = sessionStatus;
+        this.sessionName = new SessionName(sessionName);
+        this.courseId = courseId;
+        this.capacity = Capacity.create(maxCapacity, enrolled);
+        this.price = new Price(price);
+        this.tutor = tutor;
+        this.students = students;
+        this.baseEntity = baseEntity;
+    }
+
+    public PaidSession(
+            long id, Duration duration, Covers covers, SessionStatus sessionStatus, String sessionName, long courseId,
+            int maxCapacity, int enrolled, Long price, Tutor tutor, Students students, BaseEntity baseEntity
+    ) {
+        this.id = id;
+        this.duration = duration;
+        this.covers = covers;
         this.sessionStatus = sessionStatus;
         this.sessionName = new SessionName(sessionName);
         this.courseId = courseId;
@@ -66,6 +84,16 @@ public class PaidSession implements Session {
     @Override
     public void toPreviousSessionStatus() {
         this.sessionStatus = this.sessionStatus.toPreviousStatus();
+    }
+
+    @Override
+    public void changeEnroll() {
+        this.sessionStatus = this.sessionStatus.changeEnroll();
+    }
+
+    @Override
+    public void changeNotEnroll() {
+        this.sessionStatus = this.sessionStatus.changeNotEnroll();
     }
 
     @Override
@@ -98,7 +126,6 @@ public class PaidSession implements Session {
                 this.capacity.getEnrolled(),
                 this.price.getPrice(),
                 this.tutor.getTutorId(),
-                this.cover.getId(),
                 this.sessionName.getSessionName(),
                 this.baseEntity.isDeleted(),
                 this.baseEntity.getCreatedAt(),
@@ -111,7 +138,7 @@ public class PaidSession implements Session {
         validateCanDeleteForSessionStatus();
         DeleteHistoryTargets deleteHistoryTargets = new DeleteHistoryTargets();
 
-        deleteHistoryTargets.addFirst(this.cover.delete(requestUser));
+        deleteHistoryTargets.add(this.covers.deleteAll(requestUser));
         deleteHistoryTargets.add(this.students.deleteAll(requestUser));
 
         this.baseEntity.delete(LocalDateTime.now());
@@ -126,12 +153,31 @@ public class PaidSession implements Session {
     }
 
     @Override
-    public Cover getCover() {
-        return this.cover;
+    public Covers getCovers() {
+        return this.covers;
     }
 
     @Override
     public Students getStudents() {
         return this.students;
+    }
+
+    @Override
+    public void approveStudent(Student student) {
+        students.findStudent(student)
+                .orElseThrow(() -> new IllegalArgumentException("해당 학생이 존재하지 않습니다."))
+                .approve();
+    }
+
+    @Override
+    public void denyStudent(Student student) {
+        students.findStudent(student)
+                .orElseThrow(() -> new IllegalArgumentException("해당 학생이 존재하지 않습니다."))
+                .deny();
+    }
+
+    @Override
+    public void addCover(Cover cover) {
+        this.covers.add(cover);
     }
 }

@@ -3,6 +3,7 @@ package nextstep.session.infrastructure;
 import nextstep.courses.domain.Course;
 import nextstep.session.domain.*;
 import nextstep.session.dto.SessionUpdateBasicPropertiesVO;
+import nextstep.session.type.SessionApprovedType;
 import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -153,19 +154,63 @@ class JdbcSessionRepositoryTest {
         assertThat(optionalStudent).isNotPresent();
     }
 
-    @DisplayName("커버 이미지를 변경할 수 있다.")
+    @DisplayName("커버를 추가할 수 있다.")
     @Test
-    void changeCover() {
-        // when
+    void addMultipleCovers() {
+        // given
         long savedId = sessionRepository.save(freeSession);
-        Session session = sessionRepository.findById(savedId);
-        long oldCoverId = session.toVO().getCoverId();
-
         Cover newCover = new Cover(savedId, resolution, imageFilePath, 500, NsUserTest.JAVAJIGI.getUserId());
-        sessionRepository.updateCover(savedId, oldCoverId, newCover);
-        Session sessionChangedCover = sessionRepository.findById(savedId);
+        Cover newCover2 = new Cover(savedId, resolution, imageFilePath, 500, NsUserTest.JAVAJIGI.getUserId());
+
+        // when
+        sessionRepository.addCover(savedId, newCover);
+        sessionRepository.addCover(savedId, newCover2);
+        Session session = sessionRepository.findById(savedId);
 
         // then
-        assertThat(sessionChangedCover.toVO().getCoverId()).isNotEqualTo(oldCoverId);
+        assertThat(session.getCovers().size())
+                .isEqualTo(3);
+    }
+
+    @DisplayName("학생을 승인상태로 변경할 수 있다.")
+    @Test
+    void changeStudentApproved() {
+        // given
+        long savedId = sessionRepository.save(freeSession);
+        Student student1 = new Student(savedId, NsUserTest.JAVAJIGI);
+        Student student2 = new Student(savedId, NsUserTest.SANJIGI);
+
+        // when
+        sessionRepository.apply(savedId, student1);
+        sessionRepository.apply(savedId, student2);
+        sessionRepository.approveStudent(savedId, student1);
+
+        Session session = sessionRepository.findById(savedId);
+        Student student = session.getStudents().findStudent(student1).get();
+
+        // then
+        assertThat(student.toVO().getApproved())
+                .isEqualTo(SessionApprovedType.APPROVED.toString());
+    }
+
+    @DisplayName("학생을 취소상태로 변경할 수 있다.")
+    @Test
+    void changeStudentDeny() {
+        // given
+        long savedId = sessionRepository.save(freeSession);
+        Student student1 = new Student(savedId, NsUserTest.JAVAJIGI);
+        Student student2 = new Student(savedId, NsUserTest.SANJIGI);
+
+        // when
+        sessionRepository.apply(savedId, student1);
+        sessionRepository.apply(savedId, student2);
+        sessionRepository.denyStudent(savedId, student1);
+
+        Session session = sessionRepository.findById(savedId);
+        Student student = session.getStudents().findStudent(student1).get();
+
+        // then
+        assertThat(student.toVO().getApproved())
+                .isEqualTo(SessionApprovedType.CANCELED.toString());
     }
 }

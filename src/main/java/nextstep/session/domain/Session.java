@@ -1,6 +1,5 @@
 package nextstep.session.domain;
 
-import nextstep.common.domain.DeleteHistory;
 import nextstep.common.domain.DeleteHistoryTargets;
 import nextstep.payments.domain.Payment;
 import nextstep.session.dto.SessionVO;
@@ -14,6 +13,10 @@ public interface Session {
 
     void toPreviousSessionStatus();
 
+    void changeEnroll();
+
+    void changeNotEnroll();
+
     boolean isEnrollAvailable(LocalDateTime applyDate);
 
     boolean apply(Student student, Payment payment, LocalDateTime applyDate);
@@ -22,7 +25,13 @@ public interface Session {
 
     SessionVO toVO();
 
-    Cover getCover();
+    Covers getCovers();
 
     Students getStudents();
+
+    void approveStudent(Student student);
+
+    void denyStudent(Student student);
+
+    void addCover(Cover cover);
 }

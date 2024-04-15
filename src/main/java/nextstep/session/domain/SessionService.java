@@ -12,11 +12,13 @@ public interface SessionService {
 
     int updateBasicProperties(long sessionId, SessionUpdateBasicPropertiesVO sessionUpdateDto);
 
-    void updateCover(long sessionId, long oldCoverId, Cover newCover, NsUser requestUser);
-
     Session apply(long sessionId, Payment payment, Student student);
 
     Session deleteStudent(long sessionId, Student student, NsUser requestUser);
 
     void delete(long sessionId, NsUser requestUser);
+
+    void approveStudent(long sessionId, Student student);
+
+    void denyStudent(long sessionId, Student student);
 }

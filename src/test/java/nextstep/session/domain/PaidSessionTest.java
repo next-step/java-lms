@@ -38,18 +38,19 @@ class PaidSessionTest {
         );
     }
 
-    @DisplayName("상태가 ON_ENROLL이면서, 신청일자가 Duration에 속하고, 신청인원이 꽉 차지 않았다면 신청 가능하다.")
+    @DisplayName("모집중이면서, 신청일자가 Duration에 속하고, 신청인원이 꽉 차지 않았다면 신청 가능하다.")
     @Test
     void enrollAvailable() {
         // when
         session.toNextSessionStatus();
+        session.changeEnroll();
 
         // then
         assertThat(session.isEnrollAvailable(LocalDateTime.now().plusDays(1)))
                 .isTrue();
     }
 
-    @DisplayName("다른 조건이 만족하지만 상태가 ON_ENROLL이 아니라면, 신청이 불가능하다.")
+    @DisplayName("다른 조건이 만족하지만 상태가 모집중이 아니라면, 신청이 불가능하다.")
     @Test
     void cannotEnrollWithoutStatusCondition() {
         // then
@@ -114,6 +115,7 @@ class PaidSessionTest {
 
         // when
         session.toNextSessionStatus();
+        session.changeEnroll();
         session.apply(student, payment, LocalDateTime.now().plusDays(1));
 
         // then
@@ -130,6 +132,7 @@ class PaidSessionTest {
 
         // when
         session.toNextSessionStatus();
+        session.changeEnroll();
 
         // then
         assertThat(session.apply(student, payment, LocalDateTime.now().plusDays(2)))
@@ -156,6 +159,7 @@ class PaidSessionTest {
     void delete() {
         // given
         session.toNextSessionStatus();
+        session.changeEnroll();
         session.apply(new Student(NsUserTest.JAVAJIGI), new Payment("A", 1L, 1L, 100_000L), LocalDateTime.now().plusDays(2));
 
         // when
@@ -164,5 +168,61 @@ class PaidSessionTest {
 
         // then
         assertThat(deleteHistoryTargets.asList()).hasSize(3);
+    }
+
+    @DisplayName("존재하는 학생에 대해 승인할 수 있다.")
+    @Test
+    void canApproveExist() {
+        // given
+        Student student = new Student(NsUserTest.JAVAJIGI);
+        session.changeEnroll();
+        session.apply(student, new Payment("A", 1L, 1L, 100_000L), LocalDateTime.now().plusDays(2));
+
+        // when
+        session.approveStudent(student);
+
+        // then
+        assertThat(session.getStudents().findStudent(student).get().toVO().getApproved())
+                .isEqualTo("APPROVED");
+    }
+
+    @DisplayName("존재하지 않는 학생에 대해 승인할 수 없다.")
+    @Test
+    void cannotApproveNotEixst() {
+        // given
+        Student student = new Student(NsUserTest.JAVAJIGI);
+        session.changeEnroll();
+
+        // then
+        assertThatThrownBy(() -> session.approveStudent(student))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("존재하는 학생에 대해 거절할 수 있다.")
+    @Test
+    void canDenyExist() {
+        // given
+        Student student = new Student(NsUserTest.JAVAJIGI);
+        session.changeEnroll();
+        session.apply(student, new Payment("A", 1L, 1L, 100_000L), LocalDateTime.now().plusDays(2));
+
+        // when
+        session.denyStudent(student);
+
+        // then
+        assertThat(session.getStudents().findStudent(student).get().toVO().getApproved())
+                .isEqualTo("CANCELED");
+    }
+
+    @DisplayName("존재하지 않는 학생에 대해 거절할 수 없다.")
+    @Test
+    void cannotDenyNotExist() {
+        // given
+        Student student = new Student(NsUserTest.JAVAJIGI);
+        session.changeEnroll();
+
+        // then
+        assertThatThrownBy(() -> session.denyStudent(student))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }

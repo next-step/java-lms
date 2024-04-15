@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class StudentTest {
 
@@ -34,5 +35,33 @@ class StudentTest {
 
         // then
         assertThat(student.toVO().isDeleted()).isTrue();
+    }
+
+    @DisplayName("승인된 상태에서는 승인할 수 없다.")
+    @Test
+    void cannotApproveWhenApproved() {
+        // given
+        Student student = new Student(NsUserTest.JAVAJIGI);
+
+        // when
+        student.approve();
+
+        // then
+        assertThatThrownBy(student::approve)
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("취소된 상태에서는 거절할 수 없다.")
+    @Test
+    void cannotDenyWhenCanceled() {
+        // given
+        Student student = new Student(NsUserTest.JAVAJIGI);
+
+        // when
+        student.deny();
+
+        // then
+        assertThatThrownBy(student::deny)
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }

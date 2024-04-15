@@ -1,6 +1,7 @@
 package nextstep.session.domain;
 
 import nextstep.exception.SessionStatusException;
+import nextstep.session.type.SessionEnrollType;
 import nextstep.session.type.SessionStatusType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,9 +11,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SessionStatusTest {
 
-    @DisplayName("세션 유형을 READY -> ON_ENROLL로 변경할 수 있다.")
+    @DisplayName("세션 유형이 준비중 + 비모집중이면, 진행중 + 비모집중으로 변경할 수 있다.")
     @Test
-    void sessionStatusChangeFromReadyToOnEnroll() {
+    void sessionStatusChangeFromReadyEnrollToProgressEnroll() {
         // given
         SessionStatus sessionStatus = SessionStatus.create();
 
@@ -21,26 +22,31 @@ class SessionStatusTest {
 
         // then
         assertThat(sessionStatus.getSessionStatus())
-                .isEqualTo(SessionStatusType.ON_ENROLL);
+                .isEqualTo(SessionStatusType.PROGRESS);
+        assertThat(sessionStatus.getSessionEnrollType())
+                .isEqualTo(SessionEnrollType.NOT_ON_ENROLL);
     }
 
-    @DisplayName("세션 유형을 ON_ENROLL -> READY로 변경할 수 있다.")
+    @DisplayName("세션 유형이 준비중 + 모집중이면, 진행중 + 모집중으로 변경할 수 있다.")
     @Test
-    void sessionStatusChangeFromOnEnrollToReady() {
+    void sessionStatusChangeFromReadyNotEnrollToProgressNotEnroll() {
         // given
         SessionStatus sessionStatus = SessionStatus.create();
 
         // when
-        sessionStatus = sessionStatus.toNextStatus().toPreviousStatus();
+        sessionStatus = sessionStatus.changeEnroll();
+        sessionStatus = sessionStatus.toNextStatus();
 
         // then
         assertThat(sessionStatus.getSessionStatus())
-                .isEqualTo(SessionStatusType.READY);
+                .isEqualTo(SessionStatusType.PROGRESS);
+        assertThat(sessionStatus.getSessionEnrollType())
+                .isEqualTo(SessionEnrollType.ON_ENROLL);
     }
 
-    @DisplayName("세션 유형을 ON_ENROLL -> FINISHED로 변경할 수 있다.")
+    @DisplayName("세션 유형이 진행중 + 비모집중이면, 종료 + 비모집중으로 변경할 수 있다.")
     @Test
-    void sessionStatusChangeFromOnEnrollToFinished() {
+    void sessionStatusChangeFromProgressNotEnrollToFinishNotEnroll() {
         // given
         SessionStatus sessionStatus = SessionStatus.create();
 
@@ -50,9 +56,28 @@ class SessionStatusTest {
         // then
         assertThat(sessionStatus.getSessionStatus())
                 .isEqualTo(SessionStatusType.FINISHED);
+        assertThat(sessionStatus.getSessionEnrollType())
+                .isEqualTo(SessionEnrollType.NOT_ON_ENROLL);
     }
 
-    @DisplayName("세션 유형을 FINISHED -> ON_ENROLL로 변경할 수 없다. 일치하지 않을 경우 SessionStatusException을 던진다.")
+    @DisplayName("세션 유형이 진행중 + 모집중이면, 종료 + 비모집중으로 변경할 수 있다.")
+    @Test
+    void sessionStatusChangeFromProgressEnrollToFinishNotEnroll() {
+        // given
+        SessionStatus sessionStatus = SessionStatus.create();
+
+        // when
+        sessionStatus = sessionStatus.changeEnroll();
+        sessionStatus = sessionStatus.toNextStatus().toNextStatus();
+
+        // then
+        assertThat(sessionStatus.getSessionStatus())
+                .isEqualTo(SessionStatusType.FINISHED);
+        assertThat(sessionStatus.getSessionEnrollType())
+                .isEqualTo(SessionEnrollType.NOT_ON_ENROLL);
+    }
+
+    @DisplayName("세션 유형을 FINISHED -> ON_ENROLL로 변경할 수 없다.")
     @Test
     void sessionStatusCannotChangeFromFinishedToOnEnroll() {
         // given
@@ -66,7 +91,7 @@ class SessionStatusTest {
                 .isInstanceOf(SessionStatusException.class);
     }
 
-    @DisplayName("READY에선 이전 세션으로 돌아갈 수없다. 시도 할 경우 SessionStatusException을 던진다.")
+    @DisplayName("READY에선 이전 세션으로 돌아갈 수없다.")
     @Test
     void cantChangeReadyToPreviouse() {
         // given
@@ -104,5 +129,39 @@ class SessionStatusTest {
         // then
         assertThat(sessionStatus1.onReady()).isTrue();
         assertThat(sessionStatus2.onReady()).isFalse();
+    }
+
+    @DisplayName("어느 상태든 모집중이면, 모집 가능상태가 된다.")
+    @Test
+    void canEnroll() {
+        // given
+        SessionStatus readyEnroll = SessionStatus.create();
+        SessionStatus progressEnroll = SessionStatus.create();
+
+        // when
+        readyEnroll = readyEnroll.changeEnroll();
+        progressEnroll = progressEnroll.toNextStatus().changeEnroll();
+
+        // then
+        assertThat(readyEnroll.canEnroll()).isTrue();
+        assertThat(progressEnroll.canEnroll()).isTrue();
+    }
+
+    @DisplayName("어느 상태든 모집중이 아니면, 모집이 불가능하다.")
+    @Test
+    void cantEnroll() {
+        // given
+        SessionStatus readyEnroll = SessionStatus.create();
+        SessionStatus progressEnroll = SessionStatus.create();
+        SessionStatus finished = SessionStatus.create();
+
+        // when
+        progressEnroll = progressEnroll.toNextStatus();
+        finished = finished.toNextStatus().toNextStatus();
+
+        // then
+        assertThat(readyEnroll.canEnroll()).isFalse();
+        assertThat(progressEnroll.canEnroll()).isFalse();
+        assertThat(finished.canEnroll()).isFalse();
     }
 }
