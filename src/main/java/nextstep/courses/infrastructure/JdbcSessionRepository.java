@@ -6,9 +6,12 @@ import nextstep.courses.domain.enrollment.SessionPeriod;
 import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
 import nextstep.courses.infrastructure.engine.SessionRepository;
 import nextstep.courses.infrastructure.util.LocalDateTimeConverter;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 import static java.time.LocalTime.now;
 
@@ -35,11 +38,15 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public Session findById(Long id) {
+    public Optional<Session> findById(Long id) {
         String sql = "select id, course_id, type, start_at, end_at, status, capacity, fee, created_at, updated_at " +
                      "from session " +
                      "where id = ?";
-        return jdbcTemplate.queryForObject(sql, sessionEntityRowMapper(), id);
+        try {
+            return Optional.of(jdbcTemplate.queryForObject(sql, sessionEntityRowMapper(), id));
+        } catch (IncorrectResultSizeDataAccessException exception) {
+            return Optional.empty();
+        }
     }
 
     private RowMapper<Session> sessionEntityRowMapper() {

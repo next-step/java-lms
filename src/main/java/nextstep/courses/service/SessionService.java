@@ -12,6 +12,7 @@ import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SessionService {
@@ -34,9 +35,9 @@ public class SessionService {
     }
 
     public void enroll(Long sessionId, NsUser user) {
-        Session findSession = sessionRepository.findById(sessionId);
+        Optional<Session> findSession = sessionRepository.findById(sessionId);
         List<SessionStudent> findStudents = sessionStudentRepository.findAllBySessionId(sessionId);
-        Session session = SessionFactory.get(findSession, findStudents);
+        Session session = SessionFactory.get(findSession.get(), findStudents);
 
         Payment payment = paymentService.payment(sessionId, user.getId(), session.getEnrollment().getFee());
         SessionStudent student = session.enroll(user, payment);

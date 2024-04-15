@@ -3,9 +3,12 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.image.SessionCoverImage;
 import nextstep.courses.infrastructure.engine.SessionCoverImageRepository;
 import nextstep.courses.infrastructure.util.LocalDateTimeConverter;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 import static java.time.LocalTime.now;
 
@@ -31,11 +34,15 @@ public class JdbcSessionCoverImageRepository implements SessionCoverImageReposit
     }
 
     @Override
-    public SessionCoverImage findById(Long id) {
+    public Optional<SessionCoverImage> findById(Long id) {
         String sql = "select id, session_id, size, width, height, extension, created_at, updated_at " +
                 "from session_cover_image " +
                 "where id = ?";
-        return jdbcTemplate.queryForObject(sql, coverImageRowMapper(), id);
+        try {
+            return Optional.of(jdbcTemplate.queryForObject(sql, coverImageRowMapper(), id));
+        } catch (IncorrectResultSizeDataAccessException exception) {
+            return Optional.empty();
+        }
     }
 
     private RowMapper<SessionCoverImage> coverImageRowMapper() {
