@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.enrollment;
 
 import nextstep.courses.domain.enrollment.engine.SessionEnroll;
 import nextstep.courses.domain.status.SessionStatus;
