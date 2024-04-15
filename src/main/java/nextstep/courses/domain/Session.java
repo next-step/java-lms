@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Session {
@@ -13,7 +14,7 @@ public class Session {
     private final Image image;
     private final SessionCost cost;
     private final SessionStatus status;
-    private List<Student> students;
+    private final List<Student> students = new ArrayList<>();
     private final int limit;
 
     public Session(String title, Long sessionId, LocalDateTime startDate, LocalDateTime endDate, Image image, SessionCost cost, SessionStatus status, int limit) {
