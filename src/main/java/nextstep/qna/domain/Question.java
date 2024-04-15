@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -72,9 +73,12 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public List<DeleteHistory> createHistories(long questionId) {
+
+        DeleteHistories deleteHistories = new DeleteHistories();
+        deleteHistories.process(questionId, this.getWriter(), this.getAnswers());
+
+        return deleteHistories.getDeleteHistories();
     }
 
     public boolean isDeleted() {
@@ -88,5 +92,42 @@ public class Question {
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
+
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        validateAuthority(loginUser);
+        validateWriter(loginUser);
+        validateUnAnswered();
+
+        this.deleted = true;
+
+        for (Answer answer : answers) {
+            if (answer.isOwner(loginUser)) {
+                answer.delete();
+            }
+        }
+
+        return createHistories(id);
+    }
+
+    private void validateUnAnswered() {
+        if (!answers.isEmpty()) {
+            throw new IllegalStateException("답변이 존재하는 경우 삭제할 수 없습니다.");
+        }
+    }
+
+    private void validateWriter(NsUser loginUser) throws CannotDeleteException {
+        List<Answer> answers = this.getAnswers();
+        for (Answer answer : answers) {
+            if (!answer.isOwner(loginUser)) {
+                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+            }
+        }
+    }
+
+    private void validateAuthority(NsUser loginUser) throws CannotDeleteException {
+        if (!this.isOwner(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
     }
 }
