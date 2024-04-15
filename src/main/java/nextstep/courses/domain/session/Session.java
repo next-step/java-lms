@@ -59,6 +59,20 @@ public class Session {
         this.updatedAt = updatedAt;
     }
 
+    public Session(Long id, String title, String description, SessionType sessionType, SessionStatus sessionStatus, SessionGatheringStatus sessionGatheringStatus, Period periodOfSession, Course course, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.sessionType = sessionType;
+        this.sessionStatus = sessionStatus;
+        this.sessionGatheringStatus = sessionGatheringStatus;
+        this.periodOfSession = periodOfSession;
+        this.coverImages = null;
+        this.course = course;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     public Session(Long id, String title, String description, SessionType sessionType, SessionStatus sessionStatus, SessionGatheringStatus sessionGatheringStatus, Period periodOfSession, CoverImages coverImages, Course course, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
@@ -109,6 +123,10 @@ public class Session {
             return;
         }
         this.id = id;
+    }
+
+    public void updateCoverImages(CoverImages coverImages) {
+        this.coverImages = coverImages;
     }
 
     public void updateEnrolledUsers(EnrolledUsers enrolledUsers) {

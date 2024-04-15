@@ -28,23 +28,9 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session save(Session session) {
-        CoverImage coverImage = session.getCoverImage();
-        KeyHolder keyHolderForCoverImage = new GeneratedKeyHolder();
-        final String sqlForCoverImageSave = "insert into cover_image (name, capacity, width, height, type) values (?, ?, ?, ?, ?)";
-        jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(sqlForCoverImageSave, new String[]{"id"});
-            ps.setString(1, coverImage.getName());
-            ps.setDouble(2, coverImage.getCapacity());
-            ps.setDouble(3, coverImage.getWidth());
-            ps.setDouble(4, coverImage.getHeight());
-            ps.setString(5, coverImage.getImageType().name());
-            return ps;
-        }, keyHolderForCoverImage);
-        coverImage.updateAsSavedCoverImage(keyHolderForCoverImage.getKey().longValue());
-
         KeyHolder keyHolderForSession = new GeneratedKeyHolder();
-        final String sqlForSessionSave = "insert into session (title, description, max_number_of_enrollment, fee, status, gathering_status, started_at, ended_at, cover_image_id, course_id, created_at) " +
-                "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        final String sqlForSessionSave = "insert into session (title, description, max_number_of_enrollment, fee, status, gathering_status, started_at, ended_at, course_id, created_at) " +
+                "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sqlForSessionSave, new String[]{"id"});
             ps.setString(1, session.getTitle());
@@ -55,12 +41,18 @@ public class JdbcSessionRepository implements SessionRepository {
             ps.setString(6, session.getSessionGatheringStatus().name());
             ps.setTimestamp(7, Timestamp.valueOf(session.getStartedAt()));
             ps.setTimestamp(8, Timestamp.valueOf(session.getEndedAt()));
-            ps.setLong(9, session.getIdOfCoverImage());
-            ps.setDouble(10, session.getIdOfCourse());
-            ps.setTimestamp(11, Timestamp.valueOf(session.getCreatedAt()));
+            ps.setDouble(9, session.getIdOfCourse());
+            ps.setTimestamp(10, Timestamp.valueOf(session.getCreatedAt()));
             return ps;
         }, keyHolderForSession);
         session.updateAsSavedSession(keyHolderForSession.getKey().longValue());
+
+        final String sqlForSessionCoverImageSave = "insert into session_cover_image (session_id, cover_image_id, created_at) values (?, ?, ?)";
+        session.getCoverImages()
+                .stream()
+                .forEach(coverImage -> {
+                    jdbcTemplate.update(sqlForSessionCoverImageSave, session.getId(), coverImage.getId(), Timestamp.valueOf(LocalDateTime.now()));
+                });
 
         return session;
     }
@@ -69,21 +61,20 @@ public class JdbcSessionRepository implements SessionRepository {
     public Session findById(Long id) {
         try {
             final String sqlForSession = "select S.id, S.title, S.description, S.max_number_of_enrollment, S.fee, S.status, S.gathering_status, S.started_at, S.ended_at" +
-                    ", CI.id, CI.name, CI.capacity, CI.width, CI.height, CI.type" +
                     ", C.id, C.title, C.creator_id, C.created_at, C.updated_at" +
                     ", S.created_at, S.updated_at" +
                     " from session as S" +
                     " inner join course as C on C.id = s.course_id" +
-                    " inner join cover_image CI on CI.id = S.cover_image_id" +
                     " where S.id = ?";
             RowMapper<Session> rowMapperForSession = (rs, rowNum) -> new Session(
                     rs.getLong(1), rs.getString(2), rs.getString(3), new SessionType(rs.getInt(4), rs.getLong(5)),
                     SessionStatus.valueOf(rs.getString(6)), SessionGatheringStatus.valueOf(rs.getString(7)),
                     new Period(toLocalDateTime(rs.getTimestamp(8)), toLocalDateTime(rs.getTimestamp(9))),
-                    new CoverImage(rs.getLong(10), rs.getString(11), rs.getDouble(12), new Dimensions(rs.getDouble(13), rs.getDouble(14)), ImageType.valueOf(rs.getString(15))),
-                    new Course(rs.getLong(16), rs.getString(17), rs.getLong(18), toLocalDateTime(rs.getTimestamp(19)), toLocalDateTime(rs.getTimestamp(20))),
-                    toLocalDateTime(rs.getTimestamp(21)), toLocalDateTime(rs.getTimestamp(22)));
+                    new Course(rs.getLong(10), rs.getString(11), rs.getLong(12), toLocalDateTime(rs.getTimestamp(13)), toLocalDateTime(rs.getTimestamp(14))),
+                    toLocalDateTime(rs.getTimestamp(15)), toLocalDateTime(rs.getTimestamp(16)));
             Session session = jdbcTemplate.queryForObject(sqlForSession, rowMapperForSession, id);
+
+            session.updateCoverImages(new CoverImages(coverImages(id)));
             session.updateEnrolledUsers(new EnrolledUsers(enrolledUsers(id)));
 
             return session;
@@ -94,9 +85,9 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session update(Session session) {
-        final String sqlForSessionForUpdate = "update session set title = ?, description = ?, max_number_of_enrollment = ?, fee = ?, status = ?, gathering_status = ?, started_at = ?, ended_at = ?, cover_image_id = ?, updated_at = ? where id = ?";
+        final String sqlForSessionForUpdate = "update session set title = ?, description = ?, max_number_of_enrollment = ?, fee = ?, status = ?, gathering_status = ?, started_at = ?, ended_at = ?,  updated_at = ? where id = ?";
         jdbcTemplate.update(sqlForSessionForUpdate, session.getTitle(), session.getDescription(), session.getMaxNumberOfEnrollment(), session.getFee(), session.getSessionStatus().name(), session.getSessionGatheringStatus().name(),
-                Timestamp.valueOf(session.getStartedAt()), Timestamp.valueOf(session.getEndedAt()), session.getIdOfCoverImage(), session.getUpdatedAt(), session.getId());
+                Timestamp.valueOf(session.getStartedAt()), Timestamp.valueOf(session.getEndedAt()), session.getUpdatedAt(), session.getId());
 
         List<NsUser> notUpdatedEnrolledUsers = enrolledUsers(session.getId());
         session.getEnrolledUsers()
@@ -108,6 +99,18 @@ public class JdbcSessionRepository implements SessionRepository {
                 });
 
         return session;
+    }
+
+    private List<CoverImage> coverImages(Long id) {
+        final String sqlForCoverImages = "select CI.id, CI.name, CI.capacity, CI.width, CI.height, CI.type" +
+                " from session_cover_image as SCI" +
+                " inner join cover_image as CI on CI.id = SCI.cover_image_id" +
+                " where SCI.session_id = ?";
+
+        RowMapper<CoverImage> rowMapperForCoverImage = (rs, rowNum) -> new CoverImage(
+                rs.getLong(1), rs.getString(2), rs.getDouble(3), new Dimensions(rs.getDouble(4), rs.getDouble(5)), ImageType.valueOf(rs.getString(6)));
+
+        return jdbcTemplate.query(sqlForCoverImages, rowMapperForCoverImage, id);
     }
 
     private List<NsUser> enrolledUsers(Long id) {
