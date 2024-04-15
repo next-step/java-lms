@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.courses.domain.enrollment.*;
 import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
 import nextstep.courses.domain.image.SessionCoverImage;
+import nextstep.courses.domain.status.SessionStatus;
 import nextstep.courses.exception.SessionEnrollmentNotMatchException;
 
 import java.time.LocalDateTime;
@@ -22,9 +23,9 @@ public class SessionFactory {
         throw new SessionEnrollmentNotMatchException(type);
     }
 
-    public static Session get(Long sessionId, Long courseId, String typeString, LocalDateTime startAt, LocalDateTime endAt, String statusString, int capacity, long fee, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public static Session get(Long sessionId, Long courseId, String typeString, LocalDateTime startAt, LocalDateTime endAt, String progressString, String recruitmentString, int capacity, long fee, LocalDateTime createdAt, LocalDateTime updatedAt) {
         SessionType type = SessionType.convert(typeString);
-        SessionStatus status = SessionStatus.convert(statusString);
+        SessionStatus status = SessionStatus.of(progressString, recruitmentString);
 
         if (SessionType.FREE == type) {
             return new Session(sessionId, courseId, type, new SessionPeriod(startAt, endAt), new FreeSessionEnrollment(status), createdAt, updatedAt);
