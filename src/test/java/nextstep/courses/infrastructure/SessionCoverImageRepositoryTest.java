@@ -9,11 +9,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.DirtiesContext;
+
+import java.util.Optional;
 
 import static nextstep.courses.domain.fixture.SessionCoverImageFixture.coverImage;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class SessionCoverImageRepositoryTest {
 
     @Autowired
@@ -37,15 +41,28 @@ public class SessionCoverImageRepositoryTest {
     }
 
     @Test
-    @DisplayName("findById()")
-    void findById() {
+    @DisplayName("findById() Optional.isPresent()")
+    void findByIdIsPresent() {
         String extension = ImageExtension.GIF.get();
         SessionCoverImage image = coverImage(extension);
         sessionCoverImageRepository.save(image);
 
-        SessionCoverImage saveCoverImage = sessionCoverImageRepository.findById(1L);
+        Optional<SessionCoverImage> optionalImage = sessionCoverImageRepository.findById(1L);
 
-        assertThat(saveCoverImage.getExtension().get()).isEqualTo(extension);
+        assertThat(optionalImage).isPresent();
+        assertThat(optionalImage.get().getExtension().get()).isEqualTo(extension);
+    }
+
+    @Test
+    @DisplayName("findById() Optional.isEmpty()")
+    void findByIdIsEmpty() {
+        String extension = ImageExtension.GIF.get();
+        SessionCoverImage image = coverImage(extension);
+        sessionCoverImageRepository.save(image);
+
+        Optional<SessionCoverImage> optionalImage = sessionCoverImageRepository.findById(2L);
+
+        assertThat(optionalImage).isEmpty();
     }
 
 }

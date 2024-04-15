@@ -9,11 +9,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.DirtiesContext;
+
+import java.util.Optional;
 
 import static nextstep.courses.domain.fixture.SessionFixture.session;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class SessionRepositoryTest {
 
     @Autowired
@@ -37,14 +41,25 @@ public class SessionRepositoryTest {
     }
 
     @Test
-    @DisplayName("findById()")
-    void findById() {
+    @DisplayName("findById() Optional.isPresent()")
+    void findByIdIsPresent() {
         Session session = session(SessionType.FREE);
         sessionRepository.save(session);
 
-        Session saveEntity = sessionRepository.findById(1L);
+        Optional<Session> optionalSession = sessionRepository.findById(1L);
 
-        assertThat(saveEntity.getType()).isEqualTo(SessionType.FREE);
+        assertThat(optionalSession).isPresent();
+        assertThat(optionalSession.get().getType()).isEqualTo(SessionType.FREE);
+    }
+
+    @Test
+    @DisplayName("findById() Optional.isEmpty()")
+    void findByIdIsEmpty() {
+        Session session = session(SessionType.FREE);
+        sessionRepository.save(session);
+
+        Optional<Session> optionalSession = sessionRepository.findById(2L);
+        assertThat(optionalSession).isEmpty();
     }
 
 }
