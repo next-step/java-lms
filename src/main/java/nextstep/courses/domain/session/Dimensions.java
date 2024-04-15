@@ -1,8 +1,8 @@
-package nextstep.courses.domain.session.coverImage;
+package nextstep.courses.domain.session;
 
 import static nextstep.courses.ExceptionMessage.INVALID_COVER_IMAGE;
 
-public class CoverImageWidthHeight {
+public class Dimensions {
     private static final double MIN_WIDTH = 300;
     private static final double MIN_HEIGHT = 200;
     private static final double RATIO_OF_WIDTH_HEIGHT = 3.0 / 2.0;
@@ -10,7 +10,7 @@ public class CoverImageWidthHeight {
     private final double width;
     private final double height;
 
-    public CoverImageWidthHeight(double width, double height) {
+    public Dimensions(double width, double height) {
         validateCoverImageWidthHeightInput(width, height);
         this.width = width;
         this.height = height;
@@ -24,5 +24,13 @@ public class CoverImageWidthHeight {
 
     private boolean isValidWidthHeight(double width, double height) {
         return width >= MIN_WIDTH && height >= MIN_HEIGHT && (width / height == RATIO_OF_WIDTH_HEIGHT);
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
     }
 }

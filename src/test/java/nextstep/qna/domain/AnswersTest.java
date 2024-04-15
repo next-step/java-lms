@@ -8,34 +8,23 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static nextstep.qna.domain.AnswerTest.answerOfJAVAJIGI;
-import static nextstep.qna.domain.AnswerTest.answerOfSANJIGI;
+import static nextstep.qna.domain.AnswerTest.ANSWER_OF_JAVAJIGI;
+import static nextstep.qna.domain.AnswerTest.ANSWER_OF_SANJIGI;
 import static nextstep.qna.domain.QuestionTest.QUESTION;
 import static nextstep.users.domain.NsUserTest.JAVAJIGI;
-import static nextstep.users.domain.NsUserTest.SANJIGI;
+import static nextstep.users.domain.NsUserTest.ZIPJIGI;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class AnswersTest {
-    @Test
-    @DisplayName("writerOfQuestion와 모든 Answer.writer가 같은 경우 true를 그렇지 않으면 false를 반환한다.")
-    void testIsDeletableByUser() {
-        NsUser writerOfQuestion = SANJIGI;
-        Answers answers = new Answers(List.of(answerOfJAVAJIGI, answerOfSANJIGI));
-
-        assertThat(answers.isDeletableByWriter(writerOfQuestion)).isFalse();
-    }
-
     @Nested
     @DisplayName("deleteByUser() 테스트")
     class DeleteByUserTest {
         @Test
-        @DisplayName("user와 Answer.writer가 일치하지 않는 경우 CannotDeleteException라는 예외가 발생한다.")
+        @DisplayName("user가 answers의 writer와 모두 일치하지 않는 다면 CannotDeleteException이 발생한다.")
         void testFailCase() {
-            NsUser user = SANJIGI;
-            Answers answers = new Answers(List.of(answerOfJAVAJIGI));
-
-            assertThatThrownBy(() -> answers.deleteByUser(user)).isExactlyInstanceOf(CannotDeleteException.class);
+            Answers answers = new Answers(List.of(ANSWER_OF_JAVAJIGI, ANSWER_OF_SANJIGI));
+            assertThatThrownBy(() -> answers.deleteByUser(ZIPJIGI)).isExactlyInstanceOf(CannotDeleteException.class);
         }
 
         @Test
@@ -44,7 +33,7 @@ class AnswersTest {
             NsUser user = JAVAJIGI;
             Answer answer = new Answer(JAVAJIGI, QUESTION, "Answers Contents");
             Answers answers = new Answers(List.of(answer));
-            DeleteHistory expectedDeleteHistory = DeleteHistory.answerDeleteHistory(answer.getId(), answer.getWriter());
+            DeleteHistory expectedDeleteHistory = DeleteHistory.answerOf(answer.getId(), answer.getWriter());
 
             List<DeleteHistory> deleteHistories = answers.deleteByUser(user);
 

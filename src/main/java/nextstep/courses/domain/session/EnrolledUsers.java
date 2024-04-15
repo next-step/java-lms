@@ -3,6 +3,7 @@ package nextstep.courses.domain.session;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -27,5 +28,9 @@ public class EnrolledUsers {
 
     public void add(NsUser user) {
         enrolledUsers.add(user);
+    }
+
+    public List<NsUser> getEnrolledUsers() {
+        return Collections.unmodifiableList(enrolledUsers);
     }
 }

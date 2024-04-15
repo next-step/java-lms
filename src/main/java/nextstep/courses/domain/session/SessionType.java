@@ -6,27 +6,27 @@ import static nextstep.courses.ExceptionMessage.INVALID_MAX_NUMBER_OF_ENROLLMENT
 
 public class SessionType {
     private static final int MAX_NUMBER_OF_ENROLLMENT = Integer.MAX_VALUE;
-    private static final long FEE_OF_FREE = 0;
+    private static final Fee FEE_OF_FREE = new Fee(0L);
 
     protected int maxNumberOfEnrollment;
-    protected long fee;
+    protected Fee fee;
 
-    private SessionType(int maxNumberOfEnrollment, long fee) {
-        validateSessionTypeInput(maxNumberOfEnrollment, fee);
-        this.maxNumberOfEnrollment = maxNumberOfEnrollment;
-        this.fee = fee;
+    public SessionType(int maxNumberOfEnrollment, long fee) {
+        this(maxNumberOfEnrollment, new Fee(fee));
     }
 
-    public static SessionType paidSessionType(int maxNumberOfEnrollment, long fee) {
-        return new SessionType(maxNumberOfEnrollment, fee);
+    public SessionType(int maxNumberOfEnrollment, Fee fee) {
+        validateSessionTypeInput(maxNumberOfEnrollment);
+        this.maxNumberOfEnrollment = maxNumberOfEnrollment;
+        this.fee = fee;
     }
 
     public static SessionType freeSessionType() {
         return new SessionType(MAX_NUMBER_OF_ENROLLMENT, FEE_OF_FREE);
     }
 
-    protected void validateSessionTypeInput(int maxNumberOfEnrollment, long fee) {
-        if (maxNumberOfEnrollment < 0 || fee < 0) {
+    protected void validateSessionTypeInput(int maxNumberOfEnrollment) {
+        if (maxNumberOfEnrollment < 0) {
             throw new IllegalArgumentException(INVALID_MAX_NUMBER_OF_ENROLLMENT_AND_FEE.message());
         }
     }
@@ -36,7 +36,7 @@ public class SessionType {
     }
 
     private boolean isSessionNotFull(long currentNumberOfEnrollment) {
-        if (fee == 0) {
+        if (fee.isFree()) {
             return true;
         }
 
@@ -44,10 +44,18 @@ public class SessionType {
     }
 
     private boolean isValidPayment(Payment payment) {
-        if (fee == 0) {
+        if (fee.isFree()) {
             return true;
         }
 
-        return payment.isSameAmount(fee);
+        return payment.isSameAmount(fee.getFee());
+    }
+
+    public int getMaxNumberOfEnrollment() {
+        return maxNumberOfEnrollment;
+    }
+
+    public long getFee() {
+        return fee.getFee();
     }
 }

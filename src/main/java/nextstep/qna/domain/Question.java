@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static nextstep.qna.ExceptionMessage.DIFFERENT_WRITER_OF_QUESTION_AND_WRITER_OF_ANSWER;
 import static nextstep.qna.ExceptionMessage.NO_AUTHORITY_TO_DELETE_ANSWER;
 
 public class Question {
@@ -70,11 +69,6 @@ public class Question {
     }
 
     private void validateDeletableQuestion(NsUser user) throws CannotDeleteException {
-        validateUser(user);
-        validateAnswers();
-    }
-
-    private void validateUser(NsUser user) throws CannotDeleteException {
         if (!isOwner(user)) {
             throw new CannotDeleteException(NO_AUTHORITY_TO_DELETE_ANSWER.message());
         }
@@ -84,12 +78,6 @@ public class Question {
         return writer.equals(user);
     }
 
-    private void validateAnswers() throws CannotDeleteException {
-        if (!answers.isDeletableByWriter(writer)) {
-            throw new CannotDeleteException(DIFFERENT_WRITER_OF_QUESTION_AND_WRITER_OF_ANSWER.message());
-        }
-    }
-
     private void updateDeletedAsTrue() {
         this.deleted = true;
     }
@@ -97,7 +85,7 @@ public class Question {
     private List<DeleteHistory> deleteHistoriesOfQuestion(List<DeleteHistory> deleteHistoriesOfAnswers) {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
 
-        deleteHistories.add(DeleteHistory.questionDeleteHistory(id, writer));
+        deleteHistories.add(DeleteHistory.questionOf(id, writer));
         deleteHistories.addAll(deleteHistoriesOfAnswers);
 
         return deleteHistories;

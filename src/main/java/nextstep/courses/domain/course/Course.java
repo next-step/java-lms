@@ -20,12 +20,20 @@ public class Course {
         this(0L, title, creatorId, LocalDateTime.now(), null);
     }
 
+    public Course(Long id, String title, Long creatorId) {
+        this(id, title, creatorId, LocalDateTime.now(), null);
+    }
+
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getTitle() {

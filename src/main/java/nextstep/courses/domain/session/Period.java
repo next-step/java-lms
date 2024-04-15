@@ -19,4 +19,12 @@ public class Period {
             throw new IllegalArgumentException(INVALID_PERIOD.message());
         }
     }
+
+    public LocalDateTime getStartedAt() {
+        return startedAt;
+    }
+
+    public LocalDateTime getEndedAt() {
+        return endedAt;
+    }
 }
