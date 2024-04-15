@@ -3,6 +3,7 @@ package nextstep.qna.domain;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DeleteHistories {
     private final List<DeleteHistory> deleteHistories;
@@ -11,14 +12,16 @@ public class DeleteHistories {
         this.deleteHistories = new ArrayList<>();
     }
 
+    public DeleteHistories(List<DeleteHistory> deleteHistories) {
+        this.deleteHistories = deleteHistories;
+    }
+
     public DeleteHistories(Answers answers) {
-        this();
-        add(answers);
+        this(toDeleteHistory(answers));
     }
 
     public DeleteHistories(Question question) {
-        this();
-        add(question);
+        this(List.of(new DeleteHistory(question)));
     }
 
     public void add(DeleteHistory deleteHistory) {
@@ -31,14 +34,10 @@ public class DeleteHistories {
         }
     }
 
-    public void add(Answers answers) {
-        for (Answer answer : answers.getAnswers()) {
-            add(new DeleteHistory(answer));
-        }
-    }
-
-    public void add(Question question) {
-        add(new DeleteHistory(question));
+    private static List<DeleteHistory> toDeleteHistory(Answers answers) {
+        return answers.getAnswers().stream()
+                .map(DeleteHistory::new)
+                .collect(Collectors.toList());
     }
 
     public List<DeleteHistory> getDeleteHistoryList() {
