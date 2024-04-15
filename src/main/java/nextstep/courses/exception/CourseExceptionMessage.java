@@ -9,7 +9,8 @@ public enum CourseExceptionMessage {
     CANNOT_ENROLLMENT_SESSION_STATUS("해당 강의는 수강신청 불가능한 상태입니다."),
     INVALID_SESSION_DURATION("강의 시작일시와 종료일시가 유효하지 않습니다."),
     INVALID_SESSION_TYPE("강의 유형이 유효하지 않습니다."),
-    INVALID_SESSION_STATUS("강의 상태가 유효하지 않습니다."),
+    INVALID_SESSION_PROGRESS_STATUS("강의 진행 상태가 유효하지 않습니다."),
+    INVALID_SESSION_RECRUITMENT_STATUS("강의 모집 상태가 유효하지 않습니다."),
     NOT_MATCH_SESSION_ENROLLMENT("매칭되는 신청 유형이 없습니다.")
     ;
 
