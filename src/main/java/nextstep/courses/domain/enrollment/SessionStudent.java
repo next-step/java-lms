@@ -11,15 +11,15 @@ public class SessionStudent extends BaseEntity {
     private Long sessionId;
     private Long nsUserId;
 
-    public static SessionStudent from(Long sessionId, NsUser nsUser) {
-        return new SessionStudent(sessionId, nsUser.getId());
-    }
-
     public SessionStudent(Long id, Long sessionId, Long nsUserId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(createdAt, updatedAt);
         this.id = id;
         this.sessionId = sessionId;
         this.nsUserId = nsUserId;
+    }
+
+    public static SessionStudent from(Long sessionId, NsUser nsUser) {
+        return new SessionStudent(sessionId, nsUser.getId());
     }
 
     public SessionStudent(Long sessionId, Long nsUserId) {
