@@ -21,8 +21,8 @@ class SessionScheduleTest {
         LocalDate startDate = LocalDate.of(2024, 4, 10);
         LocalDate endDate = LocalDate.of(2024, 6, 30);
         SessionSchedule sessionSchedule = new SessionSchedule(startDate, endDate);
-
-        assertThat(sessionSchedule.getStartDate()).isEqualTo(startDate);
-        assertThat(sessionSchedule.getEndDate()).isEqualTo(endDate);
+        assertThat(sessionSchedule.isAbleToRegister(LocalDate.of(2024, 4, 9))).isFalse();
+        assertThat(sessionSchedule.isAbleToRegister(LocalDate.of(2024, 6, 30))).isFalse();
+        assertThat(sessionSchedule.isAbleToRegister(LocalDate.of(2024, 5, 1))).isTrue();
     }
 }

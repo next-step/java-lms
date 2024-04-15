@@ -19,11 +19,9 @@ public class SessionSchedule {
         }
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
+    public boolean isAbleToRegister(LocalDate registrationDate) {
+        return registrationDate.isAfter(startDate) && registrationDate.isBefore(endDate);
     }
 
-    public LocalDate getEndDate() {
-        return endDate;
-    }
+
 }
