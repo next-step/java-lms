@@ -1,7 +1,7 @@
 package nextstep.courses.domain.session;
 
-public enum SessionStatus {
-    PREPARING, GATHERING, ON_GOING, END;
+public enum SessionGatheringStatus {
+    GATHERING, NON_GATHERING;
 
     public boolean isEnrollPossibleStatus() {
         return this == GATHERING;

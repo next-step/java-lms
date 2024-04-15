@@ -10,6 +10,7 @@ import java.util.List;
 
 import static java.util.Objects.nonNull;
 import static nextstep.courses.ExceptionMessage.SESSION_ENROLL_FAIL_MESSAGE;
+import static nextstep.courses.domain.session.SessionGatheringStatus.NON_GATHERING;
 import static nextstep.courses.domain.session.SessionStatus.PREPARING;
 
 public class Session {
@@ -18,6 +19,7 @@ public class Session {
     private String description;
     private SessionType sessionType;
     private SessionStatus sessionStatus;
+    private SessionGatheringStatus sessionGatheringStatus;
     private Period periodOfSession;
     private CoverImage coverImage;
     private Course course;
@@ -26,19 +28,24 @@ public class Session {
     private LocalDateTime updatedAt;
 
     public Session(String title, String description, SessionType sessionType, Period periodOfSession, CoverImage coverImage, Course course) {
-        this(null, title, description, sessionType, PREPARING, periodOfSession, coverImage, course, LocalDateTime.now(), null);
+        this(null, title, description, sessionType, PREPARING, NON_GATHERING, periodOfSession, coverImage, course, LocalDateTime.now(), null);
     }
 
     public Session(Long id, String title, String description, SessionType sessionType, Period periodOfSession, CoverImage coverImage, Course course) {
-        this(id, title, description, sessionType, PREPARING, periodOfSession, coverImage, course, LocalDateTime.now(), null);
+        this(id, title, description, sessionType, PREPARING, NON_GATHERING, periodOfSession, coverImage, course, LocalDateTime.now(), null);
     }
 
     public Session(Long id, String title, String description, SessionType sessionType, SessionStatus sessionStatus, Period periodOfSession, CoverImage coverImage, Course course, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(id, title, description, sessionType, sessionStatus, null, periodOfSession, coverImage, course, createdAt, updatedAt);
+    }
+
+    public Session(Long id, String title, String description, SessionType sessionType, SessionStatus sessionStatus, SessionGatheringStatus sessionGatheringStatus, Period periodOfSession, CoverImage coverImage, Course course, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.sessionType = sessionType;
         this.sessionStatus = sessionStatus;
+        this.sessionGatheringStatus = sessionGatheringStatus;
         this.periodOfSession = periodOfSession;
         this.coverImage = coverImage;
         this.course = course;
@@ -51,8 +58,20 @@ public class Session {
         addEnrolledUser(user);
     }
 
+    public void enroll2(NsUser user, Payment payment) {
+        validateSessionEnrollment2(user, payment);
+        addEnrolledUser(user);
+    }
+
+
     private void validateSessionEnrollment(NsUser user, Payment payment) {
         if (!isSessionEnrollPossible(user, payment)) {
+            throw new CannotEnrollException(SESSION_ENROLL_FAIL_MESSAGE.message());
+        }
+    }
+
+    private void validateSessionEnrollment2(NsUser user, Payment payment) {
+        if (!isSessionEnrollPossible2(user, payment)) {
             throw new CannotEnrollException(SESSION_ENROLL_FAIL_MESSAGE.message());
         }
     }
@@ -63,12 +82,23 @@ public class Session {
                 sessionType.isEnrollmentPossible(enrolledUsers.numberOfCurrentEnrollment(), payment);
     }
 
+    private boolean isSessionEnrollPossible2(NsUser user, Payment payment) {
+        return sessionGatheringStatus.isEnrollPossibleStatus() &&
+                !enrolledUsers.isDuplicatedUser(user) &&
+                sessionType.isEnrollmentPossible(enrolledUsers.numberOfCurrentEnrollment(), payment);
+    }
+
     private void addEnrolledUser(NsUser user) {
         enrolledUsers.add(user);
     }
 
     public void updateStatusAs(SessionStatus sessionStatus) {
         this.sessionStatus = sessionStatus;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void updateSessionGatheringStatusAs(SessionGatheringStatus sessionGatheringStatus) {
+        this.sessionGatheringStatus = sessionGatheringStatus;
         this.updatedAt = LocalDateTime.now();
     }
 
@@ -106,6 +136,10 @@ public class Session {
 
     public SessionStatus getSessionStatus() {
         return sessionStatus;
+    }
+
+    public SessionGatheringStatus getSessionGatheringStatus() {
+        return sessionGatheringStatus;
     }
 
     public LocalDateTime getStartedAt() {
