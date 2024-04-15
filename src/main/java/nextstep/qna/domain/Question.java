@@ -75,7 +75,6 @@ public class Question {
 
     public List<DeleteHistory> createHistories(long questionId) {
 
-        this.deleted = true;
         DeleteHistories deleteHistories = new DeleteHistories();
         deleteHistories.process(questionId, this.getWriter(), this.getAnswers());
 
@@ -95,9 +94,11 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public void isDeletableBy(NsUser loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         validateAuthority(loginUser);
         validateWriter(loginUser);
+        this.deleted = true;
+        return createHistories(id);
     }
 
     private void validateWriter(NsUser loginUser) throws CannotDeleteException {
