@@ -9,10 +9,9 @@ import org.junit.jupiter.params.provider.EnumSource.Mode;
 
 class NsUserTypeTest {
 
-    @ParameterizedTest
-    @EnumSource(mode = Mode.EXCLUDE, names = "COACH")
-    void 강사가_아니면_true를_반환한다(final NsUserType nsUserType) {
-        assertThat(nsUserType.isNotCoach()).isTrue();
+    @Test
+    void 강사이면_true를_반환한다() {
+        assertThat(NsUserType.COACH.isCoach()).isTrue();
     }
 
     @Test

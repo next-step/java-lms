@@ -4,8 +4,8 @@ public enum NsUserType {
 
     USER, COACH, WOOTECO, WOOTECAM;
 
-    public boolean isNotCoach() {
-        return this != COACH;
+    public boolean isCoach() {
+        return this == COACH;
     }
 
     public boolean isNotSelected() {
