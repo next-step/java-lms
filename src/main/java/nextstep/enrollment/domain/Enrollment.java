@@ -34,6 +34,12 @@ public class Enrollment {
         }
     }
 
+    public void cancelBy(final NsUser coach) {
+        if (coach.isCoach() && !attendee.isSelected()) {
+            status = REJECTED;
+        }
+    }
+
     private void validate(final long price) {
         session.validateNonFreeSession();
         session.validatePriceEquality(price);
