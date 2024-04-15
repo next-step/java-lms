@@ -8,12 +8,8 @@ import java.util.List;
 
 public class FreeSessionEnrollment extends SessionEnrollment {
 
-    public FreeSessionEnrollment(Long sessionId, SessionEnrollment enrollment, List<SessionStudent> students) {
-        super(sessionId, enrollment, students);
-    }
-
-    public FreeSessionEnrollment(Long sessionId, SessionStatus status) {
-        super(sessionId, status, SessionCapacity.INFINITY, SessionFee.FREE);
+    public FreeSessionEnrollment(SessionEnrollment enrollment, List<SessionStudent> students) {
+        super(enrollment, students);
     }
 
     public FreeSessionEnrollment(SessionStatus status) {

@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import static nextstep.courses.domain.enrollment.SessionStatus.FINISHED;
 import static nextstep.courses.domain.enrollment.SessionStatus.RECRUITING;
+import static nextstep.courses.domain.fixture.IdFixture.SESSION_ID;
 import static nextstep.courses.domain.fixture.NsUserFixture.nsUser;
 import static nextstep.courses.domain.fixture.PaymentFixture.payment;
 import static nextstep.courses.domain.fixture.SessionEnrollmentFixture.freeSessionEnrollment;
@@ -89,7 +90,7 @@ public class SessionEnrollTest {
         Payment payment = payment(0L);
 
         assertThatNoException()
-                .isThrownBy(() -> enrollment.enroll(user, payment));
+                .isThrownBy(() -> enrollment.enroll(SESSION_ID, user, payment));
     }
 
     @Test
@@ -101,7 +102,7 @@ public class SessionEnrollTest {
         Payment payment = payment(800_000L);
 
         assertThatNoException()
-                .isThrownBy(() -> enrollment.enroll(user, payment));
+                .isThrownBy(() -> enrollment.enroll(SESSION_ID, user, payment));
     }
 
 }

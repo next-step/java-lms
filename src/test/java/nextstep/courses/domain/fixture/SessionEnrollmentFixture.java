@@ -5,20 +5,18 @@ import nextstep.courses.domain.enrollment.PaidSessionEnrollment;
 import nextstep.courses.domain.enrollment.SessionStatus;
 import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
 
-import static nextstep.courses.domain.fixture.IdFixture.SESSION_ID;
-
 public class SessionEnrollmentFixture {
 
     public static SessionEnrollment freeSessionEnrollment() {
-        return new FreeSessionEnrollment(SESSION_ID, SessionStatus.RECRUITING);
+        return new FreeSessionEnrollment(SessionStatus.RECRUITING);
     }
 
     public static SessionEnrollment freeSessionEnrollment(SessionStatus status) {
-        return new FreeSessionEnrollment(SESSION_ID, status);
+        return new FreeSessionEnrollment(status);
     }
 
     public static SessionEnrollment paidSessionEnrollment(SessionStatus status, int capacity, long fee) {
-        return new PaidSessionEnrollment(SESSION_ID, status, capacity, fee);
+        return new PaidSessionEnrollment(status, capacity, fee);
     }
 
 }

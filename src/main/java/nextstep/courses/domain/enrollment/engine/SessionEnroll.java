@@ -6,7 +6,7 @@ import nextstep.users.domain.NsUser;
 
 public interface SessionEnroll {
 
-    SessionStudent enroll(NsUser nsUser, Payment payment);
+    SessionStudent enroll(Long sessionId, NsUser nsUser, Payment payment);
 
     default void satisfyEnrollment(Payment payment) {
         satisfyStatus();

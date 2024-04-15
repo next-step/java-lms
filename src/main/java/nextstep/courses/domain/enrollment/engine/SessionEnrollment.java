@@ -14,30 +14,13 @@ import java.util.List;
 
 public abstract class SessionEnrollment implements SessionEnroll {
 
-    protected Long sessionId;
     protected final SessionStatus status;
     protected final SessionCapacity capacity;
     protected final SessionFee fee;
     protected final List<SessionStudent> students;
 
-    protected SessionEnrollment(Long sessionId, SessionEnrollment enrollment, List<SessionStudent> students) {
-        this(sessionId, enrollment.getStatus(), enrollment.getCapacity().get(), enrollment.getFee().get(), students);
-    }
-
-    protected SessionEnrollment(Long sessionId, SessionStatus status, int capacity, long fee) {
-        this.sessionId = sessionId;
-        this.status = status;
-        this.capacity = new SessionCapacity(sessionId, capacity);
-        this.fee = new SessionFee(sessionId, fee);
-        this.students = new ArrayList<>();
-    }
-
-    protected SessionEnrollment(Long sessionId, SessionStatus status, int capacity, long fee, List<SessionStudent> students) {
-        this.sessionId = sessionId;
-        this.status = status;
-        this.capacity = new SessionCapacity(sessionId, capacity);
-        this.fee = new SessionFee(sessionId, fee);
-        this.students = students;
+    protected SessionEnrollment(SessionEnrollment enrollment, List<SessionStudent> students) {
+        this(enrollment.getStatus(), enrollment.getCapacity().get(), enrollment.getFee().get(), students);
     }
 
     protected SessionEnrollment(SessionStatus status, int capacity, long fee) {
@@ -55,7 +38,7 @@ public abstract class SessionEnrollment implements SessionEnroll {
     }
 
     @Override
-    public SessionStudent enroll(NsUser nsUser, Payment payment) {
+    public SessionStudent enroll(Long sessionId, NsUser nsUser, Payment payment) {
         satisfyEnrollment(payment);
 
         SessionStudent student = SessionStudent.from(sessionId, nsUser);
@@ -76,10 +59,6 @@ public abstract class SessionEnrollment implements SessionEnroll {
         if (capacity.noCapacity(students.size())) {
             throw new SessionCapacityExceedException(capacity.get(), students.size());
         }
-    }
-
-    public Long getSessionId() {
-        return sessionId;
     }
 
     public SessionStatus getStatus() {

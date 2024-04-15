@@ -27,11 +27,11 @@ public class SessionFactory {
         SessionStatus status = SessionStatus.convert(statusString);
 
         if (SessionType.FREE == type) {
-            return new Session(sessionId, courseId, type, new SessionPeriod(sessionId, startAt, endAt), new FreeSessionEnrollment(status), createdAt, updatedAt);
+            return new Session(sessionId, courseId, type, new SessionPeriod(startAt, endAt), new FreeSessionEnrollment(status), createdAt, updatedAt);
         }
 
         if (SessionType.PAID == type) {
-            return new Session(sessionId, courseId, type, new SessionPeriod(sessionId, startAt, endAt), new PaidSessionEnrollment(status, capacity, fee), createdAt, updatedAt);
+            return new Session(sessionId, courseId, type, new SessionPeriod(startAt, endAt), new PaidSessionEnrollment(status, capacity, fee), createdAt, updatedAt);
         }
 
         throw new SessionEnrollmentNotMatchException(type);
@@ -49,15 +49,14 @@ public class SessionFactory {
 
     private static SessionEnrollment assembleEnrollmentStudents(Session session, List<SessionStudent> students) {
         SessionType type = session.getType();
-        Long sessionId = session.getId();
         SessionEnrollment enrollment = session.getEnrollment();
 
         if (SessionType.FREE == type) {
-            return new FreeSessionEnrollment(sessionId, enrollment, students);
+            return new FreeSessionEnrollment(enrollment, students);
         }
 
         if (SessionType.PAID == type) {
-            return new PaidSessionEnrollment(sessionId, enrollment, students);
+            return new PaidSessionEnrollment(enrollment, students);
         }
 
         throw new SessionEnrollmentNotMatchException(type);

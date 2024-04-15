@@ -47,7 +47,7 @@ public class Session extends BaseEntity {
 
 
     public SessionStudent enroll(NsUser nsUser, Payment payment) {
-        return enrollment.enroll(nsUser, payment);
+        return enrollment.enroll(id, nsUser, payment);
     }
 
     public Long getId() {
