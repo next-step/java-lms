@@ -11,18 +11,18 @@ public class CoverImageInfo {
 	private static final String IMAGE_HEIGHT_UNDER_MESSAGE = "이미지의 높이는 200 픽셀 이상이어야 합니다.";
 	private static final String IMAGE_WRONG_RATE_MESSAGE = "이미지의 너비와 높이는 3:2 비율이어야 합니다.";
 
-	private static final int MAX_IMAGE_SIZE = 1024;
-	private static final int MIN_IMAGE_WIDTH = 300;
-	private static final int MIN_IMAGE_HEIGHT = 200;
-	private static final int WIDTH_RATE = 3;
-	private static final int HEIGHT_RATE = 2;
+	private static final Long MAX_IMAGE_SIZE = 1024L;         // KB
+	private static final Long MIN_IMAGE_WIDTH = 300L;         // 픽셀
+	private static final Long MIN_IMAGE_HEIGHT = 200L;        // 픽셀
+	private static final Long WIDTH_RATE = 3L;
+	private static final Long HEIGHT_RATE = 2L;
 
-	private final int size;
+	private final Long size;
 	private final ImageType imageType;
-	private final int width;
-	private final int height;
+	private final Long width;
+	private final Long height;
 
-	public CoverImageInfo(int size, String imageType, int width, int height) {
+	public CoverImageInfo(Long size, String imageType, Long width, Long height) {
 		validationImageSize(size);
 		validationImageRate(width, height);
 		this.imageType = validationImageType(imageType);
@@ -36,7 +36,7 @@ public class CoverImageInfo {
 		return imageType.orElseThrow(() -> new IllegalArgumentException(IMAGE_TYPE_INVALID_MESSAGE));
 	}
 
-	private void validationImageRate(int width, int height) {
+	private void validationImageRate(Long width, Long height) {
 		if (width < MIN_IMAGE_WIDTH) {
 			throw new IllegalArgumentException(IMAGE_WIDTH_UNDER_MESSAGE);
 		}
@@ -48,11 +48,11 @@ public class CoverImageInfo {
 		}
 	}
 
-	private static boolean isCorrectImageRate(int width, int height) {
+	private static boolean isCorrectImageRate(Long width, Long height) {
 		return WIDTH_RATE * height != HEIGHT_RATE * width;
 	}
 
-	private void validationImageSize(int size) {
+	private void validationImageSize(Long size) {
 		if (size > MAX_IMAGE_SIZE) {
 			throw new IllegalArgumentException(IMAGE_SIZE_OVER_MESSAGE);
 		}
