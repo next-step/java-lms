@@ -73,6 +73,7 @@ create table session
     max_number_of_enrollment bigint       not null default 0,
     fee                      bigint       not null default 0,
     status                   varchar(255) not null,
+    gathering_status         varchar(255) not null,
     started_at               timestamp    not null,
     ended_at                 timestamp    not null,
     cover_image_id           bigint,

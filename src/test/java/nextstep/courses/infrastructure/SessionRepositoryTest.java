@@ -1,8 +1,6 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.session.CoverImage;
-import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionRepository;
+import nextstep.courses.domain.session.*;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +12,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import static nextstep.courses.domain.course.CourseTest.COURSE;
 import static nextstep.courses.domain.session.ImageType.PNG;
 import static nextstep.courses.domain.session.PeriodTest.PERIOD_OF_SESSION;
-import static nextstep.courses.domain.session.SessionStatus.GATHERING;
 import static nextstep.courses.domain.session.SessionTypeTest.PAID_SESSION_TYPE;
 import static nextstep.users.domain.NsUserTest.ZIPJIGI;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,7 +42,7 @@ class SessionRepositoryTest {
     @DisplayName("강의 상태 변경 테스트")
     void testUpdateStatus() {
         Session savedSession = sessionRepository.save(new Session("자바 강의", "자바 강의다", PAID_SESSION_TYPE, PERIOD_OF_SESSION, new CoverImage("이미지", 1024 * 1024, 300, 200, PNG), COURSE));
-        savedSession.updateStatusAs(GATHERING);
+        savedSession.updateStatusAs(SessionStatus.GATHERING);
         Session updatedSession = sessionRepository.update(savedSession);
         Session foundSession = sessionRepository.findById(updatedSession.getId());
 
@@ -53,11 +50,22 @@ class SessionRepositoryTest {
     }
 
     @Test
+    @DisplayName("강의 모집 상태 변경 테스트")
+    void testUpdateGatheringStatus() {
+        Session savedSession = sessionRepository.save(new Session("자바 강의", "자바 강의다", PAID_SESSION_TYPE, PERIOD_OF_SESSION, new CoverImage("이미지", 1024 * 1024, 300, 200, PNG), COURSE));
+        savedSession.updateSessionGatheringStatusAs(SessionGatheringStatus.GATHERING);
+        Session updatedSession = sessionRepository.update(savedSession);
+        Session foundSession = sessionRepository.findById(updatedSession.getId());
+
+        assertThat(updatedSession.getSessionGatheringStatus()).isEqualTo(foundSession.getSessionGatheringStatus());
+    }
+
+    @Test
     @DisplayName("수강 신청 테스트")
     void testEnroll() {
         Session savedSession = sessionRepository.save(new Session("자바 강의", "자바 강의다", PAID_SESSION_TYPE, PERIOD_OF_SESSION, new CoverImage("이미지", 1024 * 1024, 300, 200, PNG), COURSE));
-        savedSession.updateStatusAs(GATHERING);
-        savedSession.enroll(ZIPJIGI, new Payment("p1", savedSession.getId(), ZIPJIGI.getId(), 100L));
+        savedSession.updateSessionGatheringStatusAs(SessionGatheringStatus.GATHERING);
+        savedSession.enroll2(ZIPJIGI, new Payment("p1", savedSession.getId(), ZIPJIGI.getId(), 100L));
         Session updatedSession = sessionRepository.update(savedSession);
         Session foundSession = sessionRepository.findById(updatedSession.getId());
 
