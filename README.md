@@ -20,3 +20,6 @@ step1
 step2
 * refactor/feedback-step1
   * refactored codes based on feedback from step 1
+* feature/session
+  * implement domain model of session
+    * test codes are also implemented
