@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import javax.swing.ImageIcon;
 import nextstep.courses.CannotRegisterException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -15,7 +16,7 @@ public class Session {
     private String title;
     private SessionType sessionType;
     private SessionState state;
-    private String image;
+    private Image image;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
@@ -33,7 +34,7 @@ public class Session {
         this.title = title;
         this.sessionType = sessionType;
         this.state = state;
-        this.image = image;
+        this.image = new Image(image);
         this.startDate = startDate;
         this.endDate = endDate;
         this.studentCapacity = studentCapacity;
