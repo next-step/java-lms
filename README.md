@@ -23,3 +23,6 @@ step2
 * feature/session
   * implement domain model of session
     * test codes are also implemented
+* feature/session-service
+  * implement session service
+    * test codes are also implemented

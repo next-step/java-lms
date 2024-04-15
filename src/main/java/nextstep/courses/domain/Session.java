@@ -78,6 +78,10 @@ public class Session {
         enrollment.enroll(student);
     }
 
+    public Long id() {
+        return id;
+    }
+
     public Enrollment enrollment() {
         return enrollment;
     }
