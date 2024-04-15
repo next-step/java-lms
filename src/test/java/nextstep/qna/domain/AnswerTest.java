@@ -17,8 +17,9 @@ public class AnswerTest {
     @DisplayName("삭제 메서드 테스트")
     public void deleteTest() {
         LocalDateTime deleteTime = LocalDateTime.now();
+        A1.delete();
 
-        assertThat(A1.delete(deleteTime)).isEqualTo(new DeleteHistory(ContentType.ANSWER, A1.getId(), A1.getWriter(), deleteTime));
+        assertThat(A1.createDeleteHistory(deleteTime)).isEqualTo(new DeleteHistory(ContentType.ANSWER, A1.getId(), A1.getWriter(), deleteTime));
         assertThat(A1.isDeleted()).isTrue();
     }
 }

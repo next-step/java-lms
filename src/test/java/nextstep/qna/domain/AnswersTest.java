@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class AnswersTest {
     public static final Answers ANSWERS = new Answers(Arrays.asList(AnswerTest.A1, AnswerTest.A2));
@@ -32,6 +34,8 @@ class AnswersTest {
     @Test
     @DisplayName("Answers 작성자 검증 테스트")
     public void validateWriterTest() {
-        assertThat(ANSWERS.validateWriter(NsUserTest.NEWUSER)).isTrue();
+        assertThatThrownBy(() -> ANSWERS.validateDelete(NsUserTest.NEWUSER))
+                .isInstanceOf(CannotDeleteException.class)
+                .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
 }

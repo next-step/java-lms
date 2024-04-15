@@ -3,7 +3,6 @@ package nextstep.qna.domain;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,11 +32,7 @@ public class DeleteHistory {
     }
 
     public static List<DeleteHistory> deleteAnswers(Answers answers, LocalDateTime deleteTime) {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-
-        answers.forEach(answer -> deleteHistories.add(answer.delete(deleteTime)));
-
-        return deleteHistories;
+        return answers.delete(deleteTime);
     }
 
     @Override

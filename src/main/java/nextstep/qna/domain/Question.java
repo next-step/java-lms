@@ -82,7 +82,7 @@ public class Question {
         return deleted;
     }
 
-    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> deleteAndGetDeleteHistories(NsUser loginUser) throws CannotDeleteException {
         this.validateDelete(loginUser);
 
         this.deleted = true;
@@ -105,9 +105,7 @@ public class Question {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
-        if (this.answers.validateWriter(loginUser)) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-        }
+        answers.validateDelete(loginUser);
     }
 
     @Override
