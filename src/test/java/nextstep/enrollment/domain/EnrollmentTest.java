@@ -1,5 +1,6 @@
 package nextstep.enrollment.domain;
 
+import static nextstep.enrollment.domain.EnrollmentStatus.*;
 import static nextstep.sessions.domain.SessionProgressStatus.END;
 import static nextstep.sessions.domain.SessionProgressStatus.PREPARING;
 import static nextstep.sessions.domain.SessionRecruitingStatus.NON_RECRUITING;
@@ -69,23 +70,25 @@ class EnrollmentTest {
     void 무료_강의_수강_신청한다() {
         // given
         final Session freeSession = Session.free(RECRUITING, PREPARING,course);
+        final Enrollment enrollment = new Enrollment(freeSession, NsUserTest.JAVAJIGI);
 
         // when
-        new Enrollment(freeSession, NsUserTest.JAVAJIGI).enroll(0L);
+        enrollment.enroll(0L);
 
         // then
-        assertThat(freeSession.getEnrollments()).hasSize(1)
-                .extracting("attendee")
-                .containsExactly(NsUserTest.JAVAJIGI);
+        assertThat(enrollment.getStatus()).isEqualTo(REGISTERED);
     }
 
     @Test
     void 유료_강의_수강_신청한다() {
-        new Enrollment(session, NsUserTest.JAVAJIGI).enroll(SESSION_PRICE);
+        // given
+        final Enrollment enrollment = new Enrollment(session, NsUserTest.JAVAJIGI);
 
-        assertThat(session.getEnrollments()).hasSize(1)
-                .extracting("attendee")
-                .containsExactly(NsUserTest.JAVAJIGI);
+        // when
+        enrollment.enroll(SESSION_PRICE);
+
+        // then
+        assertThat(enrollment.getStatus()).isEqualTo(REGISTERED);
     }
 
     @Test
@@ -96,7 +99,7 @@ class EnrollmentTest {
                 .isThrownBy(() -> new Enrollment(session, new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net", WOOTECAM)).enroll(SESSION_PRICE))
                 .withMessage("이미 수강 신청한 사용자입니다.");
     }
-    
+
     @Test
     void 강의_진행_상태가_END이면_수강_신청에_실패한다() {
         // given

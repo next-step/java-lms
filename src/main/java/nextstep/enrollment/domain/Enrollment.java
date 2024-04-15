@@ -1,5 +1,7 @@
 package nextstep.enrollment.domain;
 
+import static nextstep.enrollment.domain.EnrollmentStatus.*;
+
 import java.util.Objects;
 
 import nextstep.sessions.domain.Session;
@@ -8,6 +10,8 @@ import nextstep.users.domain.NsUser;
 public class Enrollment {
 
     private Long id;
+
+    private EnrollmentStatus status;
 
     private Session session;
 
@@ -20,7 +24,7 @@ public class Enrollment {
 
     public void enroll(final long paymentPrice) {
         validate(paymentPrice);
-        session.addEnrollment(this);
+        status = REGISTERED;
     }
 
     private void validate(final long price) {
@@ -62,6 +66,10 @@ public class Enrollment {
 
     public Long getAttendeeId() {
         return attendee.getId();
+    }
+
+    public EnrollmentStatus getStatus() {
+        return status;
     }
 
     @Override

@@ -79,6 +79,10 @@ public class Session {
         enrollments.add(enrollment);
     }
 
+    public void removeEnrollment(final Enrollment enrollment) {
+        enrollments.remove(enrollment);
+    }
+
     public boolean isEnd() {
         return sessionProgressStatus.isEnd();
     }
