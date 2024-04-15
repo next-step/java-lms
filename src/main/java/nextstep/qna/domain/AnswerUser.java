@@ -18,15 +18,14 @@ public class AnswerUser {
         users.add(answer);
     }
 
-    public void isOwner(NsUser loginUser) throws CannotDeleteException {
+    public void delete(List<DeleteHistory> deleteHistories, NsUser loginUser) throws CannotDeleteException {
         for (Answer answer : users) {
-            if (!answer.getWriter().equals(loginUser)) {
-                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-            }
+            deleteHistories.add(answer.delete(loginUser));
         }
     }
 
     public List<Answer> getUsers() {
         return users;
     }
+
 }

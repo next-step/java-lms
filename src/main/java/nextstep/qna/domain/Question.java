@@ -70,15 +70,15 @@ public class Question {
         answers.add(answer);
     }
 
-    public void isOwner(NsUser loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
         if (!writer.equals(loginUser))
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        this.deleted = true;
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, new DeleteUserInformation(this)));
+        return deleteHistories;
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
 
     public boolean isDeleted() {
         return deleted;
