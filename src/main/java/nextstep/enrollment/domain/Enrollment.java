@@ -27,6 +27,13 @@ public class Enrollment {
         status = REGISTERED;
     }
 
+    public void approveBy(final NsUser coach) {
+        if (coach.isCoach() && attendee.isSelected()) {
+            status = APPROVED;
+            session.addEnrollment(this);
+        }
+    }
+
     private void validate(final long price) {
         session.validateNonFreeSession();
         session.validatePriceEquality(price);

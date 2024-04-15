@@ -43,6 +43,14 @@ public class NsUser {
         this.updatedAt = updatedAt;
     }
 
+    public boolean isCoach() {
+        return nsUserType.isCoach();
+    }
+
+    public boolean isSelected() {
+        return nsUserType.isSelected();
+    }
+
     public Long getId() {
         return id;
     }

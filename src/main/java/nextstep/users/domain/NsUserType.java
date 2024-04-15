@@ -8,7 +8,7 @@ public enum NsUserType {
         return this == COACH;
     }
 
-    public boolean isNotSelected() {
-        return this != WOOTECO && this != WOOTECAM;
+    public boolean isSelected() {
+        return this == WOOTECO || this == WOOTECAM;
     }
 }
