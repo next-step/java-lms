@@ -74,13 +74,9 @@ public class Answer {
         this.question = question;
     }
 
-    public static List<DeleteHistory> delete(List<Answer> answers) {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        for (Answer answer : answers) {
-            answer.setDeleted(true);
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
-        }
-        return deleteHistories;
+    public DeleteHistory delete() {
+        setDeleted(true);
+        return new DeleteHistory(ContentType.ANSWER, getId(), getWriter(), LocalDateTime.now());
     }
 
     @Override
