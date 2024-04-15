@@ -7,6 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static nextstep.courses.domain.course.CourseTest.COURSE;
 import static nextstep.courses.domain.session.CoverImageTest.COVER_IMAGE_PNG;
 import static nextstep.courses.domain.session.PeriodTest.PERIOD_OF_SESSION;
@@ -27,7 +29,7 @@ class SessionTest {
             @Test
             @DisplayName("강의 상태가 모집중이 아닌 경우 CannotEnrollException이 발생한다.")
             void testInvalidSessionStatus() {
-                Session session = new Session(11L, "무료 강의", "무료 강의다", FREE_SESSION_TYPE, PERIOD_OF_SESSION, COVER_IMAGE_PNG, COURSE);
+                Session session = new Session(11L, "무료 강의", "무료 강의다", FREE_SESSION_TYPE, PERIOD_OF_SESSION, new CoverImages(List.of(COVER_IMAGE_PNG)), COURSE);
 
                 assertThatThrownBy(() -> session.enroll(JAVAJIGI, new Payment("p1", 11L, JAVAJIGI.getId(), 0L)))
                         .isExactlyInstanceOf(CannotEnrollException.class);
@@ -39,7 +41,7 @@ class SessionTest {
                 NsUser user = JAVAJIGI;
                 Payment payment = new Payment("p1", 11L, user.getId(), 0L);
 
-                Session session = new Session(11L, "무료 강의", "무료 강의다", FREE_SESSION_TYPE, PERIOD_OF_SESSION, COVER_IMAGE_PNG, COURSE);
+                Session session = new Session(11L, "무료 강의", "무료 강의다", FREE_SESSION_TYPE, PERIOD_OF_SESSION, new CoverImages(List.of(COVER_IMAGE_PNG)), COURSE);
                 session.updateSessionGatheringStatusAs(GATHERING);
                 session.enroll(user, payment);
 
@@ -50,7 +52,7 @@ class SessionTest {
             @Test
             @DisplayName("유료 강의면서 최대 수강 인원인 경우 CannotEnrollException이 발생한다.")
             void testFullEnrolledPaidSession() {
-                Session session = new Session(11L, "유료 강의", "유료 강의다", PAID_SESSION_TYPE, PERIOD_OF_SESSION, COVER_IMAGE_PNG, COURSE);
+                Session session = new Session(11L, "유료 강의", "유료 강의다", PAID_SESSION_TYPE, PERIOD_OF_SESSION, new CoverImages(List.of(COVER_IMAGE_PNG)), COURSE);
                 session.updateSessionGatheringStatusAs(GATHERING);
                 session.enroll(JAVAJIGI, new Payment("p1", 11L, JAVAJIGI.getId(), 100L));
                 session.enroll(SANJIGI, new Payment("p2", 11L, SANJIGI.getId(), 100L));
@@ -62,7 +64,7 @@ class SessionTest {
             @Test
             @DisplayName("유료 강의면서 결제한 금액과 수강료가 일치하지 않는 경우 CannotEnrollException이 발생한다.")
             void testInvalidPaymentPaidSession() {
-                Session session = new Session(11L, "유료 강의", "유료 강의다", PAID_SESSION_TYPE, PERIOD_OF_SESSION, COVER_IMAGE_PNG, COURSE);
+                Session session = new Session(11L, "유료 강의", "유료 강의다", PAID_SESSION_TYPE, PERIOD_OF_SESSION, new CoverImages(List.of(COVER_IMAGE_PNG)), COURSE);
                 session.updateSessionGatheringStatusAs(GATHERING);
 
                 assertThatThrownBy(() -> session.enroll(JAVAJIGI, new Payment("p1", 11L, JAVAJIGI.getId(), 0L)))
@@ -76,7 +78,7 @@ class SessionTest {
             @Test
             @DisplayName("검증 조건을 통과한 경우 정상적으로 무료 강의가 수강 신청되는 것을 확인할 수 있습니다.")
             void testFreeSession() {
-                Session session = new Session(11L, "무료 강의", "무료 강의다", FREE_SESSION_TYPE, PERIOD_OF_SESSION, COVER_IMAGE_PNG, COURSE);
+                Session session = new Session(11L, "무료 강의", "무료 강의다", FREE_SESSION_TYPE, PERIOD_OF_SESSION, new CoverImages(List.of(COVER_IMAGE_PNG)), COURSE);
                 session.updateSessionGatheringStatusAs(GATHERING);
 
                 assertThatNoException().isThrownBy(() -> session.enroll(JAVAJIGI, new Payment("p1", 11L, JAVAJIGI.getId(), 0L)));
@@ -87,7 +89,7 @@ class SessionTest {
             @Test
             @DisplayName("검증 조건을 통과한 경우 정상적으로 유료 강의가 수강 신청되는 것을 확인할 수 있습니다.")
             void testPaidSession() {
-                Session session = new Session(11L, "유료 강의", "유료 강의다", PAID_SESSION_TYPE, PERIOD_OF_SESSION, COVER_IMAGE_PNG, COURSE);
+                Session session = new Session(11L, "유료 강의", "유료 강의다", PAID_SESSION_TYPE, PERIOD_OF_SESSION, new CoverImages(List.of(COVER_IMAGE_PNG)), COURSE);
                 session.updateSessionGatheringStatusAs(GATHERING);
 
                 assertThatNoException().isThrownBy(() -> session.enroll(JAVAJIGI, new Payment("p1", 11L, JAVAJIGI.getId(), 100L)));
