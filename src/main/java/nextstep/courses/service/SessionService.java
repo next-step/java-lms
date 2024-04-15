@@ -31,7 +31,7 @@ public class SessionService {
 
     public void establish(Session session) {
         sessionRepository.save(session);
-        sessionCoverImageRepository.save(session.getCoverImage());
+        sessionCoverImageRepository.saveAll(session.getCoverImage());
     }
 
     public void enroll(Long sessionId, NsUser user) {

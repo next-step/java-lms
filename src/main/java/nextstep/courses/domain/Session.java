@@ -9,6 +9,7 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Session extends BaseEntity {
 
@@ -16,7 +17,7 @@ public class Session extends BaseEntity {
     private Long courseId;
     private SessionType type;
     private SessionPeriod period;
-    private SessionCoverImage coverImage;
+    private List<SessionCoverImage> coverImage;
     private SessionEnrollment enrollment;
 
     public Session(Long id, Long courseId, SessionType type, SessionPeriod period, SessionCoverImage coverImage, SessionEnrollment enrollment, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -25,7 +26,7 @@ public class Session extends BaseEntity {
         this.courseId = courseId;
         this.type = type;
         this.period = period;
-        this.coverImage = coverImage;
+        this.coverImage = List.of(coverImage);
         this.enrollment = enrollment;
     }
 
@@ -66,7 +67,7 @@ public class Session extends BaseEntity {
         return period;
     }
 
-    public SessionCoverImage getCoverImage() {
+    public List<SessionCoverImage> getCoverImage() {
         return coverImage;
     }
 
