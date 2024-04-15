@@ -106,7 +106,7 @@ validate도 마찬가지
   - [X] Session의 생성자에서 SessionStatus null처리 대신 생성자 분리로 수정
   - [X] 빌더패턴을 점진적으로 제거하고 각 매개변수를 클래스 분리로 구현
     - 빌더패턴을 정적 팩터리 메서드로 수정
-- [ ] 선발 인원을 관리하기 위해 Session과 NsUser를 매핑하는 Selection 매핑 클래스 구현
+- [X] 선발 인원을 관리하기 위해 Session과 NsUser를 매핑하는 Selection 매핑 클래스 구현
   - nsUser (NsUser) - 선발된 유저
   - session (Session) - 선발된 세션
   - hasPaid (boolean) - 유저 결제완료 여부
