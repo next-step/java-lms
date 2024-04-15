@@ -42,7 +42,7 @@ class SessionRepositoryTest {
     @DisplayName("강의 상태 변경 테스트")
     void testUpdateStatus() {
         Session savedSession = sessionRepository.save(new Session("자바 강의", "자바 강의다", PAID_SESSION_TYPE, PERIOD_OF_SESSION, new CoverImage("이미지", 1024 * 1024, 300, 200, PNG), COURSE));
-        savedSession.updateStatusAs(SessionStatus.GATHERING);
+        savedSession.updateStatusAs(SessionStatus.ON_GOING);
         Session updatedSession = sessionRepository.update(savedSession);
         Session foundSession = sessionRepository.findById(updatedSession.getId());
 
@@ -65,7 +65,7 @@ class SessionRepositoryTest {
     void testEnroll() {
         Session savedSession = sessionRepository.save(new Session("자바 강의", "자바 강의다", PAID_SESSION_TYPE, PERIOD_OF_SESSION, new CoverImage("이미지", 1024 * 1024, 300, 200, PNG), COURSE));
         savedSession.updateSessionGatheringStatusAs(SessionGatheringStatus.GATHERING);
-        savedSession.enroll2(ZIPJIGI, new Payment("p1", savedSession.getId(), ZIPJIGI.getId(), 100L));
+        savedSession.enroll(ZIPJIGI, new Payment("p1", savedSession.getId(), ZIPJIGI.getId(), 100L));
         Session updatedSession = sessionRepository.update(savedSession);
         Session foundSession = sessionRepository.findById(updatedSession.getId());
 

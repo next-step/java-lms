@@ -35,10 +35,6 @@ public class Session {
         this(id, title, description, sessionType, PREPARING, NON_GATHERING, periodOfSession, coverImage, course, LocalDateTime.now(), null);
     }
 
-    public Session(Long id, String title, String description, SessionType sessionType, SessionStatus sessionStatus, Period periodOfSession, CoverImage coverImage, Course course, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this(id, title, description, sessionType, sessionStatus, null, periodOfSession, coverImage, course, createdAt, updatedAt);
-    }
-
     public Session(Long id, String title, String description, SessionType sessionType, SessionStatus sessionStatus, SessionGatheringStatus sessionGatheringStatus, Period periodOfSession, CoverImage coverImage, Course course, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
@@ -58,31 +54,13 @@ public class Session {
         addEnrolledUser(user);
     }
 
-    public void enroll2(NsUser user, Payment payment) {
-        validateSessionEnrollment2(user, payment);
-        addEnrolledUser(user);
-    }
-
-
     private void validateSessionEnrollment(NsUser user, Payment payment) {
         if (!isSessionEnrollPossible(user, payment)) {
             throw new CannotEnrollException(SESSION_ENROLL_FAIL_MESSAGE.message());
         }
     }
 
-    private void validateSessionEnrollment2(NsUser user, Payment payment) {
-        if (!isSessionEnrollPossible2(user, payment)) {
-            throw new CannotEnrollException(SESSION_ENROLL_FAIL_MESSAGE.message());
-        }
-    }
-
     private boolean isSessionEnrollPossible(NsUser user, Payment payment) {
-        return sessionStatus.isEnrollPossibleStatus() &&
-                !enrolledUsers.isDuplicatedUser(user) &&
-                sessionType.isEnrollmentPossible(enrolledUsers.numberOfCurrentEnrollment(), payment);
-    }
-
-    private boolean isSessionEnrollPossible2(NsUser user, Payment payment) {
         return sessionGatheringStatus.isEnrollPossibleStatus() &&
                 !enrolledUsers.isDuplicatedUser(user) &&
                 sessionType.isEnrollmentPossible(enrolledUsers.numberOfCurrentEnrollment(), payment);

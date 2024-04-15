@@ -16,7 +16,7 @@ public class SessionService {
 
     public void enroll(Long sessionId, NsUser loginUser, Payment payment) {
         Session session = sessionRepository.findById(sessionId);
-        session.enroll2(loginUser, payment);
+        session.enroll(loginUser, payment);
         sessionRepository.update(session);
     }
 }
