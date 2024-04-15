@@ -7,8 +7,8 @@ import nextstep.courses.domain.SessionStatus;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
-public class TestSession2 extends Session {
-    public TestSession2(Long id, SessionImage sessionImage, SessionStatus sessionStatus, SessionDate sessionDate) {
+public class TestDuplicateSession extends Session {
+    public TestDuplicateSession(Long id, SessionImage sessionImage, SessionStatus sessionStatus, SessionDate sessionDate) {
         super(id, sessionImage, sessionStatus, sessionDate);
     }
 

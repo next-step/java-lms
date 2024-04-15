@@ -4,8 +4,6 @@ import java.util.Optional;
 
 public interface SessionRepository {
     Sessions findByCourseId(Long courseId);
-    Optional<PaySession> findByPaySessionId(Long sessionId);
-    Optional<FreeSession> findByFreeSessionId(Long sessionId);
-    void savePaySession(PaySession paySession, Long courseId);
-    void saveFreeSession(FreeSession freeSession, Long courseId);
+    <T> Optional<Session> findBySessionId(Long sessionId, Class<T> type);
+    void saveSession(Session session, Long courseId);
 }

@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.exception.NotRecruitException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 

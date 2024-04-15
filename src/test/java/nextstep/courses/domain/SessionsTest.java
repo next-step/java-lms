@@ -19,7 +19,7 @@ public class SessionsTest {
         sessions.addSession(TestSessionFactory.recruitStatusSession(sessionId1));
         sessions.addSession(TestSessionFactory.recruitStatusSession(sessionId2));
 
-        assertThat(sessions.getSessions()).hasSize(2).containsExactly(TestSessionFactory.recruitStatusSession(sessionId1), TestSessionFactory.recruitStatusSession(sessionId2));
+        assertThat(sessions.getSessions()).hasSize(2).containsExactlyInAnyOrder(TestSessionFactory.recruitStatusSession(sessionId1), TestSessionFactory.recruitStatusSession(sessionId2));
     }
 
     @Test
