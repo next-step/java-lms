@@ -110,7 +110,7 @@ validate도 마찬가지
   - nsUser (NsUser) - 선발된 유저
   - session (Session) - 선발된 세션
   - hasPaid (boolean) - 유저 결제완료 여부
-- [ ] Payment에서 nsUser가 해당 Session에 선발되지 않았을 경우 예외처리
+- [X] 선발 인원을 저장, 선발 여부 확인을 위한 SelectionRepository 구현
 - [ ] Session의 coverImageInfo를 List로 리팩터링
 - [ ] 강의 진행 상태(준비중, 진행중, 종료)와 모집 상태(비모집중, 모집중)로 상태 값을 분리해야 한다.
   - 진행 상태와 무관하게 모집 상태로만 수강신청 가능유무 판단

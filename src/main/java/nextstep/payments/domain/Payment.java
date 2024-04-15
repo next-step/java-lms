@@ -28,6 +28,14 @@ public class Payment {
         this.createdAt = LocalDateTime.now();
     }
 
+    public Long getSessionId() {
+        return sessionId;
+    }
+
+    public Long getNsUserId() {
+        return nsUserId;
+    }
+
     public boolean isDifferentAmount(Long price) {
         return !Objects.equals(amount, price);
     }
