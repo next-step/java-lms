@@ -17,6 +17,6 @@ public class DeleteHistoryEventListener {
 
     @TransactionalEventListener(phase = AFTER_COMMIT, fallbackExecution = true)
     public void handleDeleteHistoryEvent(DeleteHistoryEvent event) {
-        deleteHistoryService.saveAll(event.getQuestion().deletedHistories());
+        deleteHistoryService.saveAll(event.deletedHistories());
     }
 }

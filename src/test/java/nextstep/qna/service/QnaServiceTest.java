@@ -52,8 +52,8 @@ public class QnaServiceTest {
         qnAService.deleteQuestion(NsUserTest.JAVAJIGI, question.getId());
 
         assertThat(question.isDeleted()).isTrue();
-        verify(applicationEventPublisher, times(1)).publishEvent(new DeleteHistoryEvent(qnAService,question));
-
+        verify(applicationEventPublisher, times(1))
+                .publishEvent(new DeleteHistoryEvent(qnAService, DeleteHistories.of(question)));
     }
 
     @Test
@@ -73,7 +73,8 @@ public class QnaServiceTest {
 
         assertThat(question.isDeleted()).isTrue();
         assertThat(answer.isDeleted()).isTrue();
-        verify(applicationEventPublisher, times(1)).publishEvent(new DeleteHistoryEvent(qnAService,question));
+        verify(applicationEventPublisher, times(1))
+                .publishEvent(new DeleteHistoryEvent(qnAService, DeleteHistories.of(question)));
 
     }
 
