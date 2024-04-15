@@ -10,10 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository("sessionRepository")
@@ -34,12 +31,12 @@ public class JdbcSessionRepository implements SessionRepository {
         List<Long> freeSessionIds = jdbcTemplate.query(freeSessionSql, ((rs, rowNum) -> rs.getLong(1)), courseId);
 
         sessions.addAll(paySessionIds.stream()
-                .map(this::findByPaySessionId)
+                .map(id -> findBySessionId(id, PaySession.class))
                 .filter(Optional::isPresent)
                 .map(Optional::get).collect(Collectors.toSet()));
 
         sessions.addAll(freeSessionIds.stream()
-                .map(this::findByFreeSessionId)
+                .map(id -> findBySessionId(id, FreeSession.class))
                 .filter(Optional::isPresent)
                 .map(Optional::get).collect(Collectors.toSet()));
 
@@ -48,7 +45,37 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public Optional<PaySession> findByPaySessionId(Long sessionId) {
+    public <T> Optional<Session> findBySessionId(Long sessionId, Class<T> type) {
+        if (type.isAssignableFrom(PaySession.class)) {
+            return findPaySessionById(sessionId);
+        }
+        if (type.isAssignableFrom(FreeSession.class)) {
+            return findFreeSessionById(sessionId);
+        }
+
+        throw new NoSuchElementException();
+    }
+
+    private Optional<Session> findFreeSessionById(Long sessionId) {
+        String paySessionSql = "select id, session_status, start_date, end_date from free_session where id = ?";
+        String sessionImageTableName = "free_session_image";
+        String studentsTableName = "free_session_students";
+
+        SessionImage sessionImage = findSessionImageBySessionId(sessionId, sessionImageTableName);
+        Set<NsUser> students = findSessionStudentsBySessionId(sessionId, studentsTableName);
+
+        RowMapper<FreeSession> sessionMapper = (rs, rowNum) ->
+                new FreeSession(rs.getLong(1),
+                        sessionImage,
+                        SessionStatus.findByName(rs.getString(2)),
+                        new SessionDate(toLocalDate(rs.getTimestamp(3)), toLocalDate(rs.getTimestamp(4))),
+                        students
+                );
+
+        return Optional.ofNullable(jdbcTemplate.queryForObject(paySessionSql, sessionMapper, sessionId));
+    }
+
+    private Optional<Session> findPaySessionById(Long sessionId) {
         String paySessionSql = "select id, session_status, amount, maximum_students, start_date, end_date from pay_session where id = ?";
         String sessionImageTableName = "pay_session_image";
         String studentsTableName = "pay_session_students";
@@ -70,27 +97,21 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public Optional<FreeSession> findByFreeSessionId(Long sessionId) {
-        String paySessionSql = "select id, session_status, start_date, end_date from free_session where id = ?";
-        String sessionImageTableName = "free_session_image";
-        String studentsTableName = "free_session_students";
+    public void saveSession(Session session, Long courseId) {
+        if (session instanceof PaySession) {
+            savePaySession((PaySession) session, courseId);
+            return;
+        }
 
-        SessionImage sessionImage = findSessionImageBySessionId(sessionId, sessionImageTableName);
-        Set<NsUser> students = findSessionStudentsBySessionId(sessionId, studentsTableName);
+        if (session instanceof FreeSession) {
+            saveFreeSession((FreeSession) session, courseId);
+            return;
+        }
 
-        RowMapper<FreeSession> sessionMapper = (rs, rowNum) ->
-                new FreeSession(rs.getLong(1),
-                        sessionImage,
-                        SessionStatus.findByName(rs.getString(2)),
-                        new SessionDate(toLocalDate(rs.getTimestamp(3)), toLocalDate(rs.getTimestamp(4))),
-                        students
-                );
-
-        return Optional.ofNullable(jdbcTemplate.queryForObject(paySessionSql, sessionMapper, sessionId));
+        throw new NoSuchElementException();
     }
 
-    @Override
-    public void savePaySession(PaySession paySession, Long courseId) {
+    private void savePaySession(PaySession paySession, Long courseId) {
         String sql = "insert into pay_session (id, session_status, amount, maximum_students, start_date, end_date, course_id) values (?, ?, ?, ?, ?, ?, ?)";
         String studentsTableName = "pay_session_students";
         String sessionImageTableName = "pay_session_image";
@@ -108,8 +129,7 @@ public class JdbcSessionRepository implements SessionRepository {
         insertSessionImage(paySession, sessionImageTableName);
     }
 
-    @Override
-    public void saveFreeSession(FreeSession freeSession, Long courseId) {
+    private void saveFreeSession(FreeSession freeSession, Long courseId) {
         String sql = "insert into free_session (id, session_status, start_date, end_date, course_id) values (?, ?, ?, ?, ?)";
         String studentsTableName = "free_session_students";
         String sessionImageTableName = "free_session_image";

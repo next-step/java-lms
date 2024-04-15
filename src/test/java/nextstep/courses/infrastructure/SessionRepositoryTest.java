@@ -42,12 +42,12 @@ public class SessionRepositoryTest {
     }
 
     @Test
-    @DisplayName("유료 강의 db에 넣고 조회 테스트")
+    @DisplayName("무료 강의 db에 넣고 조회 테스트")
     void testFreeSession() {
         FreeSession freeSession = new FreeSession(1L, sessionImage, SessionStatus.RECRUIT, SessionDateTest.of(), students);
-        sessionRepository.saveFreeSession(freeSession, courseId);
+        sessionRepository.saveSession(freeSession, courseId);
 
-        FreeSession findSession = sessionRepository.findByFreeSessionId(freeSession.getId()).orElse(null);
+        Session findSession = sessionRepository.findBySessionId(freeSession.getId(), FreeSession.class).orElse(null);
 
         assertThat(findSession.getId()).isEqualTo(1L);
 
@@ -59,14 +59,14 @@ public class SessionRepositoryTest {
     }
 
     @Test
-    @DisplayName("무료 강의 db에 넣고 조회 테스트")
+    @DisplayName("유료 강의 db에 넣고 조회 테스트")
     void testPaySession() {
         int amount = 1000;
         PaySession paySession = new PaySession(1L, sessionImage, SessionStatus.RECRUIT, SessionDateTest.of(), students, 2, amount);
 
-        sessionRepository.savePaySession(paySession, courseId);
+        sessionRepository.saveSession(paySession, courseId);
 
-        PaySession findSession = sessionRepository.findByPaySessionId(paySession.getId()).orElse(null);
+        Session findSession = sessionRepository.findBySessionId(paySession.getId(), PaySession.class).orElse(null);
 
         assertThat(findSession.getId()).isEqualTo(1L);
 
@@ -82,10 +82,10 @@ public class SessionRepositoryTest {
     void testSessions() {
         int amount = 1000;
         FreeSession freeSession = new FreeSession(1L, sessionImage, SessionStatus.RECRUIT, SessionDateTest.of(), students);
-        sessionRepository.saveFreeSession(freeSession, courseId);
+        sessionRepository.saveSession(freeSession, courseId);
 
         PaySession paySession = new PaySession(1L, sessionImage, SessionStatus.RECRUIT, SessionDateTest.of(), students, 2, amount);
-        sessionRepository.savePaySession(paySession, courseId);
+        sessionRepository.saveSession(paySession, courseId);
 
         Sessions sessions = sessionRepository.findByCourseId(courseId);
 

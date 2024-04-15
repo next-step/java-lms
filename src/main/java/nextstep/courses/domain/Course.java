@@ -16,7 +16,7 @@ public class Course {
     private LocalDateTime updatedAt;
 
     public Course() {
-        this.sessions = new Sessions();
+        this(null, null);
     }
 
     public Course(String title, Long creatorId) {
@@ -24,12 +24,7 @@ public class Course {
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.title = title;
-        this.creatorId = creatorId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.sessions = new Sessions();
+        this(id, title, creatorId, createdAt, updatedAt, new Sessions());
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt, Sessions sessions) {
