@@ -24,10 +24,7 @@ public abstract class SessionEnrollment implements SessionEnroll {
     }
 
     protected SessionEnrollment(SessionStatus status, int capacity, long fee) {
-        this.status = status;
-        this.capacity = new SessionCapacity(capacity);
-        this.fee = new SessionFee(fee);
-        this.students = new ArrayList<>();
+        this(status, capacity, fee, new ArrayList<>());
     }
 
     protected SessionEnrollment(SessionStatus status, int capacity, long fee, List<SessionStudent> students) {
