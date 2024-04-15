@@ -13,13 +13,15 @@ abstract public class Session {
     protected CoverImageInfo coverImageInfo;
     protected final SessionType type;
 
+    protected Session(Long id, Course course, SessionDate sessionDate, int numberOfStudents, CoverImageInfo coverImageInfo, SessionType type) {
+        this(id, course, sessionDate, SessionStatus.READY, numberOfStudents, coverImageInfo, type);
+    }
+
     protected Session(Long id, Course course, SessionDate sessionDate, SessionStatus sessionStatus, int numberOfStudents, CoverImageInfo coverImageInfo, SessionType type) {
         this.id = id;
         this.course = course;
         this.sessionDate = sessionDate;
-        if (sessionStatus == null) {
-            this.sessionStatus = SessionStatus.READY;
-        }
+        this.sessionStatus = sessionStatus;
         this.numberOfStudents = numberOfStudents;
         this.coverImageInfo = coverImageInfo;
         this.type = type;
