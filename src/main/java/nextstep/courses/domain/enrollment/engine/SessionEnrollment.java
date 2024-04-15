@@ -1,22 +1,97 @@
 package nextstep.courses.domain.enrollment.engine;
 
+import nextstep.courses.domain.enrollment.SessionCapacity;
+import nextstep.courses.domain.enrollment.SessionFee;
+import nextstep.courses.domain.enrollment.SessionStatus;
+import nextstep.courses.domain.enrollment.SessionStudent;
+import nextstep.courses.exception.SessionCapacityExceedException;
+import nextstep.courses.exception.SessionStatusCannotEnrollmentException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
-public interface SessionEnrollment {
+import java.util.ArrayList;
+import java.util.List;
 
-    void enroll(NsUser nsUser, Payment payment);
+public abstract class SessionEnrollment implements SessionEnroll {
 
-    default void satisfyEnrollment(Payment payment) {
-        satisfyStatus();
-        satisfyCapacity();
-        satisfyFee(payment);
+    protected Long sessionId;
+    protected final SessionStatus status;
+    protected final SessionCapacity capacity;
+    protected final SessionFee fee;
+    protected final List<SessionStudent> students;
+
+    protected SessionEnrollment(Long sessionId, SessionEnrollment enrollment, List<SessionStudent> students) {
+        this(sessionId, enrollment.getStatus(), enrollment.getCapacity().get(), enrollment.getFee().get(), students);
     }
 
-    void satisfyStatus();
+    protected SessionEnrollment(Long sessionId, SessionStatus status, int capacity, long fee) {
+        this.sessionId = sessionId;
+        this.status = status;
+        this.capacity = new SessionCapacity(sessionId, capacity);
+        this.fee = new SessionFee(sessionId, fee);
+        this.students = new ArrayList<>();
+    }
 
-    void satisfyCapacity();
+    protected SessionEnrollment(Long sessionId, SessionStatus status, int capacity, long fee, List<SessionStudent> students) {
+        this.sessionId = sessionId;
+        this.status = status;
+        this.capacity = new SessionCapacity(sessionId, capacity);
+        this.fee = new SessionFee(sessionId, fee);
+        this.students = students;
+    }
 
-    void satisfyFee(Payment payment);
+    protected SessionEnrollment(SessionStatus status, int capacity, long fee) {
+        this.status = status;
+        this.capacity = new SessionCapacity(capacity);
+        this.fee = new SessionFee(fee);
+        this.students = new ArrayList<>();
+    }
+
+    protected SessionEnrollment(SessionStatus status, int capacity, long fee, List<SessionStudent> students) {
+        this.status = status;
+        this.capacity = new SessionCapacity(capacity);
+        this.fee = new SessionFee(fee);
+        this.students = students;
+    }
+
+    @Override
+    public SessionStudent enroll(NsUser nsUser, Payment payment) {
+        satisfyEnrollment(payment);
+
+        SessionStudent student = SessionStudent.from(sessionId, nsUser);
+        students.add(student);
+
+        return student;
+    }
+
+    @Override
+    public void satisfyStatus() {
+        if (status.cannotEnroll()) {
+            throw new SessionStatusCannotEnrollmentException(status);
+        }
+    }
+
+    @Override
+    public void satisfyCapacity() {
+        if (capacity.noCapacity(students.size())) {
+            throw new SessionCapacityExceedException(capacity.get(), students.size());
+        }
+    }
+
+    public Long getSessionId() {
+        return sessionId;
+    }
+
+    public SessionStatus getStatus() {
+        return status;
+    }
+
+    public SessionCapacity getCapacity() {
+        return capacity;
+    }
+
+    public SessionFee getFee() {
+        return fee;
+    }
 
 }

@@ -19,7 +19,7 @@ public class ImageSize {
     }
 
     public void validate(int width, int height) {
-        if (width > MIN_WIDTH || height > MIN_HEIGHT) {
+        if (width < MIN_WIDTH || height < MIN_HEIGHT) {
             throw new SessionCoverImageException(width, height);
         }
 
@@ -27,4 +27,13 @@ public class ImageSize {
             throw new SessionCoverImageException(width, height);
         }
     }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
 }

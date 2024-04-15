@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.exception.SessionCapacityExceedException;
+import nextstep.courses.exception.SessionCapacityInvalidException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +21,7 @@ public class SessionCapacityTest {
     @Test
     @DisplayName("[실패] 최소 인원 미만의 수강 인원을 생성할 경우 SessionCapacityExceedException 예외가 발생한다.")
     void 최소_인원_미만_생성() {
-        assertThatExceptionOfType(SessionCapacityExceedException.class)
+        assertThatExceptionOfType(SessionCapacityInvalidException.class)
                 .isThrownBy(() -> sessionCapacity(-1));
     }
 

@@ -1,27 +1,77 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.enrollment.SessionPeriod;
+import nextstep.courses.domain.enrollment.SessionStudent;
 import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
 import nextstep.courses.domain.image.SessionCoverImage;
+import nextstep.courses.infrastructure.entity.BaseEntity;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
-public class Session {
+import java.time.LocalDateTime;
 
-    private final Long id;
-    private final Long courseId;
-    private final SessionCoverImage coverImage;
-    private final SessionEnrollment enrollment;
+public class Session extends BaseEntity {
 
+    private Long id;
+    private Long courseId;
+    private SessionType type;
+    private SessionPeriod period;
+    private SessionCoverImage coverImage;
+    private SessionEnrollment enrollment;
 
-    public Session(Long id, Long courseId, SessionCoverImage coverImage, SessionEnrollment enrollment) {
+    public Session(Long id, Long courseId, SessionType type, SessionPeriod period, SessionCoverImage coverImage, SessionEnrollment enrollment, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(createdAt, updatedAt);
         this.id = id;
         this.courseId = courseId;
+        this.type = type;
+        this.period = period;
         this.coverImage = coverImage;
         this.enrollment = enrollment;
     }
 
-    public void enroll(NsUser nsUser, Payment payment) {
-        enrollment.enroll(nsUser, payment);
+    public Session(Long sessionId, Long courseId, SessionType type, SessionPeriod period, SessionEnrollment enrollment, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(createdAt, updatedAt);
+        this.id = sessionId;
+        this.courseId = courseId;
+        this.type = type;
+        this.period = period;
+        this.enrollment = enrollment;
+    }
+
+    public Session(Long courseId, SessionType type, SessionPeriod period, SessionEnrollment enrollment) {
+        this.courseId = courseId;
+        this.type = type;
+        this.period = period;
+        this.enrollment = enrollment;
+    }
+
+
+    public SessionStudent enroll(NsUser nsUser, Payment payment) {
+        return enrollment.enroll(nsUser, payment);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Long getCourseId() {
+        return courseId;
+    }
+
+    public SessionType getType() {
+        return type;
+    }
+
+    public SessionPeriod getPeriod() {
+        return period;
+    }
+
+    public SessionCoverImage getCoverImage() {
+        return coverImage;
+    }
+
+    public SessionEnrollment getEnrollment() {
+        return enrollment;
     }
 
 }

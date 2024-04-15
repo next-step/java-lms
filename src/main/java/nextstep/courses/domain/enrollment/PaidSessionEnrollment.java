@@ -1,13 +1,23 @@
 package nextstep.courses.domain.enrollment;
 
-import nextstep.courses.domain.enrollment.engine.ConcreteSessionEnrollment;
+import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
 import nextstep.courses.exception.SessionFeeMismatchException;
 import nextstep.payments.domain.Payment;
 
-public class PaidSessionEnrollment extends ConcreteSessionEnrollment {
+import java.util.List;
 
-    public PaidSessionEnrollment(Long id, Long sessionId, SessionStatus status, int capacity, long fee) {
-        super(id, sessionId, status, capacity, fee);
+public class PaidSessionEnrollment extends SessionEnrollment {
+
+    public PaidSessionEnrollment(Long sessionId, SessionEnrollment enrollment, List<SessionStudent> students) {
+        super(sessionId, enrollment, students);
+    }
+
+    public PaidSessionEnrollment(Long sessionId, SessionStatus status, int capacity, long fee) {
+        super(sessionId, status, capacity, fee);
+    }
+
+    public PaidSessionEnrollment(SessionStatus status, int capacity, long fee) {
+        super(status, capacity, fee);
     }
 
     @Override
