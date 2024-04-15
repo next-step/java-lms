@@ -3,6 +3,7 @@ package nextstep.courses.infrastructure;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import nextstep.courses.infrastructure.dto.ApplyStatus;
 import nextstep.courses.infrastructure.dto.LearnerDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -63,18 +64,18 @@ class JdbcLearnerRepositoryTest {
     }
 
     @Test
-    @DisplayName("update는 isAccepted를 변경한다")
-    void update() {
+    @DisplayName("aceept하면 수강신청 상태를 ACCEPTED로 바꾼다")
+    void accept() {
         // given
-        LearnerDto learnerDto = new LearnerDto(1L, 1L, false);
+        LearnerDto learnerDto = new LearnerDto(1L, 1L, ApplyStatus.PENDING);
         learnerRepository.save(learnerDto);
 
         // when
-        learnerRepository.update(learnerDto.getSessionId(), learnerDto.getUserId(), true);
+        learnerRepository.accept(learnerDto.getSessionId(), learnerDto.getUserId());
 
         // then
-        String sql = "select is_accepted from session_learner where session_id = ? and user_id = ?";
-        boolean isAccepted = jdbcTemplate.queryForObject(sql, Boolean.class, learnerDto.getSessionId(), learnerDto.getUserId());
-        assertThat(isAccepted).isTrue();
+        String sql = "select apply_status from session_learner where session_id = ? and user_id = ?";
+        ApplyStatus applyStatus = jdbcTemplate.queryForObject(sql, ApplyStatus.class, learnerDto.getSessionId(), learnerDto.getUserId());
+        assertThat(applyStatus).isEqualTo(ApplyStatus.ACCEPTED);
     }
 }

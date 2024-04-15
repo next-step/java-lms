@@ -28,6 +28,6 @@ public class SessionService {
     }
 
     public void acceptLearner(Session session, NsUser learner) {
-        learnerRepository.update(session.getId(), learner.getId(), true);
+        learnerRepository.accept(session.getId(), learner.getId());
     }
 }
