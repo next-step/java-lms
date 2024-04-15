@@ -41,7 +41,7 @@
 - [x] 서비스 레이어에서 수강신청 로직 구현
 
 ## step3 TODO
-- [ ] 각 도메인에 대한 DDL 작성
+- [x] 각 도메인에 대한 DDL 작성
   - Session 슈퍼/서브 타입은 Single Type 채택
   - session
     - startDate
