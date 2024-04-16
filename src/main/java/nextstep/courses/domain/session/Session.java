@@ -26,6 +26,7 @@ public class Session {
     private CoverImages coverImages;
     private Course course;
     private EnrolledUsers enrolledUsers = new EnrolledUsers();
+    private Enrollments enrollments = new Enrollments();
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -60,8 +61,19 @@ public class Session {
         addEnrolledUser(user);
     }
 
+    public void enroll2(NsUser user, Payment payment) {
+        validateEnrollPossibility(payment);
+        enrollments.add(this, user);
+    }
+
     private void validateSessionEnrollment(NsUser user, Payment payment) {
         if (!isSessionEnrollPossible(user, payment)) {
+            throw new CannotEnrollException(SESSION_ENROLL_FAIL.message());
+        }
+    }
+
+    private void validateEnrollPossibility(Payment payment) {
+        if (!isEnrollPossible(payment)) {
             throw new CannotEnrollException(SESSION_ENROLL_FAIL.message());
         }
     }
@@ -70,6 +82,10 @@ public class Session {
         return sessionGatheringStatus.isEnrollPossibleStatus() &&
                 !enrolledUsers.isDuplicatedUser(user) &&
                 sessionType.isEnrollmentPossible(enrolledUsers.numberOfCurrentEnrollment(), payment);
+    }
+
+    private boolean isEnrollPossible(Payment payment) {
+        return sessionGatheringStatus.isEnrollPossibleStatus() && sessionType.isEnrollmentPossible(enrollments.numberOfCurrentEnrollment(), payment);
     }
 
     private void addEnrolledUser(NsUser user) {
@@ -99,6 +115,10 @@ public class Session {
 
     public void updateEnrolledUsers(EnrolledUsers enrolledUsers) {
         this.enrolledUsers = enrolledUsers;
+    }
+
+    public void updateEnrollments(Enrollments enrollments) {
+        this.enrollments = enrollments;
     }
 
     public Long getId() {

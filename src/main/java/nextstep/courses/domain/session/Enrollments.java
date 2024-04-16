@@ -3,6 +3,7 @@ package nextstep.courses.domain.session;
 import nextstep.courses.CannotEnrollException;
 import nextstep.users.domain.NsUser;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,6 +12,10 @@ import static nextstep.courses.ExceptionMessage.SESSION_ENROLL_FAIL;
 
 public class Enrollments {
     private final List<Enrollment> enrollments;
+
+    public Enrollments() {
+        this(new ArrayList<>());
+    }
 
     public Enrollments(List<Enrollment> enrollments) {
         this.enrollments = enrollments;

@@ -35,6 +35,10 @@ public class SessionType {
         return isSessionNotFull(currentNumberOfEnrollment) && isValidPayment(payment);
     }
 
+    public boolean isEnrollmentPossible(long currentNumberOfEnrollment, Payment payment) {
+        return isSessionNotFull(currentNumberOfEnrollment) && isValidPayment(payment);
+    }
+
     private boolean isSessionNotFull(long currentNumberOfEnrollment) {
         if (fee.isFree()) {
             return true;

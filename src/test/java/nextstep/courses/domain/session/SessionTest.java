@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static nextstep.courses.domain.course.CourseTest.COURSE;
@@ -31,7 +32,7 @@ class SessionTest {
             void testInvalidSessionStatus() {
                 Session session = new Session(11L, "무료 강의", "무료 강의다", FREE_SESSION_TYPE, PERIOD_OF_SESSION, new CoverImages(List.of(COVER_IMAGE_PNG)), COURSE);
 
-                assertThatThrownBy(() -> session.enroll(JAVAJIGI, new Payment("p1", 11L, JAVAJIGI.getId(), 0L)))
+                assertThatThrownBy(() -> session.enroll2(JAVAJIGI, new Payment("p1", 11L, JAVAJIGI.getId(), 0L)))
                         .isExactlyInstanceOf(CannotEnrollException.class);
             }
 
@@ -43,9 +44,9 @@ class SessionTest {
 
                 Session session = new Session(11L, "무료 강의", "무료 강의다", FREE_SESSION_TYPE, PERIOD_OF_SESSION, new CoverImages(List.of(COVER_IMAGE_PNG)), COURSE);
                 session.updateSessionGatheringStatusAs(GATHERING);
-                session.enroll(user, payment);
+                session.enroll2(user, payment);
 
-                assertThatThrownBy(() -> session.enroll(user, payment))
+                assertThatThrownBy(() -> session.enroll2(user, payment))
                         .isExactlyInstanceOf(CannotEnrollException.class);
             }
 
@@ -54,10 +55,16 @@ class SessionTest {
             void testFullEnrolledPaidSession() {
                 Session session = new Session(11L, "유료 강의", "유료 강의다", PAID_SESSION_TYPE, PERIOD_OF_SESSION, new CoverImages(List.of(COVER_IMAGE_PNG)), COURSE);
                 session.updateSessionGatheringStatusAs(GATHERING);
-                session.enroll(JAVAJIGI, new Payment("p1", 11L, JAVAJIGI.getId(), 100L));
-                session.enroll(SANJIGI, new Payment("p2", 11L, SANJIGI.getId(), 100L));
 
-                assertThatThrownBy(() -> session.enroll(ZIPJIGI, new Payment("p3", 11L, ZIPJIGI.getId(), 100L)))
+                Enrollment enrollmentOfSANJIGI = new Enrollment(session, SANJIGI);
+                enrollmentOfSANJIGI.approve(JAVAJIGI);
+                Enrollment enrollmentOfBAPJIGI = new Enrollment(session, BAPZIGI);
+                enrollmentOfBAPJIGI.approve(JAVAJIGI);
+
+                Enrollments enrollments = new Enrollments(new ArrayList<>(List.of(enrollmentOfSANJIGI, enrollmentOfBAPJIGI)));
+                session.updateEnrollments(enrollments);
+
+                assertThatThrownBy(() -> session.enroll2(ZIPJIGI, new Payment("p3", 11L, ZIPJIGI.getId(), 100L)))
                         .isExactlyInstanceOf(CannotEnrollException.class);
             }
 
@@ -67,7 +74,7 @@ class SessionTest {
                 Session session = new Session(11L, "유료 강의", "유료 강의다", PAID_SESSION_TYPE, PERIOD_OF_SESSION, new CoverImages(List.of(COVER_IMAGE_PNG)), COURSE);
                 session.updateSessionGatheringStatusAs(GATHERING);
 
-                assertThatThrownBy(() -> session.enroll(JAVAJIGI, new Payment("p1", 11L, JAVAJIGI.getId(), 0L)))
+                assertThatThrownBy(() -> session.enroll2(JAVAJIGI, new Payment("p1", 11L, JAVAJIGI.getId(), 0L)))
                         .isExactlyInstanceOf(CannotEnrollException.class);
             }
         }
@@ -81,9 +88,9 @@ class SessionTest {
                 Session session = new Session(11L, "무료 강의", "무료 강의다", FREE_SESSION_TYPE, PERIOD_OF_SESSION, new CoverImages(List.of(COVER_IMAGE_PNG)), COURSE);
                 session.updateSessionGatheringStatusAs(GATHERING);
 
-                assertThatNoException().isThrownBy(() -> session.enroll(JAVAJIGI, new Payment("p1", 11L, JAVAJIGI.getId(), 0L)));
-                assertThatNoException().isThrownBy(() -> session.enroll(SANJIGI, new Payment("p2", 11L, SANJIGI.getId(), 0L)));
-                assertThatNoException().isThrownBy(() -> session.enroll(ZIPJIGI, new Payment("p3", 11L, ZIPJIGI.getId(), 0L)));
+                assertThatNoException().isThrownBy(() -> session.enroll2(JAVAJIGI, new Payment("p1", 11L, JAVAJIGI.getId(), 0L)));
+                assertThatNoException().isThrownBy(() -> session.enroll2(SANJIGI, new Payment("p2", 11L, SANJIGI.getId(), 0L)));
+                assertThatNoException().isThrownBy(() -> session.enroll2(ZIPJIGI, new Payment("p3", 11L, ZIPJIGI.getId(), 0L)));
             }
 
             @Test
@@ -92,8 +99,8 @@ class SessionTest {
                 Session session = new Session(11L, "유료 강의", "유료 강의다", PAID_SESSION_TYPE, PERIOD_OF_SESSION, new CoverImages(List.of(COVER_IMAGE_PNG)), COURSE);
                 session.updateSessionGatheringStatusAs(GATHERING);
 
-                assertThatNoException().isThrownBy(() -> session.enroll(JAVAJIGI, new Payment("p1", 11L, JAVAJIGI.getId(), 100L)));
-                assertThatNoException().isThrownBy(() -> session.enroll(SANJIGI, new Payment("p2", 11L, SANJIGI.getId(), 100L)));
+                assertThatNoException().isThrownBy(() -> session.enroll2(JAVAJIGI, new Payment("p1", 11L, JAVAJIGI.getId(), 100L)));
+                assertThatNoException().isThrownBy(() -> session.enroll2(SANJIGI, new Payment("p2", 11L, SANJIGI.getId(), 100L)));
             }
         }
     }
