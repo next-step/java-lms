@@ -11,4 +11,8 @@ public class Free {
     public boolean isFree() {
         return isFree;
     }
+
+    public boolean isSame(boolean b) {
+        return isFree == b;
+    }
 }
