@@ -4,27 +4,27 @@ import nextstep.courses.domain.exception.NotRecruitException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 public abstract class Session {
 
     private final Long id;
-    private final SessionImage sessionImage;
-    private SessionStatus sessionStatus;
+    private final List<SessionImage> sessionImage;
+    private RecruitStatus recruitStatus;
     private final Set<NsUser> students;
     private final SessionDate sessionDate;
 
-    public Session(Long id, SessionImage sessionImage, SessionStatus sessionStatus, SessionDate sessionDate) {
-        this(id, sessionImage,sessionStatus, sessionDate, new HashSet<>());
+    public Session(Long id, List<SessionImage> sessionImage, RecruitStatus recruitStatus, SessionDate sessionDate) {
+        this(id, sessionImage, recruitStatus, sessionDate, new HashSet<>());
     }
 
-    public Session(Long id, SessionImage sessionImage, SessionStatus sessionStatus, SessionDate sessionDate, Set<NsUser> students) {
+    public Session(Long id, List<SessionImage> sessionImage, RecruitStatus recruitStatus, SessionDate sessionDate, Set<NsUser> students) {
         this.id = id;
         this.sessionImage = sessionImage;
-        this.sessionStatus = sessionStatus;
+        this.recruitStatus = recruitStatus;
         this.sessionDate = sessionDate;
         this.students = students;
     }
@@ -44,7 +44,7 @@ public abstract class Session {
     }
 
     private void assertRecruit() {
-        if (!sessionStatus.isRecruit()) {
+        if (!recruitStatus.isRecruit()) {
             throw new NotRecruitException();
         }
     }
@@ -57,12 +57,12 @@ public abstract class Session {
         return id;
     }
 
-    public SessionImage getSessionImage() {
+    public List<SessionImage> getSessionImage() {
         return sessionImage;
     }
 
-    public SessionStatus getSessionStatus() {
-        return sessionStatus;
+    public RecruitStatus getSessionStatus() {
+        return recruitStatus;
     }
 
     public SessionDate getSessionDate() {

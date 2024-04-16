@@ -12,16 +12,16 @@ public class PaySession extends Session {
     private final int maximumStudents;
     private final long amount;
 
-    public PaySession(Long id, SessionImage sessionImage, SessionStatus sessionStatus, SessionDate sessionDate, int maximumStudents, long amount) {
-        super(id, sessionImage, sessionStatus, sessionDate);
+    public PaySession(Long id, SessionImage sessionImage, RecruitStatus recruitStatus, SessionDate sessionDate, int maximumStudents, long amount) {
+        super(id, sessionImage, recruitStatus, sessionDate);
         assertValidMaximumStudents(maximumStudents);
         assertValidAmount(amount);
         this.amount = amount;
         this.maximumStudents = maximumStudents;
     }
 
-    public PaySession(Long id, SessionImage sessionImage, SessionStatus sessionStatus, SessionDate sessionDate, Set<NsUser> students, int maximumStudents, long amount) {
-        super(id, sessionImage, sessionStatus, sessionDate, students);
+    public PaySession(Long id, SessionImage sessionImage, RecruitStatus recruitStatus, SessionDate sessionDate, Set<NsUser> students, int maximumStudents, long amount) {
+        super(id, sessionImage, recruitStatus, sessionDate, students);
         assertValidMaximumStudents(maximumStudents);
         assertValidAmount(amount);
         this.amount = amount;

@@ -2,7 +2,6 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
 import nextstep.users.domain.NsUser;
-import nextstep.users.domain.UserRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -67,7 +66,7 @@ public class JdbcSessionRepository implements SessionRepository {
         RowMapper<FreeSession> sessionMapper = (rs, rowNum) ->
                 new FreeSession(rs.getLong(1),
                         sessionImage,
-                        SessionStatus.findByName(rs.getString(2)),
+                        RecruitStatus.findByName(rs.getString(2)),
                         new SessionDate(toLocalDate(rs.getTimestamp(3)), toLocalDate(rs.getTimestamp(4))),
                         students
                 );
@@ -86,7 +85,7 @@ public class JdbcSessionRepository implements SessionRepository {
         RowMapper<PaySession> sessionMapper = (rs, rowNum) ->
                 new PaySession(rs.getLong(1),
                         sessionImage,
-                        SessionStatus.findByName(rs.getString(2)),
+                        RecruitStatus.findByName(rs.getString(2)),
                         new SessionDate(toLocalDate(rs.getTimestamp(5)), toLocalDate(rs.getTimestamp(6))),
                         students,
                         rs.getInt(4),
