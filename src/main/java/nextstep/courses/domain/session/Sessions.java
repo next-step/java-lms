@@ -3,6 +3,7 @@ package nextstep.courses.domain.session;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import nextstep.courses.error.exception.DuplicateSessionException;
 import nextstep.courses.error.exception.NotExistSession;
 
 public class Sessions {
@@ -10,6 +11,10 @@ public class Sessions {
     private final Map<SessionName, Session> sessions = new HashMap<>();
 
     public void addSession(SessionName sessionName, Session session) {
+        if (sessions.containsKey(sessionName)) {
+            throw new DuplicateSessionException(sessionName);
+        }
+
         sessions.put(sessionName, session);
     }
 
