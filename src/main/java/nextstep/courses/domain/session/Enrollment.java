@@ -49,6 +49,7 @@ public class Enrollment {
     private void updateStatus(NsUser user, EnrollmentStatus status) {
         validateSessionCreator(user);
         this.status = status;
+        this.updatedAt = LocalDateTime.now();
     }
 
     private void validateSessionCreator(NsUser user) {
@@ -78,5 +79,13 @@ public class Enrollment {
 
     public EnrollmentStatus getStatus() {
         return status;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }

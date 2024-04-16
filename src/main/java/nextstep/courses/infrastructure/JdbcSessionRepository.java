@@ -138,7 +138,7 @@ public class JdbcSessionRepository implements SessionRepository {
             ps.setLong(1, enrollment.getEnrolledUser().getId());
             ps.setLong(2, session.getId());
             ps.setString(3, enrollment.getStatus().name());
-            ps.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setTimestamp(4, Timestamp.valueOf(enrollment.getCreatedAt()));
             return ps;
         }, keyHolderForEnrollment);
         enrollment.updateAsSavedEnrollment(keyHolderForEnrollment.getKey().longValue());
