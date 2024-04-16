@@ -18,9 +18,9 @@ public class SessionStudents {
     }
 
     private void approveStatus(List<SessionStudent> students) {
-        for (SessionStudent student : students) {
-            student.toApproveStatus();
-        }
+        this.students.stream()
+                .filter(enrollStudent -> students.stream().anyMatch(enrollStudent::sameAs))
+                .forEach(SessionStudent::toApproveStatus);
     }
 
     private void cancelStatus() {
