@@ -22,14 +22,14 @@ public class JdbcSessionStudentRepository implements SessionStudentRepository {
 
     @Override
     public int save(SessionStudent student) {
-        String sql = "insert into session_student (session_id, ns_user_id, created_at) " +
-                "values (?, ?, ?)";
-        return jdbcTemplate.update(sql, student.getSessionId(), student.getNsUserId(), now());
+        String sql = "insert into session_student (session_id, ns_user_id, enrollment_status, created_at) " +
+                "values (?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, student.getSessionId(), student.getNsUserId(), student.getEnrollmentStatus().get(), now());
     }
 
     @Override
     public List<SessionStudent> findAllBySessionId(Long sessionId) {
-        String sql = "select id, session_id, ns_user_id, created_at, updated_at " +
+        String sql = "select id, session_id, ns_user_id, enrollment_status, created_at, updated_at " +
                 "from session_student " +
                 "where session_id = ?";
 
@@ -41,8 +41,9 @@ public class JdbcSessionStudentRepository implements SessionStudentRepository {
                 rs.getLong(1),
                 rs.getLong(2),
                 rs.getLong(3),
-                LocalDateTimeConverter.convert(rs.getTimestamp(4)),
-                LocalDateTimeConverter.convert(rs.getTimestamp(5))
+                rs.getString(4),
+                LocalDateTimeConverter.convert(rs.getTimestamp(5)),
+                LocalDateTimeConverter.convert(rs.getTimestamp(6))
         );
     }
 
