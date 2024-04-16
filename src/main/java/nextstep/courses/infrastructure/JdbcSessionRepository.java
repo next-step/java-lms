@@ -76,7 +76,6 @@ public class JdbcSessionRepository implements SessionRepository {
             Session session = jdbcTemplate.queryForObject(sqlForSession, rowMapperForSession, id);
 
             session.updateCoverImages(new CoverImages(coverImages(id)));
-            session.updateEnrolledUsers(new EnrolledUsers(enrolledUsers(id)));
             session.updateEnrollments(new Enrollments(enrollments(session)));
 
             return session;
@@ -103,38 +102,17 @@ public class JdbcSessionRepository implements SessionRepository {
         jdbcTemplate.update(sqlForSessionForUpdate, session.getTitle(), session.getDescription(), session.getMaxNumberOfEnrollment(), session.getFee(), session.getSessionStatus().name(), session.getSessionGatheringStatus().name(),
                 Timestamp.valueOf(session.getStartedAt()), Timestamp.valueOf(session.getEndedAt()), session.getUpdatedAt(), session.getId());
 
-        List<NsUser> notUpdatedEnrolledUsers = enrolledUsers(session.getId());
-        session.getEnrolledUsers()
-                .stream()
-                .filter(user -> !notUpdatedEnrolledUsers.contains(user))
-                .forEach(user -> {
-                    final String sqlForEnrollmentSave = "insert into enrollment (user_id, session_id, created_at) values (?, ?, ?)";
-                    jdbcTemplate.update(sqlForEnrollmentSave, user.getId(), session.getId(), Timestamp.valueOf(LocalDateTime.now()));
-                });
-
-
-        List<NsUser> notUpdatedEnrolledUsers2 = enrollments(session).stream()
+        List<NsUser> notUpdatedEnrolledUsers = enrollments(session).stream()
                 .map(Enrollment::getEnrolledUser)
                 .collect(Collectors.toList());
+
         List<Enrollment> enrollments = session.getEnrollments()
                 .stream()
-                .map(enrollment -> notUpdatedEnrolledUsers2.contains(enrollment.getEnrolledUser()) ? enrollment : saveEnrollment(session, enrollment))
+                .map(enrollment -> notUpdatedEnrolledUsers.contains(enrollment.getEnrolledUser()) ? enrollment : saveEnrollment(session, enrollment))
                 .collect(Collectors.toList());
         session.updateEnrollments(new Enrollments(enrollments));
 
         return session;
-    }
-
-    private List<NsUser> enrolledUsers(Long id) {
-        final String sqlForEnrolledUsers = "select U.id, U.user_id, U.password, U.name, U.email, U.created_at, U.updated_at" +
-                " from enrollment as E" +
-                " inner join ns_user as U on U.id = E.user_id" +
-                " where E.session_id = ?";
-        RowMapper<NsUser> rowMapperForEnrolledUser = (rs, rowNum) -> new NsUser(
-                rs.getLong(1), rs.getString(2), rs.getString(3),
-                rs.getString(4), rs.getString(5), toLocalDateTime(rs.getTimestamp(6)), toLocalDateTime(rs.getTimestamp(7)));
-
-        return jdbcTemplate.query(sqlForEnrolledUsers, rowMapperForEnrolledUser, id);
     }
 
     private List<Enrollment> enrollments(Session session) {

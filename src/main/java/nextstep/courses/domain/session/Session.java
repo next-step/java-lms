@@ -25,7 +25,6 @@ public class Session {
     private Period periodOfSession;
     private CoverImages coverImages;
     private Course course;
-    private EnrolledUsers enrolledUsers = new EnrolledUsers();
     private Enrollments enrollments = new Enrollments();
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -57,19 +56,8 @@ public class Session {
     }
 
     public void enroll(NsUser user, Payment payment) {
-        validateSessionEnrollment(user, payment);
-        addEnrolledUser(user);
-    }
-
-    public void enroll2(NsUser user, Payment payment) {
         validateEnrollPossibility(payment);
         enrollments.add(this, user);
-    }
-
-    private void validateSessionEnrollment(NsUser user, Payment payment) {
-        if (!isSessionEnrollPossible(user, payment)) {
-            throw new CannotEnrollException(SESSION_ENROLL_FAIL.message());
-        }
     }
 
     private void validateEnrollPossibility(Payment payment) {
@@ -78,18 +66,8 @@ public class Session {
         }
     }
 
-    private boolean isSessionEnrollPossible(NsUser user, Payment payment) {
-        return sessionGatheringStatus.isEnrollPossibleStatus() &&
-                !enrolledUsers.isDuplicatedUser(user) &&
-                sessionType.isEnrollmentPossible(enrolledUsers.numberOfCurrentEnrollment(), payment);
-    }
-
     private boolean isEnrollPossible(Payment payment) {
         return sessionGatheringStatus.isEnrollPossibleStatus() && sessionType.isEnrollmentPossible(enrollments.numberOfCurrentEnrollment(), payment);
-    }
-
-    private void addEnrolledUser(NsUser user) {
-        enrolledUsers.add(user);
     }
 
     public void updateStatusAs(SessionStatus sessionStatus) {
@@ -111,10 +89,6 @@ public class Session {
 
     public void updateCoverImages(CoverImages coverImages) {
         this.coverImages = coverImages;
-    }
-
-    public void updateEnrolledUsers(EnrolledUsers enrolledUsers) {
-        this.enrolledUsers = enrolledUsers;
     }
 
     public void updateEnrollments(Enrollments enrollments) {
@@ -172,10 +146,6 @@ public class Session {
 
     public Long getIdOfCourse() {
         return course.getId();
-    }
-
-    public List<NsUser> getEnrolledUsers() {
-        return enrolledUsers.getEnrolledUsers();
     }
 
     public List<Enrollment> getEnrollments() {
