@@ -2,12 +2,9 @@ package nextstep.courses.domain;
 
 import nextstep.courses.ImageException;
 
-import java.util.List;
-
 public class Image {
     private static final int MAX_SIZE = 1_000_000;
     private static final int MAX_WIDTH_SIZE = 300;
-    private static final List<String> IMAGE_TYPE_LIST = List.of("gif", "jpg", "jpeg", "png", "svg");
 
     private final long size;
     private final int width;
