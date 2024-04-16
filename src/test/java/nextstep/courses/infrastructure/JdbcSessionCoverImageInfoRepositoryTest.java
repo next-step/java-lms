@@ -28,7 +28,7 @@ class JdbcSessionCoverImageInfoRepositoryTest {
     }
 
     @Test
-    public void session_cover_image_info_crud() throws Exception {
+    public void session_cover_image_info_crud() {
         // given
         SessionCoverImageInfo sessionCoverImageInfo = SessionCoverImageInfo.createNewInstance(preparedPaySession(), preparedCoverImageInfo());
         // when

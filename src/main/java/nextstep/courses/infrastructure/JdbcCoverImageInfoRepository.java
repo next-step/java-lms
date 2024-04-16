@@ -31,8 +31,8 @@ public class JdbcCoverImageInfoRepository implements CoverImageInfoRepository {
                     "on cii.id = scii.cover_image_info_id " +
                     "where scii.session_id = ?";
 
-    private JdbcOperations jdbcTemplate;
-    private SimpleJdbcInsert simpleJdbcInsert;
+    private final JdbcOperations jdbcTemplate;
+    private final SimpleJdbcInsert simpleJdbcInsert;
 
     public JdbcCoverImageInfoRepository(JdbcOperations jdbcTemplate, DataSource dataSource) {
         this.jdbcTemplate = jdbcTemplate;
