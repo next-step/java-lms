@@ -1,6 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -26,6 +27,12 @@ public class SessionRepositoryTest {
   @BeforeEach
   void setUp() {
     sessionRepository = new JdbcSessionRepository(jdbcTemplate, new JdbcSessionImageRepository(jdbcTemplate));
+  }
+
+  @AfterEach
+  void tearDown() {
+    jdbcTemplate.update("ALTER TABLE session ALTER COLUMN id RESTART WITH 1");
+    jdbcTemplate.update("ALTER TABLE session_image ALTER COLUMN id RESTART WITH 1");
   }
 
   @Test

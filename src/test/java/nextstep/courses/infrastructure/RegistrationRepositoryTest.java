@@ -4,6 +4,7 @@ import nextstep.courses.domain.*;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import nextstep.users.infrastructure.JdbcUserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -40,6 +41,12 @@ public class RegistrationRepositoryTest {
             userRepository);
   }
 
+  @AfterEach
+  void tearDown() {
+    jdbcTemplate.update("ALTER TABLE session ALTER COLUMN id RESTART WITH 1");
+    jdbcTemplate.update("ALTER TABLE session_image ALTER COLUMN id RESTART WITH 1");
+  }
+
   @Test
   void crud() {
     NsUser student = userRepository.findById(1L).get();
@@ -55,6 +62,8 @@ public class RegistrationRepositoryTest {
 
     Registration savedRegistration = registrationRepository.findById(1L);
     assertThat(registration.sessionId()).isEqualTo(savedRegistration.sessionId());
+    LOGGER.debug("Registration: {}", savedRegistration);
+
     savedRegistration = registrationRepository.findByUserIdAndSessionId(student.getId(), session.getId());
     assertThat(registration.sessionId()).isEqualTo(savedRegistration.sessionId());
     LOGGER.debug("Registration: {}", savedRegistration);
@@ -66,8 +75,5 @@ public class RegistrationRepositoryTest {
     savedRegistrations = registrationRepository.findBySessionId(1L);
     assertThat(registration.userId()).isEqualTo(savedRegistrations.get(0).userId());
     LOGGER.debug("Registrations by sessionId: {}", savedRegistrations);
-
-//    jdbcTemplate.update("DELETE FROM session");
-//    jdbcTemplate.update("DELETE FROM session_image");
   }
 }
