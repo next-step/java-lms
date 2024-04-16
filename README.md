@@ -117,6 +117,7 @@ validate도 마찬가지
       - id (Long)
       - sessionId (Long)
       - coverImageInfoId (Long)
-  - [ ] SessionCoverImageInfo 테이블 생성
+  - [X] SessionCoverImageInfo 테이블 생성
+  - [ ] Session 등록할 때, 추가된 CoverImage가 있으면 매핑 테이블에 추가해주기
 - [ ] 강의 진행 상태(준비중, 진행중, 종료)와 모집 상태(비모집중, 모집중)로 상태 값을 분리해야 한다.
   - 진행 상태와 무관하게 모집 상태로만 수강신청 가능유무 판단

@@ -2,20 +2,20 @@ package nextstep.courses.domain;
 
 public class SessionCoverImageInfo {
     private final Long id;
-    private final Long sessionId;
-    private final Long coverImageInfoId;
+    private final Session session;
+    private final CoverImageInfo coverImageInfo;
 
-    public static SessionCoverImageInfo createNewInstance(Long sessionId, Long coverImageInfoId) {
-        return new SessionCoverImageInfo(0L, sessionId, coverImageInfoId);
+    public static SessionCoverImageInfo createNewInstance(Session session, CoverImageInfo coverImageInfo) {
+        return new SessionCoverImageInfo(0L, session, coverImageInfo);
     }
 
-    public static SessionCoverImageInfo createFromData(Long id, Long sessionId, Long coverImageInfoId) {
-        return new SessionCoverImageInfo(id, sessionId, coverImageInfoId);
+    public static SessionCoverImageInfo createFromData(Long id, Session session, CoverImageInfo coverImageInfo) {
+        return new SessionCoverImageInfo(id, session, coverImageInfo);
     }
 
-    private SessionCoverImageInfo(Long id, Long sessionId, Long coverImageInfoId) {
+    private SessionCoverImageInfo(Long id, Session session, CoverImageInfo coverImageInfo) {
         this.id = id;
-        this.sessionId = sessionId;
-        this.coverImageInfoId = coverImageInfoId;
+        this.session = session;
+        this.coverImageInfo = coverImageInfo;
     }
 }

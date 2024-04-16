@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -19,11 +20,11 @@ public class PaySessionTest {
     @BeforeEach
     void setUp() {
         payment = new Payment("1", 123L, 1L, 0L);
+
         paySession = PaySession.createNewInstance(
                 new Course(),
                 SessionInfos.createWithDefault(SessionDate.of(LocalDateTime.now(), LocalDateTime.now())),
                 2,
-                CoverImageInfo.createNewInstance(1000L, "jpg", 300L, 200L),
                 2000L
         );
     }

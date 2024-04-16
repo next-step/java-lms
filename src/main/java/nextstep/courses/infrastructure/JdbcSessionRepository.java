@@ -28,11 +28,6 @@ public class JdbcSessionRepository implements SessionRepository {
             ", s.price as price" +
             ", s.type as type" +
             ", s.is_recruiting as isRecruiting" +
-            ", cii.id as coverImageId" +
-            ", cii.size as coverImageSize" +
-            ", cii.width as coverImageWidth" +
-            ", cii.height as coverImageHeight" +
-            ", cii.type as coverImageType " +
             ", c.id as courseId " +
             ", c.title as courseTitle " +
             ", c.creator_id as courseCreatorId " +
@@ -40,8 +35,6 @@ public class JdbcSessionRepository implements SessionRepository {
             ", c.updated_at as courseUpdatedAt " +
             "from " +
             "session s " +
-            "left join cover_image_info cii " +
-            "on s.cover_image_info_id = cii.id " +
             "left join course c " +
             "on c.id = s.course_id " +
             "where s.id = ?";
@@ -78,7 +71,6 @@ public class JdbcSessionRepository implements SessionRepository {
 
     private Map<String, Object> getCommonSessionInsertParam(Session session) {
         SessionDate sessionDate = session.getSessionDate();
-        CoverImageInfo coverImageInfo = session.getCoverImageInfo();
         SessionStatus sessionStatus = session.getSessionStatus();
         SessionType sessionType = session.getType();
 
@@ -87,7 +79,6 @@ public class JdbcSessionRepository implements SessionRepository {
                 "end_date", sessionDate.getEndDate(),
                 "status", sessionStatus.name(),
                 "number_of_students", session.getNumberOfStudents(),
-                "cover_image_info_id", coverImageInfo.getId(),
                 "type", sessionType.getType(),
                 "is_recruiting", session.isRecruiting()
         );
@@ -96,8 +87,6 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public Session findById(Long id) {
         RowMapper<Session> rowMapper = (rs, rowNum) -> {
-            CoverImageInfo coverImageInfo = makeCoverImageInfo(rs);
-
             Course course = makeCourse(rs);
 
             String type = rs.getString("type");
@@ -111,7 +100,6 @@ public class JdbcSessionRepository implements SessionRepository {
                         sessionInfos,
                         rs.getInt("numberOfStudents"),
                         rs.getInt("maxNumberOfStudents"),
-                        coverImageInfo,
                         rs.getLong("price")
                 );
             }
@@ -120,8 +108,7 @@ public class JdbcSessionRepository implements SessionRepository {
                     rs.getLong("id"),
                     course,
                     sessionInfos,
-                    rs.getInt("numberOfStudents"),
-                    coverImageInfo
+                    rs.getInt("numberOfStudents")
             );
         };
 
@@ -144,16 +131,6 @@ public class JdbcSessionRepository implements SessionRepository {
                 toLocalDateTime(rs.getTimestamp("courseCreatedAt")),
                 toLocalDateTime(rs.getTimestamp("courseUpdatedAt"))
         );
-    }
-
-    private static CoverImageInfo makeCoverImageInfo(ResultSet rs) throws SQLException {
-        return CoverImageInfo.createFromData(
-                        rs.getLong("coverImageId"),
-                        rs.getLong("coverImageSize"),
-                        rs.getString("coverImageType"),
-                        rs.getLong("coverImageWidth"),
-                        rs.getLong("coverImageHeight")
-                );
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

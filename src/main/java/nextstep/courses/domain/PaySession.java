@@ -11,16 +11,16 @@ public class PaySession extends Session {
     private final Long price;
     private final int maxNumberOfStudents;
 
-    public static PaySession createNewInstance(Course course, SessionInfos sessionInfos, int maxNumberOfStudents, CoverImageInfo coverImageInfo, Long price) {
-        return new PaySession(0L, course, sessionInfos, 0, maxNumberOfStudents, coverImageInfo, price);
+    public static PaySession createNewInstance(Course course, SessionInfos sessionInfos, int maxNumberOfStudents, Long price) {
+        return new PaySession(0L, course, sessionInfos, 0, maxNumberOfStudents, price);
     }
 
-    public static PaySession createFromData(Long id, Course course, SessionInfos sessionInfos, int numberOfStudents, int maxNumberOfStudents, CoverImageInfo coverImageInfo, Long price) {
-        return new PaySession(id, course, sessionInfos, numberOfStudents, maxNumberOfStudents, coverImageInfo, price);
+    public static PaySession createFromData(Long id, Course course, SessionInfos sessionInfos, int numberOfStudents, int maxNumberOfStudents, Long price) {
+        return new PaySession(id, course, sessionInfos, numberOfStudents, maxNumberOfStudents, price);
     }
 
-    private PaySession(Long id, Course course, SessionInfos sessionInfos, int numberOfStudents, int maxNumberOfStudents, CoverImageInfo coverImageInfo, Long price) {
-        super(id, course, sessionInfos, SessionType.PAY, numberOfStudents, coverImageInfo);
+    private PaySession(Long id, Course course, SessionInfos sessionInfos, int numberOfStudents, int maxNumberOfStudents, Long price) {
+        super(id, course, sessionInfos, SessionType.PAY, numberOfStudents);
         this.price = price;
         this.maxNumberOfStudents = maxNumberOfStudents;
     }

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -25,8 +26,7 @@ public class FreeSessionTest {
                         SessionDate.of(LocalDateTime.now(), LocalDateTime.now()),
                         SessionStatus.READY,
                         false
-                ),
-                CoverImageInfo.createNewInstance(1000L, "jpg", 300L, 200L)
+                )
         );
 
         payment = new Payment("1", 123L, 1L, 0L);

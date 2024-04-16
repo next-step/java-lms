@@ -4,23 +4,27 @@ import nextstep.courses.domain.enums.SessionStatus;
 import nextstep.courses.domain.enums.SessionType;
 import nextstep.payments.domain.Payment;
 
+import java.util.List;
+
 abstract public class Session {
     protected final Long id;
     protected final Course course;
-
     protected final SessionInfos sessionInfos;
     protected SessionType sessionType;
-
     protected int numberOfStudents;
-    protected CoverImageInfo coverImageInfo;
+    protected List<CoverImageInfo> coverImageInfos;
 
-    protected Session(Long id, Course course, SessionInfos sessionInfos, SessionType sessionType, int numberOfStudents, CoverImageInfo coverImageInfo) {
+    protected Session(Long id, Course course, SessionInfos sessionInfos, SessionType sessionType, int numberOfStudents, List<CoverImageInfo> coverImageInfos) {
+        this(id, course, sessionInfos, sessionType, numberOfStudents);
+        this.coverImageInfos = coverImageInfos;
+    }
+
+    protected Session(Long id, Course course, SessionInfos sessionInfos, SessionType sessionType, int numberOfStudents) {
         this.id = id;
         this.course = course;
         this.sessionInfos = sessionInfos;
         this.sessionType = sessionType;
         this.numberOfStudents = numberOfStudents;
-        this.coverImageInfo = coverImageInfo;
     }
 
     abstract public void enroll(Payment payment);
@@ -49,8 +53,8 @@ abstract public class Session {
         return numberOfStudents;
     }
 
-    public CoverImageInfo getCoverImageInfo() {
-        return coverImageInfo;
+    public void addCoverImageInfo(CoverImageInfo coverImageInfo) {
+        this.coverImageInfos.add(coverImageInfo);
     }
 
     public SessionType getType() {

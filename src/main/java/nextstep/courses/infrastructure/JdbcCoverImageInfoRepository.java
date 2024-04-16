@@ -11,10 +11,26 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Repository("CoverImageInfoRepository")
 public class JdbcCoverImageInfoRepository implements CoverImageInfoRepository {
     public static final String FIND_COVER_IMAGE_INFO_BY_ID_SQL = "select id, size, width, height, type from cover_image_info where id = ?";
+    public static final String FIND_COVER_IMAGE_INFO_BY_SESSION_ID_SQL =
+            "select " +
+                    "scii.id as id" +
+                    ", scii.session_id as sessionId" +
+                    ", cii.id as coverImageId" +
+                    ", cii.size as coverImageSize" +
+                    ", cii.width as coverImageWidth" +
+                    ", cii.height as coverImageHeight" +
+                    ", cii.type as coverImageType" +
+                    "from " +
+                    "session_cover_image_info scii " +
+                    "left join cover_image_info cii " +
+                    "on cii.id = scii.cover_image_info_id " +
+                    "where scii.session_id = ?";
+
     private JdbcOperations jdbcTemplate;
     private SimpleJdbcInsert simpleJdbcInsert;
 
@@ -49,5 +65,18 @@ public class JdbcCoverImageInfoRepository implements CoverImageInfoRepository {
                 );
 
         return jdbcTemplate.queryForObject(FIND_COVER_IMAGE_INFO_BY_ID_SQL, rowMapper, id);
+    }
+
+    @Override
+    public List<CoverImageInfo> findBySessionId(Long sessionId) {
+        RowMapper<CoverImageInfo> rowMapper = (rs, rowNum) -> CoverImageInfo.createFromData(
+                rs.getLong("coverImageId"),
+                rs.getLong("coverImageSize"),
+                rs.getString("coverImageType"),
+                rs.getLong("coverImageWidth"),
+                rs.getLong("coverImageHeight")
+        );
+
+        return jdbcTemplate.query(FIND_COVER_IMAGE_INFO_BY_SESSION_ID_SQL, rowMapper, sessionId);
     }
 }

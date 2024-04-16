@@ -43,4 +43,15 @@ public class CoverImageInfoRepositoryTest {
         assertThat(coverImageInfo.getSize()).isEqualTo(10L);
         LOGGER.debug("CoverImageInfo: {}", savedCoverImageInfo);
     }
+
+    @Test
+    void findBySessionId() {
+        CoverImageInfo coverImageInfo = CoverImageInfo.createNewInstance(10L, "gif", 300L, 200L);
+
+        Long savedCoverImageId = coverImageInfoRepository.saveAndGetId(coverImageInfo);
+
+        CoverImageInfo savedCoverImageInfo = coverImageInfoRepository.findById(savedCoverImageId);
+        assertThat(coverImageInfo.getSize()).isEqualTo(10L);
+        LOGGER.debug("CoverImageInfo: {}", savedCoverImageInfo);
+    }
 }

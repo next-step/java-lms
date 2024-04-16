@@ -26,15 +26,10 @@ public class SessionRepositoryTest {
     private DataSource dataSource;
 
     private SessionRepository sessionRepository;
-    private CoverImageInfo savedCoverImageInfo;
+
     @BeforeEach
     void setUp() {
         sessionRepository = new JdbcSessionRepository(jdbcTemplate, dataSource);
-        CoverImageInfoRepository coverImageInfoRepository = new JdbcCoverImageInfoRepository(jdbcTemplate, dataSource);
-        CoverImageInfo coverImageInfo = CoverImageInfo.createNewInstance(1000L, "jpg", 300L, 200L);
-
-        Long savedCoverImageInfoId = coverImageInfoRepository.saveAndGetId(coverImageInfo);
-        savedCoverImageInfo = coverImageInfoRepository.findById(savedCoverImageInfoId);
     }
 
     @Test
@@ -47,7 +42,6 @@ public class SessionRepositoryTest {
                 new Course(),
                 SessionInfos.createWithDefault(sessionDate),
                 20,
-                savedCoverImageInfo,
                 20000L
         );
 
