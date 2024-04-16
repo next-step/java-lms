@@ -8,6 +8,8 @@ public interface SessionStudentRepository {
 
     int save(SessionStudent student);
 
+    int[] updateAll(List<SessionStudent> students);
+
     List<SessionStudent> findAllBySessionId(Long sessionId);
 
 }

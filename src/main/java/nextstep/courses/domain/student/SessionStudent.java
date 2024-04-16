@@ -45,6 +45,10 @@ public class SessionStudent extends BaseEntity {
         this.enrollmentStatus = CANCEL;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public Long getSessionId() {
         return sessionId;
     }
