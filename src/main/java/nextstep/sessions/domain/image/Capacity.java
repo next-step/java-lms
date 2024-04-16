@@ -32,4 +32,7 @@ public class Capacity {
         return Objects.hash(capacity);
     }
 
+    public int getCapacity() {
+        return capacity;
+    }
 }

@@ -16,4 +16,19 @@ public class Image {
         this.size = size;
     }
 
+    public int getCapacity() {
+        return capacity.getCapacity();
+    }
+
+    public String getImageType() {
+        return imageType.name();
+    }
+
+    public double getWidth() {
+        return size.getWidth();
+    }
+
+    public double getHeight() {
+        return size.getHeight();
+    }
 }

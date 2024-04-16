@@ -109,7 +109,7 @@
 ### 구현 목록 사항(3단계)
 - ImageRepository
   - [x] image 테이블 생성
-  - [ ] 이미지를 저장한다
+  - [x] 이미지를 저장한다
 - NsUserRepository
   - [ ] ns_user 테이블 생성
   - [ ] 사용자를 저장한다
