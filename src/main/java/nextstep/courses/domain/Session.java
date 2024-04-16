@@ -18,11 +18,7 @@ public abstract class Session {
     private final SessionDate sessionDate;
 
     public Session(Long id, SessionImage sessionImage, SessionStatus sessionStatus, SessionDate sessionDate) {
-        this.id = id;
-        this.sessionImage = sessionImage;
-        this.sessionStatus = sessionStatus;
-        this.sessionDate = sessionDate;
-        this.students = new HashSet<>();
+        this(id, sessionImage,sessionStatus, sessionDate, new HashSet<>());
     }
 
     public Session(Long id, SessionImage sessionImage, SessionStatus sessionStatus, SessionDate sessionDate, Set<NsUser> students) {
