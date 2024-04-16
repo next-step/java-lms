@@ -1,8 +1,11 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.*;
-import nextstep.courses.domain.enums.SessionStatus;
-import nextstep.courses.domain.enums.SessionType;
+import static org.assertj.core.api.Assertions.*;
+
+import java.time.LocalDateTime;
+
+import javax.sql.DataSource;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,10 +15,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import javax.sql.DataSource;
-import java.time.LocalDateTime;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import nextstep.courses.domain.Course;
+import nextstep.courses.domain.CoverImageInfo;
+import nextstep.courses.domain.CoverImageInfoRepository;
+import nextstep.courses.domain.PaySession;
+import nextstep.courses.domain.SessionDate;
+import nextstep.courses.domain.SessionInfos;
+import nextstep.courses.domain.SessionRepository;
+import nextstep.courses.domain.enums.SessionType;
 
 @JdbcTest
 public class SessionRepositoryTest {
@@ -32,12 +39,7 @@ public class SessionRepositoryTest {
 	void setUp() {
 		sessionRepository = new JdbcSessionRepository(jdbcTemplate, dataSource);
 		CoverImageInfoRepository coverImageInfoRepository = new JdbcCoverImageInfoRepository(jdbcTemplate, dataSource);
-		CoverImageInfo coverImageInfo = CoverImageInfo.builder()
-			.size(1000L)
-			.width(300L)
-			.height(200L)
-			.imageType("jpg")
-			.build();
+		CoverImageInfo coverImageInfo = CoverImageInfo.createNewInstance(1000L, "jpg", 300L, 200L);
 		Long savedCoverImageInfoId = coverImageInfoRepository.saveAndGetId(coverImageInfo);
 		savedCoverImageInfo = coverImageInfoRepository.findById(savedCoverImageInfoId);
 	}
@@ -47,16 +49,13 @@ public class SessionRepositoryTest {
 	void paysession_crud() {
 		// given
 		SessionDate sessionDate = SessionDate.of(LocalDateTime.of(2024, 04, 07, 10, 11), LocalDateTime.now());
-
-		PaySession session = PaySession.builder()
-			.sessionDate(sessionDate)
-			.price(20000L)
-			.sessionStatus(SessionStatus.READY)
-			.maxNumberOfStudents(20)
-			.coverImageInfo(savedCoverImageInfo)
-			.type(SessionType.PAY)
-			.build();
-
+		PaySession session = PaySession.createNewInstance(
+			new Course(),
+			SessionInfos.createWithReadyStatus(sessionDate),
+			20,
+			savedCoverImageInfo,
+			20000L
+		);
 		Long savedId = sessionRepository.saveSessionAndGetId(session);
 
 		PaySession savedSession = (PaySession) sessionRepository.findById(savedId);

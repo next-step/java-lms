@@ -18,7 +18,7 @@ public enum SessionType {
 			.findFirst();
 	}
 
-	public static boolean isPay(String typeStr) {
+	public static boolean isPaySession(String typeStr) {
 		Optional<SessionType> sessionType = findByTypeStr(typeStr);
 		return sessionType.filter(value -> value == SessionType.PAY).isPresent();
 	}

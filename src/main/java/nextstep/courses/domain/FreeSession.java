@@ -1,69 +1,28 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.enums.SessionStatus;
 import nextstep.courses.domain.enums.SessionType;
 import nextstep.payments.domain.Payment;
 
 public class FreeSession extends Session {
 	private static final String SESSION_NOT_RECRUITING = "해당 강의는 현재 모집 중이 아닙니다.";
 
-	private FreeSession(Long id, SessionDate sessionDate, SessionStatus sessionStatus, int numberOfStudents, CoverImageInfo coverImageInfo, SessionType type) {
-		super(id, sessionDate, sessionStatus, numberOfStudents, coverImageInfo, type);
+	public static FreeSession createNewInstance(Course course, SessionInfos sessionInfos, CoverImageInfo coverImageInfo) {
+		return new FreeSession(0L, course, sessionInfos, 0, coverImageInfo);
+	}
+
+	public static FreeSession createFromData(Long id, Course course, SessionInfos sessionInfos, int numberOfStudents, CoverImageInfo coverImageInfo) {
+		return new FreeSession(id, course, sessionInfos, numberOfStudents, coverImageInfo);
+	}
+
+	private FreeSession(Long id, Course course, SessionInfos sessionInfos, int numberOfStudents, CoverImageInfo coverImageInfo) {
+		super(id, course, sessionInfos, SessionType.FREE, numberOfStudents, coverImageInfo);
 	}
 
 	@Override
 	public void enroll(Payment payment) {
-		if (sessionStatus.isStatusNotRecruiting()) {
+		if (sessionInfos.isStatusNotRecruiting()) {
 			throw new IllegalStateException(SESSION_NOT_RECRUITING);
 		}
 		numberOfStudents++;
-	}
-
-
-	public static FreeSession.FreeSessionBuilder builder() {
-		return new FreeSession.FreeSessionBuilder();
-	}
-
-	public static class FreeSessionBuilder {
-		private Long id;
-		private SessionDate sessionDate;
-		private SessionStatus sessionStatus;
-		private int numberOfStudents;
-		private CoverImageInfo coverImageInfo;
-		private SessionType type;
-
-		public FreeSession.FreeSessionBuilder id(Long id) {
-			this.id = id;
-			return this;
-		}
-
-		public FreeSession.FreeSessionBuilder sessionDate(SessionDate sessionDate) {
-			this.sessionDate = sessionDate;
-			return this;
-		}
-
-		public FreeSession.FreeSessionBuilder sessionStatus(SessionStatus sessionStatus) {
-			this.sessionStatus = sessionStatus;
-			return this;
-		}
-
-		public FreeSession.FreeSessionBuilder numberOfStudents(int numberOfStudents) {
-			this.numberOfStudents = numberOfStudents;
-			return this;
-		}
-
-		public FreeSession.FreeSessionBuilder coverImageInfo(CoverImageInfo coverImageInfo) {
-			this.coverImageInfo = coverImageInfo;
-			return this;
-		}
-
-		public FreeSession.FreeSessionBuilder type(SessionType type) {
-			this.type = type;
-			return this;
-		}
-
-		public FreeSession build() {
-			return new FreeSession(id, sessionDate, sessionStatus, numberOfStudents, coverImageInfo, type);
-		}
 	}
 }

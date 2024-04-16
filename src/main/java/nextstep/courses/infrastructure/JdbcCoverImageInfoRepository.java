@@ -40,14 +40,13 @@ public class JdbcCoverImageInfoRepository implements CoverImageInfoRepository {
 
 	@Override
 	public CoverImageInfo findById(Long id) {
-		RowMapper<CoverImageInfo> rowMapper = (rs, rowNum) -> CoverImageInfo.builder()
-			.id(rs.getLong(1))
-			.size(rs.getLong(2))
-			.width(rs.getLong(3))
-			.height(rs.getLong(4))
-			.imageType(rs.getString(5))
-			.build();
-
+		RowMapper<CoverImageInfo> rowMapper = (rs, rowNum) -> CoverImageInfo.createFromData(
+			rs.getLong("id"),
+			rs.getLong("size"),
+			rs.getString("type"),
+			rs.getLong("width"),
+			rs.getLong("height")
+		);
 		return jdbcTemplate.queryForObject(FIND_COVER_IMAGE_INFO_BY_ID_SQL, rowMapper, id);
 	}
 }

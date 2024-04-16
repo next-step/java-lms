@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -25,15 +27,22 @@ public class JdbcSessionRepository implements SessionRepository {
 		", s.max_number_of_students as maxNumberOfStudents" +
 		", s.price as price" +
 		", s.type as type" +
-		", c.id as coverImageId" +
-		", c.size as coverImageSize" +
-		", c.width as coverImageWidth" +
-		", c.height as coverImageHeight" +
-		", c.type as coverImageType " +
+		", cii.id as coverImageId" +
+		", cii.size as coverImageSize" +
+		", cii.width as coverImageWidth" +
+		", cii.height as coverImageHeight" +
+		", cii.type as coverImageType " +
+		", c.id as courseId " +
+		", c.title as courseTitle " +
+		", c.creator_id as courseCreatorId " +
+		", c.created_at as courseCreatedAt " +
+		", c.updated_at as courseUpdatedAt " +
 		"from " +
 		"session s " +
-		"join cover_image_info c " +
-		"on s.cover_image_info_id = c.id " +
+		"left join cover_image_info cii " +
+		"on s.cover_image_info_id = cii.id " +
+		"left join course c " +
+		"on c.id = s.course_id " +
 		"where s.id = ?";
 
 	private final JdbcOperations jdbcTemplate;
@@ -85,40 +94,63 @@ public class JdbcSessionRepository implements SessionRepository {
 	@Override
 	public Session findById(Long id) {
 		RowMapper<Session> rowMapper = (rs, rowNum) -> {
-			CoverImageInfo coverImageInfo = CoverImageInfo.builder()
-				.id(rs.getLong("coverImageId"))
-				.size(rs.getLong("coverImageSize"))
-				.width(rs.getLong("coverImageWidth"))
-				.height(rs.getLong("coverImageHeight"))
-				.imageType(rs.getString("coverImageType"))
-				.build();
+			CoverImageInfo coverImageInfo = makeCoverImageInfo(rs);
+
+			Course course = makeCourse(rs);
 
 			String type = rs.getString("type");
 
-			if (SessionType.isPay(type)) {
-				return PaySession.builder()
-					.id(rs.getLong("id"))
-					.sessionDate(SessionDate.of(toLocalDateTime(rs.getTimestamp("startDate")), toLocalDateTime(rs.getTimestamp("endDate"))))
-					.sessionStatus(SessionStatus.findBySessionStr(rs.getString("status")).orElse(null))
-					.numberOfStudents(rs.getInt("numberOfStudents"))
-					.maxNumberOfStudents(rs.getInt("maxNumberOfStudents"))
-					.coverImageInfo(coverImageInfo)
-					.price(rs.getLong("price"))
-					.type(SessionType.findByTypeStr(rs.getString("type")).orElse(null))
-					.build();
+			SessionInfos sessionInfos = makeSessionInfo(rs, type);
+
+			if (SessionType.isPaySession(type)) {
+				return PaySession.createFromData(
+					rs.getLong("id"),
+					course,
+					sessionInfos,
+					rs.getInt("numberOfStudents"),
+					rs.getInt("maxNumberOfStudents"),
+					coverImageInfo,
+					rs.getLong("price")
+				);
 			}
 
-			return FreeSession.builder()
-				.id(rs.getLong("id"))
-				.sessionDate(SessionDate.of(toLocalDateTime(rs.getTimestamp("startDate")), toLocalDateTime(rs.getTimestamp("endDate"))))
-				.sessionStatus(SessionStatus.findBySessionStr(rs.getString("status")).orElse(null))
-				.numberOfStudents(rs.getInt("numberOfStudents"))
-				.coverImageInfo(coverImageInfo)
-				.type(SessionType.findByTypeStr(rs.getString("type")).orElse(null))
-				.build();
+			return FreeSession.createFromData(
+				rs.getLong("id"),
+				course,
+				sessionInfos,
+				rs.getInt("numberOfStudents"),
+				coverImageInfo
+			);
 		};
 
 		return jdbcTemplate.queryForObject(FIND_SESSION_BY_ID_SQL, rowMapper, id);
+	}
+
+	private SessionInfos makeSessionInfo(ResultSet rs, String type) throws SQLException {
+		return SessionInfos.createWithStatus(
+			SessionDate.of(toLocalDateTime(rs.getTimestamp("startDate")), toLocalDateTime(rs.getTimestamp("endDate"))),
+			SessionStatus.findBySessionStr(rs.getString("status")).orElseThrow()
+		);
+	}
+
+	private Course makeCourse(ResultSet rs) throws SQLException {
+		return new Course(
+			rs.getLong("courseId"),
+			rs.getString("courseTitle"),
+			rs.getLong("courseCreatorId"),
+			toLocalDateTime(rs.getTimestamp("courseCreatedAt")),
+			toLocalDateTime(rs.getTimestamp("courseUpdatedAt"))
+		);
+	}
+
+	private static CoverImageInfo makeCoverImageInfo(ResultSet rs) throws SQLException {
+		return CoverImageInfo.createFromData(
+			rs.getLong("coverImageId"),
+			rs.getLong("coverImageSize"),
+			rs.getString("coverImageType"),
+			rs.getLong("coverImageWidth"),
+			rs.getLong("coverImageHeight")
+		);
 	}
 
 	private LocalDateTime toLocalDateTime(Timestamp timestamp) {

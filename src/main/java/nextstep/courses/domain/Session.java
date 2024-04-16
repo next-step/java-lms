@@ -6,34 +6,27 @@ import nextstep.payments.domain.Payment;
 
 abstract public class Session {
 	protected final Long id;
-	protected final SessionDate sessionDate;
-	protected SessionStatus sessionStatus = SessionStatus.READY;;
+	protected final Course course;
+
+	protected final SessionInfos sessionInfos;
+	protected SessionType sessionType;
+
 	protected int numberOfStudents;
 	protected CoverImageInfo coverImageInfo;
-	protected final SessionType type;
 
-	protected Session(Long id, SessionDate sessionDate, CoverImageInfo coverImageInfo, SessionType type) {
+	protected Session(Long id, Course course, SessionInfos sessionInfos, SessionType sessionType, int numberOfStudents, CoverImageInfo coverImageInfo) {
 		this.id = id;
-		this.sessionDate = sessionDate;
-		this.numberOfStudents = 0;
-		this.type = type;
-	}
-
-	protected Session(Long id, SessionDate sessionDate, SessionStatus sessionStatus, int numberOfStudents, CoverImageInfo coverImageInfo, SessionType type) {
-		this.id = id;
-		this.sessionDate = sessionDate;
-		if (sessionStatus == null) {
-			this.sessionStatus = SessionStatus.READY;
-		}
+		this.course = course;
+		this.sessionInfos = sessionInfos;
+		this.sessionType = sessionType;
 		this.numberOfStudents = numberOfStudents;
 		this.coverImageInfo = coverImageInfo;
-		this.type = type;
 	}
 
 	abstract public void enroll(Payment payment);
 
 	public void startRecruit() {
-		sessionStatus = SessionStatus.RECRUITING;
+		sessionInfos.startRecruit();
 	}
 
 	public boolean hasNumberOfStudents(int targetCount) {
@@ -41,12 +34,15 @@ abstract public class Session {
 	}
 
 	public Long getId() {return id;}
+
+	public Course getCourse() {return course;}
+
 	public SessionDate getSessionDate() {
-		return sessionDate;
+		return sessionInfos.getSessionDate();
 	}
 
 	public SessionStatus getSessionStatus() {
-		return sessionStatus;
+		return sessionInfos.getSessionStatus();
 	}
 
 	public int getNumberOfStudents() {
@@ -58,6 +54,6 @@ abstract public class Session {
 	}
 
 	public SessionType getType() {
-		return type;
+		return sessionType;
 	}
 }

@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.enums.SessionStatus;
 import nextstep.courses.domain.enums.SessionType;
 import nextstep.payments.domain.Payment;
 
@@ -12,22 +11,16 @@ public class PaySession extends Session {
 	private final Long price;
 	private final int maxNumberOfStudents;
 
-	public static PaySession of(Long id, SessionDate sessionDate, Long price, int maxNumberOfStudents, CoverImageInfo coverImageInfo) {
-		return new PaySession(id, sessionDate, price, maxNumberOfStudents, coverImageInfo);
+	public static PaySession createNewInstance(Course course, SessionInfos sessionInfos, int maxNumberOfStudents, CoverImageInfo coverImageInfo, Long price) {
+		return new PaySession(0L, course, sessionInfos, 0, maxNumberOfStudents, coverImageInfo, price);
 	}
 
-	public static PaySession of(Long id, SessionDate sessionDate, Long price, int maxNumberOfStudents) {
-		return new PaySession(id, sessionDate, price, maxNumberOfStudents, null);
+	public static PaySession createFromData(Long id, Course course, SessionInfos sessionInfos, int numberOfStudents, int maxNumberOfStudents, CoverImageInfo coverImageInfo, Long price) {
+		return new PaySession(id, course, sessionInfos, numberOfStudents, maxNumberOfStudents, coverImageInfo, price);
 	}
 
-	private PaySession(Long id, SessionDate sessionDate, Long price, int maxNumberOfStudents, CoverImageInfo coverImageInfo) {
-		super(id, sessionDate, coverImageInfo, SessionType.PAY);
-		this.price = price;
-		this.maxNumberOfStudents = maxNumberOfStudents;
-	}
-
-	private PaySession(Long id, SessionDate sessionDate, SessionStatus sessionStatus, int numberOfStudents, int maxNumberOfStudents, CoverImageInfo coverImageInfo, SessionType type, Long price) {
-		super(id, sessionDate, sessionStatus, numberOfStudents, coverImageInfo, type);
+	private PaySession(Long id, Course course, SessionInfos sessionInfos, int numberOfStudents, int maxNumberOfStudents, CoverImageInfo coverImageInfo, Long price) {
+		super(id, course, sessionInfos, SessionType.PAY, numberOfStudents, coverImageInfo);
 		this.price = price;
 		this.maxNumberOfStudents = maxNumberOfStudents;
 	}
@@ -39,7 +32,7 @@ public class PaySession extends Session {
 	}
 
 	private void validateEnrollable(Payment payment) {
-		if (sessionStatus.isStatusNotRecruiting()) {
+		if (sessionInfos.isStatusNotRecruiting()) {
 			throw new IllegalStateException(SESSION_NOT_RECRUITING);
 		}
 		if (payment.isDifferentAmount(price)) {
@@ -58,62 +51,4 @@ public class PaySession extends Session {
 		return price;
 	}
 
-	public static PaySession.PaySessionBuilder builder() {
-		return new PaySession.PaySessionBuilder();
-	}
-
-	public static class PaySessionBuilder {
-		private Long id;
-		private SessionDate sessionDate;
-		private SessionStatus sessionStatus;
-		private int numberOfStudents;
-		private int maxNumberOfStudents;
-		private CoverImageInfo coverImageInfo;
-		private SessionType type;
-		private Long price;
-
-		public PaySession.PaySessionBuilder id(Long id) {
-			this.id = id;
-			return this;
-		}
-
-		public PaySession.PaySessionBuilder sessionDate(SessionDate sessionDate) {
-			this.sessionDate = sessionDate;
-			return this;
-		}
-
-		public PaySession.PaySessionBuilder sessionStatus(SessionStatus sessionStatus) {
-			this.sessionStatus = sessionStatus;
-			return this;
-		}
-
-		public PaySession.PaySessionBuilder numberOfStudents(int numberOfStudents) {
-			this.numberOfStudents = numberOfStudents;
-			return this;
-		}
-
-		public PaySession.PaySessionBuilder maxNumberOfStudents(int maxNumberOfStudents) {
-			this.maxNumberOfStudents = maxNumberOfStudents;
-			return this;
-		}
-
-		public PaySession.PaySessionBuilder coverImageInfo(CoverImageInfo coverImageInfo) {
-			this.coverImageInfo = coverImageInfo;
-			return this;
-		}
-
-		public PaySession.PaySessionBuilder type(SessionType type) {
-			this.type = type;
-			return this;
-		}
-
-		public PaySession.PaySessionBuilder price(Long price) {
-			this.price = price;
-			return this;
-		}
-
-		public PaySession build() {
-			return new PaySession(id, sessionDate, sessionStatus, numberOfStudents, maxNumberOfStudents, coverImageInfo, type, price);
-		}
-	}
 }
