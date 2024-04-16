@@ -34,4 +34,8 @@ public class Payment {
     public boolean isMatchedPaymentSessionId(Long id) {
         return sessionId.equals(id);
     }
+
+    public boolean isSamePriceWith(Long fee) {
+        return amount == fee;
+    }
 }
