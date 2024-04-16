@@ -6,6 +6,7 @@ import java.util.List;
 
 import nextstep.courses.domain.Course;
 import nextstep.enrollment.domain.Enrollment;
+import nextstep.users.domain.NsUser;
 
 public class Session {
 
@@ -23,22 +24,24 @@ public class Session {
 
     private Course course;
 
+    private Long coachId;
+
     private List<Enrollment> enrollments = new ArrayList<>();
 
     public Session(final int maxEnrollment, final SessionRecruitingStatus sessionRecruitingStatus,
                    final SessionProgressStatus sessionProgressStatus, final long price, final LocalDateTime endAt,
-                   final Course course) {
-        this(maxEnrollment, sessionRecruitingStatus, sessionProgressStatus, price, LocalDateTime.now(), endAt, course);
+                   final Course course, final Long coachId) {
+        this(maxEnrollment, sessionRecruitingStatus, sessionProgressStatus, price, LocalDateTime.now(), endAt, course, coachId);
     }
 
     public Session(final int maxEnrollment, final SessionRecruitingStatus sessionRecruitingStatus, final SessionProgressStatus sessionProgressStatus,
-                   final long price, final LocalDateTime startedAt, final LocalDateTime endAt, final Course course) {
-        this(null, maxEnrollment, sessionRecruitingStatus, sessionProgressStatus, price, startedAt, endAt, course);
+                   final long price, final LocalDateTime startedAt, final LocalDateTime endAt, final Course course, Long coachId) {
+        this(null, maxEnrollment, sessionRecruitingStatus, sessionProgressStatus, price, startedAt, endAt, course, coachId);
     }
 
     public Session(final Long id, final int maxEnrollment, final SessionRecruitingStatus sessionRecruitingStatus,
                    final SessionProgressStatus sessionProgressStatus, final long price,
-                   final LocalDateTime startedAt, final LocalDateTime endAt, final Course course) {
+                   final LocalDateTime startedAt, final LocalDateTime endAt, final Course course, final Long coachId) {
         this.id = id;
         this.maxEnrollment = maxEnrollment;
         this.sessionRecruitingStatus = sessionRecruitingStatus;
@@ -46,11 +49,12 @@ public class Session {
         this.sessionPrice = new SessionPrice(price);
         this.sessionPeriod = new SessionPeriod(startedAt, endAt);
         this.course = course;
+        this.coachId = coachId;
     }
 
     public static Session free(final SessionRecruitingStatus recruitingStatus, final SessionProgressStatus progressStatus,
-                               final Course course) {
-        return new Session(Integer.MAX_VALUE, recruitingStatus, progressStatus, 0L, LocalDateTime.now(), LocalDateTime.MAX, course);
+                               final Course course, final Long coachId) {
+        return new Session(Integer.MAX_VALUE, recruitingStatus, progressStatus, 0L, LocalDateTime.now(), LocalDateTime.MAX, course, coachId);
     }
 
     public boolean isFull() {
@@ -79,8 +83,8 @@ public class Session {
         enrollments.add(enrollment);
     }
 
-    public void removeEnrollment(final Enrollment enrollment) {
-        enrollments.remove(enrollment);
+    public boolean isCoach(final NsUser user) {
+        return coachId.equals(user.getId());
     }
 
     public boolean isEnd() {

@@ -2,6 +2,7 @@ package nextstep.sessions.domain;
 
 import static nextstep.sessions.domain.SessionProgressStatus.PREPARING;
 import static nextstep.sessions.domain.SessionRecruitingStatus.RECRUITING;
+import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static nextstep.users.domain.NsUserType.WOOTECO;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import nextstep.courses.domain.Course;
 import nextstep.enrollment.domain.Enrollment;
 import nextstep.users.domain.NsUser;
-import nextstep.users.domain.NsUserTest;
 
 class SessionTest {
 
@@ -29,10 +29,10 @@ class SessionTest {
         // given
         final Course course = new Course("TDD, 클린 코드 with Java", 1L);
         final Session session = new Session(1, RECRUITING, PREPARING, 100000L, LocalDateTime.now().plusDays(1),
-                LocalDateTime.now().plusDays(2), course);
+                LocalDateTime.now().plusDays(2), course, JAVAJIGI.getId());
         final Enrollment enrollment = new Enrollment(session, user);
         enrollment.enroll(100000L);
-        enrollment.approveBy(NsUserTest.JAVAJIGI);
+        enrollment.approveBy(JAVAJIGI);
 
         // when
         final boolean isFull = session.isFull();
@@ -46,7 +46,7 @@ class SessionTest {
         // given
         final Course course = new Course("TDD, 클린 코드 with Java", 1L);
         final Session session = new Session(4, RECRUITING, PREPARING, 100000L, LocalDateTime.now().plusDays(1),
-                LocalDateTime.now().plusDays(2), course);
+                LocalDateTime.now().plusDays(2), course, JAVAJIGI.getId());
 
         // when
         final boolean isNotFull = session.isFull();
@@ -60,10 +60,10 @@ class SessionTest {
         // given
         final Course course = new Course("TDD, 클린 코드 with Java", 1L);
         final Session session = new Session(4, RECRUITING, PREPARING, 100000L, LocalDateTime.now().plusDays(1),
-                LocalDateTime.now().plusDays(2), course);
+                LocalDateTime.now().plusDays(2), course, JAVAJIGI.getId());
         final Enrollment enrollment = new Enrollment(session, user);
         enrollment.enroll(100000L);
-        enrollment.approveBy(NsUserTest.JAVAJIGI);
+        enrollment.approveBy(JAVAJIGI);
 
         // when
         final boolean canNotEnroll = session.canEnroll(enrollment);
@@ -77,8 +77,8 @@ class SessionTest {
         // given
         final Course course = new Course("TDD, 클린 코드 with Java", 1L);
         final Session session = new Session(4, RECRUITING, PREPARING, 100000L, LocalDateTime.now().plusDays(1),
-                LocalDateTime.now().plusDays(2), course);
-        final Enrollment enrollment = new Enrollment(session, NsUserTest.JAVAJIGI);
+                LocalDateTime.now().plusDays(2), course, JAVAJIGI.getId());
+        final Enrollment enrollment = new Enrollment(session, JAVAJIGI);
 
         // when
         final boolean canEnroll = session.canEnroll(enrollment);

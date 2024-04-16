@@ -38,7 +38,7 @@ class EnrollmentTest {
         user2 = new NsUser(4L, "kim", "password", "name", "lee@slipp.net", WOOTECAM);
         course = new Course("TDD, 클린 코드 with Java", 1L);
         session = new Session(2, RECRUITING, PREPARING, SESSION_PRICE, LocalDateTime.now().plusDays(1),
-                LocalDateTime.now().plusDays(2), course);
+                LocalDateTime.now().plusDays(2), course, JAVAJIGI.getId());
     }
 
     @Test
@@ -53,7 +53,8 @@ class EnrollmentTest {
 
     @Test
     void 모집중이_아닌_강의인_경우_수강_신청을_하면_실패한다() {
-        final Session session = new Session(5, NON_RECRUITING, PREPARING, 100000L, LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2), course);
+        final Session session = new Session(5, NON_RECRUITING, PREPARING, 100000L, LocalDateTime.now().plusDays(1),
+                LocalDateTime.now().plusDays(2), course, JAVAJIGI.getId());
 
         assertThatIllegalArgumentException().isThrownBy(() -> new Enrollment(session, JAVAJIGI).enroll(100000L))
                 .withMessage("모집중인 강의가 아닙니다.");
@@ -61,7 +62,8 @@ class EnrollmentTest {
 
     @Test
     void 시작일이_지난_강의를_수강_신청을_하면_실패한다() {
-        final Session session = new Session(5, RECRUITING, PREPARING, 100000L, LocalDateTime.now().plusDays(1), course);
+        final Session session = new Session(5, RECRUITING, PREPARING, 100000L, LocalDateTime.now().plusDays(1), course,
+                JAVAJIGI.getId());
 
         assertThatIllegalArgumentException().isThrownBy(() -> new Enrollment(session, JAVAJIGI).enroll(100000L))
                 .withMessage("시작일이 지난 강의는 수강 신청할 수 없습니다.");
@@ -76,7 +78,7 @@ class EnrollmentTest {
     @Test
     void 무료_강의_수강_신청한다() {
         // given
-        final Session freeSession = Session.free(RECRUITING, PREPARING,course);
+        final Session freeSession = Session.free(RECRUITING, PREPARING, course, JAVAJIGI.getId());
         final Enrollment enrollment = new Enrollment(freeSession, JAVAJIGI);
 
         // when
@@ -111,7 +113,7 @@ class EnrollmentTest {
     void 강의_진행_상태가_END이면_수강_신청에_실패한다() {
         // given
         final Session session = new Session(2, RECRUITING, END, SESSION_PRICE, LocalDateTime.now().plusDays(1),
-                LocalDateTime.now().plusDays(2), course);
+                LocalDateTime.now().plusDays(2), course, JAVAJIGI.getId());
 
         // when
         final Enrollment enrollment = new Enrollment(session, JAVAJIGI);

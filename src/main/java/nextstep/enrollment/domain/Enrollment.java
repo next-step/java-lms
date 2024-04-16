@@ -28,7 +28,7 @@ public class Enrollment {
     }
 
     public void approveBy(final NsUser coach) {
-        if (coach.isCoach() && attendee.isSelected()) {
+        if (session.isCoach(coach) && attendee.isSelected()) {
             status = APPROVED;
             session.addEnrollment(this);
         }

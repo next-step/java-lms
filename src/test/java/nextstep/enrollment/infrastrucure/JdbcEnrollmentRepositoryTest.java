@@ -2,6 +2,8 @@ package nextstep.enrollment.infrastrucure;
 
 import static nextstep.sessions.domain.SessionProgressStatus.PREPARING;
 import static nextstep.sessions.domain.SessionRecruitingStatus.RECRUITING;
+import static nextstep.users.domain.NsUserTest.JAVAJIGI;
+import static nextstep.users.domain.NsUserTest.SANJIGI;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
@@ -15,7 +17,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import nextstep.enrollment.domain.Enrollment;
 import nextstep.enrollment.domain.EnrollmentRepository;
 import nextstep.sessions.domain.Session;
-import nextstep.users.domain.NsUserTest;
 
 @JdbcTest
 class JdbcEnrollmentRepositoryTest {
@@ -34,8 +35,8 @@ class JdbcEnrollmentRepositoryTest {
     void 등록을_저장한다() {
         // given
         final Session session = new Session(1L, 30, RECRUITING, PREPARING, 800_000, LocalDateTime.now().plusDays(1),
-                LocalDateTime.now().plusMonths(1), null);
-        final Enrollment enrollment = new Enrollment(session, NsUserTest.SANJIGI);
+                LocalDateTime.now().plusMonths(1), null, JAVAJIGI.getId());
+        final Enrollment enrollment = new Enrollment(session, SANJIGI);
 
         // when
         final int count = enrollmentRepository.save(enrollment);
