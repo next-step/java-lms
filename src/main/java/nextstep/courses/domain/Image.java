@@ -7,16 +7,16 @@ public class Image {
     private final int MB = 1024 * 1024;
     private final int MINIMUM_WIDTH = 300;
     private final int MINIMUM_HEIGHT = 200;
-    private final Type type;
+    private final ImageType imageType;
     private final int width;
     private final int height;
 
-    public Image(int size, Type type, int width, int height) {
+    public Image(int size, ImageType type, int width, int height) {
         imagePixel(width, height);
         imageSize(size);
         imageType(type);
         this.size = size;
-        this.type = type;
+        this.imageType = type;
         this.width = width;
         this.height = height;
     }
@@ -32,7 +32,7 @@ public class Image {
             throw new IllegalArgumentException("비율이 맞지 않습니다");
     }
 
-    private void imageType(Type type) {
+    private void imageType(ImageType type) {
         if (type == null)
             throw new IllegalArgumentException("잘못된 파일 타입입니다");
     }
@@ -43,12 +43,12 @@ public class Image {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Image image = (Image) o;
-        return size == image.size && width == image.width && height == image.height && type == image.type;
+        return size == image.size && width == image.width && height == image.height && imageType == image.imageType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(size, MB, type, width, height);
+        return Objects.hash(size, MB, imageType, width, height);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class Image {
         return "Image{" +
                 "size=" + size +
                 ", MB=" + MB +
-                ", type=" + type +
+                ", type=" + imageType +
                 ", width=" + width +
                 ", height=" + height +
                 '}';
