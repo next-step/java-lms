@@ -4,13 +4,16 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.junit.jupiter.api.Assertions.*;
 
 class FrameTest {
 
     @Test
-    void is_width_over_300() {
+    void is_appropriate_ratio() {
         assertThatCode(() -> new Frame(300, 200)).doesNotThrowAnyException();
+    }
+
+    @Test
+    void is_not_appropriate_ratio() {
         assertThatIllegalArgumentException().isThrownBy(() -> new Frame(350, 200));
     }
 }
