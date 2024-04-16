@@ -57,3 +57,13 @@ create table image (
     height bigint not null,
     primary key (id)
 );
+
+create table session_register_details (
+    id bigint auto_increment,
+    current_count_of_students bigint not null,
+    max_count_of_students bigint not null,
+    session_type varchar(255) not null,
+    price bigint not null,
+    session_status varchar(255) not null,
+    primary key (id)
+);
