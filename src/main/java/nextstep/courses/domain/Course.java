@@ -2,6 +2,9 @@ package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import nextstep.courses.CannotRegisterException;
+import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 
 public class Course {
 
@@ -62,5 +65,13 @@ public class Course {
             return;
         }
         sessions.addSession(session);
+    }
+
+    public void register(Long sessionId, NsUser user) throws CannotRegisterException {
+        this.sessions.register(sessionId, user);
+    }
+
+    public void register(Long sessionId, NsUser user, Payment payment) throws CannotRegisterException {
+        this.sessions.register(sessionId, user, payment);
     }
 }
