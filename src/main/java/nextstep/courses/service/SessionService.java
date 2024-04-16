@@ -3,6 +3,7 @@ package nextstep.courses.service;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionFactory;
 import nextstep.courses.domain.student.SessionStudent;
+import nextstep.courses.exception.SessionNotFoundException;
 import nextstep.courses.infrastructure.engine.SessionCoverImageRepository;
 import nextstep.courses.infrastructure.engine.SessionRepository;
 import nextstep.courses.infrastructure.engine.SessionStudentRepository;
@@ -12,7 +13,6 @@ import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SessionService {
@@ -35,9 +35,10 @@ public class SessionService {
     }
 
     public void enroll(Long sessionId, NsUser user) {
-        Optional<Session> findSession = sessionRepository.findById(sessionId);
+        Session findSession = sessionRepository.findById(sessionId)
+                .orElseThrow(() -> new SessionNotFoundException(sessionId));
         List<SessionStudent> findStudents = sessionStudentRepository.findAllBySessionId(sessionId);
-        Session session = SessionFactory.get(findSession.get(), findStudents);
+        Session session = SessionFactory.get(findSession, findStudents);
 
         Payment payment = paymentService.payment(sessionId, user.getId(), session.getEnrollment().getFee());
         SessionStudent student = session.enroll(user, payment);
@@ -46,7 +47,14 @@ public class SessionService {
     }
 
     public void approve(Long sessionId, List<SessionStudent> students) {
+        Session findSession = sessionRepository.findById(sessionId)
+                .orElseThrow(() -> new SessionNotFoundException(sessionId));
+        List<SessionStudent> findStudents = sessionStudentRepository.findAllBySessionId(sessionId);
+        Session session = SessionFactory.get(findSession, findStudents);
 
+        session.approveEnroll(students);
+
+        sessionStudentRepository.updateAll(students);
     }
 
 }

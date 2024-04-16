@@ -12,8 +12,8 @@ public enum CourseExceptionMessage {
     INVALID_SESSION_PROGRESS_STATUS("강의 진행 상태가 유효하지 않습니다."),
     INVALID_SESSION_RECRUITMENT_STATUS("강의 모집 상태가 유효하지 않습니다."),
     INVALID_SESSION_STUDENT_ENROLLMENT_STATUS("수강생 신청 상태가 유효하지 않습니다."),
-    NOT_MATCH_SESSION_ENROLLMENT("매칭되는 신청 유형이 없습니다.")
-    ;
+    NOT_MATCH_SESSION_ENROLLMENT("매칭되는 신청 유형이 없습니다."),
+    SESSION_NOT_FOUNT("강의를 찾을 수 없습니다.");
 
     private final String message;
 
