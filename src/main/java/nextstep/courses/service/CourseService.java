@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class CourseService {
   @Autowired
-  RegistrationRepository registrationRepository;
+  private RegistrationRepository registrationRepository;
 
   @Transactional
   public void approve(Long userId, Long sessionId) {
