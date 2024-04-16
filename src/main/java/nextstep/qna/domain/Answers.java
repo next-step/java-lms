@@ -33,7 +33,7 @@ public class Answers {
                 .allMatch(answer -> answer.isOwner(loginUser));
     }
 
-    public void allDeleted(NsUser loginUser) throws CannotDeleteException {
+    private void allDeleted(NsUser loginUser) throws CannotDeleteException {
         for (Answer answer : answers) {
             answer.delete(loginUser);
         }

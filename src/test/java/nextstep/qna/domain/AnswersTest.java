@@ -21,7 +21,7 @@ public class AnswersTest {
     void Answers_전체_삭제_확인() throws CannotDeleteException {
         Answers answers = CAN_DELETED_ANSWERS;
 
-        answers.allDeleted(NsUserTest.JAVAJIGI);
+        answers.delete(NsUserTest.JAVAJIGI);
         List<Answer> answersList = answers.getAnswers();
         assertThat(answersList).allMatch(Answer::isDeleted);
     }
