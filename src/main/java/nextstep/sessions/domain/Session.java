@@ -91,10 +91,6 @@ public class Session {
         return sessionProgressStatus.isEnd();
     }
 
-    public List<Enrollment> getEnrollments() {
-        return enrollments;
-    }
-
     public Long getId() {
         return id;
     }
@@ -121,6 +117,10 @@ public class Session {
 
     public LocalDateTime getSessionEndDate() {
         return sessionPeriod.getEndAt();
+    }
+
+    public Long getCoachId() {
+        return coachId;
     }
 
     public Long getCourse() {

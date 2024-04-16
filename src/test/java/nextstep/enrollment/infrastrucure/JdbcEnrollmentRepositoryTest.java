@@ -37,6 +37,7 @@ class JdbcEnrollmentRepositoryTest {
         final Session session = new Session(1L, 30, RECRUITING, PREPARING, 800_000, LocalDateTime.now().plusDays(1),
                 LocalDateTime.now().plusMonths(1), null, JAVAJIGI.getId());
         final Enrollment enrollment = new Enrollment(session, SANJIGI);
+        enrollment.enroll(800_000);
 
         // when
         final int count = enrollmentRepository.save(enrollment);
