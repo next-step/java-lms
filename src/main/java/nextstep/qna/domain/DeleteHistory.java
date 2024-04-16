@@ -22,6 +22,7 @@ public class DeleteHistory {
     public DeleteHistory(Answer answer) {
         this(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now());
     }
+
     public DeleteHistory(Question question) {
         this(ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now());
     }
