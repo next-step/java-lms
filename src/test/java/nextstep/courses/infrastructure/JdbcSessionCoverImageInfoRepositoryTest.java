@@ -1,12 +1,8 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
-import nextstep.courses.domain.enums.SessionType;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,39 +10,33 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import javax.sql.DataSource;
 import java.time.LocalDateTime;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 @JdbcTest
-public class SessionRepositoryTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SessionRepositoryTest.class);
+class JdbcSessionCoverImageInfoRepositoryTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
     @Autowired
     private DataSource dataSource;
 
-    private SessionRepository sessionRepository;
+    private SessionCoverImageInfoRepository sessionCoverImageInfoRepository;
 
     @BeforeEach
     void setUp() {
-        sessionRepository = new JdbcSessionRepository(jdbcTemplate, dataSource);
+        sessionCoverImageInfoRepository = new JdbcSessionCoverImageInfoRepository(jdbcTemplate, dataSource);
     }
 
     @Test
-    @DisplayName("유료 강의 CRUD")
-    void paysession_crud() {
+    public void session_cover_image_info_crud() throws Exception {
         // given
-        Session session = preparedPaySession();
-        session.addCoverImageInfo(preparedCoverImageInfo());
-        Long savedId = sessionRepository.saveSessionAndGetId(session);
-
-        PaySession savedSession = (PaySession) sessionRepository.findById(savedId);
-
-        assertThat(savedSession.getType()).isEqualTo(SessionType.PAY);
-        assertThat(savedSession.getMaxNumberOfStudents()).isEqualTo(20);
-
-        LOGGER.debug("PaySession: {}", savedSession);
+        SessionCoverImageInfo sessionCoverImageInfo = SessionCoverImageInfo.createNewInstance(preparedPaySession(), preparedCoverImageInfo());
+        // when
+        Long savedId = sessionCoverImageInfoRepository.saveAndGetId(sessionCoverImageInfo);
+        // then
+        assertThat(savedId).isEqualTo(1L);
     }
+
 
     private static CoverImageInfo preparedCoverImageInfo() {
         return CoverImageInfo.createNewInstance(1000L, "jpg", 300L, 200L);

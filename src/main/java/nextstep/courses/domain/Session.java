@@ -4,6 +4,7 @@ import nextstep.courses.domain.enums.SessionStatus;
 import nextstep.courses.domain.enums.SessionType;
 import nextstep.payments.domain.Payment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 abstract public class Session {
@@ -14,17 +15,17 @@ abstract public class Session {
     protected int numberOfStudents;
     protected List<CoverImageInfo> coverImageInfos;
 
-    protected Session(Long id, Course course, SessionInfos sessionInfos, SessionType sessionType, int numberOfStudents, List<CoverImageInfo> coverImageInfos) {
-        this(id, course, sessionInfos, sessionType, numberOfStudents);
-        this.coverImageInfos = coverImageInfos;
+    protected Session(Long id, Course course, SessionInfos sessionInfos, SessionType sessionType, int numberOfStudents) {
+        this(id, course, sessionInfos, sessionType, numberOfStudents, new ArrayList<>());
     }
 
-    protected Session(Long id, Course course, SessionInfos sessionInfos, SessionType sessionType, int numberOfStudents) {
+    protected Session(Long id, Course course, SessionInfos sessionInfos, SessionType sessionType, int numberOfStudents, List<CoverImageInfo> coverImageInfos) {
         this.id = id;
         this.course = course;
         this.sessionInfos = sessionInfos;
         this.sessionType = sessionType;
         this.numberOfStudents = numberOfStudents;
+        this.coverImageInfos = coverImageInfos;
     }
 
     abstract public void enroll(Payment payment);
@@ -63,5 +64,9 @@ abstract public class Session {
 
     public boolean isRecruiting() {
         return sessionInfos.isStatusNotRecruiting();
+    }
+
+    public boolean isCoverImageEmpty() {
+        return coverImageInfos.isEmpty();
     }
 }

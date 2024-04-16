@@ -18,4 +18,12 @@ public class SessionCoverImageInfo {
         this.session = session;
         this.coverImageInfo = coverImageInfo;
     }
+
+    public Long getSessionId() {
+        return session.getId();
+    }
+
+    public Long getCoverImageInfoId() {
+        return coverImageInfo.getId();
+    }
 }

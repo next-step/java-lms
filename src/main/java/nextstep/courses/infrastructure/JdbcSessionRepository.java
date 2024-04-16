@@ -18,7 +18,9 @@ import java.util.Map;
 
 @Repository("SessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
-    public static final String FIND_SESSION_BY_ID_SQL = "select " +
+    private static final String SESSION_MUST_HAVE_COVER_IMAGE_MESSAGE = "세션에 하나 이상의 커버 이미지가 등록되어야 합니다.";
+
+    private static final String FIND_SESSION_BY_ID_SQL = "select " +
             "s.id as id" +
             ", s.start_date as startDate" +
             ", s.end_date as endDate" +
@@ -73,7 +75,6 @@ public class JdbcSessionRepository implements SessionRepository {
         SessionDate sessionDate = session.getSessionDate();
         SessionStatus sessionStatus = session.getSessionStatus();
         SessionType sessionType = session.getType();
-
         return Map.of(
                 "start_date", sessionDate.getStartDate(),
                 "end_date", sessionDate.getEndDate(),
