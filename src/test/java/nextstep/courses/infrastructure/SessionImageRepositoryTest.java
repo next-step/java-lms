@@ -47,7 +47,5 @@ public class SessionImageRepositoryTest {
     sessionImageRepository.save(new SessionImage(2L,300, 200, "jpeg", 1024, "TEST", 1L));
     List<SessionImage> savedSessionImages = sessionImageRepository.findBySessionId(1L);
     assertThat(savedSessionImages.size()).isEqualTo(2);
-
-//    jdbcTemplate.update("DELETE FROM session_image");
   }
 }
