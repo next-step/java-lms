@@ -5,9 +5,11 @@ import nextstep.courses.domain.exception.NotRecruitException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
+import java.util.Set;
+
 public class PaySession extends Session {
 
-    private int maximumStudents;
+    private final int maximumStudents;
     private final long amount;
 
     public PaySession(Long id, SessionImage sessionImage, SessionStatus sessionStatus, SessionDate sessionDate, int maximumStudents, long amount) {
@@ -18,8 +20,11 @@ public class PaySession extends Session {
         this.maximumStudents = maximumStudents;
     }
 
-    public void changeMaximumStudents(int maximumStudents) {
+    public PaySession(Long id, SessionImage sessionImage, SessionStatus sessionStatus, SessionDate sessionDate, Set<NsUser> students, int maximumStudents, long amount) {
+        super(id, sessionImage, sessionStatus, sessionDate, students);
         assertValidMaximumStudents(maximumStudents);
+        assertValidAmount(amount);
+        this.amount = amount;
         this.maximumStudents = maximumStudents;
     }
 
@@ -39,23 +44,30 @@ public class PaySession extends Session {
         }
     }
 
-    @Override
-    public void assertRecruit(NsUser user) {
-        if (!getSessionStatus().isRecruit() || getStudents().size() == maximumStudents) {
-            throw new NotRecruitException();
-        }
+    public int getMaximumStudents() {
+        return maximumStudents;
+    }
 
-        if (getStudents().contains(user)) {
-            throw new NotRecruitException();
-        }
-
-        if (user.getChargePoint() < amount) {
-            throw new LackPointException();
-        }
+    public long getAmount() {
+        return amount;
     }
 
     @Override
-    public Payment payResult(NsUser user) {
-        return new Payment(null, getId(), user.getId(), amount);
+    public void assertSatisfiedCondition(NsUser user, Payment payment) {
+        if (getStudents().size() == maximumStudents) {
+            throw new NotRecruitException();
+        }
+
+        if (payment.getSessionId() == null || !payment.getSessionId().equals(getId())) {
+            throw new NotRecruitException();
+        }
+
+        if (payment.getNsUserId() == null || !payment.getNsUserId().equals(user.getId())) {
+            throw new NotRecruitException();
+        }
+
+        if (payment.getAmount() == null || payment.getAmount() < amount) {
+            throw new LackPointException();
+        }
     }
 }

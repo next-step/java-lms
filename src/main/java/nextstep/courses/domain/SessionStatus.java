@@ -1,14 +1,19 @@
 package nextstep.courses.domain;
 
-public enum SessionStatus {
-    PREPARE,RECRUIT,END;
+import java.util.Optional;
 
+public enum SessionStatus {
+    PREPARE,
+    RECRUIT,
+    END;
+
+    public static SessionStatus findByName(String name) {
+        return SessionStatus.valueOf(name.toUpperCase());
+    }
 
     public boolean isRecruit() {
-        if (this.equals(RECRUIT)) {
-            return true;
-        }
-
-        return false;
+        return this.equals(RECRUIT);
     }
+
+
 }

@@ -1,15 +1,19 @@
 package nextstep.courses.domain;
 
 public class SessionImageSize {
-    private final int height;
-    private final int width;
-    private final int size;
 
     private static final int MIN_HEIGHT = 200;
     private static final int MIN_WIDTH = 300;
-    private static final int MAX_SIZE = 1;
+    //1MB
+    private static final int MAX_SIZE = 1024 * 1024 * 1;
     private static final int WIDTH_RATIO = 3;
     private static final int HEIGHT_RATIO = 2;
+
+    private final int height;
+    private final int width;
+
+    //단위 : byte
+    private final int size;
 
     public SessionImageSize(int width, int height, int size) {
         assertValidWidthAndHeight(width, height);

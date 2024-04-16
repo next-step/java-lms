@@ -10,7 +10,7 @@ public class SessionImageTest {
     private static final Long VALID_ID = 1L;
     private static final int VALID_HEIGHT = 200;
     private static final int VALID_WIDTH = 300;
-    private static final int VALID_SIZE = 1;
+    private static final int VALID_SIZE = 1024 * 1024;
     private static final String VALID_PATH = "image.png";
     public static final SessionImage S1 = new SessionImage(VALID_ID, VALID_PATH, VALID_WIDTH, VALID_HEIGHT, VALID_SIZE);
 
