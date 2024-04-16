@@ -5,13 +5,13 @@ import nextstep.courses.error.exception.MaxRegistrationCountNotZero;
 
 public class MaxRegistrationCount {
 
-    private final RegistrationCount registrationCount;
-
     private static final Comparator<RegistrationCount> COMPARATOR = Comparator.comparingInt(
         RegistrationCount::getValue);
 
+    private final RegistrationCount registrationCount;
+
     public MaxRegistrationCount(RegistrationCount registrationCount) {
-        if (registrationCount.isValueZero()){
+        if (registrationCount.isValueZero()) {
             throw new MaxRegistrationCountNotZero(registrationCount);
         }
 
