@@ -1,5 +1,9 @@
 package nextstep.courses.domain.student;
 
+import nextstep.courses.exception.StudentEnrollmentStatusInvalidException;
+
+import java.util.Arrays;
+
 public enum StudentEnrollmentStatus {
 
     PENDING("대기중"),
@@ -13,6 +17,15 @@ public enum StudentEnrollmentStatus {
         this.status = status;
     }
 
+    public static StudentEnrollmentStatus convert(String status) {
+        return Arrays.stream(values())
+                .filter(enrollmentStatus -> enrollmentStatus.status.equals(status))
+                .findAny()
+                .orElseThrow(() -> new StudentEnrollmentStatusInvalidException(status));
+    }
 
+    public String get() {
+        return status;
+    }
 
 }

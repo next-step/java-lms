@@ -14,9 +14,15 @@ public class SessionStudent extends BaseEntity {
     private Long nsUserId;
     private StudentEnrollmentStatus enrollmentStatus;
 
-    public SessionStudent(Long id, Long sessionId, Long nsUserId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public SessionStudent(Long id, Long sessionId, Long nsUserId, String enrollmentString, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(createdAt, updatedAt);
         this.id = id;
+        this.sessionId = sessionId;
+        this.nsUserId = nsUserId;
+        this.enrollmentStatus = convert(enrollmentString);
+    }
+
+    public SessionStudent(Long sessionId, Long nsUserId) {
         this.sessionId = sessionId;
         this.nsUserId = nsUserId;
         this.enrollmentStatus = PENDING;
@@ -24,11 +30,6 @@ public class SessionStudent extends BaseEntity {
 
     public static SessionStudent from(Long sessionId, NsUser nsUser) {
         return new SessionStudent(sessionId, nsUser.getId());
-    }
-
-    public SessionStudent(Long sessionId, Long nsUserId) {
-        this.sessionId = sessionId;
-        this.nsUserId = nsUserId;
     }
 
     public void toApproveStatus() {
