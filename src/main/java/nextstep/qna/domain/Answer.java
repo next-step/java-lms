@@ -32,11 +32,11 @@ public class Answer {
     public Answer(Long id, NsUser writer, Question question, String contents) {
         this.id = id;
         if (writer == null) {
-            throw new UnAuthorizedException();
+            throw new UnAuthorizedException("답변 생성을 위해서는 유효한 작성자 정보가 필요합니다.");
         }
 
         if (question == null) {
-            throw new NotFoundException();
+            throw new NotFoundException("답변 생성을 위해서는 유효한 질문 정보가 필요합니다.");
         }
 
         this.writer = writer;
@@ -52,10 +52,6 @@ public class Answer {
         return deleted;
     }
 
-    private Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
 
     public boolean isOwner(NsUser writer) {
         return this.writer.equals(writer);
@@ -65,9 +61,6 @@ public class Answer {
         return writer;
     }
 
-    public String getContents() {
-        return contents;
-    }
 
     public void toQuestion(Question question) {
         this.question = question;
@@ -77,13 +70,13 @@ public class Answer {
         if (!isOwner(question.getWriter())) {
             throw new CannotDeleteException("질문자와 답변자가 다른경우 답변을 삭제할 수 없습니다.");
         }
-        setDeleted(true);
+        this.deleted = true;
         return createDeleteHistory();
 
     }
 
     private DeleteHistory createDeleteHistory() {
-        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
+        return DeleteHistory.createAnswerDeleteHistory(id, writer);
     }
 
     @Override
