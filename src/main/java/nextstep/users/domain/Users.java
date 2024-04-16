@@ -9,16 +9,16 @@ public class Users {
 
     public Users() {}
 
-    public Users(List<NsUser> users) {
-        this.users.addAll(users);
-    }
-
     public int getNumberOfUsers() {
         return users.size();
     }
 
     public void add(NsUser user) {
         this.users.add(user);
+    }
+
+    public boolean hasUserOf(NsUser user) {
+        return users.contains(user);
     }
 
 }
