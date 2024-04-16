@@ -23,6 +23,10 @@ public class Enrollment {
         this.status = status;
     }
 
+    public boolean isApproved() {
+        return status.isApproved();
+    }
+
     public void approve(NsUser user) {
         updateStatus(user, APPROVED);
     }
