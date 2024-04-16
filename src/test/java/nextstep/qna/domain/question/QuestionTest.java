@@ -22,7 +22,7 @@ public class QuestionTest {
 
     @Test
     @DisplayName("모든 답변을 포함한 질문을 삭제하고, 삭제 이력을 남긴다.")
-    void deleteBy_AllQuestionAndAnswers_DeleteHistories() throws CannotDeleteException {
+    void deleteBy_AllQuestionAndAnswers_DeleteHistories() {
         final Question question = new Question(1L, JAVAJIGI, "title", "contents");
         final Answer answer = new Answer(10L, JAVAJIGI, Q1, "contents");
         question.addAnswer(answer);
