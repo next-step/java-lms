@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 
 @Repository("CoverImageInfoRepository")
 public class JdbcCoverImageInfoRepository implements CoverImageInfoRepository {
+	public static final String FIND_COVER_IMAGE_INFO_BY_ID_SQL = "select id, size, width, height, type from cover_image_info where id = ?";
 	private JdbcOperations jdbcTemplate;
 	private SimpleJdbcInsert simpleJdbcInsert;
 
@@ -39,7 +40,6 @@ public class JdbcCoverImageInfoRepository implements CoverImageInfoRepository {
 
 	@Override
 	public CoverImageInfo findById(Long id) {
-		String sql = "select id, size, width, height, type from cover_image_info where id = ?";
 		RowMapper<CoverImageInfo> rowMapper = (rs, rowNum) -> CoverImageInfo.builder()
 			.id(rs.getLong(1))
 			.size(rs.getLong(2))
@@ -48,6 +48,6 @@ public class JdbcCoverImageInfoRepository implements CoverImageInfoRepository {
 			.imageType(rs.getString(5))
 			.build();
 
-		return jdbcTemplate.queryForObject(sql, rowMapper, id);
+		return jdbcTemplate.queryForObject(FIND_COVER_IMAGE_INFO_BY_ID_SQL, rowMapper, id);
 	}
 }

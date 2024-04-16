@@ -27,12 +27,11 @@ public class SessionRepositoryTest {
 	private DataSource dataSource;
 
 	private SessionRepository sessionRepository;
-	private CoverImageInfoRepository coverImageInfoRepository;
 	private CoverImageInfo savedCoverImageInfo;
 	@BeforeEach
 	void setUp() {
 		sessionRepository = new JdbcSessionRepository(jdbcTemplate, dataSource);
-		coverImageInfoRepository = new JdbcCoverImageInfoRepository(jdbcTemplate, dataSource);
+		CoverImageInfoRepository coverImageInfoRepository = new JdbcCoverImageInfoRepository(jdbcTemplate, dataSource);
 		CoverImageInfo coverImageInfo = CoverImageInfo.builder()
 			.size(1000L)
 			.width(300L)

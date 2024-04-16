@@ -22,7 +22,9 @@ abstract public class Session {
 	protected Session(Long id, SessionDate sessionDate, SessionStatus sessionStatus, int numberOfStudents, CoverImageInfo coverImageInfo, SessionType type) {
 		this.id = id;
 		this.sessionDate = sessionDate;
-		this.sessionStatus = sessionStatus;
+		if (sessionStatus == null) {
+			this.sessionStatus = SessionStatus.READY;
+		}
 		this.numberOfStudents = numberOfStudents;
 		this.coverImageInfo = coverImageInfo;
 		this.type = type;

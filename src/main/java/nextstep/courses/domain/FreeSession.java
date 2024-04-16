@@ -7,18 +7,6 @@ import nextstep.payments.domain.Payment;
 public class FreeSession extends Session {
 	private static final String SESSION_NOT_RECRUITING = "해당 강의는 현재 모집 중이 아닙니다.";
 
-	public static FreeSession of(Long id, SessionDate sessionDate) {
-		return new FreeSession(id, sessionDate, null);
-	}
-
-	public static FreeSession of(Long id, SessionDate sessionDate, CoverImageInfo coverImageInfo) {
-		return new FreeSession(id, sessionDate, coverImageInfo);
-	}
-
-	private FreeSession(Long id, SessionDate sessionDate, CoverImageInfo coverImageInfo) {
-		super(id, sessionDate, coverImageInfo, SessionType.FREE);
-	}
-
 	private FreeSession(Long id, SessionDate sessionDate, SessionStatus sessionStatus, int numberOfStudents, CoverImageInfo coverImageInfo, SessionType type) {
 		super(id, sessionDate, sessionStatus, numberOfStudents, coverImageInfo, type);
 	}
