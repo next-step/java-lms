@@ -44,7 +44,7 @@
     * [X] SessionRepository와 SessionRepository에 대한 수정
     * [X] 사용하지 않는 메서드 제거
 * 선발된 인원만 수강 가능하도록 수정
-    * [ ] Session, Session에 대한 테스트 수정
-    * [ ] SessionRepository와 SessionRepository에 대한 수정
-    * [ ] SessionService 수정
-    * [ ] 사용하지 않는 메서드 제거
+    * [X] Session, Session에 대한 테스트 수정
+    * [X] SessionRepository와 SessionRepository에 대한 수정
+    * [X] SessionService 수정
+    * [X] 사용하지 않는 메서드 제거
