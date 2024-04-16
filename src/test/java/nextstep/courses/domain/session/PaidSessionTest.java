@@ -11,11 +11,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.time.LocalDateTime;
 
 import static nextstep.courses.domain.session.PaidSession.OVER_MAX_ENROLLMENTS;
-import static nextstep.courses.domain.session.PaidSession.PAYMENT_IS_NOT_MATCHING;
-import static nextstep.courses.domain.session.Session.SESSION_NOT_OPENED;
+import static nextstep.courses.domain.session.Session.*;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class PaidSessionTest {
 
@@ -25,10 +23,10 @@ class PaidSessionTest {
         // given
         PaidSession paidSession = getPaidSession(SessionStatusEnum.OPEN, 1);
         NsUser user = new NsUser();
-        user.addPayment(new Payment("TEST", 1L, 1L, 10000L));
+        Payment payment = getPayment(paidSession, user, paidSession.getFee());
 
         // when
-        paidSession.enrollStudent(user);
+        paidSession.enrollStudent(user, payment);
 
         // then
         assertTrue(paidSession.isSessionOpened());
@@ -41,54 +39,66 @@ class PaidSessionTest {
         // given
         PaidSession paidSession = getPaidSession(sessionStatus, 1);
         NsUser user = new NsUser();
-        user.addPayment(new Payment("TEST", 1L, 1L, 10000L));
+        Payment payment = getPayment(paidSession, user, paidSession.getFee());
 
         // when, then
         assertThatIllegalArgumentException().isThrownBy(() -> {
-            paidSession.enrollStudent(user);
+            paidSession.enrollStudent(user, payment);
         }).withMessageContaining(SESSION_NOT_OPENED);
     }
 
     @Test
-    @DisplayName("유료 수강 객체 생성 실패 - 신청 가능 인원 초과")
+    @DisplayName("유료 수강 신청 불가능- 신청 가능 인원 초과")
     void testPaidSession_isEnrollmentFull_ShouldThrowException() {
         // given
         PaidSession paidSession = getPaidSession(SessionStatusEnum.OPEN, 0);
         NsUser user = new NsUser();
-        user.addPayment(new Payment("TEST", 1L, 1L, 10000L));
+        Payment payment = getPayment(paidSession, user, paidSession.getFee());
 
         // when, then
         assertThatIllegalArgumentException().isThrownBy(() -> {
-            paidSession.enrollStudent(user);
+            paidSession.enrollStudent(user, payment);
         }).withMessageContaining(OVER_MAX_ENROLLMENTS);
     }
 
     @Test
-    @DisplayName("유료 수강 객체 생성 실패 - 유저가 지불한 수강신청 금액이 매칭되지 않음")
+    @DisplayName("유료 수강 신청 불가능 - 강의료와 결재금액이 매칭되지 않음")
     void testPaidSession_isNotPaymentAmountMatching_ShouldThrowException() {
         // given
         PaidSession paidSession = getPaidSession(SessionStatusEnum.OPEN, 1);
         NsUser user = new NsUser();
-        user.addPayment(new Payment("TEST", 1L, 1L, 9999L));
+        Payment payment = getPayment(paidSession, user, 1L);
 
         // when, then
+        assertTrue(paidSession.isSessionOpened());
         assertThatIllegalArgumentException().isThrownBy(() -> {
-            paidSession.enrollStudent(user);
-        }).withMessageContaining(PAYMENT_IS_NOT_MATCHING);
+            paidSession.enrollStudent(user, payment);
+        }).withMessageContaining(PAYMENT_NOT_MATCHING);
     }
 
     @Test
-    @DisplayName("유료 수강 객체 생성 실패 - 유저가 신청한 수강신청 ID가 일치하지 않음")
-    void testPaidSession_isNotPaymentSessionIdMatching_ShouldThrowException() {
+    @DisplayName("유료 수강 신청 불가능 - 유저가 이미 수강신청을 완료함")
+    void testPaidSession_hasAlreadyEnrolled_ShouldThrowException() {
         // given
-        PaidSession paidSession = getPaidSession(SessionStatusEnum.OPEN, 1);
+        PaidSession paidSession = getPaidSession(SessionStatusEnum.OPEN, 2);
         NsUser user = new NsUser();
-        user.addPayment(new Payment("TEST", 9999L, 1L, 10000L));
+        Payment payment = getPayment(paidSession, user, paidSession.getFee());
+
+        // when
+        paidSession.enrollStudent(user, payment);
+
+        // then
+        assertTrue(paidSession.isSessionOpened());
+        assertAll(
+                "User has enrolled the paid session once correctly",
+                () -> assertTrue(user.hasEnrolledSession(paidSession)),
+                () -> assertTrue(paidSession.hasStudentOf(user))
+        );
 
         // when, then
         assertThatIllegalArgumentException().isThrownBy(() -> {
-            paidSession.enrollStudent(user);
-        }).withMessageContaining(PAYMENT_IS_NOT_MATCHING);
+            paidSession.enrollStudent(user, payment);
+        }).withMessageContaining(ENROLLMENT_ALREADY_DONE);
     }
 
     private PaidSession getPaidSession(SessionStatusEnum sessionStatusEnum, int maxEnrollments) {
@@ -102,6 +112,10 @@ class PaidSessionTest {
 
         return new PaidSession(sessionId, sessionPeriod, coverImage,
                 sessionStatus, maxEnrollments, fee);
+    }
+
+    private Payment getPayment(Session session, NsUser user, Long fee) {
+        return new Payment("SESSION_PAYMENT", session.getSessionId(), user.getId(), fee);
     }
 
 }

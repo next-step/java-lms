@@ -67,7 +67,7 @@ class SessionRepositoryTest {
 
         // given
         Session paidSession = new PaidSession(1L, sessionPeriod, coverImage,
-                SessionStatusEnum.PENDING, 100, 10L);
+                SessionStatusEnum.OPEN, 100, 10L);
 
         // when
         int count = sessionRepository.save(paidSession);
@@ -83,7 +83,7 @@ class SessionRepositoryTest {
                 () -> assertEquals(savedPaidSession.getSessionPeriod().getEndDate(), LocalDateTime.of(2024,4,1,0,0,0)),
                 () -> assertEquals(savedPaidSession.getCoverImage().getImageType(), "gif"),
                 () -> assertEquals(savedPaidSession.getCoverImage().getImageSizeHeight(), 200),
-                () -> assertEquals(savedPaidSession.getSessionStatus(), SessionStatusEnum.PENDING)
+                () -> assertEquals(savedPaidSession.getSessionStatus(), SessionStatusEnum.OPEN)
         );
     }
 
