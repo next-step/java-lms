@@ -1,59 +1,49 @@
 package nextstep.courses.domain;
 
-import java.time.LocalDate;
-
 public class Session {
 
-    private final Free free;
-    private final Amount maxCount;
-    private final Money tuition;
+    private final FreeOrPaid freeOrPaid;
+    private final AttendeeCount attendeeCount;
     private final SessionStatus status;
-    private ImageFile image;
-    private final LocalDate startDate;
-    private final LocalDate endDate;
-
-    public Session() {
-        this(true, 0, 0, SessionStatus.READY);
-    }
+    private final Duration duration;
 
     public Session(boolean isFree, int maxCount, int tuition) {
         this(isFree, maxCount, tuition, SessionStatus.READY);
     }
 
     public Session(boolean isFree, int maxCount, int tuition, SessionStatus status) {
-        this(isFree, maxCount, tuition, status, LocalDate.now(), LocalDate.now().plusDays(60));
+        this(new FreeOrPaid(isFree, tuition), new AttendeeCount(maxCount), status);
     }
 
-    public Session(boolean isFree, int maxCount, int tuition, SessionStatus status, LocalDate startDate, LocalDate endDate) {
-        this(new Free(isFree), new Amount(maxCount), new Money(tuition), status, startDate, endDate);
+    public Session(boolean isFree, int maxCount, int currentCount, int tuition) {
+        this(new FreeOrPaid(isFree, tuition), new AttendeeCount(maxCount, currentCount), SessionStatus.RECRUITING);
     }
 
-    public Session(Free free, Amount maxCount, Money tuition, SessionStatus status, LocalDate startDate, LocalDate endDate) {
-        this.free = free;
-        this.maxCount = maxCount;
-        this.tuition = tuition;
+    public Session(FreeOrPaid test, AttendeeCount attendeeCount, SessionStatus status) {
+        this.freeOrPaid = test;
+        this.attendeeCount = attendeeCount;
         this.status = status;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.duration = new Duration();
+    }
+
+    public static Session freeSession() {
+        return new Session(true, -1, 0);
     }
 
     public boolean isFrees() {
-        return free.isFree();
+        return freeOrPaid.isFree();
     }
 
     public boolean hasMax() {
-        if (maxCount.isNoLimit()) {
-            return false;
-        }
-        return true;
+        return attendeeCount.limitExist();
     }
 
-    public boolean isLeft(Amount count) {
-        return maxCount.isSmaller(count);
+    public boolean isLeft() {
+        return attendeeCount.canSignUp();
     }
 
     public boolean canListen(Money submit) {
-        return tuition.equals(submit);
+        return freeOrPaid.canPay(submit);
     }
 
     public boolean canRegister() {
