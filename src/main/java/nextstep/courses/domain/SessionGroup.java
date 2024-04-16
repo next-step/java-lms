@@ -4,9 +4,9 @@ import java.util.List;
 
 public class SessionGroup {
 
-    private final List<Session> sessions;
+    private final List<SessionWithImage> sessions;
 
-    public SessionGroup(List<Session> sessions) {
+    public SessionGroup(List<SessionWithImage> sessions) {
         this.sessions = sessions;
     }
 }
