@@ -3,6 +3,9 @@ package nextstep.courses.domain.session;
 import nextstep.courses.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
+import java.time.LocalDateTime;
+
+import static java.util.Objects.nonNull;
 import static nextstep.courses.ExceptionMessage.UNAUTHORIZED;
 import static nextstep.courses.domain.session.EnrollmentStatus.*;
 
@@ -11,16 +14,20 @@ public class Enrollment {
     private Session session;
     private NsUser enrolledUser;
     private EnrollmentStatus status;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public Enrollment(Session session, NsUser enrolledUser) {
-        this(null, session, enrolledUser, WAITING);
+        this(null, session, enrolledUser, WAITING, LocalDateTime.now(), null);
     }
 
-    public Enrollment(Long id, Session session, NsUser enrolledUser, EnrollmentStatus status) {
+    public Enrollment(Long id, Session session, NsUser enrolledUser, EnrollmentStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.session = session;
         this.enrolledUser = enrolledUser;
         this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public boolean isApproved() {
@@ -48,6 +55,13 @@ public class Enrollment {
         if (!session.isSessionCreator(user)) {
             throw new UnAuthorizedException(UNAUTHORIZED.message());
         }
+    }
+
+    public void updateAsSavedEnrollment(Long id) {
+        if (nonNull(this.id)) {
+            return;
+        }
+        this.id = id;
     }
 
     public Long getId() {

@@ -178,6 +178,10 @@ public class Session {
         return enrolledUsers.getEnrolledUsers();
     }
 
+    public List<Enrollment> getEnrollments() {
+        return enrollments.getEnrollments();
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }

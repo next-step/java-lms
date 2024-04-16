@@ -17,6 +17,7 @@ import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
@@ -76,11 +77,24 @@ public class JdbcSessionRepository implements SessionRepository {
 
             session.updateCoverImages(new CoverImages(coverImages(id)));
             session.updateEnrolledUsers(new EnrolledUsers(enrolledUsers(id)));
+            session.updateEnrollments(new Enrollments(enrollments(session)));
 
             return session;
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
+    }
+
+    private List<CoverImage> coverImages(Long id) {
+        final String sqlForCoverImages = "select CI.id, CI.name, CI.capacity, CI.width, CI.height, CI.type" +
+                " from session_cover_image as SCI" +
+                " inner join cover_image as CI on CI.id = SCI.cover_image_id" +
+                " where SCI.session_id = ?";
+
+        RowMapper<CoverImage> rowMapperForCoverImage = (rs, rowNum) -> new CoverImage(
+                rs.getLong(1), rs.getString(2), rs.getDouble(3), new Dimensions(rs.getDouble(4), rs.getDouble(5)), ImageType.valueOf(rs.getString(6)));
+
+        return jdbcTemplate.query(sqlForCoverImages, rowMapperForCoverImage, id);
     }
 
     @Override
@@ -98,19 +112,17 @@ public class JdbcSessionRepository implements SessionRepository {
                     jdbcTemplate.update(sqlForEnrollmentSave, user.getId(), session.getId(), Timestamp.valueOf(LocalDateTime.now()));
                 });
 
+
+        List<NsUser> notUpdatedEnrolledUsers2 = enrollments(session).stream()
+                .map(Enrollment::getEnrolledUser)
+                .collect(Collectors.toList());
+        List<Enrollment> enrollments = session.getEnrollments()
+                .stream()
+                .map(enrollment -> notUpdatedEnrolledUsers2.contains(enrollment.getEnrolledUser()) ? enrollment : saveEnrollment(session, enrollment))
+                .collect(Collectors.toList());
+        session.updateEnrollments(new Enrollments(enrollments));
+
         return session;
-    }
-
-    private List<CoverImage> coverImages(Long id) {
-        final String sqlForCoverImages = "select CI.id, CI.name, CI.capacity, CI.width, CI.height, CI.type" +
-                " from session_cover_image as SCI" +
-                " inner join cover_image as CI on CI.id = SCI.cover_image_id" +
-                " where SCI.session_id = ?";
-
-        RowMapper<CoverImage> rowMapperForCoverImage = (rs, rowNum) -> new CoverImage(
-                rs.getLong(1), rs.getString(2), rs.getDouble(3), new Dimensions(rs.getDouble(4), rs.getDouble(5)), ImageType.valueOf(rs.getString(6)));
-
-        return jdbcTemplate.query(sqlForCoverImages, rowMapperForCoverImage, id);
     }
 
     private List<NsUser> enrolledUsers(Long id) {
@@ -123,6 +135,37 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getString(4), rs.getString(5), toLocalDateTime(rs.getTimestamp(6)), toLocalDateTime(rs.getTimestamp(7)));
 
         return jdbcTemplate.query(sqlForEnrolledUsers, rowMapperForEnrolledUser, id);
+    }
+
+    private List<Enrollment> enrollments(Session session) {
+        final String sqlForEnrollments = "select E.id, U.id, U.user_id, U.password, U.name, U.email, U.created_at, U.updated_at, E.status, E.created_at, E.updated_at" +
+                " from enrollment as E" +
+                " inner join ns_user as U on U.id = E.user_id" +
+                " where E.session_id = ?";
+
+        RowMapper<Enrollment> rowMapperForEnrollment = (rs, rowNum) -> new Enrollment(
+                rs.getLong(1), session,
+                new NsUser(rs.getLong(2), rs.getString(3), rs.getString(4),
+                        rs.getString(5), rs.getString(6), toLocalDateTime(rs.getTimestamp(7)), toLocalDateTime(rs.getTimestamp(8))),
+                EnrollmentStatus.valueOf(rs.getString(9)), toLocalDateTime(rs.getTimestamp(10)), toLocalDateTime(rs.getTimestamp(11)));
+
+        return jdbcTemplate.query(sqlForEnrollments, rowMapperForEnrollment, session.getId());
+    }
+
+    private Enrollment saveEnrollment(Session session, Enrollment enrollment) {
+        final String sqlForEnrollmentSave = "insert into enrollment (user_id, session_id, status, created_at) values (?, ?, ?, ?)";
+        KeyHolder keyHolderForEnrollment = new GeneratedKeyHolder();
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sqlForEnrollmentSave, new String[]{"id"});
+            ps.setLong(1, enrollment.getEnrolledUser().getId());
+            ps.setLong(2, session.getId());
+            ps.setString(3, enrollment.getStatus().name());
+            ps.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+            return ps;
+        }, keyHolderForEnrollment);
+        enrollment.updateAsSavedEnrollment(keyHolderForEnrollment.getKey().longValue());
+
+        return enrollment;
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
