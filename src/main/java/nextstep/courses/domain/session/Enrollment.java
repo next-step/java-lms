@@ -73,6 +73,10 @@ public class Enrollment {
         return session;
     }
 
+    public Long getIdOfSession() {
+        return session.getId();
+    }
+
     public NsUser getEnrolledUser() {
         return enrolledUser;
     }

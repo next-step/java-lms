@@ -29,6 +29,10 @@ public class Session {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    public Session(String title, String description, SessionType sessionType, Period periodOfSession, Course course) {
+        this(null, title, description, sessionType, PREPARING, NON_GATHERING, periodOfSession, null, course, LocalDateTime.now(), null);
+    }
+
     public Session(String title, String description, SessionType sessionType, Period periodOfSession, CoverImages coverImages, Course course) {
         this(null, title, description, sessionType, PREPARING, NON_GATHERING, periodOfSession, coverImages, course, LocalDateTime.now(), null);
     }

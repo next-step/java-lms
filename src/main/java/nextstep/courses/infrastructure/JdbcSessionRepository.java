@@ -22,9 +22,11 @@ import java.util.stream.Collectors;
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
     private JdbcOperations jdbcTemplate;
+    private EnrollmentRepository enrollmentRepository;
 
-    public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
+    public JdbcSessionRepository(JdbcOperations jdbcTemplate, EnrollmentRepository enrollmentRepository) {
         this.jdbcTemplate = jdbcTemplate;
+        this.enrollmentRepository = enrollmentRepository;
     }
 
     @Override
@@ -108,7 +110,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
         List<Enrollment> enrollments = session.getEnrollments()
                 .stream()
-                .map(enrollment -> notUpdatedEnrolledUsers.contains(enrollment.getEnrolledUser()) ? enrollment : saveEnrollment(session, enrollment))
+                .map(enrollment -> notUpdatedEnrolledUsers.contains(enrollment.getEnrolledUser()) ? enrollment : enrollmentRepository.save(enrollment))
                 .collect(Collectors.toList());
         session.updateEnrollments(new Enrollments(enrollments));
 
@@ -128,22 +130,6 @@ public class JdbcSessionRepository implements SessionRepository {
                 EnrollmentStatus.valueOf(rs.getString(9)), toLocalDateTime(rs.getTimestamp(10)), toLocalDateTime(rs.getTimestamp(11)));
 
         return jdbcTemplate.query(sqlForEnrollments, rowMapperForEnrollment, session.getId());
-    }
-
-    private Enrollment saveEnrollment(Session session, Enrollment enrollment) {
-        final String sqlForEnrollmentSave = "insert into enrollment (user_id, session_id, status, created_at) values (?, ?, ?, ?)";
-        KeyHolder keyHolderForEnrollment = new GeneratedKeyHolder();
-        jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(sqlForEnrollmentSave, new String[]{"id"});
-            ps.setLong(1, enrollment.getEnrolledUser().getId());
-            ps.setLong(2, session.getId());
-            ps.setString(3, enrollment.getStatus().name());
-            ps.setTimestamp(4, Timestamp.valueOf(enrollment.getCreatedAt()));
-            return ps;
-        }, keyHolderForEnrollment);
-        enrollment.updateAsSavedEnrollment(keyHolderForEnrollment.getKey().longValue());
-
-        return enrollment;
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
