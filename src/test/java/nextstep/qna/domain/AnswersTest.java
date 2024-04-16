@@ -13,8 +13,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class AnswersTest {
 
-    public static final Answers CAN_DELETED_ANSWERS = new Answers(List.of(AnswerTest.A1, AnswerTest.A1));
-    public static final Answers NOT_DELETED_ANSWERS = new Answers(List.of(AnswerTest.A1, AnswerTest.A2));
+    public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+    public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
+    public static final Answers CAN_DELETED_ANSWERS = new Answers(List.of(A1, A1));
+    public static final Answers NOT_DELETED_ANSWERS = new Answers(List.of(A1, A2));
 
     @Test
     @DisplayName("질문들을 전체 삭제 하여 전체 isDeleted 값은 True")

@@ -40,8 +40,8 @@ public class Answer extends Post {
     }
 
     public void delete(NsUser loginUser) throws CannotDeleteException {
-        if (!this.writer.equals(loginUser)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        if (!isOwner(loginUser)) {
+            throw new CannotDeleteException("답변을 삭제할 권한이 없습니다.");
         }
         this.deleted = true;
     }
