@@ -74,8 +74,12 @@
   - [X] 시작일이 종료일보다 빠른 일자인지 검증한다.
 
 
-- 수강생 (Student)
+- 수강생 (SessionStudent)
   - [X] 강의 수강생 정보를 관리한다.
+
+- 수강생 신청 상태 (StudentEnrollmentStatus)
+  - [X] 수강생 신청 상태를 관리한다.
+    - [X] 대기중, 승인, 취소 상태를 가진다.
 
 
 - 강의 커버 이미지 (SessionCoverImage)
