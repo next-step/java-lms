@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.ImageException;
+import nextstep.courses.PeriodException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +17,7 @@ public class CourseTest {
     }
 
     @Test
-    void 강의_추가() throws ImageException {
+    void 강의_추가() throws ImageException, PeriodException {
         Course course = new Course("TDD, 클린 코드 with Java", NsUserTest.JAVAJIGI.getId());
         Session session = new Session(1L, "자동차경주게임",
                 LocalDate.of(2024, 4, 1),

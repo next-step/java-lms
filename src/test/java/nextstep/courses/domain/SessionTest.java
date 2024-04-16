@@ -2,9 +2,12 @@ package nextstep.courses.domain;
 
 import nextstep.courses.CannotEnrollException;
 import nextstep.courses.ImageException;
+import nextstep.courses.PeriodException;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import java.time.LocalDate;
 
@@ -20,7 +23,7 @@ public class SessionTest {
     }
 
     @Test
-    void 강의_생성() {
+    void 강의_생성() throws PeriodException {
         Session session = new Session(1L, "자동차경주게임",
                 LocalDate.of(2024, 4, 1),
                 LocalDate.of(2024, 4, 30),
@@ -30,7 +33,7 @@ public class SessionTest {
     }
 
     @Test
-    void 강의_수강신청() throws CannotEnrollException {
+    void 강의_수강신청() throws CannotEnrollException, PeriodException {
         Session session = new Session(1L, "자동차경주게임",
                 LocalDate.of(2024, 4, 1),
                 LocalDate.of(2024, 4, 30),
@@ -41,7 +44,7 @@ public class SessionTest {
     }
 
     @Test
-    void 수강신청_최대수강인원_초과() throws CannotEnrollException {
+    void 수강신청_최대수강인원_초과() throws CannotEnrollException, PeriodException {
         Session session = new Session(1L, "자동차경주게임",
                 LocalDate.of(2024, 4, 1),
                 LocalDate.of(2024, 4, 30),
@@ -55,7 +58,7 @@ public class SessionTest {
     }
 
     @Test
-    void 수강신청_결제금액이_수강료와_다른_경우() throws CannotEnrollException {
+    void 수강신청_결제금액이_수강료와_다른_경우() throws PeriodException {
         Session session = new Session(1L, "자동차경주게임",
                 LocalDate.of(2024, 4, 1),
                 LocalDate.of(2024, 4, 30),
@@ -67,14 +70,15 @@ public class SessionTest {
                 .hasMessage("결제한 금액이 수강료와 다릅니다.");
     }
 
-    @Test
-    void 수강신청_강의상태가_모집중이_아닌_경우() throws CannotEnrollException {
+    @ParameterizedTest
+    @EnumSource(value = SessionStatus.class, mode = EnumSource.Mode.EXCLUDE, names = {"ENROLLING"})
+    void 수강신청_강의상태가_모집중이_아닌_경우(SessionStatus sessionStatus) throws PeriodException {
         Session session = new Session(1L, "자동차경주게임",
                 LocalDate.of(2024, 4, 1),
                 LocalDate.of(2024, 4, 30),
                 image, ChargeType.CHARGE, 500_000,
-                1, SessionStatus.ENROLLING);
-        session.closeSession();
+                1, sessionStatus);
+
         assertThatThrownBy(() -> session.enroll(NsUser.GUEST_USER, 500_000))
                 .isInstanceOf(CannotEnrollException.class)
                 .hasMessage("모집 중인 강의가 아닙니다.");
