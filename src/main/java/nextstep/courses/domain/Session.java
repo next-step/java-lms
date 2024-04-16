@@ -60,6 +60,10 @@ public class Session {
         register(user);
     }
 
+    public boolean hasId(Long id) {
+        return this.id == id;
+    }
+
     private void isRegisteredAllowed() throws CannotRegisterException {
         if (!state.isAllowed()) {
             throw new CannotRegisterException(String.format("해당 강의 상태 %s에서는 수강 신청을 할 수 없습니다.", state.getState()));
