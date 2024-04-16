@@ -8,9 +8,10 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.Objects.nonNull;
-import static nextstep.courses.ExceptionMessage.SESSION_ENROLL_FAIL_MESSAGE;
+import static nextstep.courses.ExceptionMessage.SESSION_ENROLL_FAIL;
 import static nextstep.courses.domain.session.SessionGatheringStatus.NON_GATHERING;
 import static nextstep.courses.domain.session.SessionStatus.PREPARING;
 
@@ -61,7 +62,7 @@ public class Session {
 
     private void validateSessionEnrollment(NsUser user, Payment payment) {
         if (!isSessionEnrollPossible(user, payment)) {
-            throw new CannotEnrollException(SESSION_ENROLL_FAIL_MESSAGE.message());
+            throw new CannotEnrollException(SESSION_ENROLL_FAIL.message());
         }
     }
 
@@ -143,6 +144,10 @@ public class Session {
 
     public Course getCourse() {
         return course;
+    }
+
+    public boolean isSessionCreator(NsUser user) {
+        return Objects.equals(course.getCreatorId(), user.getId());
     }
 
     public Long getIdOfCourse() {
