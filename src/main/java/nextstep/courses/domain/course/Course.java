@@ -13,7 +13,7 @@ public class Course {
 
     private Long creatorId;
 
-    private Sessions sessions;
+    private Sessions sessions = new Sessions();
 
     private LocalDateTime createdAt;
 
@@ -23,15 +23,14 @@ public class Course {
     }
 
     public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, new Sessions(), LocalDateTime.now(), null);
+        this(0L, title, creatorId, LocalDateTime.now(), null);
     }
 
-    public Course(Long id, String title, Long creatorId, Sessions sessions, LocalDateTime createdAt,
+    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt,
         LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
-        this.sessions = sessions;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
