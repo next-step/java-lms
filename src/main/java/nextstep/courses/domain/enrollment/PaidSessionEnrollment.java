@@ -2,6 +2,7 @@ package nextstep.courses.domain.enrollment;
 
 import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
 import nextstep.courses.domain.status.SessionStatus;
+import nextstep.courses.domain.student.SessionStudent;
 import nextstep.courses.exception.SessionFeeMismatchException;
 import nextstep.payments.domain.Payment;
 

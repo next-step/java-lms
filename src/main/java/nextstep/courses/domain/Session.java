@@ -1,7 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.enrollment.SessionPeriod;
-import nextstep.courses.domain.enrollment.SessionStudent;
+import nextstep.courses.domain.student.SessionStudent;
 import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
 import nextstep.courses.domain.image.SessionCoverImage;
 import nextstep.courses.infrastructure.entity.BaseEntity;

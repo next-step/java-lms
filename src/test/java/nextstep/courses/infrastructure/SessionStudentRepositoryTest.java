@@ -1,6 +1,6 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.enrollment.SessionStudent;
+import nextstep.courses.domain.student.SessionStudent;
 import nextstep.courses.infrastructure.engine.SessionStudentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -1,6 +1,6 @@
 package nextstep.courses.domain.fixture;
 
-import nextstep.courses.domain.enrollment.SessionStudent;
+import nextstep.courses.domain.student.SessionStudent;
 
 public class SessionStudentFixture {
 

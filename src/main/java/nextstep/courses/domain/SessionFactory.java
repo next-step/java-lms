@@ -4,6 +4,7 @@ import nextstep.courses.domain.enrollment.*;
 import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
 import nextstep.courses.domain.image.SessionCoverImage;
 import nextstep.courses.domain.status.SessionStatus;
+import nextstep.courses.domain.student.SessionStudent;
 import nextstep.courses.exception.SessionEnrollmentNotMatchException;
 
 import java.time.LocalDateTime;

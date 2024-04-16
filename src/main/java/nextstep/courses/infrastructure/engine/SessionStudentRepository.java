@@ -1,6 +1,6 @@
 package nextstep.courses.infrastructure.engine;
 
-import nextstep.courses.domain.enrollment.SessionStudent;
+import nextstep.courses.domain.student.SessionStudent;
 
 import java.util.List;
 
