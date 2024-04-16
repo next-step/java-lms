@@ -26,4 +26,12 @@ public class SessionService {
         LearnerDto learnerDto = paidSession.join(loginUser, payment);
         learnerRepository.save(learnerDto);
     }
+
+    public void acceptLearner(Session session, NsUser learner) {
+        learnerRepository.accept(session.getId(), learner.getId());
+    }
+
+    public void declineLearner(Session session, NsUser learner) {
+        learnerRepository.decline(session.getId(), learner.getId());
+    }
 }

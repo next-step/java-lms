@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.List;
 import java.util.Set;
 import nextstep.courses.CanNotJoinSessionException;
 import nextstep.courses.InvalidSessionException;
@@ -13,8 +14,6 @@ import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
 class SessionTest {
 
@@ -25,7 +24,7 @@ class SessionTest {
             .isThrownBy(
                 () ->  new Session(
                     FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-                    SAMPLE_COVER_IMAGE,
+                    List.of(SAMPLE_COVER_IMAGE),
                     FIXED_DATE_TIME
                 )
             );
@@ -37,7 +36,7 @@ class SessionTest {
         assertThatThrownBy(
             () ->  new Session(
                 FIXED_DATE_TIME.plusDays(1), FIXED_DATE_TIME,
-                SAMPLE_COVER_IMAGE,
+                List.of(SAMPLE_COVER_IMAGE),
                 FIXED_DATE_TIME
             )
         ).isInstanceOf(InvalidSessionException.class);
@@ -49,7 +48,7 @@ class SessionTest {
         // given
         Session session = new Session(
             0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, SessionStatus.RECRUIT,
+            List.of(SAMPLE_COVER_IMAGE), SessionStatus.PREPARE, true,
             FIXED_DATE_TIME
         );
         NsUser loginUser = NsUserTest.JAVAJIGI;
@@ -62,14 +61,13 @@ class SessionTest {
         assertThat(learners).contains(loginUser);
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = {"PREPARE", "END"})
+    @Test
     @DisplayName("모집중이 아니라면 강의 참여 시 예외가 발생한다")
-    void join_fail_for_not_recruiting(String sessionStatus) {
+    void join_fail_for_not_recruiting() {
         // given
         Session session = new Session(
             0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, SessionStatus.valueOf(sessionStatus),
+            List.of(SAMPLE_COVER_IMAGE), SessionStatus.PREPARE, false,
             FIXED_DATE_TIME
         );
         NsUser loginUser = NsUserTest.JAVAJIGI;
@@ -85,7 +83,7 @@ class SessionTest {
         // given
         Session session = new Session(
             0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, SessionStatus.RECRUIT,
+            List.of(SAMPLE_COVER_IMAGE), SessionStatus.RECRUIT, true,
             FIXED_DATE_TIME
         );
         NsUser loginUser = NsUserTest.JAVAJIGI;

@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import nextstep.courses.CanNotJoinSessionException;
 import nextstep.courses.infrastructure.dto.LearnerDto;
@@ -12,24 +13,17 @@ public class PaidSession extends Session {
     private Long price;
     private Integer capacity;
 
-    public PaidSession(LocalDateTime startDate, LocalDateTime endDate,
-        SessionCoverImage coverImage, Long price, Integer capacity, LocalDateTime createdAt) {
-        super(startDate, endDate, coverImage, createdAt);
+    public PaidSession(Long id, LocalDateTime startDate, LocalDateTime endDate,
+        List<SessionCoverImage> coverImages, SessionStatus status, boolean isRecruiting, Long price, Integer capacity, LocalDateTime createdAt) {
+        super(id, startDate, endDate, coverImages, status, isRecruiting, createdAt);
         this.price = price;
         this.capacity = capacity;
     }
 
     public PaidSession(Long id, LocalDateTime startDate, LocalDateTime endDate,
-        SessionCoverImage coverImage, SessionStatus status, Long price, Integer capacity, LocalDateTime createdAt) {
-        super(id, startDate, endDate, coverImage, status, createdAt);
-        this.price = price;
-        this.capacity = capacity;
-    }
-
-    public PaidSession(Long id, LocalDateTime startDate, LocalDateTime endDate,
-        SessionCoverImage coverImage, SessionStatus status, Set<NsUser> learners,
+        List<SessionCoverImage> coverImages, SessionStatus status, boolean isRecruiting, Set<NsUser> learners,
         LocalDateTime createdAt, LocalDateTime updatedAt, Long price, Integer capacity) {
-        super(id, startDate, endDate, coverImage, status, learners, createdAt, updatedAt);
+        super(id, startDate, endDate, coverImages, status, isRecruiting, learners, createdAt, updatedAt);
         this.price = price;
         this.capacity = capacity;
     }
@@ -45,7 +39,7 @@ public class PaidSession extends Session {
         return new LearnerDto(learner.getId(), id);
     }
 
-    private void validateJoinable(NsUser learner, Payment payment) {
+    protected void validateJoinable(NsUser learner, Payment payment) {
         super.validateJoinable(learner);
         validateCapacity();
         validatePayment(learner, payment);

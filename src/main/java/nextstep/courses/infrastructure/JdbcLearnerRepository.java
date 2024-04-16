@@ -1,5 +1,6 @@
 package nextstep.courses.infrastructure;
 
+import nextstep.courses.infrastructure.dto.ApplyStatus;
 import nextstep.courses.infrastructure.dto.LearnerDto;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
@@ -16,8 +17,8 @@ public class JdbcLearnerRepository {
     }
 
     public void save(LearnerDto learnerDto) {
-        String sql = "insert into session_learner (session_id, user_id) values(?, ?)";
-        jdbcTemplate.update(sql, learnerDto.getSessionId(), learnerDto.getUserId());
+        String sql = "insert into session_learner (session_id, user_id, apply_status) values(?, ?, ?)";
+        jdbcTemplate.update(sql, learnerDto.getSessionId(), learnerDto.getUserId(), learnerDto.getApplyStatus().name());
     }
 
     public boolean exists(LearnerDto learnerDto) {
@@ -26,5 +27,18 @@ public class JdbcLearnerRepository {
         return EXIST.equals(jdbcTemplate.queryForObject(sql, Integer.class,
             learnerDto.getSessionId(), learnerDto.getUserId()
         ));
+    }
+
+    public void accept(Long sessionId, Long userId) {
+        update(sessionId, userId, ApplyStatus.ACCEPTED);
+    }
+
+    public void decline(Long sessionId, Long userId) {
+        update(sessionId, userId, ApplyStatus.DECLINED);
+    }
+
+    private void update(Long sessionId, Long userId, ApplyStatus applyStatus) {
+        String sql = "update session_learner set apply_status = ? where session_id = ? and user_id = ?";
+        jdbcTemplate.update(sql, applyStatus.name(), sessionId, userId);
     }
 }
