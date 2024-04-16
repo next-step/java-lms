@@ -44,7 +44,7 @@ public class SessionRepositoryTest {
     @Test
     @DisplayName("무료 강의 db에 넣고 조회 테스트")
     void testFreeSession() {
-        FreeSession freeSession = new FreeSession(1L, sessionImage, SessionStatus.RECRUIT, SessionDateTest.of(), students);
+        FreeSession freeSession = new FreeSession(1L, sessionImage, RecruitStatus.RECRUIT, SessionDateTest.of(), students);
         sessionRepository.saveSession(freeSession, courseId);
 
         Session findSession = sessionRepository.findBySessionId(freeSession.getId(), FreeSession.class).orElse(null);
@@ -62,7 +62,7 @@ public class SessionRepositoryTest {
     @DisplayName("유료 강의 db에 넣고 조회 테스트")
     void testPaySession() {
         int amount = 1000;
-        PaySession paySession = new PaySession(1L, sessionImage, SessionStatus.RECRUIT, SessionDateTest.of(), students, 2, amount);
+        PaySession paySession = new PaySession(1L, sessionImage, RecruitStatus.RECRUIT, SessionDateTest.of(), students, 2, amount);
 
         sessionRepository.saveSession(paySession, courseId);
 
@@ -81,10 +81,10 @@ public class SessionRepositoryTest {
     @DisplayName("모든 세션 조회 테스트")
     void testSessions() {
         int amount = 1000;
-        FreeSession freeSession = new FreeSession(1L, sessionImage, SessionStatus.RECRUIT, SessionDateTest.of(), students);
+        FreeSession freeSession = new FreeSession(1L, sessionImage, RecruitStatus.RECRUIT, SessionDateTest.of(), students);
         sessionRepository.saveSession(freeSession, courseId);
 
-        PaySession paySession = new PaySession(1L, sessionImage, SessionStatus.RECRUIT, SessionDateTest.of(), students, 2, amount);
+        PaySession paySession = new PaySession(1L, sessionImage, RecruitStatus.RECRUIT, SessionDateTest.of(), students, 2, amount);
         sessionRepository.saveSession(paySession, courseId);
 
         Sessions sessions = sessionRepository.findByCourseId(courseId);

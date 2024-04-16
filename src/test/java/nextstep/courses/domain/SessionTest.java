@@ -20,8 +20,8 @@ public class SessionTest {
     @ParameterizedTest
     @EnumSource(mode = EnumSource.Mode.EXCLUDE, names = {"RECRUIT"})
     @DisplayName("모집 중이 아닌 강의에 수강신청 하는 경우 에러 발생")
-    void testInvalidEnrollmentUser(SessionStatus sessionStatus) {
-        Session testSession = TestSessionFactory.makeSession(sessionId, sessionStatus);
+    void testInvalidEnrollmentUser(RecruitStatus recruitStatus) {
+        Session testSession = TestSessionFactory.makeSession(sessionId, recruitStatus);
 
         assertThatThrownBy(() -> testSession.enrollmentUser(student, new Payment())).isInstanceOf(NotRecruitException.class);
     }
