@@ -5,6 +5,8 @@ import java.util.Objects;
 public class Image {
     private final int size;
     private final int MB = 1024 * 1024;
+    private final int MINIMUM_WIDTH = 300;
+    private final int MINIMUM_HEIGHT = 200;
     private final Type type;
     private final int width;
     private final int height;
@@ -20,11 +22,11 @@ public class Image {
     }
 
     private void imageSize(int size) {
-        if (size > MB)
+        if (size > 1 * MB)
             throw new IllegalArgumentException("이미지 파일 크기가 너무 큽니다");
     }
     private void imagePixel(int width, int height) {
-        if (width < 300 || height < 200)
+        if (width < MINIMUM_WIDTH || height < MINIMUM_HEIGHT)
             throw new IllegalArgumentException("크기가 맞지 않습니다");
         if (!(width * 2 == height * 3))
             throw new IllegalArgumentException("비율이 맞지 않습니다");

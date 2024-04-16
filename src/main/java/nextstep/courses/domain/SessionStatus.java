@@ -2,14 +2,11 @@ package nextstep.courses.domain;
 
 public class SessionStatus {
 
-    private String status;
-    private final String prepare = "prepare";
-    private final String end = "end";
-    private final String recruit = "recruit";
+    private Status status;
 
     public SessionStatus(String status) {
         statusCheck(status);
-        this.status = status;
+        this.status = Status;
     }
 
     private void statusCheck(String status) {
