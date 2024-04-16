@@ -10,13 +10,12 @@ public class Amount {
         this.value = value;
     }
 
-    public boolean isNoLimit() {
-        return this.value == 0;
+    public boolean exist() {
+        return this.value != -1;
     }
 
-
-    public boolean isSmaller(Amount count) {
-        return this.value >= count.value;
+    public boolean isBigger(Amount other) {
+        return this.value > other.value;
     }
 
     @Override
