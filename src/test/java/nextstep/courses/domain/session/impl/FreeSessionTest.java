@@ -10,7 +10,6 @@ import nextstep.courses.domain.cover.ImageType;
 import nextstep.courses.domain.cover.ImageWidth;
 import nextstep.courses.domain.session.SessionName;
 import nextstep.courses.domain.session.SessionStatus;
-import nextstep.courses.domain.session.impl.FreeSession;
 import nextstep.payments.domain.Money;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.Test;

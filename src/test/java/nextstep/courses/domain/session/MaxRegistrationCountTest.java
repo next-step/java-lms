@@ -2,8 +2,6 @@ package nextstep.courses.domain.session;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import nextstep.courses.domain.session.MaxRegistrationCount;
-import nextstep.courses.domain.session.RegistrationCount;
 import nextstep.courses.error.exception.MaxRegistrationCountNotZero;
 import org.junit.jupiter.api.Test;
 

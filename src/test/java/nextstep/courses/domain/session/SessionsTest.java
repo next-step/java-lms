@@ -9,10 +9,6 @@ import nextstep.courses.domain.cover.ImageHeight;
 import nextstep.courses.domain.cover.ImageSize;
 import nextstep.courses.domain.cover.ImageType;
 import nextstep.courses.domain.cover.ImageWidth;
-import nextstep.courses.domain.session.SessionName;
-import nextstep.courses.domain.session.SessionStatus;
-import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.Sessions;
 import nextstep.courses.domain.session.impl.FreeSession;
 import org.junit.jupiter.api.Test;
 
