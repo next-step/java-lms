@@ -3,7 +3,8 @@ package nextstep.courses.domain.enrollment.engine;
 import nextstep.courses.domain.enrollment.SessionCapacity;
 import nextstep.courses.domain.enrollment.SessionFee;
 import nextstep.courses.domain.status.SessionStatus;
-import nextstep.courses.domain.enrollment.SessionStudent;
+import nextstep.courses.domain.student.SessionStudent;
+import nextstep.courses.domain.student.SessionStudents;
 import nextstep.courses.exception.SessionCapacityExceedException;
 import nextstep.courses.exception.SessionStatusCannotEnrollmentException;
 import nextstep.payments.domain.Payment;
@@ -17,7 +18,7 @@ public abstract class SessionEnrollment implements SessionEnroll {
     protected final SessionStatus status;
     protected final SessionCapacity capacity;
     protected final SessionFee fee;
-    protected final List<SessionStudent> students;
+    protected final SessionStudents students;
 
     protected SessionEnrollment(SessionEnrollment enrollment, List<SessionStudent> students) {
         this(enrollment.getStatus(), enrollment.getCapacity().get(), enrollment.getFee().get(), students);
@@ -31,7 +32,7 @@ public abstract class SessionEnrollment implements SessionEnroll {
         this.status = status;
         this.capacity = new SessionCapacity(capacity);
         this.fee = new SessionFee(fee);
-        this.students = students;
+        this.students = new SessionStudents(students);
     }
 
     @Override
@@ -58,6 +59,11 @@ public abstract class SessionEnrollment implements SessionEnroll {
         }
     }
 
+    @Override
+    public void approveStudents(List<SessionStudent> students) {
+        this.students.approve(students);
+    }
+
     public SessionStatus getStatus() {
         return status;
     }
@@ -68,6 +74,10 @@ public abstract class SessionEnrollment implements SessionEnroll {
 
     public SessionFee getFee() {
         return fee;
+    }
+
+    public SessionStudents getStudents() {
+        return students;
     }
 
 }

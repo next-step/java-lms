@@ -2,7 +2,7 @@ package nextstep.courses.service;
 
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionFactory;
-import nextstep.courses.domain.enrollment.SessionStudent;
+import nextstep.courses.domain.student.SessionStudent;
 import nextstep.courses.infrastructure.engine.SessionCoverImageRepository;
 import nextstep.courses.infrastructure.engine.SessionRepository;
 import nextstep.courses.infrastructure.engine.SessionStudentRepository;
@@ -43,6 +43,10 @@ public class SessionService {
         SessionStudent student = session.enroll(user, payment);
 
         sessionStudentRepository.save(student);
+    }
+
+    public void approve(Long sessionId, List<SessionStudent> students) {
+
     }
 
 }
