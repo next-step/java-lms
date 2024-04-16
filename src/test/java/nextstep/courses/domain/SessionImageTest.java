@@ -13,6 +13,8 @@ public class SessionImageTest {
     private static final int VALID_SIZE = 1024 * 1024;
     private static final String VALID_PATH = "image.png";
     public static final SessionImage S1 = new SessionImage(VALID_ID, VALID_PATH, VALID_WIDTH, VALID_HEIGHT, VALID_SIZE);
+    public static final SessionImage S2 = new SessionImage(VALID_ID+1, VALID_PATH, VALID_WIDTH, VALID_HEIGHT, VALID_SIZE);
+
 
     @Test
     @DisplayName("강의 이미지 생성 테스트")

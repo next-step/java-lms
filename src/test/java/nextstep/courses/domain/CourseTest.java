@@ -16,10 +16,10 @@ public class CourseTest {
     void testCourse() {
         Course course = new Course("test", 1L);
         course.addSession(TestSessionFactory.recruitStatusSession(sessionId));
-        course.addSession(TestSessionFactory.recruitStatusSession2(sessionId));
+        course.addSession(TestSessionFactory.recruitStatusOtherSession(sessionId));
 
         Sessions sessions = course.getSessions();
-        assertThat(sessions.getSessions()).hasSize(2).contains(TestSessionFactory.recruitStatusSession(sessionId), TestSessionFactory.recruitStatusSession2(sessionId));
+        assertThat(sessions.getSessions()).hasSize(2).contains(TestSessionFactory.recruitStatusSession(sessionId), TestSessionFactory.recruitStatusOtherSession(sessionId));
     }
 
     @Test

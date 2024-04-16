@@ -10,6 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SessionTest {
@@ -34,5 +37,15 @@ public class SessionTest {
         testSession.enrollmentUser(student, new Payment());
 
         assertThatThrownBy(() -> testSession.enrollmentUser(student, new Payment())).isInstanceOf(NotRecruitException.class);
+    }
+
+    @Test
+    @DisplayName("1장 이상의 이미지가 들어갈 수 있는지 테스트")
+    void testManyImage() {
+        List<SessionImage> sessionImages = List.of(SessionImageTest.S1, SessionImageTest.S2);
+        Session testSession = TestSessionFactory.recruitSession(sessionId, sessionImages);
+
+        assertThat(testSession.getSessionImage()).hasSize(2)
+                .containsExactlyInAnyOrderElementsOf(sessionImages);
     }
 }
