@@ -62,4 +62,16 @@
 - [x] Session 리포지토리
   - [x] 인터페이스 작성
   - [x] 인터페이스 구현
-- [ ] 서비스 레이어에서 수강신청 로직 구현
+- [x] 서비스 레이어에서 수강신청 로직 구현
+
+## step4 TODO
+변경된 기능 요구사항
+- [ ] 강의 진행 상태(준비중, 진행중, 종료)와 모집 상태(비모집중, 모집중)로 상태 값 가져야 한다
+  - 진행 상태와 무관하게 모집 상태로만 수강신청 가능유무 판단
+- [ ] 선발 인원을 관리하기 위해 Session과 NsUser를 매핑하는 Selection 매핑 클래스 구현
+  - nsUser (NsUser) - 선발된 유저
+  - session (Session) - 선발된 세션
+  - hasPaid (boolean) - 유저 결제완료 여부
+- [ ] Payment에서 nsUser가 해당 Session에 선발되지 않았을 경우 예외처리
+- [ ] Session의 coverImageInfo를 List로 리팩터링
+
