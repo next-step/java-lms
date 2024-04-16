@@ -1,6 +1,8 @@
 package nextstep.courses.domain.cover;
 
-public class Image {
+import nextstep.courses.domain.BaseEntity;
+
+public class Image extends BaseEntity {
 
     private final ImageSize size;
 

@@ -1,12 +1,13 @@
 package nextstep.courses.domain.course;
 
 import java.time.LocalDateTime;
+import nextstep.courses.domain.BaseEntity;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionName;
 import nextstep.courses.domain.session.Sessions;
 import nextstep.payments.domain.Payment;
 
-public class Course {
+public class Course extends BaseEntity {
     private Long id;
 
     private String title;
@@ -14,10 +15,6 @@ public class Course {
     private Long creatorId;
 
     private Sessions sessions = new Sessions();
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 
     public Course() {
     }

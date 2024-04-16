@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session.impl;
 
 import java.time.LocalDateTime;
+import nextstep.courses.domain.BaseEntity;
 import nextstep.courses.domain.cover.Image;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionName;
@@ -10,7 +11,7 @@ import nextstep.courses.domain.session.RegistrationCount;
 import nextstep.payments.domain.Money;
 import nextstep.payments.domain.Payment;
 
-public class PaidSession implements Session {
+public class PaidSession extends BaseEntity implements Session {
 
     private final SessionName sessionName;
 
