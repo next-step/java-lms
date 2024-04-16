@@ -23,7 +23,7 @@ class FreeSessionTest {
     @BeforeEach
     void setUp() {
         Period period = new Period(LocalDate.of(2024, 2, 4), LocalDate.of(2024, 10, 9));
-        Image image = new Image(1000, 200, 300, "test.jpg");
+        Image image = new Image(1000, 200, 300, "test.jpg", LocalDateTime.now());
         SessionUsers sessionUsers = SessionUsers.from(new ArrayList<>());
         List<Session> sessions = new ArrayList<>();
         sessions.add(new FreeSession(1L, "축구교실", null, period, List.of(image), SessionStatus.RECRUITING, sessionUsers,1L));

@@ -15,6 +15,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -28,7 +29,7 @@ class SessionTest {
         LocalDate startDate = LocalDate.of(2024, 1, 20);
         LocalDate endDate = LocalDate.of(2024, 3, 20);
         Period period = new Period(startDate, endDate);
-        Image image = new Image(1000, 200, 300, "test.jpg");
+        Image image = new Image(1000, 200, 300, "test.jpg", LocalDateTime.now());
         List<SessionUser> sessionUsers = List.of(new SessionUser(1L, 1L));
 
         session = new FreeSession("축구교실", new Course(), period, List.of(image), SessionUsers.from(sessionUsers));

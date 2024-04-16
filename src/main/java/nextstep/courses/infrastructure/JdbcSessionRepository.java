@@ -4,6 +4,7 @@ import nextstep.courses.domain.Course;
 import nextstep.courses.domain.image.Image;
 import nextstep.courses.domain.session.*;
 import nextstep.courses.domain.session.type.SessionStatus;
+import nextstep.courses.domain.session.user.SessionUser;
 import nextstep.courses.domain.session.user.SessionUsers;
 import nextstep.users.domain.NsUser;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -37,7 +38,7 @@ public class JdbcSessionRepository implements SessionRepository {
                         new ArrayList<>(),
                         SessionStatus.valueOf(rs.getString(5)),
                         SessionUsers.from(new ArrayList<>())
-                        ,rs.getLong(10));
+                        , rs.getLong(9));
             }
 
             return new PaidSession(rs.getLong(1),
@@ -65,9 +66,9 @@ public class JdbcSessionRepository implements SessionRepository {
     private void addNsUser(Session session) {
         Long sessionId = session.getId();
         String userSql = "SELECT user_id FROM session_users where session_id = ?";
-        RowMapper<NsUser> nsUserRowMapper = (rs, rowNumber) -> new NsUser(rs.getLong(1));
-        List<NsUser> nsUsers = jdbcOperations.query(userSql, nsUserRowMapper, sessionId);
-        session.addSessionUser(nsUsers);
+        RowMapper<SessionUser> nsUserRowMapper = (rs, rowNumber) -> new SessionUser(sessionId, rs.getLong(1));
+        List<SessionUser> sessionUsers = jdbcOperations.query(userSql, nsUserRowMapper, sessionId);
+        session.addSessionUser(sessionUsers);
     }
 
     private void addImage(Session session) {

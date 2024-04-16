@@ -21,8 +21,8 @@ public class Image {
     private final LocalDateTime updatedAt;
     private final int MAX_SIZE = 1_000_000;
 
-    public Image(int size, int height, int width, String fileName) {
-        this(0L, null, size, height, width, "", FileExtension.from(fileName), LocalDateTime.now(), null);
+    public Image(int size, int height, int width, String fileName, LocalDateTime createdAt) {
+        this(0L, null, size, height, width, "", FileExtension.from(fileName), createdAt, null);
     }
 
     public Image(Long id, Session session, int size, int height, int width, String name, FileExtension type, LocalDateTime createdAt, LocalDateTime updatedAt) {

@@ -12,6 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ class PaidSessionTest {
         LocalDate startDate = LocalDate.of(2024, 1, 20);
         LocalDate endDate = LocalDate.of(2099, 3, 20);
         period = new Period(startDate, endDate);
-        image = new Image(1000, 200, 300, "test.jpg");
+        image = new Image(1000, 200, 300, "test.jpg", LocalDateTime.now());
         List<SessionUser> userList = new ArrayList<>();
         userList.add(new SessionUser(1L, 1L));
         userList.add(new SessionUser(2L, 2L));

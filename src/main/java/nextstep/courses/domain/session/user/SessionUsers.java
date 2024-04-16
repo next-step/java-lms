@@ -25,10 +25,8 @@ public class SessionUsers {
         return this.sessionUsers.size() < maxSize;
     }
 
-    public void addAll(List<NsUser> nsUserList, Long id) {
-        NsUsers nsUsers = NsUsers.from(nsUserList);
-        this.sessionUsers.addAll(nsUsers.convertSessionUsers(id));
-
+    public void addAll(List<SessionUser> sessionUsers) {
+        this.sessionUsers.addAll(sessionUsers);
     }
 
     public void accessSession(SessionUser sessionUser) {

@@ -80,8 +80,9 @@ public abstract class Session {
         return paidSession.toPayment(nsUser);
     }
 
-    public void addSessionUser(List<NsUser> nsUsers) {
-        this.sessionUsers.addAll(nsUsers, this.getId());
+
+    public void addSessionUser(List<SessionUser> sessionUsers) {
+        this.sessionUsers.addAll(sessionUsers);
     }
 
     public void addImages(List<Image> images) {
