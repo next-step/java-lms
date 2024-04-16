@@ -60,7 +60,7 @@ public class JdbcSessionRepository implements SessionRepository {
         String sessionImageTableName = "free_session_image";
         String studentsTableName = "free_session_students";
 
-        SessionImage sessionImage = findSessionImageBySessionId(sessionId, sessionImageTableName);
+        List<SessionImage> sessionImage = findSessionImageBySessionId(sessionId, sessionImageTableName);
         Set<NsUser> students = findSessionStudentsBySessionId(sessionId, studentsTableName);
 
         RowMapper<FreeSession> sessionMapper = (rs, rowNum) ->
@@ -79,7 +79,7 @@ public class JdbcSessionRepository implements SessionRepository {
         String sessionImageTableName = "pay_session_image";
         String studentsTableName = "pay_session_students";
 
-        SessionImage sessionImage = findSessionImageBySessionId(sessionId, sessionImageTableName);
+        List<SessionImage> sessionImage = findSessionImageBySessionId(sessionId, sessionImageTableName);
         Set<NsUser> students = findSessionStudentsBySessionId(sessionId, studentsTableName);
 
         RowMapper<PaySession> sessionMapper = (rs, rowNum) ->
@@ -144,14 +144,14 @@ public class JdbcSessionRepository implements SessionRepository {
         insertSessionImage(freeSession, sessionImageTableName);
     }
 
-    private SessionImage findSessionImageBySessionId(Long sessionId, String tableName) {
+    private List<SessionImage> findSessionImageBySessionId(Long sessionId, String tableName) {
         String sessionImageSql = "select id, image_path, width, height, image_size from " + tableName + " where session_id = ?";
 
         RowMapper<SessionImage> sessionImageMapper = (rs, rowNum) ->
                 new SessionImage(rs.getLong(1), rs.getString(2), rs.getInt(3), rs.getInt(4), rs.getInt(5));
 
 
-        return jdbcTemplate.queryForObject(sessionImageSql, sessionImageMapper, sessionId);
+        return jdbcTemplate.query(sessionImageSql, sessionImageMapper, sessionId);
     }
 
     private Set<NsUser> findSessionStudentsBySessionId(Long sessionId, String tableName) {
@@ -181,10 +181,13 @@ public class JdbcSessionRepository implements SessionRepository {
 
     private void insertSessionImage(Session session, String tableName) {
         String sql = "insert into " + tableName + " (id, image_path, width, height, image_size, session_id) values (?, ?, ?, ?, ?, ?)";
-        SessionImage sessionImage = session.getSessionImage();
-        SessionImageSize sessionImageSize = sessionImage.getSessionImageSize();
+        List<SessionImage> sessionImages = session.getSessionImage();
 
-        jdbcTemplate.update(sql, sessionImage.getId(), sessionImage.getPath(), sessionImageSize.getWidth(), sessionImageSize.getHeight(), sessionImageSize.getSize(), session.getId());
+        sessionImages.forEach(sessionImage ->  {
+            SessionImageSize sessionImageSize = sessionImage.getSessionImageSize();
+            jdbcTemplate.update(sql, sessionImage.getId(), sessionImage.getPath(), sessionImageSize.getWidth(), sessionImageSize.getHeight(), sessionImageSize.getSize(), session.getId());
+        });
+
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

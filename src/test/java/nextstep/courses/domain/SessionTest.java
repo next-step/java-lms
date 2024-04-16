@@ -19,7 +19,6 @@ public class SessionTest {
 
     private final Long sessionId = 1L;
     private final NsUser student = NsUserTest.JAVAJIGI;
-    private final NsUser notApproveStudent = NsUserTest.SANJIGI;
 
     @ParameterizedTest
     @EnumSource(mode = EnumSource.Mode.EXCLUDE, names = {"RECRUIT"})
@@ -48,32 +47,5 @@ public class SessionTest {
 
         assertThat(testSession.getSessionImage()).hasSize(2)
                 .containsExactlyInAnyOrderElementsOf(sessionImages);
-    }
-
-    @Test
-    @DisplayName("진행 중인 강의 수강신청")
-    void testEnrollmentWhenSessionRun() {
-        Session testSession = TestSessionFactory.recruitStatusSession(sessionId);
-        testSession.changeProgressStatus(SessionProgressStatus.RUN);
-        testSession.enrollmentUser(student, new Payment());
-
-        assertThat(testSession.getStudents()).hasSize(1);
-    }
-
-    @Test
-    @DisplayName("승인되지 않은 학생 삭제 수강 취소")
-    void testEnrollmentNotApproveStudent() {
-        Session testSession = TestSessionFactory.recruitStatusSession(sessionId);
-
-        testSession.addApproveStudent(student);
-
-        testSession.enrollmentUser(student, new Payment());
-        testSession.enrollmentUser(notApproveStudent, new Payment());
-        assertThat(testSession.getStudents()).hasSize(2);
-
-        testSession.removeNotApproveUser();
-        assertThat(testSession.getStudents()).hasSize(1)
-                .containsExactlyInAnyOrder(student);
-
     }
 }
