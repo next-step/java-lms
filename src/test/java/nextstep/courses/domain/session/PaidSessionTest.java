@@ -18,7 +18,8 @@ public class PaidSessionTest {
     @DisplayName("PaidSession 생성 테스트")
     public void initPaidSession() {
         PaidSession paidSession = new PaidSession(
-                CourseTest.COURSE,
+                1L,
+                1L,
                 SessionImageTest.SESSION_IMAGE,
                 LocalDateTime.now().minusDays(5),
                 LocalDateTime.now().plusDays(5),
