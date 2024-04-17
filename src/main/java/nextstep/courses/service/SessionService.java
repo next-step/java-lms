@@ -7,12 +7,13 @@ import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-
 public class SessionService {
 
-    @Resource(name = "sessionRepository")
-    private SessionRepository sessionRepository;
+    private final SessionRepository sessionRepository;
+
+    public SessionService(SessionRepository sessionRepository) {
+        this.sessionRepository = sessionRepository;
+    }
 
     @Transactional
     public void enrollSession (NsUser nsUser,

@@ -4,6 +4,6 @@ import nextstep.users.domain.NsUserTest;
 
 public class SessionInfoTest {
 
-    public static SessionInfo INFO = new SessionInfo("session title", NsUserTest.JAVAJIGI);;
+    public static SessionDetail INFO = new SessionDetail("session title", NsUserTest.JAVAJIGI);;
 
 }

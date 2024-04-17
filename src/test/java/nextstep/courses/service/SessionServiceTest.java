@@ -3,7 +3,7 @@ package nextstep.courses.service;
 import nextstep.courses.code.ChargeType;
 import nextstep.courses.code.EnrollStatus;
 import nextstep.courses.code.ImageType;
-import nextstep.courses.domain.BaseInfo;
+import nextstep.courses.domain.DataStatus;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionImage;
@@ -46,12 +46,12 @@ public class SessionServiceTest {
         session = new Session(
                 1L,
                 new Course("course title", 0L),
-                new SessionInfo("session title", NsUserTest.JAVAJIGI),
+                new SessionDetail("session title", NsUserTest.JAVAJIGI),
                 new SessionPeriod(LocalDate.of(2024, 01, 01), LocalDate.of(2024, 12, 31)),
-                new SessionImage(new ImageInfo(1024, 300, 200, ImageType.JPEG), 0L),
+                new SessionImage(new ImageSpec(1024, 300, 200, ImageType.JPEG), 0L),
                 new Enrollment(EnrollStatus.OPEN, new Students(new ArrayList<>(List.of(NsUserTest.JAVAJIGI))), 2),
                 new Charge(ChargeType.PAID, 100_000L),
-                new BaseInfo(0L));
+                new DataStatus(0L));
 
         payment = new Payment(1L, 0L, 100_000L);
     }

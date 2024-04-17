@@ -8,13 +8,12 @@ public class Charge {
 
     private Long price;
 
-    public Charge() {
+    public Charge(Long price) {
+        this(ChargeType.of(price), price);
     }
 
     public Charge(ChargeType type,
                   Long price) {
-        type.validateChargeType(price);
-
         this.type = type;
         this.price = price;
     }

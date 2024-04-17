@@ -8,8 +8,6 @@ public class SessionPeriod {
 
     private LocalDate endDate;
 
-    public SessionPeriod() {
-    }
 
     public SessionPeriod(LocalDate startDate,
                          LocalDate endDate) {
