@@ -142,6 +142,12 @@ public class NsUser {
         return authorization == TEACHER;
     }
 
+    public void checkSessionAcceptAuth() {
+        if(!isTeacher()){
+            throw new IllegalArgumentException("강사만 학생을 수락할 수 있습니다.");
+        }
+    }
+
     private static class GuestNsUser extends NsUser {
         @Override
         public boolean isGuestUser() {

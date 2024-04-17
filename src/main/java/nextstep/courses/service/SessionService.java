@@ -34,7 +34,7 @@ public class SessionService {
     }
 
     public void acceptStudent(NsUser teacher, Long sessionId, SelectedStudents students){
-        checkTeacher(teacher);
+        checkSessionAcceptAuth(teacher);
         sessionRepository.updateStudentSelect(sessionId, students);
     }
 
@@ -42,9 +42,7 @@ public class SessionService {
         return sessionRepository.findAcceptedStudentsById(sessionId);
     }
 
-    private  void checkTeacher(NsUser teacher) {
-        if (!teacher.isTeacher()){
-            throw new IllegalArgumentException("강사만 학생을 수락할 수 있습니다.");
-        }
+    private void checkSessionAcceptAuth(NsUser teacher) {
+        teacher.checkSessionAcceptAuth();
     }
 }

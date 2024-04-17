@@ -30,9 +30,6 @@ public class SessionDuration {
 
   public boolean isRecruitingNow() {
     LocalDate now = LocalDate.now();
-    if (now.isEqual(startDate) || now.isAfter(startDate) || now.isBefore(endDate)) {
-      return true;
-    }
-    return false;
+    return (now.isEqual(startDate) || now.isAfter(startDate)) && now.isBefore(endDate);
   }
 }
