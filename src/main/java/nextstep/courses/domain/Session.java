@@ -9,15 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Session {
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private Course course;
-    private SessionImage sessionImage;
-    private SessionStatus sessionStatus;
-    private SessionType sessionType;
-    private int capacity;
-    private Long fee;
-    private List<NsUser> students = new ArrayList<>();
+    private final LocalDateTime startTime;
+    private final LocalDateTime endTime;
+    private final Course course;
+    private final SessionImage sessionImage;
+    private final SessionStatus sessionStatus;
+    private final SessionType sessionType;
+    private final List<NsUser> students = new ArrayList<>();
 
     public Session(
             Course course,
@@ -25,9 +23,7 @@ public class Session {
             LocalDateTime startTime,
             LocalDateTime endTime,
             SessionStatus sessionStatus,
-            SessionType sessionType,
-            int capacity,
-            Long fee
+            SessionType sessionType
     ) {
         this.course = course;
         this.sessionImage = sessionImage;
@@ -35,7 +31,5 @@ public class Session {
         this.endTime = endTime;
         this.sessionStatus = sessionStatus;
         this.sessionType = sessionType;
-        this.capacity = capacity;
-        this.fee = fee;
     }
 }
