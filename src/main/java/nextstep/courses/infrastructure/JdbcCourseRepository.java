@@ -57,6 +57,7 @@ public class JdbcCourseRepository implements CourseRepository {
     @Override
     public Course findById(Long id) {
         String sql = "select id, title, creator_id, created_at, updated_at from course where id = ?";
+
         Sessions sessions = Sessions.concatSessions(freeSessionRepository.findByCourseId(id), paySessionRepository.findByCourseId(id));
 
         RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(

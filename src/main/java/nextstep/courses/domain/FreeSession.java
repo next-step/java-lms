@@ -19,7 +19,6 @@ public class FreeSession extends Session {
         super(id, sessionImage, recruitStatus, sessionProgressStatus, sessionDate, students, approveStudents);
     }
 
-
     @Override
     protected void assertSatisfiedCondition(NsUser user, Payment payment) {
     }

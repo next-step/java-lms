@@ -48,6 +48,7 @@ public abstract class Session {
         students.add(user);
     }
 
+
     public final void removeNotApproveUser() {
         students.removeIf(student -> !approveStudents.contains(student));
     }
@@ -56,6 +57,7 @@ public abstract class Session {
         approveStudents.add(nsUser);
     }
 
+
     private void assertNotDuplicateStudents(NsUser user) {
         if (students.contains(user)) {
             throw new NotRecruitException();
@@ -63,7 +65,9 @@ public abstract class Session {
     }
 
     private void assertRecruit() {
+
         if (!recruitStatus.isRecruit()) {
+
             throw new NotRecruitException();
         }
     }
