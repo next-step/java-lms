@@ -19,7 +19,7 @@ public class SessionCoverImage {
     }
 
     private void validate(long size, String type) throws InvalidImageConditionsException {
-        if (!validateSize(size)) {
+        if (isOverSize(size)) {
             throw new InvalidImageConditionsException(String.format("이미지 크기는"
                 + "%dMB 이하여야합니다. 입력된 이미지 크기 %dMB", MAX_SIZE / (1024 * 1024), size / (1024 * 1024)));
         }
@@ -29,11 +29,8 @@ public class SessionCoverImage {
         }
     }
 
-    private boolean validateSize(long size) {
-        if (size > MAX_SIZE) {
-            return false;
-        }
-        return true;
+    private boolean isOverSize(long size) {
+        return size > MAX_SIZE;
     }
 
     public boolean isSameImageType(String type) {
