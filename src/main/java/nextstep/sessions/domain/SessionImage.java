@@ -1,6 +1,6 @@
 package nextstep.sessions.domain;
 
-public class Image {
+public class SessionImage {
 
     public static final int MAX_BYTE = 1000;
     public static final int MIN_WIDTH = 300;
@@ -10,15 +10,14 @@ public class Image {
     private final int imageWidth;
     private final int imageHeight;
 
-    public Image(int imageByte, String imageType, int imageWidth, int imageHeight) {
+    public SessionImage(int imageByte, String imageType, int imageWidth, int imageHeight) {
         validateImageByte(imageByte);
-        this.imageByte = imageByte;
-
-        this.imageType = ImageType.valueOfType(imageType);
-
         validateImageWidth(imageWidth);
         validateImageHeight(imageHeight);
         validateImageRate(imageWidth, imageHeight);
+
+        this.imageByte = imageByte;
+        this.imageType = ImageType.valueOfType(imageType);
         this.imageWidth = imageWidth;
         this.imageHeight = imageHeight;
     }
