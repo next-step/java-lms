@@ -40,16 +40,20 @@ public class EnrollmentPolicy {
 
 
     public boolean isCapacityFull(int enrolledStudentCount) {
-        if (priceType.isFree()) {
+        if (isPriceTypeFree()) {
             return false;
         }
         return maxEnrollment <= enrolledStudentCount;
     }
 
     public boolean isPaymentCorrect(int payment) {
-        if (priceType == PriceType.FREE) {
+        if (isPriceTypeFree()) {
             return true;
         }
         return payment == fee;
+    }
+
+    private boolean isPriceTypeFree() {
+        return priceType.isFree();
     }
 }
