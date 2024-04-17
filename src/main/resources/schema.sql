@@ -60,7 +60,7 @@ create table image (
 
 create table session_register_details (
     id bigint auto_increment,
-    current_count_of_students bigint not null,
+    current_count_of_students bigint,
     max_count_of_students bigint not null,
     session_type varchar(255) not null,
     price bigint not null,

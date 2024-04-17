@@ -1,5 +1,7 @@
 package nextstep.sessions.domain;
 
+import javax.annotation.Resource;
+
 public class CountOfStudent {
 
     private int currentCountOfStudents;
@@ -24,4 +26,11 @@ public class CountOfStudent {
         this.currentCountOfStudents++;
     }
 
+    public int getMaxOfStudents() {
+        return maxOfStudents;
+    }
+
+    public String getSessionType() {
+        return sessionType.name();
+    }
 }

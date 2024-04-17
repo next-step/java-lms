@@ -2,6 +2,7 @@ package nextstep.sessions.domain;
 
 import nextstep.users.domain.NsUser;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,4 +61,19 @@ public class SessionRegisterDetails {
         return listeners.contains(listener);
     }
 
+    public int getMaxCountOfStudents() {
+        return countOfStudent.getMaxOfStudents();
+    }
+
+    public String getSessionType() {
+        return countOfStudent.getSessionType();
+    }
+
+    public long getPrice() {
+        return price.getPrice();
+    }
+
+    public String getSessionStatus() {
+        return sessionStatus.name();
+    }
 }

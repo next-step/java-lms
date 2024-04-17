@@ -31,4 +31,7 @@ public class Price {
         return Objects.hash(price);
     }
 
+    public long getPrice() {
+        return price;
+    }
 }
