@@ -15,6 +15,8 @@ public class FreeSession extends Session {
 
     public void enroll(NsUser nsUser) {
         validateEnrollSessionStatus();
+        validateEnrolledStudent(nsUser);
+
         super.enrollStudent(nsUser);
     }
 }

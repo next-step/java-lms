@@ -25,6 +25,7 @@ class FreeSessionTest {
         );
 
         assertThat(paidSession).isInstanceOf(FreeSession.class);
+        assertThat(paidSession.getEnrolledStudentCount()).isEqualTo(0);
     }
 
     @Test
@@ -41,6 +42,7 @@ class FreeSessionTest {
         paidSession.enroll(NsUser.GUEST_USER);
 
         assertThat(paidSession.getEnrolledStudentCount()).isEqualTo(1);
+        assertThat(paidSession.isEnrolled(NsUser.GUEST_USER)).isTrue();
     }
 
     @Test

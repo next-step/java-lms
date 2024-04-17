@@ -41,11 +41,21 @@ public class Session {
         }
     }
 
+    protected void validateEnrolledStudent(NsUser nsUser) {
+        if (isEnrolled(nsUser)) {
+            throw new IllegalArgumentException("이미 수강 중인 학생입니다.");
+        }
+    }
+
     protected int getEnrolledStudentCount() {
         return students.size();
     }
 
     protected void enrollStudent(NsUser nsUser) {
         students.add(nsUser);
+    }
+
+    protected boolean isEnrolled(NsUser nsUser) {
+        return students.contains(nsUser);
     }
 }

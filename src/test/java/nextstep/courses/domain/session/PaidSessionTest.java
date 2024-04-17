@@ -46,6 +46,7 @@ public class PaidSessionTest {
         paidSession.enroll(NsUserTest.NEWUSER, PaymentTest.PAYMENT);
 
         assertThat(paidSession.getEnrolledStudentCount()).isEqualTo(1);
+        assertThat(paidSession.isEnrolled(NsUserTest.NEWUSER)).isTrue();
     }
 
     @Test

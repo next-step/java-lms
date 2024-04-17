@@ -28,12 +28,13 @@ public class PaidSession extends Session {
     }
 
     public void enroll(NsUser nsUser, Payment payment) {
-        validatePaidSessionEnroll(payment);
+        validatePaidSessionEnroll(nsUser, payment);
         super.enrollStudent(nsUser);
     }
 
-    private void validatePaidSessionEnroll(Payment payment) {
+    private void validatePaidSessionEnroll(NsUser nsUser, Payment payment) {
         validateEnrollSessionStatus();
+        validateEnrolledStudent(nsUser);
 
         if (!payment.isPaid(fee)) {
             throw new IllegalArgumentException("결제 금액이 일치하지 않습니다.");
