@@ -24,14 +24,16 @@ public class CourseRepositoryTest {
     private JdbcTemplate jdbcTemplate;
 
     private CourseRepository courseRepository;
-    private SessionRepository sessionRepository;
+    private FreeSessionRepository freeSessionRepository;
+    private PaySessionRepository paySessionRepository;
 
     private Long courseId = 1L;
 
     @BeforeEach
     void setUp() {
-        sessionRepository = new JdbcSessionRepository(jdbcTemplate);
-        courseRepository = new JdbcCourseRepository(jdbcTemplate, sessionRepository);
+        freeSessionRepository = new JdbcFreeSessionRepository(jdbcTemplate);
+        paySessionRepository = new JdbcPaySessionRepository(jdbcTemplate);
+        courseRepository = new JdbcCourseRepository(jdbcTemplate, freeSessionRepository, paySessionRepository);
     }
 
     @Test
