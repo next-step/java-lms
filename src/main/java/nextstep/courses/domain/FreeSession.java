@@ -7,7 +7,7 @@ import java.util.List;
 
 public class FreeSession extends Session {
     public FreeSession(Long id, String title, LocalDate startDate, LocalDate endDate, CoverImage coverImage, SessionStatus status) {
-        super(id, title, startDate, endDate, coverImage, status, List.of());
+        super(id, title, startDate, endDate, coverImage, status);
     }
 
     public FreeSession(Long id, String title, LocalDate startDate, LocalDate endDate, CoverImage coverImage, SessionStatus status, List<NsUser> userList) {

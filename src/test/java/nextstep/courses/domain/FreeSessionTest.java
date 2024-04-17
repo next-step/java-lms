@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.users.domain.NsUser;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -23,5 +24,15 @@ public class FreeSessionTest {
         userList.add(SANJIGI);
 
         new FreeSession(0L, "title", LocalDate.now(), LocalDate.now(), new CoverImage(), SessionStatus.PREPARING, userList);
+    }
+
+    @Test
+    void 수강신청_정상() {
+        FreeSession freeSession = new FreeSession(0L, "title", LocalDate.now(), LocalDate.now(), new CoverImage(), SessionStatus.RECRUITING);
+        NsUser JAVAJIGI = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
+
+        Assertions.assertThat(freeSession.userCount()).isEqualTo(0);
+        freeSession.join(JAVAJIGI);
+        Assertions.assertThat(freeSession.userCount()).isEqualTo(1);
     }
 }
