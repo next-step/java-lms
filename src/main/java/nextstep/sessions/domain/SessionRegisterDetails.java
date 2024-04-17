@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SessionRegisterDetails {
-
+    private final long id;
     private final CountOfStudent countOfStudent;
 
     private final Price price;
@@ -16,26 +16,44 @@ public class SessionRegisterDetails {
 
     private List<NsUser> listeners;
 
-    public SessionRegisterDetails(int currentCountOfStudents,
-                                  int maxOfStudents,
-                                  long price,
-                                  SessionType sessionType,
-                                  SessionStatus sessionStatus
+    public SessionRegisterDetails(
+            int currentCountOfStudents,
+            int maxOfStudents,
+            long price,
+            SessionType sessionType,
+            SessionStatus sessionStatus
     ) {
         this(currentCountOfStudents, maxOfStudents, price, sessionType, sessionStatus, new ArrayList<>());
     }
 
-    public SessionRegisterDetails(int currentCountOfStudents,
-                                  int maxOfStudents,
-                                  long price,
-                                  SessionType sessionType,
-                                  SessionStatus sessionStatus,
-                                  List<NsUser> listeners
+    public SessionRegisterDetails(
+            int currentCountOfStudents,
+            int maxOfStudents,
+            long price,
+            SessionType sessionType,
+            SessionStatus sessionStatus,
+            List<NsUser> listeners
     ) {
         this(new CountOfStudent(currentCountOfStudents, maxOfStudents, sessionType), new Price(price), sessionStatus, listeners);
     }
 
-    public SessionRegisterDetails(CountOfStudent countOfStudent, Price price, SessionStatus sessionStatus, List<NsUser> listeners) {
+    public SessionRegisterDetails(
+            CountOfStudent countOfStudent,
+            Price price,
+            SessionStatus sessionStatus,
+            List<NsUser> listeners
+    ) {
+        this(0, countOfStudent, price, sessionStatus, listeners);
+    }
+
+    public SessionRegisterDetails(
+            long id,
+            CountOfStudent countOfStudent,
+            Price price,
+            SessionStatus sessionStatus,
+            List<NsUser> listeners
+    ) {
+        this.id = id;
         this.countOfStudent = countOfStudent;
         this.price = price;
         this.sessionStatus = sessionStatus;
@@ -75,5 +93,13 @@ public class SessionRegisterDetails {
 
     public String getSessionStatus() {
         return sessionStatus.name();
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public List<NsUser> getListeners() {
+        return listeners;
     }
 }

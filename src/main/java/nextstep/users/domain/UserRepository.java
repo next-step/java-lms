@@ -6,5 +6,5 @@ import java.util.Optional;
 public interface UserRepository {
     Optional<NsUser> findByUserId(String userId);
 
-    List<NsUser> findListersBySessionId(long sessionId);
+    List<NsUser> findNsUsersBySessionRegisterDetailsId(long sessionId);
 }

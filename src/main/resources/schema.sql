@@ -65,5 +65,19 @@ create table session_register_details (
     session_type varchar(255) not null,
     price bigint not null,
     session_status varchar(255) not null,
-    primary key (id)
+    ns_user_id bigint not null,
+    primary key (id),
+    foreign key (id) references ns_user (id)
+);
+
+create table session (
+    id bigint auto_increment,
+    started_at timestamp not null,
+    ended_at timestamp not null,
+    session_name varchar(255) not null,
+    image_id bigint not null,
+    session_register_details_id bigint not null,
+    primary key (id),
+    foreign key (id) references image (id),
+    foreign key (id) references session_register_details (id)
 );

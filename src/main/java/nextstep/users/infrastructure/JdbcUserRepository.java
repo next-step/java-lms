@@ -41,8 +41,12 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public List<NsUser> findListersBySessionId(long sessionId) {
-        String sql = "select ns_user.id, ns_user.user_id, ns_user.password, ns_user.name, ns_user.email, ns_user.created_at, ns_user.updated_at from ns_user join session_register_details on ns_user.id = session_register_details.ns_user_id where session_register_details.id = ?";
+    public List<NsUser> findNsUsersBySessionRegisterDetailsId(long sessionId) {
+        String sql = "select ns_user.id, ns_user.user_id, ns_user.password, ns_user.name, ns_user.email, ns_user.created_at, ns_user.updated_at " +
+                "from ns_user " +
+                "join session_register_details " +
+                "on ns_user.id = session_register_details.ns_user_id " +
+                "where session_register_details.id = ?";
         RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
                 rs.getLong(1),
                 rs.getString(2),

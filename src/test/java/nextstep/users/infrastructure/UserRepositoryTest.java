@@ -39,8 +39,8 @@ public class UserRepositoryTest {
 
     @DisplayName("세션 아이디로 참여자 목록을 조회한다")
     @Test
-    void findListersBySessionId() {
-        List<NsUser> listersBySessionId = userRepository.findListersBySessionId(1L);
-        assertThat(listersBySessionId.isEmpty()).isTrue();
+    void findListenersBySessionId() {
+        List<NsUser> listenersBySessionId = userRepository.findNsUsersBySessionRegisterDetailsId(1L);
+        assertThat(listenersBySessionId.isEmpty()).isTrue();
     }
 }
