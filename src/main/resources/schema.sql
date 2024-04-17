@@ -115,3 +115,19 @@ alter table free_session rename column session_status to recruit_status;
 
 alter table pay_session add column progress_status varchar(20) default 'PREPARE';
 alter table free_session add column progress_status varchar(20) default 'PREPARE';
+
+create table pay_session_approve_students (
+    session_id bigint,
+    student_id bigint,
+    foreign key (session_id) REFERENCES pay_session (id),
+    foreign key (student_id) REFERENCES ns_user (id),
+    primary key (session_id, student_id)
+);
+
+create table free_session_approve_students (
+    session_id bigint,
+    student_id bigint,
+    foreign key (session_id) REFERENCES free_session (id),
+    foreign key (student_id) REFERENCES ns_user (id),
+    primary key (session_id, student_id)
+);

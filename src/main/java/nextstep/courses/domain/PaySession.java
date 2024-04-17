@@ -29,8 +29,8 @@ public class PaySession extends Session {
         this.maximumStudents = maximumStudents;
     }
 
-    public PaySession(Long id, List<SessionImage> sessionImage, RecruitStatus recruitStatus, SessionProgressStatus sessionProgressStatus, SessionDate sessionDate, Set<NsUser> students, int maximumStudents, long amount) {
-        super(id, sessionImage, recruitStatus, sessionProgressStatus, sessionDate, students);
+    public PaySession(Long id, List<SessionImage> sessionImage, RecruitStatus recruitStatus, SessionProgressStatus sessionProgressStatus, SessionDate sessionDate, Set<NsUser> students, Set<NsUser> approveStudents, int maximumStudents, long amount) {
+        super(id, sessionImage, recruitStatus, sessionProgressStatus, sessionDate, students, approveStudents);
         assertValidMaximumStudents(maximumStudents);
         assertValidAmount(amount);
         this.amount = amount;

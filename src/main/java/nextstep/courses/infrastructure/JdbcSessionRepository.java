@@ -59,9 +59,11 @@ public class JdbcSessionRepository implements SessionRepository {
         String paySessionSql = "select id, recruit_status, progress_status, start_date, end_date from free_session where id = ?";
         String sessionImageTableName = "free_session_image";
         String studentsTableName = "free_session_students";
+        String approveStudentsTableName = "free_session_approve_students";
 
         List<SessionImage> sessionImage = findSessionImageBySessionId(sessionId, sessionImageTableName);
         Set<NsUser> students = findSessionStudentsBySessionId(sessionId, studentsTableName);
+        Set<NsUser> approveStudents = findSessionApproveStudentsBySessionId(sessionId, approveStudentsTableName);
 
         RowMapper<FreeSession> sessionMapper = (rs, rowNum) ->
                 new FreeSession(rs.getLong(1),
@@ -69,7 +71,8 @@ public class JdbcSessionRepository implements SessionRepository {
                         RecruitStatus.findByName(rs.getString(2)),
                         SessionProgressStatus.findByName(rs.getString(3)),
                         new SessionDate(toLocalDate(rs.getTimestamp(4)), toLocalDate(rs.getTimestamp(5))),
-                        students
+                        students,
+                        approveStudents
                 );
 
         return Optional.ofNullable(jdbcTemplate.queryForObject(paySessionSql, sessionMapper, sessionId));
@@ -79,9 +82,11 @@ public class JdbcSessionRepository implements SessionRepository {
         String paySessionSql = "select id, recruit_status, progress_status, amount, maximum_students, start_date, end_date from pay_session where id = ?";
         String sessionImageTableName = "pay_session_image";
         String studentsTableName = "pay_session_students";
+        String approveStudentsTableName = "pay_session_approve_students";
 
         List<SessionImage> sessionImage = findSessionImageBySessionId(sessionId, sessionImageTableName);
         Set<NsUser> students = findSessionStudentsBySessionId(sessionId, studentsTableName);
+        Set<NsUser> approveStudents = findSessionApproveStudentsBySessionId(sessionId, approveStudentsTableName);
 
         RowMapper<PaySession> sessionMapper = (rs, rowNum) ->
                 new PaySession(rs.getLong(1),
@@ -90,6 +95,7 @@ public class JdbcSessionRepository implements SessionRepository {
                         SessionProgressStatus.findByName(rs.getString(3)),
                         new SessionDate(toLocalDate(rs.getTimestamp(6)), toLocalDate(rs.getTimestamp(7))),
                         students,
+                        approveStudents,
                         rs.getInt(5),
                         rs.getInt(4)
                 );
@@ -115,6 +121,7 @@ public class JdbcSessionRepository implements SessionRepository {
     private void savePaySession(PaySession paySession, Long courseId) {
         String sql = "insert into pay_session (id, progress_status, recruit_status, amount, maximum_students, start_date, end_date, course_id) values (?, ?, ?, ?, ?, ?, ?, ?)";
         String studentsTableName = "pay_session_students";
+        String approveStudentsTableName = "pay_session_approve_students";
         String sessionImageTableName = "pay_session_image";
 
         jdbcTemplate.update(sql,
@@ -129,11 +136,13 @@ public class JdbcSessionRepository implements SessionRepository {
 
         insertStudents(paySession, studentsTableName);
         insertSessionImage(paySession, sessionImageTableName);
+        insertApproveStudents(paySession, approveStudentsTableName);
     }
 
     private void saveFreeSession(FreeSession freeSession, Long courseId) {
         String sql = "insert into free_session (id, progress_status, recruit_status, start_date, end_date, course_id) values (?, ?, ?, ?, ?, ?)";
         String studentsTableName = "free_session_students";
+        String approveStudentsTableName = "free_session_approve_students";
         String sessionImageTableName = "free_session_image";
 
         jdbcTemplate.update(sql,
@@ -146,6 +155,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
         insertStudents(freeSession, studentsTableName);
         insertSessionImage(freeSession, sessionImageTableName);
+        insertApproveStudents(freeSession, approveStudentsTableName);
     }
 
     private List<SessionImage> findSessionImageBySessionId(Long sessionId, String tableName) {
@@ -176,10 +186,37 @@ public class JdbcSessionRepository implements SessionRepository {
         return new HashSet<>(jdbcTemplate.query(studentsSql, studentsMapper, sessionId));
     }
 
+
+
+    private Set<NsUser> findSessionApproveStudentsBySessionId(Long sessionId, String tableName) {
+        String studentsSql = "select ns_user.id, ns_user.user_id, ns_user.password, ns_user.name, ns_user.email, ns_user.created_at, ns_user.updated_at " +
+                "from " + tableName + " join ns_user on " + tableName + ".student_id = ns_user.id " +
+                "where " + tableName +".session_id = ?";
+
+        RowMapper<NsUser> studentsMapper = (rs, rowNum) ->
+                new NsUser(
+                        rs.getLong(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        toLocalDateTime(rs.getTimestamp(6)),
+                        toLocalDateTime(rs.getTimestamp(7)));
+
+        return new HashSet<>(jdbcTemplate.query(studentsSql, studentsMapper, sessionId));
+    }
+
     private void insertStudents(Session session, String tableName) {
         String sql = "insert into " + tableName + " (session_id, student_id) values (?, ?)";
 
         session.getStudents().forEach(student ->
+                jdbcTemplate.update(sql, session.getId(), student.getId()));
+    }
+
+    private void insertApproveStudents(Session session, String tableName) {
+        String sql = "insert into " + tableName + " (session_id, student_id) values (?, ?)";
+
+        session.getApproveStudents().forEach(student ->
                 jdbcTemplate.update(sql, session.getId(), student.getId()));
     }
 

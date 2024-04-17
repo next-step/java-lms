@@ -15,8 +15,8 @@ public class FreeSession extends Session {
         super(id, sessionImage, recruitStatus, sessionDate, students);
     }
 
-    public FreeSession(Long id, List<SessionImage> sessionImage, RecruitStatus recruitStatus,  SessionProgressStatus sessionProgressStatus, SessionDate sessionDate, Set<NsUser> students) {
-        super(id, sessionImage, recruitStatus, sessionProgressStatus, sessionDate, students);
+    public FreeSession(Long id, List<SessionImage> sessionImage, RecruitStatus recruitStatus, SessionProgressStatus sessionProgressStatus, SessionDate sessionDate, Set<NsUser> students, Set<NsUser> approveStudents) {
+        super(id, sessionImage, recruitStatus, sessionProgressStatus, sessionDate, students, approveStudents);
     }
 
 
