@@ -1,4 +1,4 @@
-package nextstep.courses.infrastructure;
+package nextstep.courses.domain;
 
 import nextstep.courses.domain.CoverImage;
 import nextstep.courses.domain.MembershipType;
