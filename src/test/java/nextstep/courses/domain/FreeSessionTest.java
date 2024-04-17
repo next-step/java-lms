@@ -2,12 +2,9 @@ package nextstep.courses.domain;
 
 import nextstep.sessions.domain.*;
 import nextstep.users.domain.NsUser;
-import nextstep.users.domain.NsUsers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
@@ -29,8 +26,7 @@ public class FreeSessionTest {
         int imageHeight = 200;
         SessionImage sessionImage = new SessionImage(imageByte, imageType, imageWidth, imageHeight);
 
-        List<NsUser> userList = List.of(new NsUser(), new NsUser(), new NsUser());
-        session = new FreeSession(new Course(), sessionPeriod, sessionImage, new NsUsers(userList), SessionStatus.PREPARING);
+        session = new FreeSession(new Course(), sessionPeriod, sessionImage, SessionStatus.PREPARING);
     }
 
     @Test

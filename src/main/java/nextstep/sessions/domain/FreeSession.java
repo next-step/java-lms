@@ -6,8 +6,8 @@ import nextstep.users.domain.NsUsers;
 
 public class FreeSession extends Session{
 
-    public FreeSession(Course course, SessionPeriod sessionPeriod, SessionImage sessionImage, NsUsers nsUsers, SessionStatus sessionStatus) {
-        super(course, sessionPeriod, sessionImage, nsUsers, sessionStatus);
+    public FreeSession(Course course, SessionPeriod sessionPeriod, SessionImage sessionImage, SessionStatus sessionStatus) {
+        super(course, sessionPeriod, sessionImage, sessionStatus);
     }
 
     @Override
