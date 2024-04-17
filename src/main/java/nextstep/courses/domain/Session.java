@@ -13,6 +13,7 @@ public class Session {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Course course;
+    private SessionImage sessionImage;
     private SessionStatus sessionStatus;
     private SessionType sessionType;
     private int capacity;
