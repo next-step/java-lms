@@ -2,6 +2,7 @@ package nextstep.qna.service;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.domain.*;
+import nextstep.qna.event.DeleteHistorySavePublisher;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,7 +27,7 @@ public class QnaServiceTest {
     private QuestionRepository questionRepository;
 
     @Mock
-    private DeleteHistoryService deleteHistoryService;
+    private DeleteHistorySavePublisher deleteHistorySavePublisher;
 
     @InjectMocks
     private QnAService qnAService;
@@ -85,6 +86,6 @@ public class QnaServiceTest {
         List<DeleteHistory> deleteHistories = Arrays.asList(
                 new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now()),
                 new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
-        verify(deleteHistoryService).saveAll(deleteHistories);
+        verify(deleteHistorySavePublisher).publish(deleteHistories);
     }
 }
