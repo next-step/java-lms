@@ -1,23 +1,17 @@
 package nextstep.image.domain;
 
 public class ImageShape {
-	private int width;
-	private int height;
+	private ImageWidth imageWidth;
+	private ImageHeight imageHeight;
 
-	public ImageShape(int width, int height) {
-		validateShape(width, height);
-		this.width = width;
-		this.height = height;
+	public ImageShape(ImageWidth imageWidth, ImageHeight imageHeight) {
+		validateShape(imageWidth, imageHeight);
+		this.imageWidth = imageWidth;
+		this.imageHeight = imageHeight;
 	}
 
-	private static void validateShape(final int width, final int height) {
-		if(width >= 300) {
-			throw new IllegalArgumentException("너비는 300px보다 커야 합니다.");
-		}
-		if(height >= 200) {
-			throw new IllegalArgumentException("높이는 200px보다 커야 합니다.");
-		}
-		if (width * 2 != height * 3) {
+	private static void validateShape(final ImageWidth imageWidth, final ImageHeight imageHeight) {
+		if (imageWidth.getWidth() * 2 != imageHeight.getHeight() * 3) {
 			throw new IllegalArgumentException("가로 세로 비율은 3:2이어야 합니다.");
 		}
 	}
