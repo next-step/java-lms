@@ -27,11 +27,21 @@ public class PaidSessionTest {
     }
 
     @Test
+    void 수강신청_정상() {
+        PaidSession paidSession = new PaidSession(0L, "title", LocalDate.now(), LocalDate.now(), new CoverImage(), SessionStatus.RECRUITING, 1L, 10000L);
+        NsUser JAVAJIGI = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
+
+        Assertions.assertThatCode(() -> {
+            paidSession.join(JAVAJIGI);
+        }).doesNotThrowAnyException();
+    }
+
+    @Test
     void 수강신청_예외_인원초과() {
         PaidSession paidSession = new PaidSession(0L, "title", LocalDate.now(), LocalDate.now(), new CoverImage(), SessionStatus.RECRUITING, 0L, 10000L);
         NsUser JAVAJIGI = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
 
-        Assertions.assertThatIllegalArgumentException().isThrownBy(()->{
+        Assertions.assertThatIllegalArgumentException().isThrownBy(() -> {
             paidSession.join(JAVAJIGI);
         });
     }
