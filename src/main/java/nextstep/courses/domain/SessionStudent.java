@@ -36,4 +36,8 @@ public class SessionStudent {
   public List<Long> getIds() {
     return students.stream().map(NsUser::getId).collect(Collectors.toList());
   }
+
+  public List<NsUser> getStudents(){
+    return this.students;
+  }
 }

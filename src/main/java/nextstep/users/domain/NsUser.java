@@ -1,11 +1,16 @@
 package nextstep.users.domain;
 
+import static nextstep.courses.domain.SelectionStatus.ACCEPTED;
 import static nextstep.users.domain.UserAuthorization.STUDENT;
 import static nextstep.users.domain.UserAuthorization.TEACHER;
 
+import nextstep.courses.domain.SelectedStudents;
+import nextstep.courses.domain.SessionStudent;
 import nextstep.qna.UnAuthorizedException;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class NsUser {
@@ -146,6 +151,11 @@ public class NsUser {
         if(!isTeacher()){
             throw new IllegalArgumentException("강사만 학생을 수락할 수 있습니다.");
         }
+    }
+
+    public SelectedStudents acceptStudents(SessionStudent students) {
+        this.checkSessionAcceptAuth();
+        return new SelectedStudents(Map.of(ACCEPTED, students.getStudents()));
     }
 
     private static class GuestNsUser extends NsUser {

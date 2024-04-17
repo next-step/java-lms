@@ -10,6 +10,7 @@ import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class SessionService {
@@ -33,16 +34,12 @@ public class SessionService {
         sessionRepository.saveStudents(session);
     }
 
-    public void acceptStudent(NsUser teacher, Long sessionId, SelectedStudents students){
-        checkSessionAcceptAuth(teacher);
-        sessionRepository.updateStudentSelect(sessionId, students);
+    public void acceptStudent(NsUser teacher, Long sessionId, SessionStudent students){
+        SelectedStudents selectedStudents = teacher.acceptStudents(students);
+        sessionRepository.updateStudentSelect(sessionId, selectedStudents);
     }
 
     public SessionStudent getAcceptedStudents(Long sessionId){
         return sessionRepository.findAcceptedStudentsById(sessionId);
-    }
-
-    private void checkSessionAcceptAuth(NsUser teacher) {
-        teacher.checkSessionAcceptAuth();
     }
 }
