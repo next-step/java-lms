@@ -123,9 +123,18 @@ public class NsUser {
         return false;
     }
 
+    public void addPayment(Payment payment){
+        payments.add(payment);
+    }
+
     public boolean isPaymentFor(PaidSession paidSession) {
         return payments.stream()
                 .anyMatch(payment -> payment.isPaymentFor(paidSession));
+    }
+
+    public boolean isNotPaymentFor(PaidSession paidSession) {
+        return payments.stream()
+                .noneMatch(payment -> payment.isPaymentFor(paidSession));
     }
 
     private static class GuestNsUser extends NsUser {

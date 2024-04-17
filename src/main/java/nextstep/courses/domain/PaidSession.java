@@ -35,7 +35,7 @@ public class PaidSession extends Session {
             throw new IllegalArgumentException("이미 수강중 입니다");
         }
 
-        if (user.isPaymentFor(this)) {
+        if (user.isNotPaymentFor(this)) {
             throw new IllegalArgumentException("해당 강의를 결제한 내역이 없습니다");
         }
 
@@ -43,6 +43,6 @@ public class PaidSession extends Session {
     }
 
     public boolean isFee(Long amount) {
-        return this.fee == amount;
+        return amount.equals(this.fee);
     }
 }
