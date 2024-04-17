@@ -35,12 +35,18 @@ public class CoverImageInfoRepositoryTest {
     @Test
     @DisplayName("이미지 CRUD")
     void crud() {
-        CoverImageInfo coverImageInfo = CoverImageInfo.builder()
-                .size(10L)
-                .width(300L)
-                .height(200L)
-                .imageType("gif")
-                .build();
+        CoverImageInfo coverImageInfo = CoverImageInfo.createNewInstance(10L, "gif", 300L, 200L);
+
+        Long savedCoverImageId = coverImageInfoRepository.saveAndGetId(coverImageInfo);
+
+        CoverImageInfo savedCoverImageInfo = coverImageInfoRepository.findById(savedCoverImageId);
+        assertThat(coverImageInfo.getSize()).isEqualTo(10L);
+        LOGGER.debug("CoverImageInfo: {}", savedCoverImageInfo);
+    }
+
+    @Test
+    void findBySessionId() {
+        CoverImageInfo coverImageInfo = CoverImageInfo.createNewInstance(10L, "gif", 300L, 200L);
 
         Long savedCoverImageId = coverImageInfoRepository.saveAndGetId(coverImageInfo);
 

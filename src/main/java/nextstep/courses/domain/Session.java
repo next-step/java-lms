@@ -4,31 +4,34 @@ import nextstep.courses.domain.enums.SessionStatus;
 import nextstep.courses.domain.enums.SessionType;
 import nextstep.payments.domain.Payment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 abstract public class Session {
     protected final Long id;
     protected final Course course;
-    protected final SessionDate sessionDate;
-    protected SessionStatus sessionStatus;
+    protected final SessionInfos sessionInfos;
+    protected SessionType sessionType;
     protected int numberOfStudents;
-    protected CoverImageInfo coverImageInfo;
-    protected final SessionType type;
+    protected List<CoverImageInfo> coverImageInfos;
 
-    protected Session(Long id, Course course, SessionDate sessionDate, SessionStatus sessionStatus, int numberOfStudents, CoverImageInfo coverImageInfo, SessionType type) {
+    protected Session(Long id, Course course, SessionInfos sessionInfos, SessionType sessionType, int numberOfStudents) {
+        this(id, course, sessionInfos, sessionType, numberOfStudents, new ArrayList<>());
+    }
+
+    protected Session(Long id, Course course, SessionInfos sessionInfos, SessionType sessionType, int numberOfStudents, List<CoverImageInfo> coverImageInfos) {
         this.id = id;
         this.course = course;
-        this.sessionDate = sessionDate;
-        if (sessionStatus == null) {
-            this.sessionStatus = SessionStatus.READY;
-        }
+        this.sessionInfos = sessionInfos;
+        this.sessionType = sessionType;
         this.numberOfStudents = numberOfStudents;
-        this.coverImageInfo = coverImageInfo;
-        this.type = type;
+        this.coverImageInfos = coverImageInfos;
     }
 
     abstract public void enroll(Payment payment);
 
     public void startRecruit() {
-        sessionStatus = SessionStatus.RECRUITING;
+        sessionInfos.startRecruit();
     }
 
     public boolean hasNumberOfStudents(int targetCount) {
@@ -40,22 +43,30 @@ abstract public class Session {
     public Course getCourse() {return course;}
 
     public SessionDate getSessionDate() {
-        return sessionDate;
+        return sessionInfos.getSessionDate();
     }
 
     public SessionStatus getSessionStatus() {
-        return sessionStatus;
+        return sessionInfos.getSessionStatus();
     }
 
     public int getNumberOfStudents() {
         return numberOfStudents;
     }
 
-    public CoverImageInfo getCoverImageInfo() {
-        return coverImageInfo;
+    public void addCoverImageInfo(CoverImageInfo coverImageInfo) {
+        this.coverImageInfos.add(coverImageInfo);
     }
 
     public SessionType getType() {
-        return type;
+        return sessionType;
+    }
+
+    public boolean isRecruiting() {
+        return sessionInfos.isStatusNotRecruiting();
+    }
+
+    public boolean isCoverImageEmpty() {
+        return coverImageInfos.isEmpty();
     }
 }

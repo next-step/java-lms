@@ -20,7 +20,7 @@ class CoverImageInfoTest {
     @DisplayName("이미지 크기는 1024KB(1MB)를 초과하지 않아야 한다.")
     void create_image_size_exception() {
         Long overSize = 1025L;
-        assertThatThrownBy(() -> CoverImageInfo.builder().size(overSize).imageType(NORMAL_TYPE).width(NORMAL_WIDTH).height(NORMAL_HEIGHT).build())
+        assertThatThrownBy(() -> CoverImageInfo.createNewInstance(overSize, NORMAL_TYPE, NORMAL_WIDTH, NORMAL_HEIGHT))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining(IMAGE_SIZE_OVER_MESSAGE);
     }
@@ -29,7 +29,7 @@ class CoverImageInfoTest {
     @DisplayName("매개변수의 이미지 타입이 ImageType에 해당해야 한다.")
     void create_image_type_exception() {
         String wrongImageType = "vvc";
-        assertThatThrownBy(() -> CoverImageInfo.builder().size(NORMAL_SIZE).imageType(wrongImageType).width(NORMAL_WIDTH).height(NORMAL_HEIGHT).build())
+        assertThatThrownBy(() -> CoverImageInfo.createNewInstance(NORMAL_SIZE, wrongImageType, NORMAL_WIDTH, NORMAL_HEIGHT))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining(IMAGE_TYPE_INVALID_MESSAGE);
     }
@@ -38,7 +38,7 @@ class CoverImageInfoTest {
     @DisplayName("width는 300 이상이어야 한다")
     void create_image_width_exception() {
         Long wrongWidth = 299L;
-        assertThatThrownBy(() -> CoverImageInfo.builder().size(NORMAL_SIZE).imageType(NORMAL_TYPE).width(wrongWidth).height(NORMAL_HEIGHT).build())
+        assertThatThrownBy(() -> CoverImageInfo.createNewInstance(NORMAL_SIZE, NORMAL_TYPE, wrongWidth, NORMAL_HEIGHT))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining(IMAGE_WIDTH_UNDER_MESSAGE);
     }
@@ -47,7 +47,7 @@ class CoverImageInfoTest {
     @DisplayName("height는 200 이상이어야 한다")
     void create_image_height_exception() {
         Long wrongHeight = 199L;
-        assertThatThrownBy(() -> CoverImageInfo.builder().size(NORMAL_SIZE).imageType(NORMAL_TYPE).width(NORMAL_WIDTH).height(wrongHeight).build())
+        assertThatThrownBy(() -> CoverImageInfo.createNewInstance(NORMAL_SIZE, NORMAL_TYPE, NORMAL_WIDTH, wrongHeight))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining(IMAGE_HEIGHT_UNDER_MESSAGE);
     }
@@ -56,13 +56,13 @@ class CoverImageInfoTest {
     @DisplayName("width와 height는 3:2 비율이어야 한다")
     void create_image_rate_exception() {
         Long wrongHeight = 250L;
-        assertThatThrownBy(() -> CoverImageInfo.builder().size(NORMAL_SIZE).imageType(NORMAL_TYPE).width(NORMAL_WIDTH).height(wrongHeight).build())
+        assertThatThrownBy(() -> CoverImageInfo.createNewInstance(NORMAL_SIZE, NORMAL_TYPE, NORMAL_WIDTH, wrongHeight))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining(IMAGE_WRONG_WIDTH_HEIGHT_RATE_MESSAGE);
     }
     @Test
     @DisplayName("모든 조건 만족 시 정상 생성")
     void create_success() {
-        assertThatNoException().isThrownBy(() -> CoverImageInfo.builder().size(NORMAL_SIZE).imageType(NORMAL_TYPE).width(NORMAL_WIDTH).height(NORMAL_HEIGHT).build());
+        assertThatNoException().isThrownBy(() -> CoverImageInfo.createNewInstance(NORMAL_SIZE, NORMAL_TYPE, NORMAL_WIDTH, NORMAL_HEIGHT));
     }
 }

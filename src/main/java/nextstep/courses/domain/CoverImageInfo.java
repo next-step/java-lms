@@ -23,14 +23,18 @@ public class CoverImageInfo {
     private final Long width;
     private final Long height;
 
-    private CoverImageInfo(Long id, Long size, String imageTypeStr, Long width, Long height) {
-        this(size, imageTypeStr, width, height);
-        this.id = id;
+    public static CoverImageInfo createNewInstance(Long size, String imageTypeStr, Long width, Long height) {
+        return new CoverImageInfo(0L, size, imageTypeStr, width, height);
     }
 
-    private CoverImageInfo(Long size, String imageTypeStr, Long width, Long height) {
+    public static CoverImageInfo createFromData(Long id, Long size, String imageTypeStr, Long width, Long height) {
+        return new CoverImageInfo(id, size, imageTypeStr, width, height);
+    }
+
+    private CoverImageInfo(Long id, Long size, String imageTypeStr, Long width, Long height) {
         validateImageSize(size);
         validateWidthAndHeight(width, height);
+        this.id = id;
         this.imageType = validatedImageType(imageTypeStr);
         this.size = size;
         this.width = width;
@@ -84,47 +88,6 @@ public class CoverImageInfo {
 
     private static boolean isCorrectImageRate(Long width, Long height) {
         return WIDTH_RATE * height != HEIGHT_RATE * width;
-    }
-
-    public static CoverImageInfoBuilder builder() {
-        return new CoverImageInfoBuilder();
-    }
-
-    public static class CoverImageInfoBuilder {
-        private Long id;
-        private Long size;
-        private String imageType;
-        private Long width;
-        private Long height;
-
-        public CoverImageInfoBuilder id(Long id) {
-            this.id = id;
-            return this;
-        }
-
-        public CoverImageInfoBuilder size(Long size) {
-            this.size = size;
-            return this;
-        }
-
-        public CoverImageInfoBuilder imageType(String imageTypeStr) {
-            this.imageType = imageTypeStr;
-            return this;
-        }
-
-        public CoverImageInfoBuilder width(Long width) {
-            this.width = width;
-            return this;
-        }
-
-        public CoverImageInfoBuilder height(Long height) {
-            this.height = height;
-            return this;
-        }
-
-        public CoverImageInfo build() {
-            return new CoverImageInfo(id, size, imageType, width, height);
-        }
     }
 
 }

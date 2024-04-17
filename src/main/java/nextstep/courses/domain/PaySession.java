@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.enums.SessionStatus;
 import nextstep.courses.domain.enums.SessionType;
 import nextstep.payments.domain.Payment;
 
@@ -12,8 +11,16 @@ public class PaySession extends Session {
     private final Long price;
     private final int maxNumberOfStudents;
 
-    private PaySession(Long id, Course course, SessionDate sessionDate, SessionStatus sessionStatus, int numberOfStudents, int maxNumberOfStudents, CoverImageInfo coverImageInfo, SessionType type, Long price) {
-        super(id, course, sessionDate, sessionStatus, numberOfStudents, coverImageInfo, type);
+    public static PaySession createNewInstance(Course course, SessionInfos sessionInfos, int maxNumberOfStudents, Long price) {
+        return new PaySession(0L, course, sessionInfos, 0, maxNumberOfStudents, price);
+    }
+
+    public static PaySession createFromData(Long id, Course course, SessionInfos sessionInfos, int numberOfStudents, int maxNumberOfStudents, Long price) {
+        return new PaySession(id, course, sessionInfos, numberOfStudents, maxNumberOfStudents, price);
+    }
+
+    private PaySession(Long id, Course course, SessionInfos sessionInfos, int numberOfStudents, int maxNumberOfStudents, Long price) {
+        super(id, course, sessionInfos, SessionType.PAY, numberOfStudents);
         this.price = price;
         this.maxNumberOfStudents = maxNumberOfStudents;
     }
@@ -25,7 +32,7 @@ public class PaySession extends Session {
     }
 
     private void validateEnrollable(Payment payment) {
-        if (sessionStatus.isStatusNotRecruiting()) {
+        if (sessionInfos.isStatusNotRecruiting()) {
             throw new IllegalStateException(SESSION_NOT_RECRUITING);
         }
         if (payment.isDifferentAmount(price)) {
@@ -44,68 +51,4 @@ public class PaySession extends Session {
         return price;
     }
 
-    public static PaySession.PaySessionBuilder builder() {
-        return new PaySession.PaySessionBuilder();
-    }
-
-    public static class PaySessionBuilder {
-        private Long id;
-        private Course course;
-        private SessionDate sessionDate;
-        private SessionStatus sessionStatus;
-        private int numberOfStudents;
-        private int maxNumberOfStudents;
-        private CoverImageInfo coverImageInfo;
-        private SessionType type;
-        private Long price;
-
-        public PaySession.PaySessionBuilder id(Long id) {
-            this.id = id;
-            return this;
-        }
-
-        public PaySession.PaySessionBuilder course(Course course) {
-            this.course = course;
-            return this;
-        }
-
-        public PaySession.PaySessionBuilder sessionDate(SessionDate sessionDate) {
-            this.sessionDate = sessionDate;
-            return this;
-        }
-
-        public PaySession.PaySessionBuilder sessionStatus(SessionStatus sessionStatus) {
-            this.sessionStatus = sessionStatus;
-            return this;
-        }
-
-        public PaySession.PaySessionBuilder numberOfStudents(int numberOfStudents) {
-            this.numberOfStudents = numberOfStudents;
-            return this;
-        }
-
-        public PaySession.PaySessionBuilder maxNumberOfStudents(int maxNumberOfStudents) {
-            this.maxNumberOfStudents = maxNumberOfStudents;
-            return this;
-        }
-
-        public PaySession.PaySessionBuilder coverImageInfo(CoverImageInfo coverImageInfo) {
-            this.coverImageInfo = coverImageInfo;
-            return this;
-        }
-
-        public PaySession.PaySessionBuilder type(SessionType type) {
-            this.type = type;
-            return this;
-        }
-
-        public PaySession.PaySessionBuilder price(Long price) {
-            this.price = price;
-            return this;
-        }
-
-        public PaySession build() {
-            return new PaySession(id, course, sessionDate, sessionStatus, numberOfStudents, maxNumberOfStudents, coverImageInfo, type, price);
-        }
-    }
 }

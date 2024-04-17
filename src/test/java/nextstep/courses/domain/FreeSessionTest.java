@@ -19,10 +19,14 @@ public class FreeSessionTest {
 
     @BeforeEach
     void setUp() {
-        freeSession = FreeSession.builder()
-                .sessionDate(SessionDate.of(LocalDateTime.now(), LocalDateTime.now()))
-                .sessionStatus(SessionStatus.READY)
-                .build();
+        freeSession = FreeSession.createNewInstance(
+                new Course(),
+                SessionInfos.createFromData(
+                        SessionDate.of(LocalDateTime.now(), LocalDateTime.now()),
+                        SessionStatus.READY,
+                        false
+                )
+        );
 
         payment = new Payment("1", 123L, 1L, 0L);
     }
