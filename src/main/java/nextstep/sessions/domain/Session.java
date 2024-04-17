@@ -126,4 +126,8 @@ public class Session {
     public Long getCourse() {
         return course.getId();
     }
+
+    public List<Enrollment> getEnrollments() {
+        return enrollments;
+    }
 }

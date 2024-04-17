@@ -18,6 +18,11 @@ public class Enrollment {
     private NsUser attendee;
 
     public Enrollment(final Session session, final NsUser attendee) {
+        this(null, session, attendee);
+    }
+
+    public Enrollment(final Long id, final Session session, final NsUser attendee) {
+        this.id = id;
         this.session = session;
         this.attendee = attendee;
     }
@@ -71,6 +76,10 @@ public class Enrollment {
         if (session.isEnd()) {
             throw new IllegalArgumentException("종료된 강의입니다.");
         }
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Long getSession() {
