@@ -16,11 +16,13 @@ import java.time.LocalDateTime;
 public class JdbcCourseRepository implements CourseRepository {
     private JdbcOperations jdbcTemplate;
 
-    private final SessionRepository sessionRepository;
+    private final FreeSessionRepository freeSessionRepository;
+    private final PaySessionRepository paySessionRepository;
 
-    public JdbcCourseRepository(JdbcOperations jdbcTemplate, SessionRepository sessionRepository) {
+    public JdbcCourseRepository(JdbcOperations jdbcTemplate, FreeSessionRepository freeSessionRepository, PaySessionRepository paySessionRepository) {
         this.jdbcTemplate = jdbcTemplate;
-        this.sessionRepository = sessionRepository;
+        this.freeSessionRepository = freeSessionRepository;
+        this.paySessionRepository = paySessionRepository;
     }
 
     @Override
@@ -38,8 +40,15 @@ public class JdbcCourseRepository implements CourseRepository {
             return ps;
         }, keyHolder);
 
-        course.getSessions().getSessions().forEach(session ->
-                sessionRepository.saveSession(session, (long) keyHolder.getKey())
+        course.getSessions().getSessions().forEach(session -> {
+                    if (session instanceof PaySession) {
+                        paySessionRepository.saveSession((PaySession) session, (long) keyHolder.getKey());
+                    }
+
+                    if (session instanceof FreeSession) {
+                        freeSessionRepository.saveSession((FreeSession) session, (long) keyHolder.getKey());
+                    }
+                }
         );
 
         return result;
@@ -48,7 +57,7 @@ public class JdbcCourseRepository implements CourseRepository {
     @Override
     public Course findById(Long id) {
         String sql = "select id, title, creator_id, created_at, updated_at from course where id = ?";
-        Sessions sessions = sessionRepository.findByCourseId(id);
+        Sessions sessions = Sessions.concatSessions(freeSessionRepository.findByCourseId(id), paySessionRepository.findByCourseId(id));
 
         RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(
                 rs.getLong(1),
