@@ -7,7 +7,7 @@ public class CoverImage {
     private Long hight;
 
     public CoverImage() {
-        this(0L, ImageExtension.GIF.name(), 300L, 200L);
+        this(0L, ImageExtension.GIF.getValue(), 300L, 200L);
     }
 
     public CoverImage(Long size, String extension, Long width, Long hight) {

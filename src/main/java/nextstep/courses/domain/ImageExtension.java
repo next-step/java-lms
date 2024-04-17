@@ -11,7 +11,11 @@ public enum ImageExtension {
         this.value = value.toLowerCase();
     }
 
-    public static ImageExtension of(String value){
+    public String getValue() {
+        return value;
+    }
+
+    public static ImageExtension of(String value) {
         return Arrays.stream(values())
                 .filter(imageExtension -> imageExtension.value.equals(value))
                 .findFirst()
