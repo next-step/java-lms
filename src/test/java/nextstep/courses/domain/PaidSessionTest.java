@@ -45,4 +45,26 @@ public class PaidSessionTest {
             paidSession.join(JAVAJIGI);
         });
     }
+
+    @Test
+    void 수강신청_예외_모집전() {
+        PaidSession paidSession = new PaidSession(0L, "title", LocalDate.now(), LocalDate.now(), new CoverImage(), SessionStatus.PREPARING, 1L, 10000L);
+        NsUser JAVAJIGI = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
+
+        Assertions.assertThatIllegalArgumentException().isThrownBy(() -> {
+            paidSession.join(JAVAJIGI);
+        });
+    }
+
+    @Test
+    void 수강신청_예외_이미수강중() {
+        PaidSession paidSession = new PaidSession(0L, "title", LocalDate.now(), LocalDate.now(), new CoverImage(), SessionStatus.RECRUITING, 2L, 10000L);
+        NsUser JAVAJIGI = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
+        paidSession.join(JAVAJIGI);
+
+        Assertions.assertThatIllegalArgumentException().isThrownBy(() -> {
+            paidSession.join(JAVAJIGI);
+        });
+    }
+
 }
