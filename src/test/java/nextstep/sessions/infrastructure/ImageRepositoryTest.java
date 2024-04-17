@@ -3,12 +3,15 @@ package nextstep.sessions.infrastructure;
 import nextstep.sessions.domain.image.Image;
 import nextstep.sessions.domain.image.ImageSize;
 import nextstep.sessions.domain.image.ImageType;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,4 +35,14 @@ public class ImageRepositoryTest {
         assertThat(imageRepository.save(image)).isEqualTo(1);
     }
 
+    @DisplayName("이미지를 조회한다")
+    @Test
+    void findById() {
+        Image image = new Image(10, ImageType.JPEG, new ImageSize(300, 200));
+        imageRepository.save(image);
+
+        Optional<Image> savedImage = imageRepository.findById(1L);
+
+        assertThat(savedImage).isNotEmpty();
+    }
 }
