@@ -1,8 +1,12 @@
 package nextstep.users.domain;
 
+import nextstep.courses.domain.PaidSession;
+import nextstep.payments.domain.Payment;
 import nextstep.qna.UnAuthorizedException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class NsUser {
@@ -21,6 +25,8 @@ public class NsUser {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private List<Payment> payments = new ArrayList<>();
 
     public NsUser() {
     }
@@ -115,6 +121,20 @@ public class NsUser {
 
     public boolean isGuestUser() {
         return false;
+    }
+
+    public void addPayment(Payment payment){
+        payments.add(payment);
+    }
+
+    public boolean isPaymentFor(PaidSession paidSession) {
+        return payments.stream()
+                .anyMatch(payment -> payment.isPaymentFor(paidSession));
+    }
+
+    public boolean isNotPaymentFor(PaidSession paidSession) {
+        return payments.stream()
+                .noneMatch(payment -> payment.isPaymentFor(paidSession));
     }
 
     private static class GuestNsUser extends NsUser {
