@@ -4,29 +4,40 @@ import nextstep.courses.domain.exception.NotRecruitException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public abstract class Session {
 
     private final Long id;
-    private final SessionImage sessionImage;
-    private SessionStatus sessionStatus;
+    private final List<SessionImage> sessionImage;
+    private RecruitStatus recruitStatus;
+    private SessionProgressStatus sessionProgressStatus;
     private final Set<NsUser> students;
+    private final Set<NsUser> approveStudents;
     private final SessionDate sessionDate;
 
-    public Session(Long id, SessionImage sessionImage, SessionStatus sessionStatus, SessionDate sessionDate) {
-        this(id, sessionImage,sessionStatus, sessionDate, new HashSet<>());
+
+    public Session(Long id, List<SessionImage> sessionImage, RecruitStatus recruitStatus, SessionDate sessionDate) {
+        this(id, sessionImage, recruitStatus, sessionDate, new HashSet<>());
     }
 
-    public Session(Long id, SessionImage sessionImage, SessionStatus sessionStatus, SessionDate sessionDate, Set<NsUser> students) {
+    public Session(Long id, List<SessionImage> sessionImage, RecruitStatus recruitStatus, SessionProgressStatus sessionProgressStatus, SessionDate sessionDate) {
+        this(id, sessionImage, recruitStatus, sessionProgressStatus, sessionDate, new HashSet<>(), new HashSet<>());
+    }
+
+    public Session(Long id, List<SessionImage> sessionImage, RecruitStatus recruitStatus, SessionDate sessionDate, Set<NsUser> students) {
+        this(id, sessionImage, recruitStatus, SessionProgressStatus.PREPARE, sessionDate, students, new HashSet<>());
+    }
+
+    public Session(Long id, List<SessionImage> sessionImage, RecruitStatus recruitStatus, SessionProgressStatus sessionProgressStatus, SessionDate sessionDate, Set<NsUser> students, Set<NsUser> approveStudents) {
         this.id = id;
         this.sessionImage = sessionImage;
-        this.sessionStatus = sessionStatus;
+        this.recruitStatus = recruitStatus;
+        this.sessionProgressStatus = sessionProgressStatus;
         this.sessionDate = sessionDate;
         this.students = students;
+        this.approveStudents = approveStudents;
+
     }
 
     public final void enrollmentUser(NsUser user, Payment payment) {
@@ -37,6 +48,14 @@ public abstract class Session {
         students.add(user);
     }
 
+    public final void removeNotApproveUser() {
+        students.removeIf(student -> !approveStudents.contains(student));
+    }
+
+    public final void addApproveStudent(NsUser nsUser) {
+        approveStudents.add(nsUser);
+    }
+
     private void assertNotDuplicateStudents(NsUser user) {
         if (students.contains(user)) {
             throw new NotRecruitException();
@@ -44,7 +63,7 @@ public abstract class Session {
     }
 
     private void assertRecruit() {
-        if (!sessionStatus.isRecruit()) {
+        if (!recruitStatus.isRecruit()) {
             throw new NotRecruitException();
         }
     }
@@ -53,20 +72,32 @@ public abstract class Session {
         return new HashSet<>(students);
     }
 
+    public Set<NsUser> getApproveStudents() {
+        return new HashSet<>(approveStudents);
+    }
+
     public Long getId() {
         return id;
     }
 
-    public SessionImage getSessionImage() {
+    public List<SessionImage> getSessionImage() {
         return sessionImage;
     }
 
-    public SessionStatus getSessionStatus() {
-        return sessionStatus;
+    public RecruitStatus getRecruitStatus() {
+        return recruitStatus;
+    }
+
+    public SessionProgressStatus getSessionProgressStatus() {
+        return sessionProgressStatus;
     }
 
     public SessionDate getSessionDate() {
         return sessionDate;
+    }
+
+    public void changeProgressStatus(SessionProgressStatus sessionProgressStatus) {
+        this.sessionProgressStatus = sessionProgressStatus;
     }
 
 
