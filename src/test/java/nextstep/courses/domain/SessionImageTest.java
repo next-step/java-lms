@@ -6,7 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class SessionImageTest {
+public class SessionImageTest {
+    public static final SessionImage SESSION_IMAGE = new SessionImage(1, ImageFileType.JPG, 300, 200);
     @Test
     @DisplayName("SessionImage 검증 테스트 - 이미지 용량 초과")
     public void validateSessionImageOverSizeTest() {
