@@ -12,7 +12,7 @@ public class Image {
 
     public Image(String fileName) {
         try {
-            ImageInfo.validate(fileName);
+            ImageMeta.validate(fileName);
             ClassPathResource resource = new ClassPathResource(fileName);
             this.file = new File(resource.getPath());
         } catch (IOException e) {
@@ -20,7 +20,7 @@ public class Image {
         }
     }
 
-    private static class ImageInfo {
+    private static class ImageMeta {
 
         private static final int MIN_WIDTH = 300;
         private static final int MIN_HEIGHT = 200;
@@ -50,16 +50,16 @@ public class Image {
                         String.format("파일 확장자가 올바르지 않습니다. 해당 파일 확장자는 %s 입니다.", extractExtension(fileName)));
             }
 
-            if (!ImageInfo.isValidRatio(fileName)) {
+            if (!ImageMeta.isValidRatio(fileName)) {
                 throw new IllegalArgumentException(String.format("강의 커버 이미지의 비율은 %f 올바르지 않습니다.", RATIO));
             }
 
-            if (!ImageInfo.isValidSize(fileName)) {
+            if (!ImageMeta.isValidSize(fileName)) {
                 throw new IllegalArgumentException(
                         String.format("강의 커버 이미지의 최소 가로길이 %d, 세로길이 %d 이상이여야 합니다.", MIN_WIDTH, MIN_HEIGHT));
             }
 
-            if (!ImageInfo.isValidVolume(fileName)) {
+            if (!ImageMeta.isValidVolume(fileName)) {
                 throw new IllegalArgumentException(
                         String.format("강의 커버 이미지는 최대 크기는 %d 입니다.", MAX_FILE_SIZE));
             }
