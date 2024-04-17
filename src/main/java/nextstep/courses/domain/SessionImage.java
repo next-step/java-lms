@@ -8,10 +8,10 @@ public class SessionImage {
     private static final int MINIMUM_HEIGHT = 200;
     private static final double IMAGE_RATIO = (double) 3 / 2;
 
-    private int imageSize;
-    private ImageFileType fileType;
-    private int width;
-    private int height;
+    private final int imageSize;
+    private final ImageFileType fileType;
+    private final int width;
+    private final int height;
 
     public SessionImage(int imageSize, ImageFileType fileType, int width, int height) {
         this.imageSize = imageSize;
@@ -20,8 +20,12 @@ public class SessionImage {
         this.height = height;
     }
 
+    public SessionImage(int imageSize, String inputFileType, int width, int height) {
+        this(imageSize, ImageFileType.getImageFileType(inputFileType), width, height);
+    }
+
     public void validateSessionImage() {
-        if (imageSize > 1) {
+        if (imageSize > MAXIMUM_SIZE) {
             throw new IllegalArgumentException("이미지 크기는 1MB 이하여야 합니다.");
         }
 

@@ -5,7 +5,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 class SessionImageTest {
     @Test
@@ -50,4 +49,11 @@ class SessionImageTest {
                 .hasMessage("이미지의 가로:세로 비율은 3:2 여야 합니다.");
     }
 
+    @Test
+    @DisplayName("SessionImage 검증 테스트 - 유효하지 않은 확장자 파일 입력")
+    public void invalidImageFileTypeTest() {
+        assertThatThrownBy(() -> new SessionImage(1, "bmp", 300, 200))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("bmp은 유효한 이미지 파일이 아닙니다. (허용 타입: gif, jpg, jpeg, png, svg)");
+    }
 }
