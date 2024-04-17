@@ -35,4 +35,25 @@ public class FreeSessionTest {
         freeSession.join(JAVAJIGI);
         Assertions.assertThat(freeSession.userCount()).isEqualTo(1);
     }
+
+    @Test
+    void 수강신청_예외_모집전() {
+        FreeSession freeSession = new FreeSession(0L, "title", LocalDate.now(), LocalDate.now(), new CoverImage(), SessionStatus.PREPARING);
+        NsUser JAVAJIGI = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
+
+        Assertions.assertThatIllegalArgumentException().isThrownBy(()->{
+            freeSession.join(JAVAJIGI);
+        });
+    }
+
+    @Test
+    void 수간신청_예외_이미수강중() {
+        FreeSession freeSession = new FreeSession(0L, "title", LocalDate.now(), LocalDate.now(), new CoverImage(), SessionStatus.RECRUITING);
+        NsUser JAVAJIGI = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
+        freeSession.join(JAVAJIGI);
+
+        Assertions.assertThatIllegalArgumentException().isThrownBy(()->{
+            freeSession.join(JAVAJIGI);
+        });
+    }
 }
