@@ -14,17 +14,28 @@ public abstract class Session {
     private final Long id;
     private final List<SessionImage> sessionImage;
     private RecruitStatus recruitStatus;
+    private SessionProgressStatus sessionProgressStatus;
     private final Set<NsUser> students;
     private final SessionDate sessionDate;
+
 
     public Session(Long id, List<SessionImage> sessionImage, RecruitStatus recruitStatus, SessionDate sessionDate) {
         this(id, sessionImage, recruitStatus, sessionDate, new HashSet<>());
     }
 
+    public Session(Long id, List<SessionImage> sessionImage, RecruitStatus recruitStatus, SessionProgressStatus sessionProgressStatus, SessionDate sessionDate) {
+        this(id, sessionImage, recruitStatus, sessionProgressStatus, sessionDate, new HashSet<>());
+    }
+
     public Session(Long id, List<SessionImage> sessionImage, RecruitStatus recruitStatus, SessionDate sessionDate, Set<NsUser> students) {
+        this(id, sessionImage, recruitStatus, SessionProgressStatus.PREPARE, sessionDate, students);
+    }
+
+    public Session(Long id, List<SessionImage> sessionImage, RecruitStatus recruitStatus, SessionProgressStatus sessionProgressStatus, SessionDate sessionDate, Set<NsUser> students) {
         this.id = id;
         this.sessionImage = sessionImage;
         this.recruitStatus = recruitStatus;
+        this.sessionProgressStatus = sessionProgressStatus;
         this.sessionDate = sessionDate;
         this.students = students;
     }
@@ -61,12 +72,24 @@ public abstract class Session {
         return sessionImage;
     }
 
-    public RecruitStatus getSessionStatus() {
+    public RecruitStatus getRecruitStatus() {
         return recruitStatus;
+    }
+
+    public SessionProgressStatus getSessionProgressStatus() {
+        return sessionProgressStatus;
     }
 
     public SessionDate getSessionDate() {
         return sessionDate;
+    }
+
+    public void changeProgressStatus(SessionProgressStatus sessionProgressStatus) {
+        this.sessionProgressStatus = sessionProgressStatus;
+    }
+
+    public void changeRecruitStatus(RecruitStatus recruitStatus) {
+        this.recruitStatus = recruitStatus;
     }
 
 

@@ -15,6 +15,10 @@ public class FreeSession extends Session {
         super(id, sessionImage, recruitStatus, sessionDate, students);
     }
 
+    public FreeSession(Long id, List<SessionImage> sessionImage, RecruitStatus recruitStatus,  SessionProgressStatus sessionProgressStatus, SessionDate sessionDate, Set<NsUser> students) {
+        super(id, sessionImage, recruitStatus, sessionProgressStatus, sessionDate, students);
+    }
+
 
     @Override
     protected void assertSatisfiedCondition(NsUser user, Payment payment) {

@@ -108,3 +108,10 @@ create table delete_history (
     deleted_by_id bigint,
     primary key (id)
 );
+
+
+alter table pay_session rename column session_status to recruit_status;
+alter table free_session rename column session_status to recruit_status;
+
+alter table pay_session add column progress_status varchar(20) default 'PREPARE';
+alter table free_session add column progress_status varchar(20) default 'PREPARE';
