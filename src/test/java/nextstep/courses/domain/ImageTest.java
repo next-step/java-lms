@@ -1,9 +1,12 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.image.Image;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -11,7 +14,7 @@ class ImageTest {
     @DisplayName("이미지 크기는 1MB 이하여야 한다.")
     @Test
     public void imageMaxSize1Mb() {
-        assertThatThrownBy(() -> new Image(1000001, 0, 0, "test.jpg"))
+        assertThatThrownBy(() -> new Image(1000001, 0, 0, "test.jpg", LocalDateTime.now()))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -25,20 +28,20 @@ class ImageTest {
     @DisplayName("width 와 height는 각각 300, 200 픽셀 이상이여야 한다.")
     @Test
     void minimumHeightAndWidth() {
-        assertThatCode(() -> new Image(1000, 200, 300, ""))
+        assertThatCode(() -> new Image(1000, 200, 300, "", LocalDateTime.now()))
                 .doesNotThrowAnyException();
 
-        assertThatThrownBy(() -> new Image(1000, 199, 300, ""))
+        assertThatThrownBy(() -> new Image(1000, 199, 300, "",LocalDateTime.now()))
                 .isInstanceOf(IllegalArgumentException.class);
 
-        assertThatThrownBy(() -> new Image(1000, 200, 299, ""))
+        assertThatThrownBy(() -> new Image(1000, 200, 299, "", LocalDateTime.now()))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @DisplayName("이미지 비율은 3:2 이여야 한다.")
     @Test
     void checkRatioThreeToTwo() {
-        assertThatCode(() -> new Image(1000, 200, 300, ""))
+        assertThatCode(() -> new Image(1000, 200, 300, "", LocalDateTime.now()))
                 .doesNotThrowAnyException();
     }
 

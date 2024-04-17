@@ -16,10 +16,10 @@ public class Period {
     }
 
 
-    public boolean isStart(LocalDate date) {
+    public boolean isEnd(LocalDate date) {
         if (date == null) {
             return true;
         }
-        return !this.startDate.isBefore(date);
+        return this.endDate.equals(date) || this.endDate.isBefore(date);
     }
 }

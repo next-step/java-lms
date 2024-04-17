@@ -1,6 +1,10 @@
 package nextstep.users.domain;
 
+import nextstep.courses.domain.session.user.SessionUser;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class NsUsers {
     private List<NsUser> users;
@@ -26,5 +30,14 @@ public class NsUsers {
             return;
         }
         this.users.addAll(nsUsers);
+    }
+
+    public List<SessionUser> convertSessionUsers(Long sessionId) {
+        if (sessionId == null) {
+            return new ArrayList<>();
+        }
+        return this.users.stream()
+                .map(item -> new SessionUser(sessionId, item.getId()))
+                .collect(Collectors.toList());
     }
 }

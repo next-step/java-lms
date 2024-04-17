@@ -1,39 +1,44 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.Course;
-import nextstep.courses.domain.Image;
+import nextstep.courses.domain.image.Image;
+import nextstep.courses.domain.image.Images;
 import nextstep.courses.domain.session.type.SessionType;
 import nextstep.courses.domain.session.type.SessionStatus;
+import nextstep.courses.domain.session.user.SessionUser;
+import nextstep.courses.domain.session.user.SessionUsers;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
-import nextstep.users.domain.NsUsers;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class Session {
     protected final Long id;
     protected final String title;
     private final Course course;
     private final Period period;
-    private final Image image;
+    private final Images images;
     private final SessionStatus status;
     private final SessionType type;
-    protected final NsUsers nsUsers;
+    protected final SessionUsers sessionUsers;
+    private Long creatorId;
 
-    public Session(Course course, String title, Period period, Image image, NsUsers users, SessionType type) {
-        this(0L, title, course, period, image, SessionStatus.READY, users, type);
+    public Session(Course course, String title, Period period, List<Image> images, SessionUsers sessionUsers, SessionType type) {
+        this(0L, title, course, period, images, SessionStatus.READY, sessionUsers, type, 0L);
     }
 
-    public Session(Long id, String title, Course course, Period period, Image image, SessionStatus status, NsUsers nsUsers, SessionType type) {
+    public Session(Long id, String title, Course course, Period period, List<Image> images, SessionStatus status, SessionUsers sessionUsers, SessionType type, Long creatorId) {
         this.id = id;
         this.title = title;
         this.course = course;
         this.period = period;
-        this.image = image;
+        this.images = Images.from(images);
         this.status = status;
-        this.nsUsers = nsUsers;
+        this.sessionUsers = sessionUsers;
         this.type = type;
+        this.creatorId = creatorId;
     }
 
     public Long getId() {
@@ -44,11 +49,11 @@ public abstract class Session {
         if (!canEnrollStatus()) {
             throw new IllegalArgumentException("강의는 현재 모집하고 있지 않습니다.");
         }
-        if (period.isStart(date)) {
-            throw new IllegalArgumentException("강의가 시작되어 수강신청을 할 수 없습ㄴ디ㅏ.");
+        if (period.isEnd(date)) {
+            throw new IllegalArgumentException("강의가 종료되어 수강신청을 할 수 없습니다.");
         }
         assertCanEnroll();
-        nsUsers.add(nsUser);
+        sessionUsers.add(this.id, nsUser.getId());
     }
 
     public abstract void assertCanEnroll();
@@ -76,7 +81,23 @@ public abstract class Session {
         return paidSession.toPayment(nsUser);
     }
 
-    public void addNsUser(List<NsUser> nsUsers) {
-        this.nsUsers.addAll(nsUsers);
+
+    public void addSessionUser(List<SessionUser> sessionUsers) {
+        this.sessionUsers.addAll(sessionUsers);
+    }
+
+    public void addImages(List<Image> images) {
+        this.images.addAll(images);
+    }
+
+    public void accessUser(SessionUser accessUserTarget, Long creatorId) {
+        if (!Objects.equals(creatorId, this.getCreatorId())) {
+            throw new IllegalArgumentException("자신의 강의만 유저 승인을 할 수 있습니다.");
+        }
+        this.sessionUsers.accessSession(accessUserTarget);
+    }
+
+    public Long getCreatorId() {
+        return this.creatorId;
     }
 }

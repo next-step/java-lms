@@ -1,28 +1,45 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.image;
 
+import nextstep.courses.domain.session.Session;
+import nextstep.utils.StringUtils;
+
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Image {
+    private final Long id;
+    private Session session;
     private final int size;
     private final int height;
     private final int width;
     private final String name;
     private final FileExtension type;
-
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
     private final int MAX_SIZE = 1_000_000;
 
+    public Image(int size, int height, int width, String fileName, LocalDateTime createdAt) {
+        this(0L, null, size, height, width, "", FileExtension.from(fileName), createdAt, null);
+    }
 
-    public Image(int size, int height, int width, String fileName) {
+    public Image(Long id, Session session, int size, int height, int width, String name, FileExtension type, LocalDateTime createdAt, LocalDateTime updatedAt) {
         verify(size, height, width);
-
+        this.id = id;
+        this.session = session;
         this.size = size;
         this.height = height;
         this.width = width;
-        this.name = "";
-        this.type = convertType(fileName);
+        this.name = name;
+        this.type = type;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public void addSession(Session session) {
+        this.session = session;
     }
 
     private void verify(int size, int height, int width) {
@@ -43,15 +60,6 @@ public class Image {
         }
     }
 
-    public Image(int size, int height, int width, String name, String type) {
-        verify(size, height, width);
-        this.size = size;
-        this.height = height;
-        this.width = width;
-        this.name = name;
-        this.type = convertType(type);
-    }
-
     private boolean verifyWidth(int width) {
         return width >= 300;
     }
@@ -66,10 +74,6 @@ public class Image {
 
     private String convertName(String fileName) {
         return "";
-    }
-
-    private static String[] fileSplit(String fileName) {
-        return fileName.split("\\.");
     }
 
     private boolean isOverSize(int size) {
@@ -105,6 +109,17 @@ public class Image {
             Arrays.stream(FileExtension.values())
                     .forEach(item -> hashMap.put(item.name().toLowerCase(), item));
             return hashMap;
+        }
+
+        private static String[] fileSplit(String fileName) {
+            return fileName.split("\\.");
+        }
+
+        public static FileExtension fromType(String extension) {
+            if (StringUtils.isBlank(extension)) {
+                return NONE;
+            }
+            return MAPPINGS.getOrDefault(extension, NONE);
         }
 
         public static FileExtension from(String fileName) {
