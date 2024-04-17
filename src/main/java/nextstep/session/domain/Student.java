@@ -5,11 +5,13 @@ import java.util.Objects;
 public class Student {
 
     private final Long id;
-    private final String name;
+    private final Long user_id;
+    private final Long session_id;
 
-    public Student(Long id, String name) {
+    public Student(Long id, Long user_id, Long session_id) {
         this.id = id;
-        this.name = name;
+        this.user_id = user_id;
+        this.session_id = session_id;
     }
 
     @Override
@@ -21,11 +23,12 @@ public class Student {
             return false;
         }
         Student student = (Student) o;
-        return Objects.equals(id, student.id) && Objects.equals(name, student.name);
+        return Objects.equals(id, student.id) && Objects.equals(user_id,
+            student.user_id) && Objects.equals(session_id, student.session_id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id, user_id, session_id);
     }
 }

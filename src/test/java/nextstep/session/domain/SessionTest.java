@@ -27,7 +27,7 @@ class SessionTest {
     @Test
     public void 강의_신청()
         throws CannotEnrollException, InvalidEnrollmentPolicyException, StudentAlreadyEnrolledException {
-        Student student = new Student(1L, "박소민");
+        Student student = new Student(1L, 1L, 2L);
         Session session = Session.createPaidSession(1L, 2L, "객체지향강의", sessionSchedule, coverImage,
             SessionStatus.RECRUITING, 500, 50000);
 
@@ -37,7 +37,7 @@ class SessionTest {
 
     @Test
     public void 모집중인_강의만_신청_가능() throws InvalidEnrollmentPolicyException {
-        Student student = new Student(1L, "박소민");
+        Student student = new Student(1L, 1L, 1L);
         Session session = Session.createPaidSession(1L, 2L, "객체지향강의", sessionSchedule, coverImage,
             SessionStatus.PREPARING, 100, 50000);
         assertThatThrownBy(() ->
@@ -47,7 +47,7 @@ class SessionTest {
 
     @Test
     public void 유료강의의_경우_수강료와_지불금액이_일치해야_신청_가능() throws InvalidEnrollmentPolicyException {
-        Student student = new Student(1L, "박소민");
+        Student student = new Student(1L, 1L, 1L);
         Session session = Session.createPaidSession(1L, 2L, "객체지향강의", sessionSchedule, coverImage,
             SessionStatus.RECRUITING, 100, 50000);
         assertThatThrownBy(() ->
