@@ -75,7 +75,7 @@ public class Session {
     }
 
     private boolean isExceedStudentCapacity() {
-        return users.size() + 1 < studentCapacity;
+        return users.size()  == studentCapacity;
     }
 
     private void validateFee(Payment payment) throws CannotRegisterException {
