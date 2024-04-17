@@ -2,7 +2,7 @@ package nextstep.courses.domain.vo;
 
 import nextstep.courses.code.ImageType;
 
-public class ImageInfo {
+public class ImageSpec {
 
     private final int MAX_SIZE = 1024;
     private final int MIN_WIDTH = 300;
@@ -16,17 +16,15 @@ public class ImageInfo {
 
     private ImageType imageType;
 
-    public ImageInfo() {
-    }
 
-    public ImageInfo(int size,
+    public ImageSpec(int size,
                      int width,
                      int height,
                      String extension) {
         this(size, width, height, ImageType.of(extension));
     }
 
-    public ImageInfo(int size,
+    public ImageSpec(int size,
                      int width,
                      int height,
                      ImageType imageType) {

@@ -2,17 +2,15 @@ package nextstep.courses.domain.vo;
 
 import nextstep.users.domain.NsUser;
 
-public class SessionInfo {
+public class SessionDetail {
 
     private String title;
 
     private NsUser instructor;
 
-    public SessionInfo() {
-    }
 
-    public SessionInfo(String title,
-                       NsUser instructor) {
+    public SessionDetail(String title,
+                         NsUser instructor) {
         this.title = title;
         this.instructor = instructor;
     }
