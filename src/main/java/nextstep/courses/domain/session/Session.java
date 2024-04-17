@@ -12,6 +12,7 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class Session {
     protected final Long id;
@@ -90,7 +91,7 @@ public abstract class Session {
     }
 
     public void accessUser(SessionUser accessUserTarget, Long creatorId) {
-        if (creatorId != this.getCreatorId()) {
+        if (!Objects.equals(creatorId, this.getCreatorId())) {
             throw new IllegalArgumentException("자신의 강의만 유저 승인을 할 수 있습니다.");
         }
         this.sessionUsers.accessSession(accessUserTarget);

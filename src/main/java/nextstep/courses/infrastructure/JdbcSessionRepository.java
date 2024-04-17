@@ -6,7 +6,6 @@ import nextstep.courses.domain.session.*;
 import nextstep.courses.domain.session.type.SessionStatus;
 import nextstep.courses.domain.session.user.SessionUser;
 import nextstep.courses.domain.session.user.SessionUsers;
-import nextstep.users.domain.NsUser;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -55,15 +54,19 @@ public class JdbcSessionRepository implements SessionRepository {
         };
 
         List<Session> sessions = jdbcOperations.query(sessionSql, seessionRowMapper, id);
-        sessions.forEach(session -> {
-            addNsUser(session);
-            addImage(session);
-        });
+        addRelationObject(sessions);
 
         return sessions;
     }
 
-    private void addNsUser(Session session) {
+    private void addRelationObject(List<Session> sessions) {
+        sessions.forEach(session -> {
+            addSessionUser(session);
+            addImage(session);
+        });
+    }
+
+    private void addSessionUser(Session session) {
         Long sessionId = session.getId();
         String userSql = "SELECT user_id FROM session_users where session_id = ?";
         RowMapper<SessionUser> nsUserRowMapper = (rs, rowNumber) -> new SessionUser(sessionId, rs.getLong(1));
