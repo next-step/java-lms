@@ -114,9 +114,11 @@
 - NsUserRepository
   - [x] ns_user 테이블 생성
   - [x] 사용자를 조회한다
+  - [x] 세션 아이디로 참여자 목록을 조회한다
 - SessionRegisterDetailsRepository
   - [x] session_register_details 테이블 생성
-  - [x] 세션 등록 상세를 저장한다 
+  - [x] 세션 등록 상세를 저장한다
+  - [ ] 세션 등록 상세를 조회한다
 - SessionRegisterDetailsUserRepository
   - [ ] session_user 테이블 생성 (중간 테이블)
 - SessionRepository

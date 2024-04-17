@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository("userRepository")
@@ -37,5 +38,19 @@ public class JdbcUserRepository implements UserRepository {
             return null;
         }
         return timestamp.toLocalDateTime();
+    }
+
+    @Override
+    public List<NsUser> findListersBySessionId(long sessionId) {
+        String sql = "select ns_user.id, ns_user.user_id, ns_user.password, ns_user.name, ns_user.email, ns_user.created_at, ns_user.updated_at from ns_user join session_register_details on ns_user.id = session_register_details.ns_user_id where session_register_details.id = ?";
+        RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
+                rs.getLong(1),
+                rs.getString(2),
+                rs.getString(3),
+                rs.getString(4),
+                rs.getString(5),
+                toLocalDateTime(rs.getTimestamp(6)),
+                toLocalDateTime(rs.getTimestamp(7)));
+        return jdbcTemplate.query(sql, rowMapper, sessionId);
     }
 }
