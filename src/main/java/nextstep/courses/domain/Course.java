@@ -33,7 +33,6 @@ public class Course {
     }
 
     public void addSession(Session session) throws SessionAlreadyExistException {
-        session.toCourse(this);
         sessions.add(session);
     }
 

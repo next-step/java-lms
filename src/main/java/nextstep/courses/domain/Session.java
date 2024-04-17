@@ -3,7 +3,7 @@ package nextstep.courses.domain;
 import nextstep.courses.code.ChargeType;
 import nextstep.courses.domain.vo.Charge;
 import nextstep.courses.domain.vo.Enrollment;
-import nextstep.courses.domain.vo.SessionInfo;
+import nextstep.courses.domain.vo.SessionDetail;
 import nextstep.courses.domain.vo.SessionPeriod;
 import nextstep.courses.exception.AlreadyEnrolledException;
 import nextstep.payments.domain.Payment;
@@ -17,7 +17,7 @@ public class Session {
 
     private Course course;
 
-    private SessionInfo info;
+    private SessionDetail info;
 
     private SessionPeriod period;
 
@@ -27,13 +27,13 @@ public class Session {
 
     private Charge charge;
 
-    private BaseInfo baseInfo;
+    private DataStatus dataStatus;
 
     public Session() {
     }
 
     public Session(Course course,
-                   SessionInfo info,
+                   SessionDetail info,
                    SessionPeriod period,
                    SessionImage coverImage,
                    Enrollment enrollment,
@@ -46,17 +46,17 @@ public class Session {
                 coverImage,
                 enrollment,
                 charge,
-                new BaseInfo(creatorId));
+                new DataStatus(creatorId));
     }
 
     public Session(Long id,
                    Course course,
-                   SessionInfo info,
+                   SessionDetail info,
                    SessionPeriod period,
                    SessionImage coverImage,
                    Enrollment enrollment,
                    Charge charge,
-                   BaseInfo baseInfo) {
+                   DataStatus dataStatus) {
         validateSessionCharge(charge, enrollment);
 
         this.id = id;
@@ -66,7 +66,7 @@ public class Session {
         this.coverImage = coverImage;
         this.enrollment = enrollment;
         this.charge = charge;
-        this.baseInfo = baseInfo;
+        this.dataStatus = dataStatus;
     }
 
     public void toCourse(Course course) {

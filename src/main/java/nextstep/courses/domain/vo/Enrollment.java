@@ -10,8 +10,6 @@ public class Enrollment {
     private Students students;
     private int capacity;
 
-    public Enrollment() {
-    }
 
     public Enrollment(int capacity) {
         this(EnrollStatus.READY, new Students(), capacity);

@@ -6,9 +6,6 @@ public enum EnrollStatus {
     OPEN,
     CLOSED;
 
-    EnrollStatus() {
-    }
-
     public boolean isOpen() {
         return this.equals(OPEN);
     }

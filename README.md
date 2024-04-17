@@ -26,3 +26,5 @@ step2
 * feature/session-service
   * implement session service
     * test codes are also implemented
+* refactor/feedback
+  * refactored codes based on feedback
