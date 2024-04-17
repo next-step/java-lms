@@ -14,15 +14,15 @@ public class AnswerTest {
 
     @Test
     @DisplayName("Answer 삭제 성공 테스트")
-    public void deleteAnswerSuccessTest() throws Exception {
+    void deleteAnswerSuccessTest() throws Exception {
         A1.delete(NsUserTest.JAVAJIGI);
 
         assertThat(A1.isDeleted()).isTrue();
     }
 
     @Test
-    @DisplayName("Answer 삭제 실패 테스트")
-    public void deleteAnswerFailTest() {
+    @DisplayName("Answer 삭제 실패 테스트 - 다른 사람이 쓴 답변")
+    void deleteAnswerFailForOtherUserAnswerTest() {
         assertThatThrownBy(() -> {
             A1.delete(NsUserTest.SANJIGI);
         }).isInstanceOf(CannotDeleteException.class)

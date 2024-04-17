@@ -1,9 +1,13 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.exception.SessionAlreadyExistException;
+
 import java.time.LocalDateTime;
 
 public class Course {
     private Long id;
+
+    private Sessions sessions = new Sessions();
 
     private String title;
 
@@ -26,6 +30,10 @@ public class Course {
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public void addSession(Session session) throws SessionAlreadyExistException {
+        sessions.add(session);
     }
 
     public String getTitle() {
