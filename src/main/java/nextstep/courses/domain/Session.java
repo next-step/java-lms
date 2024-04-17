@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Session {
-    private Long id;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Course course;
@@ -19,4 +18,24 @@ public class Session {
     private int capacity;
     private Long fee;
     private List<NsUser> students = new ArrayList<>();
+
+    public Session(
+            Course course,
+            SessionImage sessionImage,
+            LocalDateTime startTime,
+            LocalDateTime endTime,
+            SessionStatus sessionStatus,
+            SessionType sessionType,
+            int capacity,
+            Long fee
+    ) {
+        this.course = course;
+        this.sessionImage = sessionImage;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.sessionStatus = sessionStatus;
+        this.sessionType = sessionType;
+        this.capacity = capacity;
+        this.fee = fee;
+    }
 }
