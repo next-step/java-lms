@@ -53,7 +53,7 @@ public class SessionRepositoryTest {
         assertThat(findSession.getId()).isEqualTo(1L);
 
         assertThat(findSession.getSessionImage().get(0).getId()).isEqualTo(sessionImages.get(0).getId());
-
+        assertThat(findSession.getSessionProgressStatus()).isEqualTo(SessionProgressStatus.PREPARE);
         assertThat(findSession.getStudents()).hasSize(2)
                 .extracting(NsUser::getUserId)
                 .containsAll(students.stream().map(NsUser::getUserId).collect(Collectors.toUnmodifiableList()));
@@ -63,7 +63,7 @@ public class SessionRepositoryTest {
     @DisplayName("유료 강의 db에 넣고 조회 테스트")
     void testPaySession() {
         int amount = 1000;
-        PaySession paySession = new PaySession(1L, sessionImages, RecruitStatus.RECRUIT, SessionDateTest.of(), students, 2, amount);
+        PaySession paySession = new PaySession(1L, sessionImages,RecruitStatus.RECRUIT, SessionDateTest.of(), students, 2, amount);
 
         sessionRepository.saveSession(paySession, courseId);
 
@@ -72,7 +72,7 @@ public class SessionRepositoryTest {
         assertThat(findSession.getId()).isEqualTo(1L);
 
         assertThat(findSession.getSessionImage().get(0).getId()).isEqualTo(sessionImages.get(0).getId());
-
+        assertThat(findSession.getSessionProgressStatus()).isEqualTo(SessionProgressStatus.PREPARE);
         assertThat(findSession.getStudents()).hasSize(2)
                 .extracting(NsUser::getUserId)
                 .containsAll(students.stream().map(NsUser::getUserId).collect(Collectors.toUnmodifiableList()));

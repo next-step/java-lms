@@ -56,7 +56,7 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     private Optional<Session> findFreeSessionById(Long sessionId) {
-        String paySessionSql = "select id, session_status, start_date, end_date from free_session where id = ?";
+        String paySessionSql = "select id, recruit_status, progress_status, start_date, end_date from free_session where id = ?";
         String sessionImageTableName = "free_session_image";
         String studentsTableName = "free_session_students";
 
@@ -67,7 +67,8 @@ public class JdbcSessionRepository implements SessionRepository {
                 new FreeSession(rs.getLong(1),
                         sessionImage,
                         RecruitStatus.findByName(rs.getString(2)),
-                        new SessionDate(toLocalDate(rs.getTimestamp(3)), toLocalDate(rs.getTimestamp(4))),
+                        SessionProgressStatus.findByName(rs.getString(3)),
+                        new SessionDate(toLocalDate(rs.getTimestamp(4)), toLocalDate(rs.getTimestamp(5))),
                         students
                 );
 
@@ -75,7 +76,7 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     private Optional<Session> findPaySessionById(Long sessionId) {
-        String paySessionSql = "select id, session_status, amount, maximum_students, start_date, end_date from pay_session where id = ?";
+        String paySessionSql = "select id, recruit_status, progress_status, amount, maximum_students, start_date, end_date from pay_session where id = ?";
         String sessionImageTableName = "pay_session_image";
         String studentsTableName = "pay_session_students";
 
@@ -86,10 +87,11 @@ public class JdbcSessionRepository implements SessionRepository {
                 new PaySession(rs.getLong(1),
                         sessionImage,
                         RecruitStatus.findByName(rs.getString(2)),
-                        new SessionDate(toLocalDate(rs.getTimestamp(5)), toLocalDate(rs.getTimestamp(6))),
+                        SessionProgressStatus.findByName(rs.getString(3)),
+                        new SessionDate(toLocalDate(rs.getTimestamp(6)), toLocalDate(rs.getTimestamp(7))),
                         students,
-                        rs.getInt(4),
-                        rs.getInt(3)
+                        rs.getInt(5),
+                        rs.getInt(4)
                 );
 
         return Optional.ofNullable(jdbcTemplate.queryForObject(paySessionSql, sessionMapper, sessionId));
@@ -111,13 +113,14 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     private void savePaySession(PaySession paySession, Long courseId) {
-        String sql = "insert into pay_session (id, session_status, amount, maximum_students, start_date, end_date, course_id) values (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into pay_session (id, progress_status, recruit_status, amount, maximum_students, start_date, end_date, course_id) values (?, ?, ?, ?, ?, ?, ?, ?)";
         String studentsTableName = "pay_session_students";
         String sessionImageTableName = "pay_session_image";
 
         jdbcTemplate.update(sql,
                 paySession.getId(),
-                paySession.getSessionStatus().name(),
+                paySession.getSessionProgressStatus().name(),
+                paySession.getRecruitStatus().name(),
                 paySession.getAmount(),
                 paySession.getMaximumStudents(),
                 paySession.getSessionDate().getStartDate(),
@@ -129,13 +132,14 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     private void saveFreeSession(FreeSession freeSession, Long courseId) {
-        String sql = "insert into free_session (id, session_status, start_date, end_date, course_id) values (?, ?, ?, ?, ?)";
+        String sql = "insert into free_session (id, progress_status, recruit_status, start_date, end_date, course_id) values (?, ?, ?, ?, ?, ?)";
         String studentsTableName = "free_session_students";
         String sessionImageTableName = "free_session_image";
 
         jdbcTemplate.update(sql,
                 freeSession.getId(),
-                freeSession.getSessionStatus().name(),
+                freeSession.getSessionProgressStatus().name(),
+                freeSession.getRecruitStatus().name(),
                 freeSession.getSessionDate().getStartDate(),
                 freeSession.getSessionDate().getEndDate(),
                 courseId);

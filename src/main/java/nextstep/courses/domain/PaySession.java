@@ -29,6 +29,14 @@ public class PaySession extends Session {
         this.maximumStudents = maximumStudents;
     }
 
+    public PaySession(Long id, List<SessionImage> sessionImage, RecruitStatus recruitStatus, SessionProgressStatus sessionProgressStatus, SessionDate sessionDate, Set<NsUser> students, int maximumStudents, long amount) {
+        super(id, sessionImage, recruitStatus, sessionProgressStatus, sessionDate, students);
+        assertValidMaximumStudents(maximumStudents);
+        assertValidAmount(amount);
+        this.amount = amount;
+        this.maximumStudents = maximumStudents;
+    }
+
     private void assertValidMaximumStudents(int maximumStudents) {
         String errorMessage = "최대 수강생은 1명 이상으로 등록해야 합니다.";
 

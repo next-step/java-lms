@@ -48,4 +48,14 @@ public class SessionTest {
         assertThat(testSession.getSessionImage()).hasSize(2)
                 .containsExactlyInAnyOrderElementsOf(sessionImages);
     }
+
+    @Test
+    @DisplayName("진행 중인 강의 수강신청")
+    void testEnrollmentWhenSessionRun() {
+        Session testSession = TestSessionFactory.recruitStatusSession(sessionId);
+        testSession.changeProgressStatus(SessionProgressStatus.RUN);
+        testSession.enrollmentUser(student, new Payment());
+
+        assertThat(testSession.getStudents()).hasSize(1);
+    }
 }
