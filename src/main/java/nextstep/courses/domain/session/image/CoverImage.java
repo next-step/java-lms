@@ -8,20 +8,17 @@ public class CoverImage {
     private final ImageType type;
     private final Size size;
     private final Dimensions dimensions;
-    private final Long sessionId;
 
     public CoverImage(
             final Long id,
             final ImageType type,
             final Size size,
-            final Dimensions dimensions,
-            final Long sessionId
+            final Dimensions dimensions
     ) {
         this.id = id;
         this.type = type;
         this.size = size;
         this.dimensions = dimensions;
-        this.sessionId = sessionId;
     }
 
     @Override

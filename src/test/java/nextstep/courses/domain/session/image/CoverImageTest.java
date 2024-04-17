@@ -14,7 +14,7 @@ class CoverImageTest {
         final Size size = new Size(1000L);
         final Dimensions dimensions = new Dimensions(new Width(300), new Height(200));
 
-        assertThat(new CoverImage(1L, GIF, size, dimensions, 1L))
-                .isEqualTo(new CoverImage(1L, GIF, size, dimensions, 1L));
+        assertThat(new CoverImage(1L, GIF, size, dimensions))
+                .isEqualTo(new CoverImage(1L, GIF, size, dimensions));
     }
 }

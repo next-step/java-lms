@@ -37,8 +37,7 @@ class SessionTest {
             1L,
             GIF,
             new Size(10000),
-            new Dimensions(new Width(300), new Height(200)),
-            1L
+            new Dimensions(new Width(300), new Height(200))
     );
 
     private final Course course = new Course(
