@@ -51,10 +51,6 @@ public class Session extends BaseEntity {
         return enrollment.enroll(id, nsUser, payment);
     }
 
-    public void approveEnroll(List<SessionStudent> students) {
-        enrollment.approveStudents(students);
-    }
-
     public Long getId() {
         return id;
     }

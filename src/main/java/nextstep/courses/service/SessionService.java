@@ -3,6 +3,7 @@ package nextstep.courses.service;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionFactory;
 import nextstep.courses.domain.student.SessionStudent;
+import nextstep.courses.domain.student.SessionStudents;
 import nextstep.courses.exception.SessionNotFoundException;
 import nextstep.courses.infrastructure.engine.SessionCoverImageRepository;
 import nextstep.courses.infrastructure.engine.SessionRepository;
@@ -11,8 +12,6 @@ import nextstep.payments.domain.Payment;
 import nextstep.payments.service.PaymentService;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class SessionService {
@@ -37,8 +36,8 @@ public class SessionService {
     public void enroll(Long sessionId, NsUser user) {
         Session findSession = sessionRepository.findById(sessionId)
                 .orElseThrow(() -> new SessionNotFoundException(sessionId));
-        List<SessionStudent> findStudents = sessionStudentRepository.findAllBySessionId(sessionId);
-        Session session = SessionFactory.get(findSession, findStudents);
+        SessionStudents findStudents = sessionStudentRepository.findAllBySessionId(sessionId);
+        Session session = SessionFactory.get(findSession, findStudents.get());
 
         Payment payment = paymentService.payment(sessionId, user.getId(), session.getEnrollment().getFee());
         SessionStudent student = session.enroll(user, payment);
@@ -46,14 +45,13 @@ public class SessionService {
         sessionStudentRepository.save(student);
     }
 
-    public void approve(Long sessionId, List<SessionStudent> students) {
-        Session findSession = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new SessionNotFoundException(sessionId));
-        List<SessionStudent> findStudents = sessionStudentRepository.findAllBySessionId(sessionId);
-        Session session = SessionFactory.get(findSession, findStudents);
+    public void approveEnrollment(SessionStudents students) {
+        students.toApproveStatus();
+        sessionStudentRepository.updateAll(students);
+    }
 
-        session.approveEnroll(students);
-
+    public void cancelEnrollment(SessionStudents students) {
+        students.toCancelStatus();
         sessionStudentRepository.updateAll(students);
     }
 

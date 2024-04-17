@@ -59,11 +59,6 @@ public abstract class SessionEnrollment implements SessionEnroll {
         }
     }
 
-    @Override
-    public void approveStudents(List<SessionStudent> students) {
-        this.students.approve(students);
-    }
-
     public SessionStatus getStatus() {
         return status;
     }

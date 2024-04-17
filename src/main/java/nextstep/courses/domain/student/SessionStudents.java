@@ -2,8 +2,6 @@ package nextstep.courses.domain.student;
 
 import java.util.List;
 
-import static nextstep.courses.domain.student.StudentEnrollmentStatus.*;
-
 public class SessionStudents {
 
     private final List<SessionStudent> students;
@@ -12,25 +10,14 @@ public class SessionStudents {
         this.students = students;
     }
 
-    public void approve(List<SessionStudent> students) {
-        approveStatus(students);
-        cancelStatus();
-    }
-
-    private void approveStatus(List<SessionStudent> students) {
-        this.students.stream()
-                .filter(enrollStudent -> students.stream().anyMatch(enrollStudent::sameAs))
-                .forEach(SessionStudent::toApproveStatus);
-    }
-
-    private void cancelStatus() {
+    public void toApproveStatus() {
         for (SessionStudent student : students) {
-            toCancelStatus(student);
+            student.toApproveStatus();
         }
     }
 
-    private void toCancelStatus(SessionStudent student) {
-        if (student.getEnrollmentStatus().equals(PENDING)) {
+    public void toCancelStatus() {
+        for (SessionStudent student : students) {
             student.toCancelStatus();
         }
     }
