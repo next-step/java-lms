@@ -30,16 +30,10 @@ public class Dimension {
     }
 
     private boolean validateDimensions(long width, long height) {
-        if (width < MIN_WIDTH || height < MIN_HEIGHT) {
-            return false;
-        }
-        return true;
+        return width >= MIN_WIDTH && height >= MIN_HEIGHT;
     }
 
     private boolean validateRatio(long width, long height) {
-        if ((width * HEIGHT_RATIO) != (height * WIDTH_RATIO)) {
-            return false;
-        }
-        return true;
+        return (width * HEIGHT_RATIO) == (height * WIDTH_RATIO);
     }
 }
