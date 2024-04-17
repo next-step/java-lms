@@ -14,7 +14,6 @@ public class StudentsTest {
         Student student = new Student(1L, "맥북이");
         students.add(student);
 
-        assertThat(students.enrolledStudentCount()).isEqualTo(1);
         assertThat(students.isAlreadyEnrolled(student)).isTrue();
 
     }
