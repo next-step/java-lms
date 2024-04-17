@@ -45,14 +45,4 @@ public class SessionService {
         sessionStudentRepository.save(student);
     }
 
-    public void approveEnrollment(SessionStudents students) {
-        students.toApproveStatus();
-        sessionStudentRepository.updateAll(students);
-    }
-
-    public void cancelEnrollment(SessionStudents students) {
-        students.toCancelStatus();
-        sessionStudentRepository.updateAll(students);
-    }
-
 }
