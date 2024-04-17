@@ -122,6 +122,6 @@
 - SessionRepository
   - [x] session 테이블 생성
   - [x] 세션을 저장한다
-  - [ ] 세션을 조회한다
+  - [x] 세션을 조회한다
 - SessionService
   - [ ] 수강신청을 한다
