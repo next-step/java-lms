@@ -2,7 +2,6 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.constant.SessionStatus;
 import nextstep.courses.constant.SessionType;
-import nextstep.courses.domain.Course;
 import nextstep.courses.domain.SessionImage;
 import nextstep.users.domain.NsUser;
 
@@ -13,9 +12,9 @@ public class FreeSession extends Session {
         super(sessionId, courseId, sessionImage, startTime, endTime, sessionStatus, SessionType.FREE);
     }
 
+    @Override
     public void enroll(NsUser nsUser) {
-        validateEnrollSessionStatus();
-        validateEnrolledStudent(nsUser);
+        validateSession(nsUser);
 
         super.enrollStudent(nsUser);
     }

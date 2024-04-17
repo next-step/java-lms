@@ -2,7 +2,6 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.constant.SessionStatus;
 import nextstep.courses.constant.SessionType;
-import nextstep.courses.domain.Course;
 import nextstep.courses.domain.SessionImage;
 import nextstep.users.domain.NsUser;
 
@@ -10,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Session {
+public abstract class Session {
     private final Long sessionId;
     private final Long courseId;
     private final LocalDateTime startTime;
@@ -38,13 +37,20 @@ public class Session {
         this.sessionType = sessionType;
     }
 
-    protected void validateEnrollSessionStatus() {
+    public abstract void enroll(NsUser nsUser);
+
+    protected void validateSession(NsUser nsUser) {
+        validateEnrollSessionStatus();
+        validateEnrolledStudent(nsUser);
+    }
+
+    private void validateEnrollSessionStatus() {
         if (!sessionStatus.equals(SessionStatus.RECRUITING)) {
             throw new IllegalArgumentException("수강 모집중인 세션이 아닙니다.");
         }
     }
 
-    protected void validateEnrolledStudent(NsUser nsUser) {
+    private void validateEnrolledStudent(NsUser nsUser) {
         if (isEnrolled(nsUser)) {
             throw new IllegalArgumentException("이미 수강 중인 학생입니다.");
         }

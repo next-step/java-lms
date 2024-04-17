@@ -2,7 +2,6 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.constant.SessionStatus;
 import nextstep.courses.constant.SessionType;
-import nextstep.courses.domain.Course;
 import nextstep.courses.domain.SessionImage;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -28,14 +27,18 @@ public class PaidSession extends Session {
         this.fee = fee;
     }
 
+    @Override
+    public void enroll(NsUser nsUser) {
+        throw new UnsupportedOperationException("유료 강의는 결제를 통해 수강 신청이 가능합니다.");
+    }
+
     public void enroll(NsUser nsUser, Payment payment) {
         validatePaidSessionEnroll(nsUser, payment);
         super.enrollStudent(nsUser);
     }
 
     private void validatePaidSessionEnroll(NsUser nsUser, Payment payment) {
-        validateEnrollSessionStatus();
-        validateEnrolledStudent(nsUser);
+        validateSession(nsUser);
 
         if (!payment.isPaid(fee)) {
             throw new IllegalArgumentException("결제 금액이 일치하지 않습니다.");

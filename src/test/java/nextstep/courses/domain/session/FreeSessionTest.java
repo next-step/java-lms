@@ -1,7 +1,6 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.constant.SessionStatus;
-import nextstep.courses.domain.CourseTest;
 import nextstep.courses.domain.SessionImageTest;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.DisplayName;
