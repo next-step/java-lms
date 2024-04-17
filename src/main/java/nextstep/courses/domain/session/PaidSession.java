@@ -14,7 +14,8 @@ public class PaidSession extends Session {
     private final Long fee;
 
     public PaidSession(
-            Course course,
+            Long courseId,
+            Long sessionId,
             SessionImage sessionImage,
             LocalDateTime startTime,
             LocalDateTime endTime,
@@ -22,7 +23,7 @@ public class PaidSession extends Session {
             int capacity,
             Long fee
     ) {
-        super(course, sessionImage, startTime, endTime, sessionStatus, SessionType.PAID);
+        super(courseId, sessionId, sessionImage, startTime, endTime, sessionStatus, SessionType.PAID);
         this.capacity = capacity;
         this.fee = fee;
     }

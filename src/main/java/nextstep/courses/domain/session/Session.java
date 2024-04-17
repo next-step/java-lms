@@ -11,7 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Session {
-    private final Course course;
+    private final Long sessionId;
+    private final Long courseId;
     private final LocalDateTime startTime;
     private final LocalDateTime endTime;
     private final SessionImage sessionImage;
@@ -20,14 +21,16 @@ public class Session {
     private final List<NsUser> students = new ArrayList<>();
 
     protected Session(
-            Course course,
+            Long sessionId,
+            Long courseId,
             SessionImage sessionImage,
             LocalDateTime startTime,
             LocalDateTime endTime,
             SessionStatus sessionStatus,
             SessionType sessionType
     ) {
-        this.course = course;
+        this.sessionId = sessionId;
+        this.courseId = courseId;
         this.sessionImage = sessionImage;
         this.startTime = startTime;
         this.endTime = endTime;

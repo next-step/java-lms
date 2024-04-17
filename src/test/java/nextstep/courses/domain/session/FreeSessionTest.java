@@ -17,7 +17,8 @@ class FreeSessionTest {
     @DisplayName("FreeSession 생성 테스트")
     public void initFreeSession() {
         FreeSession paidSession = new FreeSession(
-                CourseTest.COURSE,
+                1L,
+                1L,
                 SessionImageTest.SESSION_IMAGE,
                 LocalDateTime.now().minusDays(5),
                 LocalDateTime.now().plusDays(5),
@@ -32,7 +33,8 @@ class FreeSessionTest {
     @DisplayName("FreeSession 등록 테스트")
     public void enrollFreeSession() {
         FreeSession paidSession = new FreeSession(
-                CourseTest.COURSE,
+                1L,
+                1L,
                 SessionImageTest.SESSION_IMAGE,
                 LocalDateTime.now().minusDays(5),
                 LocalDateTime.now().plusDays(5),
@@ -49,7 +51,8 @@ class FreeSessionTest {
     @DisplayName("FreeSession 등록 테스트, 상태 예외 처리 테스트")
     public void enrollFreeSessionStatusErrorTest() {
         FreeSession paidSession = new FreeSession(
-                CourseTest.COURSE,
+                1L,
+                1L,
                 SessionImageTest.SESSION_IMAGE,
                 LocalDateTime.now().minusDays(5),
                 LocalDateTime.now().plusDays(5),

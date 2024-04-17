@@ -9,8 +9,8 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 
 public class FreeSession extends Session {
-    public FreeSession(Course course, SessionImage sessionImage, LocalDateTime startTime, LocalDateTime endTime, SessionStatus sessionStatus) {
-        super(course, sessionImage, startTime, endTime, sessionStatus, SessionType.FREE);
+    public FreeSession(Long sessionId, Long courseId, SessionImage sessionImage, LocalDateTime startTime, LocalDateTime endTime, SessionStatus sessionStatus) {
+        super(sessionId, courseId, sessionImage, startTime, endTime, sessionStatus, SessionType.FREE);
     }
 
     public void enroll(NsUser nsUser) {

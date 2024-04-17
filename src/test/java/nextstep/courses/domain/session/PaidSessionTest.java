@@ -34,7 +34,8 @@ public class PaidSessionTest {
     @DisplayName("PaidSession 등록 테스트")
     public void enrollPaidSession() {
         PaidSession paidSession = new PaidSession(
-                CourseTest.COURSE,
+                1L,
+                1L,
                 SessionImageTest.SESSION_IMAGE,
                 LocalDateTime.now().minusDays(5),
                 LocalDateTime.now().plusDays(5),
@@ -53,7 +54,8 @@ public class PaidSessionTest {
     @DisplayName("PaidSession 등록 테스트, 모집중이 아닌 세션 등록 예외 처리 테스트")
     public void enrollNotRecruitingSession() {
         PaidSession paidSession = new PaidSession(
-                CourseTest.COURSE,
+                1L,
+                1L,
                 SessionImageTest.SESSION_IMAGE,
                 LocalDateTime.now().minusDays(5),
                 LocalDateTime.now().plusDays(5),
@@ -71,7 +73,8 @@ public class PaidSessionTest {
     @DisplayName("PaidSession 등록 테스트, Payment 금액 미일치 예외 처리 테스트")
     public void enrollWithNotMatchedPaymentSession() {
         PaidSession paidSession = new PaidSession(
-                CourseTest.COURSE,
+                1L,
+                1L,
                 SessionImageTest.SESSION_IMAGE,
                 LocalDateTime.now().minusDays(5),
                 LocalDateTime.now().plusDays(5),
@@ -89,7 +92,8 @@ public class PaidSessionTest {
     @DisplayName("PaidSession 등록 테스트, 수강 인원 초과 예외 처리 테스트")
     public void enrollWithOverEnrollmentSession() {
         PaidSession paidSession = new PaidSession(
-                CourseTest.COURSE,
+                1L,
+                1L,
                 SessionImageTest.SESSION_IMAGE,
                 LocalDateTime.now().minusDays(5),
                 LocalDateTime.now().plusDays(5),
@@ -105,5 +109,4 @@ public class PaidSessionTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("수강 인원이 초과되었습니다.");
     }
-
 }
