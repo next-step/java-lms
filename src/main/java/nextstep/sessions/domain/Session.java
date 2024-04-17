@@ -39,4 +39,27 @@ public class Session extends BaseEntity {
         return sessionRegisterDetails.isContainsListener(listener);
     }
 
+    public long getId() {
+        return super.getId();
+    }
+
+    public LocalDateTime getStartedAt() {
+        return super.getStartedAt();
+    }
+
+    public LocalDateTime getEndedAt() {
+        return super.getEndedAt();
+    }
+
+    public String getSessionName() {
+        return sessionName;
+    }
+
+    public long getImageId() {
+        return image.getId();
+    }
+
+    public long getSessionRegisterDetailsId() {
+        return sessionRegisterDetails.getId();
+    }
 }

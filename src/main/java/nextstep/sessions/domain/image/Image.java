@@ -37,4 +37,8 @@ public class Image {
     public double getHeight() {
         return size.getHeight();
     }
+
+    public long getId() {
+        return id;
+    }
 }

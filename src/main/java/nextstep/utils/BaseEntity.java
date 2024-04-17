@@ -19,4 +19,15 @@ public class BaseEntity {
         this.endedAt = endedAt;
     }
 
+    protected long getId() {
+        return id;
+    }
+
+    protected LocalDateTime getStartedAt() {
+        return startedAt;
+    }
+
+    protected LocalDateTime getEndedAt() {
+        return endedAt;
+    }
 }
