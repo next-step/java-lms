@@ -13,8 +13,8 @@ import java.util.List;
 public class PaidSessionTest {
 
     private List<NsUser> userList;
-    NsUser JAVAJIGI, SANJIGI;
-    Payment payment;
+    private NsUser JAVAJIGI, SANJIGI;
+    private Payment payment;
 
 
     @BeforeEach
