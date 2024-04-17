@@ -80,11 +80,11 @@ create table registration (
 );
 
 ALTER TABLE session_image
-ADD session_id bigint not null;
+ADD session_id bigint default 0 not null;
 ALTER TABLE session_image
 ADD CONSTRAINT pk_session_image PRIMARY KEY (id);
 
 ALTER TABLE registration
-ADD status varchar(10) not null;
+ADD status varchar(10) default 'PENDING' not null;
 ALTER TABLE registration
 ADD CONSTRAINT pk_registration PRIMARY KEY (id);
