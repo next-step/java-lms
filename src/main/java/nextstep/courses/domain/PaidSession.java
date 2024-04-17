@@ -23,6 +23,10 @@ public class PaidSession extends Session {
 
     @Override
     public void join(NsUser user) {
+        if (userCount() >= maxUserCount) {
+            throw new IllegalArgumentException("수강인원을 초과 하였습니다.");
+        }
+
         if (this.status != SessionStatus.RECRUITING) {
             throw new IllegalArgumentException("현재 강의 모집이 오픈하지 않았습니다");
         }
