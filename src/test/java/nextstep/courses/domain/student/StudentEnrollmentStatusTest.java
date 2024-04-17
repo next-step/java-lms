@@ -17,7 +17,7 @@ public class StudentEnrollmentStatusTest {
 
     @ParameterizedTest(name = "[{index}] {0} -> {1}")
     @MethodSource("statusFixture")
-    @DisplayName("[성공] 문자열을 c 객체로 변환한다.")
+    @DisplayName("[성공] 문자열을 StudentEnrollmentStatus 객체로 변환한다.")
     void 수강생_신청_상태_변환(String statusString, StudentEnrollmentStatus status) {
         assertThat(StudentEnrollmentStatus.convert(statusString)).isEqualTo(status);
     }
