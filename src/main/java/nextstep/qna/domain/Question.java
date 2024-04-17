@@ -73,11 +73,6 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
@@ -92,13 +87,24 @@ public class Question {
         this.deleted = true;
     }
 
+    public List<DeleteHistory> addDeleteHistory() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
 
-    public List<Answer> getAnswers() {
-        return answers;
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
+
+        for (Answer answer : answers) {
+            deleteHistories.add(answer.newDeleteAnswerHistory());
+        }
+
+        return deleteHistories;
     }
 
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
+
+    public List<Answer> getAnswers() {
+        return this.answers;
     }
 }

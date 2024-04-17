@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static nextstep.qna.domain.QuestionTest.Q1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -15,6 +16,7 @@ public class AnswerTest {
 
     @BeforeEach
     void setUp() {
+        Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
         A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
         A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
     }
