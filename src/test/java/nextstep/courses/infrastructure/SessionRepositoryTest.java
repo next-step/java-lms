@@ -8,17 +8,8 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import nextstep.courses.domain.Course;
-import nextstep.courses.domain.Image;
-import nextstep.courses.domain.ImageType;
-import nextstep.courses.domain.Images;
-import nextstep.courses.domain.SelectedStudents;
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionDuration;
-import nextstep.courses.domain.SessionPayType;
-import nextstep.courses.domain.SessionRepository;
-import nextstep.courses.domain.SessionState;
-import nextstep.courses.domain.SessionStudent;
+
+import nextstep.courses.domain.*;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -40,7 +31,7 @@ public class SessionRepositoryTest {
   void setUp() {
     sessionRepository = new JdbcSessionRepository(jdbcTemplate);
     session = new Session(new Course("TDD, 클린 코드 with Java", 1L),  new SessionDuration(
-        LocalDate.of(2025,4,11), LocalDate.of(2025,5,12)), new Image(100, ImageType.JPG, 300, 200), SessionPayType.FREE, SessionState.PREPARING, 0, 0L, new SessionStudent());
+        LocalDate.of(2025,4,11), LocalDate.of(2025,5,12)), new Image(100, ImageType.JPG, 300, 200), SessionPayType.FREE, SessionState.PREPARING, RecruitmentState.NOT_RECRUITING, 0, 0L, new SessionStudent());
   }
 
   @Test
@@ -57,7 +48,7 @@ public class SessionRepositoryTest {
     Images images = new Images(
         List.of(new Image(100, ImageType.JPG, 300, 200), new Image(300, ImageType.SVG, 300, 200)));
     Session sessionTwoImages = new Session(new Course("TDD, 클린 코드 with Java", 1L),  new SessionDuration(
-        LocalDate.of(2025,4,11), LocalDate.of(2025,5,12)), images, SessionPayType.FREE, SessionState.PREPARING, 0, 0L, new SessionStudent());
+        LocalDate.of(2025,4,11), LocalDate.of(2025,5,12)), images, SessionPayType.FREE, SessionState.PREPARING, RecruitmentState.NOT_RECRUITING, 0, 0L, new SessionStudent());
 
     Session savedSession = sessionRepository.save(sessionTwoImages);
     Session sessionByDb = sessionRepository.findById(savedSession.getId());

@@ -4,18 +4,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import nextstep.courses.domain.Course;
-import nextstep.courses.domain.Image;
+
+import nextstep.courses.domain.*;
 import nextstep.courses.domain.Image.Dimension;
-import nextstep.courses.domain.ImageType;
-import nextstep.courses.domain.Images;
-import nextstep.courses.domain.SelectedStudents;
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionDuration;
-import nextstep.courses.domain.SessionPayType;
-import nextstep.courses.domain.SessionRepository;
-import nextstep.courses.domain.SessionState;
-import nextstep.courses.domain.SessionStudent;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserAuthorization;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
@@ -87,7 +78,7 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     private Long insertSession(Session session) {
-        String sql = "insert into session (course_id, start_date, end_date, pay_type, state, fee, created_at) values(?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into session (course_id, start_date, end_date, pay_type, session_state, recruitment_state, fee, created_at) values(?, ?, ?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
@@ -95,9 +86,10 @@ public class JdbcSessionRepository implements SessionRepository {
             ps.setTimestamp(2, Timestamp.valueOf(session.getStartDate().atStartOfDay()));
             ps.setTimestamp(3, Timestamp.valueOf(session.getEndDate().atStartOfDay()));
             ps.setString(4, session.getPayType());
-            ps.setString(5, session.getState());
-            ps.setLong(6, session.getFee());
-            ps.setTimestamp(7, Timestamp.valueOf(session.getCreatedAt()));
+            ps.setString(5, session.getSessionState());
+            ps.setString(6, session.getRecruitmentState());
+            ps.setLong(7, session.getFee());
+            ps.setTimestamp(8, Timestamp.valueOf(session.getCreatedAt()));
             return ps;
         }, keyHolder);
         return keyHolder.getKey().longValue();
@@ -107,21 +99,22 @@ public class JdbcSessionRepository implements SessionRepository {
     public Session findById(Long id) {
         Images images = findImagesBySessionId(id);
 
-        String sql = "select s.id, s.course_id, s.start_date, s.end_date, s.pay_type, s.state, s.max_student, s.fee, c.title, c.creator_id "
+        String sql = "select s.id, s.course_id, s.start_date, s.end_date, s.pay_type, s.session_state, s.recruitment_state, s.max_student, s.fee, c.title, c.creator_id "
             + "from session s "
             + "join course c on s.course_id = c.id "
             + "where s.id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) ->
             new Session(
                 rs.getLong(1),
-                new Course(rs.getLong(2), rs.getString(9), rs.getLong(10)),
+                new Course(rs.getLong(2), rs.getString(10), rs.getLong(11)),
                 new SessionDuration(toLocalDate(rs.getTimestamp(3)), toLocalDate(rs.getTimestamp(4))),
                 images,
                 SessionPayType.valueOf(rs.getString(5)),
                 SessionState.valueOf(rs.getString(6)),
-                rs.getInt(7),
-                rs.getLong(8),
-                new SessionStudent( rs.getInt(7))
+                RecruitmentState.valueOf(rs.getString(7)),
+                rs.getInt(8),
+                rs.getLong(9),
+                new SessionStudent( rs.getInt(8))
             );
 
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
