@@ -15,10 +15,6 @@ public abstract class Session {
     protected SessionStatus status;
     protected List<NsUser> userList = new ArrayList<>();
 
-    public Session() {
-        this(0L, "title", LocalDate.now(), LocalDate.now(), new CoverImage(), SessionStatus.PREPARING, List.of());
-    }
-
     public Session(Long id, String title, LocalDate startDate, LocalDate endDate, CoverImage coverImage, SessionStatus status) {
         this.id = id;
         this.title = title;
