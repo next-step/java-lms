@@ -30,10 +30,9 @@ class CourseTest {
                 LocalDateTime.of(2024,1,1,0,0,0),
                 LocalDateTime.of(2024,4,1,0,0,0));
         CoverImage coverImage = CoverImage.of("jpg", 1024, 300,200);
-        Users users = new Users();
 
         return new PaidSession(sessionId, sessionPeriod, coverImage,
-                SessionStatusEnum.OPEN, users, 1, fee);
+                SessionStatusEnum.OPEN, 1, fee);
     }
 
     private FreeSession getFreeSession() {
@@ -42,9 +41,8 @@ class CourseTest {
                 LocalDateTime.of(2024,1,1,0,0,0),
                 LocalDateTime.of(2024,4,1,0,0,0));
         CoverImage coverImage = CoverImage.of("jpg", 1024, 300,200);
-        Users users = new Users();
 
-        return new FreeSession(sessionId, sessionPeriod, coverImage, SessionStatusEnum.OPEN, users);
+        return new FreeSession(sessionId, sessionPeriod, coverImage, SessionStatusEnum.OPEN);
     }
 
 }

@@ -21,10 +21,4 @@ public class Payments {
         return this.payments.contains(payment);
     }
 
-    public boolean containsPaymentOf(Long sessionId, Long fee) {
-        return this.payments.stream()
-                .anyMatch(payment -> payment.isMatchedPaymentAmount(fee)
-                && payment.isMatchedPaymentSessionId(sessionId));
-    }
-
 }

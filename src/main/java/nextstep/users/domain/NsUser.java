@@ -1,5 +1,7 @@
 package nextstep.users.domain;
 
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.Sessions;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.domain.Payments;
 import nextstep.qna.UnAuthorizedException;
@@ -25,6 +27,8 @@ public class NsUser {
     private LocalDateTime updatedAt;
 
     private Payments payments = new Payments();
+
+    private Sessions sessions = new Sessions();
 
     public NsUser() {
     }
@@ -80,6 +84,10 @@ public class NsUser {
         this.email = target.email;
     }
 
+    public void enrollSession(Session session) {
+        this.sessions.add(session);
+    }
+
     public boolean matchUser(NsUser target) {
         return matchUserId(target.getUserId());
     }
@@ -105,8 +113,8 @@ public class NsUser {
         return false;
     }
 
-    public boolean hasPaidForSession(Long sessionId, Long fee) {
-        return payments.containsPaymentOf(sessionId, fee);
+    public boolean hasEnrolledSession(Session session) {
+        return sessions.hasSession(session);
     }
 
     private static class GuestNsUser extends NsUser {

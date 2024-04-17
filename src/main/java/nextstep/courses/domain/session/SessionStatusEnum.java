@@ -6,11 +6,7 @@ public enum SessionStatusEnum {
     CLOSED;
 
     public boolean isSessionOpened() {
-        if (this != OPEN) {
-            return false;
-        }
-
-        return true;
+        return this == OPEN;
     }
 
 }

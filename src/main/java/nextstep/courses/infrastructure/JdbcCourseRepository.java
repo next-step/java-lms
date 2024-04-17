@@ -10,7 +10,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Deprecated
 @Repository("courseRepository")
 public class JdbcCourseRepository implements CourseRepository {
 

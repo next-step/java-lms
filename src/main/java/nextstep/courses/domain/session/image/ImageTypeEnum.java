@@ -16,7 +16,7 @@ public enum ImageTypeEnum {
     public static final String INVALID_IMAGE_TYPE = "유효하지 않은 이미지 타입 입니다.";
     private String imageType;
 
-    private static final Map<String, ImageTypeEnum> imageTypes = Collections.unmodifiableMap(
+    private static final Map<String, ImageTypeEnum> IMAGE_TYPES = Collections.unmodifiableMap(
             Stream.of(values())
                     .collect(Collectors.toMap(ImageTypeEnum::getImageType, Function.identity()))
     );
@@ -32,8 +32,8 @@ public enum ImageTypeEnum {
     public static ImageTypeEnum of(String imageType) {
         imageType = imageType.toLowerCase();
 
-        if (imageTypes.containsKey(imageType)) {
-            return imageTypes.get(imageType);
+        if (IMAGE_TYPES.containsKey(imageType)) {
+            return IMAGE_TYPES.get(imageType);
         }
 
         throw new IllegalArgumentException(INVALID_IMAGE_TYPE);
