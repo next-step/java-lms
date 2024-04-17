@@ -11,4 +11,8 @@ public class SessionStudentsFixture {
         return new SessionStudents(List.of(students));
     }
 
+    public static SessionStudents students(List<SessionStudent> students) {
+        return new SessionStudents(students);
+    }
+
 }
