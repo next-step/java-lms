@@ -31,8 +31,9 @@ public class SessionRepositoryTest {
     private SessionRepository sessionRepository;
     private CourseRepository courseRepository;
 
-    private Set<NsUser> students = Set.of(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI);
-    private List<SessionImage> sessionImages = List.of(SessionImageTest.S1);
+    private final Set<NsUser> students = Set.of(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI);
+    private final NsUser approveStudent = NsUserTest.JAVAJIGI;
+    private final List<SessionImage> sessionImages = List.of(SessionImageTest.S1);
 
     private Long courseId = 3L;
 
@@ -46,6 +47,7 @@ public class SessionRepositoryTest {
     @DisplayName("무료 강의 db에 넣고 조회 테스트")
     void testFreeSession() {
         FreeSession freeSession = new FreeSession(1L, sessionImages, RecruitStatus.RECRUIT, SessionDateTest.of(), students);
+        freeSession.addApproveStudent(approveStudent);
         sessionRepository.saveSession(freeSession, courseId);
 
         Session findSession = sessionRepository.findBySessionId(freeSession.getId(), FreeSession.class).orElse(null);
@@ -54,9 +56,14 @@ public class SessionRepositoryTest {
 
         assertThat(findSession.getSessionImage().get(0).getId()).isEqualTo(sessionImages.get(0).getId());
         assertThat(findSession.getSessionProgressStatus()).isEqualTo(SessionProgressStatus.PREPARE);
+
         assertThat(findSession.getStudents()).hasSize(2)
                 .extracting(NsUser::getUserId)
                 .containsAll(students.stream().map(NsUser::getUserId).collect(Collectors.toUnmodifiableList()));
+
+        assertThat(findSession.getApproveStudents()).hasSize(1)
+                .extracting(NsUser::getUserId)
+                .contains(approveStudent.getUserId());
     }
 
     @Test
@@ -64,7 +71,7 @@ public class SessionRepositoryTest {
     void testPaySession() {
         int amount = 1000;
         PaySession paySession = new PaySession(1L, sessionImages,RecruitStatus.RECRUIT, SessionDateTest.of(), students, 2, amount);
-
+        paySession.addApproveStudent(approveStudent);
         sessionRepository.saveSession(paySession, courseId);
 
         Session findSession = sessionRepository.findBySessionId(paySession.getId(), PaySession.class).orElse(null);
@@ -76,6 +83,10 @@ public class SessionRepositoryTest {
         assertThat(findSession.getStudents()).hasSize(2)
                 .extracting(NsUser::getUserId)
                 .containsAll(students.stream().map(NsUser::getUserId).collect(Collectors.toUnmodifiableList()));
+
+        assertThat(findSession.getApproveStudents()).hasSize(1)
+                .extracting(NsUser::getUserId)
+                .contains(approveStudent.getUserId());
     }
 
     @Test
