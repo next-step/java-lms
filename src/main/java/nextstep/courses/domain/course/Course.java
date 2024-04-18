@@ -3,7 +3,7 @@ package nextstep.courses.domain.course;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import nextstep.courses.domain.session.Sessions;
+import nextstep.courses.domain.session.Session;
 
 public class Course {
 
@@ -54,6 +54,11 @@ public class Course {
 
     public LocalDateTime getCreatedAt() {
         return this.createdAt;
+    }
+
+    public void addNewSession(final Session session) {
+        this.sessions.add(session);
+        session.assignCourse(this);
     }
 
     @Override

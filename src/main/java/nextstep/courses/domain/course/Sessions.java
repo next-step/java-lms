@@ -1,8 +1,10 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.course;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import nextstep.courses.domain.session.Session;
 
 public class Sessions {
 
@@ -10,6 +12,18 @@ public class Sessions {
 
     public Sessions() {
         this.sessions = new ArrayList<>();
+    }
+
+    public void add(final Session session) {
+        validateNotExistedSession(session);
+
+        this.sessions.add(session);
+    }
+
+    private void validateNotExistedSession(final Session session) {
+        if (this.sessions.contains(session)) {
+            throw new IllegalArgumentException("해당 과정에 이미 포함된 강의입니다. 강의: " + session);
+        }
     }
 
     @Override

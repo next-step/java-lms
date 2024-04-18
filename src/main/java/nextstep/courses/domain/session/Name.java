@@ -35,4 +35,9 @@ public class Name {
     public int hashCode() {
         return Objects.hash(this.value);
     }
+
+    @Override
+    public String toString() {
+        return this.value;
+    }
 }

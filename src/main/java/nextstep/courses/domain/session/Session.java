@@ -12,17 +12,28 @@ import nextstep.payments.domain.Payment;
 
 public class Session {
 
-    private final Long sessionId;
+    private final Long id;
     private final Name name;
     private final SessionStatus status;
     private final Schedule schedule;
     private final CoverImage coverImage;
     private final SessionStrategy sessionStrategy;
-    private final Course course;
+    private Course course;
     private EnrollmentCount currentEnrollmentCount;
 
     public Session(
-            final Long sessionId,
+            final Name name,
+            final SessionStatus status,
+            final Schedule schedule,
+            final CoverImage coverImage,
+            final SessionStrategy sessionStrategy,
+            final EnrollmentCount currentEnrollmentCount
+    ) {
+        this(null, name, status, schedule, coverImage, sessionStrategy, null, currentEnrollmentCount);
+    }
+
+    public Session(
+            final Long id,
             final Name name,
             final SessionStatus status,
             final Schedule schedule,
@@ -31,7 +42,7 @@ public class Session {
             final Course course,
             final EnrollmentCount currentEnrollmentCount
     ) {
-        this.sessionId = sessionId;
+        this.id = id;
         this.name = name;
         this.status = status;
         this.schedule = schedule;
@@ -43,6 +54,14 @@ public class Session {
 
     public int currentEnrollmentCount() {
         return this.currentEnrollmentCount.value();
+    }
+
+    public Course course() {
+        return this.course;
+    }
+
+    public void assignCourse(final Course course) {
+        this.course = course;
     }
 
     public void enroll(final Payment payment) {
@@ -83,7 +102,7 @@ public class Session {
 
         final Session that = (Session)otherSession;
 
-        return Objects.equals(this.sessionId, that.sessionId) &&
+        return Objects.equals(this.id, that.id) &&
                 Objects.equals(this.name, that.name) &&
                 this.status == that.status &&
                 Objects.equals(this.schedule, that.schedule) &&
@@ -92,6 +111,11 @@ public class Session {
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.sessionId, this.name, this.status, this.schedule, this.course);
+        return Objects.hash(this.id, this.name, this.status, this.schedule, this.course);
+    }
+
+    @Override
+    public String toString() {
+        return this.name.toString();
     }
 }
