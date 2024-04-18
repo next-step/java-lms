@@ -1,5 +1,7 @@
 package nextstep.courses.domain.session.image;
 
+import static nextstep.courses.domain.session.image.HeightTest.HEIGHT;
+import static nextstep.courses.domain.session.image.WidthTest.WIDTH;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
@@ -8,16 +10,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-class DimensionsTest {
+public class DimensionsTest {
+
+    public static final Dimensions DIMENSIONS = new Dimensions(WIDTH, HEIGHT);
 
     @Test
     @DisplayName("너비와 높이를 기준으로 새로운 커버 이미지 치수를 생성한다.")
     void Dimensions() {
-        final Width width = new Width(300);
-        final Height height = new Height(200);
-
-        assertThat(new Dimensions(width, height))
-                .isEqualTo(new Dimensions(width, height));
+        assertThat(new Dimensions(WIDTH, HEIGHT))
+                .isEqualTo(DIMENSIONS);
     }
 
     @ParameterizedTest

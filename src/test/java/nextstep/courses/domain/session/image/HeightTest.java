@@ -7,13 +7,15 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class HeightTest {
+public class HeightTest {
+
+    public static final Height HEIGHT = new Height(MINIMUM_HEIGHT);
 
     @Test
     @DisplayName("새로운 커버 이미지 높이를 생성한다.")
     void Height() {
         assertThat(new Height(MINIMUM_HEIGHT))
-                .isEqualTo(new Height(MINIMUM_HEIGHT));
+                .isEqualTo(HEIGHT);
     }
 
     @Test
