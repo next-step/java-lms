@@ -13,6 +13,10 @@ public class SessionStudentService {
         this.sessionStudentRepository = sessionStudentRepository;
     }
 
+    public SessionStudents getSessionStudents(Long sessionId) {
+        return sessionStudentRepository.findAllBySessionId(sessionId);
+    }
+
     public void approveStudents(SessionStudents students) {
         students.toApproveStatus();
         sessionStudentRepository.updateAll(students);
