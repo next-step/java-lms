@@ -3,7 +3,6 @@ package nextstep.sessions.infrastructure;
 import nextstep.sessions.domain.image.Image;
 import nextstep.sessions.domain.image.ImageSize;
 import nextstep.sessions.domain.image.ImageType;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,4 +44,5 @@ public class ImageRepositoryTest {
 
         assertThat(savedImage).isNotEmpty();
     }
+
 }

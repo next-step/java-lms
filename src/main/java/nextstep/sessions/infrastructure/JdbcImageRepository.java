@@ -5,11 +5,8 @@ import nextstep.sessions.domain.image.Image;
 import nextstep.sessions.domain.image.ImageSize;
 import nextstep.sessions.domain.image.ImageType;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Optional;
 
 @Repository("imageRepository")

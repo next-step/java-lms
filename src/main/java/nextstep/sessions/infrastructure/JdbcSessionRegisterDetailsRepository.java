@@ -26,7 +26,6 @@ public class JdbcSessionRegisterDetailsRepository implements SessionRegisterDeta
 
     @Override
     public int save(SessionRegisterDetails sessionRegisterDetails) {
-        // 처음 강의 세부 사항을 저장할 때 사용하는 쿼리
         String sql = "INSERT INTO session_register_details (id, max_count_of_students, session_type, price, session_status, ns_user_id) VALUES (?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql, sessionRegisterDetails.getId(), sessionRegisterDetails.getMaxCountOfStudents(), sessionRegisterDetails.getSessionType(), sessionRegisterDetails.getPrice(), sessionRegisterDetails.getSessionStatus(), sessionRegisterDetails.getListeners().get(0).getId());
     }

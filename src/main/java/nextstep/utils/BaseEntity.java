@@ -30,4 +30,5 @@ public class BaseEntity {
     protected LocalDateTime getEndedAt() {
         return endedAt;
     }
+
 }

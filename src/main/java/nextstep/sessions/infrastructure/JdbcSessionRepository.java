@@ -45,4 +45,5 @@ public class JdbcSessionRepository implements SessionRepository {
         String sql = "INSERT INTO session (id, started_at, ended_at, session_name, image_id, session_register_details_id) VALUES (?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql, session.getId(), session.getStartedAt(), session.getEndedAt(), session.getSessionName(), session.getImageId(), session.getSessionRegisterDetailsId());
     }
+
 }
