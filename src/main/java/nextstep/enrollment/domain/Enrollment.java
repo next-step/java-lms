@@ -1,5 +1,7 @@
 package nextstep.enrollment.domain;
 
+import static nextstep.enrollment.domain.EnrollmentStatus.*;
+
 import java.util.Objects;
 
 import nextstep.sessions.domain.Session;
@@ -9,18 +11,38 @@ public class Enrollment {
 
     private Long id;
 
+    private EnrollmentStatus status;
+
     private Session session;
 
     private NsUser attendee;
 
     public Enrollment(final Session session, final NsUser attendee) {
+        this(null, session, attendee);
+    }
+
+    public Enrollment(final Long id, final Session session, final NsUser attendee) {
+        this.id = id;
         this.session = session;
         this.attendee = attendee;
     }
 
     public void enroll(final long paymentPrice) {
         validate(paymentPrice);
-        session.addEnrollment(this);
+        status = REGISTERED;
+    }
+
+    public void approveBy(final NsUser coach) {
+        if (session.isCoach(coach) && attendee.isSelected()) {
+            status = APPROVED;
+            session.addEnrollment(this);
+        }
+    }
+
+    public void cancelBy(final NsUser coach) {
+        if (coach.isCoach() && !attendee.isSelected()) {
+            status = REJECTED;
+        }
     }
 
     private void validate(final long price) {
@@ -29,6 +51,7 @@ public class Enrollment {
         validateAttendeeNumber();
         validateRecruitingStatus();
         validateAlreadyEnroll();
+        validateEndProgress();
     }
 
     private void validateAttendeeNumber() {
@@ -49,12 +72,26 @@ public class Enrollment {
         }
     }
 
+    private void validateEndProgress() {
+        if (session.isEnd()) {
+            throw new IllegalArgumentException("종료된 강의입니다.");
+        }
+    }
+
+    public Long getId() {
+        return id;
+    }
+
     public Long getSession() {
         return session.getId();
     }
 
     public Long getAttendeeId() {
         return attendee.getId();
+    }
+
+    public EnrollmentStatus getStatus() {
+        return status;
     }
 
     @Override

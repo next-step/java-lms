@@ -12,6 +12,7 @@ import nextstep.qna.domain.Answer;
 import nextstep.qna.domain.AnswerRepository;
 import nextstep.qna.domain.Question;
 import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NsUserType;
 
 @Repository("answerRepository")
 public class JdbcAnswerRepository implements AnswerRepository {
@@ -40,15 +41,16 @@ public class JdbcAnswerRepository implements AnswerRepository {
     }
 
     private NsUser getWriterById(final Long writerId) {
-        final String sql = "select id, user_id, password, name, email, created_at, updated_at from ns_user where id = ?";
+        final String sql = "select id, user_id, password, name, email, user_type, created_at, updated_at from ns_user where id = ?";
         final RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
                 rs.getLong(1),
                 rs.getString(2),
                 rs.getString(3),
                 rs.getString(4),
                 rs.getString(5),
-                toLocalDateTime(rs.getTimestamp(6)),
-                toLocalDateTime(rs.getTimestamp(7)));
+                NsUserType.valueOf(rs.getString(6)),
+                toLocalDateTime(rs.getTimestamp(7)),
+                toLocalDateTime(rs.getTimestamp(8)));
         return jdbcTemplate.queryForObject(sql, rowMapper, writerId);
     }
 

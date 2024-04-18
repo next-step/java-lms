@@ -6,6 +6,7 @@ import java.util.List;
 
 import nextstep.courses.domain.Course;
 import nextstep.enrollment.domain.Enrollment;
+import nextstep.users.domain.NsUser;
 
 public class Session {
 
@@ -13,7 +14,9 @@ public class Session {
 
     private int maxEnrollment;
 
-    private SessionStatus sessionStatus;
+    private SessionRecruitingStatus sessionRecruitingStatus;
+
+    private SessionProgressStatus sessionProgressStatus;
 
     private SessionPrice sessionPrice;
 
@@ -21,30 +24,37 @@ public class Session {
 
     private Course course;
 
+    private Long coachId;
+
     private List<Enrollment> enrollments = new ArrayList<>();
 
-    public Session(final int maxEnrollment, final SessionStatus sessionStatus, final long price,
-                   final LocalDateTime endAt, final Course course) {
-        this(maxEnrollment, sessionStatus, price, LocalDateTime.now(), endAt, course);
+    public Session(final int maxEnrollment, final SessionRecruitingStatus sessionRecruitingStatus,
+                   final SessionProgressStatus sessionProgressStatus, final long price, final LocalDateTime endAt,
+                   final Course course, final Long coachId) {
+        this(maxEnrollment, sessionRecruitingStatus, sessionProgressStatus, price, LocalDateTime.now(), endAt, course, coachId);
     }
 
-    public Session(final int maxEnrollment, final SessionStatus sessionStatus, final long price,
-                   final LocalDateTime startedAt, final LocalDateTime endAt, final Course course) {
-        this(null, maxEnrollment, sessionStatus, price, startedAt, endAt, course);
+    public Session(final int maxEnrollment, final SessionRecruitingStatus sessionRecruitingStatus, final SessionProgressStatus sessionProgressStatus,
+                   final long price, final LocalDateTime startedAt, final LocalDateTime endAt, final Course course, Long coachId) {
+        this(null, maxEnrollment, sessionRecruitingStatus, sessionProgressStatus, price, startedAt, endAt, course, coachId);
     }
 
-    public Session(final Long id, final int maxEnrollment, final SessionStatus sessionStatus, final long price,
-                   final LocalDateTime startedAt, final LocalDateTime endAt, final Course course) {
+    public Session(final Long id, final int maxEnrollment, final SessionRecruitingStatus sessionRecruitingStatus,
+                   final SessionProgressStatus sessionProgressStatus, final long price,
+                   final LocalDateTime startedAt, final LocalDateTime endAt, final Course course, final Long coachId) {
         this.id = id;
         this.maxEnrollment = maxEnrollment;
-        this.sessionStatus = sessionStatus;
+        this.sessionRecruitingStatus = sessionRecruitingStatus;
+        this.sessionProgressStatus = sessionProgressStatus;
         this.sessionPrice = new SessionPrice(price);
         this.sessionPeriod = new SessionPeriod(startedAt, endAt);
         this.course = course;
+        this.coachId = coachId;
     }
 
-    public static Session free(final SessionStatus sessionStatus, final Course course) {
-        return new Session(Integer.MAX_VALUE, sessionStatus, 0L, LocalDateTime.now(), LocalDateTime.MAX, course);
+    public static Session free(final SessionRecruitingStatus recruitingStatus, final SessionProgressStatus progressStatus,
+                               final Course course, final Long coachId) {
+        return new Session(Integer.MAX_VALUE, recruitingStatus, progressStatus, 0L, LocalDateTime.now(), LocalDateTime.MAX, course, coachId);
     }
 
     public boolean isFull() {
@@ -52,7 +62,7 @@ public class Session {
     }
 
     public boolean isNotRecruiting() {
-        return sessionStatus.isNotRecruiting();
+        return sessionRecruitingStatus.isNotRecruiting();
     }
 
     public void validatePriceEquality(final long price) {
@@ -73,8 +83,12 @@ public class Session {
         enrollments.add(enrollment);
     }
 
-    public List<Enrollment> getEnrollments() {
-        return enrollments;
+    public boolean isCoach(final NsUser user) {
+        return coachId.equals(user.getId());
+    }
+
+    public boolean isEnd() {
+        return sessionProgressStatus.isEnd();
     }
 
     public Long getId() {
@@ -86,7 +100,11 @@ public class Session {
     }
 
     public String getSessionStatus() {
-        return sessionStatus.name();
+        return sessionRecruitingStatus.name();
+    }
+
+    public String getSessionProgressStatus() {
+        return sessionProgressStatus.name();
     }
 
     public long getSessionPrice() {
@@ -101,7 +119,15 @@ public class Session {
         return sessionPeriod.getEndAt();
     }
 
+    public Long getCoachId() {
+        return coachId;
+    }
+
     public Long getCourse() {
         return course.getId();
+    }
+
+    public List<Enrollment> getEnrollments() {
+        return enrollments;
     }
 }

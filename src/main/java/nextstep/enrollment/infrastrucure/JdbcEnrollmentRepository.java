@@ -17,7 +17,7 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
 
     @Override
     public int save(final Enrollment enrollment) {
-        final String sql = "insert into enrollment (user_id, session_id) values (?, ?)";
-        return jdbcTemplate.update(sql, enrollment.getAttendeeId(), enrollment.getSession());
+        final String sql = "insert into enrollment (enrollment_status, user_id, session_id) values (?, ?, ?)";
+        return jdbcTemplate.update(sql, enrollment.getStatus().name(), enrollment.getAttendeeId(), enrollment.getSession());
     }
 }
