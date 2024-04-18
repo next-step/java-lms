@@ -1,6 +1,5 @@
-package nextstep.courses.domain.status;
+package nextstep.courses.domain.enrollment;
 
-import nextstep.courses.domain.enrollment.RecruitmentStatus;
 import nextstep.courses.exception.SessionRecruitmentStatusInvalidException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

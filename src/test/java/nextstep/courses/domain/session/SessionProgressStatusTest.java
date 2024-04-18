@@ -1,6 +1,5 @@
-package nextstep.courses.domain.status;
+package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.session.ProgressStatus;
 import nextstep.courses.exception.SessionProgressStatusInvalidException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
