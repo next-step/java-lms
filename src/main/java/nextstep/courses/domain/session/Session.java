@@ -13,7 +13,7 @@ import nextstep.payments.domain.Payment;
 
 public class Session {
 
-    private final Long id;
+    private Long id;
     private final Name name;
     private final SessionStatus status;
     private final Schedule schedule;
@@ -46,6 +46,10 @@ public class Session {
         this.schedule = schedule;
         this.sessionStrategy = sessionStrategy;
         this.currentEnrollmentCount = currentEnrollmentCount;
+    }
+
+    public long id() {
+        return this.id;
     }
 
     public String name() {
@@ -82,6 +86,10 @@ public class Session {
 
     public Course course() {
         return this.course;
+    }
+
+    public void assignId(final Long id) {
+        this.id = id;
     }
 
     public void assignCoverImage(final CoverImage coverImage) {

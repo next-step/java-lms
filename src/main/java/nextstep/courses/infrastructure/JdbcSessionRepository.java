@@ -1,17 +1,19 @@
 package nextstep.courses.infrastructure;
 
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import nextstep.courses.domain.course.Course;
@@ -40,22 +42,62 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public int save(final Session session) {
+    public long save(final Session session) {
         final String sql = "insert into session "
                 + "(name, status, start_date, end_date, strategy, fee, enrollment_limit, enrollment_count) "
                 + "values(?, ?, ?, ?, ?, ?, ?, ?)";
+        final KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        return jdbcTemplate.update(
-                sql,
-                session.name(),
-                session.statusName(),
-                session.startDate(),
-                session.endDate(),
-                session.strategyName(),
-                session.fee(),
-                session.enrollmentLimit(),
-                session.currentEnrollmentCount()
+        jdbcTemplate.update(connection -> {
+            final PreparedStatement preparedStatement = connection.prepareStatement(sql,
+                    Statement.RETURN_GENERATED_KEYS);
+
+            preparedStatement.setString(1, session.name());
+            preparedStatement.setString(2, session.statusName());
+            preparedStatement.setDate(3, Date.valueOf(session.startDate()));
+            preparedStatement.setDate(4, Date.valueOf(session.endDate()));
+            preparedStatement.setString(5, session.strategyName());
+            preparedStatement.setInt(6, session.fee());
+            preparedStatement.setInt(7, session.enrollmentLimit());
+            preparedStatement.setInt(8, session.currentEnrollmentCount());
+
+            return preparedStatement;
+        }, keyHolder);
+
+        return keyHolder.getKey().longValue();
+    }
+
+    @Override
+    public void updateEnrollmentCount(final Session session) {
+        final String sql = "update session set enrollment_count = ? where id = ?";
+
+        jdbcTemplate.update(sql, session.currentEnrollmentCount(), session.id());
+    }
+
+    @Override
+    public Optional<Session> findById(final Long id) {
+        final String sql = "select "
+                + "id, name, status, start_date, end_date, strategy, fee, enrollment_limit, enrollment_count "
+                + "from session "
+                + "where id = ?";
+
+        final RowMapper<Session> rowMapper = (resultSet, rowNumber) -> new Session(
+                resultSet.getLong("id"),
+                new Name(resultSet.getString("name")),
+                SessionStatus.from(resultSet.getString("status")),
+                new Schedule(
+                        resultSet.getDate("start_date").toLocalDate(),
+                        resultSet.getDate("end_date").toLocalDate()
+                ),
+                StrategyType.buildStrategy(
+                        resultSet.getString("strategy"),
+                        resultSet.getInt("fee"),
+                        resultSet.getInt("enrollment_limit")
+                ),
+                new EnrollmentCount(resultSet.getInt("enrollment_count"))
         );
+
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
     }
 
     @Override
@@ -111,8 +153,8 @@ public class JdbcSessionRepository implements SessionRepository {
                     new Name(resultSet.getString("session_name")),
                     SessionStatus.from(resultSet.getString("session_status_name")),
                     new Schedule(
-                            toLocalDate(resultSet.getDate("session_start_date")),
-                            toLocalDate(resultSet.getDate("session_end_date"))
+                            resultSet.getDate("session_start_date").toLocalDate(),
+                            resultSet.getDate("session_end_date").toLocalDate()
                     ),
                     StrategyType.buildStrategy(
                             resultSet.getString("session_strategy_name"),
@@ -127,16 +169,6 @@ public class JdbcSessionRepository implements SessionRepository {
 
             return session;
         };
-    }
-
-    private LocalDate toLocalDate(final Date date) {
-        if (date == null) {
-            return null;
-        }
-
-        return date.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
     }
 
     private void assignCoverImageIfNotNull(final Session session, final ResultSet resultSet) throws SQLException {
