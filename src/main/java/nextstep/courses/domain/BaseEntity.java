@@ -9,7 +9,8 @@ public abstract class BaseEntity {
     protected LocalDateTime updatedAt;
 
     public BaseEntity() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
+        LocalDateTime currentTime = LocalDateTime.now();
+        createdAt = currentTime;
+        updatedAt = currentTime;
     }
 }
