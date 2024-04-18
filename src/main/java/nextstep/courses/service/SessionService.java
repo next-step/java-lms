@@ -1,7 +1,7 @@
 package nextstep.courses.service;
 
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionFactory;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionFactory;
 import nextstep.courses.domain.student.SessionStudent;
 import nextstep.courses.domain.student.SessionStudents;
 import nextstep.courses.exception.SessionNotFoundException;

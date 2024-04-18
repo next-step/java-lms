@@ -1,4 +1,4 @@
-package nextstep.courses.domain.status;
+package nextstep.courses.domain.session;
 
 import nextstep.courses.exception.SessionProgressStatusInvalidException;
 

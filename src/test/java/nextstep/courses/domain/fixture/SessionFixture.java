@@ -1,11 +1,11 @@
 package nextstep.courses.domain.fixture;
 
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionFactory;
-import nextstep.courses.domain.SessionType;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionFactory;
+import nextstep.courses.domain.session.SessionType;
 import nextstep.courses.domain.enrollment.SessionCapacity;
 import nextstep.courses.domain.enrollment.SessionFee;
-import nextstep.courses.domain.status.ProgressStatus;
+import nextstep.courses.domain.session.ProgressStatus;
 import nextstep.courses.domain.status.RecruitmentStatus;
 
 import static nextstep.courses.domain.fixture.IdFixture.COURSE_ID;

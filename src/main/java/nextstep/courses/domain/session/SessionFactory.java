@@ -1,11 +1,10 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.enrollment.FreeSessionEnrollment;
 import nextstep.courses.domain.enrollment.PaidSessionEnrollment;
 import nextstep.courses.domain.enrollment.SessionPeriod;
 import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
 import nextstep.courses.domain.image.SessionCoverImage;
-import nextstep.courses.domain.status.ProgressStatus;
 import nextstep.courses.domain.status.RecruitmentStatus;
 import nextstep.courses.domain.student.SessionStudent;
 import nextstep.courses.exception.SessionEnrollmentNotMatchException;

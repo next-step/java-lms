@@ -1,7 +1,7 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionFactory;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionFactory;
 import nextstep.courses.domain.enrollment.SessionPeriod;
 import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
 import nextstep.courses.infrastructure.engine.SessionRepository;
