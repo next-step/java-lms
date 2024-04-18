@@ -1,8 +1,16 @@
 package nextstep.users.domain;
 
+import static nextstep.courses.domain.SelectionStatus.ACCEPTED;
+import static nextstep.users.domain.UserAuthorization.STUDENT;
+import static nextstep.users.domain.UserAuthorization.TEACHER;
+
+import nextstep.courses.domain.SelectedStudents;
+import nextstep.courses.domain.SessionStudent;
 import nextstep.qna.UnAuthorizedException;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class NsUser {
@@ -18,6 +26,8 @@ public class NsUser {
 
     private String email;
 
+    private UserAuthorization authorization;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
@@ -25,8 +35,12 @@ public class NsUser {
     public NsUser() {
     }
 
+    public NsUser(Long id, String userId, String name, String email, UserAuthorization authorization) {
+        this(id, userId, null, name, email, authorization, LocalDateTime.now(), null);
+    }
+
     public NsUser(Long id, String userId, String password, String name, String email) {
-        this(id, userId, password, name, email, LocalDateTime.now(), null);
+        this(id, userId, password, name, email, STUDENT,  LocalDateTime.now(), null);
     }
 
     public NsUser(Long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -35,6 +49,18 @@ public class NsUser {
         this.password = password;
         this.name = name;
         this.email = email;
+        this.authorization = STUDENT;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public NsUser(Long id, String userId, String password, String name, String email, UserAuthorization authorization, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.authorization = authorization;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -115,6 +141,21 @@ public class NsUser {
 
     public boolean isGuestUser() {
         return false;
+    }
+
+    public boolean isTeacher() {
+        return authorization == TEACHER;
+    }
+
+    public void checkSessionAcceptAuth() {
+        if(!isTeacher()){
+            throw new IllegalArgumentException("강사만 학생을 수락할 수 있습니다.");
+        }
+    }
+
+    public SelectedStudents acceptStudents(SessionStudent students) {
+        this.checkSessionAcceptAuth();
+        return new SelectedStudents(Map.of(ACCEPTED, students.getStudents()));
     }
 
     private static class GuestNsUser extends NsUser {

@@ -9,6 +9,14 @@ public class Image extends BaseEntity{
         this(size, type, new Dimension(width, height));
     }
 
+    public Image(Long id, Integer size, ImageType type, Dimension dimension) {
+        super(id);
+        validateSize(size);
+        this.dimension = dimension;
+        this.size = size;
+        this.type = type;
+    }
+
     public Image(Integer size, ImageType type, Dimension dimension) {
         super(1L);
         validateSize(size);

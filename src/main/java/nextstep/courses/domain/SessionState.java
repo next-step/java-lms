@@ -2,10 +2,7 @@ package nextstep.courses.domain;
 
 public enum SessionState {
     PREPARING,
-    RECRUITING,
+    IN_PROGRESS,
     TERMINATE;
 
-    public boolean isRecruiting() {
-        return this == RECRUITING;
-    }
 }

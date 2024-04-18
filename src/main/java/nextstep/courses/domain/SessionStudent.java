@@ -17,6 +17,10 @@ public class SessionStudent {
     this.students = new ArrayList<>();
   }
 
+  public SessionStudent(List<NsUser> students) {
+    this.students = students;
+  }
+
   public  boolean canAcceptNewStudent() {
     return size() < maxStudent;
   }
@@ -31,5 +35,9 @@ public class SessionStudent {
 
   public List<Long> getIds() {
     return students.stream().map(NsUser::getId).collect(Collectors.toList());
+  }
+
+  public List<NsUser> getStudents(){
+    return this.students;
   }
 }

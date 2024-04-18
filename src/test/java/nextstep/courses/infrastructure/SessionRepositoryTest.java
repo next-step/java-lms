@@ -1,19 +1,15 @@
 package nextstep.courses.infrastructure;
 
+import static nextstep.courses.domain.SelectionStatus.ACCEPTED;
 import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import java.time.LocalDate;
-import nextstep.courses.domain.Course;
-import nextstep.courses.domain.Image;
-import nextstep.courses.domain.ImageType;
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.Session.SessionDuration;
-import nextstep.courses.domain.SessionPayType;
-import nextstep.courses.domain.SessionRepository;
-import nextstep.courses.domain.SessionState;
-import nextstep.courses.domain.SessionStudent;
+import java.util.List;
+import java.util.Map;
+
+import nextstep.courses.domain.*;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,7 +31,7 @@ public class SessionRepositoryTest {
   void setUp() {
     sessionRepository = new JdbcSessionRepository(jdbcTemplate);
     session = new Session(new Course("TDD, 클린 코드 with Java", 1L),  new SessionDuration(
-        LocalDate.of(2025,4,11), LocalDate.of(2025,5,12)), new Image(100, ImageType.JPG, 300, 200), SessionPayType.FREE, SessionState.PREPARING, 0, 0L, new SessionStudent());
+        LocalDate.of(2025,4,11), LocalDate.of(2025,5,12)), new Image(100, ImageType.JPG, 300, 200), SessionPayType.FREE, SessionState.PREPARING, RecruitmentState.NOT_RECRUITING, 0, 0L, new SessionStudent());
   }
 
   @Test
@@ -44,6 +40,19 @@ public class SessionRepositoryTest {
     Session savedSession = sessionRepository.save(session);
     Session sessionByDb = sessionRepository.findById(savedSession.getId());
     assertThat(savedSession.getId()).isEqualTo(sessionByDb.getId());
+  }
+
+  @Test
+  @DisplayName("Session에 여러개의 커버 이미지를 등록한다.")
+  void saveSessionWithMultipleImages() {
+    Images images = new Images(
+        List.of(new Image(100, ImageType.JPG, 300, 200), new Image(300, ImageType.SVG, 300, 200)));
+    Session sessionTwoImages = new Session(new Course("TDD, 클린 코드 with Java", 1L),  new SessionDuration(
+        LocalDate.of(2025,4,11), LocalDate.of(2025,5,12)), images, SessionPayType.FREE, SessionState.PREPARING, RecruitmentState.NOT_RECRUITING, 0, 0L, new SessionStudent());
+
+    Session savedSession = sessionRepository.save(sessionTwoImages);
+    Session sessionByDb = sessionRepository.findById(savedSession.getId());
+    assertThat(sessionByDb.getImages().getImages().size()).isEqualTo(2);
   }
 
   @Test
@@ -57,4 +66,23 @@ public class SessionRepositoryTest {
 
     assertThatNoException().isThrownBy(() -> sessionRepository.saveStudents(sessionByDb));
   }
+
+  @Test
+  @DisplayName("수업에 참여하는 학생을 선발한다.")
+void updateStudentSelect() {
+    Session savedSession = sessionRepository.save(session);
+    Session sessionByDb = sessionRepository.findById(savedSession.getId());
+
+    sessionByDb.openRegister();
+    sessionByDb.addStudent(JAVAJIGI, new Payment(20L, savedSession.getId(), 1L, 10000L));
+    sessionRepository.saveStudents(sessionByDb);
+
+    sessionRepository.updateStudentSelect(savedSession.getId(), new SelectedStudents(Map.of(
+        ACCEPTED, List.of(JAVAJIGI))));
+
+    SessionStudent acceptedStudents = sessionRepository.findAcceptedStudentsById(
+        savedSession.getId());
+    assertThat(acceptedStudents.getIds()).isEqualTo(List.of(JAVAJIGI.getId()));
+  }
+
 }
