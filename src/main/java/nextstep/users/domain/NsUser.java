@@ -1,138 +1,159 @@
 package nextstep.users.domain;
 
 import nextstep.qna.UnAuthorizedException;
+import nextstep.sessions.domain.Session;
+import nextstep.sessions.domain.Sessions;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class NsUser {
-    public static final GuestNsUser GUEST_USER = new GuestNsUser();
+	public static final GuestNsUser GUEST_USER = new GuestNsUser();
 
-    private Long id;
+	private Long id;
 
-    private String userId;
+	private String userId;
 
-    private String password;
+	private String password;
 
-    private String name;
+	private String name;
 
-    private String email;
+	private String email;
 
-    private LocalDateTime createdAt;
+	private Sessions sessions;
 
-    private LocalDateTime updatedAt;
+	private LocalDateTime createdAt;
 
-    public NsUser() {
-    }
+	private LocalDateTime updatedAt;
 
-    public NsUser(Long id, String userId, String password, String name, String email) {
-        this(id, userId, password, name, email, LocalDateTime.now(), null);
-    }
+	public NsUser() {
+	}
 
-    public NsUser(Long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.userId = userId;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
+	public NsUser(Long id, String userId, String password, String name, String email) {
+		this(id, userId, password, name, email, LocalDateTime.now(), null);
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public NsUser(Long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
+		this.id = id;
+		this.userId = userId;
+		this.password = password;
+		this.name = name;
+		this.email = email;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+		this.sessions = new Sessions(new ArrayList<>());
+	}
 
-    public String getUserId() {
-        return userId;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public NsUser setUserId(String userId) {
-        this.userId = userId;
-        return this;
-    }
+	public String getUserId() {
+		return userId;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public NsUser setUserId(String userId) {
+		this.userId = userId;
+		return this;
+	}
 
-    public NsUser setPassword(String password) {
-        this.password = password;
-        return this;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public NsUser setPassword(String password) {
+		this.password = password;
+		return this;
+	}
 
-    public NsUser setName(String name) {
-        this.name = name;
-        return this;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public NsUser setName(String name) {
+		this.name = name;
+		return this;
+	}
 
-    public NsUser setEmail(String email) {
-        this.email = email;
-        return this;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public void update(NsUser loginUser, NsUser target) {
-        if (!matchUserId(loginUser.getUserId())) {
-            throw new UnAuthorizedException();
-        }
+	public NsUser setEmail(String email) {
+		this.email = email;
+		return this;
+	}
 
-        if (!matchPassword(target.getPassword())) {
-            throw new UnAuthorizedException();
-        }
+	public void update(NsUser loginUser, NsUser target) {
+		if (!matchUserId(loginUser.getUserId())) {
+			throw new UnAuthorizedException();
+		}
 
-        this.name = target.name;
-        this.email = target.email;
-    }
+		if (!matchPassword(target.getPassword())) {
+			throw new UnAuthorizedException();
+		}
 
-    public boolean matchUser(NsUser target) {
-        return matchUserId(target.getUserId());
-    }
+		this.name = target.name;
+		this.email = target.email;
+	}
 
-    private boolean matchUserId(String userId) {
-        return this.userId.equals(userId);
-    }
+	public boolean matchUser(NsUser target) {
+		return matchUserId(target.getUserId());
+	}
 
-    public boolean matchPassword(String targetPassword) {
-        return password.equals(targetPassword);
-    }
+	private boolean matchUserId(String userId) {
+		return this.userId.equals(userId);
+	}
 
-    public boolean equalsNameAndEmail(NsUser target) {
-        if (Objects.isNull(target)) {
-            return false;
-        }
+	public boolean matchPassword(String targetPassword) {
+		return password.equals(targetPassword);
+	}
 
-        return name.equals(target.name) &&
-                email.equals(target.email);
-    }
+	public boolean equalsNameAndEmail(NsUser target) {
+		if (Objects.isNull(target)) {
+			return false;
+		}
 
-    public boolean isGuestUser() {
-        return false;
-    }
+		return name.equals(target.name) &&
+				email.equals(target.email);
+	}
 
-    private static class GuestNsUser extends NsUser {
-        @Override
-        public boolean isGuestUser() {
-            return true;
-        }
-    }
+	public boolean isGuestUser() {
+		return false;
+	}
 
-    @Override
-    public String toString() {
-        return "NsUser{" +
-                "id=" + id +
-                ", userId='" + userId + '\'' +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
-    }
+	public void registerSession(final Session session, final long paymentAmount) {
+		if (session.isPaidSession() && session.getTuitionFee() != paymentAmount) {
+			throw new IllegalArgumentException("수강료가 일치하지 않습니다.");
+		}
+		addSession(session);
+	}
+
+	private void addSession(final Session session) {
+		sessions.add(session);
+	}
+
+	public Sessions getSessions() {
+		return sessions;
+	}
+
+	private static class GuestNsUser extends NsUser {
+		@Override
+		public boolean isGuestUser() {
+			return true;
+		}
+	}
+
+	@Override
+	public String toString() {
+		return "NsUser{" +
+				"id=" + id +
+				", userId='" + userId + '\'' +
+				", name='" + name + '\'' +
+				", email='" + email + '\'' +
+				", createdAt=" + createdAt +
+				", updatedAt=" + updatedAt +
+				'}';
+	}
 }

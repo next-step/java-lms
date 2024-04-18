@@ -27,8 +27,8 @@ public class CourseTest {
 	void CreateCourseWithMultipleSessions() {
 		// given & when
 
-		List sessionList = List.of(new Session(1L, "객체지향 프로그래밍", 1L, LocalDate.of(2024, 5, 2), LocalDate.of(2024, 5, 30), SessionType.PAID, 10000, 100),
-				new Session(2L, "클래스 디자인", 1L, LocalDate.of(2024, 6, 2), LocalDate.of(2024, 2, 20), SessionType.PAID, 10000, 100));
+		List sessionList = List.of(new Session(1L, "객체지향 프로그래밍", 1L, LocalDate.of(2024, 5, 2), LocalDate.of(2024, 5, 30), SessionType.PAID, 10000, 100, 10000),
+				new Session(2L, "클래스 디자인", 1L, LocalDate.of(2024, 6, 2), LocalDate.of(2024, 2, 20), SessionType.PAID, 10000, 100, 10000));
 		Sessions sessions = new Sessions(sessionList);
 		Course course = new Course(1L, "tdd 클린코드", 1L, sessions);
 

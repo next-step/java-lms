@@ -15,8 +15,9 @@ public class Session {
 	private SessionType sessionType;
 	private Integer maximumAttendeeNumber;
 	private Integer attendeeNumber;
+	private Integer TuitionFee;
 
-	public Session(final long id, final String title, final long courseId, final LocalDate startedAt, final LocalDate endedAt, final SessionType sessionType, final int maximumAttendeeNumber, final int attendeeNumber) {
+	public Session(final long id, final String title, final long courseId, final LocalDate startedAt, final LocalDate endedAt, final SessionType sessionType, final int maximumAttendeeNumber, final int attendeeNumber, final int TuitionFee) {
 		validateSessionDate(startedAt, endedAt);
 		validateSessionMaximumAttendeeNumber(sessionType, maximumAttendeeNumber, attendeeNumber);
 		this.id = id;
@@ -27,6 +28,7 @@ public class Session {
 		this.sessionType = sessionType;
 		this.maximumAttendeeNumber = maximumAttendeeNumber;
 		this.attendeeNumber = attendeeNumber;
+		this.TuitionFee = TuitionFee;
 	}
 
 	private void validateSessionMaximumAttendeeNumber(final SessionType sessionType, final int maximumAttendeeNumber, final int attendeeNumber) {
@@ -39,5 +41,17 @@ public class Session {
 		if (startedAt.isAfter(endedAt)) {
 			throw new IllegalArgumentException("강의 종료일보다 강의 시작일이 늦을 수 없습니다.");
 		}
+	}
+
+	public boolean isPaidSession() {
+		return sessionType.equals(SessionType.PAID);
+	}
+
+	public Integer getTuitionFee() {
+		return TuitionFee;
+	}
+
+	public Long getId() {
+		return id;
 	}
 }

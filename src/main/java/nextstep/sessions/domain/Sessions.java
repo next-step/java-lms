@@ -12,4 +12,8 @@ public class Sessions {
 	public int size() {
 		return sessions.size();
 	}
+
+	public void add(final Session session) {
+		sessions.add(session);
+	}
 }
