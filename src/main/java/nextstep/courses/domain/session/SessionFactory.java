@@ -2,11 +2,12 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.enrollment.FreeSessionEnrollment;
 import nextstep.courses.domain.enrollment.PaidSessionEnrollment;
+import nextstep.courses.domain.enrollment.RecruitmentStatus;
 import nextstep.courses.domain.enrollment.SessionPeriod;
 import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
 import nextstep.courses.domain.image.SessionCoverImage;
-import nextstep.courses.domain.enrollment.RecruitmentStatus;
 import nextstep.courses.domain.student.SessionStudent;
+import nextstep.courses.domain.student.SessionStudents;
 import nextstep.courses.exception.SessionEnrollmentNotMatchException;
 
 import java.time.LocalDateTime;
@@ -66,4 +67,25 @@ public class SessionFactory {
 
         throw new SessionEnrollmentNotMatchException(type);
     }
+
+    public static Session get(Session session, List<SessionCoverImage> coverImages, SessionStudents students) {
+        SessionEnrollment enrollment = assembleEnrollmentStudents(session, students);
+        return new Session(session.getId(), session.getCourseId(), session.getType(), session.getPeriod(), coverImages, enrollment, session.getCreatedAt(), session.getUpdatedAt());
+    }
+
+    private static SessionEnrollment assembleEnrollmentStudents(Session session, SessionStudents students) {
+        SessionType type = session.getType();
+        SessionEnrollment enrollment = session.getEnrollment();
+
+        if (SessionType.FREE == type) {
+            return new FreeSessionEnrollment(enrollment, students);
+        }
+
+        if (SessionType.PAID == type) {
+            return new PaidSessionEnrollment(enrollment, students);
+        }
+
+        throw new SessionEnrollmentNotMatchException(type);
+    }
+
 }

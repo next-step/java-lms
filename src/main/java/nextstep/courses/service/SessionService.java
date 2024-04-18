@@ -1,9 +1,7 @@
 package nextstep.courses.service;
 
 import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionFactory;
 import nextstep.courses.domain.student.SessionStudent;
-import nextstep.courses.domain.student.SessionStudents;
 import nextstep.courses.exception.SessionNotFoundException;
 import nextstep.courses.infrastructure.engine.SessionCoverImageRepository;
 import nextstep.courses.infrastructure.engine.SessionRepository;
@@ -34,10 +32,8 @@ public class SessionService {
     }
 
     public void enroll(Long sessionId, NsUser user) {
-        Session findSession = sessionRepository.findById(sessionId)
+        Session session = sessionRepository.findById(sessionId)
                 .orElseThrow(() -> new SessionNotFoundException(sessionId));
-        SessionStudents findStudents = sessionStudentRepository.findAllBySessionId(sessionId);
-        Session session = SessionFactory.get(findSession, findStudents.get());
 
         Payment payment = paymentService.payment(sessionId, user.getId(), session.getEnrollment().getFee().get());
         SessionStudent student = session.enroll(user, payment);

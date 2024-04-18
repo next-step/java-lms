@@ -2,6 +2,7 @@ package nextstep.courses.domain.enrollment;
 
 import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
 import nextstep.courses.domain.student.SessionStudent;
+import nextstep.courses.domain.student.SessionStudents;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.exception.PaymentAmountExistException;
 
@@ -10,6 +11,10 @@ import java.util.List;
 public class FreeSessionEnrollment extends SessionEnrollment {
 
     public FreeSessionEnrollment(SessionEnrollment enrollment, List<SessionStudent> students) {
+        super(enrollment, students);
+    }
+
+    public FreeSessionEnrollment(SessionEnrollment enrollment, SessionStudents students) {
         super(enrollment, students);
     }
 

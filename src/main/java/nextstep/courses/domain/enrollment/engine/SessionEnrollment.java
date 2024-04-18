@@ -24,6 +24,10 @@ public abstract class SessionEnrollment implements SessionEnroll {
         this(enrollment.getRecruitmentStatus(), enrollment.getCapacity().get(), enrollment.getFee().get(), students);
     }
 
+    protected SessionEnrollment(SessionEnrollment enrollment, SessionStudents students) {
+        this(enrollment.getRecruitmentStatus(), enrollment.getCapacity(), enrollment.getFee(), students);
+    }
+
     protected SessionEnrollment(RecruitmentStatus recruitmentStatus, int capacity, long fee) {
         this(recruitmentStatus, capacity, fee, new ArrayList<>());
     }
@@ -33,6 +37,13 @@ public abstract class SessionEnrollment implements SessionEnroll {
         this.capacity = new SessionCapacity(capacity);
         this.fee = new SessionFee(fee);
         this.students = new SessionStudents(students);
+    }
+
+    public SessionEnrollment(RecruitmentStatus recruitmentStatus, SessionCapacity capacity, SessionFee fee, SessionStudents students) {
+        this.recruitmentStatus = recruitmentStatus;
+        this.capacity = capacity;
+        this.fee = fee;
+        this.students = students;
     }
 
     @Override

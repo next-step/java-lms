@@ -2,10 +2,13 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionType;
+import nextstep.courses.infrastructure.engine.SessionCoverImageRepository;
 import nextstep.courses.infrastructure.engine.SessionRepository;
+import nextstep.courses.infrastructure.engine.SessionStudentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,11 +26,19 @@ public class SessionRepositoryTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Mock
+    private SessionCoverImageRepository sessionCoverImageRepository;
+
+    @Mock
+    private SessionStudentRepository sessionStudentRepository;
+
     private SessionRepository sessionRepository;
 
     @BeforeEach
     void setUp() {
-        sessionRepository = new JdbcSessionRepository(jdbcTemplate);
+        sessionRepository = new JdbcSessionRepository(jdbcTemplate,
+                sessionCoverImageRepository, 
+                sessionStudentRepository);
     }
 
     @Test

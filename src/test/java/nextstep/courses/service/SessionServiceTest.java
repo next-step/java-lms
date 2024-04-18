@@ -1,9 +1,8 @@
 package nextstep.courses.service;
 
+import nextstep.courses.domain.fixture.SessionFixture;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionType;
-import nextstep.courses.domain.fixture.SessionFixture;
-import nextstep.courses.domain.student.SessionStudents;
 import nextstep.courses.exception.SessionNotFoundException;
 import nextstep.courses.infrastructure.engine.SessionCoverImageRepository;
 import nextstep.courses.infrastructure.engine.SessionRepository;
@@ -25,7 +24,6 @@ import static nextstep.courses.domain.fixture.IdFixture.NS_USER_ID;
 import static nextstep.courses.domain.fixture.IdFixture.SESSION_ID;
 import static nextstep.courses.domain.fixture.NsUserFixture.nsUser;
 import static nextstep.courses.domain.fixture.PaymentFixture.payment;
-import static nextstep.courses.domain.fixture.SessionStudentsFixture.students;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -65,8 +63,8 @@ public class SessionServiceTest {
         Session session = SessionFixture.freeSession();
         when(sessionRepository.findById(SESSION_ID)).thenReturn(Optional.of(session));
 
-        SessionStudents students = students();
-        when(sessionStudentRepository.findAllBySessionId(SESSION_ID)).thenReturn(students);
+//        SessionStudents students = students();
+//        when(sessionStudentRepository.findAllBySessionId(SESSION_ID)).thenReturn(students);
 
         Payment payment = payment(0L);
         when(paymentService.payment(SESSION_ID, NS_USER_ID, 0L)).thenReturn(payment);
@@ -90,8 +88,8 @@ public class SessionServiceTest {
         Session session = SessionFixture.paidSession(SessionType.PAID, capacity, sessionFee);
         when(sessionRepository.findById(SESSION_ID)).thenReturn(Optional.of(session));
 
-        SessionStudents students = students();
-        when(sessionStudentRepository.findAllBySessionId(SESSION_ID)).thenReturn(students);
+//        SessionStudents students = students();
+//        when(sessionStudentRepository.findAllBySessionId(SESSION_ID)).thenReturn(students);
 
         Payment payment = payment(sessionFee);
         when(paymentService.payment(SESSION_ID, NS_USER_ID, sessionFee)).thenReturn(payment);

@@ -1,16 +1,21 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionFactory;
 import nextstep.courses.domain.enrollment.SessionPeriod;
 import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
+import nextstep.courses.domain.image.SessionCoverImage;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionFactory;
+import nextstep.courses.domain.student.SessionStudents;
+import nextstep.courses.infrastructure.engine.SessionCoverImageRepository;
 import nextstep.courses.infrastructure.engine.SessionRepository;
+import nextstep.courses.infrastructure.engine.SessionStudentRepository;
 import nextstep.courses.infrastructure.util.LocalDateTimeConverter;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import static java.time.LocalTime.now;
@@ -20,8 +25,15 @@ public class JdbcSessionRepository implements SessionRepository {
 
     private JdbcOperations jdbcTemplate;
 
-    public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
+    private SessionCoverImageRepository sessionCoverImageRepository;
+    private SessionStudentRepository sessionStudentRepository;
+
+    public JdbcSessionRepository(JdbcOperations jdbcTemplate,
+                                 SessionCoverImageRepository sessionCoverImageRepository,
+                                 SessionStudentRepository sessionStudentRepository) {
         this.jdbcTemplate = jdbcTemplate;
+        this.sessionCoverImageRepository = sessionCoverImageRepository;
+        this.sessionStudentRepository = sessionStudentRepository;
     }
 
     @Override
@@ -48,11 +60,17 @@ public class JdbcSessionRepository implements SessionRepository {
                             "created_at, updated_at " +
                      "from session " +
                      "where id = ?";
+
+        Session session;
         try {
-            return Optional.of(jdbcTemplate.queryForObject(sql, sessionEntityRowMapper(), id));
+            session = jdbcTemplate.queryForObject(sql, sessionEntityRowMapper(), id);
         } catch (IncorrectResultSizeDataAccessException exception) {
             return Optional.empty();
         }
+
+        List<SessionCoverImage> coverImages = sessionCoverImageRepository.findAllBySessionId(id);
+        SessionStudents students = sessionStudentRepository.findAllBySessionId(id);
+        return Optional.of(SessionFactory.get(session, coverImages, students));
     }
 
     private RowMapper<Session> sessionEntityRowMapper() {
