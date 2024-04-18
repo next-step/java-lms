@@ -6,7 +6,6 @@ import nextstep.courses.domain.enrollment.RecruitmentStatus;
 import nextstep.courses.domain.enrollment.SessionPeriod;
 import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
 import nextstep.courses.domain.image.SessionCoverImage;
-import nextstep.courses.domain.student.SessionStudent;
 import nextstep.courses.domain.student.SessionStudents;
 import nextstep.courses.exception.SessionEnrollmentNotMatchException;
 
@@ -38,31 +37,6 @@ public class SessionFactory {
 
         if (SessionType.PAID == type) {
             return new Session(sessionId, courseId, type, new SessionPeriod(startAt, endAt), progressStatus, new PaidSessionEnrollment(recruitmentStatus, capacity, fee), createdAt, updatedAt);
-        }
-
-        throw new SessionEnrollmentNotMatchException(type);
-    }
-
-    public static Session get(Session session, List<SessionStudent> students) {
-        SessionEnrollment enrollment = assembleEnrollmentStudents(session, students);
-        return new Session(session.getId(), session.getCourseId(), session.getType(), session.getPeriod(), enrollment, session.getCreatedAt(), session.getUpdatedAt());
-    }
-
-    public static Session get(Session session, SessionCoverImage coverImage, List<SessionStudent> students) {
-        SessionEnrollment enrollment = assembleEnrollmentStudents(session, students);
-        return new Session(session.getId(), session.getCourseId(), session.getType(), session.getPeriod(), coverImage, enrollment, session.getCreatedAt(), session.getUpdatedAt());
-    }
-
-    private static SessionEnrollment assembleEnrollmentStudents(Session session, List<SessionStudent> students) {
-        SessionType type = session.getType();
-        SessionEnrollment enrollment = session.getEnrollment();
-
-        if (SessionType.FREE == type) {
-            return new FreeSessionEnrollment(enrollment, students);
-        }
-
-        if (SessionType.PAID == type) {
-            return new PaidSessionEnrollment(enrollment, students);
         }
 
         throw new SessionEnrollmentNotMatchException(type);
