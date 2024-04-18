@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.sessionPolicy.FreeSessionPolicyStrategy;
+import nextstep.courses.domain.sessionPolicy.PaidSessionPolicyStrategy;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.User;
 
@@ -12,15 +14,13 @@ public class Session {
     private ImageCover imageCover;
     private SessionPeriod sessionPeriod;
     private Enrollment enrollment;
-    private Charge charge;
 
     private Session(SessionInfo sessionInfo, ImageCover imageCover,
-                    SessionPeriod sessionPeriod, Enrollment enrollment, Charge charge) {
+                    SessionPeriod sessionPeriod, Enrollment enrollment) {
         this.sessionInfo = sessionInfo;
         this.imageCover = imageCover;
         this.sessionPeriod = sessionPeriod;
         this.enrollment = enrollment;
-        this.charge = charge;
     }
 
     public static Session paidOf(String title, Long sessionId,
@@ -31,8 +31,7 @@ public class Session {
         return new Session(new SessionInfo(title, sessionId),
                 new ImageCover(imageSize, width, height, imageType),
                 new SessionPeriod(startDate, endDate),
-                new Enrollment(sessionStatus, capacity),
-                new Charge(ChargeStatus.PAID, price));
+                new Enrollment(sessionStatus, new PaidSessionPolicyStrategy(capacity, price)));
     }
 
     public static Session freeOf(String title, Long sessionId,
@@ -42,14 +41,14 @@ public class Session {
         return new Session(new SessionInfo(title, sessionId),
                 new ImageCover(imageSize, width, height, imageType),
                 new SessionPeriod(startDate, endDate),
-                new Enrollment(sessionStatus, Integer.MAX_VALUE),
-                new Charge(ChargeStatus.FREE));
+                new Enrollment(sessionStatus, new FreeSessionPolicyStrategy()));
     }
 
     public void enroll(User user, Payment payment) {
-        if (!charge.isCompletePay(payment)) {
-            throw new IllegalArgumentException(NOT_FOUND_SESSION_ERROR_MESSAGE);
-        }
-        enrollment.enroll(user);
+        enrollment.enroll(user, payment);
+    }
+
+    public int countEnrolledStudent() {
+        return enrollment.countEnrolledStudent();
     }
 }

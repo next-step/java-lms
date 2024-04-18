@@ -1,13 +1,13 @@
 package nextstep.courses.domain;
 
 public class ImagePixel {
-    public static final int MIN_WIDTH = 300;
-    public static final int MIN_HEIGHT = 200;
-    public static final int WIDTH_RATIO = MIN_WIDTH / 100;
-    public static final int HEIGHT_RATIO = MIN_HEIGHT / 100;
-    public static final String HEIGHT_SIZE_ERROR_MESSAGE = "이미지의 높이는 %d pixel 이상이여야 합니다.";
-    public static final String WIDTH_SIZE_ERROR_MESSAGE = "이미지의 너비는 %d pixel 이상이여야 합니다.";
-    public static final String IMAGE_RATIO_ERROR_MESSAGE = "이미지의 비율은 %d:%d여야 합니다.";
+    private static final int MIN_WIDTH = 300;
+    private static final int MIN_HEIGHT = 200;
+    private static final int WIDTH_RATIO = MIN_WIDTH / 100;
+    private static final int HEIGHT_RATIO = MIN_HEIGHT / 100;
+    private static final String HEIGHT_SIZE_ERROR_MESSAGE = "이미지의 높이는 %d pixel 이상이여야 합니다.";
+    private static final String WIDTH_SIZE_ERROR_MESSAGE = "이미지의 너비는 %d pixel 이상이여야 합니다.";
+    private static final String IMAGE_RATIO_ERROR_MESSAGE = "이미지의 비율은 %d:%d여야 합니다.";
     private int width;
     private int height;
 

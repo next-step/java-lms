@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 
@@ -34,6 +35,7 @@ class SessionTest {
         );
         Payment payment = new Payment("payment_id_1", 2L, 2L, 800_000L);
         paidSession.enroll(UserTest.JAVAJIGI, payment);
+        assertThat(paidSession.countEnrolledStudent()).isEqualTo(1);
     }
 
     @DisplayName("실패 - 결제 금액 불일치 테스트")

@@ -21,11 +21,7 @@ public class Students {
         students.add(student);
     }
 
-    public boolean isOversize(int capacity) {
-        return capacity < students.size();
-    }
-
-    public boolean isFull(int capacity) {
-        return capacity == students.size();
+    public int count() {
+        return students.size();
     }
 }
