@@ -17,7 +17,7 @@ public class Session extends BaseEntity {
     private Long courseId;
     private SessionType type;
     private SessionPeriod period;
-    private List<SessionCoverImage> coverImage;
+    private List<SessionCoverImage> coverImages;
     private SessionEnrollment enrollment;
 
     public Session(Long id, Long courseId, SessionType type, SessionPeriod period, SessionCoverImage coverImage, SessionEnrollment enrollment, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -26,7 +26,7 @@ public class Session extends BaseEntity {
         this.courseId = courseId;
         this.type = type;
         this.period = period;
-        this.coverImage = List.of(coverImage);
+        this.coverImages = List.of(coverImage);
         this.enrollment = enrollment;
     }
 
@@ -67,8 +67,8 @@ public class Session extends BaseEntity {
         return period;
     }
 
-    public List<SessionCoverImage> getCoverImage() {
-        return coverImage;
+    public List<SessionCoverImage> getCoverImages() {
+        return coverImages;
     }
 
     public SessionEnrollment getEnrollment() {

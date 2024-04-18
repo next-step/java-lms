@@ -30,7 +30,7 @@ public class SessionService {
 
     public void establish(Session session) {
         sessionRepository.save(session);
-        sessionCoverImageRepository.saveAll(session.getCoverImage());
+        sessionCoverImageRepository.saveAll(session.getCoverImages());
     }
 
     public void enroll(Long sessionId, NsUser user) {
