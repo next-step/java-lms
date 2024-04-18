@@ -20,6 +20,10 @@ public class Money {
         }
     }
 
+    public int value() {
+        return this.value;
+    }
+
     public boolean isLessThan(final Money otherMoney) {
         return this.value < otherMoney.value;
     }

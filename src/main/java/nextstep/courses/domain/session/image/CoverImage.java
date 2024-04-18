@@ -9,16 +9,31 @@ public class CoverImage {
     private final Size size;
     private final Dimensions dimensions;
 
-    public CoverImage(
-            final Long id,
-            final ImageType type,
-            final Size size,
-            final Dimensions dimensions
-    ) {
+    public CoverImage(final ImageType type, final Size size, final Dimensions dimensions) {
+        this(null, type, size, dimensions);
+    }
+
+    public CoverImage(final Long id, final ImageType type, final Size size, final Dimensions dimensions) {
         this.id = id;
         this.type = type;
         this.size = size;
         this.dimensions = dimensions;
+    }
+
+    public String typeName() {
+        return this.type.typeName();
+    }
+
+    public long size() {
+        return this.size.bytes();
+    }
+
+    public int width() {
+        return this.dimensions.width();
+    }
+
+    public int height() {
+        return this.dimensions.height();
     }
 
     @Override

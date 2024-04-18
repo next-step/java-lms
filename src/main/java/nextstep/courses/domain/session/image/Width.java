@@ -24,6 +24,10 @@ public class Width {
         return this.px * ratio;
     }
 
+    public int px() {
+        return this.px;
+    }
+
     @Override
     public boolean equals(final Object otherWidth) {
         if (this == otherWidth) {

@@ -18,6 +18,10 @@ public class Name {
         }
     }
 
+    public String value() {
+        return this.value;
+    }
+
     @Override
     public boolean equals(final Object otherName) {
         if (this == otherName) {
@@ -34,10 +38,5 @@ public class Name {
     @Override
     public int hashCode() {
         return Objects.hash(this.value);
-    }
-
-    @Override
-    public String toString() {
-        return this.value;
     }
 }

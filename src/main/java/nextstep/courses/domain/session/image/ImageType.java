@@ -23,6 +23,10 @@ public enum ImageType {
         this.typeName = typeName;
     }
 
+    public String typeName() {
+        return this.typeName;
+    }
+
     public static ImageType from(final String typeName) {
         return Optional.ofNullable(imageTypes.get(typeName))
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 커버 이미지 종류입니다. 종류: " + typeName));

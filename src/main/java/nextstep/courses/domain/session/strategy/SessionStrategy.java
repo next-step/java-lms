@@ -8,4 +8,10 @@ public interface SessionStrategy {
     boolean isPaymentSufficient(final Money paymentAmount);
 
     boolean canEnrollMoreStudents(final EnrollmentCount currentEnrollmentCount);
+
+    String name();
+
+    int fee();
+
+    int enrollmentLimit();
 }

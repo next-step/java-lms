@@ -2,6 +2,7 @@ package nextstep.courses.domain.session;
 
 import static nextstep.courses.domain.session.SessionStatus.OPEN;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 import nextstep.courses.domain.course.Course;
@@ -16,8 +17,8 @@ public class Session {
     private final Name name;
     private final SessionStatus status;
     private final Schedule schedule;
-    private final CoverImage coverImage;
     private final SessionStrategy sessionStrategy;
+    private CoverImage coverImage;
     private Course course;
     private EnrollmentCount currentEnrollmentCount;
 
@@ -25,11 +26,10 @@ public class Session {
             final Name name,
             final SessionStatus status,
             final Schedule schedule,
-            final CoverImage coverImage,
             final SessionStrategy sessionStrategy,
             final EnrollmentCount currentEnrollmentCount
     ) {
-        this(null, name, status, schedule, coverImage, sessionStrategy, null, currentEnrollmentCount);
+        this(null, name, status, schedule, sessionStrategy, currentEnrollmentCount);
     }
 
     public Session(
@@ -37,19 +37,43 @@ public class Session {
             final Name name,
             final SessionStatus status,
             final Schedule schedule,
-            final CoverImage coverImage,
             final SessionStrategy sessionStrategy,
-            final Course course,
             final EnrollmentCount currentEnrollmentCount
     ) {
         this.id = id;
         this.name = name;
         this.status = status;
         this.schedule = schedule;
-        this.coverImage = coverImage;
         this.sessionStrategy = sessionStrategy;
-        this.course = course;
         this.currentEnrollmentCount = currentEnrollmentCount;
+    }
+
+    public String name() {
+        return this.name.value();
+    }
+
+    public String statusName() {
+        return this.status.statusName();
+    }
+
+    public LocalDate startDate() {
+        return this.schedule.startDate();
+    }
+
+    public LocalDate endDate() {
+        return this.schedule.endDate();
+    }
+
+    public String strategyName() {
+        return this.sessionStrategy.name();
+    }
+
+    public int fee() {
+        return this.sessionStrategy.fee();
+    }
+
+    public int enrollmentLimit() {
+        return this.sessionStrategy.enrollmentLimit();
     }
 
     public int currentEnrollmentCount() {
@@ -58,6 +82,10 @@ public class Session {
 
     public Course course() {
         return this.course;
+    }
+
+    public void assignCoverImage(final CoverImage coverImage) {
+        this.coverImage = coverImage;
     }
 
     public void assignCourse(final Course course) {
@@ -116,6 +144,6 @@ public class Session {
 
     @Override
     public String toString() {
-        return this.name.toString();
+        return this.name.value();
     }
 }
