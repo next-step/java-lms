@@ -4,7 +4,6 @@ import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionFactory;
 import nextstep.courses.domain.enrollment.SessionPeriod;
 import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
-import nextstep.courses.domain.status.SessionStatus;
 import nextstep.courses.infrastructure.engine.SessionRepository;
 import nextstep.courses.infrastructure.util.LocalDateTimeConverter;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
@@ -34,10 +33,9 @@ public class JdbcSessionRepository implements SessionRepository {
 
         SessionPeriod period = session.getPeriod();
         SessionEnrollment enrollment = session.getEnrollment();
-        SessionStatus status = enrollment.getStatus();
         return jdbcTemplate.update(sql, session.getCourseId(), session.getType().get(),
                 period.getStartAt(), period.getEndAt(),
-                status.getProgressStatus().get(), status.getRecruitmentStatus().get(),
+                session.getProgressStatus().get(), enrollment.getRecruitmentStatus().get(),
                 enrollment.getCapacity().get(), enrollment.getFee().get(),
                 now());
     }

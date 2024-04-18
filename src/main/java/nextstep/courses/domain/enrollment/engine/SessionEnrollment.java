@@ -2,6 +2,7 @@ package nextstep.courses.domain.enrollment.engine;
 
 import nextstep.courses.domain.enrollment.SessionCapacity;
 import nextstep.courses.domain.enrollment.SessionFee;
+import nextstep.courses.domain.status.RecruitmentStatus;
 import nextstep.courses.domain.status.SessionStatus;
 import nextstep.courses.domain.student.SessionStudent;
 import nextstep.courses.domain.student.SessionStudents;
@@ -15,13 +16,14 @@ import java.util.List;
 
 public abstract class SessionEnrollment implements SessionEnroll {
 
-    protected final SessionStatus status;
+    protected RecruitmentStatus recruitmentStatus;
+    protected SessionStatus status;
     protected final SessionCapacity capacity;
     protected final SessionFee fee;
     protected final SessionStudents students;
 
     protected SessionEnrollment(SessionEnrollment enrollment, List<SessionStudent> students) {
-        this(enrollment.getStatus(), enrollment.getCapacity().get(), enrollment.getFee().get(), students);
+        this(enrollment.getRecruitmentStatus(), enrollment.getCapacity().get(), enrollment.getFee().get(), students);
     }
 
     protected SessionEnrollment(SessionStatus status, int capacity, long fee) {
@@ -30,6 +32,17 @@ public abstract class SessionEnrollment implements SessionEnroll {
 
     protected SessionEnrollment(SessionStatus status, int capacity, long fee, List<SessionStudent> students) {
         this.status = status;
+        this.capacity = new SessionCapacity(capacity);
+        this.fee = new SessionFee(fee);
+        this.students = new SessionStudents(students);
+    }
+
+    protected SessionEnrollment(RecruitmentStatus recruitmentStatus, int capacity, long fee) {
+        this(recruitmentStatus, capacity, fee, new ArrayList<>());
+    }
+
+    protected SessionEnrollment(RecruitmentStatus recruitmentStatus, int capacity, long fee, List<SessionStudent> students) {
+        this.recruitmentStatus = recruitmentStatus;
         this.capacity = new SessionCapacity(capacity);
         this.fee = new SessionFee(fee);
         this.students = new SessionStudents(students);
@@ -47,7 +60,7 @@ public abstract class SessionEnrollment implements SessionEnroll {
 
     @Override
     public void satisfyStatus() {
-        if (status.cannotEnroll()) {
+        if (recruitmentStatus.cannotEnroll()) {
             throw new SessionStatusCannotEnrollmentException(status);
         }
     }
@@ -61,6 +74,10 @@ public abstract class SessionEnrollment implements SessionEnroll {
 
     public SessionStatus getStatus() {
         return status;
+    }
+
+    public RecruitmentStatus getRecruitmentStatus() {
+        return recruitmentStatus;
     }
 
     public SessionCapacity getCapacity() {

@@ -1,9 +1,10 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.enrollment.SessionPeriod;
-import nextstep.courses.domain.student.SessionStudent;
 import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
 import nextstep.courses.domain.image.SessionCoverImage;
+import nextstep.courses.domain.status.ProgressStatus;
+import nextstep.courses.domain.student.SessionStudent;
 import nextstep.courses.infrastructure.entity.BaseEntity;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -17,6 +18,7 @@ public class Session extends BaseEntity {
     private Long courseId;
     private SessionType type;
     private SessionPeriod period;
+    private ProgressStatus progressStatus;
     private List<SessionCoverImage> coverImages;
     private SessionEnrollment enrollment;
 
@@ -46,6 +48,24 @@ public class Session extends BaseEntity {
         this.enrollment = enrollment;
     }
 
+    public Session(Long sessionId, Long courseId, SessionType type, SessionPeriod period, ProgressStatus progressStatus, SessionEnrollment enrollment, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(createdAt, updatedAt);
+        this.id = sessionId;
+        this.courseId = courseId;
+        this.type = type;
+        this.period = period;
+        this.progressStatus = progressStatus;
+        this.enrollment = enrollment;
+    }
+
+    public Session(Long courseId, SessionType type, SessionPeriod period, ProgressStatus progressStatus, SessionEnrollment enrollment) {
+        this.courseId = courseId;
+        this.type = type;
+        this.period = period;
+        this.progressStatus = progressStatus;
+        this.enrollment = enrollment;
+    }
+
 
     public SessionStudent enroll(NsUser nsUser, Payment payment) {
         return enrollment.enroll(id, nsUser, payment);
@@ -65,6 +85,10 @@ public class Session extends BaseEntity {
 
     public SessionPeriod getPeriod() {
         return period;
+    }
+
+    public ProgressStatus getProgressStatus() {
+        return progressStatus;
     }
 
     public List<SessionCoverImage> getCoverImages() {

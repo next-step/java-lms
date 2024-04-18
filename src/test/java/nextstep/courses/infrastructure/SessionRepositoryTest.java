@@ -2,7 +2,6 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionType;
-import nextstep.courses.domain.fixture.SessionFixture;
 import nextstep.courses.infrastructure.engine.SessionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +13,7 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.Optional;
 
+import static nextstep.courses.domain.fixture.SessionFixture.freeSession;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
@@ -33,7 +33,7 @@ public class SessionRepositoryTest {
     @Test
     @DisplayName("save()")
     void save() {
-        Session session = SessionFixture.freeSession();
+        Session session = freeSession();
 
         int count = sessionRepository.save(session);
 
@@ -43,7 +43,7 @@ public class SessionRepositoryTest {
     @Test
     @DisplayName("findById() Optional.isPresent()")
     void findByIdIsPresent() {
-        Session session = SessionFixture.freeSession();
+        Session session = freeSession();
         sessionRepository.save(session);
 
         Optional<Session> optionalSession = sessionRepository.findById(1L);
@@ -55,7 +55,7 @@ public class SessionRepositoryTest {
     @Test
     @DisplayName("findById() Optional.isEmpty()")
     void findByIdIsEmpty() {
-        Session session = SessionFixture.freeSession();
+        Session session = freeSession();
         sessionRepository.save(session);
 
         Optional<Session> optionalSession = sessionRepository.findById(2L);

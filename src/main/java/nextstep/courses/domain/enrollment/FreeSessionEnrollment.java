@@ -1,6 +1,7 @@
 package nextstep.courses.domain.enrollment;
 
 import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
+import nextstep.courses.domain.status.RecruitmentStatus;
 import nextstep.courses.domain.status.SessionStatus;
 import nextstep.courses.domain.student.SessionStudent;
 import nextstep.payments.domain.Payment;
@@ -16,6 +17,10 @@ public class FreeSessionEnrollment extends SessionEnrollment {
 
     public FreeSessionEnrollment(SessionStatus status) {
         super(status, SessionCapacity.INFINITY, SessionFee.FREE);
+    }
+
+    public FreeSessionEnrollment(RecruitmentStatus recruitmentStatus) {
+        super(recruitmentStatus, SessionCapacity.INFINITY, SessionFee.FREE);
     }
 
     @Override

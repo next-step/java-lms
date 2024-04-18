@@ -1,6 +1,7 @@
 package nextstep.courses.domain.enrollment;
 
 import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
+import nextstep.courses.domain.status.RecruitmentStatus;
 import nextstep.courses.domain.status.SessionStatus;
 import nextstep.courses.domain.student.SessionStudent;
 import nextstep.courses.exception.SessionFeeMismatchException;
@@ -16,6 +17,10 @@ public class PaidSessionEnrollment extends SessionEnrollment {
 
     public PaidSessionEnrollment(SessionStatus status, int capacity, long fee) {
         super(status, capacity, fee);
+    }
+
+    public PaidSessionEnrollment(RecruitmentStatus recruitmentStatus, int capacity, long fee) {
+        super(recruitmentStatus, capacity, fee);
     }
 
     @Override

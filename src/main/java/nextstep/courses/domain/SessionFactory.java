@@ -1,9 +1,12 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.enrollment.*;
+import nextstep.courses.domain.enrollment.FreeSessionEnrollment;
+import nextstep.courses.domain.enrollment.PaidSessionEnrollment;
+import nextstep.courses.domain.enrollment.SessionPeriod;
 import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
 import nextstep.courses.domain.image.SessionCoverImage;
-import nextstep.courses.domain.status.SessionStatus;
+import nextstep.courses.domain.status.ProgressStatus;
+import nextstep.courses.domain.status.RecruitmentStatus;
 import nextstep.courses.domain.student.SessionStudent;
 import nextstep.courses.exception.SessionEnrollmentNotMatchException;
 
@@ -12,13 +15,13 @@ import java.util.List;
 
 public class SessionFactory {
 
-    public static Session get(Long courseId, SessionType type, SessionPeriod period, SessionStatus status, int capacity, long fee) {
+    public static Session get(Long courseId, SessionType type, SessionPeriod period, ProgressStatus progressStatus, RecruitmentStatus recruitmentStatus, int capacity, long fee) {
         if (SessionType.FREE == type) {
-            return new Session(courseId, type, period, new FreeSessionEnrollment(status));
+            return new Session(courseId, type, period, progressStatus, new FreeSessionEnrollment(recruitmentStatus));
         }
 
         if (SessionType.PAID == type) {
-            return new Session(courseId, type, period, new PaidSessionEnrollment(status, capacity, fee));
+            return new Session(courseId, type, period, progressStatus, new PaidSessionEnrollment(recruitmentStatus, capacity, fee));
         }
 
         throw new SessionEnrollmentNotMatchException(type);
@@ -26,14 +29,15 @@ public class SessionFactory {
 
     public static Session get(Long sessionId, Long courseId, String typeString, LocalDateTime startAt, LocalDateTime endAt, String progressString, String recruitmentString, int capacity, long fee, LocalDateTime createdAt, LocalDateTime updatedAt) {
         SessionType type = SessionType.convert(typeString);
-        SessionStatus status = SessionStatus.of(progressString, recruitmentString);
+        ProgressStatus progressStatus = ProgressStatus.convert(progressString);
+        RecruitmentStatus recruitmentStatus = RecruitmentStatus.convert(recruitmentString);
 
         if (SessionType.FREE == type) {
-            return new Session(sessionId, courseId, type, new SessionPeriod(startAt, endAt), new FreeSessionEnrollment(status), createdAt, updatedAt);
+            return new Session(sessionId, courseId, type, new SessionPeriod(startAt, endAt), progressStatus, new FreeSessionEnrollment(recruitmentStatus), createdAt, updatedAt);
         }
 
         if (SessionType.PAID == type) {
-            return new Session(sessionId, courseId, type, new SessionPeriod(startAt, endAt), new PaidSessionEnrollment(status, capacity, fee), createdAt, updatedAt);
+            return new Session(sessionId, courseId, type, new SessionPeriod(startAt, endAt), progressStatus, new PaidSessionEnrollment(recruitmentStatus, capacity, fee), createdAt, updatedAt);
         }
 
         throw new SessionEnrollmentNotMatchException(type);
