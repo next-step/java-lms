@@ -1,7 +1,6 @@
 package nextstep.courses.domain.enrollment;
 
 import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
-import nextstep.courses.domain.status.RecruitmentStatus;
 import nextstep.courses.domain.student.SessionStudent;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.exception.PaymentAmountExistException;

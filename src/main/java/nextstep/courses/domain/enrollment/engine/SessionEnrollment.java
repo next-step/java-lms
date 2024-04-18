@@ -2,7 +2,7 @@ package nextstep.courses.domain.enrollment.engine;
 
 import nextstep.courses.domain.enrollment.SessionCapacity;
 import nextstep.courses.domain.enrollment.SessionFee;
-import nextstep.courses.domain.status.RecruitmentStatus;
+import nextstep.courses.domain.enrollment.RecruitmentStatus;
 import nextstep.courses.domain.student.SessionStudent;
 import nextstep.courses.domain.student.SessionStudents;
 import nextstep.courses.exception.RecruitmentStatusCannotEnrollmentException;

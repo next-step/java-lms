@@ -3,9 +3,9 @@ package nextstep.courses.domain.fixture;
 import nextstep.courses.domain.enrollment.FreeSessionEnrollment;
 import nextstep.courses.domain.enrollment.PaidSessionEnrollment;
 import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
-import nextstep.courses.domain.status.RecruitmentStatus;
+import nextstep.courses.domain.enrollment.RecruitmentStatus;
 
-import static nextstep.courses.domain.status.RecruitmentStatus.*;
+import static nextstep.courses.domain.enrollment.RecruitmentStatus.*;
 
 public class SessionEnrollmentFixture {
 

@@ -6,7 +6,7 @@ import nextstep.courses.domain.session.SessionType;
 import nextstep.courses.domain.enrollment.SessionCapacity;
 import nextstep.courses.domain.enrollment.SessionFee;
 import nextstep.courses.domain.session.ProgressStatus;
-import nextstep.courses.domain.status.RecruitmentStatus;
+import nextstep.courses.domain.enrollment.RecruitmentStatus;
 
 import static nextstep.courses.domain.fixture.IdFixture.COURSE_ID;
 import static nextstep.courses.domain.fixture.SessionPeriodFixture.period;

@@ -15,8 +15,8 @@ import static nextstep.courses.domain.fixture.NsUserFixture.nsUser;
 import static nextstep.courses.domain.fixture.PaymentFixture.payment;
 import static nextstep.courses.domain.fixture.SessionEnrollmentFixture.freeSessionEnrollment;
 import static nextstep.courses.domain.fixture.SessionEnrollmentFixture.paidSessionEnrollment;
-import static nextstep.courses.domain.status.RecruitmentStatus.NOT_RECRUITMENT;
-import static nextstep.courses.domain.status.RecruitmentStatus.RECRUITMENT;
+import static nextstep.courses.domain.enrollment.RecruitmentStatus.NOT_RECRUITMENT;
+import static nextstep.courses.domain.enrollment.RecruitmentStatus.RECRUITMENT;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 

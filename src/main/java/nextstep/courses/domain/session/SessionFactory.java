@@ -5,7 +5,7 @@ import nextstep.courses.domain.enrollment.PaidSessionEnrollment;
 import nextstep.courses.domain.enrollment.SessionPeriod;
 import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
 import nextstep.courses.domain.image.SessionCoverImage;
-import nextstep.courses.domain.status.RecruitmentStatus;
+import nextstep.courses.domain.enrollment.RecruitmentStatus;
 import nextstep.courses.domain.student.SessionStudent;
 import nextstep.courses.exception.SessionEnrollmentNotMatchException;
 

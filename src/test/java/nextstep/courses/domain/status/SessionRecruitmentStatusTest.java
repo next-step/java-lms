@@ -1,5 +1,6 @@
 package nextstep.courses.domain.status;
 
+import nextstep.courses.domain.enrollment.RecruitmentStatus;
 import nextstep.courses.exception.SessionRecruitmentStatusInvalidException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,8 +10,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static nextstep.courses.domain.status.RecruitmentStatus.NOT_RECRUITMENT;
-import static nextstep.courses.domain.status.RecruitmentStatus.RECRUITMENT;
+import static nextstep.courses.domain.enrollment.RecruitmentStatus.NOT_RECRUITMENT;
+import static nextstep.courses.domain.enrollment.RecruitmentStatus.RECRUITMENT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 

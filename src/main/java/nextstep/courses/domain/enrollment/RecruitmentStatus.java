@@ -1,4 +1,4 @@
-package nextstep.courses.domain.status;
+package nextstep.courses.domain.enrollment;
 
 import nextstep.courses.exception.SessionRecruitmentStatusInvalidException;
 

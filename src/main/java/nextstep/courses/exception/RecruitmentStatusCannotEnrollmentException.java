@@ -1,6 +1,6 @@
 package nextstep.courses.exception;
 
-import nextstep.courses.domain.status.RecruitmentStatus;
+import nextstep.courses.domain.enrollment.RecruitmentStatus;
 
 import java.text.MessageFormat;
 
