@@ -1,5 +1,9 @@
 package nextstep.courses.domain;
 
+import nextstep.image.domain.ImageHeight;
+import nextstep.image.domain.ImageShape;
+import nextstep.image.domain.ImageSize;
+import nextstep.image.domain.ImageWidth;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.image.domain;
 
 public class ImageWidth {
     private int width;
