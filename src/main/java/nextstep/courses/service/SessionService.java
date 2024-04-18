@@ -39,7 +39,7 @@ public class SessionService {
         SessionStudents findStudents = sessionStudentRepository.findAllBySessionId(sessionId);
         Session session = SessionFactory.get(findSession, findStudents.get());
 
-        Payment payment = paymentService.payment(sessionId, user.getId(), session.getEnrollment().getFee());
+        Payment payment = paymentService.payment(sessionId, user.getId(), session.getEnrollment().getFee().get());
         SessionStudent student = session.enroll(user, payment);
 
         sessionStudentRepository.save(student);
