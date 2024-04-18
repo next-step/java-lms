@@ -1,5 +1,6 @@
 package nextstep.sessions.domain;
 
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,14 +24,19 @@ public class SessionTest {
     @DisplayName("강의의 가격과 결제 금액이 같을 때, 수강신청이 된다")
     @Test
     void register() {
-        tddCleanCodeJava.register(NsUserTest.JAVAJIGI, 30000L);
+        Payment payment = new Payment("javajigi", 1L, 1L, 30000L);
+
+        tddCleanCodeJava.register(NsUserTest.JAVAJIGI, payment);
+
         assertThat(tddCleanCodeJava.isContainListener(NsUserTest.JAVAJIGI)).isTrue();
     }
 
     @DisplayName("강의의 가격과 결제 금액이 같지 않으면 예외를 반환한다")
     @Test
     void registerException() {
-        assertThatThrownBy(() -> tddCleanCodeJava.register(NsUserTest.JAVAJIGI, 10000L))
+        Payment payment = new Payment("javajigi", 1L, 1L, 10000L);
+
+        assertThatThrownBy(() -> tddCleanCodeJava.register(NsUserTest.JAVAJIGI, payment))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("결제한 금액이 강의의 가격과 일치하지 않습니다.");
     }

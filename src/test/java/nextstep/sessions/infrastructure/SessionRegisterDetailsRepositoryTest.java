@@ -5,7 +5,6 @@ import nextstep.sessions.domain.Price;
 import nextstep.sessions.domain.SessionRegisterDetails;
 import nextstep.sessions.domain.SessionStatus;
 import nextstep.sessions.domain.SessionType;
-import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import nextstep.users.infrastructure.JdbcUserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +15,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

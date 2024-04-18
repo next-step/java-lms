@@ -61,17 +61,6 @@ public class SessionRegisterDetails {
         this.listeners = listeners;
     }
 
-    public void register(NsUser listener, Long amount) {
-        if (this.sessionStatus.isNotRecruiting()) {
-            throw new IllegalArgumentException(String.format("현재 강의는 (%s)인 상태입니다.", this.sessionStatus));
-        }
-        if (this.isNotSamePrice(amount)) {
-            throw new IllegalArgumentException("결제한 금액이 강의의 가격과 일치하지 않습니다.");
-        }
-        this.countOfStudent.increaseCountOfStudents();
-        listeners.add(listener);
-    }
-
     public void register(NsUser listener, Payment payment) {
         if (this.sessionStatus.isNotRecruiting()) {
             throw new IllegalArgumentException(String.format("현재 강의는 (%s)인 상태입니다.", this.sessionStatus));

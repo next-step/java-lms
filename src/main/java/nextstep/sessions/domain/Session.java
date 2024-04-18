@@ -32,10 +32,6 @@ public class Session extends BaseEntity {
         this.sessionRegisterDetails = sessionRegisterDetails;
     }
 
-    public void register(NsUser listener, Long amount) {
-        sessionRegisterDetails.register(listener, amount);
-    }
-
     public void register(NsUser listener, Payment payment) {
         sessionRegisterDetails.register(listener, payment);
     }
