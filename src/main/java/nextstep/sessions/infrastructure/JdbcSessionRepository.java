@@ -7,12 +7,12 @@ import nextstep.sessions.domain.image.Image;
 import nextstep.sessions.domain.image.ImageSize;
 import nextstep.sessions.domain.image.ImageType;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Optional;
 
+@Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
 
     private final JdbcTemplate jdbcTemplate;

@@ -1,5 +1,6 @@
 package nextstep.sessions.domain;
 
+import nextstep.payments.domain.Payment;
 import nextstep.sessions.domain.image.Image;
 import nextstep.users.domain.NsUser;
 import nextstep.utils.BaseEntity;
@@ -33,6 +34,10 @@ public class Session extends BaseEntity {
 
     public void register(NsUser listener, Long amount) {
         sessionRegisterDetails.register(listener, amount);
+    }
+
+    public void register(NsUser listener, Payment payment) {
+        sessionRegisterDetails.register(listener, payment);
     }
 
     public boolean isContainListener(NsUser listener) {

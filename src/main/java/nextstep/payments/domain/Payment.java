@@ -31,6 +31,10 @@ public class Payment {
         return amount == price;
     }
 
+    public boolean isImPossibleToTakeSession(long price) {
+        return amount != price;
+    }
+
     public Long getAmount() {
         return amount;
     }
