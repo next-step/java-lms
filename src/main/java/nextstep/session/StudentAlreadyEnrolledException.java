@@ -1,6 +1,6 @@
 package nextstep.session;
 
-public class StudentAlreadyEnrolledException extends Exception {
+public class StudentAlreadyEnrolledException extends RuntimeException {
 
     public StudentAlreadyEnrolledException(String message) {
         super(message);
