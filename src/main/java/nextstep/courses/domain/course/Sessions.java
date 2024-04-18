@@ -14,6 +14,10 @@ public class Sessions {
         this.sessions = new ArrayList<>();
     }
 
+    public Sessions(final List<Session> sessions) {
+        this.sessions = sessions;
+    }
+
     public void add(final Session session) {
         validateNotExistedSession(session);
 
