@@ -3,11 +3,10 @@ package nextstep.courses.domain.enrollment.engine;
 import nextstep.courses.domain.enrollment.SessionCapacity;
 import nextstep.courses.domain.enrollment.SessionFee;
 import nextstep.courses.domain.status.RecruitmentStatus;
-import nextstep.courses.domain.status.SessionStatus;
 import nextstep.courses.domain.student.SessionStudent;
 import nextstep.courses.domain.student.SessionStudents;
+import nextstep.courses.exception.RecruitmentStatusCannotEnrollmentException;
 import nextstep.courses.exception.SessionCapacityExceedException;
-import nextstep.courses.exception.SessionStatusCannotEnrollmentException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
@@ -17,24 +16,12 @@ import java.util.List;
 public abstract class SessionEnrollment implements SessionEnroll {
 
     protected RecruitmentStatus recruitmentStatus;
-    protected SessionStatus status;
     protected final SessionCapacity capacity;
     protected final SessionFee fee;
     protected final SessionStudents students;
 
     protected SessionEnrollment(SessionEnrollment enrollment, List<SessionStudent> students) {
         this(enrollment.getRecruitmentStatus(), enrollment.getCapacity().get(), enrollment.getFee().get(), students);
-    }
-
-    protected SessionEnrollment(SessionStatus status, int capacity, long fee) {
-        this(status, capacity, fee, new ArrayList<>());
-    }
-
-    protected SessionEnrollment(SessionStatus status, int capacity, long fee, List<SessionStudent> students) {
-        this.status = status;
-        this.capacity = new SessionCapacity(capacity);
-        this.fee = new SessionFee(fee);
-        this.students = new SessionStudents(students);
     }
 
     protected SessionEnrollment(RecruitmentStatus recruitmentStatus, int capacity, long fee) {
@@ -61,7 +48,7 @@ public abstract class SessionEnrollment implements SessionEnroll {
     @Override
     public void satisfyStatus() {
         if (recruitmentStatus.cannotEnroll()) {
-            throw new SessionStatusCannotEnrollmentException(status);
+            throw new RecruitmentStatusCannotEnrollmentException(recruitmentStatus);
         }
     }
 
@@ -70,10 +57,6 @@ public abstract class SessionEnrollment implements SessionEnroll {
         if (capacity.noCapacity(students.size())) {
             throw new SessionCapacityExceedException(capacity.get(), students.size());
         }
-    }
-
-    public SessionStatus getStatus() {
-        return status;
     }
 
     public RecruitmentStatus getRecruitmentStatus() {

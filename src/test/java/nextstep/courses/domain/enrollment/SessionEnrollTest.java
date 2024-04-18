@@ -1,10 +1,9 @@
 package nextstep.courses.domain.enrollment;
 
 import nextstep.courses.domain.enrollment.engine.SessionEnroll;
-import nextstep.courses.domain.status.SessionStatus;
+import nextstep.courses.exception.RecruitmentStatusCannotEnrollmentException;
 import nextstep.courses.exception.SessionCapacityExceedException;
 import nextstep.courses.exception.SessionFeeMismatchException;
-import nextstep.courses.exception.SessionStatusCannotEnrollmentException;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.exception.PaymentAmountExistException;
 import nextstep.users.domain.NsUser;
@@ -16,8 +15,6 @@ import static nextstep.courses.domain.fixture.NsUserFixture.nsUser;
 import static nextstep.courses.domain.fixture.PaymentFixture.payment;
 import static nextstep.courses.domain.fixture.SessionEnrollmentFixture.freeSessionEnrollment;
 import static nextstep.courses.domain.fixture.SessionEnrollmentFixture.paidSessionEnrollment;
-import static nextstep.courses.domain.fixture.SessionStatusFixture.status;
-import static nextstep.courses.domain.status.ProgressStatus.PREPARING;
 import static nextstep.courses.domain.status.RecruitmentStatus.NOT_RECRUITMENT;
 import static nextstep.courses.domain.status.RecruitmentStatus.RECRUITMENT;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -28,7 +25,6 @@ public class SessionEnrollTest {
     @Test
     @DisplayName("[성공] 무료 강의 신청을 만족한다.")
     void 무료_강의_신청_만족() {
-        SessionStatus status = status(PREPARING, RECRUITMENT);
         SessionEnroll enrollment = freeSessionEnrollment(RECRUITMENT);
 
         Payment payment = payment(0L);
@@ -50,7 +46,6 @@ public class SessionEnrollTest {
     @Test
     @DisplayName("[성공] 유료 강의 신청을 만족한다.")
     void 유료_강의_신청_만족() {
-        SessionStatus status = status(PREPARING, RECRUITMENT);
         SessionEnroll enrollment = paidSessionEnrollment(RECRUITMENT, 10, 800_000L);
 
         Payment payment = payment(800_000L);
@@ -61,10 +56,9 @@ public class SessionEnrollTest {
     @Test
     @DisplayName("[실패] 강의 신청 시 수강신청 가능한 상태가 아니라면 SessionCapacityExceedException 예외가 발생한다.")
     void 강의_신청_수강신청_불가능() {
-        SessionStatus status = status(PREPARING, NOT_RECRUITMENT);
         SessionEnroll enrollment = freeSessionEnrollment(NOT_RECRUITMENT);
 
-        assertThatExceptionOfType(SessionStatusCannotEnrollmentException.class)
+        assertThatExceptionOfType(RecruitmentStatusCannotEnrollmentException.class)
                 .isThrownBy(enrollment::satisfyStatus);
     }
 
@@ -90,7 +84,6 @@ public class SessionEnrollTest {
     @Test
     @DisplayName("[성공] 무료 강의를 신청한다.")
     void 무료_강의_신청() {
-        SessionStatus status = status(PREPARING, RECRUITMENT);
         SessionEnroll enrollment = freeSessionEnrollment(RECRUITMENT);
 
         NsUser user = nsUser();
@@ -103,7 +96,6 @@ public class SessionEnrollTest {
     @Test
     @DisplayName("[성공] 유료 강의를 신청한다.")
     void 유료_강의_신청() {
-        SessionStatus status = status(PREPARING, RECRUITMENT);
         SessionEnroll enrollment = paidSessionEnrollment(RECRUITMENT, 10, 800_000L);
 
         NsUser user = nsUser();
