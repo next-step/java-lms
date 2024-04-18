@@ -1,30 +1,28 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.enums.SessionType;
 import nextstep.payments.domain.Payment;
 
 public class FreeSession extends Session {
 	private static final String SESSION_NOT_RECRUITING = "해당 강의는 현재 모집 중이 아닙니다.";
 
-
-	public static FreeSession of(SessionDate sessionDate) {
-		return new FreeSession(sessionDate, null);
+	public static FreeSession createNewInstance(Course course, SessionInfos sessionInfos, CoverImageInfo coverImageInfo) {
+		return new FreeSession(0L, course, sessionInfos, 0, coverImageInfo);
 	}
 
-	// 객체를 생성하고 반환하는 정적 팩토리 메소드
-	public static FreeSession of(SessionDate sessionDate, CoverImageInfo coverImageInfo) {
-		return new FreeSession(sessionDate, coverImageInfo);
+	public static FreeSession createFromData(Long id, Course course, SessionInfos sessionInfos, int numberOfStudents, CoverImageInfo coverImageInfo) {
+		return new FreeSession(id, course, sessionInfos, numberOfStudents, coverImageInfo);
 	}
 
-	private FreeSession(SessionDate sessionDate, CoverImageInfo coverImageInfo) {
-		super(sessionDate, coverImageInfo);
+	private FreeSession(Long id, Course course, SessionInfos sessionInfos, int numberOfStudents, CoverImageInfo coverImageInfo) {
+		super(id, course, sessionInfos, SessionType.FREE, numberOfStudents, coverImageInfo);
 	}
 
 	@Override
 	public void enroll(Payment payment) {
-		if (sessionStatus.isStatusNotRecruiting()) {
-			numberOfStudents++;
-			return;
+		if (sessionInfos.isStatusNotRecruiting()) {
+			throw new IllegalStateException(SESSION_NOT_RECRUITING);
 		}
-		throw new IllegalStateException(SESSION_NOT_RECRUITING);
+		numberOfStudents++;
 	}
 }

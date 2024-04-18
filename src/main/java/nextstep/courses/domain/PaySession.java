@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.enums.SessionStatus;
+import nextstep.courses.domain.enums.SessionType;
 import nextstep.payments.domain.Payment;
 
 public class PaySession extends Session {
@@ -11,16 +11,16 @@ public class PaySession extends Session {
 	private final Long price;
 	private final int maxNumberOfStudents;
 
-	public static PaySession of(SessionDate sessionDate, Long price, int maxNumberOfStudents, CoverImageInfo coverImageInfo) {
-		return new PaySession(sessionDate, price, maxNumberOfStudents, coverImageInfo);
+	public static PaySession createNewInstance(Course course, SessionInfos sessionInfos, int maxNumberOfStudents, CoverImageInfo coverImageInfo, Long price) {
+		return new PaySession(0L, course, sessionInfos, 0, maxNumberOfStudents, coverImageInfo, price);
 	}
 
-	public static PaySession of(SessionDate sessionDate, Long price, int maxNumberOfStudents) {
-		return new PaySession(sessionDate, price, maxNumberOfStudents, null);
+	public static PaySession createFromData(Long id, Course course, SessionInfos sessionInfos, int numberOfStudents, int maxNumberOfStudents, CoverImageInfo coverImageInfo, Long price) {
+		return new PaySession(id, course, sessionInfos, numberOfStudents, maxNumberOfStudents, coverImageInfo, price);
 	}
 
-	public PaySession(SessionDate sessionDate, Long price, int maxNumberOfStudents, CoverImageInfo coverImageInfo) {
-		super(sessionDate, coverImageInfo);
+	private PaySession(Long id, Course course, SessionInfos sessionInfos, int numberOfStudents, int maxNumberOfStudents, CoverImageInfo coverImageInfo, Long price) {
+		super(id, course, sessionInfos, SessionType.PAY, numberOfStudents, coverImageInfo);
 		this.price = price;
 		this.maxNumberOfStudents = maxNumberOfStudents;
 	}
@@ -32,16 +32,23 @@ public class PaySession extends Session {
 	}
 
 	private void validateEnrollable(Payment payment) {
-		if (sessionStatus.isStatusNotRecruiting()) {
+		if (sessionInfos.isStatusNotRecruiting()) {
 			throw new IllegalStateException(SESSION_NOT_RECRUITING);
 		}
-
 		if (payment.isDifferentAmount(price)) {
 			throw new IllegalArgumentException(PAYMENT_AMOUNT_WRONG);
 		}
-
 		if (numberOfStudents >= maxNumberOfStudents) {
 			throw new IllegalArgumentException(NUMBER_OF_STUDENTS_IS_FULL);
 		}
 	}
+
+	public int getMaxNumberOfStudents() {
+		return maxNumberOfStudents;
+	}
+
+	public Long getPrice() {
+		return price;
+	}
+
 }
