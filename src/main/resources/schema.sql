@@ -46,6 +46,8 @@ create table session_student
     created_at        timestamp   not null,
     updated_at        timestamp
 );
+alter table session_student
+alter column enrollment_status set default '대기중';
 
 create table ns_user
 (
