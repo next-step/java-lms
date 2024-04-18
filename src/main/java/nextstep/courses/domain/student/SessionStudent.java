@@ -4,7 +4,6 @@ import nextstep.courses.infrastructure.entity.BaseEntity;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 import static nextstep.courses.domain.student.StudentEnrollmentStatus.*;
 
@@ -33,10 +32,6 @@ public class SessionStudent extends BaseEntity {
         return new SessionStudent(sessionId, nsUser.getId());
     }
 
-    public boolean sameAs(SessionStudent student) {
-        return equals(student);
-    }
-
     public void toApproveStatus() {
         this.enrollmentStatus = APPROVAL;
     }
@@ -61,16 +56,4 @@ public class SessionStudent extends BaseEntity {
         return enrollmentStatus;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SessionStudent student = (SessionStudent) o;
-        return Objects.equals(id, student.id) && Objects.equals(sessionId, student.sessionId) && Objects.equals(nsUserId, student.nsUserId) && enrollmentStatus == student.enrollmentStatus;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, sessionId, nsUserId, enrollmentStatus);
-    }
 }

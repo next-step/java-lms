@@ -18,10 +18,6 @@ public class BaseEntity {
         this.updatedAt = updatedAt;
     }
 
-    public BaseEntity(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
