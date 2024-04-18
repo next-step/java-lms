@@ -63,9 +63,6 @@ public class SessionServiceTest {
         Session session = SessionFixture.freeSession();
         when(sessionRepository.findById(SESSION_ID)).thenReturn(Optional.of(session));
 
-//        SessionStudents students = students();
-//        when(sessionStudentRepository.findAllBySessionId(SESSION_ID)).thenReturn(students);
-
         Payment payment = payment(0L);
         when(paymentService.payment(SESSION_ID, NS_USER_ID, 0L)).thenReturn(payment);
 
@@ -87,9 +84,6 @@ public class SessionServiceTest {
 
         Session session = SessionFixture.paidSession(SessionType.PAID, capacity, sessionFee);
         when(sessionRepository.findById(SESSION_ID)).thenReturn(Optional.of(session));
-
-//        SessionStudents students = students();
-//        when(sessionStudentRepository.findAllBySessionId(SESSION_ID)).thenReturn(students);
 
         Payment payment = payment(sessionFee);
         when(paymentService.payment(SESSION_ID, NS_USER_ID, sessionFee)).thenReturn(payment);
