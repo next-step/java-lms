@@ -78,6 +78,6 @@ create table session (
     image_id bigint not null,
     session_register_details_id bigint not null,
     primary key (id),
-    foreign key (id) references image (id),
-    foreign key (id) references session_register_details (id)
+    foreign key (image_id) references image (id),
+    foreign key (session_register_details_id) references session_register_details (id)
 );

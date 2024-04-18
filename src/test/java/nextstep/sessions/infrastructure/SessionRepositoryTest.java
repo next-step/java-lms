@@ -44,36 +44,16 @@ public class SessionRepositoryTest {
         sessionRegisterDetailsRepository = new JdbcSessionRegisterDetailsRepository(jdbcTemplate, userRepository);
     }
 
-    @DisplayName("세션을 저장한다")
+    @DisplayName("세션을 저장하고 조회한다")
     @Test
-    void save() {
-        Image image = new Image(1L, new Capacity(100), ImageType.PNG, new ImageSize(300, 200));
-        imageRepository.save(image);
-
-        SessionRegisterDetails sessionRegisterDetails = new SessionRegisterDetails(1L, new CountOfStudent(20, 40, SessionType.PAID), new Price(100000L), SessionStatus.RECRUITING, List.of(NsUserTest.JAVAJIGI));
-        sessionRegisterDetailsRepository.save(sessionRegisterDetails);
-
-        Session session = new Session(
-                1L,
-                LocalDateTime.of(2024, 1, 1, 0, 0),
-                LocalDateTime.of(2024, 12, 31, 23, 59),
-                "tdd with java",
-                image,
-                sessionRegisterDetailsRepository.findById(1L).orElseThrow()
-        );
-        int count = sessionRepository.save(session);
-        assertThat(count).isEqualTo(1);
-    }
-
-    @DisplayName("세션을 조회한다")
-    @Test
-    void findById() {
+    void crud() {
         Image image = new Image(1L, new Capacity(100), ImageType.PNG, new ImageSize(300, 200));
         imageRepository.save(image);
         Image imageByFind = imageRepository.findById(1L).orElseThrow();
 
         SessionRegisterDetails sessionRegisterDetails = new SessionRegisterDetails(1L, new CountOfStudent(20, 40, SessionType.PAID), new Price(100000L), SessionStatus.RECRUITING, List.of(NsUserTest.JAVAJIGI));
         sessionRegisterDetailsRepository.save(sessionRegisterDetails);
+        SessionRegisterDetails sessionRegisterDetailsByFind = sessionRegisterDetailsRepository.findById(1L).orElseThrow();
 
         Session tddWithJava = new Session(
                 1L,
@@ -81,7 +61,7 @@ public class SessionRepositoryTest {
                 LocalDateTime.of(2024, 12, 31, 23, 59),
                 "tdd with java",
                 imageByFind,
-                sessionRegisterDetailsRepository.findById(1L).orElseThrow()
+                sessionRegisterDetailsByFind
         );
         sessionRepository.save(tddWithJava);
 
