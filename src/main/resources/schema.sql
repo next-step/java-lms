@@ -56,10 +56,12 @@ create table session (
     start_date timestamp not null,
     end_date timestamp not  null,
     image_id bigint,
-    status varchar(15) not null,
+    open_status varchar(15) not null,
+    recruit_status varchar(15) not null,
     session_type varchar(20) not null,
     max_size int,
-    tuition bigint
+    tuition bigint,
+    primary key (id)
 );
 
 create table session_image (
@@ -76,3 +78,13 @@ create table registration (
     session_id bigint not null,
     user_id bigint not null
 );
+
+ALTER TABLE session_image
+ADD session_id bigint default 0 not null;
+ALTER TABLE session_image
+ADD CONSTRAINT pk_session_image PRIMARY KEY (id);
+
+ALTER TABLE registration
+ADD status varchar(10) default 'PENDING' not null;
+ALTER TABLE registration
+ADD CONSTRAINT pk_registration PRIMARY KEY (id);

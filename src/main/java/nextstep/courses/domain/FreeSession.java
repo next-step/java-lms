@@ -7,16 +7,19 @@ import java.util.List;
 
 public class FreeSession extends Session {
 
-  public FreeSession(Long courseId, LocalDate startDate, LocalDate endDate, SessionImage image, SessionStatus status) {
-    this(0L, courseId, startDate, endDate, image, status, List.of());
+  public FreeSession(Long courseId, LocalDate startDate, LocalDate endDate, List<SessionImage> images,
+                     OpenStatus openStatus, RecruitStatus recruitStatus) {
+    this(0L, courseId, startDate, endDate, images, openStatus, recruitStatus, List.of());
   }
 
-  public FreeSession(Long id, Long courseId, LocalDate startDate, LocalDate endDate, SessionImage image, SessionStatus status) {
-    this(id, courseId, startDate, endDate, image, status, List.of());
+  public FreeSession(Long id, Long courseId, LocalDate startDate, LocalDate endDate, List<SessionImage> images,
+                     OpenStatus openStatus, RecruitStatus recruitStatus) {
+    this(id, courseId, startDate, endDate, images, openStatus, recruitStatus, List.of());
   }
 
-  public FreeSession(Long id, Long courseId, LocalDate startDate, LocalDate endDate, SessionImage image, SessionStatus status, List<NsUser> students) {
-    super(id, courseId, startDate, endDate, image, status, students);
+  public FreeSession(Long id, Long courseId, LocalDate startDate, LocalDate endDate, List<SessionImage> images, OpenStatus openStatus,
+                     RecruitStatus recruitStatus, List<NsUser> students) {
+    super(id, courseId, startDate, endDate, images, openStatus, recruitStatus, students);
   }
 
   @Override

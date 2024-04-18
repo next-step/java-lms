@@ -1,7 +1,7 @@
 package nextstep.courses.domain;
 
 public class SessionImage {
-  private static Double IMAGE_RATIO = 1.5;
+  private static final Double IMAGE_RATIO = 1.5;
 
   private Long id;
   private final Integer width;
@@ -9,18 +9,20 @@ public class SessionImage {
   private final ImageExtension extension;
   private final Integer fileSize;
   private final String fileName;
+  private final Long sessionId;
 
-  public SessionImage(Integer width, Integer height, String extension, Integer fileSize, String fileName) {
-    this(0L, width, height, extension, fileSize, fileName);
+  public SessionImage(Integer width, Integer height, String extension, Integer fileSize, String fileName, Long sessionId) {
+    this(0L, width, height, extension, fileSize, fileName, sessionId);
   }
 
-  public SessionImage(Long id, Integer width, Integer height, String extension, Integer fileSize, String fileName) {
+  public SessionImage(Long id, Integer width, Integer height, String extension, Integer fileSize, String fileName, Long sessionId) {
     this.id = id;
     this.width = width;
     this.height = height;
     this.extension = ImageExtension.of(extension);
     this.fileSize = fileSize;
     this.fileName = fileName;
+    this.sessionId = sessionId;
     this.validate();
   }
 
@@ -70,4 +72,20 @@ public class SessionImage {
     return this.fileName;
   }
 
+  public Long getSessionId() {
+    return this.sessionId;
+  }
+
+  @Override
+  public String toString() {
+    return "SessionImage{" +
+            "id=" + id +
+            ", width=" + width +
+            ", height=" + height +
+            ", extension=" + extension +
+            ", fileSize=" + fileSize +
+            ", fileName='" + fileName + '\'' +
+            ", sessionId=" + sessionId +
+            '}';
+  }
 }

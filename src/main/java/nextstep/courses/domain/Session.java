@@ -11,27 +11,32 @@ public abstract class Session {
   private Long courseId;
   private LocalDate startDate;
   private LocalDate endDate;
-  private SessionImage image;
+  private List<SessionImage> images;
   private SessionStatus status;
+  private OpenStatus openStatus;
+  private RecruitStatus recruitStatus;
   protected final Users students = new Users();
 
-  protected Session(Long id, Long courseId, LocalDate startDate, LocalDate endDate, SessionImage image, SessionStatus status, final List<NsUser> students) {
+  protected Session(Long courseId, LocalDate startDate, LocalDate endDate, List<SessionImage> images, OpenStatus openStatus,
+                    RecruitStatus recruitStatus) {
+    this(0L, courseId, startDate, endDate, images, openStatus, recruitStatus, List.of());
+  }
+
+  protected Session(Long id, Long courseId, LocalDate startDate, LocalDate endDate, List<SessionImage> images, OpenStatus openStatus,
+                    RecruitStatus recruitStatus) {
+    this(id, courseId, startDate, endDate, images, openStatus, recruitStatus, List.of());
+  }
+
+  protected Session(Long id, Long courseId, LocalDate startDate, LocalDate endDate, List<SessionImage> images,
+                    OpenStatus openStatus, RecruitStatus recruitStatus, final List<NsUser> students) {
     this.id = id;
     this.courseId = courseId;
     this.startDate = startDate;
     this.endDate = endDate;
-    this.image = image;
-    this.status = status;
+    this.images = images;
+    this.openStatus = openStatus;
+    this.recruitStatus = recruitStatus;
     this.students.addAll(students);
-    validate();
-  }
-
-  protected Session(Long courseId, LocalDate startDate, LocalDate endDate, SessionImage image, SessionStatus status) {
-    this(0L, courseId, startDate, endDate, image, status, List.of());
-  }
-
-  protected Session(Long id, Long courseId, LocalDate startDate, LocalDate endDate, SessionImage image, SessionStatus status) {
-    this(id, courseId, startDate, endDate, image, status, List.of());
     validate();
   }
 
@@ -42,7 +47,7 @@ public abstract class Session {
   }
 
   public Registration addStudent(final NsUser student) {
-    if (this.isNotOpen()) {
+    if (this.isNotRecruiting()) {
       throw new IllegalStateException("수강생 모집중인 강의가 아닙니다.");
     }
 
@@ -50,7 +55,7 @@ public abstract class Session {
 
     this.students.add(student);
 
-    return new Registration(this.id, student.getId());
+    return new Registration(this, student);
   }
 
   protected abstract void validateAddition(final NsUser user);
@@ -61,8 +66,8 @@ public abstract class Session {
     return this.startDate.isAfter(this.endDate);
   }
 
-  protected boolean isNotOpen() {
-    return this.status != SessionStatus.OPEN;
+  protected boolean isNotRecruiting() {
+    return this.recruitStatus == RecruitStatus.CLOSED;
   }
 
   public Integer numberOfStudents() {
@@ -77,6 +82,10 @@ public abstract class Session {
     return this.students.contains(student);
   }
 
+  public Long getId() {
+    return this.id;
+  }
+
   public Long getCourseId() {
     return this.courseId;
   }
@@ -89,15 +98,26 @@ public abstract class Session {
     return this.endDate;
   }
 
-  public Long getSessionImageId() {
-    return this.image.getId();
+  public RecruitStatus getStatus() {
+    return this.recruitStatus;
   }
 
-  public SessionStatus getStatus() {
-    return this.status;
+  public RecruitStatus getRecruitStatus() {
+    return this.recruitStatus;
   }
 
-  public SessionImage image() {
-    return this.image;
+  public OpenStatus getOpenStatus() {
+    return this.openStatus;
+  }
+
+  public List<SessionImage> images() {
+    return this.images;
+  }
+
+  @Override
+  public String toString() {
+    return "Session{" +
+            "id=" + id +
+            '}';
   }
 }
