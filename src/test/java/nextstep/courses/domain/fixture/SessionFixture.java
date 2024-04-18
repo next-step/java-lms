@@ -12,8 +12,8 @@ import static nextstep.courses.domain.fixture.SessionStatusFixture.status;
 
 public class SessionFixture {
 
-    public static Session freeSession(SessionType type) {
-        return SessionFactory.get(COURSE_ID, type, period(), status(), SessionCapacity.INFINITY, SessionFee.FREE);
+    public static Session freeSession() {
+        return SessionFactory.get(COURSE_ID, SessionType.FREE, period(), status(), SessionCapacity.INFINITY, SessionFee.FREE);
     }
 
     public static Session paidSession(SessionType type, int capacity, long fee) {

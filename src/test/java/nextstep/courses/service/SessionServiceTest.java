@@ -50,7 +50,7 @@ public class SessionServiceTest {
     @Test
     @DisplayName("[성공] 강의를 개설 한다.")
     void 강의_개설() {
-        Session session = SessionFixture.freeSession(SessionType.FREE);
+        Session session = SessionFixture.freeSession();
 
         sessionService.establish(session);
 
@@ -62,7 +62,7 @@ public class SessionServiceTest {
     @DisplayName("[성공] 무료 강의 수강신청을 한다.")
     void 무료_강의_수강신청() {
         // Given
-        Session session = SessionFixture.freeSession(SessionType.FREE);
+        Session session = SessionFixture.freeSession();
         when(sessionRepository.findById(SESSION_ID)).thenReturn(Optional.of(session));
 
         SessionStudents students = students();

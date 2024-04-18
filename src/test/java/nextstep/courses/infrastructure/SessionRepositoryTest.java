@@ -33,7 +33,7 @@ public class SessionRepositoryTest {
     @Test
     @DisplayName("save()")
     void save() {
-        Session session = SessionFixture.freeSession(SessionType.FREE);
+        Session session = SessionFixture.freeSession();
 
         int count = sessionRepository.save(session);
 
@@ -43,7 +43,7 @@ public class SessionRepositoryTest {
     @Test
     @DisplayName("findById() Optional.isPresent()")
     void findByIdIsPresent() {
-        Session session = SessionFixture.freeSession(SessionType.FREE);
+        Session session = SessionFixture.freeSession();
         sessionRepository.save(session);
 
         Optional<Session> optionalSession = sessionRepository.findById(1L);
@@ -55,7 +55,7 @@ public class SessionRepositoryTest {
     @Test
     @DisplayName("findById() Optional.isEmpty()")
     void findByIdIsEmpty() {
-        Session session = SessionFixture.freeSession(SessionType.FREE);
+        Session session = SessionFixture.freeSession();
         sessionRepository.save(session);
 
         Optional<Session> optionalSession = sessionRepository.findById(2L);
