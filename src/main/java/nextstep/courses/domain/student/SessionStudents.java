@@ -1,5 +1,7 @@
 package nextstep.courses.domain.student;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SessionStudents {
@@ -7,7 +9,7 @@ public class SessionStudents {
     private final List<SessionStudent> students;
 
     public SessionStudents(List<SessionStudent> students) {
-        this.students = students;
+        this.students = new ArrayList<>(students);
     }
 
     public void toApproveStatus() {
@@ -31,6 +33,6 @@ public class SessionStudents {
     }
 
     public List<SessionStudent> get() {
-        return students;
+        return Collections.unmodifiableList(students);
     }
 }
