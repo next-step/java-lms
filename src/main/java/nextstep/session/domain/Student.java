@@ -4,9 +4,14 @@ import java.util.Objects;
 
 public class Student {
 
-    private final Long id;
-    private final Long user_id;
-    private final Long session_id;
+    private Long id;
+    private Long user_id;
+    private Long session_id;
+
+    public Student(Long user_id, Long session_id) {
+        this.user_id = user_id;
+        this.session_id = session_id;
+    }
 
     public Student(Long id, Long user_id, Long session_id) {
         this.id = id;
@@ -30,5 +35,13 @@ public class Student {
     @Override
     public int hashCode() {
         return Objects.hash(id, user_id, session_id);
+    }
+
+    public Long getUser_id() {
+        return user_id;
+    }
+
+    public Long getSession_id() {
+        return session_id;
     }
 }
