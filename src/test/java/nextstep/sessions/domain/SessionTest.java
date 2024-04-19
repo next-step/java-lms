@@ -39,14 +39,4 @@ public class SessionTest {
 		// then
 		assertThat(freeSession).isNotNull();
 	}
-
-	@DisplayName("유료 강의는 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능하다")
-	@Test
-	void paidLectureCanBeAppliedIfPaidAmountEqualsTuitionFee() {
-		// given
-
-		// when
-
-		// then
-	}
 }
