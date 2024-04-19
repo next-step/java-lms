@@ -60,14 +60,22 @@ create table image (
 
 create table session_register_details (
     id bigint auto_increment,
-    current_count_of_students bigint,
+    session_id bigint not null,
     max_count_of_students bigint not null,
     session_type varchar(255) not null,
     price bigint not null,
     session_status varchar(255) not null,
-    ns_user_id bigint not null,
     primary key (id),
-    foreign key (id) references ns_user (id)
+    foreign key (session_id) references session (id)
+);
+
+create table students (
+    id bigint auto_increment,
+    ns_user_id bigint not null,
+    session_id bigint not null,
+    primary key (id),
+    foreign key (ns_user_id) references ns_user (id),
+    foreign key (session_id) references session (id)
 );
 
 create table session (
@@ -78,6 +86,5 @@ create table session (
     image_id bigint not null,
     session_register_details_id bigint not null,
     primary key (id),
-    foreign key (image_id) references image (id),
-    foreign key (session_register_details_id) references session_register_details (id)
+    foreign key (image_id) references image (id)
 );
