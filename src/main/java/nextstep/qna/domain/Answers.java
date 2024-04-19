@@ -23,4 +23,13 @@ public class Answers {
 				.allMatch(answer -> answer.isOwner(writer));
 	}
 
+	public void setDeleteAnswers(NsUser writer) throws CannotDeleteException {
+		checkOwner(writer);
+		answers.forEach(answer -> answer.setDeleted(true));
+	}
+
+	public Answer getAnswer(int index) {
+		return answers.get(index);
+	}
+
 }
