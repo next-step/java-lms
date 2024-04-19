@@ -1,5 +1,6 @@
 package nextstep.sessions.infrastructure;
 
+import nextstep.sessions.domain.ImageRepository;
 import nextstep.sessions.domain.image.Capacity;
 import nextstep.sessions.domain.image.Image;
 import nextstep.sessions.domain.image.ImageSize;

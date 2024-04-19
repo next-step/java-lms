@@ -2,6 +2,7 @@ package nextstep.sessions.infrastructure;
 
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionRegisterDetails;
+import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.image.Capacity;
 import nextstep.sessions.domain.image.Image;
 import nextstep.sessions.domain.image.ImageSize;
@@ -23,6 +24,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Optional<Session> findById(long id) {
+        // todo: join query
         String sql = "SELECT id, started_at, ended_at, session_name, image_id, session_register_details_id FROM session WHERE id = ?";
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
             long sessionId = rs.getLong("id");

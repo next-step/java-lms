@@ -1,4 +1,4 @@
-package nextstep.sessions.infrastructure;
+package nextstep.sessions.domain;
 
 import nextstep.sessions.domain.image.Image;
 

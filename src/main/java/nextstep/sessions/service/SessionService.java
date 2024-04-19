@@ -3,7 +3,7 @@ package nextstep.sessions.service;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.infrastructure.PaymentRepository;
 import nextstep.sessions.domain.Session;
-import nextstep.sessions.infrastructure.SessionRepository;
+import nextstep.sessions.domain.SessionRepository;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

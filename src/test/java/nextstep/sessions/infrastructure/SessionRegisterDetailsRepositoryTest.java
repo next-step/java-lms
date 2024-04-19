@@ -3,6 +3,7 @@ package nextstep.sessions.infrastructure;
 import nextstep.sessions.domain.CountOfStudent;
 import nextstep.sessions.domain.Price;
 import nextstep.sessions.domain.SessionRegisterDetails;
+import nextstep.sessions.domain.SessionRegisterDetailsRepository;
 import nextstep.sessions.domain.SessionStatus;
 import nextstep.sessions.domain.SessionType;
 import nextstep.users.domain.NsUserTest;

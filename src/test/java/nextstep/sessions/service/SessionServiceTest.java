@@ -12,7 +12,7 @@ import nextstep.sessions.domain.image.Capacity;
 import nextstep.sessions.domain.image.Image;
 import nextstep.sessions.domain.image.ImageSize;
 import nextstep.sessions.domain.image.ImageType;
-import nextstep.sessions.infrastructure.SessionRepository;
+import nextstep.sessions.domain.SessionRepository;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

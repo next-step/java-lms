@@ -1,6 +1,4 @@
-package nextstep.sessions.infrastructure;
-
-import nextstep.sessions.domain.Session;
+package nextstep.sessions.domain;
 
 import java.util.Optional;
 
