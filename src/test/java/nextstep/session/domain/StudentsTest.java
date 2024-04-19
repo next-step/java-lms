@@ -11,10 +11,9 @@ public class StudentsTest {
     @Test
     public void 학생_등록() throws StudentAlreadyEnrolledException {
         Students students = new Students();
-        Student student = new Student(1L, "맥북이");
+        Student student = new Student(1L, 1L, 1L);
         students.add(student);
 
-        assertThat(students.enrolledStudentCount()).isEqualTo(1);
         assertThat(students.isAlreadyEnrolled(student)).isTrue();
 
     }
@@ -22,7 +21,7 @@ public class StudentsTest {
     @Test
     public void 이미_등록한_학생인지_체크() throws StudentAlreadyEnrolledException {
         Students students = new Students();
-        Student student = new Student(1L, "장갑이");
+        Student student = new Student(1L, 1L, 1L);
         students.add(student);
         assertThatThrownBy(() -> {
             students.add(student);

@@ -11,13 +11,13 @@ public class Dimension {
     private final long width;
     private final long height;
 
-    public Dimension(long width, long height) throws InvalidImageConditionsException {
+    public Dimension(long width, long height) {
         validate(width, height);
         this.width = width;
         this.height = height;
     }
 
-    private void validate(long width, long height) throws InvalidImageConditionsException {
+    private void validate(long width, long height) {
         if (!validateDimensions(width, height)) {
             throw new InvalidImageConditionsException(
                 String.format("이미지는 최소 %d*%d 이상이여야합니다. 입력된 사이즈 %d*%d", MIN_WIDTH, MIN_HEIGHT, width,
@@ -30,16 +30,18 @@ public class Dimension {
     }
 
     private boolean validateDimensions(long width, long height) {
-        if (width < MIN_WIDTH || height < MIN_HEIGHT) {
-            return false;
-        }
-        return true;
+        return width >= MIN_WIDTH && height >= MIN_HEIGHT;
     }
 
     private boolean validateRatio(long width, long height) {
-        if ((width * HEIGHT_RATIO) != (height * WIDTH_RATIO)) {
-            return false;
-        }
-        return true;
+        return (width * HEIGHT_RATIO) == (height * WIDTH_RATIO);
+    }
+
+    public long getWidth() {
+        return width;
+    }
+
+    public long getHeight() {
+        return height;
     }
 }

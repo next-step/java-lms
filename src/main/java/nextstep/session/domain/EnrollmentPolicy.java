@@ -11,8 +11,7 @@ public class EnrollmentPolicy {
     private final int fee;
 
 
-    private EnrollmentPolicy(PriceType priceType, int maxEnrollment, int fee)
-        throws InvalidEnrollmentPolicyException {
+    public EnrollmentPolicy(PriceType priceType, int maxEnrollment, int fee) {
         if (!validate(maxEnrollment, fee)) {
             throw new InvalidEnrollmentPolicyException(
                 String.format("최소수강인원은 %d명 이상, 최소 수강료는 %d원 이상이여야 합니다.", MIN_ENROLLMENT, MIN_FEE));
@@ -22,12 +21,11 @@ public class EnrollmentPolicy {
         this.fee = fee;
     }
 
-    public static EnrollmentPolicy createFreePolicy() throws InvalidEnrollmentPolicyException {
+    public static EnrollmentPolicy createFreePolicy() {
         return new EnrollmentPolicy(PriceType.FREE, MIN_ENROLLMENT, 0);
     }
 
-    public static EnrollmentPolicy createPaidPolicy(int maxEnrollment, int fee)
-        throws InvalidEnrollmentPolicyException {
+    public static EnrollmentPolicy createPaidPolicy(int maxEnrollment, int fee) {
         return new EnrollmentPolicy(PriceType.PAID, maxEnrollment, fee);
     }
 
@@ -40,16 +38,32 @@ public class EnrollmentPolicy {
 
 
     public boolean isCapacityFull(int enrolledStudentCount) {
-        if (priceType.isFree()) {
+        if (isPriceTypeFree()) {
             return false;
         }
         return maxEnrollment <= enrolledStudentCount;
     }
 
     public boolean isPaymentCorrect(int payment) {
-        if (priceType == PriceType.FREE) {
+        if (isPriceTypeFree()) {
             return true;
         }
         return payment == fee;
+    }
+
+    private boolean isPriceTypeFree() {
+        return priceType.isFree();
+    }
+
+    public String getPriceType() {
+        return priceType.toString();
+    }
+
+    public int getMaxEnrollment() {
+        return maxEnrollment;
+    }
+
+    public int getFee() {
+        return fee;
     }
 }

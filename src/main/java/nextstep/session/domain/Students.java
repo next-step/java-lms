@@ -13,7 +13,11 @@ public class Students {
         this.students = new ArrayList<>();
     }
 
-    public void add(Student student) throws StudentAlreadyEnrolledException {
+    public Students(List<Student> list) {
+        this.students = list;
+    }
+
+    public void add(Student student) {
         if (isAlreadyEnrolled(student)) {
             throw new StudentAlreadyEnrolledException("이미 등록된 학생입니다");
         }

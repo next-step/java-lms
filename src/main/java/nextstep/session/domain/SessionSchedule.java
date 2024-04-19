@@ -23,5 +23,11 @@ public class SessionSchedule {
         return registrationDate.isAfter(startDate) && registrationDate.isBefore(endDate);
     }
 
+    public LocalDate getStartDate() {
+        return startDate;
+    }
 
+    public LocalDate getEndDate() {
+        return endDate;
+    }
 }
