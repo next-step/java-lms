@@ -28,6 +28,7 @@ public class SessionService {
                 .orElseThrow(() -> new IllegalArgumentException("결제 정보가 없습니다."));
 
         session.register(nsUser, payment);
+        sessionRepository.save(session);
     }
 
 }
