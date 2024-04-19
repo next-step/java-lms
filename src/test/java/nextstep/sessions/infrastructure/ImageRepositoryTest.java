@@ -1,5 +1,6 @@
 package nextstep.sessions.infrastructure;
 
+import nextstep.sessions.domain.image.Capacity;
 import nextstep.sessions.domain.image.Image;
 import nextstep.sessions.domain.image.ImageSize;
 import nextstep.sessions.domain.image.ImageType;
@@ -37,10 +38,10 @@ public class ImageRepositoryTest {
     @DisplayName("이미지를 조회한다")
     @Test
     void findById() {
-        Image image = new Image(10, ImageType.JPEG, new ImageSize(300, 200));
+        Image image = new Image(2L, new Capacity(10), ImageType.JPEG, new ImageSize(300, 200));
         imageRepository.save(image);
 
-        Optional<Image> savedImage = imageRepository.findById(1L);
+        Optional<Image> savedImage = imageRepository.findById(2L);
 
         assertThat(savedImage).isNotEmpty();
     }

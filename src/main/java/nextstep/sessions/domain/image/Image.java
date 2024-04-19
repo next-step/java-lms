@@ -1,11 +1,14 @@
 package nextstep.sessions.domain.image;
 
 public class Image {
-
     private final Long id;
     private final Capacity capacity;
     private final ImageType imageType;
     private final ImageSize size;
+
+    public static Image createImageWithImageType(ImageType imageType) {
+        return new Image(1L, new Capacity(0), imageType, new ImageSize(300, 200));
+    }
 
     public Image(int capacity, ImageType imageType, ImageSize size) {
         this(new Capacity(capacity), imageType, size);
