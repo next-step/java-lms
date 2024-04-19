@@ -131,6 +131,7 @@ public class NsUser {
 	}
 
 	private void addSession(final Session session) {
+		session.validateOpeningSession();
 		sessions.add(session);
 	}
 

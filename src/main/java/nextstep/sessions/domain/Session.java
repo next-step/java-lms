@@ -16,6 +16,7 @@ public class Session {
 	private Integer maximumAttendeeNumber;
 	private Integer attendeeNumber;
 	private Integer TuitionFee;
+	private SessionStatus sessionStatus;
 
 	public Session(final long id, final String title, final long courseId, final LocalDate startedAt, final LocalDate endedAt, final SessionType sessionType, final int maximumAttendeeNumber, final int attendeeNumber, final int TuitionFee) {
 		validateSessionDate(startedAt, endedAt);
@@ -29,6 +30,7 @@ public class Session {
 		this.maximumAttendeeNumber = maximumAttendeeNumber;
 		this.attendeeNumber = attendeeNumber;
 		this.TuitionFee = TuitionFee;
+		this.sessionStatus = SessionStatus.READY;
 	}
 
 	private void validateSessionMaximumAttendeeNumber(final SessionType sessionType, final int maximumAttendeeNumber, final int attendeeNumber) {
@@ -53,5 +55,15 @@ public class Session {
 
 	public Long getId() {
 		return id;
+	}
+
+	public void changeSessionStatus(final SessionStatus sessionStatus) {
+		this.sessionStatus = sessionStatus;
+	}
+
+	public void validateOpeningSession() {
+		if (!sessionStatus.equals(SessionStatus.OPENED)) {
+			throw new IllegalArgumentException("강의 모집 상태가 아닙니다. 수강 신청이 불가능합니다.");
+		}
 	}
 }
