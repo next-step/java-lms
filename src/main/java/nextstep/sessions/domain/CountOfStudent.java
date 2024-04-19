@@ -1,7 +1,5 @@
 package nextstep.sessions.domain;
 
-import javax.annotation.Resource;
-
 public class CountOfStudent {
 
     private int currentCountOfStudents;

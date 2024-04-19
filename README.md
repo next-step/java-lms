@@ -130,3 +130,5 @@
 - [x] 수강신청 로직을 정확하게 수행되도록 리팩터링하라
 - [ ] 테이블 구조 다시 짜기
 - [ ] '수강생'을 고려하라
+  - [x] 'Student' domain을 구현하라
+  - [x] 'Student' domain을 'NsUser'와 'Session' domain에 연결하라
