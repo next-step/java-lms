@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private QuestionAnswers answers;
+    private List<Answer> answers = new ArrayList<>();
 
     private boolean deleted = false;
 
@@ -29,7 +29,6 @@ public class Question {
 
     public Question(NsUser writer, String title, String contents) {
         this(0L, writer, title, contents);
-        this.answers = new QuestionAnswers();
     }
 
     public Question(Long id, NsUser writer, String title, String contents) {
@@ -37,7 +36,6 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.answers = new QuestionAnswers();
     }
 
     public Long getId() {
@@ -68,43 +66,45 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        answers.addAnswer(answer);
+        answers.add(answer);
     }
 
     public boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
     }
 
-    public void checkOwner(Question question, NsUser loginUser) throws CannotDeleteException {
-        if (!question.isOwner(loginUser)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-    }
-
-    public void checkAnswerOwner(NsUser loginUser) throws CannotDeleteException {
-        this.answers.checkAnswerOwner(loginUser);
-    }
-
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
-        return answers.getAnswers();
+    public void delete(NsUser loginUser) throws CannotDeleteException {
+        if (!this.isOwner(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+        for (Answer answer : answers) {
+            answer.delete(loginUser);
+        }
+        this.deleted = true;
     }
 
-    public void delete() {
+    public List<DeleteHistory> addDeleteHistory() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
 
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
+
+        for (Answer answer : answers) {
+            deleteHistories.add(answer.newDeleteAnswerHistory());
+        }
+
+        return deleteHistories;
     }
-
 
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
+
+    public List<Answer> getAnswers() {
+        return this.answers;
     }
 }

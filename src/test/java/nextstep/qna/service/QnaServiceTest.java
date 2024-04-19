@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static nextstep.qna.domain.QuestionTest.Q1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
@@ -36,8 +37,9 @@ public class QnaServiceTest {
 
     @BeforeEach
     public void setUp() throws Exception {
+        Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
         question = new Question(1L, NsUserTest.JAVAJIGI, "title1", "contents1");
-        answer = new Answer(11L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+        answer = new Answer(11L, NsUserTest.JAVAJIGI, Q1, "Answers Contents1");
         question.addAnswer(answer);
     }
 
