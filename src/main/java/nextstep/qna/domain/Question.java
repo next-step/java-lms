@@ -60,35 +60,49 @@ public class Question {
 		return this;
 	}
 
-	public Question setDeleted(NsUser register) throws CannotDeleteException {
+	public Question setDeleted(NsUser register, List<DeleteHistory> deleteHistories) throws CannotDeleteException {
 		if (!this.isOwner(register)) {
 			throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
 		}
 
-		this.deleted = true;
+		deleteQuestion(deleteHistories);
 
 		if (!answers.isEmpty()) {
-			deletedAnswers();
+			deletedAnswers(deleteHistories);
 		}
 
 		return this;
 	}
 
-	private void deletedAnswers() throws CannotDeleteException {
+	private void deleteQuestion(List<DeleteHistory> deleteHistories) {
+		this.deleted = true;
+		this.addDeleteHistory(deleteHistories);
+	}
+
+	public Question setDeleted(NsUser register) throws CannotDeleteException {
+		if (!this.isOwner(register)) {
+			throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+		}
+		this.deleted = true;
+		return this;
+	}
+
+	private void deletedAnswers(List<DeleteHistory> deleteHistories) throws CannotDeleteException {
 		Answers answersCollection = new Answers(answers);
-		answersCollection.setDeleteAnswers(writer);
+		answersCollection.setDeleteAnswers(writer, deleteHistories);
+	}
+
+	public void addDeleteHistory(List<DeleteHistory> deleteHistories) {
+		deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
 	}
 
 	public boolean isDeleted() {
 		return deleted;
 	}
 
-	public List<Answer> getAnswers() {
-		return answers;
-	}
-
 	@Override
 	public String toString() {
 		return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
 	}
+
 }

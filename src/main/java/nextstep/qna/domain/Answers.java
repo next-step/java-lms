@@ -13,7 +13,7 @@ public class Answers {
 	}
 
 	public void checkOwner(NsUser writer) throws CannotDeleteException {
-		if(!isOwners(writer)) {
+		if (!isOwners(writer)) {
 			throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
 		}
 	}
@@ -26,6 +26,14 @@ public class Answers {
 	public void setDeleteAnswers(NsUser writer) throws CannotDeleteException {
 		checkOwner(writer);
 		answers.forEach(answer -> answer.setDeleted(true));
+	}
+
+	public void setDeleteAnswers(NsUser writer, List<DeleteHistory> deleteHistories) throws CannotDeleteException {
+		checkOwner(writer);
+		answers.forEach(answer -> {
+			answer.setDeleted(true);
+			answer.addDeleteHistory(deleteHistories);
+		});
 	}
 
 	public Answer getAnswer(int index) {
