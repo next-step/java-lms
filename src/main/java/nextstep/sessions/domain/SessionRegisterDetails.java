@@ -44,7 +44,7 @@ public class SessionRegisterDetails {
             SessionStatus sessionStatus,
             List<NsUser> listeners
     ) {
-        this(0, countOfStudent, price, sessionStatus, listeners);
+        this(0L, countOfStudent, price, sessionStatus, listeners);
     }
 
     public SessionRegisterDetails(
