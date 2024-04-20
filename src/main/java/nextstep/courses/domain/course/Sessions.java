@@ -30,6 +30,10 @@ public class Sessions {
         }
     }
 
+    public boolean contains(final Session session) {
+        return this.sessions.contains(session);
+    }
+
     @Override
     public boolean equals(final Object otherSessions) {
         if (this == otherSessions) {
