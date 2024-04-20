@@ -16,11 +16,9 @@ import java.util.Optional;
 public class JdbcSessionRegisterDetailsRepository implements SessionRegisterDetailsRepository {
 
     private final JdbcTemplate jdbcTemplate;
-    private final SessionRepository sessionRepository;
 
-    public JdbcSessionRegisterDetailsRepository(JdbcTemplate jdbcTemplate, SessionRepository sessionRepository) {
+    public JdbcSessionRegisterDetailsRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.sessionRepository = sessionRepository;
     }
 
     @Override
@@ -31,10 +29,9 @@ public class JdbcSessionRegisterDetailsRepository implements SessionRegisterDeta
 
     @Override
     public Optional<SessionRegisterDetails> findById(long sessionRegisterDetailsId) {
-        String sql = "SELECT id, session_id, current_count_of_students, max_count_of_students, session_type, price, session_status FROM session_register_details WHERE id = ?";
+        String sql = "SELECT id, current_count_of_students, max_count_of_students, session_type, price, session_status FROM session_register_details WHERE id = ?";
         SessionRegisterDetails sessionRegisterDetails = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
             long id = rs.getLong("id");
-            long sessionId = rs.getLong("session_id");
             int currentCountOfStudents = rs.getInt("current_count_of_students");
             int maxCountOfStudents = rs.getInt("max_count_of_students");
             String sessionType = rs.getString("session_type");
@@ -43,7 +40,6 @@ public class JdbcSessionRegisterDetailsRepository implements SessionRegisterDeta
 
             return new SessionRegisterDetails(
                     id,
-                    sessionId,
                     new CountOfStudent(currentCountOfStudents, maxCountOfStudents, SessionType.valueOf(sessionType)),
                     new Price(price),
                     SessionStatus.valueOf(sessionStatus));

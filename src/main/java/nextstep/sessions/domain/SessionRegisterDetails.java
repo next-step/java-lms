@@ -10,8 +10,6 @@ public class SessionRegisterDetails {
 
     private final long id;
 
-    private final long sessionId;
-
     private final CountOfStudent countOfStudent;
 
     private final Price price;
@@ -19,6 +17,8 @@ public class SessionRegisterDetails {
     private final SessionStatus sessionStatus;
 
     private List<NsUser> students;
+
+    private Session session;
 
     public SessionRegisterDetails(
             int currentCountOfStudents,
@@ -47,33 +47,35 @@ public class SessionRegisterDetails {
             SessionStatus sessionStatus,
             List<NsUser> students
     ) {
-        this(0L, 0L, countOfStudent, price, sessionStatus, students);
+        this(0L, countOfStudent, price, sessionStatus, students);
     }
 
     public SessionRegisterDetails(
             long id,
-            long sessionId,
             CountOfStudent countOfStudent,
             Price price,
             SessionStatus sessionStatus
     ) {
-        this(id, sessionId, countOfStudent, price, sessionStatus, new ArrayList<>());
+        this(id, countOfStudent, price, sessionStatus, new ArrayList<>());
     }
 
     public SessionRegisterDetails(
             long id,
-            long sessionId,
             CountOfStudent countOfStudent,
             Price price,
             SessionStatus sessionStatus,
             List<NsUser> students
     ) {
+        this(id, countOfStudent, price, sessionStatus, students, null);
+    }
+
+    public SessionRegisterDetails(long id, CountOfStudent countOfStudent, Price price, SessionStatus recruiting, List<NsUser> students, Session session) {
         this.id = id;
-        this.sessionId = sessionId;
         this.countOfStudent = countOfStudent;
         this.price = price;
-        this.sessionStatus = sessionStatus;
+        this.sessionStatus = recruiting;
         this.students = students;
+        this.session = session;
     }
 
     public void register(NsUser student, Payment payment) {
@@ -115,12 +117,13 @@ public class SessionRegisterDetails {
         return id;
     }
 
-    public long getSessionId() {
-        return sessionId;
-    }
 
     public int getCurrentCountOfStudents() {
         return countOfStudent.getCurrentCountOfStudents();
+    }
+
+    public long getSessionId() {
+        return session.getId();
     }
 
 }

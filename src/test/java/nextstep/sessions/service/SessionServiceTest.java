@@ -8,6 +8,8 @@ import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionRegisterDetails;
 import nextstep.sessions.domain.SessionStatus;
 import nextstep.sessions.domain.SessionType;
+import nextstep.sessions.domain.builder.SessionBuilder;
+import nextstep.sessions.domain.builder.SessionRegisterDetailsBuilder;
 import nextstep.sessions.domain.image.Capacity;
 import nextstep.sessions.domain.image.Image;
 import nextstep.sessions.domain.image.ImageSize;
@@ -40,23 +42,17 @@ class SessionServiceTest {
     private SessionService sessionService;
 
     private Image image;
-    private SessionRegisterDetails sessionRegisterDetails;
     private Session session;
     private Payment payment;
 
     @BeforeEach
     void setUp() {
-        image = new Image(1L, new Capacity(100), ImageType.PNG, new ImageSize(300, 200));
-        sessionRegisterDetails = new SessionRegisterDetails(1L, 1L, new CountOfStudent(20, 40, SessionType.PAID), new Price(100000L), SessionStatus.RECRUITING, new ArrayList<>());
-        session = new Session(
-                1L,
-                LocalDateTime.of(2024, 1, 1, 0, 0),
-                LocalDateTime.of(2024, 12, 31, 23, 59),
-                "tdd with java",
-                image,
-                sessionRegisterDetails
-        );
-        payment = new Payment("javajigi", 1L, 1L, 100000L);
+        image = Image.createImageWithCapacity(1024 * 1024);
+        session = new SessionBuilder()
+                .withSessionName("TDD, CleanCode")
+                .withSessionRegisterDetails(new SessionRegisterDetailsBuilder().withPrice(new Price(30000L)).build())
+                .build();
+        payment = new Payment("javajigi", 1L, 1L, 30000L);
     }
 
     @Test

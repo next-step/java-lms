@@ -15,6 +15,10 @@ public class Session extends BaseEntity {
 
     private SessionRegisterDetails sessionRegisterDetails;
 
+    public Session(long id, LocalDateTime startedAt, LocalDateTime endedAt, String sessionName, SessionRegisterDetails sessionRegisterDetails) {
+        this(id, startedAt, endedAt, sessionName, null, sessionRegisterDetails);
+    }
+
     public Session(long id, LocalDateTime startedAt, LocalDateTime endedAt, String sessionName) {
         this(id, startedAt, endedAt, sessionName, null, null);
     }
