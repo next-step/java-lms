@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.7.9'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+    id 'org.jetbrains.kotlin.jvm'
 }
 
 group = 'camp.nextstep'
@@ -17,8 +18,19 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
     testImplementation 'org.assertj:assertj-core:3.22.0'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "11"
+    }
 }
