@@ -9,11 +9,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.DirtiesContext;
 
+import java.util.List;
+
+import static nextstep.courses.domain.fixture.IdFixture.SESSION_ID;
 import static nextstep.courses.domain.fixture.SessionCoverImageFixture.coverImage;
+import static nextstep.courses.domain.fixture.SessionCoverImageFixture.coverImages;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class SessionCoverImageRepositoryTest {
 
     @Autowired
@@ -27,25 +33,28 @@ public class SessionCoverImageRepositoryTest {
     }
 
     @Test
-    @DisplayName("save()")
-    void save() {
-        SessionCoverImage image = coverImage(ImageExtension.GIF.get());
+    @DisplayName("saveAll()")
+    void saveAll() {
+        SessionCoverImage gif = coverImage(ImageExtension.GIF);
+        SessionCoverImage jpg = coverImage(ImageExtension.JPG);
+        List<SessionCoverImage> image = coverImages(gif, jpg);
 
-        int count = sessionCoverImageRepository.save(image);
+        int[] affectedRows = sessionCoverImageRepository.saveAll(image);
 
-        assertThat(count).isEqualTo(1);
+        assertThat(affectedRows).hasSize(2);
     }
 
     @Test
-    @DisplayName("findById()")
-    void findById() {
-        String extension = ImageExtension.GIF.get();
-        SessionCoverImage image = coverImage(extension);
-        sessionCoverImageRepository.save(image);
+    @DisplayName("findAllBySessionId()")
+    void findAllBySessionId() {
+        SessionCoverImage gif = coverImage(SESSION_ID, ImageExtension.GIF);
+        SessionCoverImage jpg = coverImage(SESSION_ID, ImageExtension.JPG);
+        List<SessionCoverImage> image = coverImages(gif, jpg);
+        sessionCoverImageRepository.saveAll(image);
 
-        SessionCoverImage saveCoverImage = sessionCoverImageRepository.findById(1L);
+        List<SessionCoverImage> images = sessionCoverImageRepository.findAllBySessionId(SESSION_ID);
 
-        assertThat(saveCoverImage.getExtension().get()).isEqualTo(extension);
+        assertThat(images).hasSize(2);
     }
 
 }

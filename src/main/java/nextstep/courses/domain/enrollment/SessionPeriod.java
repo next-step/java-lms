@@ -6,25 +6,23 @@ import java.time.LocalDateTime;
 
 public class SessionPeriod {
 
-    private final Long sessionId;
     private final LocalDateTime startAt;
     private final LocalDateTime endAt;
 
-    public SessionPeriod(Long sessionId, LocalDateTime startAt, LocalDateTime endAt) {
-        validateDuration(startAt, endAt);
-        this.sessionId = sessionId;
+    public SessionPeriod(LocalDateTime startAt, LocalDateTime endAt) {
+        validate(startAt, endAt);
         this.startAt = startAt;
         this.endAt = endAt;
     }
 
-    private void validateDuration(LocalDateTime startAt, LocalDateTime endAt) {
-        if (!isValidAtRange(startAt, endAt)) {
+    private void validate(LocalDateTime startAt, LocalDateTime endAt) {
+        if (invalidRange(startAt, endAt)) {
             throw new SessionPeriodRangeException(startAt, endAt);
         }
     }
 
-    private boolean isValidAtRange(LocalDateTime startAt, LocalDateTime endAt) {
-        return startAt.isBefore(endAt);
+    private boolean invalidRange(LocalDateTime startAt, LocalDateTime endAt) {
+        return endAt.isBefore(startAt);
     }
 
     public LocalDateTime getStartAt() {

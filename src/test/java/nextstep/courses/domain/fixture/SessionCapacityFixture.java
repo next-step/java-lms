@@ -2,18 +2,16 @@ package nextstep.courses.domain.fixture;
 
 import nextstep.courses.domain.enrollment.SessionCapacity;
 
-import static nextstep.courses.domain.fixture.IdFixture.SESSION_ID;
-
 public class SessionCapacityFixture {
 
     public static final int MAX_CAPACITY = 10;
 
     public static SessionCapacity sessionCapacity(int maxCapacity) {
-        return new SessionCapacity(SESSION_ID, maxCapacity);
+        return new SessionCapacity(maxCapacity);
     }
 
     public static SessionCapacity sessionCapacity() {
-        return new SessionCapacity(SESSION_ID, MAX_CAPACITY);
+        return new SessionCapacity(MAX_CAPACITY);
     }
 
 }

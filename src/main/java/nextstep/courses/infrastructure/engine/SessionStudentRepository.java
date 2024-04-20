@@ -1,13 +1,14 @@
 package nextstep.courses.infrastructure.engine;
 
-import nextstep.courses.domain.enrollment.SessionStudent;
-
-import java.util.List;
+import nextstep.courses.domain.student.SessionStudent;
+import nextstep.courses.domain.student.SessionStudents;
 
 public interface SessionStudentRepository {
 
     int save(SessionStudent student);
 
-    List<SessionStudent> findAllBySessionId(Long sessionId);
+    int[] updateAll(SessionStudents students);
+
+    SessionStudents findAllBySessionId(Long sessionId);
 
 }

@@ -1,8 +1,8 @@
 package nextstep.courses.service;
 
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionFactory;
-import nextstep.courses.domain.enrollment.SessionStudent;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.student.SessionStudent;
+import nextstep.courses.exception.SessionNotFoundException;
 import nextstep.courses.infrastructure.engine.SessionCoverImageRepository;
 import nextstep.courses.infrastructure.engine.SessionRepository;
 import nextstep.courses.infrastructure.engine.SessionStudentRepository;
@@ -10,8 +10,6 @@ import nextstep.payments.domain.Payment;
 import nextstep.payments.service.PaymentService;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class SessionService {
@@ -30,15 +28,14 @@ public class SessionService {
 
     public void establish(Session session) {
         sessionRepository.save(session);
-        sessionCoverImageRepository.save(session.getCoverImage());
+        sessionCoverImageRepository.saveAll(session.getCoverImages());
     }
 
     public void enroll(Long sessionId, NsUser user) {
-        Session findSession = sessionRepository.findById(sessionId);
-        List<SessionStudent> findStudents = sessionStudentRepository.findAllBySessionId(sessionId);
-        Session session = SessionFactory.get(findSession, findStudents);
+        Session session = sessionRepository.findById(sessionId)
+                .orElseThrow(() -> new SessionNotFoundException(sessionId));
 
-        Payment payment = paymentService.payment(sessionId, user.getId(), session.getEnrollment().getFee());
+        Payment payment = paymentService.payment(sessionId, user.getId(), session.getEnrollment().getFee().get());
         SessionStudent student = session.enroll(user, payment);
 
         sessionStudentRepository.save(student);

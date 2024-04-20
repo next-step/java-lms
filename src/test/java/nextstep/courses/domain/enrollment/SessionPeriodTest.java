@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.enrollment;
 
 import nextstep.courses.domain.fixture.SessionPeriodFixture;
 import nextstep.courses.exception.SessionPeriodRangeException;

@@ -2,23 +2,22 @@ package nextstep.courses.domain.fixture;
 
 import nextstep.courses.domain.enrollment.FreeSessionEnrollment;
 import nextstep.courses.domain.enrollment.PaidSessionEnrollment;
-import nextstep.courses.domain.enrollment.SessionStatus;
 import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
+import nextstep.courses.domain.enrollment.RecruitmentStatus;
 
-import static nextstep.courses.domain.fixture.IdFixture.SESSION_ID;
+import static nextstep.courses.domain.enrollment.RecruitmentStatus.*;
 
 public class SessionEnrollmentFixture {
 
     public static SessionEnrollment freeSessionEnrollment() {
-        return new FreeSessionEnrollment(SESSION_ID, SessionStatus.RECRUITING);
+        return new FreeSessionEnrollment(RECRUITMENT);
     }
 
-    public static SessionEnrollment freeSessionEnrollment(SessionStatus status) {
-        return new FreeSessionEnrollment(SESSION_ID, status);
+    public static SessionEnrollment freeSessionEnrollment(RecruitmentStatus recruitmentStatus) {
+        return new FreeSessionEnrollment(recruitmentStatus);
     }
 
-    public static SessionEnrollment paidSessionEnrollment(SessionStatus status, int capacity, long fee) {
-        return new PaidSessionEnrollment(SESSION_ID, status, capacity, fee);
+    public static SessionEnrollment paidSessionEnrollment(RecruitmentStatus recruitmentStatus, int capacity, long fee) {
+        return new PaidSessionEnrollment(recruitmentStatus, capacity, fee);
     }
-
 }

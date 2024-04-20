@@ -2,12 +2,14 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Course;
 import nextstep.courses.infrastructure.engine.CourseRepository;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Repository("courseRepository")
 public class JdbcCourseRepository implements CourseRepository {
@@ -24,15 +26,22 @@ public class JdbcCourseRepository implements CourseRepository {
     }
 
     @Override
-    public Course findById(Long id) {
+    public Optional<Course> findById(Long id) {
         String sql = "select id, title, creator_id, created_at, updated_at from course where id = ?";
-        RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(
+        try {
+            return Optional.of(jdbcTemplate.queryForObject(sql, courseRowMapper(), id));
+        } catch (IncorrectResultSizeDataAccessException exception) {
+            return Optional.empty();
+        }
+    }
+
+    private RowMapper<Course> courseRowMapper() {
+        return (rs, rowNum) -> new Course(
                 rs.getLong(1),
                 rs.getString(2),
                 rs.getLong(3),
                 toLocalDateTime(rs.getTimestamp(4)),
                 toLocalDateTime(rs.getTimestamp(5)));
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

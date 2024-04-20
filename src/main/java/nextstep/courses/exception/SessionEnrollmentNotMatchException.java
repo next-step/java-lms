@@ -1,6 +1,6 @@
 package nextstep.courses.exception;
 
-import nextstep.courses.domain.SessionType;
+import nextstep.courses.domain.session.SessionType;
 
 import java.text.MessageFormat;
 
