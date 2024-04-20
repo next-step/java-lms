@@ -16,9 +16,9 @@ public class SessionRegisterDetails {
 
     private final SessionStatus sessionStatus;
 
-    private List<NsUser> students;
+    private final List<NsUser> students;
 
-    private Session session;
+    private final Session session;
 
     public SessionRegisterDetails(
             int currentCountOfStudents,

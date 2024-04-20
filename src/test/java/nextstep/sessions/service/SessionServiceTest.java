@@ -47,7 +47,7 @@ class SessionServiceTest {
 
     @BeforeEach
     void setUp() {
-        image = Image.createImageWithCapacity(1024 * 1024);
+        //image = Image.createImageWithCapacity(1024 * 1024);
         session = new SessionBuilder()
                 .withSessionName("TDD, CleanCode")
                 .withSessionRegisterDetails(new SessionRegisterDetailsBuilder().withPrice(new Price(30000L)).build())

@@ -9,11 +9,11 @@ import java.time.LocalDateTime;
 
 public class Session extends BaseEntity {
 
-    private String sessionName;
+    private final String sessionName;
 
-    private Image image;
+    private final Image image;
 
-    private SessionRegisterDetails sessionRegisterDetails;
+    private final SessionRegisterDetails sessionRegisterDetails;
 
     public Session(long id, LocalDateTime startedAt, LocalDateTime endedAt, String sessionName, SessionRegisterDetails sessionRegisterDetails) {
         this(id, startedAt, endedAt, sessionName, null, sessionRegisterDetails);
