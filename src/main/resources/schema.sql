@@ -90,10 +90,8 @@ create table session_register_details
 
 create table students
 (
-    id         bigint auto_increment,
     ns_user_id bigint not null,
     session_id bigint not null,
-    primary key (id),
     foreign key (ns_user_id) references ns_user (id),
     foreign key (session_id) references session (id)
 );

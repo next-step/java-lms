@@ -8,6 +8,7 @@ import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionRegisterDetails;
 import nextstep.sessions.domain.SessionStatus;
 import nextstep.sessions.domain.SessionType;
+import nextstep.sessions.domain.StudentRepository;
 import nextstep.sessions.domain.builder.SessionBuilder;
 import nextstep.sessions.domain.builder.SessionRegisterDetailsBuilder;
 import nextstep.sessions.domain.image.Capacity;
@@ -25,6 +26,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -38,16 +40,17 @@ class SessionServiceTest {
     @Mock
     private PaymentRepository paymentRepository;
 
+    @Mock
+    private StudentRepository studentRepository;
+
     @InjectMocks
     private SessionService sessionService;
 
-    private Image image;
     private Session session;
     private Payment payment;
 
     @BeforeEach
     void setUp() {
-        //image = Image.createImageWithCapacity(1024 * 1024);
         session = new SessionBuilder()
                 .withSessionName("TDD, CleanCode")
                 .withSessionRegisterDetails(new SessionRegisterDetailsBuilder().withPrice(new Price(30000L)).build())

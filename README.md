@@ -131,4 +131,4 @@
 - [x] 테이블 구조 다시 짜기
   - [x] '수강생'을 고려하라
   - [x] session_register_details 테이블에 session_id를 fk로 추가하라
-- [ ] '수강생' repository를 추가하라
+- [x] '수강생' repository를 추가하라

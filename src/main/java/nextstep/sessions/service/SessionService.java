@@ -4,6 +4,7 @@ import nextstep.payments.domain.Payment;
 import nextstep.payments.infrastructure.PaymentRepository;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionRepository;
+import nextstep.sessions.domain.StudentRepository;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,10 +14,16 @@ public class SessionService {
 
     private final SessionRepository sessionRepository;
     private final PaymentRepository paymentRepository;
+    private final StudentRepository studentRepository;
 
-    public SessionService(SessionRepository sessionRepository, PaymentRepository paymentRepository) {
+    public SessionService(
+            SessionRepository sessionRepository,
+            PaymentRepository paymentRepository,
+            StudentRepository studentRepository
+    ) {
         this.sessionRepository = sessionRepository;
         this.paymentRepository = paymentRepository;
+        this.studentRepository = studentRepository;
     }
 
     @Transactional
@@ -29,6 +36,7 @@ public class SessionService {
 
         session.register(nsUser, payment);
         sessionRepository.save(session);
+        studentRepository.save(nsUser, session);
     }
 
 }
