@@ -2,14 +2,13 @@ package nextstep.sessions.infrastructure;
 
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionRepository;
+import nextstep.sessions.domain.builder.SessionBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-
-import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,14 +28,11 @@ public class SessionRepositoryTest {
     @DisplayName("세션을 저장하고 조회한다")
     @Test
     void crud() {
-        Session tddWithJava = new Session(
-                1L,
-                LocalDateTime.of(2024, 1, 1, 0, 0),
-                LocalDateTime.of(2024, 12, 31, 23, 59),
-                "tdd with java"
-        );
+        Session tddWithJava1 = new SessionBuilder()
+                .withSessionName("tdd with java")
+                .build();
 
-        sessionRepository.save(tddWithJava);
+        sessionRepository.save(tddWithJava1);
         Session session = sessionRepository.findById(1L)
                 .orElseThrow();
 

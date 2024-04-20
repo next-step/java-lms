@@ -8,6 +8,7 @@ import nextstep.sessions.domain.SessionRegisterDetailsRepository;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.SessionStatus;
 import nextstep.sessions.domain.SessionType;
+import nextstep.sessions.domain.builder.SessionBuilder;
 import nextstep.users.domain.NsUserTest;
 import nextstep.users.infrastructure.JdbcUserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +36,10 @@ public class SessionRegisterDetailsRepositoryTest {
         sessionRepository = new JdbcSessionRepository(jdbcTemplate);
         sessionRegisterDetailsRepository = new JdbcSessionRegisterDetailsRepository(jdbcTemplate, sessionRepository);
 
-        Session tddCleanCode = new Session(1L, "tdd, 클린코드 java", null);
+        Session tddCleanCode = new SessionBuilder()
+                .withSessionName("TDD, CleanCode")
+                .build();
+
         sessionRepository.save(tddCleanCode);
     }
 
