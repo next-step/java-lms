@@ -3,19 +3,22 @@ package nextstep.sessions.domain;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SessionRegisterDetails {
+
     private final long id;
+
+    private final long sessionId;
+
     private final CountOfStudent countOfStudent;
 
     private final Price price;
 
     private final SessionStatus sessionStatus;
 
-    private List<NsUser> listeners;
+    private List<NsUser> students;
 
     public SessionRegisterDetails(
             int currentCountOfStudents,
@@ -33,35 +36,47 @@ public class SessionRegisterDetails {
             long price,
             SessionType sessionType,
             SessionStatus sessionStatus,
-            List<NsUser> listeners
+            List<NsUser> students
     ) {
-        this(new CountOfStudent(currentCountOfStudents, maxOfStudents, sessionType), new Price(price), sessionStatus, listeners);
+        this(new CountOfStudent(currentCountOfStudents, maxOfStudents, sessionType), new Price(price), sessionStatus, students);
     }
 
     public SessionRegisterDetails(
             CountOfStudent countOfStudent,
             Price price,
             SessionStatus sessionStatus,
-            List<NsUser> listeners
+            List<NsUser> students
     ) {
-        this(0L, countOfStudent, price, sessionStatus, listeners);
+        this(0L, 0L, countOfStudent, price, sessionStatus, students);
     }
 
     public SessionRegisterDetails(
             long id,
+            long sessionId,
+            CountOfStudent countOfStudent,
+            Price price,
+            SessionStatus sessionStatus
+    ) {
+        this(id, sessionId, countOfStudent, price, sessionStatus, new ArrayList<>());
+    }
+
+    public SessionRegisterDetails(
+            long id,
+            long sessionId,
             CountOfStudent countOfStudent,
             Price price,
             SessionStatus sessionStatus,
-            List<NsUser> listeners
+            List<NsUser> students
     ) {
         this.id = id;
+        this.sessionId = sessionId;
         this.countOfStudent = countOfStudent;
         this.price = price;
         this.sessionStatus = sessionStatus;
-        this.listeners = listeners;
+        this.students = students;
     }
 
-    public void register(NsUser listener, Payment payment) {
+    public void register(NsUser student, Payment payment) {
         if (this.sessionStatus.isNotRecruiting()) {
             throw new IllegalArgumentException(String.format("현재 강의는 (%s)인 상태입니다.", this.sessionStatus));
         }
@@ -69,7 +84,7 @@ public class SessionRegisterDetails {
             throw new IllegalArgumentException("결제한 금액이 강의의 가격과 일치하지 않습니다.");
         }
         this.countOfStudent.increaseCountOfStudents();
-        listeners.add(listener);
+        students.add(student);
     }
 
     public boolean isNotSamePrice(long amount) {
@@ -77,7 +92,7 @@ public class SessionRegisterDetails {
     }
 
     public boolean isContainsListener(NsUser listener) {
-        return listeners.contains(listener);
+        return students.contains(listener);
     }
 
     public int getMaxCountOfStudents() {
@@ -100,7 +115,16 @@ public class SessionRegisterDetails {
         return id;
     }
 
-    public List<NsUser> getListeners() {
-        return listeners;
+    public List<NsUser> getStudents() {
+        return students;
     }
+
+    public long getSessionId() {
+        return sessionId;
+    }
+
+    public int getCurrentCountOfStudents() {
+        return countOfStudent.getCurrentCountOfStudents();
+    }
+
 }

@@ -1,6 +1,6 @@
 package nextstep.sessions.domain;
 
-public class CountOfStudent {
+public class CountOfStudent { //todo : 학생수
 
     private int currentCountOfStudents;
 
@@ -30,5 +30,9 @@ public class CountOfStudent {
 
     public String getSessionType() {
         return sessionType.name();
+    }
+
+    public int getCurrentCountOfStudents() {
+        return currentCountOfStudents;
     }
 }

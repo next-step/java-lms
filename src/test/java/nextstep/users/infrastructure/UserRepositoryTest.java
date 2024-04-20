@@ -37,10 +37,4 @@ public class UserRepositoryTest {
         LOGGER.debug("NsUser: {}", nsUser.get());
     }
 
-    @DisplayName("세션 아이디로 참여자 목록을 조회한다")
-    @Test
-    void findListenersBySessionId() {
-        List<NsUser> listenersBySessionId = userRepository.findNsUsersBySessionRegisterDetailsId(1L);
-        assertThat(listenersBySessionId.isEmpty()).isTrue();
-    }
 }

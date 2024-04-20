@@ -39,10 +39,10 @@ public class ImageRepositoryTest {
     @DisplayName("이미지를 조회한다")
     @Test
     void findById() {
-        Image image = new Image(2L, new Capacity(10), ImageType.JPEG, new ImageSize(300, 200));
+        Image image = new Image(1L, new Capacity(10), ImageType.JPEG, new ImageSize(300, 200));
         imageRepository.save(image);
 
-        Optional<Image> savedImage = imageRepository.findById(2L);
+        Optional<Image> savedImage = imageRepository.findById(1L);
 
         assertThat(savedImage).isNotEmpty();
     }

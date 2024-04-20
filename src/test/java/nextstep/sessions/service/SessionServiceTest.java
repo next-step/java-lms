@@ -47,7 +47,7 @@ class SessionServiceTest {
     @BeforeEach
     void setUp() {
         image = new Image(1L, new Capacity(100), ImageType.PNG, new ImageSize(300, 200));
-        sessionRegisterDetails = new SessionRegisterDetails(1L, new CountOfStudent(20, 40, SessionType.PAID), new Price(100000L), SessionStatus.RECRUITING, new ArrayList<>());
+        sessionRegisterDetails = new SessionRegisterDetails(1L, 1L, new CountOfStudent(20, 40, SessionType.PAID), new Price(100000L), SessionStatus.RECRUITING, new ArrayList<>());
         session = new Session(
                 1L,
                 LocalDateTime.of(2024, 1, 1, 0, 0),

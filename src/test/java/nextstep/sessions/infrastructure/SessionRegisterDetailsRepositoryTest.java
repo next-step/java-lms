@@ -2,8 +2,10 @@ package nextstep.sessions.infrastructure;
 
 import nextstep.sessions.domain.CountOfStudent;
 import nextstep.sessions.domain.Price;
+import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionRegisterDetails;
 import nextstep.sessions.domain.SessionRegisterDetailsRepository;
+import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.SessionStatus;
 import nextstep.sessions.domain.SessionType;
 import nextstep.users.domain.NsUserTest;
@@ -26,18 +28,28 @@ public class SessionRegisterDetailsRepositoryTest {
     private JdbcTemplate jdbcTemplate;
 
     SessionRegisterDetailsRepository sessionRegisterDetailsRepository;
-    JdbcUserRepository jdbcUserRepository;
+    SessionRepository sessionRepository;
 
     @BeforeEach
     void setUp() {
-        jdbcUserRepository = new JdbcUserRepository(jdbcTemplate);
-        sessionRegisterDetailsRepository = new JdbcSessionRegisterDetailsRepository(jdbcTemplate, jdbcUserRepository);
+        sessionRepository = new JdbcSessionRepository(jdbcTemplate);
+        sessionRegisterDetailsRepository = new JdbcSessionRegisterDetailsRepository(jdbcTemplate, sessionRepository);
+
+        Session tddCleanCode = new Session(1L, "tdd, 클린코드 java", null);
+        sessionRepository.save(tddCleanCode);
     }
 
     @DisplayName("세션 등록 상세를 저장한다")
     @Test
     void save() {
-        SessionRegisterDetails sessionRegisterDetails = new SessionRegisterDetails(1L, new CountOfStudent(20, 40, SessionType.PAID), new Price(100000L), SessionStatus.RECRUITING, List.of(NsUserTest.JAVAJIGI));
+        SessionRegisterDetails sessionRegisterDetails = new SessionRegisterDetails(
+                1L,
+                1L,
+                new CountOfStudent(20, 40, SessionType.PAID),
+                new Price(100000L),
+                SessionStatus.RECRUITING,
+                List.of(NsUserTest.JAVAJIGI)
+        );
         int count = sessionRegisterDetailsRepository.save(sessionRegisterDetails);
         assertThat(count).isEqualTo(1);
     }
@@ -45,7 +57,7 @@ public class SessionRegisterDetailsRepositoryTest {
     @DisplayName("세션 등록 상세를 조회한다")
     @Test
     void findById() {
-        SessionRegisterDetails sessionRegisterDetails = new SessionRegisterDetails(1L, new CountOfStudent(20, 40, SessionType.PAID), new Price(100000L), SessionStatus.RECRUITING, List.of(NsUserTest.JAVAJIGI));
+        SessionRegisterDetails sessionRegisterDetails = new SessionRegisterDetails(1L, 1L, new CountOfStudent(20, 40, SessionType.PAID), new Price(100000L), SessionStatus.RECRUITING, List.of(NsUserTest.JAVAJIGI));
         sessionRegisterDetailsRepository.save(sessionRegisterDetails);
 
         SessionRegisterDetails registerDetails = sessionRegisterDetailsRepository.findById(1L)
