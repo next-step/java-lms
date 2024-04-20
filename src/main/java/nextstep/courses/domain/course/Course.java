@@ -12,10 +12,10 @@ public class Course {
     private final Long creatorId;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
-    private final Sessions sessions;
+    private Sessions sessions;
 
     public Course(final String title, final Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null);
+        this(null, title, creatorId, LocalDateTime.now(), null);
     }
 
     public Course(
@@ -25,40 +25,45 @@ public class Course {
             final LocalDateTime createdAt,
             final LocalDateTime updatedAt
     ) {
-        this(id, title, creatorId, createdAt, updatedAt, new Sessions());
-    }
-
-    public Course(
-            final Long id,
-            final String title,
-            final Long creatorId,
-            final LocalDateTime createdAt,
-            final LocalDateTime updatedAt,
-            final Sessions sessions
-    ) {
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.sessions = sessions;
+        this.sessions = new Sessions();
     }
 
-    public String getTitle() {
+    public Long id() {
+        return this.id;
+    }
+
+    public String title() {
         return this.title;
     }
 
-    public Long getCreatorId() {
+    public Long creatorId() {
         return this.creatorId;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public LocalDateTime createdAt() {
         return this.createdAt;
+    }
+
+    public LocalDateTime updatedAt() {
+        return this.updatedAt;
+    }
+
+    public void assignSessions(final Sessions sessions) {
+        this.sessions = sessions;
     }
 
     public void addNewSession(final Session session) {
         this.sessions.add(session);
         session.assignCourse(this);
+    }
+
+    public boolean containsSession(final Session session) {
+        return this.sessions.contains(session);
     }
 
     @Override
