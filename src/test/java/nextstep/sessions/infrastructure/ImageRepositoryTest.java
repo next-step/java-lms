@@ -1,9 +1,7 @@
 package nextstep.sessions.infrastructure;
 
 import nextstep.sessions.domain.ImageRepository;
-import nextstep.sessions.domain.image.Capacity;
 import nextstep.sessions.domain.image.Image;
-import nextstep.sessions.domain.image.ImageSize;
 import nextstep.sessions.domain.image.ImageType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,16 +29,18 @@ public class ImageRepositoryTest {
     @DisplayName("이미지를 저장한다")
     @Test
     void save() {
-        Image image = new Image(10, ImageType.JPEG, new ImageSize(300, 200));
+        Image jpegImage = Image.createImageWithImageType(ImageType.JPEG);
 
-        assertThat(imageRepository.save(image)).isEqualTo(1);
+        int count = imageRepository.save(jpegImage);
+
+        assertThat(count).isEqualTo(1);
     }
 
     @DisplayName("이미지를 조회한다")
     @Test
     void findById() {
-        Image image = new Image(1L, new Capacity(10), ImageType.JPEG, new ImageSize(300, 200));
-        imageRepository.save(image);
+        Image jpegImage = Image.createImageWithImageType(ImageType.JPEG);
+        imageRepository.save(jpegImage);
 
         Optional<Image> savedImage = imageRepository.findById(1L);
 

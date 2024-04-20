@@ -115,10 +115,6 @@ public class SessionRegisterDetails {
         return id;
     }
 
-    public List<NsUser> getStudents() {
-        return students;
-    }
-
     public long getSessionId() {
         return sessionId;
     }

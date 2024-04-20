@@ -10,6 +10,14 @@ public class Image {
         return new Image(1L, new Capacity(0), imageType, new ImageSize(300, 200));
     }
 
+    public static Image createImageWithCapacity(int capacity) {
+        return new Image(1L, new Capacity(capacity), ImageType.GIF, new ImageSize(300, 200));
+    }
+
+    public static Image createImageWithSize(double width, double height) {
+        return new Image(1L, new Capacity(0), ImageType.GIF, new ImageSize(width, height));
+    }
+
     public Image(int capacity, ImageType imageType, ImageSize size) {
         this(new Capacity(capacity), imageType, size);
     }
