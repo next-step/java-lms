@@ -18,8 +18,7 @@ create table session(
     enrollment_limit int not null,
     enrollment_count int not null,
     course_id bigint,
-    primary key (id),
-    foreign key (course_id) references course(id)
+    primary key (id)
 );
 
 create table cover_image(
@@ -29,8 +28,7 @@ create table cover_image(
     width int not null,
     height int not null,
     session_id bigint,
-    primary key (id),
-    foreign key (session_id) references session(id)
+    primary key (id)
 );
 
 create table ns_user (
