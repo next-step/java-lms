@@ -5,6 +5,7 @@ import static nextstep.courses.domain.session.NameTest.NAME;
 import static nextstep.courses.domain.session.ScheduleTest.SCHEDULE;
 import static nextstep.courses.domain.session.SessionStatus.OPEN;
 import static nextstep.courses.domain.session.SessionStatus.PREPARING;
+import static nextstep.courses.domain.session.image.CoverImageTest.COVER_IMAGE;
 import static nextstep.courses.domain.session.strategy.PaidSessionStrategyTest.PAID_SESSION_STRATEGY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -82,12 +83,16 @@ public class SessionTest {
     }
 
     public static Session session() {
-        return new Session(
+        final Session session = new Session(
                 NAME,
                 OPEN,
                 SCHEDULE,
                 PAID_SESSION_STRATEGY,
                 ENROLLMENT_COUNT
         );
+
+        session.assignCoverImage(COVER_IMAGE);
+
+        return session;
     }
 }

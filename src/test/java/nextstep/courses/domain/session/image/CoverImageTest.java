@@ -10,12 +10,12 @@ import org.junit.jupiter.api.Test;
 
 public class CoverImageTest {
 
-    public static final CoverImage COVER_IMAGE = new CoverImage(1L, GIF, SIZE, DIMENSIONS);
+    public static final CoverImage COVER_IMAGE = new CoverImage(GIF, SIZE, DIMENSIONS);
 
     @Test
     @DisplayName("크기, 종류, 너비, 높이를 기준으로 새로운 커버 이미지를 생성한다.")
     void CoverImage() {
-        assertThat(new CoverImage(1L, GIF, SIZE, DIMENSIONS))
+        assertThat(new CoverImage(GIF, SIZE, DIMENSIONS))
                 .isEqualTo(COVER_IMAGE);
     }
 }

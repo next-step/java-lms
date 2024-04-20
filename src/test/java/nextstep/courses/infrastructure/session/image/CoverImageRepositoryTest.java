@@ -1,4 +1,4 @@
-package nextstep.courses.infrastructure;
+package nextstep.courses.infrastructure.session.image;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -10,11 +10,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
-import nextstep.courses.domain.session.image.CoverImageRepository;
-import nextstep.courses.domain.session.image.CoverImageTest;
-
 @JdbcTest
-@Transactional
 class CoverImageRepositoryTest {
 
     @Autowired
@@ -23,15 +19,20 @@ class CoverImageRepositoryTest {
     private CoverImageRepository coverImageRepository;
 
     @BeforeEach
-    void setUp() {
+    void init() {
         coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
     }
 
     @Test
+    @Transactional
     @DisplayName("새로운 커버 이미지를 생성한다.")
     void test() {
-        final int savedCount = coverImageRepository.save(CoverImageTest.COVER_IMAGE);
+        final CoverImageEntity coverImageEntity = new CoverImageEntity(null, "gif", 10000L, 300, 200, 1L);
 
-        assertThat(savedCount).isOne();
+        final long savedCoverImageEntityId = coverImageRepository.save(coverImageEntity);
+        final CoverImageEntity savedCoverImageEntity = coverImageRepository.findById(savedCoverImageEntityId).get();
+
+        assertThat(savedCoverImageEntity.id())
+                .isEqualTo(savedCoverImageEntityId);
     }
 }
