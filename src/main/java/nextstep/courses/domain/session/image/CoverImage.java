@@ -20,6 +20,10 @@ public class CoverImage {
         this.dimensions = dimensions;
     }
 
+    public Long id() {
+        return this.id;
+    }
+
     public String typeName() {
         return this.type.typeName();
     }
