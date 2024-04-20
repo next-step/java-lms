@@ -2,20 +2,12 @@ package nextstep.sessions.service;
 
 import nextstep.payments.domain.Payment;
 import nextstep.payments.infrastructure.PaymentRepository;
-import nextstep.sessions.domain.CountOfStudent;
 import nextstep.sessions.domain.Price;
 import nextstep.sessions.domain.Session;
-import nextstep.sessions.domain.SessionRegisterDetails;
-import nextstep.sessions.domain.SessionStatus;
-import nextstep.sessions.domain.SessionType;
+import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.StudentRepository;
 import nextstep.sessions.domain.builder.SessionBuilder;
 import nextstep.sessions.domain.builder.SessionRegisterDetailsBuilder;
-import nextstep.sessions.domain.image.Capacity;
-import nextstep.sessions.domain.image.Image;
-import nextstep.sessions.domain.image.ImageSize;
-import nextstep.sessions.domain.image.ImageType;
-import nextstep.sessions.domain.SessionRepository;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,10 +15,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;

@@ -1,6 +1,6 @@
 package nextstep.sessions.domain;
 
-public class CountOfStudent { //todo : 학생수
+public class CountOfStudent {
 
     private int currentCountOfStudents;
 
