@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.courses.enums.SessionStatus;
 import nextstep.courses.enums.SessionType;
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -10,7 +11,10 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
+import static nextstep.users.domain.NsUserTest.JAVAJIGI;
+import static nextstep.users.domain.NsUserTest.SANJIGI;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -27,6 +31,7 @@ class PaidSessionTest {
     int imageWidth = 300;
     int imageHeight = 200;
     int imageFileSize = 1024;
+    List<NsUser> students;
 
     @BeforeEach
     void setUp() {
@@ -39,19 +44,20 @@ class PaidSessionTest {
         maxCapacity = 1;
         sessionFee = new SessionFee(new BigDecimal(800_000));
         coverImage = CoverImage.of(imageFileSize, imageType, imageWidth, imageHeight);
+        students = List.of(SANJIGI);
     }
 
     @Test
     @DisplayName("PaidSession의 SessionType확인 : PAID")
     void sessionTypeCheckTest() {
-        Session paidSession = new PaidSession(sessionId, sessionPeriod, SessionStatus.PREPARE, maxCapacity, sessionFee, coverImage);
+        Session paidSession = new PaidSession(sessionId, sessionPeriod, SessionStatus.PREPARE, maxCapacity, sessionFee, coverImage, students);
         assertThat(paidSession.sessionType()).isEqualTo(SessionType.PAID);
     }
 
     @Test
     @DisplayName("SessionStatus RECRUIT가 아니면 IllegalStateException")
     void sessionStatusCheckTest() {
-        Session paidSession = new PaidSession(sessionId, sessionPeriod, SessionStatus.PREPARE, maxCapacity, sessionFee, coverImage);
+        Session paidSession = new PaidSession(sessionId, sessionPeriod, SessionStatus.PREPARE, maxCapacity, sessionFee, coverImage, students);
 
         assertThatThrownBy(() -> {
             paidSession.enroll(NsUserTest.JAVAJIGI, payment);
@@ -62,9 +68,9 @@ class PaidSessionTest {
     @Test
     @DisplayName("최대수강인원 보다 현재 수강인원이 작거나 같으면 IllegalStateException")
     void sessionMaxCapacityTest() {
-        Session paidSession = new PaidSession(sessionId, sessionPeriod, SessionStatus.PREPARE, maxCapacity, sessionFee, coverImage);
+        Session paidSession = new PaidSession(sessionId, sessionPeriod, SessionStatus.PREPARE, 2, sessionFee, coverImage, students);
         paidSession.start();
-        paidSession.enroll(NsUserTest.SANJIGI, payment);
+        paidSession.enroll(JAVAJIGI, payment);
 
         assertThatThrownBy(() -> {
             paidSession.enroll(NsUserTest.JAVAJIGI, payment);
@@ -75,16 +81,16 @@ class PaidSessionTest {
     @Test
     @DisplayName("수강 신청 후 수강 인원 inscrese")
     void enrollInscreseTest() {
-        Session paidSession = new PaidSession(sessionId, sessionPeriod, SessionStatus.PREPARE, maxCapacity, sessionFee, coverImage);
+        Session paidSession = new PaidSession(sessionId, sessionPeriod, SessionStatus.PREPARE, 2, sessionFee, coverImage, students);
         paidSession.start();
         paidSession.enroll(NsUserTest.JAVAJIGI, payment);
-        assertThat(paidSession.countOfStudents()).isEqualTo(1);
+        assertThat(paidSession.countOfStudents()).isEqualTo(2);
     }
 
     @Test
     @DisplayName("Payment의 결제금액이 수강료와 일치 하지 않는 경우 IllegalStateException")
     void paymentTest() {
-        Session paidSession = new PaidSession(sessionId, sessionPeriod, SessionStatus.PREPARE, maxCapacity, sessionFee, coverImage);
+        Session paidSession = new PaidSession(sessionId, sessionPeriod, SessionStatus.PREPARE, 2, sessionFee, coverImage, students);
         paidSession.start();
 
         assertThatThrownBy(() -> {
@@ -92,5 +98,17 @@ class PaidSessionTest {
         }).isInstanceOf(IllegalStateException.class)
                 .hasMessage("결제금액이 수강료와 일치하지 않습니다.");
 
+    }
+
+    @Test
+    @DisplayName("이미 수강 신청한 학생이면 IllegalStateException")
+    void hasAlreadyEnrolled() {
+        Session paidSession = new PaidSession(sessionId, sessionPeriod, SessionStatus.PREPARE, 2, sessionFee, coverImage, students);
+        paidSession.start();
+
+        assertThatThrownBy(() -> {
+            paidSession.enroll(SANJIGI, payment);
+        }).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("이미 수강 신청을 완료하신 강의입니다.");
     }
 }
