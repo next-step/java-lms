@@ -6,6 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 public class FreeSessionTest {
@@ -15,8 +17,8 @@ public class FreeSessionTest {
     @BeforeEach
     void setUp() {
         // 강의의 시작일, 종료일
-        String startDate = "20240408";
-        String endDate = "20240410";
+        LocalDate startDate = LocalDate.of(2024, 04, 8);
+        LocalDate endDate = LocalDate.of(2024, 04, 10);
         SessionPeriod sessionPeriod = new SessionPeriod(startDate, endDate);
 
         // 강의 커버 이미지 객체

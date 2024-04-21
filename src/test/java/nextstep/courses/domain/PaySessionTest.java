@@ -6,6 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 public class PaySessionTest {
@@ -15,8 +17,8 @@ public class PaySessionTest {
     @BeforeEach
     void setUp() {
         // 강의의 시작일, 종료일
-        String startDate = "20240408";
-        String endDate = "20240410";
+        LocalDate startDate = LocalDate.of(2024, 04, 8);
+        LocalDate endDate = LocalDate.of(2024, 04, 10);
         SessionPeriod sessionPeriod = new SessionPeriod(startDate, endDate);
 
         // 강의 커버 이미지 객체
@@ -49,7 +51,7 @@ public class PaySessionTest {
     @Test
     @DisplayName("유료 강의는 최대 수강 신청 인원이 0보다 작을 수 없다.")
     void paySessionUserCountPositiveTest() {
-        assertThatThrownBy(() -> new PaySession(new Course(), new SessionPeriod("20240408", "20240408"), new SessionImage(1000, "gif", 300, 200), SessionStatus.PREPARING, -1, 2000))
+        assertThatThrownBy(() -> new PaySession(new Course(), new SessionPeriod(LocalDate.of(2024, 04, 8), LocalDate.of(2024, 04, 10)), new SessionImage(1000, "gif", 300, 200), SessionStatus.PREPARING, -1, 2000))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("0보다 작은 수가 올 수 없습니다.");
     }
@@ -57,7 +59,7 @@ public class PaySessionTest {
     @Test
     @DisplayName("유료 강의는 수강료는 0보다 작을 수 없다.")
     void paySessionPricePositiveTest() {
-        assertThatThrownBy(() -> new PaySession(new Course(), new SessionPeriod("20240408", "20240408"), new SessionImage(1000, "gif", 300, 200), SessionStatus.PREPARING, 1, -1))
+        assertThatThrownBy(() -> new PaySession(new Course(), new SessionPeriod(LocalDate.of(2024, 04, 8), LocalDate.of(2024, 04, 10)), new SessionImage(1000, "gif", 300, 200), SessionStatus.PREPARING, 1, -1))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("0보다 작은 수가 올 수 없습니다.");
     }
