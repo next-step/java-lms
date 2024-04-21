@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDateTime;
 import nextstep.courses.error.exception.EndDateBeforeStartDateException;
-import nextstep.courses.error.exception.NotExistTime;
+import nextstep.courses.error.exception.NotExistTimeException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -19,7 +19,7 @@ class ValidityPeriodTest {
         LocalDateTime parsedEndDate = endDate != null ? LocalDateTime.parse(endDate) : null;
 
         assertThatThrownBy(() -> new ValidityPeriod(parsedStartDate, parsedEndDate))
-            .isInstanceOf(NotExistTime.class);
+            .isInstanceOf(NotExistTimeException.class);
     }
 
     @Test
