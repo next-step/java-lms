@@ -12,12 +12,14 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @JdbcTest
 class SessionRepositoryTest {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(CourseRepositoryTest.class);
 
     @Autowired
@@ -31,14 +33,14 @@ class SessionRepositoryTest {
     }
 
     @Test
-    @DisplayName("무료 강의 CRUD 테스트")
+    @DisplayName("무료 강의 저장 후 조회 테스트")
     void testFreeSession_updateAndFindBySessionId_ShouldReturnFreeSession() {
         SessionPeriod sessionPeriod = SessionPeriod.of(LocalDateTime.of(2024,1,1,0,0, 0),
                 LocalDateTime.of(2024,4,1,0,0, 0));
-        CoverImage coverImage = CoverImage.of("jpg", 1024,300,200);
+        List<CoverImage> coverImages = List.of(CoverImage.of("jpg", 1024,300,200));
 
         // given
-        Session freeSession = new FreeSession(1L, sessionPeriod, coverImage, SessionStatusEnum.OPEN);
+        Session freeSession = new FreeSession(1L, sessionPeriod, coverImages, SessionStatusEnum.OPEN, 0, true);
 
         // when
         int count = sessionRepository.save(freeSession);
@@ -52,22 +54,19 @@ class SessionRepositoryTest {
                 () -> assertEquals(savedFreeSession.getMaxEnrollments(), 0),
                 () -> assertEquals(savedFreeSession.getFee(), 0L),
                 () -> assertEquals(savedFreeSession.getSessionPeriod().getStartDate(), LocalDateTime.of(2024,1,1,0,0,0)),
-                () -> assertEquals(savedFreeSession.getCoverImage().getImageType(), "jpg"),
-                () -> assertEquals(savedFreeSession.getCoverImage().getImageSizeWidth(), 300),
-                () -> assertEquals(savedFreeSession.getSessionStatus(), SessionStatusEnum.OPEN)
+                () -> assertEquals(savedFreeSession.getSessionStatus(), SessionStatusEnum.OPEN),
+                () -> assertEquals(savedFreeSession.isOpenForEnrollment(), true)
         );
     }
 
     @Test
-    @DisplayName("유료 강의 CRUD 테스트")
+    @DisplayName("유료 강의 저장 후 조회 테스트")
     void testPaidSession_updateAndFindBySessionId_ShouldReturnPaidSession() {
         SessionPeriod sessionPeriod = SessionPeriod.of(LocalDateTime.of(2024,1,1,0,0, 0),
                 LocalDateTime.of(2024,4,1,0,0, 0));
-        CoverImage coverImage = CoverImage.of("gif", 1024,300,200);
 
         // given
-        Session paidSession = new PaidSession(1L, sessionPeriod, coverImage,
-                SessionStatusEnum.OPEN, 100, 10L);
+        Session paidSession = new PaidSession(1L, sessionPeriod, SessionStatusEnum.OPEN, true, 0, 100, 10L);
 
         // when
         int count = sessionRepository.save(paidSession);
@@ -81,9 +80,8 @@ class SessionRepositoryTest {
                 () -> assertEquals(savedPaidSession.getMaxEnrollments(), 100),
                 () -> assertEquals(savedPaidSession.getFee(), 10L),
                 () -> assertEquals(savedPaidSession.getSessionPeriod().getEndDate(), LocalDateTime.of(2024,4,1,0,0,0)),
-                () -> assertEquals(savedPaidSession.getCoverImage().getImageType(), "gif"),
-                () -> assertEquals(savedPaidSession.getCoverImage().getImageSizeHeight(), 200),
-                () -> assertEquals(savedPaidSession.getSessionStatus(), SessionStatusEnum.OPEN)
+                () -> assertEquals(savedPaidSession.getSessionStatus(), SessionStatusEnum.OPEN),
+                () -> assertEquals(savedPaidSession.isOpenForEnrollment(), true)
         );
     }
 
