@@ -4,12 +4,20 @@ import nextstep.courses.domain.session.image.CoverImage;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
+import java.util.List;
+
 public class FreeSession extends Session {
     public static final Long FREE_FEE = 0L;
 
-    public FreeSession(Long sessionId, SessionPeriod sessionPeriod,
-                       CoverImage coverImage, SessionStatusEnum sessionStatus) {
-        super(sessionId, sessionPeriod, coverImage, sessionStatus);
+    public FreeSession(Long sessionId, SessionPeriod sessionPeriod, List<CoverImage> coverImages,
+                       SessionStatusEnum sessionStatus, int numberOfStudents, boolean isOpenForEnrollment) {
+        super(sessionId, sessionPeriod, coverImages, sessionStatus, numberOfStudents, isOpenForEnrollment);
+        this.fee = FREE_FEE;
+    }
+
+    public FreeSession(Long sessionId, SessionPeriod sessionPeriod, SessionStatusEnum sessionStatus,
+                       int numberOfStudents, boolean isOpenForEnrollment) {
+        super(sessionId, sessionPeriod, sessionStatus, numberOfStudents, isOpenForEnrollment);
         this.fee = FREE_FEE;
     }
 
@@ -20,7 +28,7 @@ public class FreeSession extends Session {
     }
 
     private void assertAllConditions(NsUser user, Payment payment) {
-        if (!this.isSessionOpened()) {
+        if (!this.isOpenForEnrollment()) {
             throw new IllegalArgumentException(SESSION_NOT_OPENED);
         }
 
@@ -42,7 +50,6 @@ public class FreeSession extends Session {
     }
 
     private void registerSession(NsUser user, Payment payment) {
-        this.users.add(user);
         user.enrollSession(this);
         user.addPayment(payment);
     }

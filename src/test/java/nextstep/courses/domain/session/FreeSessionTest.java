@@ -9,6 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static nextstep.courses.domain.session.FreeSession.FREE_FEE;
 import static nextstep.courses.domain.session.Session.*;
@@ -30,7 +31,6 @@ class FreeSessionTest {
 
         // then
         assertTrue(freeSession.isSessionOpened());
-        assertEquals(freeSession.users.getNumberOfUsers(), 1);
     }
 
     @ParameterizedTest(name = "무료 수강 신청 불가능 - 강의 상태가 모집중이 아님")
@@ -78,8 +78,7 @@ class FreeSessionTest {
         assertTrue(freeSession.isSessionOpened());
         assertAll(
                 "User has enrolled the free session once correctly",
-                () -> assertTrue(user.hasEnrolledSession(freeSession)),
-                () -> assertTrue(freeSession.hasStudentOf(user))
+                () -> assertTrue(user.hasEnrolledSession(freeSession))
         );
 
         // when, then
@@ -93,9 +92,9 @@ class FreeSessionTest {
         SessionPeriod sessionPeriod = SessionPeriod.of(
                 LocalDateTime.of(2024,1,1,0,0,0),
                 LocalDateTime.of(2024,4,1,0,0,0));
-        CoverImage coverImage = CoverImage.of("jpg", 1024, 300,200);
+        List<CoverImage> coverImages = List.of(CoverImage.of(1L,"jpg", 1024, 300,200));
         SessionStatusEnum sessionStatus = sessionStatusEnum;
-        return new FreeSession(sessionId, sessionPeriod, coverImage, sessionStatus);
+        return new FreeSession(sessionId, sessionPeriod, coverImages, sessionStatus, 0, true);
     }
 
     private Payment getPayment(Session session, NsUser user, Long fee) {

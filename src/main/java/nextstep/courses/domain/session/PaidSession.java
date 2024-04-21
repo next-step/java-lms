@@ -4,13 +4,23 @@ import nextstep.courses.domain.session.image.CoverImage;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
+import java.util.List;
+
 public class PaidSession extends Session {
     public static final String OVER_MAX_ENROLLMENTS = "유료 강의는 강의 최대 수강 인원을 초과할 수 없습니다.";
 
-    public PaidSession(Long sessionId, SessionPeriod sessionPeriod,
-                       CoverImage coverImage, SessionStatusEnum sessionStatus,
+    public PaidSession(Long sessionId, SessionPeriod sessionPeriod, List<CoverImage> coverImages,
+                       SessionStatusEnum sessionStatus, boolean isOpenForEnrollment, int numberOfStudents,
                        int maxEnrollments, Long fee) {
-        super(sessionId, sessionPeriod, coverImage, sessionStatus);
+        super(sessionId, sessionPeriod, coverImages, sessionStatus, numberOfStudents, isOpenForEnrollment);
+        this.maxEnrollments = maxEnrollments;
+        this.fee = fee;
+    }
+
+    public PaidSession(Long sessionId, SessionPeriod sessionPeriod, SessionStatusEnum sessionStatus,
+                       boolean isOpenForEnrollment, int numberOfStudents,
+                       int maxEnrollments, Long fee) {
+        super(sessionId, sessionPeriod, sessionStatus, numberOfStudents, isOpenForEnrollment);
         this.maxEnrollments = maxEnrollments;
         this.fee = fee;
     }
@@ -22,7 +32,7 @@ public class PaidSession extends Session {
     }
 
     private void assertAllConditions(NsUser user, Payment payment) {
-        if (!this.isSessionOpened()) {
+        if (!this.isOpenForEnrollment()) {
             throw new IllegalArgumentException(SESSION_NOT_OPENED);
         }
 
@@ -40,7 +50,7 @@ public class PaidSession extends Session {
     }
 
     private boolean isEnrollmentFull() {
-        return maxEnrollments == this.users.getNumberOfUsers();
+        return maxEnrollments == numberOfStudents;
     }
 
     private boolean isPaymentAmountNotMatching(Payment payment, Long fee) {
@@ -52,7 +62,6 @@ public class PaidSession extends Session {
     }
 
     private void registerSession(NsUser user, Payment payment) {
-        this.users.add(user);
         user.enrollSession(this);
         user.addPayment(payment);
     }
