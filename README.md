@@ -26,8 +26,8 @@
 - [x] 도메인 모델의 TC의 경우, No Mock으로 테스트 코드 작성
 
 ### 요구사항 변경 (STEP4)
-- [ ] 강의가 진행 중인 상태에서도 수강신청이 가능
-  - [ ] 강의 진행 상태(준비중, 진행중, 종료)와 모집 상태(비모집중, 모집중)로 상태값을 분리
+- [x] 강의가 진행 중인 상태에서도 수강신청이 가능
+  - [x] 강의 진행 상태(준비중, 진행중, 종료)와 모집 상태(비모집중, 모집중)로 상태값을 분리
 - [x] 강의는 하나 이상의 커버 이미지를 가질 수 있음
 - [ ] 우테코(무료), 우테캠 PRO(유료)와 같이 선발된 인원만 수강 가능
   - [ ] 강사는 수강신청한 사람 중 선발된 인원에 대해서만 수강 승인이 가능
@@ -43,7 +43,7 @@
 
 </details>
 
-# [STEP 2] 🗓️ 수강신청 프로젝트
+# (STEP 2) 🗓️ 수강신청 프로젝트
 1. 기능 요구 사항
 2. 프로그래밍 요구 사항
 3. 코드 구조
@@ -82,20 +82,25 @@
 
 ## 3. 코드 구조
 - [x] Course
-  - [x] PaidSession
-  - [x] FreeSession
   - [x] Session
-    - [x] CoverImage
-      - [x] ImageTypeEnum
-      - [x] ImageFileSize
-      - [x] ImageSize (단위 : KB)
-    - [x] SessionStatusEnum
-    - [x] SessionPeriod
-    - [x] Users
-- [x] JdbcSessionRepository
+    - [x] PaidSession
+    - [x] FreeSession
+    - [x] Session
+      - [x] CoverImages
+        - [x] CoverImage
+          - [x] ImageTypeEnum
+          - [x] ImageFileSize
+          - [x] ImageSize (단위 : KB)
+      - [x] SessionStatusEnum
+      - [x] isOpenForEnrollment
+      - [x] SessionPeriod
+- [x] EnrollmentInformation
 - [x] SessionRepository
+- [x] EnrollmentInformationRepository
 - [x] CoverImageRepository
+- [x] JdbcSessionRepository
 - [x] JdbcCoverImageRepository
+- [x] JdbcEnrollmentInformationRepository
 
 ## 4. 테스트 코드
 - [x] CourseTest
@@ -104,12 +109,12 @@
   - [x] 수강 신청 가능 기한일때만 강의 신청 가능
   - [x] 수강신청하려는 sessionId와 동일한 결제내역이 있으나 (= 이미 결제를 했음), 결제금액이 다를 경우 신청 불가능
   - [x] 유저가 수강 신청을 이미 완료한 강의는 신청 불가능
-  - [ ] 1개 이상의 커버 이미지를 가져야 함 
 - [x] PaidSessionTest
   - [x] 수강 신청 가능 기한일때만 강의 신청 가능
   - [x] 수강 신청 인원이 마감됐을 경우 강의 신청 불가능
   - [x] 수강 신청 하려는 sessionId와 동일한 결제내역이 있으나 (= 이미 결제를 했음), 결제금액이 다를 경우 수강 신청 불가능
   - [x] 유저가 수강 신청을 이미 완료한 강의는 신청 불가능
+- [ ] CoverImagesTest
   - [ ] 1개 이상의 커버 이미지를 가져야 함
 - [x] CoverImageTest
   - [x] ImageTypeTest
@@ -130,3 +135,6 @@
 - [x] CoverImageRepositoryTest
   - [x] 커버 이미지를 정상으로 읽어옴
   - [x] 커버 이미지를 정상으로 저장
+- [x] EnrollmentInformationRepository
+  - [x] 유저의 수강신청 정보를 정상으로 저장
+  - [x] sessionId와 userId로 수강신청 정보 조회 정상 저장
