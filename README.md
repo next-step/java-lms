@@ -159,4 +159,8 @@ PaidSession.java
 ```
 이펙티브 자바에서는 파라미터가 하나인 경우 from, 파라미터가 여러개인 경우 of로 네이밍하도록 가이드하고 있습니다. 
 
+
+java.lang.UnsupportedOperationException은 불변 리스트에 요소를 추가하려고 할 때 발생하는 일반적인 예외입니다. 
+예외가 발생하는 이유는 List.of() 메서드로 생성된 리스트는 수정할 수 없는 불변 리스트이기 때문입니다.
+생성자 생성시 new ArrayList<>(students)로 해결...
 ```
