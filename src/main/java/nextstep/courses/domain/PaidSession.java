@@ -23,19 +23,29 @@ public class PaidSession extends Session {
     @Override
     public void enroll(NsUser user, Payment payment) {
 
+        validateRecruting();
+        validateMaxStudent();
+        validatePaid(payment);
+
+        super.addStudent(user);
+    }
+
+    private void validateRecruting() {
         if (!isRecruting()) {
             throw new IllegalStateException("강의 모집중이 아닙니다.");
         }
+    }
 
+    private void validateMaxStudent() {
         if (isFull()) {
             throw new IllegalStateException("최대 수강인원을 초과 하였습니다.");
         }
+    }
 
+    private void validatePaid(Payment payment) {
         if (!hasPaid(payment.amount())) {
             throw new IllegalStateException("결제금액이 수강료와 일치하지 않습니다.");
         }
-
-        super.addStudent(user);
     }
 
 }
