@@ -10,4 +10,8 @@ public enum SessionStatus {
     }
 
     private String value;
+
+    public String getValue() {
+        return value;
+    }
 }
