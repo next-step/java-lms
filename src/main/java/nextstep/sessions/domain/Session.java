@@ -23,11 +23,7 @@ public class Session extends BaseEntity {
         this(id, startedAt, endedAt, sessionName, null, null);
     }
 
-    public Session(long id, String sessionName, SessionRegisterDetails sessionRegisterDetails) {
-        this(id, LocalDateTime.now(), LocalDateTime.now(), sessionName, null, sessionRegisterDetails);
-    }
-
-    public Session(long id,
+    private Session(long id,
                    LocalDateTime startedAt,
                    LocalDateTime endedAt,
                    String sessionName,
@@ -64,11 +60,4 @@ public class Session extends BaseEntity {
         return sessionName;
     }
 
-    public long getImageId() {
-        return image.getId();
-    }
-
-    public long getSessionRegisterDetailsId() {
-        return sessionRegisterDetails.getId();
-    }
 }
