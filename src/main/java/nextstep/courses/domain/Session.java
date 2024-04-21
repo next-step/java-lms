@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.payments.domain.Payment;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -8,12 +10,10 @@ public class Session {
 
     private Long id;
     private SessionDate sessionDate;
-
     private SessionImage coverImage;
     private SessionProgress progress;
-    private boolean isFree;
-    private Students students = new Students(new ArrayList<>());
-    private int maxStudents = Integer.MAX_VALUE;
+    private SessionType sessionType;
+    private Students students;
 
     public Session(Long id, SessionDate sessionDate, SessionImage coverImage) {
         this(id, sessionDate, coverImage, new SessionProgress("준비중"));
@@ -24,34 +24,36 @@ public class Session {
     }
 
     public Session(Long id, SessionDate sessionDate, SessionImage coverImage, SessionProgress progress) {
-        this(id, sessionDate, coverImage, progress, true);
+        this(id, sessionDate, coverImage, progress, new SessionType(true));
     }
 
-    public Session(Long id, LocalDate startedAt, LocalDate endedAt, SessionImage coverImage, SessionProgress progress, boolean isFree) {
-        this(id, new SessionDate(startedAt, endedAt), coverImage, progress, isFree);
+    public Session(Long id, LocalDate startedAt, LocalDate endedAt, SessionImage coverImage, SessionProgress progress, SessionType sessionType) {
+        this(id, new SessionDate(startedAt, endedAt), coverImage, progress, sessionType);
     }
 
-    public Session(Long id, SessionDate sessionDate, SessionImage coverImage, SessionProgress progress, boolean isFree) {
+    public Session(Long id, SessionDate sessionDate, SessionImage coverImage, SessionProgress progress, SessionType sessionType) {
+        this(id, sessionDate, coverImage, progress, sessionType, new Students(new ArrayList<>()));
+    }
+
+    public Session(Long id, SessionDate sessionDate, SessionImage coverImage, SessionProgress progress, SessionType sessionType, Students students) {
         this.id = id;
         this.sessionDate = sessionDate;
         this.coverImage = coverImage;
         this.progress = progress;
-        this.isFree = isFree;
+        this.sessionType = sessionType;
+        this.students = students;
     }
 
     public boolean isRecruitState() {
-        return this.progress.equals(new SessionProgress(SessionProgress.RECRUIT));
+        return this.progress.compareWithRecruit(progress);
     }
 
-    public void setMaxStudents(int maxStudents) {
-        if (isFree) {
-            return;
-        }
-        this.maxStudents = maxStudents;
+    public boolean isAlreadyFull() {
+        return this.sessionType.compareStudents(this.students);
     }
 
-    public void checkAddStudent(Student student) {
-        this.students.addStudent(student, this.maxStudents);
+    public void successApply(Student student) {
+        this.students.addStudent(student);
     }
 
     @Override
@@ -64,12 +66,11 @@ public class Session {
         return Objects.equals(sessionDate, session.sessionDate)
                 && Objects.equals(coverImage, session.coverImage)
                 && Objects.equals(progress, session.progress)
-                && Objects.equals(isFree, session.isFree);
+                && Objects.equals(sessionType, session.sessionType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sessionDate, coverImage, progress, isFree);
+        return Objects.hash(sessionDate, coverImage, progress, sessionType);
     }
-
 }

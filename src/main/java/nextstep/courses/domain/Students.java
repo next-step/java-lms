@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -8,14 +9,20 @@ public class Students {
     private List<Student> students;
 
     public Students(List<Student> students) {
-        this.students = students;
+        this.students = new ArrayList<>(students);
     }
 
-    public void addStudent(Student student, int maxStudents) {
-        if (this.students.size() >= maxStudents) {
-            throw new IllegalArgumentException("수강 인원 초과 과정입니다.");
-        }
+    public boolean compareMaxStudents(int maxStudents) {
+        // 수강생들이 제한인원보다 많은가
+        return this.students.size() >= maxStudents;
+    }
+
+    public void addStudent(Student student) {
         this.students.add(student);
+    }
+
+    public boolean isContains(Student student) {
+        return this.students.contains(student);
     }
 
     @Override
@@ -32,5 +39,4 @@ public class Students {
     public int hashCode() {
         return Objects.hash(students);
     }
-
 }

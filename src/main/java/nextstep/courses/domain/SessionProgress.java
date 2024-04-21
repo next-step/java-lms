@@ -30,6 +30,10 @@ public class SessionProgress {
         return this;
     }
 
+    public boolean compareWithRecruit(SessionProgress progress) {
+        return progress.equals(new SessionProgress(RECRUIT));
+    }
+
     @Override
     public boolean equals(Object object) {
         if (this == object)
@@ -44,4 +48,5 @@ public class SessionProgress {
     public int hashCode() {
         return Objects.hash(state);
     }
+
 }
