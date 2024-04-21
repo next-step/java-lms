@@ -16,7 +16,7 @@ public class CoverImage {
 
     public static CoverImage of(int imageFileSize, String imageType, int width, int height) {
         ImageFileSize fileSize = ImageFileSize.of(imageFileSize);
-        ImageType type = ImageType.of(imageType);
+        ImageType type = ImageType.from(imageType);
         ImageSize size = ImageSize.of(width, height);
         return new CoverImage(fileSize, type, size);
     }

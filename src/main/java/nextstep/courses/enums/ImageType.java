@@ -16,7 +16,7 @@ public enum ImageType {
         this.description = description;
     }
 
-    public static ImageType of(String imageType) {
+    public static ImageType from(String imageType) {
         return Arrays.stream(ImageType.values())
                 .filter(status -> status.description.equals(imageType))
                 .findFirst()
