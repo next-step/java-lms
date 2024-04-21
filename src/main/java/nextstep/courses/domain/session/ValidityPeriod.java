@@ -2,7 +2,7 @@ package nextstep.courses.domain.session;
 
 import java.time.LocalDateTime;
 import nextstep.courses.error.exception.EndDateBeforeStartDateException;
-import nextstep.courses.error.exception.NotExistTime;
+import nextstep.courses.error.exception.NotExistTimeException;
 
 public class ValidityPeriod {
 
@@ -12,7 +12,7 @@ public class ValidityPeriod {
 
     public ValidityPeriod(LocalDateTime startDate, LocalDateTime endDate) {
         if (startDate == null || endDate == null){
-            throw new NotExistTime(startDate, endDate);
+            throw new NotExistTimeException(startDate, endDate);
         }
 
         if (endDate.isBefore(startDate)) {
