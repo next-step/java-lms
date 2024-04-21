@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
+import static nextstep.courses.domain.SessionFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 
@@ -15,28 +16,7 @@ public class SessionTest {
 		// given & when & then
 		assertThatExceptionOfType(IllegalArgumentException.class)
 				.isThrownBy(() -> {
-					new Session(1L, "객체지향 프로그래밍", 1L, LocalDate.of(2024, 5, 2), LocalDate.of(2024, 5, 1), SessionType.PAID, 10000, 100, 10000);
+					createSessionWithSessionDate(LocalDate.of(2024, 5, 6), LocalDate.of(2024, 5, 2));
 				}).withMessageMatching("강의 종료일보다 강의 시작일이 늦을 수 없습니다.");
-	}
-
-	@DisplayName("유료 강의는 강의 최대 수강 인원을 초과할 수 없다")
-	@Test
-	void paidLectureCannotOverMaximumAttendees() {
-		// given & when & then
-		assertThatExceptionOfType(IllegalArgumentException.class)
-				.isThrownBy(() -> {
-					new Session(1L, "객체지향 프로그래밍", 1L, LocalDate.of(2024, 5, 2), LocalDate.of(2024, 5, 6), SessionType.PAID, 100, 101, 10000);
-				}).withMessageMatching("유료 강의는 강의 최대 수강 인원을 초과할 수 없다.");
-
-	}
-
-	@DisplayName("무료 강의는 최대 수강 인원 제한이 없다")
-	@Test
-	void freeLectureCannotOverMaximumAttendees() {
-		// given&when
-		Session freeSession = new Session(1L, "객체지향 프로그래밍", 1L, LocalDate.of(2024, 5, 2), LocalDate.of(2024, 5, 6), SessionType.FREE, 100, 101, 10000);
-
-		// then
-		assertThat(freeSession).isNotNull();
 	}
 }

@@ -123,18 +123,6 @@ public class NsUser {
 		return false;
 	}
 
-	public void registerSession(final Session session, final long paymentAmount) {
-		if (session.isPaidSession() && session.getTuitionFee() != paymentAmount) {
-			throw new IllegalArgumentException("수강료가 일치하지 않습니다.");
-		}
-		addSession(session);
-	}
-
-	private void addSession(final Session session) {
-		session.validateOpeningSession();
-		sessions.add(session);
-	}
-
 	public Sessions getSessions() {
 		return sessions;
 	}

@@ -10,4 +10,8 @@ public enum SessionStatus {
 	SessionStatus(String description) {
 		this.description = description;
 	}
+
+	public boolean isOpened() {
+		return this == OPENED;
+	}
 }
