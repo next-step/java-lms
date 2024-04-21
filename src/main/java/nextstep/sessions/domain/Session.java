@@ -4,6 +4,7 @@ import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUsers;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public abstract class Session {
     private final Long id;
@@ -43,5 +44,18 @@ public abstract class Session {
 
     public void changeSessionStatusIsRecruiting() {
         this.sessionStatus = SessionStatus.RECRUITING;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Session session = (Session) o;
+        return Objects.equals(id, session.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
