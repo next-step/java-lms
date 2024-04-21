@@ -28,7 +28,7 @@ public class FreeSessionTest {
         int imageHeight = 200;
         SessionImage sessionImage = new SessionImage(imageByte, imageType, imageWidth, imageHeight);
 
-        session = new FreeSession(new Course(), sessionPeriod, sessionImage, SessionStatus.PREPARING);
+        session = new FreeSession(0L, sessionPeriod, sessionImage, SessionStatus.PREPARING);
     }
 
     @Test

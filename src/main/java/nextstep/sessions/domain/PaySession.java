@@ -8,8 +8,8 @@ public class PaySession extends Session{
     private final int maxUserCount;
     private final int price;
 
-    public PaySession(Course course, SessionPeriod sessionPeriod, SessionImage sessionImage, SessionStatus sessionStatus, int maxUserCount, int price) {
-        super(course, sessionPeriod, sessionImage, sessionStatus);
+    public PaySession(Long courseId, SessionPeriod sessionPeriod, SessionImage sessionImage, SessionStatus sessionStatus, int maxUserCount, int price) {
+        super(courseId, sessionPeriod, sessionImage, sessionStatus);
         validatePositive(maxUserCount);
         validatePositive(price);
         this.maxUserCount = maxUserCount;

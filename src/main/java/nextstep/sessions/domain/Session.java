@@ -1,13 +1,12 @@
 package nextstep.sessions.domain;
 
-import nextstep.courses.domain.Course;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUsers;
 
 import java.time.LocalDateTime;
 
 public abstract class Session {
-    private final Course course;
+    private final Long courseId;
     private final SessionPeriod sessionPeriod;
     private final SessionImage sessionImage;
     private LocalDateTime createdAt;
@@ -15,8 +14,8 @@ public abstract class Session {
     protected final NsUsers nsUsers;
 
 
-    public Session(Course course, SessionPeriod sessionPeriod, SessionImage sessionImage, SessionStatus sessionStatus) {
-        this.course = course;
+    public Session(Long courseId, SessionPeriod sessionPeriod, SessionImage sessionImage, SessionStatus sessionStatus) {
+        this.courseId = courseId;
         this.sessionPeriod = sessionPeriod;
         this.sessionImage = sessionImage;
         this.nsUsers = new NsUsers();
