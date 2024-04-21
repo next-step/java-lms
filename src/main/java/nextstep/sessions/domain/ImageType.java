@@ -15,8 +15,8 @@ public enum ImageType {
         this.imageType = imageType;
     }
 
-    public static ImageType valueOfType(String imageType) {
-        return Arrays.stream(values())
+    public static void checkImageType(String imageType) {
+        Arrays.stream(values())
                 .filter(value -> value.imageType.equals(imageType))
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 이미지 타입입니다."));
