@@ -16,7 +16,7 @@ class FreeSessionTest {
     void 무료_강의_수강신청시_강의_상태가_모집중이라면_수강_신청이_가능하다() {
         FreeSession freeSession = FreeSessionBuilder.anFreeSession()
             .withName("강의이름")
-            .withStatus(SessionStatus.RECRUITING)
+            .withSessionStatus(SessionStatus.RECRUITING)
             .withImage(ImageBuilder.anImage()
                 .withSize(new ImageSize(1))
                 .withType(ImageType.JPG)
@@ -32,7 +32,7 @@ class FreeSessionTest {
     void 무료_강의_수강신청시_강의_상태가_모집중이_아니라면_수강_신청이_불가능하다() {
         FreeSession freeSession = FreeSessionBuilder.anFreeSession()
             .withName("강의이름")
-            .withStatus(SessionStatus.END)
+            .withSessionStatus(SessionStatus.END)
             .withImage(ImageBuilder.anImage()
                 .withSize(new ImageSize(1))
                 .withType(ImageType.JPG)
@@ -48,7 +48,7 @@ class FreeSessionTest {
     void 무료_강의_수강신청시_강의_수강료가_0원일_경우_수강_신청이_가능하다() {
         FreeSession freeSession = FreeSessionBuilder.anFreeSession()
             .withName("강의이름")
-            .withStatus(SessionStatus.RECRUITING)
+            .withSessionStatus(SessionStatus.RECRUITING)
             .withImage(ImageBuilder.anImage()
                 .withSize(new ImageSize(1))
                 .withType(ImageType.JPG)
@@ -65,7 +65,7 @@ class FreeSessionTest {
     void 무료_강의_수강신청시_강의_수강료가_0원이_아닐_경우_수강_신청이_불가능하다() {
         FreeSession freeSession = FreeSessionBuilder.anFreeSession()
             .withName("강의이름")
-            .withStatus(SessionStatus.RECRUITING)
+            .withSessionStatus(SessionStatus.RECRUITING)
             .withImage(ImageBuilder.anImage()
                 .withSize(new ImageSize(1))
                 .withType(ImageType.JPG)
