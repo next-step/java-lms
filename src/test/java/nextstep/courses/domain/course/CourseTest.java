@@ -9,12 +9,12 @@ import nextstep.courses.domain.cover.ImageSize;
 import nextstep.courses.domain.cover.ImageType;
 import nextstep.courses.domain.cover.ImageWidth;
 import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionName;
 import nextstep.courses.domain.session.SessionStatus;
-import nextstep.courses.domain.session.MaxRegistrationCount;
-import nextstep.courses.domain.session.RegistrationCount;
+import nextstep.courses.domain.session.ValidityPeriod;
 import nextstep.courses.domain.session.impl.FreeSession;
-import nextstep.courses.domain.session.impl.PaidSession;
+import nextstep.courses.fixture.builder.FreeSessionBuilder;
+import nextstep.courses.fixture.builder.ImageBuilder;
+import nextstep.courses.fixture.builder.PaidSessionBuilder;
 import nextstep.payments.domain.Money;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.Test;
@@ -22,45 +22,58 @@ import org.junit.jupiter.api.Test;
 class CourseTest {
 
     @Test
-    void 유료강의등록이_되어야_한다() {
-        Payment payment = new Payment("1", 1L, 1L, new Money(5000));
-        Course course = new Course("18기-자바TDD", 1L);
+    void 유료강의_등록이_되어야_한다() {
+        //given
+        Image image = ImageBuilder.anImage()
+            .withSize(new ImageSize(1))
+            .withType(ImageType.JPG)
+            .withWidth(new ImageWidth(300))
+            .withHeight(new ImageHeight(200))
+            .build();
 
-        Session paidCourse = new PaidSession(new SessionName("유료강의1"),
-            new RegistrationCount(0),
-            new MaxRegistrationCount(new RegistrationCount(999)),
-            new Money(5000),
-            new Image(new ImageSize(1),
-                ImageType.JPG,
-                new ImageWidth(300),
-                new ImageHeight(200)),
-            LocalDateTime.now(),
-            LocalDateTime.now(),
-            SessionStatus.RECRUITING);
+        FreeSession paidSession = PaidSessionBuilder.anFreeSession()
+            .withName("유료강의")
+            .withMaxRegistrationCount(5)
+            .withTuitionFee(5000)
+            .withImage(image)
+            .withSessionStatus(SessionStatus.RECRUITING)
+            .withValidityPeriod(new ValidityPeriod(LocalDateTime.now(), LocalDateTime.MAX))
+            .build();
 
-        course.addSession(new SessionName("유료강의1"), paidCourse);
+        Course course = new Course();
 
-        assertThat(course.registerSession(new SessionName("유료강의1"), payment)).isTrue();
+        //when
+        Session addedSession = course.registerSession(paidSession,
+            new Payment("1", 1L, 1L, new Money(0)));
+
+        //then
+        assertThat(addedSession.getRegistrationCount()).isEqualTo(1);
     }
 
     @Test
-    void 무료강의등록이_되어야_한다() {
-        Payment payment = new Payment("1", 1L, 1L, new Money(0));
-        Course course = new Course("18기-자바TDD", 1L);
+    void 무료강의_등록이_되어야_한다() {
+        //given
+        Image image = ImageBuilder.anImage()
+            .withSize(new ImageSize(1))
+            .withType(ImageType.JPG)
+            .withWidth(new ImageWidth(300))
+            .withHeight(new ImageHeight(200))
+            .build();
 
-        Session freeSession = new FreeSession(new SessionName("무료강의1"),
-            new RegistrationCount(0),
-            new Money(0),
-            new Image(new ImageSize(1),
-                ImageType.JPG,
-                new ImageWidth(300),
-                new ImageHeight(200)),
-            LocalDateTime.now(),
-            LocalDateTime.now(),
-            SessionStatus.RECRUITING);
+        Session freeSession = FreeSessionBuilder.anFreeSession()
+            .withName("강의이름")
+            .withImage(image)
+            .withSessionStatus(SessionStatus.RECRUITING)
+            .withValidityPeriod(new ValidityPeriod(LocalDateTime.now(), LocalDateTime.MAX))
+            .build();
 
-        course.addSession(new SessionName("무료강의1"), freeSession);
+        Course course = new Course();
 
-        assertThat(course.registerSession(new SessionName("무료강의1"), payment)).isTrue();
+        //when
+        Session addedSession = course.registerSession(freeSession,
+            new Payment("1", 1L, 1L, new Money(0)));
+
+        //then
+        assertThat(addedSession.getRegistrationCount()).isEqualTo(1);
     }
 }
