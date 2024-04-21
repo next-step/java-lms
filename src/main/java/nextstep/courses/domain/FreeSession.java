@@ -5,6 +5,7 @@ import nextstep.courses.enums.SessionType;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class FreeSession extends Session {
@@ -14,7 +15,7 @@ public class FreeSession extends Session {
                 , sessionPeriod
                 , coverImage
                 , SessionType.FREE
-                , new SessionFee(0)
+                , new SessionFee(new BigDecimal(0))
                 , new ArrayList<>()
                 , sessionStatus
                 , Integer.MAX_VALUE);

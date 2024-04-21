@@ -1,15 +1,18 @@
 package nextstep.courses.domain;
 
+import java.math.BigDecimal;
+import java.util.Objects;
+
 public class SessionFee {
 
-    private long fee;
+    private BigDecimal fee;
 
-    public SessionFee(long fee) {
+    public SessionFee(BigDecimal fee) {
         this.fee = fee;
     }
 
     public boolean hasPaid(Long fee) {
-        return this.fee == fee;
+        return Objects.equals(this.fee, new BigDecimal(fee));
     }
 
 

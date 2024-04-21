@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,7 +35,7 @@ class CourseTest {
         zeroPayment = new Payment("1", 123L, 1L, 0L);
         payment = new Payment("1", 123L, 1L, 800_000L);
         maxCapacity = 1;
-        sessionFee = new SessionFee(800_000);
+        sessionFee = new SessionFee(new BigDecimal(800_000));
         coverImage = CoverImage.of(imageFileSize, imageType, imageWidth, imageHeight);
     }
 
