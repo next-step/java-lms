@@ -6,16 +6,17 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PaidSession extends Session {
 
-    public PaidSession(Long id, SessionPeriod sessionPeriod, SessionStatus sessionStatus, int maximumCapacity, SessionFee sessionFee, CoverImage coverImage) {
+    public PaidSession(Long id, SessionPeriod sessionPeriod, SessionStatus sessionStatus, int maximumCapacity, SessionFee sessionFee, CoverImage coverImage, List<NsUser> students) {
         super(id
                 , sessionPeriod
                 , coverImage
                 , SessionType.PAID
                 , sessionFee
-                , new ArrayList<>()
+                , new ArrayList<>(students)
                 , sessionStatus
                 , maximumCapacity);
     }
@@ -24,16 +25,11 @@ public class PaidSession extends Session {
     public void enroll(NsUser user, Payment payment) {
 
         validateRecruting();
+        validateEnrolled(user, this);
         validateMaxStudent();
         validatePaid(payment);
 
         super.addStudent(user);
-    }
-
-    private void validateRecruting() {
-        if (!isRecruting()) {
-            throw new IllegalStateException("강의 모집중이 아닙니다.");
-        }
     }
 
     private void validateMaxStudent() {
