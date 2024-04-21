@@ -3,8 +3,7 @@ package nextstep.courses.domain.course;
 import java.time.LocalDateTime;
 import nextstep.courses.domain.BaseEntity;
 import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionName;
-import nextstep.courses.domain.session.Sessions;
+import nextstep.courses.error.exception.SessionRegisterFailException;
 import nextstep.payments.domain.Payment;
 
 public class Course extends BaseEntity {
@@ -13,8 +12,6 @@ public class Course extends BaseEntity {
     private String title;
 
     private Long creatorId;
-
-    private Sessions sessions = new Sessions();
 
     public Course() {
     }
@@ -55,18 +52,12 @@ public class Course extends BaseEntity {
                 '}';
     }
 
-    public boolean registerSession(SessionName sessionName, Payment payment) {
-        Session session = sessions.findSession(sessionName);
-
+    public Session registerSession(Session session, Payment payment) {
         if (session.isRegistrationAvailable() && session.isPaymentAmountSameTuitionFee(payment)) {
             session.addRegistrationCount();
-            return true;
+            return session;
         }
-
-        return false;
+        throw new SessionRegisterFailException();
     }
 
-    public void addSession(SessionName sessionName, Session session) {
-        sessions.addSession(sessionName, session);
-    }
 }
