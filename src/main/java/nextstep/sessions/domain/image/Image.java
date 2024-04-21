@@ -18,14 +18,6 @@ public class Image {
         return new Image(1L, new Capacity(0), ImageType.GIF, new ImageSize(width, height));
     }
 
-    public Image(int capacity, ImageType imageType, ImageSize size) {
-        this(new Capacity(capacity), imageType, size);
-    }
-
-    public Image(Capacity capacity, ImageType imageType, ImageSize size) {
-        this(null, capacity, imageType, size);
-    }
-
     public Image(Long id, Capacity capacity, ImageType imageType, ImageSize size) {
         this.id = id;
         this.capacity = capacity;
