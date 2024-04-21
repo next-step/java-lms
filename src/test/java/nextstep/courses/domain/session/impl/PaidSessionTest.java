@@ -15,6 +15,7 @@ import nextstep.courses.domain.session.RegistrationCount;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionName;
 import nextstep.courses.domain.session.SessionStatus;
+import nextstep.courses.domain.session.ValidityPeriod;
 import nextstep.courses.error.exception.MaxRegistrationCountNotZero;
 import nextstep.payments.domain.Money;
 import nextstep.payments.domain.Payment;
@@ -40,6 +41,8 @@ class PaidSessionTest {
     @ParameterizedTest
     @MethodSource("createSessionWithExceededMaxRegistrationCount")
     void 강의_최대_수강_인원을_넘을_경우_강의_신청이_불가능해야한다(Session paidSession) {
+        paidSession.addRegistrationCount();
+
         assertThat(paidSession.isRegistrationAvailable()).isFalse();
     }
 
@@ -72,48 +75,42 @@ class PaidSessionTest {
     private PaidSession createSessionWithZeroMaxRegistrationCount() {
         return new PaidSession(
             new SessionName("강의이름"),
-            new RegistrationCount(2),
             new MaxRegistrationCount(new RegistrationCount(0)),
             new Money(1000),
             new Image(new ImageSize(1), ImageType.JPG, new ImageWidth(300), new ImageHeight(200)),
-            LocalDateTime.now(),
-            LocalDateTime.now(),
-            SessionStatus.RECRUITING);
+            SessionStatus.RECRUITING,
+            new ValidityPeriod(LocalDateTime.now(), LocalDateTime.now()));
     }
 
     static Stream<PaidSession> createSessionWithExceededMaxRegistrationCount() {
         return Stream.of(new PaidSession(
             new SessionName("강의이름"),
-            new RegistrationCount(4),
-            new MaxRegistrationCount(new RegistrationCount(3)),
+            new MaxRegistrationCount(new RegistrationCount(1)),
             new Money(1000),
             new Image(new ImageSize(1), ImageType.JPG, new ImageWidth(300), new ImageHeight(200)),
-            LocalDateTime.now(),
-            LocalDateTime.now(),
-            SessionStatus.RECRUITING));
+            SessionStatus.RECRUITING,
+            new ValidityPeriod(LocalDateTime.now(), LocalDateTime.now())));
+
     }
 
     static Stream<PaidSession> createSuccessPaidSession() {
         return Stream.of(new PaidSession(
             new SessionName("강의이름"),
-            new RegistrationCount(2),
             new MaxRegistrationCount(new RegistrationCount(3)),
             new Money(1000),
             new Image(new ImageSize(1), ImageType.JPG, new ImageWidth(300), new ImageHeight(200)),
-            LocalDateTime.now(),
-            LocalDateTime.now(),
-            SessionStatus.RECRUITING));
+            SessionStatus.RECRUITING,
+            new ValidityPeriod(LocalDateTime.now(), LocalDateTime.now())));
+
     }
 
     static Stream<PaidSession> createSessionStatusPreparingSession() {
         return Stream.of(new PaidSession(
             new SessionName("강의이름"),
-            new RegistrationCount(1),
             new MaxRegistrationCount(new RegistrationCount(3)),
             new Money(1000),
             new Image(new ImageSize(1), ImageType.JPG, new ImageWidth(300), new ImageHeight(200)),
-            LocalDateTime.now(),
-            LocalDateTime.now(),
-            SessionStatus.PREPARING));
+            SessionStatus.PREPARING,
+            new ValidityPeriod(LocalDateTime.now(), LocalDateTime.now())));
     }
 }
