@@ -1,7 +1,6 @@
 package nextstep.courses.entity;
 
 import java.time.LocalDateTime;
-import nextstep.courses.domain.BaseEntity;
 import nextstep.courses.domain.cover.Image;
 import nextstep.courses.domain.session.Session;
 

@@ -1,6 +1,6 @@
 package nextstep.courses.domain.session.impl;
 
-import nextstep.courses.domain.BaseEntity;
+import nextstep.courses.entity.BaseEntity;
 import nextstep.courses.domain.cover.Image;
 import nextstep.courses.domain.session.RegistrationCount;
 import nextstep.courses.domain.session.Session;

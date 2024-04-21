@@ -1,6 +1,6 @@
 package nextstep.courses.domain.cover;
 
-import nextstep.courses.domain.BaseEntity;
+import nextstep.courses.entity.BaseEntity;
 import nextstep.courses.entity.ImageEntity;
 
 public class Image extends BaseEntity {

@@ -1,7 +1,7 @@
 package nextstep.courses.domain.course;
 
 import java.time.LocalDateTime;
-import nextstep.courses.domain.BaseEntity;
+import nextstep.courses.entity.BaseEntity;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.error.exception.SessionRegisterFailException;
 import nextstep.payments.domain.Payment;
