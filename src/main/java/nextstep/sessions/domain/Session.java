@@ -6,6 +6,7 @@ import nextstep.users.domain.NsUsers;
 import java.time.LocalDateTime;
 
 public abstract class Session {
+    private final Long id;
     private final Long courseId;
     private final SessionPeriod sessionPeriod;
     private final SessionImage sessionImage;
@@ -14,7 +15,8 @@ public abstract class Session {
     protected final NsUsers nsUsers;
 
 
-    public Session(Long courseId, SessionPeriod sessionPeriod, SessionImage sessionImage, SessionStatus sessionStatus) {
+    public Session(Long id, Long courseId, SessionPeriod sessionPeriod, SessionImage sessionImage, SessionStatus sessionStatus) {
+        this.id = id;
         this.courseId = courseId;
         this.sessionPeriod = sessionPeriod;
         this.sessionImage = sessionImage;

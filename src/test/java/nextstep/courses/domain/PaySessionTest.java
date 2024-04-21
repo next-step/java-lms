@@ -28,7 +28,7 @@ public class PaySessionTest {
         int imageHeight = 200;
         SessionImage sessionImage = new SessionImage(imageByte, imageType, imageWidth, imageHeight);
 
-        session = new PaySession(0L, sessionPeriod, sessionImage, SessionStatus.PREPARING, 0, 2000);
+        session = new PaySession(0L, 0L, sessionPeriod, sessionImage, SessionStatus.PREPARING, 0, 2000);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class PaySessionTest {
     @Test
     @DisplayName("유료 강의는 최대 수강 신청 인원이 0보다 작을 수 없다.")
     void paySessionUserCountPositiveTest() {
-        assertThatThrownBy(() -> new PaySession(0L,  new SessionPeriod(LocalDate.of(2024, 04, 8), LocalDate.of(2024, 04, 10)), new SessionImage(1000, "gif", 300, 200), SessionStatus.PREPARING, -1, 2000))
+        assertThatThrownBy(() -> new PaySession(0L, 0L, new SessionPeriod(LocalDate.of(2024, 04, 8), LocalDate.of(2024, 04, 10)), new SessionImage(1000, "gif", 300, 200), SessionStatus.PREPARING, -1, 2000))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("0보다 작은 수가 올 수 없습니다.");
     }
@@ -59,7 +59,7 @@ public class PaySessionTest {
     @Test
     @DisplayName("유료 강의는 수강료는 0보다 작을 수 없다.")
     void paySessionPricePositiveTest() {
-        assertThatThrownBy(() -> new PaySession(0L, new SessionPeriod(LocalDate.of(2024, 04, 8), LocalDate.of(2024, 04, 10)), new SessionImage(1000, "gif", 300, 200), SessionStatus.PREPARING, 1, -1))
+        assertThatThrownBy(() -> new PaySession(0L, 0L, new SessionPeriod(LocalDate.of(2024, 04, 8), LocalDate.of(2024, 04, 10)), new SessionImage(1000, "gif", 300, 200), SessionStatus.PREPARING, 1, -1))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("0보다 작은 수가 올 수 없습니다.");
     }
