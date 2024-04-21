@@ -7,7 +7,9 @@ import nextstep.users.domain.NsUser;
 
 import java.util.List;
 
-abstract class Session {
+public abstract class Session {
+
+    public static final String ENROLLMENT_ALREADY_DONE = "이미 수강 신청을 완료하신 강의입니다.";
 
     private Long id;
     private SessionPeriod sessionPeriod;
@@ -29,7 +31,33 @@ abstract class Session {
         this.maxCapacity = maximumCapacity;
     }
 
+    protected Session(Long id, SessionPeriod sessionPeriod, CoverImage coverImage, SessionType sessionType, SessionFee sessionFee, List<NsUser> students, SessionStatus sessionStatus) {
+        this.id = id;
+        this.sessionPeriod = sessionPeriod;
+        this.coverImage = coverImage;
+        this.sessionType = sessionType;
+        this.sessionFee = sessionFee;
+        this.students = students;
+        this.sessionStatus = sessionStatus;
+    }
+
     public abstract void enroll(NsUser user, Payment payment);
+
+    public final void validateRecruting() {
+        if (!isRecruting()) {
+            throw new IllegalStateException("강의 모집중이 아닙니다.");
+        }
+    }
+
+    public final void validateEnrolled(NsUser nsUser, Session session) {
+        if (hasAlreadyEnrolled(nsUser, this)) {
+            throw new IllegalArgumentException(ENROLLMENT_ALREADY_DONE);
+        }
+    }
+
+    private boolean hasAlreadyEnrolled(NsUser nsUser, Session session) {
+        return  this.students.contains(nsUser);
+    }
 
     public void start() {
         sessionStatus = SessionStatus.RECRUIT;
