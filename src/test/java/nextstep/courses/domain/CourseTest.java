@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import nextstep.courses.enums.SessionStatus;
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static nextstep.users.domain.NsUserTest.JAVAJIGI;
+import static nextstep.users.domain.NsUserTest.SANJIGI;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CourseTest {
@@ -25,6 +28,7 @@ class CourseTest {
     int imageWidth = 300;
     int imageHeight = 200;
     int imageFileSize = 1024;
+    List<NsUser> students;
 
     @BeforeEach
     void setUp() {
@@ -37,14 +41,15 @@ class CourseTest {
         maxCapacity = 1;
         sessionFee = new SessionFee(new BigDecimal(800_000));
         coverImage = CoverImage.of(imageFileSize, imageType, imageWidth, imageHeight);
+        students = List.of(JAVAJIGI);
     }
 
     @Test
     @DisplayName("Course(과정) 생성 후 Session(무료, 유료) 추가")
     void courseTest() {
         List<Session> sessions = List.of(
-                new FreeSession(sessionId, sessionPeriod, SessionStatus.PREPARE, coverImage),
-                new PaidSession(sessionId, sessionPeriod, SessionStatus.PREPARE, maxCapacity, sessionFee, coverImage));
+                new FreeSession(sessionId, sessionPeriod, SessionStatus.PREPARE, coverImage, students),
+                new PaidSession(sessionId, sessionPeriod, SessionStatus.PREPARE, maxCapacity, sessionFee, coverImage, students));
         Course course = Course.of(1L
                 , "TDD, 클린 코드 with Java"
                 , 1L
