@@ -1,16 +1,19 @@
 package nextstep.courses.domain.session.impl;
 
-import java.time.LocalDateTime;
 import nextstep.courses.domain.BaseEntity;
 import nextstep.courses.domain.cover.Image;
+import nextstep.courses.domain.session.RegistrationCount;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionName;
 import nextstep.courses.domain.session.SessionStatus;
-import nextstep.courses.domain.session.RegistrationCount;
+import nextstep.courses.domain.session.ValidityPeriod;
+import nextstep.courses.entity.SessionEntity;
 import nextstep.payments.domain.Money;
 import nextstep.payments.domain.Payment;
 
 public class FreeSession extends BaseEntity implements Session {
+
+    private Long id;
 
     private final SessionName sessionName;
 
@@ -20,28 +23,41 @@ public class FreeSession extends BaseEntity implements Session {
 
     private final Image image;
 
-    private final LocalDateTime startDate;
-
-    private final LocalDateTime endDate;
-
     private final SessionStatus sessionStatus;
 
-    public FreeSession(SessionName sessionName, LocalDateTime startDate, LocalDateTime endDate, Image image,
-        SessionStatus sessionStatus) {
-        this(sessionName, new RegistrationCount(0), new Money(0), image, startDate, endDate,
-            sessionStatus);
+    private final ValidityPeriod validityPeriod;
+
+    public FreeSession(SessionName sessionName, Image image, SessionStatus sessionStatus,
+        ValidityPeriod validityPeriod) {
+        this(null,
+            sessionName,
+            new RegistrationCount(0),
+            new Money(0),
+            image,
+            sessionStatus,
+            validityPeriod);
     }
 
-    public FreeSession(SessionName sessionName, RegistrationCount registrationCount,
+    public FreeSession(SessionEntity sessionEntity, Image image) {
+        this(sessionEntity.getId(),
+            new SessionName(sessionEntity.getSessionName()),
+            new RegistrationCount(sessionEntity.getRegistrationCount()),
+            new Money(sessionEntity.getTuitionFee()),
+            image,
+            SessionStatus.valueOf(sessionEntity.getSessionStatus()),
+            new ValidityPeriod(sessionEntity.getStartDate(), sessionEntity.getUpdatedAt()));
+    }
+
+    public FreeSession(Long id, SessionName sessionName, RegistrationCount registrationCount,
         Money tuitionFee,
-        Image image, LocalDateTime startDate, LocalDateTime endDate, SessionStatus sessionStatus) {
+        Image image, SessionStatus sessionStatus, ValidityPeriod validityPeriod) {
+        this.id = id;
         this.sessionName = sessionName;
         this.registrationCount = registrationCount;
         this.tuitionFee = tuitionFee;
         this.image = image;
-        this.startDate = startDate;
-        this.endDate = endDate;
         this.sessionStatus = sessionStatus;
+        this.validityPeriod = validityPeriod;
     }
 
     @Override
@@ -57,5 +73,40 @@ public class FreeSession extends BaseEntity implements Session {
     @Override
     public boolean isPaymentAmountSameTuitionFee(Payment payment) {
         return payment.isSamePaymentAmount(tuitionFee);
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public String getSessionName() {
+        return sessionName.getValue();
+    }
+
+    @Override
+    public int getRegistrationCount() {
+        return registrationCount.getValue();
+    }
+
+    @Override
+    public int getTuitionFee() {
+        return tuitionFee.getValue();
+    }
+
+    @Override
+    public Image getImage() {
+        return image;
+    }
+
+    @Override
+    public String getSessionStatus() {
+        return sessionStatus.getValue();
+    }
+
+    @Override
+    public ValidityPeriod getValidityPeriod() {
+        return validityPeriod;
     }
 }
