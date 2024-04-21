@@ -13,4 +13,12 @@ public abstract class BaseEntity {
         createdAt = currentTime;
         updatedAt = currentTime;
     }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 }
