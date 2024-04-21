@@ -4,27 +4,34 @@ import nextstep.payments.domain.Payment;
 
 public class RequestSessionDto {
 
-    String courseTitle;
+    private Long courseId;
 
-    String sessionName;
+    private Long sessionId;
 
-    Payment payment;
+    private Payment payment;
 
-    public String getCourseTitle() {
-        return courseTitle;
+    private String sessionType;
+
+    public RequestSessionDto(Long courseId, Long sessionId, Payment payment, String sessionType) {
+        this.courseId = courseId;
+        this.sessionId = sessionId;
+        this.payment = payment;
+        this.sessionType = sessionType;
     }
 
-    public String getSessionName() {
-        return sessionName;
+    public Long getCourseId() {
+        return courseId;
+    }
+
+    public Long getSessionId() {
+        return sessionId;
     }
 
     public Payment getPayment() {
         return payment;
     }
 
-    public RequestSessionDto(String courseTitle, String sessionName, Payment payment) {
-        this.courseTitle = courseTitle;
-        this.sessionName = sessionName;
-        this.payment = payment;
+    public String getSessionType() {
+        return sessionType;
     }
 }
