@@ -19,8 +19,6 @@ public enum ImageType {
         return Arrays.stream(values())
                 .filter(value -> value.imageType.equals(imageType))
                 .findAny()
-                .orElseThrow(() -> {
-                    throw new IllegalArgumentException("잘못된 이미지 타입입니다.");
-                });
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 이미지 타입입니다."));
     }
 }
