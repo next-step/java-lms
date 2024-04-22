@@ -6,7 +6,7 @@ import nextstep.users.domain.NsUser;
 import java.util.List;
 
 public class Answers {
-	private List<Answer> answers;
+	private final List<Answer> answers;
 
 	public Answers(List<Answer> answers) {
 		this.answers = answers;
@@ -25,13 +25,13 @@ public class Answers {
 
 	public void setDeleteAnswers(NsUser writer) throws CannotDeleteException {
 		checkOwner(writer);
-		answers.forEach(answer -> answer.setDeleted(true));
+		answers.forEach(answer -> answer.answerDeleted());
 	}
 
 	public void setDeleteAnswers(NsUser writer, List<DeleteHistory> deleteHistories) throws CannotDeleteException {
 		checkOwner(writer);
 		answers.forEach(answer -> {
-			answer.setDeleted(true);
+			answer.answerDeleted();
 			answer.addDeleteHistory(deleteHistories);
 		});
 	}
