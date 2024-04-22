@@ -1,7 +1,5 @@
-package nextstep.courses.domain;
+package nextstep.sessions.domain;
 
-import nextstep.sessions.domain.Enrollment;
-import nextstep.sessions.domain.SessionStatus;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

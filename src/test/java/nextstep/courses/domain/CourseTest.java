@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import fixture.sessions.domain.SessionFixture;
 import nextstep.sessions.domain.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

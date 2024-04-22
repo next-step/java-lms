@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.sessions.domain;
 
 import nextstep.image.domain.ImageHeight;
 import nextstep.image.domain.ImageShape;

@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package fixture.sessions.domain;
 
 import nextstep.sessions.domain.ChargeStatus;
 import nextstep.sessions.domain.Session;

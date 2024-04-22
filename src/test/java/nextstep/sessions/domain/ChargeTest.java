@@ -1,7 +1,5 @@
-package nextstep.courses.domain;
+package nextstep.sessions.domain;
 
-import nextstep.sessions.domain.Charge;
-import nextstep.sessions.domain.ChargeStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
