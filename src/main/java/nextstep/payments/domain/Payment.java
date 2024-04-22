@@ -1,5 +1,7 @@
 package nextstep.payments.domain;
 
+import nextstep.sessions.domain.ChargeStatus;
+
 import java.time.LocalDateTime;
 
 public class Payment {
@@ -19,8 +21,8 @@ public class Payment {
     public Payment() {
     }
 
-    public Payment(String id, Long sessionId, Long nsUserId, Long amount, Long sessionAmount) {
-        if (!amount.equals(sessionAmount)) {
+    public Payment(String id, Long sessionId, Long nsUserId, Long amount, Long sessionAmount, ChargeStatus chargeStatus) {
+        if (chargeStatus.equals(ChargeStatus.PAID) && !amount.equals(sessionAmount)) {
             throw new IllegalArgumentException("결제 금액이 강의 금액과 일치하지 않습니다.");
         }
         this.id = id;

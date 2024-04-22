@@ -2,7 +2,6 @@ package nextstep.payment.domain;
 
 import nextstep.payments.domain.Payment;
 import nextstep.payments.domain.Payments;
-import nextstep.sessions.domain.Charge;
 import nextstep.sessions.domain.ChargeStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,7 @@ public class PaymentTest {
 	@Test
 	void createPayment() {
 		// given&when
-		Payment payment = new Payment("1", 1L, 1L, 100L,100L);
+		Payment payment = new Payment("1", 1L, 1L, 100L,100L, ChargeStatus.PAID);
 		// then
 		assertThat(payment.getAmount()).isEqualTo(100L);
 	}
@@ -27,7 +26,7 @@ public class PaymentTest {
 		// given&when&then
 		assertThatExceptionOfType(IllegalArgumentException.class)
 				.isThrownBy(() -> {
-					new Payment("1", 1L, 1L, 100L,101L);
+					new Payment("1", 1L, 1L, 100L,101L, ChargeStatus.PAID);
 				}).withMessageMatching("결제 금액이 강의 금액과 일치하지 않습니다.");
 	}
 
@@ -35,8 +34,8 @@ public class PaymentTest {
 	@Test
 	void createPayments() {
 		// given
-		Payment payment1 = new Payment("1", 1L, 1L, 100L, 100L);
-		Payment payment2 = new Payment("1", 1L, 1L, 100L, 100L);
+		Payment payment1 = new Payment("1", 1L, 1L, 100L, 100L, ChargeStatus.PAID);
+		Payment payment2 = new Payment("1", 1L, 1L, 100L, 100L, ChargeStatus.PAID);
 
 		// when
 		Payments payments = new Payments();
