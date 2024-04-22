@@ -15,8 +15,8 @@ public class AnswerTest {
     @Test
     public void 삭제히스토리_저장_테스트() {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        A1.addDeleteHistory(deleteHistories);
-        A2.addDeleteHistory(deleteHistories);
+        deleteHistories.add(A1.makeDeleteHistory());
+        deleteHistories.add(A2.makeDeleteHistory());
         assertThat(deleteHistories).hasSize(2);
     }
 

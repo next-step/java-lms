@@ -64,7 +64,7 @@ public class Question {
         deleteHistories.add(deleteQuestion());
 
         if (!answers.isEmpty()) {
-            deletedAnswers(deleteHistories);
+            deleteHistories.addAll(deletedAnswers());
         }
 		return deleteHistories;
     }
@@ -82,9 +82,9 @@ public class Question {
         return this;
     }
 
-    private void deletedAnswers(List<DeleteHistory> deleteHistories) throws CannotDeleteException {
+    private List<DeleteHistory> deletedAnswers() throws CannotDeleteException {
         Answers answersCollection = new Answers(answers);
-        answersCollection.setDeleteAnswers(writer, deleteHistories);
+        return answersCollection.setDeleteAnswers(writer);
     }
 
     public DeleteHistory addDeleteHistory() {

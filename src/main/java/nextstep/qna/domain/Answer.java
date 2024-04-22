@@ -61,8 +61,8 @@ public class Answer {
 		return this.writer.equals(writer);
 	}
 
-	public void addDeleteHistory(List<DeleteHistory> deleteHistories) {
-		deleteHistories.add(new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now()));
+	public DeleteHistory makeDeleteHistory() {
+		return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
 	}
 
 	public NsUser getWriter() {

@@ -3,6 +3,7 @@ package nextstep.qna.domain;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Answers {
@@ -23,17 +24,14 @@ public class Answers {
 				.allMatch(answer -> answer.isOwner(writer));
 	}
 
-	public void setDeleteAnswers(NsUser writer) throws CannotDeleteException {
+	public List<DeleteHistory> setDeleteAnswers(NsUser writer) throws CannotDeleteException {
 		checkOwner(writer);
-		answers.forEach(answer -> answer.answerDeleted());
-	}
-
-	public void setDeleteAnswers(NsUser writer, List<DeleteHistory> deleteHistories) throws CannotDeleteException {
-		checkOwner(writer);
+		List<DeleteHistory> deleteHistories = new ArrayList<>();
 		answers.forEach(answer -> {
 			answer.answerDeleted();
-			answer.addDeleteHistory(deleteHistories);
+			deleteHistories.add(answer.makeDeleteHistory());
 		});
+		return deleteHistories;
 	}
 
 	public Answer getAnswer(int index) {
