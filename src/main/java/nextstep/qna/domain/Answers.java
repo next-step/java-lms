@@ -12,7 +12,7 @@ public class Answers {
 		this.answers = answers;
 	}
 
-	public void checkOwner(NsUser writer) throws CannotDeleteException {
+	private void checkOwner(NsUser writer) throws CannotDeleteException {
 		if (!isOwners(writer)) {
 			throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
 		}

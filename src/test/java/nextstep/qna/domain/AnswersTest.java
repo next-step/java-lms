@@ -31,14 +31,12 @@ public class AnswersTest {
 
 	@Test
 	public void 다른사람이_쓴글이_존재시_확인_테스트() {
-		assertThatThrownBy(() -> otherOwnerAnswers.checkOwner(NsUserTest.JAVAJIGI))
-				.isInstanceOf(CannotDeleteException.class)
-				.hasMessageContaining("다른 사람");
+		assertThat(sameOwnerAnswers.isOwners(NsUserTest.JAVAJIGI)).isFalse();
 	}
 
 	@Test
 	public void 자신만_쓴글이_존재시_테스트() {
-		assertThat(sameOwnerAnswers.isOwners(NsUserTest.JAVAJIGI)).isEqualTo(true);
+		assertThat(sameOwnerAnswers.isOwners(NsUserTest.JAVAJIGI)).isTrue();
 	}
 
 	@Test
