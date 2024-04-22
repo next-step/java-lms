@@ -48,8 +48,8 @@ public class Answer {
 		return id;
 	}
 
-	public Answer setDeleted(boolean deleted) {
-		this.deleted = deleted;
+	public Answer answerDeleted() {
+		this.deleted = true;
 		return this;
 	}
 
