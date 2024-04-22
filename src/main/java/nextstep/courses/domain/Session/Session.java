@@ -37,9 +37,7 @@ public class Session {
         if (isPaySession()) {
             newStudents.isPaidSessionFee(fee);
 
-            if (students.getCounts() + newStudents.getCounts() > maxStudents) {
-                throw new RuntimeException("유료 강의는 최대 수강인원을 초과할 수 없습니다. 최대수강인원 : " + maxStudents);
-            }
+            isMaxStudents(students.getCounts(), newStudents.getCounts());
         }
 
         this.students.addAll(students);
@@ -51,5 +49,11 @@ public class Session {
 
     private boolean isPaySession() {
         return this.fee > 0;
+    }
+
+    private void isMaxStudents(int oldStudentsCounts, int newStudentsCounts) {
+        if (oldStudentsCounts + newStudentsCounts > maxStudents) {
+            throw new RuntimeException("유료 강의는 최대 수강인원을 초과할 수 없습니다. 최대수강인원 : " + maxStudents);
+        }
     }
 }

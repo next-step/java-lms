@@ -1,5 +1,5 @@
 package nextstep.courses.domain.Session;
 
-public enum Type {
+public enum ImageType {
     FREE, PAY
 }
