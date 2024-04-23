@@ -1,4 +1,4 @@
-package nextstep.courses.domain.session.impl;
+package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.cover.Image;
 import nextstep.courses.domain.session.RegistrationCount;
