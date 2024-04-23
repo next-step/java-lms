@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class QuestionTest {
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
@@ -17,6 +18,13 @@ public class QuestionTest {
     public void 질문삭제_정상동작_확인테스트() throws CannotDeleteException {
         Question question = Q1.setDeleted(NsUserTest.JAVAJIGI);
         assertThat(question.isDeleted()).isTrue();
+    }
+
+    @Test
+    public void 질문삭제_실패_테스트() {
+        assertThatThrownBy(() -> Q1.setDeleted(NsUserTest.SANJIGI))
+                .isInstanceOf(CannotDeleteException.class)
+                .hasMessageContaining("삭제");
     }
 
     @Test
