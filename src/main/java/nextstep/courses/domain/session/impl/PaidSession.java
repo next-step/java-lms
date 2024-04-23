@@ -1,34 +1,17 @@
 package nextstep.courses.domain.session.impl;
 
-import nextstep.courses.entity.BaseEntity;
 import nextstep.courses.domain.cover.Image;
 import nextstep.courses.domain.session.MaxRegistrationCount;
 import nextstep.courses.domain.session.RegistrationCount;
-import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionName;
 import nextstep.courses.domain.session.SessionStatus;
 import nextstep.courses.domain.session.ValidityPeriod;
 import nextstep.courses.entity.SessionEntity;
 import nextstep.payments.domain.Money;
-import nextstep.payments.domain.Payment;
 
-public class PaidSession extends BaseEntity implements Session {
-
-    private Long id;
-
-    private final SessionName sessionName;
-
-    private final RegistrationCount registrationCount;
+public class PaidSession extends AbstractSession {
 
     private final MaxRegistrationCount maxRegistrationCount;
-
-    private final Money tuitionFee;
-
-    private final Image image;
-
-    private SessionStatus sessionStatus;
-
-    private final ValidityPeriod validityPeriod;
 
     public PaidSession(SessionEntity sessionEntity, Image image) {
         this(sessionEntity.getId(),
@@ -53,19 +36,8 @@ public class PaidSession extends BaseEntity implements Session {
     public PaidSession(Long id, SessionName sessionName, RegistrationCount registrationCount,
         MaxRegistrationCount maxRegistrationCount, Money tuitionFee, Image image,
         SessionStatus sessionStatus, ValidityPeriod validityPeriod) {
-        this.id = id;
-        this.sessionName = sessionName;
-        this.registrationCount = registrationCount;
+        super(id, sessionName, registrationCount, tuitionFee, image, sessionStatus, validityPeriod);
         this.maxRegistrationCount = maxRegistrationCount;
-        this.tuitionFee = tuitionFee;
-        this.image = image;
-        this.sessionStatus = sessionStatus;
-        this.validityPeriod = validityPeriod;
-    }
-
-    @Override
-    public void addRegistrationCount() {
-        registrationCount.addValue();
     }
 
     @Override
@@ -73,50 +45,4 @@ public class PaidSession extends BaseEntity implements Session {
         return isRecruitmentOpen(sessionStatus)
             && maxRegistrationCount.isMaxRegistrationCountOver(registrationCount);
     }
-
-    @Override
-    public boolean isPaymentAmountSameTuitionFee(Payment payment) {
-        return payment.isSamePaymentAmount(tuitionFee);
-    }
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public String getSessionName() {
-        return sessionName.getValue();
-    }
-
-    @Override
-    public int getRegistrationCount() {
-        return registrationCount.getValue();
-    }
-
-    @Override
-    public int getMaxRegistrationCount() {
-        return maxRegistrationCount.getRegistrationCount();
-    }
-
-    @Override
-    public int getTuitionFee() {
-        return tuitionFee.getValue();
-    }
-
-    @Override
-    public Image getImage() {
-        return image;
-    }
-
-    @Override
-    public String getSessionStatus() {
-        return sessionStatus.getValue();
-    }
-
-    @Override
-    public ValidityPeriod getValidityPeriod() {
-        return validityPeriod;
-    }
-
 }
