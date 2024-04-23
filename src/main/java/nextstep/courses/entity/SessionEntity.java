@@ -24,6 +24,20 @@ public class SessionEntity extends BaseEntity {
 
     private LocalDateTime endDate;
 
+    public static SessionEntity from(Session session){
+        return new SessionEntity(session.getId(),
+            session.getSessionName(),
+            session.getRegistrationCount(),
+            session.getMaxRegistrationCount(),
+            session.getTuitionFee(),
+            null,
+            session.getSessionStatus(),
+            session.getValidityPeriod().getStartDate(),
+            session.getValidityPeriod().getEndDate(),
+            session.getCreatedAt(),
+            session.getUpdatedAt());
+    }
+
     public static SessionEntity from(Session session, Image image){
         return new SessionEntity(session.getId(),
             session.getSessionName(),
@@ -54,6 +68,14 @@ public class SessionEntity extends BaseEntity {
         this.endDate = endDate;
         this.createdAt = createdAt;
         this.updatedAt = updateAt;
+    }
+
+    public boolean isPaidType(){
+        return tuitionFee != 0;
+    }
+
+    public boolean isFreeType(){
+        return tuitionFee == 0;
     }
 
     public Long getId() {

@@ -22,12 +22,12 @@ public class FreeSession extends AbstractSession {
             period);
     }
 
-    public FreeSession(SessionEntity sessionEntity, Image image) {
+    public FreeSession(SessionEntity sessionEntity) {
         this(sessionEntity.getId(),
             new SessionName(sessionEntity.getSessionName()),
             new RegistrationCount(sessionEntity.getRegistrationCount()),
             new Money(sessionEntity.getTuitionFee()),
-            image,
+            null,
             SessionStatus.valueOf(sessionEntity.getSessionStatus()),
             new Period(sessionEntity.getStartDate(), sessionEntity.getUpdatedAt()));
     }

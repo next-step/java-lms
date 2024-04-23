@@ -14,14 +14,14 @@ public class PaidSession extends AbstractSession {
 
     private final MaxRegistrationCount maxRegistrationCount;
 
-    public PaidSession(SessionEntity sessionEntity, Image image) {
+    public PaidSession(SessionEntity sessionEntity) {
         this(sessionEntity.getId(),
             new SessionName(sessionEntity.getSessionName()),
             new RegistrationCount(sessionEntity.getRegistrationCount()),
             new MaxRegistrationCount(
                 new RegistrationCount(sessionEntity.getMaxRegistrationCount())),
             new Money(sessionEntity.getTuitionFee()),
-            image,
+            null,
             SessionStatus.valueOf(sessionEntity.getSessionStatus()),
             new Period(sessionEntity.getStartDate(),
                 sessionEntity.getEndDate()));

@@ -9,13 +9,12 @@ import nextstep.courses.domain.cover.ImageHeight;
 import nextstep.courses.domain.cover.ImageSize;
 import nextstep.courses.domain.cover.ImageType;
 import nextstep.courses.domain.cover.ImageWidth;
-import nextstep.courses.domain.session.Session;
-import nextstep.courses.factory.SessionFactory;
-import nextstep.courses.domain.session.SessionStatus;
-import nextstep.courses.domain.session.SessionType;
 import nextstep.courses.domain.session.Period;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionStatus;
 import nextstep.courses.entity.ImageEntity;
 import nextstep.courses.entity.SessionEntity;
+import nextstep.courses.factory.SessionFactory;
 import nextstep.courses.fixture.builder.FreeSessionBuilder;
 import nextstep.courses.fixture.builder.ImageBuilder;
 import nextstep.courses.infrastructure.impl.JdbcImageEntityRepository;
@@ -93,7 +92,7 @@ class JdbcSessionEntityRepositoryTest {
         ImageEntity imageEntity = imageEntityOptional.get();
 
         Image image = new Image(imageEntity);
-        Session session = SessionFactory.createSession(sessionEntity, image, SessionType.FREE);
+        Session session = SessionFactory.createSession(sessionEntity);
         session.addRegistrationCount();
 
         //when
