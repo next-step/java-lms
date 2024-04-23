@@ -1,6 +1,8 @@
 package nextstep.courses.domain;
 
-import static org.junit.jupiter.api.Assertions.*;
+import nextstep.courses.domain.image.Frame;
+import nextstep.courses.domain.image.ImageInfo;
+import nextstep.courses.domain.image.Size;
 
 public class ImageInfoTest {
 

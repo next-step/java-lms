@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.enroll;
 
 import nextstep.exception.AlreadyEnrollException;
 import nextstep.exception.EnrollNotAllowException;

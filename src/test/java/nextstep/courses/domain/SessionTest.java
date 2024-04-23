@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.tuition.Money;
 import nextstep.exception.EnrollNotAllowException;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.Test;

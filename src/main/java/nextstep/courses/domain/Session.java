@@ -1,5 +1,9 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.enroll.Enrollment;
+import nextstep.courses.domain.image.CoverImage;
+import nextstep.courses.domain.tuition.Money;
+import nextstep.courses.domain.tuition.Tuition;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
