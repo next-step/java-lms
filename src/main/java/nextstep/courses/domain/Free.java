@@ -8,11 +8,7 @@ public class Free {
         this.isFree = isFree;
     }
 
-    public boolean isFree() {
-        return isFree;
-    }
-
-    public boolean isSame(boolean b) {
+    public boolean eqaulTo(boolean b) {
         return isFree == b;
     }
 }

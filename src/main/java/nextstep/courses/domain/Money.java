@@ -7,6 +7,9 @@ public class Money {
     private final int value;
 
     public Money(int value) {
+        if (value < 0) {
+            throw new IllegalArgumentException("금액은 0원 이상이여야 합니다.");
+        }
         this.value = value;
     }
 
@@ -21,5 +24,9 @@ public class Money {
     @Override
     public int hashCode() {
         return Objects.hashCode(value);
+    }
+
+    public boolean isEqualOrSmaller(Money money) {
+        return this.value <= money.value;
     }
 }
