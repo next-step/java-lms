@@ -1,11 +1,6 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.cover.Image;
-import nextstep.courses.domain.session.RegistrationCount;
-import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionName;
-import nextstep.courses.domain.session.SessionStatus;
-import nextstep.courses.domain.session.Period;
 import nextstep.courses.entity.BaseEntity;
 import nextstep.payments.domain.Money;
 import nextstep.payments.domain.Payment;
