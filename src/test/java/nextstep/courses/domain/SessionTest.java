@@ -1,7 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.Session.Session;
-import nextstep.courses.domain.Session.Status;
+import nextstep.courses.domain.Session.SessionStatus;
 import nextstep.courses.domain.Session.Student;
 import nextstep.courses.domain.image.Image;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +34,7 @@ public class SessionTest {
 
         Session freeSession = new Session(startDate, endDate, coverImage, 0, 1);
 
-        freeSession.changeStatus(Status.APPLYING);
+        freeSession.changeStatus(SessionStatus.APPLYING);
 
         assertDoesNotThrow(() -> freeSession.apply(studentList));
     }
@@ -43,7 +43,7 @@ public class SessionTest {
     public void 강의는_강의최대수강인원을_초과할수없다() {
         List<Student> studentList = createStudentList(2, 10000);
 
-        session.changeStatus(Status.APPLYING);
+        session.changeStatus(SessionStatus.APPLYING);
 
         assertThrows(RuntimeException.class, () -> session.apply(studentList));
     }
@@ -54,7 +54,7 @@ public class SessionTest {
 
         List<Student> studentList = createStudentList(1, 10000);
 
-        Session.changeStatus(Status.APPLYING);
+        Session.changeStatus(SessionStatus.APPLYING);
 
         assertDoesNotThrow(() -> Session.apply(studentList));
     }
@@ -65,7 +65,7 @@ public class SessionTest {
 
         List<Student> studentList = createStudentList(1, 20000);
 
-        Session.changeStatus(Status.APPLYING);
+        Session.changeStatus(SessionStatus.APPLYING);
 
         assertThrows(RuntimeException.class, () -> Session.apply(studentList));
     }
@@ -76,7 +76,7 @@ public class SessionTest {
 
         List<Student> studentList = createStudentList(1, 10000);
 
-        Session.changeStatus(Status.APPLYING);
+        Session.changeStatus(SessionStatus.APPLYING);
 
         assertDoesNotThrow(() -> Session.apply(studentList));
     }
@@ -87,7 +87,7 @@ public class SessionTest {
 
         List<Student> studentList = createStudentList(1, 10000);
 
-        Session.changeStatus(Status.COMPLETE);
+        Session.changeStatus(SessionStatus.COMPLETE);
 
         assertThrows(RuntimeException.class, () -> Session.apply(studentList));
     }

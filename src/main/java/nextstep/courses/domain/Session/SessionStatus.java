@@ -1,9 +1,9 @@
 package nextstep.courses.domain.Session;
 
-public enum Status {
+public enum SessionStatus {
     READY, APPLYING, COMPLETE;
 
     public boolean isApplying() {
-        return this == Status.APPLYING;
+        return this == SessionStatus.APPLYING;
     }
 }

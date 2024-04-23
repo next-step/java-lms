@@ -2,9 +2,9 @@ package nextstep.courses.domain.Session;
 
 import java.time.LocalDate;
 
-public class Duration {
+public class SessionDuration {
 
-    Duration(LocalDate startDate, LocalDate endDate) {
+    SessionDuration(LocalDate startDate, LocalDate endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
     }
