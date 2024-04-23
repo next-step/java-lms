@@ -4,7 +4,6 @@ import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +20,7 @@ public class Answers {
         this.answers.add(answer);
     }
 
-    public boolean containsNotOwner(NsUser writer) throws CannotDeleteException {
+    public boolean containsNotOwner(NsUser writer) {
         return this.answers.stream()
                 .anyMatch(answer -> !answer.isOwner(writer));
     }

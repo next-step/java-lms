@@ -11,8 +11,11 @@
 - [X] 질문을 삭제할 때 답변 또한 삭제해야 하며, 답변의 삭제 또한 삭제 상태(deleted)를 변경한다.
 - [X] 질문자와 답변자가 다른경우 답변을 삭제 할 수 없다.
 - [X] 질문과 답변 삭제 이력에 대한 정보를 DeleteHistory를 활용해 남긴다.
-
 ## 테스트
+- [X] QnaServiceTest 이상 없음
+- [X] QuestionTest 
+- [X] AnswerTest 
+- [X] AnswersTest
 ## 힌트
 객체의 상태 데이터를 꺼내지(get)말고 메시지를 보낸다.
 규칙 8: 일급 콜렉션을 쓴다.
@@ -20,8 +23,6 @@ Question의 List를 일급 콜렉션으로 구현해 본다.
 규칙 7: 3개 이상의 인스턴스 변수를 가진 클래스를 쓰지 않는다.
 인스턴스 변수의 수를 줄이기 위해 도전한다.
 도메인 모델에 setter 메서드 추가하지 않는다.
-
-
 ## 리뷰 내용
 ```
 Answer
@@ -41,3 +42,7 @@ QeustionTest
 Ansers
 Answers나 Answer 도메인 클래스에 대한 테스트도 작성해볼 수 있지 않을까요?
 ```
+### TIL
+        verify(applicationEventPublisher, times(1))
+                .publishEvent(new DeleteHistoryEvent(qnAService, DeleteHistories.of(question)));
+        이 경우 Mockito 사용하면 DeleteHistoryEvent에 hashCode, equals Override 꼭 하기

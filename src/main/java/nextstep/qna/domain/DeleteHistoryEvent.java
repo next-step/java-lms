@@ -3,19 +3,20 @@ package nextstep.qna.domain;
 import nextstep.qna.service.QnAService;
 import org.springframework.context.ApplicationEvent;
 
+import java.util.List;
 import java.util.Objects;
 
 public class DeleteHistoryEvent extends ApplicationEvent {
 
-    private final Question question;
+    private final DeleteHistories deleteHistories;
 
-    public DeleteHistoryEvent(QnAService qnAService, Question question) {
+    public DeleteHistoryEvent(QnAService qnAService, DeleteHistories deleteHistories) {
         super(qnAService);
-        this.question = question;
+        this.deleteHistories = deleteHistories;
     }
 
-    public Question getQuestion() {
-        return this.question;
+    public List<DeleteHistory> deletedHistories() {
+        return deleteHistories.value();
     }
 
     @Override
@@ -23,11 +24,11 @@ public class DeleteHistoryEvent extends ApplicationEvent {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DeleteHistoryEvent that = (DeleteHistoryEvent) o;
-        return Objects.equals(question, that.question);
+        return Objects.equals(deleteHistories, that.deleteHistories);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(question);
+        return Objects.hashCode(deleteHistories);
     }
 }
