@@ -3,10 +3,10 @@ package nextstep.courses.domain.session.impl;
 import nextstep.courses.domain.cover.Image;
 import nextstep.courses.domain.session.AbstractSession;
 import nextstep.courses.domain.session.MaxRegistrationCount;
+import nextstep.courses.domain.session.Period;
 import nextstep.courses.domain.session.RegistrationCount;
 import nextstep.courses.domain.session.SessionName;
 import nextstep.courses.domain.session.SessionStatus;
-import nextstep.courses.domain.session.Period;
 import nextstep.courses.entity.SessionEntity;
 import nextstep.payments.domain.Money;
 
