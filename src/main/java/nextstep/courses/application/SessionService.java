@@ -1,9 +1,9 @@
 package nextstep.courses.application;
 
-import nextstep.courses.domain.Session.Session;
-import nextstep.courses.domain.Session.SessionRepository;
-import nextstep.courses.domain.Session.Student;
-import nextstep.courses.domain.Session.StudentRepository;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionRepository;
+import nextstep.courses.domain.session.Student;
+import nextstep.courses.domain.session.StudentRepository;
 import nextstep.users.domain.NsUser;
 
 import java.util.List;

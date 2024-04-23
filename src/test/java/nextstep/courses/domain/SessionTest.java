@@ -1,8 +1,8 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.Session.Session;
-import nextstep.courses.domain.Session.SessionStatus;
-import nextstep.courses.domain.Session.Student;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionStatus;
+import nextstep.courses.domain.session.Student;
 import nextstep.courses.domain.image.Image;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
