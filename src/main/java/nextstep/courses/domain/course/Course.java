@@ -2,9 +2,6 @@ package nextstep.courses.domain.course;
 
 import java.time.LocalDateTime;
 import nextstep.courses.entity.BaseEntity;
-import nextstep.courses.domain.session.Session;
-import nextstep.courses.error.exception.SessionRegisterFailException;
-import nextstep.payments.domain.Payment;
 
 public class Course extends BaseEntity {
     private Long id;
@@ -51,13 +48,4 @@ public class Course extends BaseEntity {
                 ", updatedAt=" + updatedAt +
                 '}';
     }
-
-    public Session registerSession(Session session, Payment payment) {
-        if (session.isRegistrationAvailable() && session.isPaymentAmountSameTuitionFee(payment)) {
-            session.addRegistrationCount();
-            return session;
-        }
-        throw new SessionRegisterFailException();
-    }
-
 }
