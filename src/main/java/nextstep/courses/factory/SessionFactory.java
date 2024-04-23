@@ -1,6 +1,8 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.factory;
 
 import nextstep.courses.domain.cover.Image;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionType;
 import nextstep.courses.domain.session.impl.FreeSession;
 import nextstep.courses.domain.session.impl.PaidSession;
 import nextstep.courses.entity.SessionEntity;

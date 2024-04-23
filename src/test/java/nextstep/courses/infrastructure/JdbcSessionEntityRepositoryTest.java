@@ -10,7 +10,7 @@ import nextstep.courses.domain.cover.ImageSize;
 import nextstep.courses.domain.cover.ImageType;
 import nextstep.courses.domain.cover.ImageWidth;
 import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionFactory;
+import nextstep.courses.factory.SessionFactory;
 import nextstep.courses.domain.session.SessionStatus;
 import nextstep.courses.domain.session.SessionType;
 import nextstep.courses.domain.session.Period;

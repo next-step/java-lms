@@ -3,7 +3,7 @@ package nextstep.courses.service;
 import nextstep.courses.domain.course.Course;
 import nextstep.courses.domain.cover.Image;
 import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionFactory;
+import nextstep.courses.factory.SessionFactory;
 import nextstep.courses.domain.session.SessionType;
 import nextstep.courses.dto.RequestSessionDto;
 import nextstep.courses.entity.ImageEntity;
