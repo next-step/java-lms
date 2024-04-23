@@ -1,4 +1,4 @@
-package nextstep.courses.domain.Session;
+package nextstep.courses.domain.session;
 
 import java.time.LocalDate;
 
@@ -25,9 +25,5 @@ public class SessionEntity {
         this.maxStudents = maxStudents;
         this.startDate = startDate;
         this.endDate = endDate;
-    }
-
-    public SessionDuration sessionDuration() {
-        return new SessionDuration(startDate, endDate);
     }
 }

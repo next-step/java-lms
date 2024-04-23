@@ -1,11 +1,13 @@
-package nextstep.courses.domain.Session;
+package nextstep.courses.domain.session;
 
 public class Student {
-    private int fee = 0 ;
+    public Student() {}
 
-    public void pay(int fee) {
+    public Student(int fee) {
         this.fee = fee;
     }
+
+    private int fee = 0 ;
 
     public int getFee() {
         return this.fee;

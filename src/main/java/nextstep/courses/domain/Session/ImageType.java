@@ -1,4 +1,4 @@
-package nextstep.courses.domain.Session;
+package nextstep.courses.domain.session;
 
 public enum ImageType {
     FREE, PAY

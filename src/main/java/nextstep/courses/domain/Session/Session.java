@@ -1,4 +1,4 @@
-package nextstep.courses.domain.Session;
+package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.image.Image;
 
@@ -10,7 +10,6 @@ public class Session {
     private final Image coverImage;
     private final int fee;
     private final int maxStudents;
-    private final Students students = new Students();
     private SessionStatus sessionStatus = SessionStatus.READY;
 
     public Session(LocalDate startDate, LocalDate endDate, Image coverImage) {
@@ -27,33 +26,15 @@ public class Session {
         this.maxStudents = maxStudents;
     }
 
-    public void apply(List<Student> studentList) {
+    public Enrollment enrollment() {
         if (!sessionStatus.isApplying()) {
             throw new RuntimeException("수강 신청은 강의 상태가 모집중이 아니면 불가능합니다. 강의 상태 : " + sessionStatus);
         }
 
-        Students newStudents = new Students(studentList);
-
-        if (isPaySession()) {
-            newStudents.isPaidSessionFee(fee);
-
-            isMaxStudents(students.getCounts(), newStudents.getCounts());
-        }
-
-        this.students.addAll(students);
+        return new Enrollment(fee, maxStudents);
     }
 
     public void changeStatus(SessionStatus sessionStatus) {
         this.sessionStatus = sessionStatus;
-    }
-
-    private boolean isPaySession() {
-        return this.fee > 0;
-    }
-
-    private void isMaxStudents(int oldStudentsCounts, int newStudentsCounts) {
-        if (oldStudentsCounts + newStudentsCounts > maxStudents) {
-            throw new RuntimeException("유료 강의는 최대 수강인원을 초과할 수 없습니다. 최대수강인원 : " + maxStudents);
-        }
     }
 }
