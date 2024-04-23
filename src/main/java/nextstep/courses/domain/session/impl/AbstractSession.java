@@ -5,7 +5,7 @@ import nextstep.courses.domain.session.RegistrationCount;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionName;
 import nextstep.courses.domain.session.SessionStatus;
-import nextstep.courses.domain.session.ValidityPeriod;
+import nextstep.courses.domain.session.Period;
 import nextstep.courses.entity.BaseEntity;
 import nextstep.payments.domain.Money;
 import nextstep.payments.domain.Payment;
@@ -24,17 +24,17 @@ public abstract class AbstractSession extends BaseEntity implements Session {
 
     protected final SessionStatus sessionStatus;
 
-    private final ValidityPeriod validityPeriod;
+    private final Period period;
 
     public AbstractSession(Long id, SessionName sessionName, RegistrationCount registrationCount,
-        Money tuitionFee, Image image, SessionStatus sessionStatus, ValidityPeriod validityPeriod) {
+        Money tuitionFee, Image image, SessionStatus sessionStatus, Period period) {
         this.id = id;
         this.sessionName = sessionName;
         this.registrationCount = registrationCount;
         this.tuitionFee = tuitionFee;
         this.image = image;
         this.sessionStatus = sessionStatus;
-        this.validityPeriod = validityPeriod;
+        this.period = period;
     }
 
     @Override
@@ -83,7 +83,7 @@ public abstract class AbstractSession extends BaseEntity implements Session {
     }
 
     @Override
-    public ValidityPeriod getValidityPeriod() {
-        return validityPeriod;
+    public Period getValidityPeriod() {
+        return period;
     }
 }

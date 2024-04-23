@@ -13,7 +13,7 @@ import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionFactory;
 import nextstep.courses.domain.session.SessionStatus;
 import nextstep.courses.domain.session.SessionType;
-import nextstep.courses.domain.session.ValidityPeriod;
+import nextstep.courses.domain.session.Period;
 import nextstep.courses.entity.ImageEntity;
 import nextstep.courses.entity.SessionEntity;
 import nextstep.courses.fixture.builder.FreeSessionBuilder;
@@ -56,7 +56,7 @@ class JdbcSessionEntityRepositoryTest {
             .withName("강의이름")
             .withImage(image)
             .withSessionStatus(SessionStatus.RECRUITING)
-            .withValidityPeriod(new ValidityPeriod(LocalDateTime.now(), LocalDateTime.MAX))
+            .withValidityPeriod(new Period(LocalDateTime.now(), LocalDateTime.MAX))
             .build();
 
         int saveCount = sessionRepository.save(SessionEntity.from(freeSession, image), 1L);

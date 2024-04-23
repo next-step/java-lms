@@ -5,7 +5,7 @@ import nextstep.courses.domain.session.MaxRegistrationCount;
 import nextstep.courses.domain.session.RegistrationCount;
 import nextstep.courses.domain.session.SessionName;
 import nextstep.courses.domain.session.SessionStatus;
-import nextstep.courses.domain.session.ValidityPeriod;
+import nextstep.courses.domain.session.Period;
 import nextstep.courses.entity.SessionEntity;
 import nextstep.payments.domain.Money;
 
@@ -22,21 +22,21 @@ public class PaidSession extends AbstractSession {
             new Money(sessionEntity.getTuitionFee()),
             image,
             SessionStatus.valueOf(sessionEntity.getSessionStatus()),
-            new ValidityPeriod(sessionEntity.getStartDate(),
+            new Period(sessionEntity.getStartDate(),
                 sessionEntity.getEndDate()));
     }
 
     public PaidSession(SessionName sessionName,
         MaxRegistrationCount maxRegistrationCount, Money tuitionFee, Image image,
-        SessionStatus sessionStatus, ValidityPeriod validityPeriod) {
+        SessionStatus sessionStatus, Period period) {
         this(null, sessionName, new RegistrationCount(0), maxRegistrationCount, tuitionFee, image,
-            sessionStatus, validityPeriod);
+            sessionStatus, period);
     }
 
     public PaidSession(Long id, SessionName sessionName, RegistrationCount registrationCount,
         MaxRegistrationCount maxRegistrationCount, Money tuitionFee, Image image,
-        SessionStatus sessionStatus, ValidityPeriod validityPeriod) {
-        super(id, sessionName, registrationCount, tuitionFee, image, sessionStatus, validityPeriod);
+        SessionStatus sessionStatus, Period period) {
+        super(id, sessionName, registrationCount, tuitionFee, image, sessionStatus, period);
         this.maxRegistrationCount = maxRegistrationCount;
     }
 

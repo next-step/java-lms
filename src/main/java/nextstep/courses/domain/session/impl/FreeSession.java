@@ -4,21 +4,21 @@ import nextstep.courses.domain.cover.Image;
 import nextstep.courses.domain.session.RegistrationCount;
 import nextstep.courses.domain.session.SessionName;
 import nextstep.courses.domain.session.SessionStatus;
-import nextstep.courses.domain.session.ValidityPeriod;
+import nextstep.courses.domain.session.Period;
 import nextstep.courses.entity.SessionEntity;
 import nextstep.payments.domain.Money;
 
 public class FreeSession extends AbstractSession {
 
     public FreeSession(SessionName sessionName, Image image, SessionStatus sessionStatus,
-        ValidityPeriod validityPeriod) {
+        Period period) {
         this(null,
             sessionName,
             new RegistrationCount(0),
             new Money(0),
             image,
             sessionStatus,
-            validityPeriod);
+            period);
     }
 
     public FreeSession(SessionEntity sessionEntity, Image image) {
@@ -28,12 +28,12 @@ public class FreeSession extends AbstractSession {
             new Money(sessionEntity.getTuitionFee()),
             image,
             SessionStatus.valueOf(sessionEntity.getSessionStatus()),
-            new ValidityPeriod(sessionEntity.getStartDate(), sessionEntity.getUpdatedAt()));
+            new Period(sessionEntity.getStartDate(), sessionEntity.getUpdatedAt()));
     }
 
     public FreeSession(Long id, SessionName sessionName, RegistrationCount registrationCount,
         Money tuitionFee,
-        Image image, SessionStatus sessionStatus, ValidityPeriod validityPeriod) {
-        super(id, sessionName, registrationCount, tuitionFee, image, sessionStatus, validityPeriod);
+        Image image, SessionStatus sessionStatus, Period period) {
+        super(id, sessionName, registrationCount, tuitionFee, image, sessionStatus, period);
     }
 }

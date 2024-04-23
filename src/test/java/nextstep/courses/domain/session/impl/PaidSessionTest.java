@@ -15,7 +15,7 @@ import nextstep.courses.domain.session.RegistrationCount;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionName;
 import nextstep.courses.domain.session.SessionStatus;
-import nextstep.courses.domain.session.ValidityPeriod;
+import nextstep.courses.domain.session.Period;
 import nextstep.courses.error.exception.MaxRegistrationCountNotZero;
 import nextstep.payments.domain.Money;
 import nextstep.payments.domain.Payment;
@@ -79,7 +79,7 @@ class PaidSessionTest {
             new Money(1000),
             new Image(new ImageSize(1), ImageType.JPG, new ImageWidth(300), new ImageHeight(200)),
             SessionStatus.RECRUITING,
-            new ValidityPeriod(LocalDateTime.now(), LocalDateTime.now()));
+            new Period(LocalDateTime.now(), LocalDateTime.now()));
     }
 
     static Stream<PaidSession> createSessionWithExceededMaxRegistrationCount() {
@@ -89,7 +89,7 @@ class PaidSessionTest {
             new Money(1000),
             new Image(new ImageSize(1), ImageType.JPG, new ImageWidth(300), new ImageHeight(200)),
             SessionStatus.RECRUITING,
-            new ValidityPeriod(LocalDateTime.now(), LocalDateTime.now())));
+            new Period(LocalDateTime.now(), LocalDateTime.now())));
 
     }
 
@@ -100,7 +100,7 @@ class PaidSessionTest {
             new Money(1000),
             new Image(new ImageSize(1), ImageType.JPG, new ImageWidth(300), new ImageHeight(200)),
             SessionStatus.RECRUITING,
-            new ValidityPeriod(LocalDateTime.now(), LocalDateTime.now())));
+            new Period(LocalDateTime.now(), LocalDateTime.now())));
 
     }
 
@@ -111,6 +111,6 @@ class PaidSessionTest {
             new Money(1000),
             new Image(new ImageSize(1), ImageType.JPG, new ImageWidth(300), new ImageHeight(200)),
             SessionStatus.PREPARING,
-            new ValidityPeriod(LocalDateTime.now(), LocalDateTime.now())));
+            new Period(LocalDateTime.now(), LocalDateTime.now())));
     }
 }

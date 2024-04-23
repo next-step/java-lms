@@ -10,7 +10,7 @@ import nextstep.courses.domain.cover.ImageType;
 import nextstep.courses.domain.cover.ImageWidth;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionStatus;
-import nextstep.courses.domain.session.ValidityPeriod;
+import nextstep.courses.domain.session.Period;
 import nextstep.courses.domain.session.impl.FreeSession;
 import nextstep.courses.fixture.builder.FreeSessionBuilder;
 import nextstep.courses.fixture.builder.ImageBuilder;
@@ -37,7 +37,7 @@ class CourseTest {
             .withTuitionFee(5000)
             .withImage(image)
             .withSessionStatus(SessionStatus.RECRUITING)
-            .withValidityPeriod(new ValidityPeriod(LocalDateTime.now(), LocalDateTime.MAX))
+            .withValidityPeriod(new Period(LocalDateTime.now(), LocalDateTime.MAX))
             .build();
 
         Course course = new Course();
@@ -64,7 +64,7 @@ class CourseTest {
             .withName("강의이름")
             .withImage(image)
             .withSessionStatus(SessionStatus.RECRUITING)
-            .withValidityPeriod(new ValidityPeriod(LocalDateTime.now(), LocalDateTime.MAX))
+            .withValidityPeriod(new Period(LocalDateTime.now(), LocalDateTime.MAX))
             .build();
 
         Course course = new Course();

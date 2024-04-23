@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-class ValidityPeriodTest {
+class PeriodTest {
 
     @ParameterizedTest
     @CsvSource(value = { "null : '2024-04-22T18:00:00'", "'2024-04-20T09:00:00' : null" }, nullValues = "null", delimiter = ':')
@@ -18,7 +18,7 @@ class ValidityPeriodTest {
         LocalDateTime parsedStartDate = startDate != null ? LocalDateTime.parse(startDate) : null;
         LocalDateTime parsedEndDate = endDate != null ? LocalDateTime.parse(endDate) : null;
 
-        assertThatThrownBy(() -> new ValidityPeriod(parsedStartDate, parsedEndDate))
+        assertThatThrownBy(() -> new Period(parsedStartDate, parsedEndDate))
             .isInstanceOf(NotExistTimeException.class);
     }
 
@@ -27,7 +27,7 @@ class ValidityPeriodTest {
         LocalDateTime startDate = LocalDateTime.of(2024, 4, 22, 18, 0); // 시작일
         LocalDateTime endDate = LocalDateTime.of(2024, 4, 20, 9, 0); // 종료일
 
-        assertThatThrownBy(() -> new ValidityPeriod(startDate, endDate))
+        assertThatThrownBy(() -> new Period(startDate, endDate))
             .isInstanceOf(EndDateBeforeStartDateException.class)
             .hasMessage("등록일이 시작일보다 이전입니다, 입력값: 2024-04-22T18:00, 2024-04-20T09:00");
     }
@@ -37,9 +37,9 @@ class ValidityPeriodTest {
         LocalDateTime startDate = LocalDateTime.of(2024, 4, 22, 18, 0); // 시작일
         LocalDateTime endDate = LocalDateTime.of(2024, 4, 22, 18, 0); // 종료일
 
-        ValidityPeriod validityPeriod = new ValidityPeriod(startDate, endDate);
+        Period period = new Period(startDate, endDate);
 
-        assertEquals(startDate, validityPeriod.getStartDate());
-        assertEquals(endDate, validityPeriod.getEndDate());
+        assertEquals(startDate, period.getStartDate());
+        assertEquals(endDate, period.getEndDate());
     }
 }

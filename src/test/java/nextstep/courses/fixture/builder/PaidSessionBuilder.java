@@ -5,7 +5,7 @@ import nextstep.courses.domain.session.MaxRegistrationCount;
 import nextstep.courses.domain.session.RegistrationCount;
 import nextstep.courses.domain.session.SessionName;
 import nextstep.courses.domain.session.SessionStatus;
-import nextstep.courses.domain.session.ValidityPeriod;
+import nextstep.courses.domain.session.Period;
 import nextstep.courses.domain.session.impl.FreeSession;
 import nextstep.payments.domain.Money;
 
@@ -23,7 +23,7 @@ public class PaidSessionBuilder {
 
     private SessionStatus sessionStatus;
 
-    private ValidityPeriod validityPeriod;
+    private Period period;
 
     private PaidSessionBuilder() {}
 
@@ -56,12 +56,12 @@ public class PaidSessionBuilder {
         return this;
     }
 
-    public PaidSessionBuilder withValidityPeriod(ValidityPeriod validityPeriod) {
-        this.validityPeriod = validityPeriod;
+    public PaidSessionBuilder withValidityPeriod(Period period) {
+        this.period = period;
         return this;
     }
 
     public FreeSession build() {
-        return new FreeSession(name, image, sessionStatus, validityPeriod);
+        return new FreeSession(name, image, sessionStatus, period);
     }
 }

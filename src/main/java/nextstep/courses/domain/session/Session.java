@@ -32,7 +32,7 @@ public interface Session {
 
     String getSessionStatus();
 
-    ValidityPeriod getValidityPeriod();
+    Period getValidityPeriod();
 
     LocalDateTime getCreatedAt();
 

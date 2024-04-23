@@ -4,13 +4,13 @@ import java.time.LocalDateTime;
 import nextstep.courses.error.exception.EndDateBeforeStartDateException;
 import nextstep.courses.error.exception.NotExistTimeException;
 
-public class ValidityPeriod {
+public class Period {
 
     private final LocalDateTime startDate;
 
     private final LocalDateTime endDate;
 
-    public ValidityPeriod(LocalDateTime startDate, LocalDateTime endDate) {
+    public Period(LocalDateTime startDate, LocalDateTime endDate) {
         if (startDate == null || endDate == null){
             throw new NotExistTimeException(startDate, endDate);
         }
