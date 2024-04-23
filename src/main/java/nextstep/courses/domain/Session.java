@@ -1,52 +1,53 @@
 package nextstep.courses.domain;
 
+import nextstep.users.domain.NsUser;
+
+import java.util.ArrayList;
+
 public class Session {
 
-    private final FreeOrPaid freeOrPaid;
-    private final AttendeeCount attendeeCount;
-    private final SessionStatus status;
-    private final Duration duration;
+    private Tuition tuition;
+    private Enrollment enrollment;
+    private Period period;
+    private CoverImage image;
 
     public Session(boolean isFree, int maxCount, int tuition) {
-        this(isFree, maxCount, tuition, SessionStatus.READY);
+        this(new Tuition(isFree, tuition), new Enrollment(maxCount, new ArrayList<>()));
     }
 
-    public Session(boolean isFree, int maxCount, int tuition, SessionStatus status) {
-        this(new FreeOrPaid(isFree, tuition), new AttendeeCount(maxCount), status);
+    public Session(Tuition tuition, Enrollment enrollment) {
+        this.tuition = tuition;
+        this.enrollment = enrollment;
+        this.period = new Period();
     }
 
-    public Session(boolean isFree, int maxCount, int currentCount, int tuition) {
-        this(new FreeOrPaid(isFree, tuition), new AttendeeCount(maxCount, currentCount), SessionStatus.RECRUITING);
+    public Session(Tuition tuition, Enrollment enrollment, Period period, CoverImage image) {
+        this.tuition = tuition;
+        this.enrollment = enrollment;
+        this.period = period;
+        this.image = image;
     }
 
-    public Session(FreeOrPaid test, AttendeeCount attendeeCount, SessionStatus status) {
-        this.freeOrPaid = test;
-        this.attendeeCount = attendeeCount;
-        this.status = status;
-        this.duration = new Duration();
-    }
-
-    public static Session freeSession() {
-        return new Session(true, -1, 0);
-    }
-
-    public boolean isFrees() {
-        return freeOrPaid.isFree();
-    }
-
-    public boolean hasMax() {
-        return attendeeCount.limitExist();
+    public static Session createFull() {
+        return new Session(new Tuition(false, 1000), Enrollment.createFull());
     }
 
     public boolean isLeft() {
-        return attendeeCount.canSignUp();
+        return enrollment.canEnroll();
     }
 
-    public boolean canListen(Money submit) {
-        return freeOrPaid.canPay(submit);
+    public boolean canPay(Money submit) {
+        return tuition.isEnough(submit);
     }
 
-    public boolean canRegister() {
-        return this.status.equals(SessionStatus.RECRUITING);
+    public void register(NsUser user, Money submit) {
+        if (tuition.canRegisterAsFree()) {
+            enrollment.enroll(user);
+        }
+
+        if (!tuition.isEnough(submit)) {
+            throw new IllegalArgumentException("금액이 부족하여 수강 신청을 진행할 수 없습니다.");
+        }
+        enrollment.enroll(user);
     }
 }
