@@ -1,6 +1,5 @@
 package nextstep.courses.factory;
 
-import nextstep.courses.domain.cover.Image;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionType;
 import nextstep.courses.domain.session.impl.FreeSession;
@@ -13,12 +12,15 @@ public class SessionFactory {
     private SessionFactory() {
     }
 
-    public static Session createSession(SessionEntity sessionEntity, Image image, SessionType sessionType) {
-        if (sessionType == SessionType.PAID) {
-            return new PaidSession(sessionEntity, image);
-        } else if (sessionType == SessionType.FREE) {
-            return new FreeSession(sessionEntity, image);
+    public static Session createSession(SessionEntity sessionEntity) {
+        if (sessionEntity.isPaidType()) {
+            return new PaidSession(sessionEntity);
         }
-        throw new NotExistSessionType(sessionType);
+
+        if (sessionEntity.isFreeType()) {
+            return new FreeSession(sessionEntity);
+        }
+
+        throw new NotExistSessionType();
     }
 }
