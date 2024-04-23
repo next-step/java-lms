@@ -20,4 +20,10 @@ public class AnswerTest {
         assertThat(deleteHistories).hasSize(2);
     }
 
+    @Test
+    public void 삭제_테스트() {
+        A1.answerDeleted();
+        assertThat(A1.isDeleted()).isTrue();
+    }
+
 }
