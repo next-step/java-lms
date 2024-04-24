@@ -1,4 +1,4 @@
-package nextstep.courses.domain.session.enrollment.count;
+package nextstep.courses.domain.session.enrollment.count.engine;
 
 public interface EnrollmentCount {
 

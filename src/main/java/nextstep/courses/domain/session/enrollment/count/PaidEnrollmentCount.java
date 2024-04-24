@@ -1,13 +1,12 @@
 package nextstep.courses.domain.session.enrollment.count;
 
-import nextstep.courses.domain.session.MaxRegistrationCount;
-import nextstep.courses.domain.session.RegistrationCount;
+import nextstep.courses.domain.session.enrollment.count.engine.AbstractEnrollmentCount;
 
-public class PaidEnrollmentCount extends AbstractEnrollmentCount{
+public class PaidEnrollmentCount extends AbstractEnrollmentCount {
 
     private final MaxRegistrationCount maxRegistrationCount;
 
-    protected PaidEnrollmentCount(RegistrationCount registrationCount,
+    public PaidEnrollmentCount(RegistrationCount registrationCount,
         MaxRegistrationCount maxRegistrationCount) {
         super(registrationCount);
         this.maxRegistrationCount = maxRegistrationCount;

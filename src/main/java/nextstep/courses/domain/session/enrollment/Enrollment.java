@@ -1,11 +1,12 @@
 package nextstep.courses.domain.session.enrollment;
 
-import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.student.Student;
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 
 public interface Enrollment {
 
-    void enroll(Session session, Payment payment);
+    Student enroll(NsUser nsUser, Payment payment);
 
     boolean checkRegistrationConditions(Payment payment);
 

@@ -20,7 +20,7 @@ public class JdbcSessionEntityRepository implements SessionRepository {
 
     @Override
     public int save(SessionEntity sessionEntity, Long courseId) {
-        String sql = "insert into session (session_name, registration_count, max_registration_count, tuitionFee, course_id, start_date, end_date, session_status, created_at) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into session (session_name, registration_count, max_registration_count, tuitionFee, course_id, start_date, end_date, recruitment_state, tuition_fee, created_at) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
             sessionEntity.getSessionName(),
             sessionEntity.getRegistrationCount(),
@@ -29,13 +29,14 @@ public class JdbcSessionEntityRepository implements SessionRepository {
             courseId,
             sessionEntity.getStartDate(),
             sessionEntity.getEndDate(),
-            sessionEntity.getSessionStatus(),
+            sessionEntity.getRecruitmentState(),
+            sessionEntity.getTuitionFee(),
             sessionEntity.getCreatedAt());
     }
 
     @Override
     public Optional<SessionEntity> findById(Long id) {
-        String sql = "select id, session_name, registration_count, max_registration_count, tuitionFee, course_id, session_status, start_date, end_date, created_at, updated_at from session where id = ?";
+        String sql = "select id, session_name, registration_count, max_registration_count, tuitionFee, course_id, recruitment_state, fee_type, start_date, end_date, created_at, updated_at from session where id = ?";
         RowMapper<SessionEntity> rowMapper = (rs, rowNum) -> new SessionEntity(
             rs.getLong(1),
             rs.getString(2),
@@ -44,10 +45,11 @@ public class JdbcSessionEntityRepository implements SessionRepository {
             rs.getInt(5),
             rs.getLong(6),
             rs.getString(7),
-            toLocalDateTime(rs.getTimestamp(8)),
+            rs.getString(8),
             toLocalDateTime(rs.getTimestamp(9)),
             toLocalDateTime(rs.getTimestamp(10)),
-            toLocalDateTime(rs.getTimestamp(11)));
+            toLocalDateTime(rs.getTimestamp(11)),
+            toLocalDateTime(rs.getTimestamp(12)));
 
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
     }

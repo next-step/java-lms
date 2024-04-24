@@ -1,15 +1,15 @@
 package nextstep.courses.domain.session.enrollment.count;
 
-import nextstep.courses.domain.session.RegistrationCount;
+import nextstep.courses.domain.session.enrollment.count.engine.AbstractEnrollmentCount;
 
-public class FreeEnrollmentCount extends AbstractEnrollmentCount{
+public class FreeEnrollmentCount extends AbstractEnrollmentCount {
 
-    protected FreeEnrollmentCount(RegistrationCount registrationCount) {
+    public FreeEnrollmentCount(RegistrationCount registrationCount) {
         super(registrationCount);
     }
 
     @Override
     public boolean isRegistrationWithinCapacity() {
-        return registrationCount.isCountNotOver(Integer.MAX_VALUE);
+        return registrationCount.getValue() < Integer.MAX_VALUE;
     }
 }

@@ -1,6 +1,6 @@
-package nextstep.courses.domain.session.enrollment.count;
+package nextstep.courses.domain.session.enrollment.count.engine;
 
-import nextstep.courses.domain.session.RegistrationCount;
+import nextstep.courses.domain.session.enrollment.count.RegistrationCount;
 
 public abstract class AbstractEnrollmentCount implements EnrollmentCount {
 

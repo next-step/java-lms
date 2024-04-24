@@ -11,4 +11,8 @@ public class SessionState {
     public boolean isRecruitmentOpen() {
         return recruitmentState == RecruitmentState.RECRUITING;
     }
+
+    public static RecruitmentState valueOfRecruitmentState(String value){
+        return RecruitmentState.valueOf(value);
+    }
 }

@@ -1,10 +1,10 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.session.feetype;
 
-public enum SessionType {
+public enum FeeType {
     PAID("유료"),
     FREE("무료");
 
-    SessionType(String value) {
+    FeeType(String value) {
         this.value = value;
     }
 

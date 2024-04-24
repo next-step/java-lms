@@ -14,6 +14,11 @@ public abstract class BaseEntity {
         updatedAt = currentTime;
     }
 
+    public BaseEntity(LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }

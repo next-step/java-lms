@@ -1,8 +1,8 @@
 package nextstep.courses.domain.session.enrollment;
 
-import nextstep.courses.domain.session.enrollment.count.EnrollmentCount;
-import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.enrollment.count.engine.EnrollmentCount;
 import nextstep.courses.domain.session.enrollment.state.SessionState;
+import nextstep.courses.domain.student.Student;
 import nextstep.courses.error.exception.SessionRegisterFailException;
 import nextstep.payments.domain.Money;
 import nextstep.payments.domain.Payment;
@@ -16,7 +16,6 @@ public class SessionEnrollment implements Enrollment {
 
     private final Money tuitionFee;
 
-
     public SessionEnrollment(EnrollmentCount enrollmentCount, SessionState sessionState,
         Money tuitionFee) {
         this.enrollmentCount = enrollmentCount;
@@ -24,18 +23,10 @@ public class SessionEnrollment implements Enrollment {
         this.tuitionFee = tuitionFee;
     }
 
-    public void enroll(Session session, Payment payment) {
-        if (session.isRegistrationAvailable() && isPaymentAmountSameTuitionFee(payment)) {
-            session.addRegistrationCount();
-            return;
-        }
-
-        throw new SessionRegisterFailException();
-    }
-
-    public void enroll(NsUser nsUser, Payment payment) {
+    public Student enroll(NsUser nsUser, Payment payment) {
         if(checkRegistrationConditions(payment)){
             enrollmentCount.addRegistrationCount();
+            return new Student(nsUser, payment);
         }
 
         throw new SessionRegisterFailException();

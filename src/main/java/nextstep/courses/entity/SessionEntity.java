@@ -1,8 +1,12 @@
 package nextstep.courses.entity;
 
 import java.time.LocalDateTime;
-import nextstep.courses.domain.cover.Image;
-import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.enrollment.Enrollment;
+import nextstep.courses.domain.session.enrollment.SessionEnrollment;
+import nextstep.courses.domain.session.enrollment.state.SessionState;
+import nextstep.courses.domain.session.feetype.FeeType;
+import nextstep.courses.factory.EnrollmentCountFactory;
+import nextstep.payments.domain.Money;
 
 public class SessionEntity extends BaseEntity {
 
@@ -18,65 +22,63 @@ public class SessionEntity extends BaseEntity {
 
     private Long imageId;
 
-    private String sessionStatus;
+    private String recruitmentState;
+
+    private String feeType;
 
     private LocalDateTime startDate;
 
     private LocalDateTime endDate;
 
-    public static SessionEntity from(Session session){
-        return new SessionEntity(session.getId(),
-            session.getSessionName(),
-            session.getRegistrationCount(),
-            session.getMaxRegistrationCount(),
-            session.getTuitionFee(),
-            null,
-            session.getSessionStatus(),
-            session.getValidityPeriod().getStartDate(),
-            session.getValidityPeriod().getEndDate(),
-            session.getCreatedAt(),
-            session.getUpdatedAt());
-    }
+//    public static SessionEntity from(Session session){
+//        return new SessionEntity(session.getId(),
+//            session.getSessionName(),
+//
+//            session.getCreatedAt(),
+//            session.getUpdatedAt());
+//    }
+//
+//    public static SessionEntity from(Session session, Image image){
+//        return new SessionEntity(session.getId(),
+//            session.getSessionName(),
+//            session.getRegistrationCount(),
+//            session.getMaxRegistrationCount(),
+//            session.getTuitionFee(),
+//            image.getId(),
+//            session.getSessionStatus(),
+//            session.getValidityPeriod().getStartDate(),
+//            session.getValidityPeriod().getEndDate(),
+//            session.getCreatedAt(),
+//            session.getUpdatedAt());
+//    }
 
-    public static SessionEntity from(Session session, Image image){
-        return new SessionEntity(session.getId(),
-            session.getSessionName(),
-            session.getRegistrationCount(),
-            session.getMaxRegistrationCount(),
-            session.getTuitionFee(),
-            image.getId(),
-            session.getSessionStatus(),
-            session.getValidityPeriod().getStartDate(),
-            session.getValidityPeriod().getEndDate(),
-            session.getCreatedAt(),
-            session.getUpdatedAt());
-    }
-
-    public SessionEntity(Long id, String sessionName,
-        int registrationCount,
-        int maxRegistrationCount,
-        int tuitionFee, Long imageId, String sessionStatus, LocalDateTime startDate,
-        LocalDateTime endDate, LocalDateTime createdAt, LocalDateTime updateAt) {
+    public SessionEntity(Long id,
+        String sessionName,
+        int registrationCount, int maxRegistrationCount, int tuitionFee, Long imageId,
+        String recruitmentState, String feeType, LocalDateTime startDate, LocalDateTime endDate,
+        LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(createdAt, updatedAt);
         this.id = id;
         this.sessionName = sessionName;
         this.registrationCount = registrationCount;
         this.maxRegistrationCount = maxRegistrationCount;
         this.tuitionFee = tuitionFee;
         this.imageId = imageId;
-        this.sessionStatus = sessionStatus;
+        this.recruitmentState = recruitmentState;
+        this.feeType = feeType;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.createdAt = createdAt;
-        this.updatedAt = updateAt;
     }
 
-    public boolean isPaidType(){
-        return tuitionFee != 0;
+    public Enrollment enrollment() {
+        return new SessionEnrollment(
+            EnrollmentCountFactory.get(FeeType.valueOf(feeType),
+                registrationCount,
+                maxRegistrationCount),
+            new SessionState(SessionState.valueOfRecruitmentState(recruitmentState)),
+            new Money(tuitionFee));
     }
 
-    public boolean isFreeType(){
-        return tuitionFee == 0;
-    }
 
     public Long getId() {
         return id;
@@ -102,8 +104,12 @@ public class SessionEntity extends BaseEntity {
         return imageId;
     }
 
-    public String getSessionStatus() {
-        return sessionStatus;
+    public String getRecruitmentState() {
+        return recruitmentState;
+    }
+
+    public String getFeeType() {
+        return feeType;
     }
 
     public LocalDateTime getStartDate() {

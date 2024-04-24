@@ -1,4 +1,4 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.session.enrollment.count;
 
 public class RegistrationCount {
 

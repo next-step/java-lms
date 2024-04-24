@@ -1,15 +1,17 @@
 package nextstep.courses.service;
 
-import nextstep.courses.domain.enrollment.Enrollment;
-import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.student.Student;
+import nextstep.courses.domain.session.enrollment.Enrollment;
 import nextstep.courses.entity.SessionEntity;
+import nextstep.courses.entity.StudentEntity;
 import nextstep.courses.error.exception.NotExistSession;
-import nextstep.courses.factory.SessionFactory;
 import nextstep.courses.infrastructure.CourseRepository;
 import nextstep.courses.infrastructure.ImageRepository;
 import nextstep.courses.infrastructure.SessionRepository;
+import nextstep.courses.infrastructure.StudentRepository;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.service.PaymentService;
+import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,25 +23,29 @@ public class lmsService {
 
     private final SessionRepository sessionRepository;
 
+    private final StudentRepository studentRepository;
+
     private final ImageRepository imageRepository;
 
     public lmsService(PaymentService paymentService, CourseRepository courseRepository,
-        SessionRepository sessionRepository, ImageRepository imageRepository) {
+        SessionRepository sessionRepository, StudentRepository studentRepository,
+        ImageRepository imageRepository) {
         this.paymentService = paymentService;
         this.courseRepository = courseRepository;
         this.sessionRepository = sessionRepository;
+        this.studentRepository = studentRepository;
         this.imageRepository = imageRepository;
     }
 
-    public void enroll(Long sessionId, Enrollment enrollment){
+    public void enroll(Long sessionId, NsUser nsUser){
         SessionEntity sessionEntity = sessionRepository.findById(sessionId)
             .orElseThrow(() -> new NotExistSession(sessionId));
 
-        Payment payment = paymentService.payment(enrollment);
-        Session session = SessionFactory.createSession(sessionEntity);
+        Payment payment = paymentService.payment(sessionId, nsUser);
 
-        enrollment.enroll(session, payment);
+        Enrollment enrollment = sessionEntity.enrollment();
+        Student student = enrollment.enroll(nsUser, payment);
 
-        sessionRepository.updateRegistrationCount(SessionEntity.from(session));
+        studentRepository.save(StudentEntity.from(student));
     }
 }

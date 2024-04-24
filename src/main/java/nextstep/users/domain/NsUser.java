@@ -2,6 +2,7 @@ package nextstep.users.domain;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import nextstep.payments.domain.Money;
 import nextstep.qna.UnAuthorizedException;
 
 public class NsUser {
@@ -16,6 +17,8 @@ public class NsUser {
     private String name;
 
     private String email;
+
+    private Money money;
 
     private LocalDateTime createdAt;
 
@@ -34,6 +37,18 @@ public class NsUser {
         this.password = password;
         this.name = name;
         this.email = email;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public NsUser(Long id, String userId, String password, String name, String email, Money money,
+        LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.money = money;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -71,6 +86,10 @@ public class NsUser {
 
     public String getEmail() {
         return email;
+    }
+
+    public Money getMoney() {
+        return money;
     }
 
     public NsUser setEmail(String email) {

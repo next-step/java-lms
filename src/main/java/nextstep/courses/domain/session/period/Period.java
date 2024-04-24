@@ -1,4 +1,4 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.session.period;
 
 import java.time.LocalDateTime;
 import nextstep.courses.error.exception.EndDateBeforeStartDateException;

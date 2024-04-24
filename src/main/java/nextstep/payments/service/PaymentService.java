@@ -1,8 +1,8 @@
 package nextstep.payments.service;
 
 import java.util.concurrent.ThreadLocalRandom;
-import nextstep.courses.domain.enrollment.Enrollment;
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,10 +12,10 @@ public class PaymentService {
         return new Payment();
     }
 
-    public Payment payment(Enrollment enrollment){
+    public Payment payment(Long sessionId, NsUser nsUser){
         return new Payment(String.valueOf(ThreadLocalRandom.current().nextLong()),
-            enrollment.getSessionId(),
+            sessionId,
             ThreadLocalRandom.current().nextLong(),
-            enrollment.getTuitionFee());
+            nsUser.getMoney());
     }
 }

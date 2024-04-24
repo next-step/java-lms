@@ -31,4 +31,8 @@ public class Payment {
     public boolean isSamePaymentAmount(Money tuitionFee){
         return amount.equals(tuitionFee);
     }
+
+    public int getAmount() {
+        return amount.getValue();
+    }
 }

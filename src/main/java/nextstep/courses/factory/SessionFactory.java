@@ -1,9 +1,9 @@
 package nextstep.courses.factory;
 
-import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionType;
-import nextstep.courses.domain.session.impl.FreeSession;
-import nextstep.courses.domain.session.impl.PaidSession;
+import nextstep.courses.domain.session.FreeSession;
+import nextstep.courses.domain.session.PaidSession;
+import nextstep.courses.domain.session.engine.Session;
+import nextstep.courses.domain.session.feetype.FeeType;
 import nextstep.courses.entity.SessionEntity;
 import nextstep.courses.error.exception.NotExistSessionType;
 
@@ -13,11 +13,11 @@ public class SessionFactory {
     }
 
     public static Session createSession(SessionEntity sessionEntity) {
-        if (sessionEntity.isPaidType()) {
+        if (FeeType.PAID == FeeType.valueOf(sessionEntity.getFeeType())) {
             return new PaidSession(sessionEntity);
         }
 
-        if (sessionEntity.isFreeType()) {
+        if (FeeType.FREE == FeeType.valueOf(sessionEntity.getFeeType())) {
             return new FreeSession(sessionEntity);
         }
 

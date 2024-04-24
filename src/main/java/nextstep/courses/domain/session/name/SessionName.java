@@ -1,4 +1,4 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.session.name;
 
 import nextstep.courses.error.exception.SessionNameEmptyException;
 
