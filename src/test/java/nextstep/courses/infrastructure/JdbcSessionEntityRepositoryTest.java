@@ -63,7 +63,7 @@ class JdbcSessionEntityRepositoryTest {
         assertThat(sessionEntity.isPresent()).isTrue();
         assertThat(sessionEntity.get())
             .extracting("id", "sessionName", "registrationCount", "maxRegistrationCount",
-                "tuitionFee", "imageId", "sessionStatus", "startDate", "endDate", "createdAt", "updatedAt")
+                "tuitionFee", "imageId", "recruitmentState", "startDate", "endDate", "createdAt", "updatedAt")
             .containsExactly(1L, "무료강의1", 1, 2147483647, 0, 1L, "RECRUITING",
                 LocalDateTime.parse("2024-01-01T00:00:00"),
                 LocalDateTime.parse("2024-01-07T00:00:00"),
