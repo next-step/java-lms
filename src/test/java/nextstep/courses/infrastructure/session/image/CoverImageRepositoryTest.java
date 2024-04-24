@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.transaction.annotation.Transactional;
 
 @JdbcTest
 class CoverImageRepositoryTest {
@@ -24,7 +23,6 @@ class CoverImageRepositoryTest {
     }
 
     @Test
-    @Transactional
     @DisplayName("새로운 커버 이미지를 생성한다.")
     void test() {
         final CoverImageEntity coverImageEntity = new CoverImageEntity("gif", 10000L, 300, 200, 1L);

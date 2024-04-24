@@ -14,6 +14,7 @@ import nextstep.courses.infrastructure.session.SessionRepository;
 import nextstep.payments.domain.Payment;
 
 @Service("SessionService")
+@Transactional(readOnly = true)
 public class SessionService {
 
     private final SessionRepository sessionRepository;
@@ -38,6 +39,9 @@ public class SessionService {
 
         final Session session = sessionEntity.toDomain();
         session.assignCoverImage(coverImageService.findBySessionId(sessionId));
+
+        session.updateDateTime();
+        sessionRepository.update(sessionEntity);
 
         return session;
     }

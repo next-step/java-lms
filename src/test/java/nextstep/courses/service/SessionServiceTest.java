@@ -12,6 +12,7 @@ import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionTest;
 import nextstep.payments.domain.Payment;
 
+@Transactional
 @SpringBootTest
 class SessionServiceTest {
 
@@ -19,7 +20,6 @@ class SessionServiceTest {
     private SessionService sessionService;
 
     @Test
-    @Transactional
     @DisplayName("새로운 강의를 생성한다.")
     void Save_NewSession() {
         final Session session = SessionTest.session();
@@ -31,7 +31,6 @@ class SessionServiceTest {
     }
 
     @Test
-    @Transactional
     @DisplayName("수강 신청 시 현재 수강 인원이 증가한다.")
     void Enroll_IncreaseCurrentEnrollmentCount() {
         final Session session = SessionTest.session();

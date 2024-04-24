@@ -12,6 +12,7 @@ import nextstep.courses.infrastructure.course.CourseEntity;
 import nextstep.courses.infrastructure.course.CourseRepository;
 
 @Service("CourseService")
+@Transactional(readOnly = true)
 public class CourseService {
 
     private final CourseRepository courseRepository;

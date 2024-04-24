@@ -10,6 +10,7 @@ import nextstep.courses.infrastructure.session.image.CoverImageEntity;
 import nextstep.courses.infrastructure.session.image.CoverImageRepository;
 
 @Service("CoverImageService")
+@Transactional(readOnly = true)
 public class CoverImageService {
 
     private final CoverImageRepository coverImageRepository;

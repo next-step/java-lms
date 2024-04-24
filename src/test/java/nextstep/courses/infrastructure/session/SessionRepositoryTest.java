@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.transaction.annotation.Transactional;
 
 @JdbcTest
 class SessionRepositoryTest {
@@ -26,7 +25,6 @@ class SessionRepositoryTest {
     }
 
     @Test
-    @Transactional
     @DisplayName("새로운 강의를 생성한다.")
     void Save_NewSession() {
         final SessionEntity sessionEntity = new SessionEntity(

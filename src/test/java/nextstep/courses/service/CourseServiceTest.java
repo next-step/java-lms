@@ -13,6 +13,7 @@ import nextstep.courses.domain.course.CourseTest;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionTest;
 
+@Transactional
 @SpringBootTest
 class CourseServiceTest {
 
@@ -23,7 +24,6 @@ class CourseServiceTest {
     private SessionService sessionService;
 
     @Test
-    @Transactional
     @DisplayName("새로운 과정을 생성한다.")
     void Save_NewCourse() {
         final Course course = CourseTest.course();
@@ -38,7 +38,6 @@ class CourseServiceTest {
     }
 
     @Test
-    @Transactional
     @DisplayName("과정에 강의를 하나 추가한다.")
     void Add_Session() {
         final Course course = CourseTest.course();

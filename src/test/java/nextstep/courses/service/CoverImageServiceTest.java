@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import nextstep.courses.domain.session.image.CoverImage;
 
+@Transactional
 @SpringBootTest
 class CoverImageServiceTest {
 
@@ -18,7 +19,6 @@ class CoverImageServiceTest {
     private CoverImageService coverImageService;
 
     @Test
-    @Transactional
     @DisplayName("새로운 커버 이미지를 생성한다.")
     void Save_NewCoverImage() {
         final Long savedCoverImageId = coverImageService.save(COVER_IMAGE, 1L);
