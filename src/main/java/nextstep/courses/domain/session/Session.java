@@ -11,19 +11,14 @@ public class Session {
     private final int fee;
     private final int maxStudents;
     private SessionStatus sessionStatus = SessionStatus.READY;
-
-    public Session(LocalDate startDate, LocalDate endDate, Image coverImage) {
-        this.sessionDuration = new SessionDuration(startDate, endDate);
-        this.coverImage = coverImage;
-        this.fee = 0;
-        this.maxStudents = Integer.MAX_VALUE;
-    }
+    private final Enrollment enrollment;
 
     public Session(LocalDate startDate, LocalDate endDate, Image coverImage, int fee, int maxStudents) {
         this.sessionDuration = new SessionDuration(startDate, endDate);
         this.coverImage = coverImage;
         this.fee = fee;
         this.maxStudents = maxStudents;
+        this.enrollment = new Enrollment(fee, maxStudents);
     }
 
     public Enrollment enrollment() {
@@ -31,7 +26,7 @@ public class Session {
             throw new RuntimeException("수강 신청은 강의 상태가 모집중이 아니면 불가능합니다. 강의 상태 : " + sessionStatus);
         }
 
-        return new Enrollment(fee, maxStudents);
+        return this.enrollment;
     }
 
     public void changeStatus(SessionStatus sessionStatus) {
