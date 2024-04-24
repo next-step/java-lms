@@ -27,11 +27,7 @@ public class CoverImages {
         coverImages.add(coverImage);
     }
 
-    public void addCoverImages(List<CoverImage> coverImages) {
-        coverImages.addAll(coverImages);
-    }
-
     private static boolean hasOneCoverImageAtLeast(List<CoverImage> coverImages) {
-        return coverImages.size() > 0;
+        return !coverImages.isEmpty();
     }
 }

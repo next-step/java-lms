@@ -94,13 +94,13 @@
       - [x] SessionStatusEnum
       - [x] isOpenForEnrollment
       - [x] SessionPeriod
-- [x] EnrollmentInformation
+- [x] Enrollment
 - [x] SessionRepository
-- [x] EnrollmentInformationRepository
+- [x] EnrollmentRepository
 - [x] CoverImageRepository
 - [x] JdbcSessionRepository
 - [x] JdbcCoverImageRepository
-- [x] JdbcEnrollmentInformationRepository
+- [x] JdbcEnrollmentRepository
 
 ## 4. 테스트 코드
 - [x] CourseTest
@@ -135,6 +135,6 @@
 - [x] CoverImageRepositoryTest
   - [x] 커버 이미지를 정상으로 읽어옴
   - [x] 커버 이미지를 정상으로 저장
-- [x] EnrollmentInformationRepository
+- [x] EnrollmentRepository
   - [x] 유저의 수강신청 정보를 정상으로 저장
   - [x] sessionId와 userId로 수강신청 정보 조회 정상 저장
