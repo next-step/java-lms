@@ -24,6 +24,10 @@ public class Height {
         return this.px * ratio;
     }
 
+    public int px() {
+        return this.px;
+    }
+
     @Override
     public boolean equals(final Object otherHeight) {
         if (this == otherHeight) {

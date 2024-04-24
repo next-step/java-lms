@@ -26,6 +26,10 @@ public enum SessionStatus {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강의 상태입니다. 상태: " + statusName));
     }
 
+    public String statusName() {
+        return this.statusName;
+    }
+
     @Override
     public String toString() {
         return this.statusName;

@@ -5,6 +5,7 @@ import nextstep.payments.domain.Money;
 
 public class PaidSessionStrategy implements SessionStrategy {
 
+    public static final String STRATEGY_NAME = "유료";
     private static final Money PAID_SESSION_MINIMUM_MONEY = new Money(1);
     private static final EnrollmentCount PAID_SESSION_MINIMUM_ENROLLMENT_COUNT = new EnrollmentCount(1);
 
@@ -39,5 +40,20 @@ public class PaidSessionStrategy implements SessionStrategy {
     @Override
     public boolean canEnrollMoreStudents(final EnrollmentCount currentEnrollmentCount) {
         return currentEnrollmentCount.isLessThan(enrollmentLimit);
+    }
+
+    @Override
+    public String name() {
+        return STRATEGY_NAME;
+    }
+
+    @Override
+    public int fee() {
+        return this.fee.value();
+    }
+
+    @Override
+    public int enrollmentLimit() {
+        return this.enrollmentLimit.value();
     }
 }

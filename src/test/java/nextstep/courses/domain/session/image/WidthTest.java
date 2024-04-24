@@ -7,13 +7,15 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class WidthTest {
+public class WidthTest {
+
+    public static final Width WIDTH = new Width(MINIMUM_WIDTH);
 
     @Test
     @DisplayName("새로운 커버 이미지 너비를 생성한다.")
     void Width() {
         assertThat(new Width(MINIMUM_WIDTH))
-                .isEqualTo(new Width(MINIMUM_WIDTH));
+                .isEqualTo(WIDTH);
     }
 
     @Test

@@ -17,6 +17,10 @@ public class Size {
         this.bytes = bytes;
     }
 
+    public long bytes() {
+        return this.bytes;
+    }
+
     @Override
     public boolean equals(final Object otherSize) {
         if (this == otherSize) {

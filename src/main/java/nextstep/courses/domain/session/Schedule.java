@@ -21,6 +21,14 @@ public class Schedule {
         }
     }
 
+    public LocalDate startDate() {
+        return this.startDate;
+    }
+
+    public LocalDate endDate() {
+        return this.endDate;
+    }
+
     @Override
     public boolean equals(final Object otherSchedule) {
         if (this == otherSchedule) {

@@ -9,13 +9,15 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-class NameTest {
+public class NameTest {
+
+    public static final Name NAME = new Name("Java");
 
     @Test
     @DisplayName("문자열을 기준으로 새로운 이름을 생성한다.")
     void Name() {
         assertThat(new Name("Java"))
-                .isEqualTo(new Name("Java"));
+                .isEqualTo(NAME);
     }
 
     @ParameterizedTest

@@ -2,47 +2,125 @@ package nextstep.courses.domain.session;
 
 import static nextstep.courses.domain.session.SessionStatus.OPEN;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
+import nextstep.common.BaseDateTime;
 import nextstep.courses.domain.course.Course;
 import nextstep.courses.domain.session.image.CoverImage;
 import nextstep.courses.domain.session.strategy.SessionStrategy;
 import nextstep.payments.domain.Money;
 import nextstep.payments.domain.Payment;
 
-public class Session {
+public class Session extends BaseDateTime {
 
-    private final Long sessionId;
+    private final Long id;
     private final Name name;
     private final SessionStatus status;
     private final Schedule schedule;
-    private final CoverImage coverImage;
     private final SessionStrategy sessionStrategy;
-    private final Course course;
+    private CoverImage coverImage;
+    private Course course;
     private EnrollmentCount currentEnrollmentCount;
 
     public Session(
-            final Long sessionId,
             final Name name,
             final SessionStatus status,
             final Schedule schedule,
-            final CoverImage coverImage,
             final SessionStrategy sessionStrategy,
-            final Course course,
             final EnrollmentCount currentEnrollmentCount
     ) {
-        this.sessionId = sessionId;
+        this(null, name, status, schedule, sessionStrategy, currentEnrollmentCount);
+    }
+
+    public Session(
+            final Long id,
+            final Name name,
+            final SessionStatus status,
+            final Schedule schedule,
+            final SessionStrategy sessionStrategy,
+            final EnrollmentCount currentEnrollmentCount
+    ) {
+        this.id = id;
         this.name = name;
         this.status = status;
         this.schedule = schedule;
-        this.coverImage = coverImage;
         this.sessionStrategy = sessionStrategy;
-        this.course = course;
         this.currentEnrollmentCount = currentEnrollmentCount;
+    }
+
+    public Session(
+            final Long id,
+            final Name name,
+            final SessionStatus status,
+            final Schedule schedule,
+            final SessionStrategy sessionStrategy,
+            final EnrollmentCount currentEnrollmentCount,
+            final LocalDateTime createdAt,
+            final LocalDateTime updatedAt
+    ) {
+        super(createdAt, updatedAt);
+
+        this.id = id;
+        this.name = name;
+        this.status = status;
+        this.schedule = schedule;
+        this.sessionStrategy = sessionStrategy;
+        this.currentEnrollmentCount = currentEnrollmentCount;
+    }
+
+    public Long id() {
+        return this.id;
+    }
+
+    public String name() {
+        return this.name.value();
+    }
+
+    public String statusName() {
+        return this.status.statusName();
+    }
+
+    public LocalDate startDate() {
+        return this.schedule.startDate();
+    }
+
+    public LocalDate endDate() {
+        return this.schedule.endDate();
+    }
+
+    public String strategyName() {
+        return this.sessionStrategy.name();
+    }
+
+    public int fee() {
+        return this.sessionStrategy.fee();
+    }
+
+    public int enrollmentLimit() {
+        return this.sessionStrategy.enrollmentLimit();
     }
 
     public int currentEnrollmentCount() {
         return this.currentEnrollmentCount.value();
+    }
+
+    public CoverImage coverImage() {
+        return this.coverImage;
+    }
+
+    public Course course() {
+        return this.course;
+    }
+
+    public void assignCoverImage(final CoverImage coverImage) {
+        this.coverImage = coverImage;
+    }
+
+    public void assignCourse(final Course course) {
+        this.course = course;
+        updateDateTime();
     }
 
     public void enroll(final Payment payment) {
@@ -51,6 +129,7 @@ public class Session {
         validateSessionCurrentEnrollmentCountIsLessThanLimit();
 
         this.currentEnrollmentCount = currentEnrollmentCount.increase();
+        updateDateTime();
     }
 
     private void validateSessionStatusIsOpen() {
@@ -83,7 +162,7 @@ public class Session {
 
         final Session that = (Session)otherSession;
 
-        return Objects.equals(this.sessionId, that.sessionId) &&
+        return Objects.equals(this.id, that.id) &&
                 Objects.equals(this.name, that.name) &&
                 this.status == that.status &&
                 Objects.equals(this.schedule, that.schedule) &&
@@ -92,6 +171,11 @@ public class Session {
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.sessionId, this.name, this.status, this.schedule, this.course);
+        return Objects.hash(this.id, this.name, this.status, this.schedule, this.course);
+    }
+
+    @Override
+    public String toString() {
+        return this.name.value();
     }
 }

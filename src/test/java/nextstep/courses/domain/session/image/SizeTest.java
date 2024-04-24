@@ -10,13 +10,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-class SizeTest {
+public class SizeTest {
+
+    public static final Size SIZE = new Size(MINIMUM_SIZE);
 
     @Test
     @DisplayName("새로운 커버 이미지 크기를 생성한다.")
     void Size() {
         assertThat(new Size(MINIMUM_SIZE))
-                .isEqualTo(new Size(MINIMUM_SIZE));
+                .isEqualTo(SIZE);
     }
 
     @ParameterizedTest

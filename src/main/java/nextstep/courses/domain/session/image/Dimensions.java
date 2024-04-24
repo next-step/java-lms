@@ -23,6 +23,14 @@ public class Dimensions {
         }
     }
 
+    public int width() {
+        return this.width.px();
+    }
+
+    public int height() {
+        return this.height.px();
+    }
+
     @Override
     public boolean equals(final Object otherDimensions) {
         if (this == otherDimensions) {
