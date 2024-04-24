@@ -2,15 +2,24 @@ package nextstep.courses.infrastructure.course;
 
 import java.time.LocalDateTime;
 
+import nextstep.common.BaseDateTime;
 import nextstep.courses.domain.course.Course;
 
-public class CourseEntity {
+public class CourseEntity extends BaseDateTime {
 
     private final Long id;
     private final String title;
     private final Long creatorId;
-    private final LocalDateTime createdAt;
-    private final LocalDateTime updatedAt;
+
+    public CourseEntity(final String title, final Long creatorId) {
+        this(null, title, creatorId);
+    }
+
+    public CourseEntity(final Long id, final String title, final Long creatorId) {
+        this.id = id;
+        this.title = title;
+        this.creatorId = creatorId;
+    }
 
     public CourseEntity(
             final Long id,
@@ -19,31 +28,27 @@ public class CourseEntity {
             final LocalDateTime createdAt,
             final LocalDateTime updatedAt
     ) {
+        super(createdAt, updatedAt);
+
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public Long id() {
-        return id;
+        return this.id;
     }
 
     public String title() {
-        return title;
+        return this.title;
     }
 
     public Long creatorId() {
-        return creatorId;
-    }
-
-    public LocalDateTime createdAt() {
-        return createdAt;
+        return this.creatorId;
     }
 
     public Course toDomain() {
-        return new Course(this.id, this.title, this.creatorId, this.createdAt, this.updatedAt);
+        return new Course(this.id, this.title, this.creatorId, createdAt(), updatedAt());
     }
 
     public static CourseEntity fromDomain(final Course course) {

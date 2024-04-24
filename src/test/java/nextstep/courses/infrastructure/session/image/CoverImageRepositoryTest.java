@@ -27,7 +27,7 @@ class CoverImageRepositoryTest {
     @Transactional
     @DisplayName("새로운 커버 이미지를 생성한다.")
     void test() {
-        final CoverImageEntity coverImageEntity = new CoverImageEntity(null, "gif", 10000L, 300, 200, 1L);
+        final CoverImageEntity coverImageEntity = new CoverImageEntity("gif", 10000L, 300, 200, 1L);
 
         final long savedCoverImageEntityId = coverImageRepository.save(coverImageEntity);
         final CoverImageEntity savedCoverImageEntity = coverImageRepository.findById(savedCoverImageEntityId).get();

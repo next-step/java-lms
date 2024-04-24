@@ -2,6 +2,8 @@ package nextstep.courses.infrastructure.session.image;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.jdbc.core.JdbcOperations;
@@ -21,7 +23,9 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
 
     @Override
     public Long save(final CoverImageEntity coverImageEntity) {
-        final String sql = "insert into cover_image (type, size, width, height, session_id) values(?, ?, ?, ?, ?)";
+        final String sql = "insert into cover_image "
+                + "(type, size, width, height, session_id, created_at, updated_at) "
+                + "values(?, ?, ?, ?, ?, ?, ?)";
         final KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
@@ -35,6 +39,8 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
             preparedStatement.setInt(3, coverImageEntity.width());
             preparedStatement.setInt(4, coverImageEntity.height());
             preparedStatement.setLong(5, coverImageEntity.sessionId());
+            preparedStatement.setTimestamp(6, Timestamp.valueOf(coverImageEntity.createdAt()));
+            preparedStatement.setTimestamp(7, Timestamp.valueOf(coverImageEntity.updatedAt()));
 
             return preparedStatement;
         }, keyHolder);
@@ -44,14 +50,14 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
 
     @Override
     public Optional<CoverImageEntity> findById(final Long id) {
-        final String sql = "select id, type, size, width, height, session_id from cover_image where id = ?";
+        final String sql = "select id, type, size, width, height, session_id, created_at, updated_at from cover_image where id = ?";
 
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, coverImageEntityMapper(), id));
     }
 
     @Override
     public Optional<CoverImageEntity> findBySessionId(final Long sessionId) {
-        final String sql = "select id, type, size, width, height, session_id from cover_image where session_id = ?";
+        final String sql = "select id, type, size, width, height, session_id, created_at, updated_at from cover_image where session_id = ?";
 
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, coverImageEntityMapper(), sessionId));
     }
@@ -63,7 +69,17 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
                 resultSet.getLong("size"),
                 resultSet.getInt("width"),
                 resultSet.getInt("height"),
-                resultSet.getLong("session_id")
+                resultSet.getLong("session_id"),
+                toLocalDateTime(resultSet.getTimestamp("created_at")),
+                toLocalDateTime(resultSet.getTimestamp("updated_at"))
         );
+    }
+
+    private LocalDateTime toLocalDateTime(final Timestamp timestamp) {
+        if (timestamp == null) {
+            return null;
+        }
+
+        return timestamp.toLocalDateTime();
     }
 }

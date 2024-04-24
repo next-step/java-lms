@@ -1,7 +1,9 @@
 package nextstep.courses.infrastructure.session;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+import nextstep.common.BaseDateTime;
 import nextstep.courses.domain.session.EnrollmentCount;
 import nextstep.courses.domain.session.Name;
 import nextstep.courses.domain.session.Schedule;
@@ -9,7 +11,7 @@ import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionStatus;
 import nextstep.courses.domain.session.strategy.StrategyType;
 
-public class SessionEntity {
+public class SessionEntity extends BaseDateTime {
 
     private final Long id;
     private final String name;
@@ -23,6 +25,19 @@ public class SessionEntity {
     private Long courseId;
 
     public SessionEntity(
+            final String name,
+            final String status,
+            final LocalDate startDate,
+            final LocalDate endDate,
+            final String strategy,
+            final int fee,
+            final int enrollmentLimit,
+            final int enrollmentCount
+    ) {
+        this(null, name, status, startDate, endDate, strategy, fee, enrollmentLimit, enrollmentCount);
+    }
+
+    public SessionEntity(
             final Long id,
             final String name,
             final String status,
@@ -33,6 +48,32 @@ public class SessionEntity {
             final int enrollmentLimit,
             final int enrollmentCount
     ) {
+        this.id = id;
+        this.name = name;
+        this.status = status;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.strategy = strategy;
+        this.fee = fee;
+        this.enrollmentLimit = enrollmentLimit;
+        this.enrollmentCount = enrollmentCount;
+    }
+
+    public SessionEntity(
+            final Long id,
+            final String name,
+            final String status,
+            final LocalDate startDate,
+            final LocalDate endDate,
+            final String strategy,
+            final int fee,
+            final int enrollmentLimit,
+            final int enrollmentCount,
+            final LocalDateTime createdAt,
+            final LocalDateTime updatedAt
+    ) {
+        super(createdAt, updatedAt);
+
         this.id = id;
         this.name = name;
         this.status = status;
@@ -95,7 +136,9 @@ public class SessionEntity {
                 SessionStatus.from(this.status),
                 new Schedule(startDate, endDate),
                 StrategyType.buildStrategy(this.strategy, this.fee, this.enrollmentLimit),
-                new EnrollmentCount(this.enrollmentCount)
+                new EnrollmentCount(this.enrollmentCount),
+                createdAt(),
+                updatedAt()
         );
     }
 
@@ -109,7 +152,9 @@ public class SessionEntity {
                 session.strategyName(),
                 session.fee(),
                 session.enrollmentLimit(),
-                session.currentEnrollmentCount()
+                session.currentEnrollmentCount(),
+                session.createdAt(),
+                session.updatedAt()
         );
     }
 }

@@ -1,8 +1,11 @@
 package nextstep.courses.domain.session.image;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class CoverImage {
+import nextstep.common.BaseDateTime;
+
+public class CoverImage extends BaseDateTime {
 
     private final Long id;
     private final ImageType type;
@@ -14,6 +17,22 @@ public class CoverImage {
     }
 
     public CoverImage(final Long id, final ImageType type, final Size size, final Dimensions dimensions) {
+        this.id = id;
+        this.type = type;
+        this.size = size;
+        this.dimensions = dimensions;
+    }
+
+    public CoverImage(
+            final Long id,
+            final ImageType type,
+            final Size size,
+            final Dimensions dimensions,
+            final LocalDateTime createdAt,
+            final LocalDateTime updatedAt
+    ) {
+        super(createdAt, updatedAt);
+
         this.id = id;
         this.type = type;
         this.size = size;

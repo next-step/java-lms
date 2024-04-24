@@ -57,6 +57,7 @@ public class SessionService {
     public void update(final Session session) {
         final SessionEntity sessionEntity = SessionEntity.fromDomain(session);
         sessionEntity.updateCourseId(session.course().id());
+
         sessionRepository.update(sessionEntity);
     }
 

@@ -3,6 +3,8 @@ package nextstep.courses.infrastructure.session;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,8 +26,8 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public Long save(final SessionEntity sessionEntity) {
         final String sql = "insert into session "
-                + "(name, status, start_date, end_date, strategy, fee, enrollment_limit, enrollment_count) "
-                + "values(?, ?, ?, ?, ?, ?, ?, ?)";
+                + "(name, status, start_date, end_date, strategy, fee, enrollment_limit, enrollment_count, created_at, updated_at) "
+                + "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         final KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
@@ -42,6 +44,8 @@ public class JdbcSessionRepository implements SessionRepository {
             preparedStatement.setInt(6, sessionEntity.fee());
             preparedStatement.setInt(7, sessionEntity.enrollmentLimit());
             preparedStatement.setInt(8, sessionEntity.enrollmentCount());
+            preparedStatement.setTimestamp(9, Timestamp.valueOf(sessionEntity.createdAt()));
+            preparedStatement.setTimestamp(10, Timestamp.valueOf(sessionEntity.updatedAt()));
 
             return preparedStatement;
         }, keyHolder);
@@ -60,7 +64,9 @@ public class JdbcSessionRepository implements SessionRepository {
                 + "fee = ?, "
                 + "enrollment_limit = ?, "
                 + "enrollment_count = ?, "
-                + "course_id = ? "
+                + "course_id = ?, "
+                + "created_at = ?, "
+                + "updated_at = ? "
                 + "where id = ?";
 
         jdbcTemplate.update(
@@ -74,6 +80,8 @@ public class JdbcSessionRepository implements SessionRepository {
                 sessionEntity.enrollmentLimit(),
                 sessionEntity.enrollmentCount(),
                 sessionEntity.courseId(),
+                sessionEntity.createdAt(),
+                sessionEntity.updatedAt(),
                 sessionEntity.id()
         );
     }
@@ -81,7 +89,7 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public Optional<SessionEntity> findById(final Long id) {
         final String sql = "select "
-                + "id, name, status, start_date, end_date, strategy, fee, enrollment_limit, enrollment_count "
+                + "id, name, status, start_date, end_date, strategy, fee, enrollment_limit, enrollment_count, created_at, updated_at "
                 + "from session "
                 + "where id = ?";
 
@@ -91,7 +99,7 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public List<SessionEntity> findAllByCourseId(final Long courseId) {
         final String sql = "select "
-                + "id, name, status, start_date, end_date, strategy, fee, enrollment_limit, enrollment_count "
+                + "id, name, status, start_date, end_date, strategy, fee, enrollment_limit, enrollment_count, created_at, updated_at  "
                 + "from session "
                 + "where course_id = ?";
 
@@ -108,7 +116,17 @@ public class JdbcSessionRepository implements SessionRepository {
                 resultSet.getString("strategy"),
                 resultSet.getInt("fee"),
                 resultSet.getInt("enrollment_limit"),
-                resultSet.getInt("enrollment_count")
+                resultSet.getInt("enrollment_count"),
+                toLocalDateTime(resultSet.getTimestamp("created_at")),
+                toLocalDateTime(resultSet.getTimestamp("updated_at"))
         );
+    }
+
+    private LocalDateTime toLocalDateTime(final Timestamp timestamp) {
+        if (timestamp == null) {
+            return null;
+        }
+
+        return timestamp.toLocalDateTime();
     }
 }

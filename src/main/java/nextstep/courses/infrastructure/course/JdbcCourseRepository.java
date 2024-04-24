@@ -23,7 +23,7 @@ public class JdbcCourseRepository implements CourseRepository {
 
     @Override
     public Long save(final CourseEntity courseEntity) {
-        final String sql = "insert into course (title, creator_id, created_at) values(?, ?, ?)";
+        final String sql = "insert into course (title, creator_id, created_at, updated_at) values(?, ?, ?, ?)";
         final KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
@@ -35,6 +35,7 @@ public class JdbcCourseRepository implements CourseRepository {
             preparedStatement.setString(1, courseEntity.title());
             preparedStatement.setLong(2, courseEntity.creatorId());
             preparedStatement.setTimestamp(3, Timestamp.valueOf(courseEntity.createdAt()));
+            preparedStatement.setTimestamp(4, Timestamp.valueOf(courseEntity.updatedAt()));
 
             return preparedStatement;
         }, keyHolder);
@@ -45,12 +46,12 @@ public class JdbcCourseRepository implements CourseRepository {
     @Override
     public Optional<CourseEntity> findById(final Long id) {
         final String sql = "select id, title, creator_id, created_at, updated_at from course where id = ?";
-        final RowMapper<CourseEntity> rowMapper = (rs, rowNum) -> new CourseEntity(
-                rs.getLong("id"),
-                rs.getString("title"),
-                rs.getLong("creator_id"),
-                toLocalDateTime(rs.getTimestamp("created_at")),
-                toLocalDateTime(rs.getTimestamp("updated_at"))
+        final RowMapper<CourseEntity> rowMapper = (resultSet, rowNumber) -> new CourseEntity(
+                resultSet.getLong("id"),
+                resultSet.getString("title"),
+                resultSet.getLong("creator_id"),
+                toLocalDateTime(resultSet.getTimestamp("created_at")),
+                toLocalDateTime(resultSet.getTimestamp("updated_at"))
         );
 
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));

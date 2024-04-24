@@ -30,7 +30,6 @@ class SessionRepositoryTest {
     @DisplayName("새로운 강의를 생성한다.")
     void Save_NewSession() {
         final SessionEntity sessionEntity = new SessionEntity(
-                null,
                 "Java",
                 "모집중",
                 LocalDate.of(2024, 4, 1),

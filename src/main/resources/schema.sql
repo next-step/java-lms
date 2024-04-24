@@ -18,6 +18,8 @@ create table session(
     enrollment_limit int not null,
     enrollment_count int not null,
     course_id bigint,
+    created_at timestamp not null,
+    updated_at timestamp,
     primary key (id)
 );
 
@@ -28,6 +30,8 @@ create table cover_image(
     width int not null,
     height int not null,
     session_id bigint,
+    created_at timestamp not null,
+    updated_at timestamp,
     primary key (id)
 );
 

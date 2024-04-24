@@ -1,5 +1,8 @@
 package nextstep.courses.infrastructure.session.image;
 
+import java.time.LocalDateTime;
+
+import nextstep.common.BaseDateTime;
 import nextstep.courses.domain.session.image.CoverImage;
 import nextstep.courses.domain.session.image.Dimensions;
 import nextstep.courses.domain.session.image.Height;
@@ -7,7 +10,7 @@ import nextstep.courses.domain.session.image.ImageType;
 import nextstep.courses.domain.session.image.Size;
 import nextstep.courses.domain.session.image.Width;
 
-public class CoverImageEntity {
+public class CoverImageEntity extends BaseDateTime {
 
     private final Long id;
     private final String type;
@@ -17,6 +20,16 @@ public class CoverImageEntity {
     private final Long sessionId;
 
     public CoverImageEntity(
+            final String type,
+            final long size,
+            final int width,
+            final int height,
+            final Long sessionId
+    ) {
+        this(null, type, size, width, height, sessionId);
+    }
+
+    public CoverImageEntity(
             final Long id,
             final String type,
             final long size,
@@ -24,6 +37,26 @@ public class CoverImageEntity {
             final int height,
             final Long sessionId
     ) {
+        this.id = id;
+        this.type = type;
+        this.size = size;
+        this.width = width;
+        this.height = height;
+        this.sessionId = sessionId;
+    }
+
+    public CoverImageEntity(
+            final Long id,
+            final String type,
+            final long size,
+            final int width,
+            final int height,
+            final Long sessionId,
+            final LocalDateTime createdAt,
+            final LocalDateTime updatedAt
+    ) {
+        super(createdAt, updatedAt);
+
         this.id = id;
         this.type = type;
         this.size = size;
@@ -61,7 +94,9 @@ public class CoverImageEntity {
                 this.id,
                 ImageType.from(this.type),
                 new Size(this.size),
-                new Dimensions(new Width(this.width), new Height(this.height))
+                new Dimensions(new Width(this.width), new Height(this.height)),
+                createdAt(),
+                updatedAt()
         );
     }
 
@@ -72,7 +107,9 @@ public class CoverImageEntity {
                 coverImage.size(),
                 coverImage.width(),
                 coverImage.height(),
-                sessionId
+                sessionId,
+                coverImage.createdAt(),
+                coverImage.updatedAt()
         );
     }
 }

@@ -3,21 +3,23 @@ package nextstep.courses.domain.session;
 import static nextstep.courses.domain.session.SessionStatus.OPEN;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
+import nextstep.common.BaseDateTime;
 import nextstep.courses.domain.course.Course;
 import nextstep.courses.domain.session.image.CoverImage;
 import nextstep.courses.domain.session.strategy.SessionStrategy;
 import nextstep.payments.domain.Money;
 import nextstep.payments.domain.Payment;
 
-public class Session {
+public class Session extends BaseDateTime {
 
+    private final Long id;
     private final Name name;
     private final SessionStatus status;
     private final Schedule schedule;
     private final SessionStrategy sessionStrategy;
-    private final Long id;
     private CoverImage coverImage;
     private Course course;
     private EnrollmentCount currentEnrollmentCount;
@@ -40,6 +42,26 @@ public class Session {
             final SessionStrategy sessionStrategy,
             final EnrollmentCount currentEnrollmentCount
     ) {
+        this.id = id;
+        this.name = name;
+        this.status = status;
+        this.schedule = schedule;
+        this.sessionStrategy = sessionStrategy;
+        this.currentEnrollmentCount = currentEnrollmentCount;
+    }
+
+    public Session(
+            final Long id,
+            final Name name,
+            final SessionStatus status,
+            final Schedule schedule,
+            final SessionStrategy sessionStrategy,
+            final EnrollmentCount currentEnrollmentCount,
+            final LocalDateTime createdAt,
+            final LocalDateTime updatedAt
+    ) {
+        super(createdAt, updatedAt);
+
         this.id = id;
         this.name = name;
         this.status = status;
@@ -98,6 +120,7 @@ public class Session {
 
     public void assignCourse(final Course course) {
         this.course = course;
+        updateDateTime();
     }
 
     public void enroll(final Payment payment) {
@@ -106,6 +129,7 @@ public class Session {
         validateSessionCurrentEnrollmentCountIsLessThanLimit();
 
         this.currentEnrollmentCount = currentEnrollmentCount.increase();
+        updateDateTime();
     }
 
     private void validateSessionStatusIsOpen() {
