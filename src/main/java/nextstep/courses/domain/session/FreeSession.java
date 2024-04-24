@@ -9,16 +9,15 @@ import java.util.List;
 public class FreeSession extends Session {
     public static final Long FREE_FEE = 0L;
 
-    public FreeSession(Long sessionId, SessionPeriod sessionPeriod, List<CoverImage> coverImages,
-                       SessionStatusEnum sessionStatus, int numberOfStudents, boolean isOpenForEnrollment) {
-        super(sessionId, sessionPeriod, coverImages, sessionStatus, numberOfStudents, isOpenForEnrollment);
-        this.fee = FREE_FEE;
+    private FreeSession(Long sessionId, SessionPeriod sessionPeriod, List<CoverImage> coverImages,
+                        SessionStatusEnum sessionStatus, int numberOfStudents, boolean isOpenForEnrollment,
+                        Long fee) {
+        super(sessionId, sessionPeriod, coverImages, sessionStatus, numberOfStudents, isOpenForEnrollment, fee);
     }
 
-    public FreeSession(Long sessionId, SessionPeriod sessionPeriod, SessionStatusEnum sessionStatus,
-                       int numberOfStudents, boolean isOpenForEnrollment) {
-        super(sessionId, sessionPeriod, sessionStatus, numberOfStudents, isOpenForEnrollment);
-        this.fee = FREE_FEE;
+    public static FreeSession of(Long sessionId, SessionPeriod sessionPeriod, List<CoverImage> coverImages,
+                                 SessionStatusEnum sessionStatus, int numberOfStudents, boolean isOpenForEnrollment) {
+        return new FreeSession(sessionId, sessionPeriod, coverImages, sessionStatus, numberOfStudents, isOpenForEnrollment, FREE_FEE);
     }
 
     @Override

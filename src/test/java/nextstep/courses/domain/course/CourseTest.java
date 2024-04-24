@@ -30,7 +30,7 @@ class CourseTest {
                 LocalDateTime.of(2024,4,1,0,0,0));
         List<CoverImage> coverImages = List.of(CoverImage.of(1L,"jpg", 1024, 300,200));
 
-        return new PaidSession(sessionId, sessionPeriod, coverImages,
+        return PaidSession.of(sessionId, sessionPeriod, coverImages,
                 SessionStatusEnum.OPEN, true, 1, 1, fee);
     }
 
@@ -41,7 +41,7 @@ class CourseTest {
                 LocalDateTime.of(2024,4,1,0,0,0));
         List<CoverImage> coverImages = List.of(CoverImage.of(1L,"jpg", 1024, 300,200));
 
-        return new FreeSession(sessionId, sessionPeriod, coverImages, SessionStatusEnum.OPEN, 0, true);
+        return FreeSession.of(sessionId, sessionPeriod, coverImages, SessionStatusEnum.OPEN, 0, true);
     }
 
 }

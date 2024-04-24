@@ -40,7 +40,7 @@ class SessionRepositoryTest {
         List<CoverImage> coverImages = List.of(CoverImage.of("jpg", 1024,300,200));
 
         // given
-        Session freeSession = new FreeSession(1L, sessionPeriod, coverImages, SessionStatusEnum.OPEN, 0, true);
+        Session freeSession = FreeSession.of(1L, sessionPeriod, coverImages, SessionStatusEnum.OPEN, 0, true);
 
         // when
         int count = sessionRepository.save(freeSession);
@@ -64,9 +64,10 @@ class SessionRepositoryTest {
     void testPaidSession_updateAndFindBySessionId_ShouldReturnPaidSession() {
         SessionPeriod sessionPeriod = SessionPeriod.of(LocalDateTime.of(2024,1,1,0,0, 0),
                 LocalDateTime.of(2024,4,1,0,0, 0));
+        List<CoverImage> coverImages = List.of(CoverImage.of("jpg", 1024,300,200));
 
         // given
-        Session paidSession = new PaidSession(1L, sessionPeriod, SessionStatusEnum.OPEN, true, 0, 100, 10L);
+        Session paidSession = PaidSession.of(1L, sessionPeriod, coverImages, SessionStatusEnum.OPEN, true, 0, 100, 10L);
 
         // when
         int count = sessionRepository.save(paidSession);

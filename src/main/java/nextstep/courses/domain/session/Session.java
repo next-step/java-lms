@@ -21,23 +21,29 @@ public abstract class Session {
     protected int numberOfStudents;
     protected Long fee;
 
-    protected Session(Long sessionId, SessionPeriod sessionPeriod,
-                      SessionStatusEnum sessionStatus, int numberOfStudents, boolean isOpenForEnrollment) {
+    protected Session(Long sessionId, SessionPeriod sessionPeriod, List<CoverImage> coverImages,
+                      SessionStatusEnum sessionStatus, int numberOfStudents, boolean isOpenForEnrollment,
+                      Long fee) {
         this.sessionId = sessionId;
         this.sessionPeriod = sessionPeriod;
+        this.coverImages = CoverImages.of(coverImages);
         this.sessionStatus = sessionStatus;
         this.numberOfStudents = numberOfStudents;
         this.isOpenForEnrollment = isOpenForEnrollment;
+        this.fee = fee;
     }
 
     protected Session(Long sessionId, SessionPeriod sessionPeriod, List<CoverImage> coverImages,
-                      SessionStatusEnum sessionStatus, int numberOfStudents, boolean isOpenForEnrollment) {
+                      SessionStatusEnum sessionStatus, int numberOfStudents, boolean isOpenForEnrollment,
+                      int maxEnrollments, Long fee) {
         this.sessionId = sessionId;
         this.sessionPeriod = sessionPeriod;
         this.sessionStatus = sessionStatus;
         this.coverImages = CoverImages.of(coverImages);
+        this.maxEnrollments = maxEnrollments;
         this.numberOfStudents = numberOfStudents;
         this.isOpenForEnrollment = isOpenForEnrollment;
+        this.fee = fee;
     }
 
 

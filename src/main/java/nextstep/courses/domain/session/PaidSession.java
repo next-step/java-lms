@@ -9,20 +9,18 @@ import java.util.List;
 public class PaidSession extends Session {
     public static final String OVER_MAX_ENROLLMENTS = "유료 강의는 강의 최대 수강 인원을 초과할 수 없습니다.";
 
-    public PaidSession(Long sessionId, SessionPeriod sessionPeriod, List<CoverImage> coverImages,
-                       SessionStatusEnum sessionStatus, boolean isOpenForEnrollment, int numberOfStudents,
-                       int maxEnrollments, Long fee) {
-        super(sessionId, sessionPeriod, coverImages, sessionStatus, numberOfStudents, isOpenForEnrollment);
-        this.maxEnrollments = maxEnrollments;
-        this.fee = fee;
+    private PaidSession(Long sessionId, SessionPeriod sessionPeriod, List<CoverImage> coverImages,
+                        SessionStatusEnum sessionStatus, boolean isOpenForEnrollment, int numberOfStudents,
+                        int maxEnrollments, Long fee) {
+        super(sessionId, sessionPeriod, coverImages, sessionStatus, numberOfStudents, isOpenForEnrollment, maxEnrollments, fee);
     }
 
-    public PaidSession(Long sessionId, SessionPeriod sessionPeriod, SessionStatusEnum sessionStatus,
-                       boolean isOpenForEnrollment, int numberOfStudents,
+    public static PaidSession of(Long sessionId, SessionPeriod sessionPeriod, List<CoverImage> coverImages,
+                       SessionStatusEnum sessionStatus, boolean isOpenForEnrollment, int numberOfStudents,
                        int maxEnrollments, Long fee) {
-        super(sessionId, sessionPeriod, sessionStatus, numberOfStudents, isOpenForEnrollment);
-        this.maxEnrollments = maxEnrollments;
-        this.fee = fee;
+        return new PaidSession(sessionId, sessionPeriod, coverImages,
+                sessionStatus, isOpenForEnrollment, numberOfStudents,
+                maxEnrollments, fee);
     }
 
     @Override

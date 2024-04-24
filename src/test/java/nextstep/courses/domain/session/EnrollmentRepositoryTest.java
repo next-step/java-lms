@@ -25,7 +25,7 @@ class EnrollmentRepositoryTest {
 
     @Test
     @DisplayName("수강 신청 정보 저장 후 조회 테스트")
-    void testEnrollment_saveAndFindBySesionIdAndUserId_ShouldReturnEnrollment() {
+    void testEnrollment_saveAndFindBySessionIdAndUserId_ShouldReturnEnrollment() {
         // given
         Long sessionId = 10L;
         Long userId = 1234L;

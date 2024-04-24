@@ -13,9 +13,6 @@ public class CoverImages {
     }
 
     public static CoverImages of(List<CoverImage> coverImages) {
-        if(!hasOneCoverImageAtLeast(coverImages)) {
-            throw new IllegalArgumentException(COVER_IMAGE_IS_EMPTY);
-        }
         return new CoverImages(coverImages);
     }
 

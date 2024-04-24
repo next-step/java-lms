@@ -64,18 +64,20 @@ public class JdbcSessionRepository implements SessionRepository {
             SessionStatusEnum sessionStatus = SessionStatusEnum.valueOf(rs.getString("session_status"));
 
             if (fee.equals(FREE_FEE)) {
-                return new FreeSession(
+                return FreeSession.of(
                         sessionId,
                         sessionPeriod,
+                        new ArrayList<>(),
                         sessionStatus,
                         rs.getInt("number_of_students"),
                         rs.getBoolean("is_open_for_enrollment")
                 );
             }
 
-            return new PaidSession(
+            return PaidSession.of(
                     sessionId,
                     sessionPeriod,
+                    new ArrayList<>(),
                     sessionStatus,
                     rs.getBoolean("is_open_for_enrollment"),
                     rs.getInt("number_of_students"),
