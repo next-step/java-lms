@@ -1,16 +1,29 @@
 package nextstep.courses.domain.session;
 
 public class Student {
-    public Student() {}
-
-    public Student(int fee) {
-        this.fee = fee;
+    public Student(Long sessionId, Long loginUserId) {
+        this.sessionId = sessionId;
+        this.loginUserId = loginUserId;
     }
 
-    private int fee = 0 ;
+    private final Long sessionId;
+    private final Long loginUserId;
+    private int fee = 0;
 
     public int getFee() {
         return this.fee;
+    }
+
+    public Long getSessionId() {
+        return this.sessionId;
+    }
+
+    public Long getLoginUserId() {
+        return this.loginUserId;
+    }
+
+    public void pay(int fee) {
+        this.fee = fee;
     }
 
     public void isPaid(int sessionFee) {

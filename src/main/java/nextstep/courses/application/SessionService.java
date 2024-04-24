@@ -14,7 +14,7 @@ public class SessionService {
 
     public void apply(NsUser loginUser, Long sessionId) {
         Session session = sessionRepository.findById(sessionId);
-        Student student = studentRepository.findBySessionId(sessionId);
-        session.enrollment().enroll(student);
+        Student student = new Student(sessionId, loginUser.getId());
+        session.enroll(student);
     }
 }

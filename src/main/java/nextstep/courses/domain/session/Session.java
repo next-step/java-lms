@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class Session {
+    private Long id;
     private final SessionDuration sessionDuration;
     private final Image coverImage;
     private final int fee;
@@ -13,23 +14,29 @@ public class Session {
     private SessionStatus sessionStatus = SessionStatus.READY;
     private final Enrollment enrollment;
 
-    public Session(LocalDate startDate, LocalDate endDate, Image coverImage, int fee, int maxStudents) {
+    public Session(Long id, LocalDate startDate, LocalDate endDate, Image coverImage, int fee, int maxStudents) {
+        this.id = id;
         this.sessionDuration = new SessionDuration(startDate, endDate);
         this.coverImage = coverImage;
         this.fee = fee;
         this.maxStudents = maxStudents;
-        this.enrollment = new Enrollment(fee, maxStudents);
+        this.enrollment = new Enrollment(fee, maxStudents, sessionStatus);
     }
 
-    public Enrollment enrollment() {
-        if (!sessionStatus.isApplying()) {
-            throw new RuntimeException("수강 신청은 강의 상태가 모집중이 아니면 불가능합니다. 강의 상태 : " + sessionStatus);
-        }
-
-        return this.enrollment;
+    public void enroll(Student student) {
+        this.enrollment.enroll(student);
     }
 
     public void changeStatus(SessionStatus sessionStatus) {
         this.sessionStatus = sessionStatus;
+        this.enrollment.changeStatus(sessionStatus);
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public SessionStatus getStatus() {
+        return this.sessionStatus;
     }
 }
