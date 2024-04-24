@@ -24,7 +24,7 @@ class EnrollmentRepositoryTest {
     }
 
     @Test
-    @DisplayName("수강 신청 정보 저장 후 조회 테스트")
+    @DisplayName("선발된 인원에 한하여 수강 신청 정보 저장 후 조회 테스트")
     void testEnrollment_saveAndFindBySessionIdAndUserId_ShouldReturnEnrollment() {
         // given
         Long sessionId = 10L;
@@ -46,7 +46,7 @@ class EnrollmentRepositoryTest {
                 () -> assertEquals(savedEnrollment.getId(), 1L),
                 () -> assertEquals(savedEnrollment.getSessionId(), sessionId),
                 () -> assertEquals(savedEnrollment.getUserId(), userId),
-                () -> assertEquals(savedEnrollment.hasPaid(), true)
+                () -> assertEquals(savedEnrollment.isAllowedToEnroll(), true)
         );
     }
 

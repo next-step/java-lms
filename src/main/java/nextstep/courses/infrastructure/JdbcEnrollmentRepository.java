@@ -17,26 +17,26 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
     @Override
     public int save(Enrollment enrollment) {
         String sql = "INSERT INTO enrollment " +
-                "(session_id, user_id, has_paid)" +
+                "(session_id, user_id, is_allowed_to_enroll)" +
                 "values(?,?,?)";
 
         return jdbcTemplates.update(
                 sql,
                 enrollment.getSessionId(),
                 enrollment.getUserId(),
-                enrollment.hasPaid()
+                enrollment.isAllowedToEnroll()
         );
     }
 
     @Override
     public Enrollment findBySessionIdAndUserId(Long sessionId, Long userId) {
-        String sql = "SELECT id, session_id, user_id, has_paid " +
+        String sql = "SELECT id, session_id, user_id, is_allowed_to_enroll " +
                 "FROM enrollment " +
                 "WHERE session_id = ? AND user_id = ?";
 
         RowMapper<Enrollment> rowMapper = (rs, rowNum) -> {
             Long id = rs.getLong("id");
-            boolean hasPaid = rs.getBoolean("has_paid");
+            boolean hasPaid = rs.getBoolean("is_allowed_to_enroll");
 
             return Enrollment.of(id, sessionId, userId, hasPaid);
         };
