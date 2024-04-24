@@ -1,29 +1,23 @@
 package nextstep.courses.fixture.builder;
 
 import nextstep.courses.domain.cover.Image;
-import nextstep.courses.domain.session.MaxRegistrationCount;
-import nextstep.courses.domain.session.RegistrationCount;
-import nextstep.courses.domain.session.SessionName;
-import nextstep.courses.domain.session.SessionStatus;
-import nextstep.courses.domain.session.Period;
-import nextstep.courses.domain.session.impl.FreeSession;
-import nextstep.payments.domain.Money;
+import nextstep.courses.domain.session.PaidSession;
+import nextstep.courses.domain.session.enrollment.Enrollment;
+import nextstep.courses.domain.session.enrollment.count.MaxRegistrationCount;
+import nextstep.courses.domain.session.name.SessionName;
+import nextstep.courses.domain.session.period.Period;
 
 public class PaidSessionBuilder {
 
-    private SessionName name;
+    private SessionName SessionName;
 
-    private RegistrationCount registrationCount;
-
-    private MaxRegistrationCount maxRegistrationCount;
-
-    private Money tuitionFee;
+    private Enrollment enrollment;
 
     private Image image;
 
-    private SessionStatus sessionStatus;
-
     private Period period;
+
+    private MaxRegistrationCount maxRegistrationCount;
 
     private PaidSessionBuilder() {}
 
@@ -32,17 +26,17 @@ public class PaidSessionBuilder {
     }
 
     public PaidSessionBuilder withName(String name) {
-        this.name = new SessionName(name);
+        this.SessionName = new SessionName(name);
+        return this;
+    }
+
+    public PaidSessionBuilder withName(Enrollment enrollment) {
+        this.enrollment = enrollment;
         return this;
     }
 
     public PaidSessionBuilder withMaxRegistrationCount(int maxRegistrationCount) {
-        this.maxRegistrationCount = new MaxRegistrationCount(new RegistrationCount(maxRegistrationCount));
-        return this;
-    }
-
-    public PaidSessionBuilder withTuitionFee(int tuitionFee) {
-        this.tuitionFee = new Money(tuitionFee);
+        this.maxRegistrationCount = new MaxRegistrationCount(maxRegistrationCount);
         return this;
     }
 
@@ -51,17 +45,12 @@ public class PaidSessionBuilder {
         return this;
     }
 
-    public PaidSessionBuilder withSessionStatus(SessionStatus status) {
-        this.sessionStatus = status;
-        return this;
-    }
-
     public PaidSessionBuilder withValidityPeriod(Period period) {
         this.period = period;
         return this;
     }
 
-    public FreeSession build() {
-        return new FreeSession(name, image, sessionStatus, period);
+    public PaidSession build() {
+        return new PaidSession(SessionName, enrollment, image, period, maxRegistrationCount);
     }
 }

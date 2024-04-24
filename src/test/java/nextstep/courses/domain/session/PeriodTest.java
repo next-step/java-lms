@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDateTime;
+import nextstep.courses.domain.session.period.Period;
 import nextstep.courses.error.exception.EndDateBeforeStartDateException;
 import nextstep.courses.error.exception.NotExistTimeException;
 import org.junit.jupiter.api.Test;
