@@ -45,4 +45,8 @@ public class Session {
     public SessionProgressStatus getStatus() {
         return this.sessionProgressStatus;
     }
+
+    public int getStudentsCount() {
+        return this.enrollment.getStudents().getCounts();
+    }
 }

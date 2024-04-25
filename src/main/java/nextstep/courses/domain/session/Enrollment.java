@@ -24,6 +24,10 @@ public class Enrollment {
             throw new RuntimeException("수강 신청은 강의 상태가 모집중이 아니면 불가능합니다. 강의 상태 : " + sessionProgressStatus);
         }
 
+        if (!newStudent.getIsSelected()) {
+            throw new RuntimeException("선발되지 않은 사람은 수강을 취소합니다.");
+        }
+
         if (isPaySession()) {
             newStudent.isPaid(fee);
             isMaxStudents();
@@ -38,6 +42,10 @@ public class Enrollment {
 
     public void changeApplyStatus(SessionApplyStatus sessionApplyStatus) {
         this.sessionApplyStatus = sessionApplyStatus;
+    }
+
+    public Students getStudents() {
+        return students;
     }
 
     private boolean isPaySession() {
