@@ -84,7 +84,7 @@ class JdbcSessionEntityRepositoryTest {
         ImageEntity imageEntity = imageEntityOptional.get();
 
         Image image = new Image(imageEntity);
-        Session session = SessionFactory.createSession(sessionEntity);
+        Session session = SessionFactory.get(sessionEntity);
         Enrollment enrollment = session.getEnrollment();
 
         //when

@@ -12,7 +12,7 @@ public class SessionFactory {
     private SessionFactory() {
     }
 
-    public static Session createSession(SessionEntity sessionEntity) {
+    public static Session get(SessionEntity sessionEntity) {
         if (FeeType.PAID == FeeType.valueOf(sessionEntity.getFeeType())) {
             return new PaidSession(sessionEntity);
         }
