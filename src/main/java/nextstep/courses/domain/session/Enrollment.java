@@ -7,10 +7,7 @@ public class Enrollment {
     private SessionStatus sessionStatus;
 
     public Enrollment(int fee, int maxStudents, SessionStatus sessionStatus) {
-        this.fee = fee;
-        this.maxStudents = maxStudents;
-        this.students = new Students();
-        this.sessionStatus = sessionStatus;
+        this(fee, maxStudents, new Students(), sessionStatus);
     }
 
     public Enrollment(int fee, int maxStudents, Students students, SessionStatus sessionStatus) {
