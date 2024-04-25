@@ -18,7 +18,6 @@ import nextstep.courses.domain.session.enrollment.state.SessionState;
 import nextstep.courses.domain.session.feetype.FeeType;
 import nextstep.courses.domain.session.period.Period;
 import nextstep.courses.domain.student.Student;
-import nextstep.courses.entity.ImageEntity;
 import nextstep.courses.entity.SessionEntity;
 import nextstep.courses.factory.SessionFactory;
 import nextstep.courses.fixture.builder.EnrollmentBuilder;
@@ -36,7 +35,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 @JdbcTest
-class JdbcSessionEntityRepositoryTest {
+class SessionRepositoryTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
