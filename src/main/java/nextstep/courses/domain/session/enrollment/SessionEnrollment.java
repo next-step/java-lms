@@ -4,6 +4,9 @@ import nextstep.courses.domain.session.enrollment.count.engine.EnrollmentCount;
 import nextstep.courses.domain.session.enrollment.state.SessionState;
 import nextstep.courses.domain.session.feetype.FeeType;
 import nextstep.courses.domain.student.Student;
+import nextstep.courses.error.exception.MaxRegistrationExceededException;
+import nextstep.courses.error.exception.PaymentConditionNotMetException;
+import nextstep.courses.error.exception.SessionNotOpenForEnrollmentException;
 import nextstep.courses.error.exception.SessionRegisterFailException;
 import nextstep.payments.domain.Money;
 import nextstep.payments.domain.Payment;
@@ -38,25 +41,34 @@ public class SessionEnrollment implements Enrollment {
 
     @Override
     public boolean checkRegistrationConditions(Payment payment) {
-        if (!isPaymentAmountSameTuitionFee(payment)){
-            return false;
+        if (!isSatisfyPaymentCondition(payment)){
+            throw new PaymentConditionNotMetException(tuitionFee, payment);
         }
 
-        if (!isRegistrationPossible()){
-            return false;
+        if (!isSatisfySessionState()){
+            throw new SessionNotOpenForEnrollmentException(sessionState);
+        }
+
+        if (!isSatisfyCapacityCondition()){
+            throw new MaxRegistrationExceededException(enrollmentCount);
         }
 
         return true;
     }
 
     @Override
-    public boolean isPaymentAmountSameTuitionFee(Payment payment) {
+    public boolean isSatisfyPaymentCondition(Payment payment) {
         return payment.isSamePaymentAmount(tuitionFee);
     }
 
     @Override
-    public boolean isRegistrationPossible() {
+    public boolean isSatisfySessionState() {
         return sessionState.isRecruitmentOpen();
+    }
+
+    @Override
+    public boolean isSatisfyCapacityCondition(){
+        return enrollmentCount.isRegistrationWithinCapacity();
     }
 
     @Override

@@ -1,7 +1,6 @@
 package nextstep.courses.entity;
 
 import java.time.LocalDateTime;
-import nextstep.courses.domain.cover.Image;
 import nextstep.courses.domain.session.engine.Session;
 import nextstep.courses.domain.session.enrollment.Enrollment;
 import nextstep.courses.domain.session.enrollment.SessionEnrollment;
@@ -46,7 +45,7 @@ public class SessionEntity extends BaseEntity {
             enrollmentCount.getMaxRegistrationCount(),
             enrollment.getTuitionFee(),
             imageId,
-            sessionState.recruitmentState(),
+            sessionState.getRecruitmentState(),
             enrollment.getFeeType(),
             period.getStartDate(),
             period.getEndDate(),

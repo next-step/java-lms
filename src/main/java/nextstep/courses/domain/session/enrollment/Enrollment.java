@@ -12,9 +12,11 @@ public interface Enrollment {
 
     boolean checkRegistrationConditions(Payment payment);
 
-    boolean isRegistrationPossible();
+    boolean isSatisfySessionState();
 
-    boolean isPaymentAmountSameTuitionFee(Payment payment);
+    boolean isSatisfyPaymentCondition(Payment payment);
+
+    boolean isSatisfyCapacityCondition();
 
     EnrollmentCount getEnrollmentCount();
 

@@ -16,7 +16,7 @@ public class SessionState {
         return RecruitmentState.valueOf(value);
     }
 
-    public String recruitmentState(){
+    public String getRecruitmentState(){
         return recruitmentState.getValue();
     }
 }
