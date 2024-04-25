@@ -22,7 +22,7 @@ class CoverImageTest {
         int imageHeight = 200;
 
         // when
-        CoverImage coverImage = CoverImage.of(imageType, imageFileSize, imageWidth, imageHeight);
+        CoverImage coverImage = CoverImage.of(1L,imageType, imageFileSize, imageWidth, imageHeight);
 
         // then
         assertAll(
@@ -39,7 +39,7 @@ class CoverImageTest {
     void testCoverImage_invalidImageType_ShouldThrowException() {
         // when, then
         assertThatIllegalArgumentException().isThrownBy(() -> {
-            CoverImage.of("exe", 1024, 300, 200);
+            CoverImage.of(1L,"exe", 1024, 300, 200);
         }).withMessageContaining(INVALID_IMAGE_TYPE);
     }
 
@@ -48,7 +48,7 @@ class CoverImageTest {
     void testCoverImage_invalidImageSize_ShouldThrowException() {
         // when, then
         assertThatIllegalArgumentException().isThrownBy(() -> {
-            CoverImage.of("jpg", 2000, 300, 200);
+            CoverImage.of(1L,"jpg", 2000, 300, 200);
         }).withMessageContaining(INVALID_IMAGE_FILE_SIZE);
     }
 
@@ -57,7 +57,7 @@ class CoverImageTest {
     void testCoverImage_invalidImageWidth_ShouldThrowException() {
         // when, then
         assertThatIllegalArgumentException().isThrownBy(() -> {
-            CoverImage.of("jpg", 1024, 200, 200);
+            CoverImage.of(1L,"jpg", 1024, 200, 200);
         }).withMessageContaining(INVALID_WIDTH);
     }
 
@@ -66,7 +66,7 @@ class CoverImageTest {
     void testCoverImage_invalidImageHeight_ShouldThrowException() {
         // when, then
         assertThatIllegalArgumentException().isThrownBy(() -> {
-            CoverImage.of("jpg", 1024, 300, 100);
+            CoverImage.of(1L,"jpg", 1024, 300, 100);
         }).withMessageContaining(INVALID_HEIGHT);
     }
 
@@ -76,7 +76,7 @@ class CoverImageTest {
     void testCoverImage_invalidImageSizeRatio_ShouldThrowException() {
         // when, then
         assertThatIllegalArgumentException().isThrownBy(() -> {
-            CoverImage.of("jpg", 1024, 600, 500);
+            CoverImage.of(1L,"jpg", 1024, 600, 500);
         }).withMessageContaining(INVALID_IMAGE_RATIO);
     }
 
