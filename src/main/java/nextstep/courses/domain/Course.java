@@ -47,15 +47,8 @@ public class Course {
         return createdAt;
     }
 
-    @Override
-    public String toString() {
-        return "Course{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", creatorId=" + creatorId +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
+    public int countOfSession() {
+        return sessions.size();
     }
 
     public void add(Session session) {
@@ -73,5 +66,16 @@ public class Course {
 
     public void register(Long sessionId, NsUser user, Payment payment) throws CannotRegisterException {
         this.sessions.register(sessionId, user, payment);
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", creatorId=" + creatorId +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }
