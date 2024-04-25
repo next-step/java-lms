@@ -1,4 +1,4 @@
-package nextstep.courses.domain.Session;
+package nextstep.courses.domain.session;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,21 +14,15 @@ public class Students {
         this.value = students;
     }
 
-    public void addAll(Students students) {
-        this.value.addAll(students.getValue());
-    }
-
-    public void isPaidSessionFee(int sessionFee) {
-        for (Student student : value) {
-            student.isPaid(sessionFee);
-        }
-    }
-
     public List<Student> getValue() {
         return this.value;
     }
 
     public int getCounts() {
         return this.value.size();
+    }
+
+    public void add(Student newStudent) {
+        this.value.add(newStudent);
     }
 }
