@@ -38,4 +38,8 @@ public class Sessions {
                 .orElseThrow(() -> new IllegalArgumentException("session id가 존재하지 않습니다." + sessionId));
         findSession.register(user);
     }
+
+    public int size() {
+        return sessions.size();
+    }
 }
