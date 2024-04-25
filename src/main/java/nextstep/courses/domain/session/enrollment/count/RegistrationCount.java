@@ -8,8 +8,8 @@ public class RegistrationCount {
         this.value = value;
     }
 
-    public void addValue() {
-        value++;
+    public int addValue() {
+        return ++value;
     }
 
     public boolean isValueZero() {

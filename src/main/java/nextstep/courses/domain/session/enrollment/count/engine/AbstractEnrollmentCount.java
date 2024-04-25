@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session.enrollment.count.engine;
 
 import nextstep.courses.domain.session.enrollment.count.RegistrationCount;
+import nextstep.courses.error.exception.MaxRegistrationExceededException;
 
 public abstract class AbstractEnrollmentCount implements EnrollmentCount {
 
@@ -12,6 +13,10 @@ public abstract class AbstractEnrollmentCount implements EnrollmentCount {
 
     @Override
     public void addRegistrationCount() {
-        registrationCount.addValue();
+        int addedRegistrationCount = registrationCount.addValue();
+
+        if (addedRegistrationCount < 0){
+            throw new MaxRegistrationExceededException(registrationCount);
+        }
     }
 }
