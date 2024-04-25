@@ -3,7 +3,6 @@ package nextstep.courses.domain.session.enrollment;
 import nextstep.courses.domain.session.enrollment.count.engine.EnrollmentCount;
 import nextstep.courses.domain.session.enrollment.state.SessionState;
 import nextstep.courses.domain.student.Student;
-import nextstep.payments.domain.Money;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
