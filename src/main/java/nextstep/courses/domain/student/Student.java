@@ -37,7 +37,7 @@ public class Student extends BaseEntity {
         return studentName.getValue();
     }
 
-    public String  getEmail() {
+    public String getEmail() {
         return email.getValue();
     }
 

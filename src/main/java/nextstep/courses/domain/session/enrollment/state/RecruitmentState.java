@@ -10,7 +10,7 @@ public enum RecruitmentState {
     }
 
     private String value;
-    
+
     public String getValue() {
         return value;
     }

@@ -13,13 +13,15 @@ public class EnrollmentCountFactory {
     private EnrollmentCountFactory() {
     }
 
-    public static EnrollmentCount get(FeeType feeType, int registrationCount, int maxRegistrationCount){
-        if (FeeType.FREE == feeType){
+    public static EnrollmentCount get(FeeType feeType, int registrationCount,
+        int maxRegistrationCount) {
+        if (FeeType.FREE == feeType) {
             return new FreeEnrollmentCount(new RegistrationCount(registrationCount));
         }
 
-        if (FeeType.PAID == feeType){
-            return new PaidEnrollmentCount(new RegistrationCount(registrationCount), new MaxRegistrationCount(maxRegistrationCount));
+        if (FeeType.PAID == feeType) {
+            return new PaidEnrollmentCount(new RegistrationCount(registrationCount),
+                new MaxRegistrationCount(maxRegistrationCount));
         }
 
         throw new NotExistEnrollmentCountType();

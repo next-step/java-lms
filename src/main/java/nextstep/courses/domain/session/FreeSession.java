@@ -38,7 +38,8 @@ public class FreeSession extends Session {
         this(null, SessionName, enrollment, image, period);
     }
 
-    public FreeSession(Long id, SessionName SessionName, Enrollment enrollment, Image image, Period period) {
+    public FreeSession(Long id, SessionName SessionName, Enrollment enrollment, Image image,
+        Period period) {
         super(id, SessionName, enrollment, image, period);
     }
 }

@@ -77,9 +77,8 @@ class EnrollmentTest {
 
         Payment payment = new Payment("1", 1L, 1L, new Money(50000));
 
-        assertThatThrownBy(() -> {
-            enrollment.enroll(nsUser, payment);
-        }).isInstanceOf(PaymentConditionNotMetException.class)
+        assertThatThrownBy(() -> enrollment.enroll(nsUser, payment))
+            .isInstanceOf(PaymentConditionNotMetException.class)
             .hasMessage("결제 금액이 일치하지 않아 강의 등록에 실패하였습니다 강의료: 0, 결제금액: 50,000");
     }
 
@@ -94,9 +93,8 @@ class EnrollmentTest {
 
         Payment payment = new Payment("1", 1L, 1L, new Money(0));
 
-        assertThatThrownBy(() -> {
-            enrollment.enroll(nsUser, payment);
-        }).isInstanceOf(SessionNotOpenForEnrollmentException.class)
+        assertThatThrownBy(() -> enrollment.enroll(nsUser, payment))
+            .isInstanceOf(SessionNotOpenForEnrollmentException.class)
             .hasMessage("강의는 모집중 상태에서만 등록 가능합니다 현재 강의 상태: 준비중");
     }
 
@@ -111,9 +109,8 @@ class EnrollmentTest {
 
         Payment payment = new Payment("1", 1L, 1L, new Money(0));
 
-        assertThatThrownBy(() -> {
-            enrollment.enroll(nsUser, payment);
-        }).isInstanceOf(MaxRegistrationExceededException.class)
+        assertThatThrownBy(() -> enrollment.enroll(nsUser, payment))
+            .isInstanceOf(MaxRegistrationExceededException.class)
             .hasMessage("최대 등록 인원수를 초과하였습니다. 현재 강의 등록 인원: 10");
     }
 }

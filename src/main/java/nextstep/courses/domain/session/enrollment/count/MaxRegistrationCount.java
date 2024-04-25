@@ -1,6 +1,5 @@
 package nextstep.courses.domain.session.enrollment.count;
 
-import nextstep.courses.domain.session.enrollment.count.RegistrationCount;
 import nextstep.courses.error.exception.MaxRegistrationCountNotZero;
 
 public class MaxRegistrationCount {

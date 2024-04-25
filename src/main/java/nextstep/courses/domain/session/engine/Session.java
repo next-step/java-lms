@@ -18,11 +18,6 @@ public abstract class Session extends BaseEntity {
 
     private final Period period;
 
-    public Session(Session session, Enrollment enrollment) {
-        this(session.getId(), new SessionName(session.getSessionName()), enrollment,
-            session.getImage(), session.getPeriod());
-    }
-
     public Session(Long id, SessionName SessionName, Enrollment enrollment, Image image,
         Period period) {
         this.id = id;

@@ -12,11 +12,11 @@ public class SessionState {
         return recruitmentState == RecruitmentState.RECRUITING;
     }
 
-    public static RecruitmentState valueOfRecruitmentState(String value){
+    public static RecruitmentState valueOfRecruitmentState(String value) {
         return RecruitmentState.valueOf(value);
     }
 
-    public String getRecruitmentState(){
+    public String getRecruitmentState() {
         return recruitmentState.getValue();
     }
 }

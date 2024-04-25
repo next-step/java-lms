@@ -31,7 +31,7 @@ public class SessionEnrollment implements Enrollment {
     }
 
     public Student enroll(NsUser nsUser, Payment payment) {
-        if(checkRegistrationConditions(payment)){
+        if (checkRegistrationConditions(payment)) {
             enrollmentCount.addRegistrationCount();
             return new Student(nsUser, payment);
         }
@@ -41,15 +41,15 @@ public class SessionEnrollment implements Enrollment {
 
     @Override
     public boolean checkRegistrationConditions(Payment payment) {
-        if (!isSatisfyPaymentCondition(payment)){
+        if (!isSatisfyPaymentCondition(payment)) {
             throw new PaymentConditionNotMetException(tuitionFee, payment);
         }
 
-        if (!isSatisfySessionState()){
+        if (!isSatisfySessionState()) {
             throw new SessionNotOpenForEnrollmentException(sessionState);
         }
 
-        if (!isSatisfyCapacityCondition()){
+        if (!isSatisfyCapacityCondition()) {
             throw new MaxRegistrationExceededException(enrollmentCount);
         }
 
@@ -67,7 +67,7 @@ public class SessionEnrollment implements Enrollment {
     }
 
     @Override
-    public boolean isSatisfyCapacityCondition(){
+    public boolean isSatisfyCapacityCondition() {
         return enrollmentCount.isRegistrationWithinCapacity();
     }
 

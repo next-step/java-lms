@@ -33,7 +33,7 @@ public class SessionEntity extends BaseEntity {
 
     private LocalDateTime endDate;
 
-    public static SessionEntity from(Session session, Long imageId){
+    public static SessionEntity from(Session session, Long imageId) {
         Enrollment enrollment = session.getEnrollment();
         EnrollmentCount enrollmentCount = enrollment.getEnrollmentCount();
         SessionState sessionState = enrollment.getSessionState();

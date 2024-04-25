@@ -7,6 +7,7 @@ import nextstep.courses.domain.session.name.SessionName;
 import nextstep.courses.domain.session.period.Period;
 
 public class FreeSessionBuilder {
+
     private SessionName SessionName;
 
     private Enrollment enrollment;

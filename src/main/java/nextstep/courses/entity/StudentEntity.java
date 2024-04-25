@@ -13,18 +13,14 @@ public class StudentEntity extends BaseEntity {
 
     private int paymentAmount;
 
-    public static StudentEntity from(Student student){
+    public static StudentEntity from(Student student) {
         return new StudentEntity(null, student.getStudentName(), student.getEmail(),
             student.getPaymentAmount(), student.getCreatedAt());
     }
 
-    public StudentEntity(Long id, String studentName, String email, int paymentAmount, LocalDateTime createdAt) {
+    public StudentEntity(Long id, String studentName, String email, int paymentAmount,
+        LocalDateTime createdAt) {
         this(id, studentName, email, paymentAmount, createdAt, null);
-    }
-
-
-    public StudentEntity(Long id, String studentName, String email, int paymentAmount) {
-        this(id, studentName, email, paymentAmount, null, null);
     }
 
     public StudentEntity(Long id,

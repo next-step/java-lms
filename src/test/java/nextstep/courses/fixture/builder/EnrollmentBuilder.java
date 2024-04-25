@@ -8,6 +8,7 @@ import nextstep.courses.domain.session.feetype.FeeType;
 import nextstep.payments.domain.Money;
 
 public class EnrollmentBuilder {
+
     private EnrollmentCount enrollmentCount;
 
     private SessionState sessionState;

@@ -1,7 +1,7 @@
 package nextstep.courses.service;
 
-import nextstep.courses.domain.student.Student;
 import nextstep.courses.domain.session.enrollment.Enrollment;
+import nextstep.courses.domain.student.Student;
 import nextstep.courses.entity.SessionEntity;
 import nextstep.courses.entity.StudentEntity;
 import nextstep.courses.error.exception.NotExistSession;
@@ -37,7 +37,7 @@ public class lmsService {
         this.imageRepository = imageRepository;
     }
 
-    public void enroll(Long sessionId, NsUser nsUser){
+    public void enroll(Long sessionId, NsUser nsUser) {
         SessionEntity sessionEntity = sessionRepository.findById(sessionId)
             .orElseThrow(() -> new NotExistSession(sessionId));
 

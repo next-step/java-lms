@@ -15,7 +15,7 @@ public abstract class AbstractEnrollmentCount implements EnrollmentCount {
     public void addRegistrationCount() {
         int addedRegistrationCount = registrationCount.addValue();
 
-        if (addedRegistrationCount < 0){
+        if (addedRegistrationCount < 0) {
             throw new MaxRegistrationExceededException(registrationCount);
         }
     }
