@@ -5,4 +5,9 @@ public interface EnrollmentCount {
     boolean isRegistrationWithinCapacity();
 
     void addRegistrationCount();
+
+    int getRegistrationCount();
+
+    int getMaxRegistrationCount();
+
 }

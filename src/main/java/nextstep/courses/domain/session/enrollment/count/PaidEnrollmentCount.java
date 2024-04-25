@@ -16,4 +16,14 @@ public class PaidEnrollmentCount extends AbstractEnrollmentCount {
     public boolean isRegistrationWithinCapacity() {
         return maxRegistrationCount.isCountNotOver(registrationCount);
     }
+
+    @Override
+    public int getRegistrationCount() {
+        return registrationCount.getValue();
+    }
+
+    @Override
+    public int getMaxRegistrationCount() {
+        return maxRegistrationCount.getValue();
+    }
 }

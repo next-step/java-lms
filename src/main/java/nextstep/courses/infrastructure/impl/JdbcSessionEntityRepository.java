@@ -20,23 +20,23 @@ public class JdbcSessionEntityRepository implements SessionRepository {
 
     @Override
     public int save(SessionEntity sessionEntity, Long courseId) {
-        String sql = "insert into session (session_name, registration_count, max_registration_count, tuitionFee, course_id, start_date, end_date, recruitment_state, tuition_fee, created_at) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into session (session_name, registration_count, max_registration_count, tuition_fee, course_id, recruitment_state, fee_type, start_date, end_date, created_at) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
             sessionEntity.getSessionName(),
             sessionEntity.getRegistrationCount(),
             sessionEntity.getMaxRegistrationCount(),
             sessionEntity.getTuitionFee(),
             courseId,
+            sessionEntity.getRecruitmentState(),
+            sessionEntity.getFeeType(),
             sessionEntity.getStartDate(),
             sessionEntity.getEndDate(),
-            sessionEntity.getRecruitmentState(),
-            sessionEntity.getTuitionFee(),
             sessionEntity.getCreatedAt());
     }
 
     @Override
     public Optional<SessionEntity> findById(Long id) {
-        String sql = "select id, session_name, registration_count, max_registration_count, tuitionFee, course_id, recruitment_state, fee_type, start_date, end_date, created_at, updated_at from session where id = ?";
+        String sql = "select id, session_name, registration_count, max_registration_count, tuition_fee, course_id, recruitment_state, fee_type, start_date, end_date, created_at, updated_at from session where id = ?";
         RowMapper<SessionEntity> rowMapper = (rs, rowNum) -> new SessionEntity(
             rs.getLong(1),
             rs.getString(2),

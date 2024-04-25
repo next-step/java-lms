@@ -26,7 +26,8 @@ public class PaidSession extends Session {
                     sessionEntity.getMaxRegistrationCount()),
                 new SessionState(
                     SessionState.valueOfRecruitmentState(sessionEntity.getRecruitmentState())),
-                new Money(sessionEntity.getTuitionFee())),
+                new Money(sessionEntity.getTuitionFee()),
+                FeeType.valueOf(sessionEntity.getFeeType())),
             null,
             new Period(sessionEntity.getStartDate(), sessionEntity.getEndDate()),
             new MaxRegistrationCount(sessionEntity.getRegistrationCount()));

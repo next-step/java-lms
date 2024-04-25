@@ -14,7 +14,7 @@ create table session
     session_name           varchar(255) not null,
     registration_count     bigint       not null,
     max_registration_count bigint,
-    tuitionFee             bigint       not null,
+    tuition_fee            bigint       not null,
     course_id              bigint       not null,
     recruitment_state      varchar(255) not null,
     fee_type               varchar(255) not null,

@@ -2,6 +2,7 @@ package nextstep.courses.domain.session.enrollment;
 
 import nextstep.courses.domain.session.enrollment.count.engine.EnrollmentCount;
 import nextstep.courses.domain.session.enrollment.state.SessionState;
+import nextstep.courses.domain.session.feetype.FeeType;
 import nextstep.courses.domain.student.Student;
 import nextstep.courses.error.exception.SessionRegisterFailException;
 import nextstep.payments.domain.Money;
@@ -16,11 +17,14 @@ public class SessionEnrollment implements Enrollment {
 
     private final Money tuitionFee;
 
+    private final FeeType feeType;
+
     public SessionEnrollment(EnrollmentCount enrollmentCount, SessionState sessionState,
-        Money tuitionFee) {
+        Money tuitionFee, FeeType feeType) {
         this.enrollmentCount = enrollmentCount;
         this.sessionState = sessionState;
         this.tuitionFee = tuitionFee;
+        this.feeType = feeType;
     }
 
     public Student enroll(NsUser nsUser, Payment payment) {
@@ -53,5 +57,25 @@ public class SessionEnrollment implements Enrollment {
     @Override
     public boolean isRegistrationPossible() {
         return sessionState.isRecruitmentOpen();
+    }
+
+    @Override
+    public EnrollmentCount getEnrollmentCount() {
+        return enrollmentCount;
+    }
+
+    @Override
+    public SessionState getSessionState() {
+        return sessionState;
+    }
+
+    @Override
+    public int getTuitionFee() {
+        return tuitionFee.getValue();
+    }
+
+    @Override
+    public String getFeeType() {
+        return feeType.getValue();
     }
 }

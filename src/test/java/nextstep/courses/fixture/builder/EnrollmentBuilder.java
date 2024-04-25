@@ -1,44 +1,45 @@
 package nextstep.courses.fixture.builder;
 
-import nextstep.courses.domain.cover.Image;
-import nextstep.courses.domain.session.FreeSession;
 import nextstep.courses.domain.session.enrollment.Enrollment;
-import nextstep.courses.domain.session.name.SessionName;
-import nextstep.courses.domain.session.period.Period;
+import nextstep.courses.domain.session.enrollment.SessionEnrollment;
+import nextstep.courses.domain.session.enrollment.count.engine.EnrollmentCount;
+import nextstep.courses.domain.session.enrollment.state.SessionState;
+import nextstep.courses.domain.session.feetype.FeeType;
+import nextstep.payments.domain.Money;
 
-public class FreeSessionBuilder {
-    private SessionName SessionName;
+public class EnrollmentBuilder {
+    private EnrollmentCount enrollmentCount;
 
-    private Enrollment enrollment;
+    private SessionState sessionState;
 
-    private Image image;
+    private Money tuitionFee;
 
-    private Period period;
+    private FeeType feeType;
 
-    public static FreeSessionBuilder anFreeSession() {
-        return new FreeSessionBuilder();
+    public static EnrollmentBuilder anEnrollment() {
+        return new EnrollmentBuilder();
     }
 
-    public FreeSessionBuilder withName(String name) {
-        this.SessionName = new SessionName(name);
+    public EnrollmentBuilder withEnrollmentCount(EnrollmentCount enrollmentCount) {
+        this.enrollmentCount = enrollmentCount;
         return this;
     }
 
-    public FreeSessionBuilder withEnrollment(Enrollment enrollment) {
-        this.enrollment = enrollment;
+    public EnrollmentBuilder withSessionState(SessionState sessionState) {
+        this.sessionState = sessionState;
         return this;
     }
 
-    public FreeSessionBuilder withImage(Image image) {
-        this.image = image;
+    public EnrollmentBuilder withTuitionFee(Money tuitionFee) {
+        this.tuitionFee = tuitionFee;
         return this;
     }
-    public FreeSessionBuilder withValidityPeriod(Period period) {
-        this.period = period;
+    public EnrollmentBuilder withFeeType(FeeType feeType) {
+        this.feeType = feeType;
         return this;
     }
 
-    public FreeSession build() {
-        return new FreeSession(SessionName, enrollment, image, period);
+    public Enrollment build() {
+        return new SessionEnrollment(enrollmentCount, sessionState, tuitionFee, feeType);
     }
 }

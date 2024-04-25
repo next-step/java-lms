@@ -1,10 +1,14 @@
 package nextstep.courses.entity;
 
 import java.time.LocalDateTime;
+import nextstep.courses.domain.cover.Image;
+import nextstep.courses.domain.session.engine.Session;
 import nextstep.courses.domain.session.enrollment.Enrollment;
 import nextstep.courses.domain.session.enrollment.SessionEnrollment;
+import nextstep.courses.domain.session.enrollment.count.engine.EnrollmentCount;
 import nextstep.courses.domain.session.enrollment.state.SessionState;
 import nextstep.courses.domain.session.feetype.FeeType;
+import nextstep.courses.domain.session.period.Period;
 import nextstep.courses.factory.EnrollmentCountFactory;
 import nextstep.payments.domain.Money;
 
@@ -30,27 +34,25 @@ public class SessionEntity extends BaseEntity {
 
     private LocalDateTime endDate;
 
-//    public static SessionEntity from(Session session){
-//        return new SessionEntity(session.getId(),
-//            session.getSessionName(),
-//
-//            session.getCreatedAt(),
-//            session.getUpdatedAt());
-//    }
-//
-//    public static SessionEntity from(Session session, Image image){
-//        return new SessionEntity(session.getId(),
-//            session.getSessionName(),
-//            session.getRegistrationCount(),
-//            session.getMaxRegistrationCount(),
-//            session.getTuitionFee(),
-//            image.getId(),
-//            session.getSessionStatus(),
-//            session.getValidityPeriod().getStartDate(),
-//            session.getValidityPeriod().getEndDate(),
-//            session.getCreatedAt(),
-//            session.getUpdatedAt());
-//    }
+    public static SessionEntity from(Session session, Long imageId){
+        Enrollment enrollment = session.getEnrollment();
+        EnrollmentCount enrollmentCount = enrollment.getEnrollmentCount();
+        SessionState sessionState = enrollment.getSessionState();
+        Period period = session.getPeriod();
+
+        return new SessionEntity(session.getId(),
+            session.getSessionName(),
+            enrollmentCount.getRegistrationCount(),
+            enrollmentCount.getMaxRegistrationCount(),
+            enrollment.getTuitionFee(),
+            imageId,
+            sessionState.recruitmentState(),
+            enrollment.getFeeType(),
+            period.getStartDate(),
+            period.getEndDate(),
+            session.getCreatedAt(),
+            session.getUpdatedAt());
+    }
 
     public SessionEntity(Long id,
         String sessionName,
@@ -76,7 +78,8 @@ public class SessionEntity extends BaseEntity {
                 registrationCount,
                 maxRegistrationCount),
             new SessionState(SessionState.valueOfRecruitmentState(recruitmentState)),
-            new Money(tuitionFee));
+            new Money(tuitionFee),
+            FeeType.valueOf(feeType));
     }
 
 

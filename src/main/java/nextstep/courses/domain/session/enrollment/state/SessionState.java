@@ -15,4 +15,8 @@ public class SessionState {
     public static RecruitmentState valueOfRecruitmentState(String value){
         return RecruitmentState.valueOf(value);
     }
+
+    public String recruitmentState(){
+        return recruitmentState.getValue();
+    }
 }

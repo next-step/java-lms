@@ -10,4 +10,7 @@ public enum FeeType {
 
     private String value;
 
+    public String getValue() {
+        return value;
+    }
 }

@@ -23,9 +23,15 @@ public class FreeSession extends Session {
                     sessionEntity.getMaxRegistrationCount()),
                 new SessionState(
                     SessionState.valueOfRecruitmentState(sessionEntity.getRecruitmentState())),
-                new Money(sessionEntity.getTuitionFee())),
+                new Money(sessionEntity.getTuitionFee()),
+                FeeType.valueOf(sessionEntity.getFeeType())),
             null,
             new Period(sessionEntity.getStartDate(), sessionEntity.getEndDate()));
+    }
+
+    public FreeSession(Session session, Enrollment enrollment) {
+        this(session.getId(), new SessionName(session.getSessionName()), enrollment,
+            session.getImage(), session.getPeriod());
     }
 
     public FreeSession(SessionName SessionName, Enrollment enrollment, Image image, Period period) {
