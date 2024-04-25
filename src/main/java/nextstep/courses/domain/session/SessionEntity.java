@@ -1,11 +1,12 @@
 package nextstep.courses.domain.session;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class SessionEntity {
     private Long id;
     private String name;
-    private String coverImage;
+    private List<String> coverImages;
     private int fee;
     private SessionProgressStatus sessionProgressStatus;
     private SessionApplyStatus sessionApplyStatus;
@@ -17,10 +18,10 @@ public class SessionEntity {
 
     }
 
-    public SessionEntity(Long id, String name, String coverImage, int fee, SessionProgressStatus sessionProgressStatus, SessionApplyStatus sessionApplyStatus, int maxStudents, LocalDate startDate, LocalDate endDate) {
+    public SessionEntity(Long id, String name, List<String> coverImages, int fee, SessionProgressStatus sessionProgressStatus, SessionApplyStatus sessionApplyStatus, int maxStudents, LocalDate startDate, LocalDate endDate) {
         this.id = id;
         this.name = name;
-        this.coverImage = coverImage;
+        this.coverImages = coverImages;
         this.fee = fee;
         this.sessionProgressStatus = sessionProgressStatus;
         this.sessionApplyStatus = sessionApplyStatus;

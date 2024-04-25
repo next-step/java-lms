@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.image.Images;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionApplyStatus;
 import nextstep.courses.domain.session.SessionProgressStatus;
@@ -20,16 +21,16 @@ public class SessionTest {
     private final Long sessionId = 1L;
     private final LocalDate startDate = LocalDate.now();
     private final LocalDate endDate = LocalDate.now();
-    private final Image coverImage = new Image(1024, "gif", 300, 200);
-    private final int fee = 10000;
-    private final int maxStudents = 1;
+    private final Images coverImages = new Images(new ArrayList<>());
 
     private Session session;
     private NsUser loginUser;
 
     @BeforeEach
     public void setUp() {
-        session = new Session(sessionId, startDate, endDate, coverImage, fee, maxStudents);
+        int fee = 10000;
+        int maxStudents = 1;
+        session = new Session(sessionId, startDate, endDate, coverImages, fee, maxStudents);
         session.changeProgressStatus(SessionProgressStatus.IN_PROGRESS);
         session.changeApplyStatus(SessionApplyStatus.APPLYING);
 
@@ -38,7 +39,7 @@ public class SessionTest {
 
     @Test
     public void 무료강의는_최대수강인원_제한이_없다() {
-        Session freeSession = new Session(sessionId, startDate, endDate, coverImage, 0, 1);
+        Session freeSession = new Session(sessionId, startDate, endDate, coverImages, 0, 1);
 
         freeSession.changeProgressStatus(SessionProgressStatus.IN_PROGRESS);
         freeSession.changeApplyStatus(SessionApplyStatus.APPLYING);

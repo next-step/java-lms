@@ -1,23 +1,24 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.image.Image;
+import nextstep.courses.domain.image.Images;
 
 import java.time.LocalDate;
 
 public class Session {
     private Long id;
     private final SessionDuration sessionDuration;
-    private final Image coverImage;
+    private final Images coverImages;
     private final int fee;
     private final int maxStudents;
     private SessionProgressStatus sessionProgressStatus = SessionProgressStatus.READY;
     private SessionApplyStatus sessionApplyStatus = SessionApplyStatus.NOT_APPLYING;
     private final Enrollment enrollment;
 
-    public Session(Long id, LocalDate startDate, LocalDate endDate, Image coverImage, int fee, int maxStudents) {
+    public Session(Long id, LocalDate startDate, LocalDate endDate, Images coverImages, int fee, int maxStudents) {
         this.id = id;
         this.sessionDuration = new SessionDuration(startDate, endDate);
-        this.coverImage = coverImage;
+        this.coverImages = coverImages;
         this.fee = fee;
         this.maxStudents = maxStudents;
         this.enrollment = new Enrollment(fee, maxStudents, sessionProgressStatus, sessionApplyStatus);
