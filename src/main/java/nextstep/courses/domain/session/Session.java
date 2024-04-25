@@ -3,7 +3,6 @@ package nextstep.courses.domain.session;
 import nextstep.courses.domain.image.Image;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public class Session {
     private Long id;
@@ -11,7 +10,8 @@ public class Session {
     private final Image coverImage;
     private final int fee;
     private final int maxStudents;
-    private SessionStatus sessionStatus = SessionStatus.READY;
+    private SessionProgressStatus sessionProgressStatus = SessionProgressStatus.READY;
+    private SessionApplyStatus sessionApplyStatus = SessionApplyStatus.NOT_APPLYING;
     private final Enrollment enrollment;
 
     public Session(Long id, LocalDate startDate, LocalDate endDate, Image coverImage, int fee, int maxStudents) {
@@ -20,23 +20,28 @@ public class Session {
         this.coverImage = coverImage;
         this.fee = fee;
         this.maxStudents = maxStudents;
-        this.enrollment = new Enrollment(fee, maxStudents, sessionStatus);
+        this.enrollment = new Enrollment(fee, maxStudents, sessionProgressStatus, sessionApplyStatus);
     }
 
     public void enroll(Student student) {
         this.enrollment.enroll(student);
     }
 
-    public void changeStatus(SessionStatus sessionStatus) {
-        this.sessionStatus = sessionStatus;
-        this.enrollment.changeStatus(sessionStatus);
+    public void changeProgressStatus(SessionProgressStatus sessionProgressStatus) {
+        this.sessionProgressStatus = sessionProgressStatus;
+        this.enrollment.changeProgressStatus(sessionProgressStatus);
+    }
+
+    public void changeApplyStatus(SessionApplyStatus sessionApplyStatus) {
+        this.sessionApplyStatus = sessionApplyStatus;
+        this.enrollment.changeApplyStatus(sessionApplyStatus);
     }
 
     public Long getId() {
         return this.id;
     }
 
-    public SessionStatus getStatus() {
-        return this.sessionStatus;
+    public SessionProgressStatus getStatus() {
+        return this.sessionProgressStatus;
     }
 }
