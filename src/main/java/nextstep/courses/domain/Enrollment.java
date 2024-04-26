@@ -1,7 +1,5 @@
 package nextstep.courses.domain;
 
-import java.util.ArrayList;
-import javax.security.auth.kerberos.KerberosCredMessage;
 import nextstep.courses.CannotRegisterException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;

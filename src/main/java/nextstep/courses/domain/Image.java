@@ -1,12 +1,7 @@
 package nextstep.courses.domain;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import javax.imageio.ImageIO;
-import org.springframework.core.io.ClassPathResource;
 
 public class Image {
 
