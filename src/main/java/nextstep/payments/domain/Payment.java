@@ -29,6 +29,6 @@ public class Payment {
     }
 
     public boolean isEqualAmount(Money money) {
-        return amount.equal(money);
+        return amount.equals(money);
     }
 }

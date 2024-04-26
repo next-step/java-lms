@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import java.util.Objects;
+
 public class Money {
 
     private final long amount;
@@ -8,7 +10,15 @@ public class Money {
         this.amount = amount;
     }
 
-    public boolean equal(Money amount) {
-        return this.amount == amount.amount;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Money)) {
+            return false;
+        }
+        Money money = (Money) o;
+        return amount == money.amount;
     }
 }
