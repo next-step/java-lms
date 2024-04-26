@@ -8,8 +8,11 @@ import nextstep.courses.domain.cover.ImageWidth;
 
 public class ImageBuilder {
     private ImageSize size;
+
     private ImageType type;
+
     private ImageWidth width;
+
     private ImageHeight height;
 
     private ImageBuilder() {}

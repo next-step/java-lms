@@ -1,36 +1,32 @@
 package nextstep.courses.fixture.builder;
 
-import java.time.LocalDateTime;
 import nextstep.courses.domain.cover.Image;
-import nextstep.courses.domain.session.SessionName;
-import nextstep.courses.domain.session.SessionStatus;
-import nextstep.courses.domain.session.impl.FreeSession;
+import nextstep.courses.domain.session.FreeSession;
+import nextstep.courses.domain.session.enrollment.Enrollment;
+import nextstep.courses.domain.session.name.SessionName;
+import nextstep.courses.domain.session.period.Period;
 
 public class FreeSessionBuilder {
-    private SessionName name;
-    private LocalDateTime beginDateTime;
-    private LocalDateTime endDateTime;
-    private Image image;
-    private SessionStatus status;
 
-    private FreeSessionBuilder() {}
+    private SessionName SessionName;
+
+    private Enrollment enrollment;
+
+    private Image image;
+
+    private Period period;
 
     public static FreeSessionBuilder anFreeSession() {
         return new FreeSessionBuilder();
     }
 
     public FreeSessionBuilder withName(String name) {
-        this.name = new SessionName(name);
+        this.SessionName = new SessionName(name);
         return this;
     }
 
-    public FreeSessionBuilder withBeginDateTime(LocalDateTime beginDateTime) {
-        this.beginDateTime = beginDateTime;
-        return this;
-    }
-
-    public FreeSessionBuilder withEndDateTime(LocalDateTime endDateTime) {
-        this.endDateTime = endDateTime;
+    public FreeSessionBuilder withEnrollment(Enrollment enrollment) {
+        this.enrollment = enrollment;
         return this;
     }
 
@@ -38,13 +34,12 @@ public class FreeSessionBuilder {
         this.image = image;
         return this;
     }
-
-    public FreeSessionBuilder withStatus(SessionStatus status) {
-        this.status = status;
+    public FreeSessionBuilder withValidityPeriod(Period period) {
+        this.period = period;
         return this;
     }
 
     public FreeSession build() {
-        return new FreeSession(name, beginDateTime, endDateTime, image, status);
+        return new FreeSession(SessionName, enrollment, image, period);
     }
 }

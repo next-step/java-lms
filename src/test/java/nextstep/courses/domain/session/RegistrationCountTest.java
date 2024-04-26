@@ -2,6 +2,7 @@ package nextstep.courses.domain.session;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import nextstep.courses.domain.session.enrollment.count.RegistrationCount;
 import org.junit.jupiter.api.Test;
 
 class RegistrationCountTest {

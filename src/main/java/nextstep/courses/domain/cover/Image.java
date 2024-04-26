@@ -1,8 +1,10 @@
 package nextstep.courses.domain.cover;
 
-import nextstep.courses.domain.BaseEntity;
+import nextstep.courses.entity.BaseEntity;
 
 public class Image extends BaseEntity {
+
+    private Long id;
 
     private final ImageSize size;
 
@@ -18,10 +20,27 @@ public class Image extends BaseEntity {
     }
 
     public Image(ImageSize size, ImageType type, ImageWidth width, ImageHeight height) {
+        this(null, size, type, width, height);
+    }
+
+    public Image(Long id, ImageSize size, ImageType type, ImageWidth width, ImageHeight height) {
+        this.id = id;
         this.size = size;
         this.type = type;
         this.width = width;
         this.height = height;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public int getSize() {
+        return size.getValue();
+    }
+
+    public String  getType() {
+        return type.getValue();
     }
 
     public int getWidth() {
