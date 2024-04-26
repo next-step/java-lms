@@ -17,7 +17,7 @@ class EnrollmentTest {
 
     @BeforeEach
     void setUp() {
-        enrollment = new Enrollment(1, 1_000);
+        enrollment = Enrollment.createPaidEnrollment(new Students(), 1, 1_000);
     }
 
     @Test
@@ -40,7 +40,7 @@ class EnrollmentTest {
 
     @Test
     void 등록_수강인원_예외() {
-        enrollment = new Enrollment(1, 1_000);
+        enrollment = Enrollment.createPaidEnrollment(new Students(), 1, 1_000);
         Payment payment = new Payment("0", 0L, NsUserTest.JAVAJIGI.getId(), 1_000L);
 
         assertThatThrownBy(() -> {
@@ -52,7 +52,7 @@ class EnrollmentTest {
     @ParameterizedTest
     @ValueSource(longs = {0L, 999L, 1_001L})
     void 등록_수강료_예외(long fee) {
-        enrollment = new Enrollment(1, 1_000);
+        enrollment = Enrollment.createPaidEnrollment(new Students(), 1, 1_000);
         Payment invalidPayment = new Payment("0", 0L, NsUserTest.JAVAJIGI.getId(), fee);
 
         assertThatThrownBy(() -> {

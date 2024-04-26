@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import java.util.ArrayList;
+import javax.security.auth.kerberos.KerberosCredMessage;
 import nextstep.courses.CannotRegisterException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -10,14 +12,26 @@ public class Enrollment {
     private int studentCapacity;
     private Money fee;
 
-    public Enrollment(Students students, int studentCapacity, long fee) {
+    private Enrollment(Students students, int studentCapacity, long fee) {
         this.students = students;
         this.studentCapacity = studentCapacity;
         this.fee = new Money(fee);
     }
 
-    public Enrollment(int studentCapacity, long fee) {
+    private Enrollment(int studentCapacity, long fee) {
         this(new Students(), studentCapacity, fee);
+    }
+
+    private Enrollment(Students students) {
+        this.students = students;
+    }
+
+    public static Enrollment createFreeEnrollment(Students students) {
+        return new Enrollment(students);
+    }
+
+    public static Enrollment createPaidEnrollment(Students students, int studentCapacity, long fee) {
+        return new Enrollment(studentCapacity, fee);
     }
 
     public void enroll(NsUser student) {
