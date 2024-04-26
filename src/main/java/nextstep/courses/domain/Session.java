@@ -1,12 +1,6 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import javax.swing.ImageIcon;
-import javax.swing.MenuElement;
 import nextstep.courses.CannotRegisterException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -49,6 +43,10 @@ public class Session {
 
     public boolean hasId(Long id) {
         return this.id == id;
+    }
+
+    public int countOfEnrolledStudent() {
+        return enrollment.countOfEnrolledStudent();
     }
 
     private void isRegisteredAllowed() throws CannotRegisterException {
