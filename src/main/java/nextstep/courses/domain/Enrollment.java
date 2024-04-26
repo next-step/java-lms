@@ -10,14 +10,14 @@ public class Enrollment {
     private int studentCapacity;
     private Money fee;
 
+    private Enrollment(Students students) {
+        this(students, 0, 0);
+    }
+
     private Enrollment(Students students, int studentCapacity, long fee) {
         this.students = students;
         this.studentCapacity = studentCapacity;
         this.fee = new Money(fee);
-    }
-
-    private Enrollment(Students students) {
-        this(students, 0, 0);
     }
 
     public static Enrollment createFreeEnrollment(Students students) {
