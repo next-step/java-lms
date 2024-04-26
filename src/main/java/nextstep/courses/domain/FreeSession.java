@@ -1,6 +1,13 @@
 package nextstep.courses.domain;
 
-public class FreeSession implements SessionType {
+import java.time.LocalDateTime;
+
+public class FreeSession extends Session {
+
+	public FreeSession(Course course, ImageInfo imageInfo, LocalDateTime startDate, LocalDateTime endDate) {
+		super(course, imageInfo, startDate, endDate);
+	}
+
 	@Override
 	public boolean isMaximumNumberOfParticipantsLimited(int NumberOfParticipants) {
 		return true;
