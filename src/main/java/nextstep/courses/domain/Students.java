@@ -12,7 +12,7 @@ public class Students {
         validate(student);
         this.students.add(student);
     }
-    public final int size() {
+    public int size() {
         return students.size();
     }
 
