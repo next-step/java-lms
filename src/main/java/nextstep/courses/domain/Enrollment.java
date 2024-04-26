@@ -34,6 +34,10 @@ public class Enrollment {
         this.students.admit(student);
     }
 
+    public int countOfEnrolledStudent() {
+        return this.students.size();
+    }
+
     private boolean isFull() {
         return studentCapacity == students.size();
     }
