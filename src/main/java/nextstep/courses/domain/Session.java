@@ -14,14 +14,11 @@ public class Session {
 
     private long id;
     private String title;
-
     private SessionDuration sessionDuration;
     private SessionType sessionType;
     private SessionState state;
     private Image image;
-
     private Course course;
-
     private Enrollment enrollment;
 
     public Session(long id, String title, SessionType sessionType, SessionState state, Image image,
