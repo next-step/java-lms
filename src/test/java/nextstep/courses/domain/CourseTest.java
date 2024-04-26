@@ -21,9 +21,26 @@ class CourseTest {
     void 무료강의_생성() {
         Course course = new Course();
         LocalDateTime now = LocalDateTime.now();
-        Session session = new Session(1L, "lms", SessionType.FREE, SessionState.RECRUITING, image, now.plusDays(5), now.plusDays(30));
-        Session session2 = new Session(2L, "lms2", SessionType.FREE, SessionState.RECRUITING, image, now.plusDays(15), now.plusDays(35));
-        course.add(session);
+
+        Session session1 = new Session.Builder(1L)
+                .title("lms")
+                .sessionType(SessionType.FREE)
+                .image(image)
+                .state(SessionState.RECRUITING)
+                .sessionDuration(now.plusDays(5), now.plusDays(30))
+                .enrollment(Enrollment.createFreeEnrollment(new Students()))
+                .build();
+
+        Session session2 = new Session.Builder(2L)
+                .title("lms2")
+                .sessionType(SessionType.FREE)
+                .image(image)
+                .state(SessionState.RECRUITING)
+                .sessionDuration(now.plusDays(5), now.plusDays(30))
+                .enrollment(Enrollment.createFreeEnrollment(new Students()))
+                .build();
+
+        course.add(session1);
         course.add(session2);
 
         assertThat(course.countOfSession()).isEqualTo(2);
@@ -33,7 +50,16 @@ class CourseTest {
     void 유료강의_생성() {
         Course course = new Course();
         LocalDateTime now = LocalDateTime.now();
-        Session session = new Session(1L, "lms", SessionType.PAID, SessionState.RECRUITING, image, now.plusDays(5), now.plusDays(30), 2, 5_000);
+        Session session = new Session.Builder(1L)
+                .title("lms")
+                .sessionType(SessionType.PAID)
+                .image(image)
+                .state(SessionState.RECRUITING)
+                .sessionDuration(now.plusDays(5), now.plusDays(30))
+                .enrollment(Enrollment.createPaidEnrollment(new Students(), 10, 5_000))
+                .build();
         course.add(session);
+
+        assertThat(course.countOfSession()).isEqualTo(1);
     }
 }
