@@ -3,23 +3,22 @@ package nextstep.session.domain;
 import nextstep.courses.domain.Course;
 
 public class PaidSession extends Session {
-	private long sessionPrice;
-	private int maximumNumberOfParticipants;
 
-	public PaidSession(Course course, ImageInfo imageInfo, Period period, long sessionPrice, int maximumNumberOfParticipants) {
+	private PaidSessionBody paidSessionBody;
+
+	public PaidSession(Course course, ImageInfo imageInfo, Period period, PaidSessionBody paidSessionBody) {
 		super(course, imageInfo, period);
-		this.sessionPrice = sessionPrice;
-		this.maximumNumberOfParticipants = maximumNumberOfParticipants;
+		this.paidSessionBody = paidSessionBody;
 	}
 
 	@Override
-	public boolean isMaximumNumberOfParticipantsLimited(int NumberOfParticipants) {
-		return NumberOfParticipants <= maximumNumberOfParticipants;
+	public boolean isMaximumNumberOfParticipantsLimited(int numberOfParticipants) {
+		return paidSessionBody.isMaximumNumberOfParticipantsLimited(numberOfParticipants);
 	}
 
 	@Override
 	public boolean isSamePaymentAndSessionPrice(int payment) {
-		return payment == sessionPrice;
+		return paidSessionBody.isSamePaymentAndSessionPrice(payment);
 	}
 
 }
