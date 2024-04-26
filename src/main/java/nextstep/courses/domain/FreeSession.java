@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 
 public class FreeSession extends Session {
 
-	public FreeSession(Course course, ImageInfo imageInfo, LocalDateTime startDate, LocalDateTime endDate) {
-		super(course, imageInfo, startDate, endDate);
+	public FreeSession(Course course, ImageInfo imageInfo, Period period) {
+		super(course, imageInfo, period);
 	}
 
 	@Override

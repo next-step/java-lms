@@ -6,8 +6,8 @@ public class PaidSession extends Session {
 	private long sessionPrice;
 	private int maximumNumberOfParticipants;
 
-	public PaidSession(Course course, ImageInfo imageInfo, LocalDateTime startDate, LocalDateTime endDate, long sessionPrice, int maximumNumberOfParticipants) {
-		super(course, imageInfo, startDate, endDate);
+	public PaidSession(Course course, ImageInfo imageInfo, Period period, long sessionPrice, int maximumNumberOfParticipants) {
+		super(course, imageInfo, period);
 		this.sessionPrice = sessionPrice;
 		this.maximumNumberOfParticipants = maximumNumberOfParticipants;
 	}
