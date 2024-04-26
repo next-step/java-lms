@@ -9,6 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ImageInfoTest {
 
+	public static final ImageInfo imageInfo = new ImageInfo(1024, "gif",300,200);
+
 	@Test
 	public void 강의커버이미지_크기_1MB이하_실패_테스트() {
 		assertThatThrownBy(() -> new ImageInfo(1200))
