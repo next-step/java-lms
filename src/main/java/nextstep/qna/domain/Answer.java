@@ -79,6 +79,6 @@ public class Answer {
 
     public DeleteHistory delete() {
         this.deleted = true;
-        return new DeleteHistory(ContentType.ANSWER, getId(), getWriter(), LocalDateTime.now());
+        return DeleteHistory.createAnswer(getId(), getWriter(), LocalDateTime.now());
     }
 }
