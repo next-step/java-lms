@@ -18,12 +18,8 @@ public class Enrollment {
         this.fee = new Money(fee);
     }
 
-    private Enrollment(int studentCapacity, long fee) {
-        this(new Students(), studentCapacity, fee);
-    }
-
     private Enrollment(Students students) {
-        this.students = students;
+        this(students, 0, 0);
     }
 
     public static Enrollment createFreeEnrollment(Students students) {
@@ -31,7 +27,7 @@ public class Enrollment {
     }
 
     public static Enrollment createPaidEnrollment(Students students, int studentCapacity, long fee) {
-        return new Enrollment(studentCapacity, fee);
+        return new Enrollment(students, studentCapacity, fee);
     }
 
     public void enroll(NsUser student) {
