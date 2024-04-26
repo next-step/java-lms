@@ -3,6 +3,8 @@ package nextstep.courses.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.ArrayList;
+import java.util.List;
 import nextstep.courses.CannotRegisterException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
@@ -17,7 +19,7 @@ class EnrollmentTest {
 
     @BeforeEach
     void setUp() {
-        enrollment = Enrollment.createPaidEnrollment(new Students(), 1, 1_000);
+        enrollment = Enrollment.createPaidEnrollment(new Students(new ArrayList<>()), 1, 1_000);
     }
 
     @Test
@@ -31,8 +33,8 @@ class EnrollmentTest {
     @Test
     void 등록_유로_강의() throws CannotRegisterException {
         Payment payment = new Payment("0", 0L, NsUserTest.JAVAJIGI.getId(), 1_000L);
-        int expected = 1;
         enrollment.enroll(NsUserTest.JAVAJIGI, payment);
+        int expected = 1;
 
         assertThat(enrollment.countOfEnrolledStudent()).isEqualTo(expected);
     }
@@ -40,7 +42,7 @@ class EnrollmentTest {
 
     @Test
     void 등록_수강인원_예외() {
-        enrollment = Enrollment.createPaidEnrollment(new Students(), 1, 1_000);
+        enrollment = Enrollment.createPaidEnrollment(new Students(List.of(NsUserTest.JAVAJIGI)), 1, 1_000);
         Payment payment = new Payment("0", 0L, NsUserTest.JAVAJIGI.getId(), 1_000L);
 
         assertThatThrownBy(() -> {
@@ -52,7 +54,7 @@ class EnrollmentTest {
     @ParameterizedTest
     @ValueSource(longs = {0L, 999L, 1_001L})
     void 등록_수강료_예외(long fee) {
-        enrollment = Enrollment.createPaidEnrollment(new Students(), 1, 1_000);
+        enrollment = Enrollment.createPaidEnrollment(new Students(List.of(NsUserTest.JAVAJIGI)), 1, 1_000);
         Payment invalidPayment = new Payment("0", 0L, NsUserTest.JAVAJIGI.getId(), fee);
 
         assertThatThrownBy(() -> {

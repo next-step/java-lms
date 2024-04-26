@@ -3,6 +3,8 @@ package nextstep.courses.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.internal.bytebuddy.asm.Advice.Local;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +30,7 @@ class CourseTest {
                 .image(image)
                 .state(SessionState.RECRUITING)
                 .sessionDuration(now.plusDays(5), now.plusDays(30))
-                .enrollment(Enrollment.createFreeEnrollment(new Students()))
+                .enrollment(Enrollment.createFreeEnrollment(new Students(List.of(NsUserTest.JAVAJIGI))))
                 .build();
 
         Session session2 = new Session.Builder(2L)
@@ -37,7 +39,7 @@ class CourseTest {
                 .image(image)
                 .state(SessionState.RECRUITING)
                 .sessionDuration(now.plusDays(5), now.plusDays(30))
-                .enrollment(Enrollment.createFreeEnrollment(new Students()))
+                .enrollment(Enrollment.createFreeEnrollment(new Students(List.of(NsUserTest.JAVAJIGI))))
                 .build();
 
         course.add(session1);
@@ -56,7 +58,7 @@ class CourseTest {
                 .image(image)
                 .state(SessionState.RECRUITING)
                 .sessionDuration(now.plusDays(5), now.plusDays(30))
-                .enrollment(Enrollment.createPaidEnrollment(new Students(), 10, 5_000))
+                .enrollment(Enrollment.createPaidEnrollment(new Students(List.of(NsUserTest.JAVAJIGI)), 10, 5_000))
                 .build();
         course.add(session);
 
