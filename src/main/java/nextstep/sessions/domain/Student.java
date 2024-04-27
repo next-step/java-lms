@@ -28,4 +28,7 @@ public class Student {
         return Objects.hash(nsUserId, sessionId);
     }
 
+    public long getId() {
+        return nsUserId;
+    }
 }

@@ -3,6 +3,7 @@ package nextstep.sessions.infrastructure;
 import nextstep.payments.domain.Payment;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionRepository;
+import nextstep.sessions.domain.Student;
 import nextstep.sessions.domain.StudentRepository;
 import nextstep.sessions.domain.builder.SessionBuilder;
 import nextstep.users.domain.NsUser;
@@ -43,5 +44,20 @@ public class StudentRepositoryTest {
         int count = studentRepository.save(nsUser, tddWithJava);
 
         assertThat(count).isEqualTo(1);
+    }
+
+    @Test
+    void findById() {
+        Session tddWithJava = new SessionBuilder()
+                .withSessionName("tdd with java")
+                .build();
+        sessionRepository.save(tddWithJava);
+
+        NsUser nsUser = new NsUser(1L, List.of(tddWithJava), new Payment());
+        studentRepository.save(nsUser, tddWithJava);
+
+        Student student = studentRepository.findByNsUserId(1L);
+
+        assertThat(student.getId()).isEqualTo(1L);
     }
 }
