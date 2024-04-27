@@ -31,4 +31,12 @@ public class Student {
     public long getId() {
         return nsUserId;
     }
+
+    public long getNsUserId() {
+        return nsUserId;
+    }
+
+    public long getSessionId() {
+        return sessionId;
+    }
 }
