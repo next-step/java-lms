@@ -89,6 +89,14 @@ public class SessionRegisterDetailsTest {
         assertThat(details.isNotSamePrice(20000)).isTrue();
     }
 
+    @DisplayName("강의의 가격과 결제한 금액이 같지 않은지 검증한다")
+    @Test
+    void isSameAmount1() {
+        SessionRegisterDetails details = new SessionRegisterDetails(1L, new Price(30000), RECRUITING, 40);
+
+        assertThat(details.isNotSamePrice(20000)).isTrue();
+    }
+
     @DisplayName("강의 수강자(listener)가 수강자 목록에 포함되어 있는지 검증한다")
     @Test
     void isContainsListener() {
