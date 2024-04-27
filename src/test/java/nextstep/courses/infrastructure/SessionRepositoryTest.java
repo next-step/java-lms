@@ -3,6 +3,7 @@ package nextstep.courses.infrastructure;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import nextstep.courses.domain.cover.Image;
 import nextstep.courses.domain.cover.ImageHeight;
@@ -72,6 +73,7 @@ class SessionRepositoryTest {
             .withName("강의이름")
             .withEnrollment(enrollment)
             .withImage(image)
+            .withImageTmp(List.of(image))
             .withValidityPeriod(new Period(LocalDateTime.now(), LocalDateTime.MAX))
             .build();
 

@@ -32,6 +32,7 @@ public class SessionFactory {
                     new Money(sessionEntity.getTuitionFee()),
                     FeeType.valueOf(sessionEntity.getFeeType())),
                 null,
+                null,
                 new Period(sessionEntity.getStartDate(), sessionEntity.getEndDate()),
                 new MaxRegistrationCount(sessionEntity.getRegistrationCount()));
         }
@@ -48,6 +49,7 @@ public class SessionFactory {
                         SessionState.valueOfRecruitmentState(sessionEntity.getRecruitmentState())),
                     new Money(sessionEntity.getTuitionFee()),
                     FeeType.valueOf(sessionEntity.getFeeType())),
+                null,
                 null,
                 new Period(sessionEntity.getStartDate(), sessionEntity.getEndDate()));
         }

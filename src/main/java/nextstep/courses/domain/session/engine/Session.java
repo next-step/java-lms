@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session.engine;
 
+import java.util.List;
 import nextstep.courses.domain.cover.Image;
 import nextstep.courses.domain.session.enrollment.Enrollment;
 import nextstep.courses.domain.session.name.SessionName;
@@ -16,14 +17,17 @@ public abstract class Session extends BaseEntity {
 
     private final Image image;
 
+    private final List<Image> imageTmp;
+
     private final Period period;
 
-    public Session(Long id, SessionName SessionName, Enrollment enrollment, Image image,
+    public Session(Long id, SessionName SessionName, Enrollment enrollment, Image image, List<Image> imageTmp,
         Period period) {
         this.id = id;
         this.sessionName = SessionName;
         this.enrollment = enrollment;
         this.image = image;
+        this.imageTmp = imageTmp;
         this.period = period;
     }
 
@@ -41,6 +45,10 @@ public abstract class Session extends BaseEntity {
 
     public Image getImage() {
         return image;
+    }
+
+    public List<Image> getImageTmp() {
+        return imageTmp;
     }
 
     public Period getPeriod() {

@@ -1,5 +1,6 @@
 package nextstep.courses.fixture.builder;
 
+import java.util.List;
 import nextstep.courses.domain.cover.Image;
 import nextstep.courses.domain.session.PaidSession;
 import nextstep.courses.domain.session.enrollment.Enrollment;
@@ -14,6 +15,8 @@ public class PaidSessionBuilder {
     private Enrollment enrollment;
 
     private Image image;
+
+    private List<Image> imageTmp;
 
     private Period period;
 
@@ -45,12 +48,17 @@ public class PaidSessionBuilder {
         return this;
     }
 
+    public PaidSessionBuilder withImageTmp(List<Image> imageTmp) {
+        this.imageTmp = imageTmp;
+        return this;
+    }
+
     public PaidSessionBuilder withValidityPeriod(Period period) {
         this.period = period;
         return this;
     }
 
     public PaidSession build() {
-        return new PaidSession(SessionName, enrollment, image, period, maxRegistrationCount);
+        return new PaidSession(SessionName, enrollment, image, imageTmp,period, maxRegistrationCount);
     }
 }
