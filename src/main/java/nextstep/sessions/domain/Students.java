@@ -26,6 +26,9 @@ public class Students {
         if (sessionType.isCapacityExceeded(countOfStudents(), maxOfStudents)) {
             throw new IllegalArgumentException(String.format("이 강의의 현재 수강 신청 인원: (%s)명, 최대 수강 인원: (%s)명이므로 현재 마감이 된 상태입니다.", countOfStudents(), maxOfStudents));
         }
+        if (students.contains(student)) {
+            throw new IllegalArgumentException("이 학생(student)은 이미 수강 신청한 학생입니다.");
+        }
         students.add(student);
     }
 }
