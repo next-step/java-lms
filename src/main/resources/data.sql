@@ -12,6 +12,9 @@ INSERT INTO question (id, writer_id, title, contents, created_at, deleted) VALUE
 INSERT INTO session (session_name, registration_count, max_registration_count, tuition_fee, course_id, recruitment_state, fee_type, start_date, end_date, created_at, updated_at)
 VALUES ('무료강의1', 1, 2147483647, 0, 1, 'RECRUITING', 'FREE', '2024-01-01 00:00:00', '2024-01-07 00:00:00', '2024-01-01 00:00:00', '2024-01-01 00:00:00');
 
+INSERT INTO session (session_name, registration_count, max_registration_count, tuition_fee, course_id, recruitment_state, fee_type, start_date, end_date, created_at, updated_at)
+VALUES ('무료강의2', 1, 2147483647, 0, 1, 'ONGOING', 'FREE', '2024-01-01 00:00:00', '2024-01-07 00:00:00', '2024-01-01 00:00:00', '2024-01-01 00:00:00');
+
 INSERT INTO image (size, type, width, height, session_id, created_at)
 VALUES (1, 'JPEG', 300, 200, 1, '2024-01-01 00:00:00');
 

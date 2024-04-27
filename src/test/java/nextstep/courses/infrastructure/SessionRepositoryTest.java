@@ -55,7 +55,7 @@ class SessionRepositoryTest {
     void Session은_저장되어야_한다() {
         Enrollment enrollment = EnrollmentBuilder.anEnrollment()
             .withEnrollmentCount(new FreeEnrollmentCount(new RegistrationCount(1)))
-            .withSessionState(new SessionState(SessionState.valueOfRecruitmentState("RECRUITING")))
+            .withSessionState(new SessionState(SessionState.valueOfRecruitmentState("ONGOING")))
             .withTuitionFee(new Money(0))
             .withFeeType(FeeType.FREE)
             .build();
@@ -97,7 +97,7 @@ class SessionRepositoryTest {
     @Test
     void Session의_등록회원수는_변경된값으로_업데이트되어야한다() {
         //given
-        Optional<SessionEntity> sessionEntityOptional = sessionRepository.findById(1L);
+        Optional<SessionEntity> sessionEntityOptional = sessionRepository.findById(2L);
         assertThat(sessionEntityOptional.isPresent()).isTrue();
 
         Session session = SessionFactory.get(sessionEntityOptional.get());

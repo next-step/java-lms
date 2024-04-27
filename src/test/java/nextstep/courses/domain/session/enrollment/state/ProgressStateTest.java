@@ -4,20 +4,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
-class RecruitmentStateTest {
+class ProgressStateTest {
 
     @Test
     void RecruitmentState_준비중_key값_으로_생성_되어야_한다(){
-        assertThat(RecruitmentState.valueOf("PREPARING")).isEqualTo(RecruitmentState.PREPARING);
+        assertThat(ProgressState.valueOf("PREPARING")).isEqualTo(ProgressState.PREPARING);
     }
 
     @Test
     void RecruitmentState_모집중_key값_으로_생성_되어야_한다(){
-        assertThat(RecruitmentState.valueOf("RECRUITING")).isEqualTo(RecruitmentState.RECRUITING);
+        assertThat(ProgressState.valueOf("ONGOING")).isEqualTo(ProgressState.ONGOING);
     }
 
     @Test
     void RecruitmentState_대기중_key값_으로_생성_되어야_한다(){
-        assertThat(RecruitmentState.valueOf("END")).isEqualTo(RecruitmentState.END);
+        assertThat(ProgressState.valueOf("END")).isEqualTo(ProgressState.END);
     }
 }
