@@ -13,7 +13,6 @@ public class Session {
     private final int maxStudents;
     private SessionProgressStatus sessionProgressStatus = SessionProgressStatus.READY;
     private SessionApplyStatus sessionApplyStatus = SessionApplyStatus.NOT_APPLYING;
-    private final Enrollment enrollment;
 
     public Session(Long id, LocalDate startDate, LocalDate endDate, Images coverImages, int fee, int maxStudents) {
         this.id = id;
@@ -21,21 +20,18 @@ public class Session {
         this.coverImages = coverImages;
         this.fee = fee;
         this.maxStudents = maxStudents;
-        this.enrollment = new Enrollment(fee, maxStudents, sessionProgressStatus, sessionApplyStatus);
     }
 
-    public void enroll(Student student) {
-        this.enrollment.enroll(student);
+    public Enrollment enroll(Students student) {
+        return new Enrollment(fee, maxStudents, student, sessionProgressStatus, sessionApplyStatus);
     }
 
     public void changeProgressStatus(SessionProgressStatus sessionProgressStatus) {
         this.sessionProgressStatus = sessionProgressStatus;
-        this.enrollment.changeProgressStatus(sessionProgressStatus);
     }
 
     public void changeApplyStatus(SessionApplyStatus sessionApplyStatus) {
         this.sessionApplyStatus = sessionApplyStatus;
-        this.enrollment.changeApplyStatus(sessionApplyStatus);
     }
 
     public Long getId() {
@@ -44,9 +40,5 @@ public class Session {
 
     public SessionProgressStatus getStatus() {
         return this.sessionProgressStatus;
-    }
-
-    public int getStudentsCount() {
-        return this.enrollment.getStudents().getCounts();
     }
 }

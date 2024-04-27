@@ -1,10 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.image.Images;
-import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionApplyStatus;
-import nextstep.courses.domain.session.SessionProgressStatus;
-import nextstep.courses.domain.session.Student;
+import nextstep.courses.domain.session.*;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,45 +42,62 @@ public class SessionTest {
         freeSession.changeApplyStatus(SessionApplyStatus.APPLYING);
 
         List<Student> studentList = createStudentList(2, 0);
+
+        Enrollment enrollment = freeSession.enroll(new Students(studentList));
+
         assertDoesNotThrow(() -> {
-            for(Student student : studentList) {
-                freeSession.enroll(student);
-            }
+            enrollment.enroll(studentList.get(0));
+            enrollment.enroll(studentList.get(1));
         });
     }
 
     @Test
     public void 강의는_강의최대수강인원을_초과할수없다() {
         List<Student> studentList = createStudentList(2, 10000);
+
+        Enrollment enrollment = session.enroll(new Students(studentList));
+
         assertThrows(RuntimeException.class, () -> {
             for(Student student : studentList) {
-                session.enroll(student);
+                enrollment.enroll(student);
             }
         });
     }
 
     @Test
     public void 강의는_수강생이_결제한금액과_수강료가_일치할때_수강신청이_가능하다() {
+        Enrollment enrollment = session.enroll(new Students());
+        Student student = createCanApplyStudent(10000);
+
         assertDoesNotThrow(() -> {
-            session.enroll(createCanApplyStudent(10000));
+            enrollment.enroll(student);
         });
     }
 
     @Test
     public void 강의는_수강생이_결제한금액과_수강료가_일치하지않으면_수강신청이_불가능하다() {
-        assertThrows(RuntimeException.class, () -> session.enroll(createCanApplyStudent(5000)));
+        Enrollment enrollment = session.enroll(new Students());
+        Student student = createCanApplyStudent(5000);
+
+        assertThrows(RuntimeException.class, () -> enrollment.enroll(student));
     }
 
     @Test
     public void 강의_수강신청은_강의진행상태가_준비중_또는_진행중이고_강의모집상태가_모집중일때만_가능하다() {
-        assertDoesNotThrow(() -> session.enroll(createCanApplyStudent(10000)));
+        Enrollment enrollment = session.enroll(new Students());
+        Student student = createCanApplyStudent(10000);
+
+        assertDoesNotThrow(() -> enrollment.enroll(student));
     }
 
     @Test
     public void 강의_수강신청은_강의_상태가_모집중이_아니면_불가능하다() {
         session.changeApplyStatus(SessionApplyStatus.NOT_APPLYING);
 
-        assertThrows(RuntimeException.class, () -> session.enroll(createCanApplyStudent(10000)));
+        Enrollment enrollment = session.enroll(new Students());
+        Student student = createCanApplyStudent(10000);
+
+        assertThrows(RuntimeException.class, () -> enrollment.enroll(student));
     }
 
     @Test
@@ -91,8 +105,10 @@ public class SessionTest {
         Student student = createSelectedStudent();
         student.pay(fee);
 
-        assertDoesNotThrow(() -> session.enroll(student));
-        assertThat(session.getStudentsCount()).isEqualTo(1);
+        Enrollment enrollment = session.enroll(new Students());
+
+        assertDoesNotThrow(() -> enrollment.enroll(student));
+        assertThat(enrollment.getStudentsCount()).isEqualTo(1);
     }
 
     @Test
@@ -100,8 +116,10 @@ public class SessionTest {
         Student student = createStudent();
         student.pay(fee);
 
-        assertThrows(RuntimeException.class, () -> session.enroll(student));
-        assertThat(session.getStudentsCount()).isEqualTo(0);
+        Enrollment enrollment = session.enroll(new Students());
+
+        assertThrows(RuntimeException.class, () -> enrollment.enroll(student));
+        assertThat(enrollment.getStudentsCount()).isEqualTo(0);
     }
 
     private List<Student> createStudentList(int number, int fee) {

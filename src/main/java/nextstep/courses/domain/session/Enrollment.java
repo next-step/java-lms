@@ -61,4 +61,8 @@ public class Enrollment {
     private boolean isAbleToEnroll() {
         return this.sessionProgressStatus.isAbleToApply() && this.sessionApplyStatus.isApplying();
     }
+
+    public int getStudentsCount() {
+        return this.students.getCounts();
+    }
 }
