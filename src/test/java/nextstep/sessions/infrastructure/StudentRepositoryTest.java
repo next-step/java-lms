@@ -1,12 +1,11 @@
 package nextstep.sessions.infrastructure;
 
-import nextstep.payments.domain.Payment;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.Student;
 import nextstep.sessions.domain.StudentRepository;
 import nextstep.sessions.domain.builder.SessionBuilder;
-import nextstep.users.domain.NsUser;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,53 +25,33 @@ public class StudentRepositoryTest {
 
     StudentRepository studentRepository;
 
+    Student student = new Student(1L, 1L);
+
     @BeforeEach
     void setUp() {
         sessionRepository = new JdbcSessionRepository(jdbcTemplate);
         studentRepository = new JdbcStudentRepository(jdbcTemplate);
-    }
 
-    @Test
-    void save() {
         Session tddWithJava = new SessionBuilder()
                 .withSessionName("tdd with java")
                 .build();
         sessionRepository.save(tddWithJava);
+    }
 
-        NsUser nsUser = new NsUser(1L, List.of(tddWithJava), new Payment());
+    @Test
+    void save() {
 
-        int count = studentRepository.save(nsUser, tddWithJava);
+        int count = studentRepository.save(student);
 
         assertThat(count).isEqualTo(1);
     }
 
     @Test
-    void findById() {
-        Session tddWithJava = new SessionBuilder()
-                .withSessionName("tdd with java")
-                .build();
-        sessionRepository.save(tddWithJava);
-
-        NsUser nsUser = new NsUser(1L, List.of(tddWithJava), new Payment());
-        studentRepository.save(nsUser, tddWithJava);
-
-        Student student = studentRepository.findByNsUserId(1L);
-
-        assertThat(student.getId()).isEqualTo(1L);
-    }
-
-    @Test
     void findBySessionId() {
-        Session tddWithJava = new SessionBuilder()
-                .withSessionName("tdd with java")
-                .build();
-        sessionRepository.save(tddWithJava);
+        studentRepository.save(new Student(1L, 1L));
 
-        NsUser nsUser = new NsUser(1L, List.of(tddWithJava), new Payment());
-        studentRepository.save(nsUser, tddWithJava);
+        List<Student> students = studentRepository.findBySessionId(1L);
 
-        Student student = studentRepository.findByNsUserId(1L);
-
-        assertThat(student.getId()).isEqualTo(1L);
+        Assertions.assertThat(students).hasSize(1);
     }
 }
