@@ -60,4 +60,19 @@ public class StudentRepositoryTest {
 
         assertThat(student.getId()).isEqualTo(1L);
     }
+
+    @Test
+    void findBySessionId() {
+        Session tddWithJava = new SessionBuilder()
+                .withSessionName("tdd with java")
+                .build();
+        sessionRepository.save(tddWithJava);
+
+        NsUser nsUser = new NsUser(1L, List.of(tddWithJava), new Payment());
+        studentRepository.save(nsUser, tddWithJava);
+
+        Student student = studentRepository.findByNsUserId(1L);
+
+        assertThat(student.getId()).isEqualTo(1L);
+    }
 }

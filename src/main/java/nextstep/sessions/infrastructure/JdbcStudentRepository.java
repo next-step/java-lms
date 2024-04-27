@@ -29,4 +29,12 @@ public class JdbcStudentRepository implements StudentRepository {
                 new Student(rs.getLong("ns_user_id"), rs.getLong("session_id"))
                 , nsUserId);
     }
+
+    @Override
+    public Student findBySessionId(long sessionId) {
+        String sql = "select * from students where session_id = ?";
+        return jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
+                        new Student(rs.getLong("ns_user_id"), rs.getLong("session_id"))
+                , sessionId);
+    }
 }
