@@ -2,9 +2,13 @@ package nextstep.sessions.domain;
 
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static nextstep.sessions.domain.SessionStatus.END;
 import static nextstep.sessions.domain.SessionStatus.RECRUITING;
@@ -28,6 +32,18 @@ public class SessionRegisterDetailsTest {
         SessionRegisterDetails details = new SessionRegisterDetails(40, 0, 30000, FREE, RECRUITING);
         details.register(NsUserTest.JAVAJIGI, payment);
         assert details.isContainsListener(NsUserTest.JAVAJIGI);
+    }
+
+    @DisplayName("수강신청을 한다")
+    @Test
+    void always1() {
+        SessionRegisterDetails details = new SessionRegisterDetails(1L, new Price(30000), RECRUITING, 40);
+        Student student = new Student(1L, 1L);
+        List<Student> students = new ArrayList<>();
+
+        details.enroll(student, students, payment);
+
+        assertThat(students).hasSize(1);
     }
 
     @DisplayName("유료강의는 수강신청을 했을 때, 최대 수강 인원을 초과하면 예외를 반환한다")

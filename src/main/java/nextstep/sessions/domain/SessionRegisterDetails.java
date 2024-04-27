@@ -10,15 +10,24 @@ public class SessionRegisterDetails {
 
     private final long id;
 
-    private final CountOfStudent countOfStudent;
+    private CountOfStudent countOfStudent;
 
     private final Price price;
 
     private final SessionStatus sessionStatus;
 
-    private final List<NsUser> students;
+    private List<NsUser> students;
 
-    private final Session session;
+    private Session session;
+
+    private int maxOfStudents;
+
+    public SessionRegisterDetails(long id, Price price, SessionStatus sessionStatus, int maxOfStudents) {
+        this.id = id;
+        this.price = price;
+        this.sessionStatus = sessionStatus;
+        this.maxOfStudents = maxOfStudents;
+    }
 
     public SessionRegisterDetails(
             int currentCountOfStudents,
@@ -87,6 +96,17 @@ public class SessionRegisterDetails {
         }
         this.countOfStudent.increaseCountOfStudents();
         students.add(student);
+    }
+
+    public void enroll(Student student, List<Student> enrolledStudents, Payment payment) {
+        if (this.sessionStatus.isNotRecruiting()) {
+            throw new IllegalArgumentException(String.format("현재 강의는 (%s)인 상태입니다.", this.sessionStatus));
+        }
+        if (this.price.isNotSamePrice(payment)) {
+            throw new IllegalArgumentException("결제한 금액이 강의의 가격과 일치하지 않습니다.");
+        }
+        Students students = new Students(this.maxOfStudents, SessionType.PAID, enrolledStudents);
+        students.enroll(student);
     }
 
     public boolean isNotSamePrice(long amount) {
