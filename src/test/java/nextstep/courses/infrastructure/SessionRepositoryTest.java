@@ -55,7 +55,8 @@ class SessionRepositoryTest {
     void Session은_저장되어야_한다() {
         Enrollment enrollment = EnrollmentBuilder.anEnrollment()
             .withEnrollmentCount(new FreeEnrollmentCount(new RegistrationCount(1)))
-            .withSessionState(new SessionState(SessionState.valueOfRecruitmentState("ONGOING")))
+            .withSessionState(new SessionState(SessionState.valueOfProgressState("ONGOING"),
+                SessionState.valueOfRecruitmentState("RECRUITING")))
             .withTuitionFee(new Money(0))
             .withFeeType(FeeType.FREE)
             .build();
@@ -86,8 +87,8 @@ class SessionRepositoryTest {
         assertThat(sessionEntity.isPresent()).isTrue();
         assertThat(sessionEntity.get())
             .extracting("id", "sessionName", "registrationCount", "maxRegistrationCount",
-                "tuitionFee", "imageId", "recruitmentState", "startDate", "endDate", "createdAt", "updatedAt")
-            .containsExactly(1L, "무료강의1", 1, 2147483647, 0, 1L, "RECRUITING",
+                "tuitionFee", "imageId", "progressState", "recruitmentState", "startDate", "endDate", "createdAt", "updatedAt")
+            .containsExactly(1L, "무료강의1", 1, 2147483647, 0, 1L, "ONGOING", "RECRUITING",
                 LocalDateTime.parse("2024-01-01T00:00:00"),
                 LocalDateTime.parse("2024-01-07T00:00:00"),
                 LocalDateTime.parse("2024-01-01T00:00:00"),

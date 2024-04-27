@@ -27,6 +27,7 @@ public class SessionFactory {
                         sessionEntity.getRegistrationCount(),
                         sessionEntity.getMaxRegistrationCount()),
                     new SessionState(
+                        SessionState.valueOfProgressState(sessionEntity.getProgressState()),
                         SessionState.valueOfRecruitmentState(sessionEntity.getRecruitmentState())),
                     new Money(sessionEntity.getTuitionFee()),
                     FeeType.valueOf(sessionEntity.getFeeType())),
@@ -43,6 +44,7 @@ public class SessionFactory {
                         sessionEntity.getRegistrationCount(),
                         sessionEntity.getMaxRegistrationCount()),
                     new SessionState(
+                        SessionState.valueOfProgressState(sessionEntity.getProgressState()),
                         SessionState.valueOfRecruitmentState(sessionEntity.getRecruitmentState())),
                     new Money(sessionEntity.getTuitionFee()),
                     FeeType.valueOf(sessionEntity.getFeeType())),

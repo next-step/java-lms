@@ -9,6 +9,7 @@ import nextstep.courses.domain.session.enrollment.count.MaxRegistrationCount;
 import nextstep.courses.domain.session.enrollment.count.PaidEnrollmentCount;
 import nextstep.courses.domain.session.enrollment.count.RegistrationCount;
 import nextstep.courses.domain.session.enrollment.state.ProgressState;
+import nextstep.courses.domain.session.enrollment.state.RecruitmentState;
 import nextstep.courses.domain.session.enrollment.state.SessionState;
 import nextstep.courses.domain.session.feetype.FeeType;
 import nextstep.courses.domain.student.Student;
@@ -35,7 +36,7 @@ class EnrollmentTest {
     void 무료강의는_수강신청_등록이_되어야_한다() {
         Enrollment enrollment = EnrollmentBuilder.anEnrollment()
             .withEnrollmentCount(new FreeEnrollmentCount(new RegistrationCount(1)))
-            .withSessionState(new SessionState(ProgressState.ONGOING))
+            .withSessionState(new SessionState(ProgressState.ONGOING, RecruitmentState.RECRUITING))
             .withTuitionFee(new Money(0))
             .withFeeType(FeeType.FREE)
             .build();
@@ -53,7 +54,7 @@ class EnrollmentTest {
         Enrollment enrollment = EnrollmentBuilder.anEnrollment()
             .withEnrollmentCount(
                 new PaidEnrollmentCount(new RegistrationCount(1), new MaxRegistrationCount(5)))
-            .withSessionState(new SessionState(ProgressState.ONGOING))
+            .withSessionState(new SessionState(ProgressState.ONGOING, RecruitmentState.RECRUITING))
             .withTuitionFee(new Money(50000))
             .withFeeType(FeeType.PAID)
             .build();
@@ -70,7 +71,7 @@ class EnrollmentTest {
     void 수강신청시_결제금액과_수강비용이_일치하지_않은_경우_예외가_발생한다() {
         Enrollment enrollment = EnrollmentBuilder.anEnrollment()
             .withEnrollmentCount(new FreeEnrollmentCount(new RegistrationCount(1)))
-            .withSessionState(new SessionState(ProgressState.ONGOING))
+            .withSessionState(new SessionState(ProgressState.ONGOING, RecruitmentState.RECRUITING))
             .withTuitionFee(new Money(0))
             .withFeeType(FeeType.FREE)
             .build();
@@ -86,7 +87,7 @@ class EnrollmentTest {
     void 수강신청시_강의가_모집중이지_않은_경우에는_예외가_발생한다() {
         Enrollment enrollment = EnrollmentBuilder.anEnrollment()
             .withEnrollmentCount(new FreeEnrollmentCount(new RegistrationCount(1)))
-            .withSessionState(new SessionState(ProgressState.PREPARING))
+            .withSessionState(new SessionState(ProgressState.ONGOING, RecruitmentState.RECRUITING))
             .withTuitionFee(new Money(0))
             .withFeeType(FeeType.FREE)
             .build();
@@ -102,7 +103,7 @@ class EnrollmentTest {
     void 수강신청시_강의가_강의_등록_가능_인원이_최대_등록_인원_수를_초과한_경우_예외가_발생한다() {
         Enrollment enrollment = EnrollmentBuilder.anEnrollment()
             .withEnrollmentCount(new PaidEnrollmentCount(new RegistrationCount(10), new MaxRegistrationCount(1)))
-            .withSessionState(new SessionState(ProgressState.ONGOING))
+            .withSessionState(new SessionState(ProgressState.ONGOING, RecruitmentState.RECRUITING))
             .withTuitionFee(new Money(0))
             .withFeeType(FeeType.PAID)
             .build();
