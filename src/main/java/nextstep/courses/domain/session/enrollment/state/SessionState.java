@@ -15,6 +15,10 @@ public class SessionState {
         return progressState == ProgressState.ONGOING;
     }
 
+    public boolean isRecruiting() {
+        return recruitmentState == RecruitmentState.RECRUITING;
+    }
+
     public static RecruitmentState valueOfRecruitmentState(String value) {
         return RecruitmentState.valueOf(value);
     }
@@ -23,11 +27,11 @@ public class SessionState {
         return ProgressState.valueOf(value);
     }
 
-    public String getRecruitmentState() {
+    public String getProgressState() {
         return progressState.getValue();
     }
 
-    public String getProgressState() {
-        return progressState.getValue();
+    public String getRecruitmentState() {
+        return recruitmentState.getValue();
     }
 }

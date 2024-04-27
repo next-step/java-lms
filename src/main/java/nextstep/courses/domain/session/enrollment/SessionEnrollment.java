@@ -63,7 +63,7 @@ public class SessionEnrollment implements Enrollment {
 
     @Override
     public boolean isSatisfySessionState() {
-        return sessionState.isOnGoing();
+        return sessionState.isOnGoing() || sessionState.isRecruiting();
     }
 
     @Override

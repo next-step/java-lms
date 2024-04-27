@@ -87,7 +87,7 @@ class EnrollmentTest {
     void 수강신청시_강의가_모집중이지_않은_경우에는_예외가_발생한다() {
         Enrollment enrollment = EnrollmentBuilder.anEnrollment()
             .withEnrollmentCount(new FreeEnrollmentCount(new RegistrationCount(1)))
-            .withSessionState(new SessionState(ProgressState.ONGOING, RecruitmentState.RECRUITING))
+            .withSessionState(new SessionState(ProgressState.PREPARING, RecruitmentState.NON_RECRUITING))
             .withTuitionFee(new Money(0))
             .withFeeType(FeeType.FREE)
             .build();
@@ -96,7 +96,7 @@ class EnrollmentTest {
 
         assertThatThrownBy(() -> enrollment.enroll(nsUser, payment))
             .isInstanceOf(SessionNotOpenForEnrollmentException.class)
-            .hasMessage("강의는 모집중 상태에서만 등록 가능합니다 현재 강의 상태: 준비중");
+            .hasMessage("강의는 모집중이거나 진행중인 상태에서만 등록 가능합니다, 현재 강의 진행 상태: 준비중, 현재 강의 모집 상태: 비모집중");
     }
 
     @Test
