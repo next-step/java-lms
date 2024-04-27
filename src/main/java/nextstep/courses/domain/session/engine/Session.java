@@ -15,19 +15,16 @@ public abstract class Session extends BaseEntity {
 
     private Enrollment enrollment;
 
-    private final Image image;
-
-    private final List<Image> imageTmp;
+    private final List<Image> images;
 
     private final Period period;
 
-    public Session(Long id, SessionName SessionName, Enrollment enrollment, Image image, List<Image> imageTmp,
+    public Session(Long id, SessionName SessionName, Enrollment enrollment, List<Image> images,
         Period period) {
         this.id = id;
         this.sessionName = SessionName;
         this.enrollment = enrollment;
-        this.image = image;
-        this.imageTmp = imageTmp;
+        this.images = images;
         this.period = period;
     }
 
@@ -43,12 +40,8 @@ public abstract class Session extends BaseEntity {
         return enrollment;
     }
 
-    public Image getImage() {
-        return image;
-    }
-
-    public List<Image> getImageTmp() {
-        return imageTmp;
+    public List<Image> getImages() {
+        return images;
     }
 
     public Period getPeriod() {

@@ -16,7 +16,7 @@ public class PaidSessionBuilder {
 
     private Image image;
 
-    private List<Image> imageTmp;
+    private List<Image> images;
 
     private Period period;
 
@@ -43,13 +43,8 @@ public class PaidSessionBuilder {
         return this;
     }
 
-    public PaidSessionBuilder withImage(Image image) {
-        this.image = image;
-        return this;
-    }
-
-    public PaidSessionBuilder withImageTmp(List<Image> imageTmp) {
-        this.imageTmp = imageTmp;
+    public PaidSessionBuilder withImages(List<Image> images) {
+        this.images = images;
         return this;
     }
 
@@ -59,6 +54,6 @@ public class PaidSessionBuilder {
     }
 
     public PaidSession build() {
-        return new PaidSession(SessionName, enrollment, image, imageTmp,period, maxRegistrationCount);
+        return new PaidSession(SessionName, enrollment, images, period, maxRegistrationCount);
     }
 }

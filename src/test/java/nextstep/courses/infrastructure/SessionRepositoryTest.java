@@ -72,8 +72,7 @@ class SessionRepositoryTest {
         Session freeSession = FreeSessionBuilder.anFreeSession()
             .withName("강의이름")
             .withEnrollment(enrollment)
-            .withImage(image)
-            .withImageTmp(List.of(image))
+            .withImages(List.of(image))
             .withValidityPeriod(new Period(LocalDateTime.now(), LocalDateTime.MAX))
             .build();
 

@@ -10,16 +10,15 @@ import nextstep.courses.domain.session.period.Period;
 public class FreeSession extends Session {
 
     public FreeSession(Session session, Enrollment enrollment) {
-        this(session.getId(), new SessionName(session.getSessionName()), enrollment,
-            session.getImage(), session.getImageTmp(), session.getPeriod());
+        this(session.getId(), new SessionName(session.getSessionName()), enrollment, session.getImages(), session.getPeriod());
     }
 
-    public FreeSession(SessionName SessionName, Enrollment enrollment, Image image, List<Image> imageTmp, Period period) {
-        this(null, SessionName, enrollment, image, imageTmp, period);
+    public FreeSession(SessionName SessionName, Enrollment enrollment, List<Image> images, Period period) {
+        this(null, SessionName, enrollment, images, period);
     }
 
-    public FreeSession(Long id, SessionName SessionName, Enrollment enrollment, Image image, List<Image> imageTmp,
+    public FreeSession(Long id, SessionName SessionName, Enrollment enrollment, List<Image> images,
         Period period) {
-        super(id, SessionName, enrollment, image, imageTmp, period);
+        super(id, SessionName, enrollment, images, period);
     }
 }

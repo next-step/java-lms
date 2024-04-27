@@ -12,15 +12,15 @@ public class PaidSession extends Session {
 
     private final MaxRegistrationCount maxRegistrationCount;
 
-    public PaidSession(SessionName SessionName, Enrollment enrollment, Image image, List<Image> imageTmp, Period period,
+    public PaidSession(SessionName SessionName, Enrollment enrollment, List<Image> images, Period period,
         MaxRegistrationCount maxRegistrationCount) {
-        this(null, SessionName, enrollment, image, imageTmp, period, maxRegistrationCount);
+        this(null, SessionName, enrollment, images, period, maxRegistrationCount);
     }
 
     public PaidSession(Long id, SessionName SessionName,
-        Enrollment enrollment, Image image, List<Image> imageTmp, Period period,
+        Enrollment enrollment, List<Image> images, Period period,
         MaxRegistrationCount maxRegistrationCount) {
-        super(id, SessionName, enrollment, image, imageTmp, period);
+        super(id, SessionName, enrollment, images, period);
         this.maxRegistrationCount = maxRegistrationCount;
     }
 }

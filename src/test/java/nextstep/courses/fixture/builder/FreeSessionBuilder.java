@@ -13,9 +13,7 @@ public class FreeSessionBuilder {
 
     private Enrollment enrollment;
 
-    private Image image;
-
-    private List<Image> imageTmp;
+    private List<Image> images;
 
     private Period period;
 
@@ -33,13 +31,8 @@ public class FreeSessionBuilder {
         return this;
     }
 
-    public FreeSessionBuilder withImage(Image image) {
-        this.image = image;
-        return this;
-    }
-
-    public FreeSessionBuilder withImageTmp(List<Image> imageTmp) {
-        this.imageTmp = imageTmp;
+    public FreeSessionBuilder withImages(List<Image> images) {
+        this.images = images;
         return this;
     }
 
@@ -49,6 +42,6 @@ public class FreeSessionBuilder {
     }
 
     public FreeSession build() {
-        return new FreeSession(SessionName, enrollment, image, imageTmp, period);
+        return new FreeSession(SessionName, enrollment, images, period);
     }
 }
