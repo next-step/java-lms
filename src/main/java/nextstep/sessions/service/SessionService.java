@@ -4,10 +4,13 @@ import nextstep.payments.domain.Payment;
 import nextstep.payments.infrastructure.PaymentRepository;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionRepository;
+import nextstep.sessions.domain.Student;
 import nextstep.sessions.domain.StudentRepository;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class SessionService {
@@ -34,9 +37,14 @@ public class SessionService {
         Payment payment = paymentRepository.findByNsUser(nsUser)
                 .orElseThrow(() -> new IllegalArgumentException("결제 정보가 없습니다."));
 
-        session.register(nsUser, payment);
-        sessionRepository.save(session);
-        studentRepository.save(nsUser, session);
+        //session.register(nsUser, payment);
+        //sessionRepository.save(session);
+        //studentRepository.save(nsUser, session);
+
+        //todo : feedback
+        List<Student> enrolledStudents = studentRepository.findBySessionId(sessionId);
+        Student student = session.enroll(nsUser, enrolledStudents, payment);
+        studentRepository.save(student);
     }
 
 }
