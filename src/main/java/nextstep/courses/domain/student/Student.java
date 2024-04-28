@@ -95,16 +95,4 @@ public class Student extends BaseEntity {
     public String getStudentType() {
         return studentType.getValue();
     }
-
-    @Override
-    public String toString() {
-        return "Student{" +
-            "id=" + id +
-            ", studentName=" + studentName +
-            ", email=" + email +
-            ", paymentAmount=" + paymentAmount +
-            ", approvalState=" + approvalState +
-            ", studentType=" + studentType +
-            "} " + super.toString();
-    }
 }
