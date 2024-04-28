@@ -9,6 +9,7 @@ public class Student {
     private final Long sessionId;
     private final Long loginUserId;
     private int fee = 0;
+    private boolean isSelected;
 
     public int getFee() {
         return this.fee;
@@ -30,5 +31,13 @@ public class Student {
         if (fee != sessionFee) {
             throw new RuntimeException("수강생이 결제한 금액과 수강료가 일치하지 않습니다. 결제한 금액 : " + fee + " 수강료 : " + sessionFee);
         }
+    }
+
+    public void select() {
+        this.isSelected = true;
+    }
+
+    public boolean getIsSelected() {
+        return this.isSelected;
     }
 }

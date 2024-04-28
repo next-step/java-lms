@@ -6,11 +6,11 @@ import java.util.List;
 public class Students {
     private final List<Student> value;
 
-    Students() {
+    public Students() {
         this.value = new ArrayList<>();
     }
 
-    Students(List<Student> students) {
+    public Students(List<Student> students) {
         this.value = students;
     }
 

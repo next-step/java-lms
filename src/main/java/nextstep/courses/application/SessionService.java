@@ -1,11 +1,9 @@
 package nextstep.courses.application;
 
-import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionRepository;
-import nextstep.courses.domain.session.Student;
-import nextstep.courses.domain.session.StudentRepository;
+import nextstep.courses.domain.session.*;
 import nextstep.users.domain.NsUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SessionService {
@@ -15,6 +13,9 @@ public class SessionService {
     public void apply(NsUser loginUser, Long sessionId) {
         Session session = sessionRepository.findById(sessionId);
         Student student = new Student(sessionId, loginUser.getId());
-        session.enroll(student);
+        Students students = new Students(studentRepository.findBySessionId(sessionId));
+
+        Enrollment enrollment = session.enroll(students);
+        enrollment.enroll(student);
     }
 }

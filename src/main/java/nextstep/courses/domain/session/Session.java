@@ -1,42 +1,44 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.image.Image;
+import nextstep.courses.domain.image.Images;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public class Session {
     private Long id;
     private final SessionDuration sessionDuration;
-    private final Image coverImage;
+    private final Images coverImages;
     private final int fee;
     private final int maxStudents;
-    private SessionStatus sessionStatus = SessionStatus.READY;
-    private final Enrollment enrollment;
+    private SessionProgressStatus sessionProgressStatus = SessionProgressStatus.READY;
+    private SessionApplyStatus sessionApplyStatus = SessionApplyStatus.NOT_APPLYING;
 
-    public Session(Long id, LocalDate startDate, LocalDate endDate, Image coverImage, int fee, int maxStudents) {
+    public Session(Long id, LocalDate startDate, LocalDate endDate, Images coverImages, int fee, int maxStudents) {
         this.id = id;
         this.sessionDuration = new SessionDuration(startDate, endDate);
-        this.coverImage = coverImage;
+        this.coverImages = coverImages;
         this.fee = fee;
         this.maxStudents = maxStudents;
-        this.enrollment = new Enrollment(fee, maxStudents, sessionStatus);
     }
 
-    public void enroll(Student student) {
-        this.enrollment.enroll(student);
+    public Enrollment enroll(Students student) {
+        return new Enrollment(fee, maxStudents, student, sessionProgressStatus, sessionApplyStatus);
     }
 
-    public void changeStatus(SessionStatus sessionStatus) {
-        this.sessionStatus = sessionStatus;
-        this.enrollment.changeStatus(sessionStatus);
+    public void changeProgressStatus(SessionProgressStatus sessionProgressStatus) {
+        this.sessionProgressStatus = sessionProgressStatus;
+    }
+
+    public void changeApplyStatus(SessionApplyStatus sessionApplyStatus) {
+        this.sessionApplyStatus = sessionApplyStatus;
     }
 
     public Long getId() {
         return this.id;
     }
 
-    public SessionStatus getStatus() {
-        return this.sessionStatus;
+    public SessionProgressStatus getStatus() {
+        return this.sessionProgressStatus;
     }
 }
