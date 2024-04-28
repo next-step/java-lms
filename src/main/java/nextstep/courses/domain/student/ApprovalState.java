@@ -14,4 +14,10 @@ public enum ApprovalState {
         return value;
     }
 
+    @Override
+    public String toString() {
+        return "ApprovalState{" +
+            "value='" + value + '\'' +
+            "} " + super.toString();
+    }
 }

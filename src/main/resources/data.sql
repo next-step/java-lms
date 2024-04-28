@@ -19,5 +19,8 @@ INSERT INTO image (size, type, width, height, session_id, created_at)
 VALUES (1, 'JPEG', 300, 200, 1, '2024-01-01 00:00:00');
 
 INSERT INTO student (name, email, payment_amount, approval_state, student_type, created_at, updated_at)
-VALUES ('namyhyeop', 'namyhyeop@gmail.com', 100, 'NON_APPROVAL', 'NORMAL', '2024-01-01 00:00:00', NULL);
+VALUES ('namhyeop', 'namhyeop@gmail.com', 100, 'NON_APPROVAL', 'NORMAL', '2024-01-01 00:00:00', NULL);
+
+INSERT INTO student (id, name, email, payment_amount, approval_state, student_type, created_at, updated_at)
+VALUES (3, 'hwan', 'hwan@gmail.com', 100, 'NON_APPROVAL', 'WOOWAHAN_TECH_COURSE_FREE', '2024-01-01 00:00:00', NULL);
 
