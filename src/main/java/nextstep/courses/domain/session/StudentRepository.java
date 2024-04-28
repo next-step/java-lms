@@ -1,7 +1,9 @@
 package nextstep.courses.domain.session;
 
+import java.util.List;
+
 public interface StudentRepository {
     int save(Student student);
 
-    Student findBySessionId(Long sessionId);
+    List<Student> findBySessionId(Long sessionId);
 }

@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class SessionTest {
+public class EnrollmentTest {
     private final Long sessionId = 1L;
     private final LocalDate startDate = LocalDate.now();
     private final LocalDate endDate = LocalDate.now();

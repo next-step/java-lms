@@ -13,7 +13,7 @@ public class SessionService {
     public void apply(NsUser loginUser, Long sessionId) {
         Session session = sessionRepository.findById(sessionId);
         Student student = new Student(sessionId, loginUser.getId());
-        Students students = new Students(new ArrayList<>());
+        Students students = new Students(studentRepository.findBySessionId(sessionId));
 
         Enrollment enrollment = session.enroll(students);
         enrollment.enroll(student);
