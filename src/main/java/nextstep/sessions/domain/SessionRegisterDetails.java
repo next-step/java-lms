@@ -113,6 +113,7 @@ public class SessionRegisterDetails {
         return price.isNotSamePrice(amount);
     }
 
+    // todo : 없애기
     public boolean isContainsListener(NsUser listener) {
         return students.contains(listener);
     }
