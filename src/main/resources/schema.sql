@@ -45,6 +45,8 @@ create table student
     name           varchar(20) not null,
     email          varchar(20) not null,
     payment_amount bigint      not null,
+    approval_state varchar(20)  not null,
+    student_type   varchar(50) not null,
     created_at     timestamp   not null,
     updated_at     timestamp,
     primary key (id)

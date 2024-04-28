@@ -18,5 +18,6 @@ VALUES ('무료강의2', 1, 2147483647, 0, 1, 'ONGOING', 'RECRUITING', 'FREE', '
 INSERT INTO image (size, type, width, height, session_id, created_at)
 VALUES (1, 'JPEG', 300, 200, 1, '2024-01-01 00:00:00');
 
-INSERT INTO student (name, email, payment_amount, created_at, updated_at)
-VALUES ('namyhyeop', 'namyhyeop@gmail.com', 100, '2024-01-01 00:00:00', NULL);
+INSERT INTO student (name, email, payment_amount, approval_state, student_type, created_at, updated_at)
+VALUES ('namyhyeop', 'namyhyeop@gmail.com', 100, 'NON_APPROVAL', 'NORMAL', '2024-01-01 00:00:00', NULL);
+

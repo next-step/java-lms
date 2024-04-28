@@ -1,7 +1,7 @@
 package nextstep.courses.domain.student;
 
 public enum StudentType {
-    NO_TYPE("일반"),
+    NORMAL("일반"),
     WOOWAHAN_TECH_COURSE_FREE("우아한테크코스(무료)"),
     WOOWAHAN_TECH_CAMP_PRO("우아한테크캠프 Pro(유료)");
 

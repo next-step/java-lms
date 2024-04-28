@@ -16,11 +16,13 @@ public class JdbcStudentEntityRepository implements StudentRepository {
 
     @Override
     public int save(StudentEntity studentEntity) {
-        String sql = "insert into student (name, email, payment_amount, created_at) values (?, ?, ?, ?)";
+        String sql = "insert into student (name, email, payment_amount, approval_state, student_type, created_at) values (?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
             studentEntity.getStudentName(),
             studentEntity.getEmail(),
             studentEntity.getPaymentAmount(),
+            studentEntity.getApprovalState(),
+            studentEntity.getStudentType(),
             studentEntity.getCreatedAt());
     }
 }
