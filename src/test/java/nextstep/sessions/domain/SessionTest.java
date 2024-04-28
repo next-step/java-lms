@@ -3,7 +3,6 @@ package nextstep.sessions.domain;
 import nextstep.payments.domain.Payment;
 import nextstep.sessions.domain.builder.SessionBuilder;
 import nextstep.sessions.domain.builder.SessionRegisterDetailsBuilder;
-import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
