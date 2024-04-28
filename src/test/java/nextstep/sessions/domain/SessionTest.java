@@ -26,16 +26,6 @@ public class SessionTest {
                 .build();
     }
 
-    @DisplayName("강의의 가격과 결제 금액이 같을 때, 수강신청이 된다")
-    @Test
-    void register() {
-        Payment payment = new Payment("javajigi", 1L, 1L, 30000L);
-
-        tddCleanCodeJava.register(NsUserTest.JAVAJIGI, payment);
-
-        assertThat(tddCleanCodeJava.isContainListener(NsUserTest.JAVAJIGI)).isTrue();
-    }
-
     @Test
     void enroll() {
         SessionRegisterDetails details = new SessionRegisterDetails(1L, new Price(30000), SessionStatus.RECRUITING, 40);
@@ -44,16 +34,6 @@ public class SessionTest {
         details.enroll(student, students, new Payment("javajigi", 1L, 1L, 30000L));
 
         assertThat(students).hasSize(1);
-    }
-
-    @DisplayName("강의의 가격과 결제 금액이 같지 않으면 예외를 반환한다")
-    @Test
-    void registerException() {
-        Payment payment = new Payment("javajigi", 1L, 1L, 10000L);
-
-        assertThatThrownBy(() -> tddCleanCodeJava.register(NsUserTest.JAVAJIGI, payment))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("결제한 금액이 강의의 가격과 일치하지 않습니다.");
     }
 
     @DisplayName("강의의 가격과 결제 금액이 같지 않으면 예외를 반환한다")

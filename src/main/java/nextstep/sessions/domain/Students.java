@@ -31,4 +31,8 @@ public class Students {
         }
         students.add(student);
     }
+
+    public SessionType getSessionType() {
+        return sessionType;
+    }
 }

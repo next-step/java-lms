@@ -37,18 +37,10 @@ public class Session extends BaseEntity {
         this.sessionRegisterDetails = sessionRegisterDetails;
     }
 
-    public void register(NsUser listener, Payment payment) {
-        sessionRegisterDetails.register(listener, payment);
-    }
-
     public Student enroll(NsUser nsUser, List<Student> students, Payment payment) {
         Student student = new Student(nsUser.getId(), getId());
         sessionRegisterDetails.enroll(student, students, payment);
         return student;
-    }
-
-    public boolean isContainListener(NsUser listener) {
-        return sessionRegisterDetails.isContainsListener(listener);
     }
 
     public long getId() {

@@ -79,7 +79,6 @@ create table session_register_details
 (
     id                        bigint auto_increment,
     session_id                bigint       not null,
-    current_count_of_students bigint       not null,
     max_count_of_students     bigint       not null,
     session_type              varchar(255) not null,
     price                     bigint       not null,

@@ -24,7 +24,7 @@ public class SessionRegisterDetailsTest {
 
     @DisplayName("수강신청을 한다")
     @Test
-    void always1() {
+    void always() {
         SessionRegisterDetails details = new SessionRegisterDetails(1L, new Price(30000), RECRUITING, 40);
         Student student = new Student(1L, 1L);
         List<Student> students = new ArrayList<>();
@@ -36,7 +36,7 @@ public class SessionRegisterDetailsTest {
 
     @DisplayName("강의가 모집중이 아닐때 수강신청을 하면 예외를 반환한다")
     @Test
-    void statusIsNotRecruiting1() {
+    void statusIsNotRecruiting() {
         SessionStatus end = END;
         SessionRegisterDetails details = new SessionRegisterDetails(1L, new Price(30000), end, 40);
 
@@ -47,7 +47,7 @@ public class SessionRegisterDetailsTest {
 
     @DisplayName("강의의 가격과 결제한 금액이 같지 않은지 검증한다")
     @Test
-    void isSameAmount1() {
+    void isSameAmount() {
         SessionRegisterDetails details = new SessionRegisterDetails(1L, new Price(30000), RECRUITING, 40);
 
         assertThat(details.isNotSamePrice(20000)).isTrue();
