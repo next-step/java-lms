@@ -1,5 +1,7 @@
 package nextstep.sessions.domain;
 
+import nextstep.payments.domain.Payment;
+
 import java.util.Objects;
 
 public class Price {
@@ -12,6 +14,10 @@ public class Price {
 
     public boolean isNotSamePrice(long amount) {
         return this.price != amount;
+    }
+
+    public boolean isNotSamePrice(Payment payment) {
+        return payment.isImPossibleToTakeSession(this.price);
     }
 
     @Override
@@ -31,4 +37,7 @@ public class Price {
         return Objects.hash(price);
     }
 
+    public long getPrice() {
+        return price;
+    }
 }

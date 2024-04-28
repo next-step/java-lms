@@ -1,24 +1,30 @@
 package nextstep.sessions.domain;
 
+import nextstep.payments.domain.Payment;
 import nextstep.sessions.domain.image.Image;
 import nextstep.users.domain.NsUser;
 import nextstep.utils.BaseEntity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Session extends BaseEntity {
 
-    private String sessionName;
+    private final String sessionName;
 
-    private Image image;
+    private final Image image;
 
-    private SessionRegisterDetails sessionRegisterDetails;
+    private final SessionRegisterDetails sessionRegisterDetails;
 
-    public Session(long id, String sessionName, SessionRegisterDetails sessionRegisterDetails) {
-        this(id, LocalDateTime.now(), LocalDateTime.now(), sessionName, null, sessionRegisterDetails);
+    public Session(long id, LocalDateTime startedAt, LocalDateTime endedAt, String sessionName, SessionRegisterDetails sessionRegisterDetails) {
+        this(id, startedAt, endedAt, sessionName, null, sessionRegisterDetails);
     }
 
-    public Session(long id,
+    public Session(long id, LocalDateTime startedAt, LocalDateTime endedAt, String sessionName) {
+        this(id, startedAt, endedAt, sessionName, null, null);
+    }
+
+    private Session(long id,
                    LocalDateTime startedAt,
                    LocalDateTime endedAt,
                    String sessionName,
@@ -31,12 +37,26 @@ public class Session extends BaseEntity {
         this.sessionRegisterDetails = sessionRegisterDetails;
     }
 
-    public void register(NsUser listener, Long amount) {
-        sessionRegisterDetails.register(listener, amount);
+    public Student enroll(NsUser nsUser, List<Student> students, Payment payment) {
+        Student student = new Student(nsUser.getId(), getId());
+        sessionRegisterDetails.enroll(student, students, payment);
+        return student;
     }
 
-    public boolean isContainListener(NsUser listener) {
-        return sessionRegisterDetails.isContainsListener(listener);
+    public long getId() {
+        return super.getId();
+    }
+
+    public LocalDateTime getStartedAt() {
+        return super.getStartedAt();
+    }
+
+    public LocalDateTime getEndedAt() {
+        return super.getEndedAt();
+    }
+
+    public String getSessionName() {
+        return sessionName;
     }
 
 }

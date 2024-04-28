@@ -34,4 +34,5 @@ public class UserRepositoryTest {
         assertThat(nsUser.isEmpty()).isFalse();
         LOGGER.debug("NsUser: {}", nsUser.get());
     }
+
 }

@@ -137,24 +137,6 @@ public class NsUser {
         return false;
     }
 
-//    public void register(Session session) {
-//        //무료강의 수강신청
-//        if (session.isRecruitingFreeSession()) {
-//            takingSessions.add(session);
-//            return;
-//        }
-//        //유료강의 수강신청
-//        if (session.isRecruiting() && payment.isPossibleToTakeSession(session.getPrice())) {
-//            session.validateUserLimitForPaidCourse();
-//            takingSessions.add(session);
-//        }
-//
-//    }
-
-    public int numberOfSession() {
-        return takingSessions.size();
-    }
-
     private static class GuestNsUser extends NsUser {
 
         @Override

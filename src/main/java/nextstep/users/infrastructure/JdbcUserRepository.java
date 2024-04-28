@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository("userRepository")
@@ -38,4 +39,5 @@ public class JdbcUserRepository implements UserRepository {
         }
         return timestamp.toLocalDateTime();
     }
+
 }

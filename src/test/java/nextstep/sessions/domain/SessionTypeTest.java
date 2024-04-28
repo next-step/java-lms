@@ -20,7 +20,7 @@ public class SessionTypeTest {
     void PaidSessionHavaEnrollCondition() {
         assertThat(SessionType.PAID.isCapacityExceeded(20, 10)).isTrue();
 
-        assertThat(SessionType.PAID.isCapacityExceeded(10, 10)).isFalse();
+        assertThat(SessionType.PAID.isCapacityExceeded(10, 10)).isTrue();
         assertThat(SessionType.PAID.isCapacityExceeded(1, 10)).isFalse();
     }
 

@@ -98,3 +98,37 @@
 - [x] `SessionType#isCapacityExceeded`를 Functional Interface를 통해 람다식으로 변경하라
 - [x] `SessionDetailsTest#always`에 assert를 활용하라 
 - [x] `ImageTest#widthException`을 프로덕션 코드에 맞게 변경하라 - ImageSize
+
+## 3단계 - 수강신청(DB 적용)
+- `Session#register(..)` 메서드를 보면, `Session`객체와 `NsUser`객체가 필요하다는 것을 알 수 있다.
+- `Session`객체는 `SessionRegisterDetails`객체를 가지고 있으며, 이 객체는 `NsUser`객체의 목록을 관리한다. 이 때, 관계가 다대다가 되므로 중간 테이블이 존재해야 한다.
+- 저장소 측면으로 볼 때, `SessionRepository`, `NsUserRepository`, `SessionUserRepository`가 필요하다.
+- `Image`도 중복이 있을 수 있기 때문에 따로 정규화하여 테이블을 만든다.
+  - 가장 안쪽 부분이니 먼저 만든다.
+
+### 구현 목록 사항(3단계)
+- ImageRepository
+  - [x] image 테이블 생성
+  - [x] 이미지를 저장한다
+  - [x] 이미지를 조회한다
+- NsUserRepository
+  - [x] ns_user 테이블 생성
+  - [x] 사용자를 조회한다
+  - [x] 세션 아이디로 참여자 목록을 조회한다
+- SessionRegisterDetailsRepository
+  - [x] session_register_details 테이블 생성
+  - [x] 세션 등록 상세를 저장한다
+  - [x] 세션 등록 상세를 조회한다
+- SessionRepository
+  - [x] session 테이블 생성
+  - [x] 세션을 저장한다
+  - [x] 세션을 조회한다
+- SessionService
+  - [x] 수강신청을 한다
+
+### 첫번째 피드백 사항
+- [x] 수강신청 로직을 정확하게 수행되도록 리팩터링하라
+- [x] 테이블 구조 다시 짜기
+  - [x] '수강생'을 고려하라
+  - [x] session_register_details 테이블에 session_id를 fk로 추가하라
+- [x] '수강생' repository를 추가하라
