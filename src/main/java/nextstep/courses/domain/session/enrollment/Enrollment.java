@@ -18,6 +18,8 @@ public interface Enrollment {
 
     boolean isSatisfyCapacityCondition();
 
+    Long getId();
+
     EnrollmentCount getEnrollmentCount();
 
     SessionState getSessionState();

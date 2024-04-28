@@ -9,6 +9,8 @@ import nextstep.payments.domain.Money;
 
 public class EnrollmentBuilder {
 
+    private Long id;
+
     private EnrollmentCount enrollmentCount;
 
     private SessionState sessionState;
@@ -19,6 +21,11 @@ public class EnrollmentBuilder {
 
     public static EnrollmentBuilder anEnrollment() {
         return new EnrollmentBuilder();
+    }
+
+    public EnrollmentBuilder withId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public EnrollmentBuilder withEnrollmentCount(EnrollmentCount enrollmentCount) {
@@ -41,6 +48,6 @@ public class EnrollmentBuilder {
     }
 
     public Enrollment build() {
-        return new SessionEnrollment(enrollmentCount, sessionState, tuitionFee, feeType);
+        return new SessionEnrollment(id, enrollmentCount, sessionState, tuitionFee, feeType);
     }
 }
