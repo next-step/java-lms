@@ -26,12 +26,12 @@ public class SessionRegisterDetailsTest {
     @Test
     void always() {
         SessionRegisterDetails details = new SessionRegisterDetails(1L, new Price(30000), RECRUITING, 40);
-        Student student = new Student(1L, 1L);
+
         List<Student> students = new ArrayList<>();
 
-        details.enroll(student, students, payment);
+        Student student = details.enroll(new Student(1L, 1L), students, payment);
 
-        assertThat(students).hasSize(1);
+        assertThat(student).isEqualTo(new Student(1L, 1L));
     }
 
     @DisplayName("강의가 모집중이 아닐때 수강신청을 하면 예외를 반환한다")

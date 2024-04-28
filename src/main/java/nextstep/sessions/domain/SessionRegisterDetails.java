@@ -29,7 +29,7 @@ public class SessionRegisterDetails {
         this.students = students;
     }
 
-    public void enroll(Student student, List<Student> enrolledStudents, Payment payment) {
+    public Student enroll(Student student, List<Student> enrolledStudents, Payment payment) {
         if (this.sessionStatus.isNotRecruiting()) {
             throw new IllegalArgumentException(String.format("현재 강의는 (%s)인 상태입니다.", this.sessionStatus));
         }
@@ -38,6 +38,7 @@ public class SessionRegisterDetails {
         }
         Students students = new Students(this.maxOfStudents, SessionType.PAID, new ArrayList<>(enrolledStudents)); // 그냥 enrolledStudents를 넣어주면 UnsupportedOperationException 발생
         students.enroll(student);
+        return student;
     }
 
     public boolean isNotSamePrice(long amount) {

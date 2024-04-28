@@ -37,6 +37,7 @@ class SessionServiceTest {
 
     private Session session;
     private Payment payment;
+    private Student student;
 
     @BeforeEach
     void setUp() {
@@ -45,14 +46,14 @@ class SessionServiceTest {
                 .withSessionRegisterDetails(new SessionRegisterDetailsBuilder().withPrice(new Price(30000L)).build())
                 .build();
         payment = new Payment("javajigi", 1L, 2L, 30000L);
+        student = new Student(1L, 1L);
     }
 
     @Test
-    void register() {
+    void enroll() {
         when(sessionRepository.findById(1L)).thenReturn(java.util.Optional.of(session));
         when(paymentRepository.findByNsUser(NsUserTest.SANJIGI)).thenReturn(java.util.Optional.of(payment));
 
-        Student student = new Student(1L, 1L);
         when(studentRepository.findBySessionId(1L)).thenReturn(java.util.List.of(student));
 
         sessionService.enrollSession(1L, NsUserTest.SANJIGI);
