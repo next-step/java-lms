@@ -56,4 +56,14 @@ public class SessionTest {
                 .hasMessage("결제한 금액이 강의의 가격과 일치하지 않습니다.");
     }
 
+    @DisplayName("강의의 가격과 결제 금액이 같지 않으면 예외를 반환한다")
+    @Test
+    void enrollException() {
+        Payment payment = new Payment("javajigi", 1L, 1L, 10000L);
+
+        assertThatThrownBy(() -> tddCleanCodeJava.enroll(NsUserTest.JAVAJIGI, new ArrayList<>(), payment))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("결제한 금액이 강의의 가격과 일치하지 않습니다.");
+    }
+
 }
