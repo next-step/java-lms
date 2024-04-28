@@ -14,6 +14,8 @@ import nextstep.users.domain.NsUser;
 
 public class SessionEnrollment implements Enrollment {
 
+    private final Long id;
+
     private final EnrollmentCount enrollmentCount;
 
     private final SessionState sessionState;
@@ -22,8 +24,9 @@ public class SessionEnrollment implements Enrollment {
 
     private final FeeType feeType;
 
-    public SessionEnrollment(EnrollmentCount enrollmentCount, SessionState sessionState,
+    public SessionEnrollment(Long id, EnrollmentCount enrollmentCount, SessionState sessionState,
         Money tuitionFee, FeeType feeType) {
+        this.id = id;
         this.enrollmentCount = enrollmentCount;
         this.sessionState = sessionState;
         this.tuitionFee = tuitionFee;
@@ -69,6 +72,11 @@ public class SessionEnrollment implements Enrollment {
     @Override
     public boolean isSatisfyCapacityCondition() {
         return enrollmentCount.isRegistrationWithinCapacity();
+    }
+
+    @Override
+    public Long getId() {
+        return id;
     }
 
     @Override

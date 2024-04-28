@@ -23,6 +23,7 @@ public class SessionFactory {
             return new PaidSession(sessionEntity.getId(),
                 new SessionName(sessionEntity.getSessionName()),
                 new SessionEnrollment(
+                    sessionEntity.getId(),
                     EnrollmentCountFactory.get(FeeType.valueOf(sessionEntity.getFeeType()),
                         sessionEntity.getRegistrationCount(),
                         sessionEntity.getMaxRegistrationCount()),
@@ -40,6 +41,7 @@ public class SessionFactory {
             return new FreeSession(sessionEntity.getId(),
                 new SessionName(sessionEntity.getSessionName()),
                 new SessionEnrollment(
+                    sessionEntity.getId(),
                     EnrollmentCountFactory.get(FeeType.valueOf(sessionEntity.getFeeType()),
                         sessionEntity.getRegistrationCount(),
                         sessionEntity.getMaxRegistrationCount()),

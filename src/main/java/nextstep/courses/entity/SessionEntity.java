@@ -77,6 +77,7 @@ public class SessionEntity extends BaseEntity {
 
     public Enrollment enrollment() {
         return new SessionEnrollment(
+            id,
             EnrollmentCountFactory.get(FeeType.valueOf(feeType),
                 registrationCount,
                 maxRegistrationCount),
