@@ -55,7 +55,7 @@ class SessionServiceTest {
         Student student = new Student(1L, 1L);
         when(studentRepository.findBySessionId(1L)).thenReturn(java.util.List.of(student));
 
-        sessionService.registerSession(1L, NsUserTest.SANJIGI);
+        sessionService.enrollSession(1L, NsUserTest.SANJIGI);
 
         assertThat(studentRepository.findBySessionId(1L)).hasSize(1);
     }

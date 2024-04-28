@@ -30,7 +30,7 @@ public class SessionService {
     }
 
     @Transactional
-    public void registerSession(Long sessionId, NsUser nsUser) {
+    public void enrollSession(Long sessionId, NsUser nsUser) {
         Session session = sessionRepository.findById(sessionId)
                 .orElseThrow(() -> new IllegalArgumentException("세션 정보가 없습니다."));
 
