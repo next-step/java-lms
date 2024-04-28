@@ -36,7 +36,7 @@ public class SessionRegisterDetails {
         if (this.price.isNotSamePrice(payment)) {
             throw new IllegalArgumentException("결제한 금액이 강의의 가격과 일치하지 않습니다.");
         }
-        Students students = new Students(this.maxOfStudents, SessionType.PAID, enrolledStudents);
+        Students students = new Students(this.maxOfStudents, SessionType.PAID, new ArrayList<>(enrolledStudents)); // 그냥 enrolledStudents를 넣어주면 UnsupportedOperationException 발생
         students.enroll(student);
     }
 

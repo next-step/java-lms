@@ -37,11 +37,6 @@ public class SessionService {
         Payment payment = paymentRepository.findByNsUser(nsUser)
                 .orElseThrow(() -> new IllegalArgumentException("결제 정보가 없습니다."));
 
-        //session.register(nsUser, payment);
-        //sessionRepository.save(session);
-        //studentRepository.save(nsUser, session);
-
-        //todo : feedback
         List<Student> enrolledStudents = studentRepository.findBySessionId(sessionId);
         Student student = session.enroll(nsUser, enrolledStudents, payment);
         studentRepository.save(student);

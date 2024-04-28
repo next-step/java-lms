@@ -5,6 +5,7 @@ import nextstep.payments.infrastructure.PaymentRepository;
 import nextstep.sessions.domain.Price;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionRepository;
+import nextstep.sessions.domain.Student;
 import nextstep.sessions.domain.StudentRepository;
 import nextstep.sessions.domain.builder.SessionBuilder;
 import nextstep.sessions.domain.builder.SessionRegisterDetailsBuilder;
@@ -43,17 +44,20 @@ class SessionServiceTest {
                 .withSessionName("TDD, CleanCode")
                 .withSessionRegisterDetails(new SessionRegisterDetailsBuilder().withPrice(new Price(30000L)).build())
                 .build();
-        payment = new Payment("javajigi", 1L, 1L, 30000L);
+        payment = new Payment("javajigi", 1L, 2L, 30000L);
     }
 
     @Test
     void register() {
         when(sessionRepository.findById(1L)).thenReturn(java.util.Optional.of(session));
-        when(paymentRepository.findByNsUser(NsUserTest.JAVAJIGI)).thenReturn(java.util.Optional.of(payment));
+        when(paymentRepository.findByNsUser(NsUserTest.SANJIGI)).thenReturn(java.util.Optional.of(payment));
 
-        sessionService.registerSession(1L, NsUserTest.JAVAJIGI);
+        Student student = new Student(1L, 1L);
+        when(studentRepository.findBySessionId(1L)).thenReturn(java.util.List.of(student));
 
-        assertThat(session.isContainListener(NsUserTest.JAVAJIGI)).isTrue();
+        sessionService.registerSession(1L, NsUserTest.SANJIGI);
+
+        assertThat(studentRepository.findBySessionId(1L)).hasSize(1);
     }
 
 }
