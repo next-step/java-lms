@@ -132,3 +132,31 @@
   - [x] '수강생'을 고려하라
   - [x] session_register_details 테이블에 session_id를 fk로 추가하라
 - [x] '수강생' repository를 추가하라
+
+## 4단계 - 수강신(요구사항 변경)
+### 변경된 기능 요구사항(기존 -> 변경사항)
+- 준비중, 모집중, 종료 -> 준비중, 진행중, 종료 && 비모집중, 모집중
+- 이미지정보 하나 -> 이미지리스트
+- 수강신청한 모든 사람이 수강 가능 -> 선발된 인원만 수강 가능
+- 강사
+  - 수강신청한 사람 중 선발된 인원에 대해서만 수강 승인 가능
+  - 수강신청한 사람 중 선발되지 않은 사람은 수강 취소 가능
+
+### 구현 목록 사항(4단계)
+- SessionStatus
+  - [ ] IN_PROGRESS 상태를 추가한다
+  - [ ] isNotInProgress() 메서드를 추가한다
+- RecruitmentStatus
+  - [ ] RECRUITING 상태를 추가한다
+  - [ ] isNotRecruiting() 메서드를 추가한다
+- Session
+  - [ ] SessionCoverImages(이미지 리스트)를 추가한다
+- Student
+  - [ ] 선발상태(isSelected)를 추가한다
+  - [ ] 승인상태(isApproved)를 추가한다
+
+### todolist
+- [ ] 강의 상태가 IN_PROGRESS가 아닌지 확인한다
+- [ ] 모집 상태가 RECRUITING이 아닌지 확인한다
+- [ ] 수강신청한 사람(Student) 중 선발된 인원만을 수강 승인 할 수 있다
+- [ ] 수강신청한 사람(Student) 중 선발되지 않은 사람은 수강 취소 할 수 있다
