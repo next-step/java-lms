@@ -144,8 +144,8 @@
 
 ### 구현 목록 사항(4단계)
 - SessionStatus
-  - [ ] IN_PROGRESS 상태를 추가한다
-  - [ ] isNotInProgress() 메서드를 추가한다
+  - [x] IN_PROGRESS 상태를 추가한다
+  - [x] isNotInProgress() 메서드를 추가한다
 - RecruitmentStatus
   - [ ] RECRUITING 상태를 추가한다
   - [ ] isNotRecruiting() 메서드를 추가한다
@@ -156,7 +156,7 @@
   - [ ] 승인상태(isApproved)를 추가한다
 
 ### todolist
-- [ ] 강의 상태가 IN_PROGRESS가 아닌지 확인한다
+- [x] 강의 상태가 IN_PROGRESS인지 아닌지 확인한다
 - [ ] 모집 상태가 RECRUITING이 아닌지 확인한다
 - [ ] 수강신청한 사람(Student) 중 선발된 인원만을 수강 승인 할 수 있다
 - [ ] 수강신청한 사람(Student) 중 선발되지 않은 사람은 수강 취소 할 수 있다
