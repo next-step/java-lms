@@ -3,22 +3,20 @@ package nextstep.session.domain;
 import java.util.Arrays;
 import nextstep.session.SessionStatusInvalidException;
 
-public enum SessionStatus {
-    PREPARING("준비중"),
-    RECRUITING("모집중"),
-    FINISHED("종료"),
-    ;
+public enum SessionEnrollmentStatus {
+    OPEN("모집중"),
+    CLOSED("비모집중");
     private final String description;
 
-    SessionStatus(String description) {
+    SessionEnrollmentStatus(String description) {
         this.description = description;
     }
 
-    public boolean isSessionRecruiting() {
-        return this == RECRUITING;
+    public boolean isSessionOpenForRegistration() {
+        return this == OPEN;
     }
 
-    public static SessionStatus convert(String status) {
+    public static SessionEnrollmentStatus convert(String status) {
         return Arrays.stream(values())
             .filter(sessionType -> sessionType.description.equals(status))
             .findAny()

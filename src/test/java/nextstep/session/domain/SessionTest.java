@@ -30,7 +30,7 @@ class SessionTest {
         throws CannotEnrollException, InvalidEnrollmentPolicyException, StudentAlreadyEnrolledException {
         NsUser user = new NsUser(1L, "somin", "1111", "박소민", "test@naver.com");
         Session session = Session.createPaidSession(1L, "객체지향강의", sessionSchedule,
-            SessionStatus.RECRUITING, 500, 50000);
+            SessionProgressStatus.IN_PROGRESS, SessionEnrollmentStatus.OPEN, 500, 50000);
 
         session.enroll(user, 50000);
         assertThat(session.enrolledStudentCount()).isEqualTo(1);
@@ -40,7 +40,7 @@ class SessionTest {
     public void 모집중인_강의만_신청_가능() throws InvalidEnrollmentPolicyException {
         NsUser user = new NsUser(1L, "somin", "1111", "박소민", "test@naver.com");
         Session session = Session.createPaidSession(2L, "객체지향강의", sessionSchedule,
-            SessionStatus.PREPARING, 100, 50000);
+            SessionProgressStatus.PREPARING, SessionEnrollmentStatus.CLOSED, 100, 50000);
         assertThatThrownBy(() ->
             session.enroll(user, 50000)).isInstanceOf(CannotEnrollException.class)
             .hasMessageContaining("현재 모집중인 강의가 아닙니다.");
@@ -50,7 +50,7 @@ class SessionTest {
     public void 유료강의의_경우_수강료와_지불금액이_일치해야_신청_가능() throws InvalidEnrollmentPolicyException {
         NsUser user = new NsUser(1L, "somin", "1111", "박소민", "test@naver.com");
         Session session = Session.createPaidSession(2L, "객체지향강의", sessionSchedule,
-            SessionStatus.RECRUITING, 100, 50000);
+            SessionProgressStatus.IN_PROGRESS, SessionEnrollmentStatus.OPEN, 100, 50000);
         assertThatThrownBy(() ->
             session.enroll(user, 20000)).isInstanceOf(CannotEnrollException.class)
             .hasMessageContaining("수강료와 지불금액이 일치하지 않습니다.");

@@ -4,9 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
 import nextstep.session.domain.Session;
+import nextstep.session.domain.SessionEnrollmentStatus;
+import nextstep.session.domain.SessionProgressStatus;
 import nextstep.session.domain.SessionRepository;
 import nextstep.session.domain.SessionSchedule;
-import nextstep.session.domain.SessionStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class SessionRepositoryTest {
         Session session = Session.createPaidSession(1L, "객체지향강의", new SessionSchedule(
                 LocalDate.of(2024, 6, 1),
                 LocalDate.of(2024, 12, 31)),
-            SessionStatus.RECRUITING, 500, 50000);
+            SessionProgressStatus.IN_PROGRESS, SessionEnrollmentStatus.OPEN, 500, 50000);
 
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
@@ -42,7 +43,7 @@ public class SessionRepositoryTest {
         Session session = Session.createPaidSession(2L, "객체지향강의", new SessionSchedule(
                 LocalDate.of(2024, 6, 1),
                 LocalDate.of(2024, 12, 31)),
-            SessionStatus.RECRUITING, 500, 50000);
+            SessionProgressStatus.IN_PROGRESS, SessionEnrollmentStatus.CLOSED, 500, 50000);
 
         sessionRepository.save(session);
         Session savedSession = sessionRepository.findById(1L);

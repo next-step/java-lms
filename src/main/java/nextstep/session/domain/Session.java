@@ -11,24 +11,28 @@ public class Session {
     private Long courseId;
     private SessionSchedule sessionSchedule;
     private SessionCoverImage coverImage;
-    private SessionStatus sessionStatus;
+    private SessionProgressStatus sessionProgressStatus;
+    private SessionEnrollmentStatus sessionEnrollmentStatus;
     private EnrollmentPolicy enrollmentPolicy;
     private Students students;
 
 
     public Session(Long id, Long courseId, String title, SessionSchedule sessionSchedule,
-        SessionStatus sessionStatus, EnrollmentPolicy enrollmentPolicy) {
+        SessionProgressStatus sessionProgressStatus,
+        SessionEnrollmentStatus sessionEnrollmentStatus, EnrollmentPolicy enrollmentPolicy) {
         this.id = id;
         this.courseId = courseId;
         this.title = title;
         this.sessionSchedule = sessionSchedule;
-        this.sessionStatus = sessionStatus;
+        this.sessionProgressStatus = sessionProgressStatus;
+        this.sessionEnrollmentStatus = sessionEnrollmentStatus;
         this.enrollmentPolicy = enrollmentPolicy;
         this.students = new Students();
     }
 
     public Session(Long id, String title, Long courseId, SessionSchedule sessionSchedule,
-        SessionStatus sessionStatus,
+        SessionProgressStatus sessionProgressStatus,
+        SessionEnrollmentStatus sessionEnrollmentStatus,
         SessionCoverImage coverImage,
         EnrollmentPolicy enrollmentPolicy,
         Students students) {
@@ -37,22 +41,28 @@ public class Session {
         this.courseId = courseId;
         this.coverImage = coverImage;
         this.sessionSchedule = sessionSchedule;
-        this.sessionStatus = sessionStatus;
+        this.sessionProgressStatus = sessionProgressStatus;
+        this.sessionEnrollmentStatus = sessionEnrollmentStatus;
         this.enrollmentPolicy = enrollmentPolicy;
         this.students = students;
     }
 
     public static Session createFreeSession(Long courseId, String title,
         SessionSchedule sessionSchedule,
-        SessionStatus sessionStatus) {
-        return new Session(0L, courseId, title, sessionSchedule, sessionStatus,
+        SessionProgressStatus sessionProgressStatus,
+        SessionEnrollmentStatus sessionEnrollmentStatus) {
+        return new Session(0L, courseId, title, sessionSchedule, sessionProgressStatus,
+            sessionEnrollmentStatus,
             EnrollmentPolicy.createFreePolicy());
     }
 
     public static Session createPaidSession(Long courseId, String title,
         SessionSchedule sessionSchedule,
-        SessionStatus sessionStatus, int maxEnrollment, int fee) {
-        return new Session(0L, courseId, title, sessionSchedule, sessionStatus,
+        SessionProgressStatus sessionProgressStatus,
+        SessionEnrollmentStatus sessionEnrollmentStatus, int maxEnrollment, int fee
+    ) {
+        return new Session(0L, courseId, title, sessionSchedule, sessionProgressStatus,
+            sessionEnrollmentStatus,
             EnrollmentPolicy.createPaidPolicy(maxEnrollment, fee));
     }
 
@@ -60,7 +70,7 @@ public class Session {
         if (enrollmentPolicy.isCapacityFull(students.enrolledStudentCount())) {
             throw new CannotEnrollException("수강 인원 초과로 인해 현재 이 강의에 추가 등록이 불가능합니다.");
         }
-        if (!sessionStatus.isSessionRecruiting()) {
+        if (!sessionEnrollmentStatus.isSessionOpenForRegistration()) {
             throw new CannotEnrollException("현재 모집중인 강의가 아닙니다.");
         }
         if (!enrollmentPolicy.isPaymentCorrect(payment)) {
@@ -100,8 +110,8 @@ public class Session {
         return sessionSchedule.getEndDate();
     }
 
-    public String getSessionStatus() {
-        return sessionStatus.getDescription();
+    public String getSessionProgressStatus() {
+        return sessionProgressStatus.getDescription();
     }
 
     public String getPriceType() {
@@ -116,4 +126,7 @@ public class Session {
         return enrollmentPolicy.getFee();
     }
 
+    public String getSessionEnrollmentStatus() {
+        return sessionEnrollmentStatus.getDescription();
+    }
 }
