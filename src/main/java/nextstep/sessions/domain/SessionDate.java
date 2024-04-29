@@ -18,4 +18,12 @@ public class SessionDate {
             throw new IllegalArgumentException("강의 종료일보다 강의 시작일이 늦을 수 없습니다.");
         }
     }
+
+    public LocalDate getStartedAt() {
+        return startedAt.getStartedAt();
+    }
+
+    public LocalDate getEndedAt() {
+        return endedAt.getEndedAt();
+    }
 }

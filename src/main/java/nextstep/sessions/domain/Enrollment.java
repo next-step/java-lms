@@ -41,4 +41,15 @@ public class Enrollment {
         return students.size() == capacity;
     }
 
+    public SessionStatus getSessionStatus() {
+        return sessionStatus;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public List<NsUser> getStudents() {
+        return students;
+    }
 }

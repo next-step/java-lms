@@ -14,4 +14,12 @@ public class Charge {
         this.status = status;
         this.price = price;
     }
+
+    public ChargeStatus getStatus() {
+        return status;
+    }
+
+    public int getPrice() {
+        return price;
+    }
 }
