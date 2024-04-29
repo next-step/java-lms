@@ -152,13 +152,13 @@
 - Session
   - [x] SessionCoverImages(이미지 리스트)를 추가한다
 - Student
-  - [ ] 선발상태(isSelected)를 추가한다
-  - [ ] 승인상태(isApproved)를 추가한다
+  - [x] 선발상태(isSelected)를 추가한다
+  - [x] 승인상태(isApproved)를 추가한다
 
 ### todolist
 - [x] 강의 상태가 IN_PROGRESS인지 아닌지 확인한다
 - [x] 모집 상태가 RECRUITING인지 아닌지 확인한다
 - [x] 강의 상태가 IN_PROGRESS일 때만 수강신청이 가능하다
 - [x] 모집 상태가 RECRUITING일 때만 수강신청이 가능하다
-- [ ] 수강신청한 사람(Student) 중 선발된 인원만을 수강 승인 할 수 있다
+- [x] 수강신청한 사람(Student) 중 선발된 인원만을 수강 승인 할 수 있다
 - [ ] 수강신청한 사람(Student) 중 선발되지 않은 사람은 수강 취소 할 수 있다
