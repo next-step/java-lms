@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static nextstep.sessions.domain.SessionStatus.END;
-import static nextstep.sessions.domain.SessionStatus.RECRUITING;
+import static nextstep.sessions.domain.SessionStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -25,7 +24,7 @@ public class SessionRegisterDetailsTest {
     @DisplayName("수강신청을 한다")
     @Test
     void always() {
-        SessionRegisterDetails details = new SessionRegisterDetails(1L, new Price(30000), RECRUITING, 40);
+        SessionRegisterDetails details = new SessionRegisterDetails(1L, new Price(30000), IN_PROGRESS, 40);
 
         List<Student> students = new ArrayList<>();
 

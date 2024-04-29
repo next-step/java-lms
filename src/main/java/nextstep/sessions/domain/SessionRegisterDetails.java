@@ -30,7 +30,7 @@ public class SessionRegisterDetails {
     }
 
     public Student enroll(Student student, List<Student> enrolledStudents, Payment payment) {
-        if (this.sessionStatus.isNotRecruiting()) {
+        if (this.sessionStatus.isNotInProgress()) {
             throw new IllegalArgumentException(String.format("현재 강의는 (%s)인 상태입니다.", this.sessionStatus));
         }
         if (this.price.isNotSamePrice(payment)) {
