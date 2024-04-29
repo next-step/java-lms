@@ -28,6 +28,9 @@ public class Student {
     }
 
     public void approve() {
+        if (!isSelected) {
+            throw new IllegalArgumentException("선발되지 않은 학생은 승인할 수 없습니다.");
+        }
         this.isApproved = true;
     }
 
