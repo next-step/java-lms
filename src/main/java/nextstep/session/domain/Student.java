@@ -7,16 +7,21 @@ public class Student {
     private Long id;
     private Long user_id;
     private Long session_id;
+    private EnrollmentApprovalStatus approvalStatus;
+
 
     public Student(Long user_id, Long session_id) {
         this.user_id = user_id;
         this.session_id = session_id;
+        this.approvalStatus = EnrollmentApprovalStatus.HOLD;
     }
 
     public Student(Long id, Long user_id, Long session_id) {
         this.id = id;
         this.user_id = user_id;
         this.session_id = session_id;
+        this.approvalStatus = EnrollmentApprovalStatus.HOLD;
+
     }
 
     @Override
