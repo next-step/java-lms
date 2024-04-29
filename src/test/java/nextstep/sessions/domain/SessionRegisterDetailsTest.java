@@ -26,18 +26,6 @@ public class SessionRegisterDetailsTest {
     @DisplayName("수강신청을 한다")
     @Test
     void always() {
-        SessionRegisterDetails details = new SessionRegisterDetails(1L, new Price(30000), IN_PROGRESS, 40);
-
-        List<Student> students = new ArrayList<>();
-
-        Student student = details.enroll(new Student(1L, 1L), students, payment);
-
-        assertThat(student).isEqualTo(new Student(1L, 1L));
-    }
-
-    @DisplayName("수강신청을 한다")
-    @Test
-    void always1() {
         SessionRegisterDetails details = new SessionRegisterDetails(1L, new Price(30000), IN_PROGRESS, RECRUITING, 40);
 
         List<Student> students = new ArrayList<>();
