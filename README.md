@@ -150,7 +150,7 @@
   - [x] RECRUITING 상태를 추가한다
   - [x] isNotRecruiting() 메서드를 추가한다
 - Session
-  - [ ] SessionCoverImages(이미지 리스트)를 추가한다
+  - [x] SessionCoverImages(이미지 리스트)를 추가한다
 - Student
   - [ ] 선발상태(isSelected)를 추가한다
   - [ ] 승인상태(isApproved)를 추가한다

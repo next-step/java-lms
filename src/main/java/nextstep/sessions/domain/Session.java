@@ -12,7 +12,7 @@ public class Session extends BaseEntity {
 
     private final String sessionName;
 
-    private final Image image;
+    private final List<Image> images;
 
     private final SessionRegisterDetails sessionRegisterDetails;
 
@@ -28,12 +28,12 @@ public class Session extends BaseEntity {
                    LocalDateTime startedAt,
                    LocalDateTime endedAt,
                    String sessionName,
-                   Image image,
+                   List<Image> images,
                    SessionRegisterDetails sessionRegisterDetails
     ) {
         super(id, startedAt, endedAt);
         this.sessionName = sessionName;
-        this.image = image;
+        this.images = images;
         this.sessionRegisterDetails = sessionRegisterDetails;
     }
 
