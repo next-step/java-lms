@@ -42,4 +42,22 @@ public class SessionService {
         studentRepository.save(student);
     }
 
+    @Transactional
+    public void approveStudent(Long studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new IllegalArgumentException("학생 정보가 없습니다."));
+
+        student.approve();
+        studentRepository.save(student);
+    }
+
+    @Transactional
+    public void disApproveStudent(Long studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new IllegalArgumentException("학생 정보가 없습니다."));
+
+        student.disApprove();
+        studentRepository.save(student);
+    }
+
 }
