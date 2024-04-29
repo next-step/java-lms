@@ -3,7 +3,7 @@ package nextstep.session.domain;
 public class ImageSize {
 	private final static long KB_UNIT = 1024;
 
-	private int imageSize;
+	private final int imageSize;
 
 	public ImageSize(int imageSize) {
 		validateImageSize(imageSize);

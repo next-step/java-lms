@@ -4,8 +4,8 @@ public class ImageReSolution {
 
 	private static final int WIDTH_RATIO = 3;
 	private static final int HEIGHT_RATIO = 2;
-	private int width;
-	private int height;
+	private final int width;
+	private final int height;
 
 	public ImageReSolution(int width, int height) {
 		validateImageDimensions(width, height);

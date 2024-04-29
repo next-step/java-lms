@@ -2,8 +2,8 @@ package nextstep.session.domain;
 
 public class PaidSessionBody {
 
-	private long sessionPrice;
-	private int maximumNumberOfParticipants;
+	private final long sessionPrice;
+	private final int maximumNumberOfParticipants;
 
 	public PaidSessionBody(long sessionPrice, int maximumNumberOfParticipants) {
 		this.sessionPrice = sessionPrice;
