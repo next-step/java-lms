@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SessionTest {
 	public static final Course C1 = new Course("title1", 1L);
@@ -15,16 +16,11 @@ class SessionTest {
 	public static final Session piadSession = new PaidSession(SessionTest.C1, SessionTest.imageInfo, SessionTest.P, 50000,50);
 
 	@Test
-	void 수강신청_성공_테스트() {
-		Session freeSession = new FreeSession(C1, imageInfo, P, 2);
-		assertThat(freeSession.applySession(NsUserTest.SANJIGI)).isTrue();
-	}
-
-	@Test
-	void 수강신청_실패_테스트() {
+	void 수강신청_성공_실패_테스트() {
 		Session freeSession = new FreeSession(C1, imageInfo, P, 1);
-		assertThat(freeSession.applySession(NsUserTest.SANJIGI)).isTrue();
-		assertThat(freeSession.applySession(NsUserTest.JAVAJIGI)).isFalse();
+		freeSession.applySession(NsUserTest.SANJIGI);
+		assertThatThrownBy(() -> freeSession.applySession(NsUserTest.JAVAJIGI))
+				.isInstanceOf(IllegalArgumentException.class);
 	}
 
 	@Test
