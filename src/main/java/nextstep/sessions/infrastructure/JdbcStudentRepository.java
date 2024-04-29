@@ -26,7 +26,7 @@ public class JdbcStudentRepository implements StudentRepository {
     public List<Student> findBySessionId(long sessionId) {
         String sql = "select * from students where session_id = ?";
         return jdbcTemplate.query(sql, (rs, rowNum) ->
-                new Student(rs.getLong("ns_user_id"), rs.getLong("session_id"))
+                        new Student(rs.getLong("ns_user_id"), rs.getLong("session_id"))
                 , sessionId);
     }
 }

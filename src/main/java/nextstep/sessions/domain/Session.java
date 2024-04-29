@@ -25,11 +25,11 @@ public class Session extends BaseEntity {
     }
 
     private Session(long id,
-                   LocalDateTime startedAt,
-                   LocalDateTime endedAt,
-                   String sessionName,
-                   List<Image> images,
-                   SessionRegisterDetails sessionRegisterDetails
+                    LocalDateTime startedAt,
+                    LocalDateTime endedAt,
+                    String sessionName,
+                    List<Image> images,
+                    SessionRegisterDetails sessionRegisterDetails
     ) {
         super(id, startedAt, endedAt);
         this.sessionName = sessionName;

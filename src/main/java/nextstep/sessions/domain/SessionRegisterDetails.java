@@ -15,9 +15,9 @@ public class SessionRegisterDetails {
 
     private final RecruitmentStatus recruitmentStatus;
 
-    private int maxOfStudents;
+    private final int maxOfStudents;
 
-    private Students students;
+    private final Students students;
 
     public SessionRegisterDetails(long id, Price price, SessionStatus sessionStatus, int maxOfStudents) {
         this(id, price, sessionStatus, RecruitmentStatus.RECRUITING, maxOfStudents, new Students(maxOfStudents));

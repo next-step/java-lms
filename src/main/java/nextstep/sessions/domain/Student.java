@@ -5,16 +5,8 @@ import java.util.Objects;
 public class Student {
     private final long nsUserId;
     private final long sessionId;
-    private boolean isSelected; //선발 상태
+    private final boolean isSelected; //선발 상태
     private boolean isApproved; //승인 상태
-
-    public static Student createStudentWithApproved(long nsUserId, long sessionId) {
-        return new Student(nsUserId, sessionId, false, true);
-    }
-
-    public static Student createStudentWithSelected(long nsUserId, long sessionId) {
-        return new Student(nsUserId, sessionId, true, false);
-    }
 
     public Student(long nsUserId, long sessionId) {
         this(nsUserId, sessionId, true, true);
