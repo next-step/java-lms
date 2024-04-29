@@ -15,4 +15,15 @@ public class StudentTest {
 
         assertThat(selectedStudent).isEqualTo(new StudentBuilder().withIsSelected(true).withIsApproved(true).build());
     }
+
+
+
+    @Test
+    void disApprove() {
+        Student selectedStudent = new StudentBuilder().withIsSelected(false).build();
+
+        selectedStudent.disApprove();
+
+        assertThat(selectedStudent).isEqualTo(new StudentBuilder().withIsSelected(false).withIsApproved(false).build());
+    }
 }

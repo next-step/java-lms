@@ -31,6 +31,10 @@ public class Student {
         this.isApproved = true;
     }
 
+    public void disApprove() {
+        this.isApproved = false;
+    }
+
     public long getId() {
         return nsUserId;
     }
