@@ -1,6 +1,8 @@
 package nextstep.session.domain;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import nextstep.session.CannotEnrollException;
 import nextstep.users.domain.NsUser;
 
@@ -10,7 +12,7 @@ public class Session {
     private String title;
     private Long courseId;
     private SessionSchedule sessionSchedule;
-    private SessionCoverImage coverImage;
+    private List<SessionCoverImage> coverImages;
     private SessionProgressStatus sessionProgressStatus;
     private SessionEnrollmentStatus sessionEnrollmentStatus;
     private EnrollmentPolicy enrollmentPolicy;
@@ -27,19 +29,20 @@ public class Session {
         this.sessionProgressStatus = sessionProgressStatus;
         this.sessionEnrollmentStatus = sessionEnrollmentStatus;
         this.enrollmentPolicy = enrollmentPolicy;
+        this.coverImages = new ArrayList<>();
         this.students = new Students();
     }
 
     public Session(Long id, String title, Long courseId, SessionSchedule sessionSchedule,
         SessionProgressStatus sessionProgressStatus,
         SessionEnrollmentStatus sessionEnrollmentStatus,
-        SessionCoverImage coverImage,
+        List<SessionCoverImage> coverImages,
         EnrollmentPolicy enrollmentPolicy,
         Students students) {
         this.id = id;
         this.title = title;
         this.courseId = courseId;
-        this.coverImage = coverImage;
+        this.coverImages = coverImages;
         this.sessionSchedule = sessionSchedule;
         this.sessionProgressStatus = sessionProgressStatus;
         this.sessionEnrollmentStatus = sessionEnrollmentStatus;
@@ -86,12 +89,24 @@ public class Session {
         return student;
     }
 
+    public void addCoverImage(SessionCoverImage coverImage) {
+        coverImages.add(coverImage);
+    }
+
     public int enrolledStudentCount() {
         return students.enrolledStudentCount();
     }
 
-    public SessionCoverImage getCoverImage() {
-        return coverImage;
+    public Long getSessionId() {
+        return id;
+    }
+
+    public List<SessionCoverImage> getCoverImages() {
+        return coverImages;
+    }
+
+    public int countCoverImages() {
+        return coverImages.size();
     }
 
     public String getTitle() {

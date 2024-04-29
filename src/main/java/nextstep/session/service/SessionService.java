@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 import nextstep.session.CannotEnrollException;
 import nextstep.session.StudentAlreadyEnrolledException;
 import nextstep.session.domain.Session;
+import nextstep.session.domain.SessionCoverImage;
 import nextstep.session.domain.SessionCoverImageRepository;
 import nextstep.session.domain.SessionRepository;
 import nextstep.session.domain.SessionStudentRepository;
@@ -33,7 +34,10 @@ public class SessionService {
     @Transactional
     public void createSession(Session session) {
         sessionRepository.save(session);
-        sessionCoverImageRepository.save(session.getCoverImage());
+        for (SessionCoverImage coverImage : session.getCoverImages()) {
+            sessionCoverImageRepository.save(coverImage);
+
+        }
     }
 
 }

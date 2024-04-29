@@ -56,5 +56,17 @@ class SessionTest {
             .hasMessageContaining("수강료와 지불금액이 일치하지 않습니다.");
     }
 
+    @Test
+    public void 강의는_하나_이상의_커버_이미지를_가질_수_있음() {
+        Session session = Session.createPaidSession(2L, "객체지향강의", sessionSchedule,
+            SessionProgressStatus.IN_PROGRESS, SessionEnrollmentStatus.OPEN, 100, 50000);
+        session.addCoverImage(
+            new SessionCoverImage(session.getSessionId(), 900, 600, 10000, "jpg"));
+        session.addCoverImage(
+            new SessionCoverImage(session.getSessionId(), 900, 600, 10000, "png"));
+
+        assertThat(session.countCoverImages()).isEqualTo(2);
+    }
+
 
 }
