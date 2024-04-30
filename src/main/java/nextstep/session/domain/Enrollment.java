@@ -7,18 +7,21 @@ public class Enrollment {
 	private static final int INCREASE_STUDENT = 1;
 	private long id;
 	private final int maximumNumberOfParticipants;
+	private final long sessionPrice;
+
 	private SessionStatus sessionStatus;
 	private NsUsers nsUsers;
 
-	public Enrollment(int maximumNumberOfParticipants) {
-		this(0L, SessionStatus.PREPARING, maximumNumberOfParticipants);
+	public Enrollment(int maximumNumberOfParticipants, long sessionPrice) {
+		this(0L, maximumNumberOfParticipants, sessionPrice, SessionStatus.PREPARING, new NsUsers());
 	}
 
-	public Enrollment(long id, SessionStatus sessionStatus, int maximumNumberOfParticipants) {
+	public Enrollment(long id, int maximumNumberOfParticipants, long sessionPrice, SessionStatus sessionStatus, NsUsers nsUsers) {
 		this.id = id;
-		this.sessionStatus = sessionStatus;
 		this.maximumNumberOfParticipants = maximumNumberOfParticipants;
-		this.nsUsers = new NsUsers();
+		this.sessionPrice = sessionPrice;
+		this.sessionStatus = sessionStatus;
+		this.nsUsers = nsUsers;
 	}
 
 	private boolean isSessionRegister() {
@@ -39,6 +42,11 @@ public class Enrollment {
 		return numberOfParticipants <= maximumNumberOfParticipants;
 	}
 
+	public boolean isSamePaymentAndSessionPrice(int payment) {
+		return payment == sessionPrice;
+	}
+
+
 	private boolean isAddStudent() {
 		return isSessionRegister() && isParticipantsSession();
 	}
@@ -47,6 +55,18 @@ public class Enrollment {
 		if (isAddStudent()) {
 			nsUsers.addStudent(student);
 		}
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public int getMaximumNumberOfParticipants() {
+		return maximumNumberOfParticipants;
+	}
+
+	public int getSessionStatus() {
+		return sessionStatus.getStatusValue();
 	}
 
 }

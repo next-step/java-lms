@@ -9,8 +9,8 @@ public abstract class Session {
 	private Period period;
 	private Enrollment enrollment;
 
-	public Session(Course course, ImageInfo imageInfo, Period period, int maximumNumberOfParticipants) {
-		this(0L, course, imageInfo, period, new Enrollment(maximumNumberOfParticipants));
+	public Session(Course course, ImageInfo imageInfo, Period period, int maximumNumberOfParticipants, long sessionPrice) {
+		this(0L, course, imageInfo, period, new Enrollment(maximumNumberOfParticipants, sessionPrice));
 	}
 
 	public Session(Long id, Course course, ImageInfo imageInfo, Period period, Enrollment enrollment) {
@@ -20,7 +20,5 @@ public abstract class Session {
 		this.period = period;
 		this.enrollment = enrollment;
 	}
-
-	abstract boolean isSamePaymentAndSessionPrice(int price);
 
 }
