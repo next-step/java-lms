@@ -15,14 +15,14 @@ class SessionsTest {
     Session session;
     @BeforeEach
     void setUp() {
-        session = new FreeSession(0L, 0L, new SessionPeriod(LocalDate.of(2024, 04, 21), LocalDate.of(2024, 04, 21)), new SessionImage(1000, "hi.jpg", 300, 200), SessionStatus.PREPARING);
+        session = Session.createFreeSession(0L, 0L, new SessionPeriod(LocalDate.of(2024, 04, 21), LocalDate.of(2024, 04, 21)), new SessionImage(1000, "hi.jpg", 300, 200), SessionStatus.PREPARING);
         sessions = new Sessions(List.of(session));
 
     }
     @Test
     @DisplayName("같은 강의가 동시에 존재할 수 없다.")
     void checkDuplicateSession() {
-        Session newSession = new FreeSession(0L, 0L, new SessionPeriod(LocalDate.of(2024, 04, 21), LocalDate.of(2024, 04, 21)), new SessionImage(1000, "hi.jpg", 300, 200), SessionStatus.PREPARING);
+        Session newSession = Session.createFreeSession(0L, 0L, new SessionPeriod(LocalDate.of(2024, 04, 21), LocalDate.of(2024, 04, 21)), new SessionImage(1000, "hi.jpg", 300, 200), SessionStatus.PREPARING);
         assertThatIllegalArgumentException().isThrownBy(
                 () -> sessions.add(newSession)
         ).withMessageContaining("이미 존재하는 강의는 추가할 수 없습니다.");

@@ -1,6 +1,6 @@
-package nextstep.courses.domain;
+package nextstep.sessions.domain;
 
-import nextstep.sessions.domain.*;
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +13,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 public class FreeSessionTest {
 
     Session session;
+    Payment payment;
+    NsUser nsUser;
 
     @BeforeEach
     void setUp() {
@@ -28,13 +30,15 @@ public class FreeSessionTest {
         int imageHeight = 200;
         SessionImage sessionImage = new SessionImage(imageByte, imageType, imageWidth, imageHeight);
 
-        session = new FreeSession(0L, 0L, sessionPeriod, sessionImage, SessionStatus.PREPARING);
+        session = Session.createFreeSession(0L, 0L, sessionPeriod, sessionImage, SessionStatus.PREPARING);
+        payment = new Payment(0L, 0L, 0L, 1000);
+        nsUser = new NsUser(0L, "1", "1", "1", "1");
     }
 
     @Test
     @DisplayName("무료 강의의 경우 강의 상태가 모집 중이 아니라면 수강 신청이 불가능하다.")
     void freeSessionTest() {
-        assertThatThrownBy(() -> session.signUp(new NsUser()))
+        assertThatThrownBy(() -> session.signUp(nsUser, payment))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("수강 모집 중이 아닙니다.");
     }

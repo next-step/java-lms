@@ -1,6 +1,6 @@
-package nextstep.courses.domain;
+package nextstep.sessions.domain;
 
-import nextstep.sessions.domain.*;
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +13,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 public class PaySessionTest {
 
     Session session;
+    Payment payment;
+    NsUser nsUser;
 
     @BeforeEach
     void setUp() {
@@ -28,13 +30,15 @@ public class PaySessionTest {
         int imageHeight = 200;
         SessionImage sessionImage = new SessionImage(imageByte, imageType, imageWidth, imageHeight);
 
-        session = new PaySession(0L, 0L, sessionPeriod, sessionImage, SessionStatus.PREPARING, 0, 2000);
+        session = Session.createPaySession(0L, 0L, sessionPeriod, sessionImage, SessionStatus.PREPARING, 0, 1000);
+        payment = new Payment(0L, 0L, 0L, 1000);
+        nsUser = new NsUser(0L, "1", "1", "1", "1");
     }
 
     @Test
     @DisplayName("강의 상태가 모집 중이 아니라면 수강 신청이 불가능하다.")
     void paySessionTest() {
-        assertThatThrownBy(() -> session.signUp(new NsUser()))
+        assertThatThrownBy(() -> session.signUp(nsUser, payment))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("수강 모집 중이 아닙니다.");
     }
@@ -43,15 +47,24 @@ public class PaySessionTest {
     @DisplayName("유료 강의는 최대 수강 신청 인원을 넘으면 수강 신청이 불가능하다.")
     void paySessionUserCountTest() {
         session.changeSessionStatusIsRecruiting();
-        assertThatThrownBy(() -> session.signUp(new NsUser()))
+        assertThatThrownBy(() -> session.signUp(nsUser, payment))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("유료 강의의 최대 수강인원을 초과할 수 없습니다.");
     }
 
     @Test
+    @DisplayName("유료 강의는 결제 정보가 다르면 수강 신청이 불가능하다.")
+    void paySessionPaymentTest() {
+        Session pay = Session.createPaySession(0L, 0L, new SessionPeriod(LocalDate.of(2024, 04, 8), LocalDate.of(2024, 04, 10)), new SessionImage(1000, "gif", 300, 200), SessionStatus.RECRUITING, 6, 2000);
+        assertThatThrownBy(() -> pay.signUp(nsUser, payment))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("결제 정보가 다릅니다.");
+    }
+
+    @Test
     @DisplayName("유료 강의는 최대 수강 신청 인원이 0보다 작을 수 없다.")
     void paySessionUserCountPositiveTest() {
-        assertThatThrownBy(() -> new PaySession(0L, 0L, new SessionPeriod(LocalDate.of(2024, 04, 8), LocalDate.of(2024, 04, 10)), new SessionImage(1000, "gif", 300, 200), SessionStatus.PREPARING, -1, 2000))
+        assertThatThrownBy(() -> Session.createPaySession(0L, 0L, new SessionPeriod(LocalDate.of(2024, 04, 8), LocalDate.of(2024, 04, 10)), new SessionImage(1000, "gif", 300, 200), SessionStatus.PREPARING, -1, 2000))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("0보다 작은 수가 올 수 없습니다.");
     }
@@ -59,7 +72,7 @@ public class PaySessionTest {
     @Test
     @DisplayName("유료 강의는 수강료는 0보다 작을 수 없다.")
     void paySessionPricePositiveTest() {
-        assertThatThrownBy(() -> new PaySession(0L, 0L, new SessionPeriod(LocalDate.of(2024, 04, 8), LocalDate.of(2024, 04, 10)), new SessionImage(1000, "gif", 300, 200), SessionStatus.PREPARING, 1, -1))
+        assertThatThrownBy(() -> Session.createPaySession(0L, 0L, new SessionPeriod(LocalDate.of(2024, 04, 8), LocalDate.of(2024, 04, 10)), new SessionImage(1000, "gif", 300, 200), SessionStatus.PREPARING, 1, -1))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("0보다 작은 수가 올 수 없습니다.");
     }
