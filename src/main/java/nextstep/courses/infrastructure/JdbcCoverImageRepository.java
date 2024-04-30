@@ -19,7 +19,7 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
 
     @Override
     public int save(CoverImage coverImage) {
-        String sql = "insert into cover_image (capacity, type, width, height, session_id, created_at, updated_at) values (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO cover_image (capacity, type, width, height, session_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(
                 sql,
                 coverImage.getCapacity(),
@@ -34,7 +34,7 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
 
     @Override
     public Optional<CoverImage> findById(Long coverImageId) {
-        String sql = "select id, capacity, type, width, height, session_id, created_at, updated_at from cover_image where id = ?";
+        String sql = "SELECT id, capacity, type, width, height, session_id, created_at, updated_at FROM cover_image WHERE id = ?";
         RowMapper<CoverImage> rowMapper = (rs, rowNum) -> new CoverImage(
                 LocalDateMappingUtil.toLocalDateTime(rs.getTimestamp(7)),
                 LocalDateMappingUtil.toLocalDateTime(rs.getTimestamp(8)),

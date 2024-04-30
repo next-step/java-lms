@@ -20,7 +20,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public int save(Session session) {
-        String sql = "insert into session (fee, count, status, course_id, start_date, end_date, created_at, updated_at) values(?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO session (fee, count, status, course_id, start_date, end_date, created_at, updated_at) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(
                 sql,
                 session.getEnrollmentManager().getFee(),
@@ -36,9 +36,9 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Optional<Session> findById(Long sessionId) {
-        String sql = "select s.*, ci.* " +
-                "from session as s " +
-                "left join cover_image as ci on s.id = ci.session_id where s.id = ?";
+        String sql = "SELECT s.*, ci.* " +
+                "FROM session AS s " +
+                "LEFT JOIN cover_image AS ci ON s.id = ci.session_id WHERE s.id = ?";
 
         RowMapper<Session> rowMapper = (rs, rowNum) -> {
             CoverImage coverImage = new CoverImage(

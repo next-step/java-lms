@@ -16,13 +16,13 @@ public class JdbcCourseRepository implements CourseRepository {
 
     @Override
     public int save(Course course) {
-        String sql = "insert into course (title, creator_id, created_at) values(?, ?, ?)";
+        String sql = "INSERT INTO course (title, creator_id, created_at) VALUES (?, ?, ?)";
         return jdbcTemplate.update(sql, course.getTitle(), course.getCreatorId(), course.getCreatedAt());
     }
 
     @Override
     public Course findById(Long id) {
-        String sql = "select id, title, creator_id, created_at, updated_at from course where id = ?";
+        String sql = "SELECT id, title, creator_id, created_at, updated_at FROM course WHERE id = ?";
         RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(
                 rs.getLong(1),
                 rs.getString(2),
