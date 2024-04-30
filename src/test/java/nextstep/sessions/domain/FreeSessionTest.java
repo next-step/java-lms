@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 public class FreeSessionTest {
 
@@ -38,9 +38,8 @@ public class FreeSessionTest {
     @Test
     @DisplayName("무료 강의의 경우 강의 상태가 모집 중이 아니라면 수강 신청이 불가능하다.")
     void freeSessionTest() {
-        assertThatThrownBy(() -> session.signUp(nsUser, payment))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("수강 모집 중이 아닙니다.");
+        assertThatIllegalArgumentException().isThrownBy(() -> session.signUp(nsUser, payment))
+                .withMessageContaining("수강 모집 중이 아닙니다.");
     }
 
 }

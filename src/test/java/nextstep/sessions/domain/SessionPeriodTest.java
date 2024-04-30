@@ -1,6 +1,5 @@
 package nextstep.sessions.domain;
 
-import nextstep.sessions.domain.SessionPeriod;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
