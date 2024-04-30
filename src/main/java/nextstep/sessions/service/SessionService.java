@@ -43,7 +43,8 @@ public class SessionService {
     }
 
     @Transactional
-    public void approveStudent(Long studentId) {
+    public void approveStudent(Long sessionId, NsUser user, Long studentId) {
+        validateUserAuthority(sessionId, user);
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new IllegalArgumentException("학생 정보가 없습니다."));
 
@@ -51,8 +52,18 @@ public class SessionService {
         studentRepository.save(student);
     }
 
+    private void validateUserAuthority(Long sessionId, NsUser user) {
+        Session session = sessionRepository.findById(sessionId)
+                .orElseThrow(() -> new IllegalArgumentException("세션 정보가 없습니다."));
+
+        if (session.isOutOfControl(user)) {
+            throw new IllegalArgumentException("해당 유저는 권한이 없습니다.");
+        }
+    }
+
     @Transactional
-    public void disApproveStudent(Long studentId) {
+    public void disApproveStudent(Long sessionId, NsUser user, Long studentId) {
+        validateUserAuthority(sessionId, user);
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new IllegalArgumentException("학생 정보가 없습니다."));
 

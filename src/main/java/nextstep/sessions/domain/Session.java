@@ -43,6 +43,10 @@ public class Session extends BaseEntity {
         return student;
     }
 
+    public boolean isOutOfControl(NsUser user) {
+        return this.getId() != user.getId();
+    }
+
     public long getId() {
         return super.getId();
     }
@@ -58,5 +62,4 @@ public class Session extends BaseEntity {
     public String getSessionName() {
         return sessionName;
     }
-
 }
