@@ -31,16 +31,20 @@ public class CoverImage extends BaseTimeEntity {
         this.id = id;
     }
 
-    public ImageCapacity getCapacity() {
-        return capacity;
+    public Long getCapacity() {
+        return capacity.getCapacity();
     }
 
-    public ImageType getType() {
-        return type;
+    public String getType() {
+        return type.name();
     }
 
-    public ImageDimension getDimension() {
-        return dimension;
+    public Long getWidth(){
+        return dimension.getWidth();
+    }
+
+    public Long getHeight(){
+        return dimension.getHeight();
     }
 
     public Long getSessionId() {

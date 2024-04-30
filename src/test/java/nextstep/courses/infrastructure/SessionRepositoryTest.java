@@ -44,10 +44,10 @@ class SessionRepositoryTest {
         assertThat(savedSession.getEnrollmentManager().getCount()).isEqualTo(100);
         assertThat(savedSession.getSessionPeriod().getStartDate()).isEqualTo(LocalDate.of(2024, 3, 10));
         assertThat(savedSession.getSessionPeriod().getEndDate()).isEqualTo(LocalDate.of(2024, 4, 10));
-        assertThat(savedSession.getCoverImage().getCapacity().getCapacity()).isEqualTo(9_000L);
-        assertThat(savedSession.getCoverImage().getType().name()).isEqualTo("GIF");
-        assertThat(savedSession.getCoverImage().getDimension().getWidth()).isEqualTo(300L);
-        assertThat(savedSession.getCoverImage().getDimension().getHeight()).isEqualTo(200L);
+        assertThat(savedSession.getCoverImage().getCapacity()).isEqualTo(9_000L);
+        assertThat(savedSession.getCoverImage().getType()).isEqualTo("GIF");
+        assertThat(savedSession.getCoverImage().getWidth()).isEqualTo(300L);
+        assertThat(savedSession.getCoverImage().getHeight()).isEqualTo(200L);
         LOGGER.debug("Session : {}", savedSession);
     }
 }

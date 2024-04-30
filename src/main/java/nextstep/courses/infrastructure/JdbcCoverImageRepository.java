@@ -22,10 +22,10 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
         String sql = "insert into cover_image (capacity, type, width, height, session_id, created_at, updated_at) values (?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(
                 sql,
-                coverImage.getCapacity().getCapacity(),
-                coverImage.getType().name(),
-                coverImage.getDimension().getWidth(),
-                coverImage.getDimension().getHeight(),
+                coverImage.getCapacity(),
+                coverImage.getType(),
+                coverImage.getWidth(),
+                coverImage.getHeight(),
                 coverImage.getSessionId(),
                 coverImage.getCreatedAt(),
                 coverImage.getUpdatedAt()

@@ -33,10 +33,10 @@ public class CoverImageRepositoryTest {
         int count = coverImageRepository.save(coverImage);
         assertThat(count).isEqualTo(1L);
         CoverImage savedCoverImage = coverImageRepository.findById(1L).get();
-        assertThat(savedCoverImage.getCapacity().getCapacity()).isEqualTo(9_000L);
-        assertThat(savedCoverImage.getType().name()).isEqualTo("GIF");
-        assertThat(savedCoverImage.getDimension().getWidth()).isEqualTo(300L);
-        assertThat(savedCoverImage.getDimension().getHeight()).isEqualTo(200L);
+        assertThat(savedCoverImage.getCapacity()).isEqualTo(9_000L);
+        assertThat(savedCoverImage.getType()).isEqualTo("GIF");
+        assertThat(savedCoverImage.getWidth()).isEqualTo(300L);
+        assertThat(savedCoverImage.getHeight()).isEqualTo(200L);
         LOGGER.debug("CoverImage: {}", savedCoverImage);
     }
 }
