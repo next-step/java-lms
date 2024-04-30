@@ -35,12 +35,38 @@
   - [x] 유료 강의는 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능하다.
 - [x] 강의 상태는 준비중, 모집중, 종료 3가지 상태를 가진다.
 - [x] 강의 수강신청은 강의 상태가 모집중일 때만 가능하다.
-- [ ] 유료 강의의 경우 결제는 이미 완료한 것으로 가정하고 이후 과정을 구현한다.
-  - [ ] 결제를 완료한 결제 정보는 payments 모듈을 통해 관리되며, 결제 정보는 Payment 객체에 담겨 반한된다.
+- [x] 유료 강의의 경우 결제는 이미 완료한 것으로 가정하고 이후 과정을 구현한다.
+  - [x] 결제를 완료한 결제 정보는 payments 모듈을 통해 관리되며, 결제 정보는 Payment 객체에 담겨 반한된다.
 
-
+  
 ## 프로그래밍 요구사항
 - DB 테이블 설계 없이 도메인 모델부터 구현한다.
 - 도메인 모델은 TDD로 구현한다.
 - 단, Service 클래스는 단위 테스트가 없어도 된다.
 - 다음 동영상을 참고해 DB 테이블보다 도메인 모델을 먼저 설계하고 구현한다.
+
+# step3
+## 수강 신청 기능 요구사항
+- [ ] 수강 신청 로직에 필요한 값만 가지도록 Enrollment와 같은 객체 추가
+- [ ] Session 매핑
+  - Long id
+  - LocalDateTime startDate
+  - LocalDateTime endDate
+
+- [ ] Enrollment 매핑
+  - Long id 
+  - String sessionStatus
+  - Long sessionPrice
+  - maximumNumberOfParticipants
+  - Long sessionid
+
+- [ ] ImageInfo 매핑
+  - int imageSize
+  - int width
+  - int height
+  - String imagetype
+
+## 프로그래밍 요구사항
+앞 단계에서 구현한 도메인 모델을 DB 테이블과 매핑하고, 데이터를 저장한다.
+CRUD 쿼리와 코드를 구현하는데 집중하기 보다 테이블을 설계하고 객체 매핑하는 부분에 집중한다.
+Payment는 테이블 매핑을 고려하지 않아도 된다.
