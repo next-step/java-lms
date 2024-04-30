@@ -15,5 +15,4 @@ public class PaidSession extends Session {
 		return payment == sessionPrice;
 	}
 
-
 }
