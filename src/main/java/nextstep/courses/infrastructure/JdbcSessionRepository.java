@@ -1,5 +1,6 @@
 package nextstep.courses.infrastructure;
 
+import nextstep.courses.domain.CoverImage;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -35,19 +36,34 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Optional<Session> findById(Long sessionId) {
-        String sql = "select id, fee, count, status, course_id, start_date, end_date, created_at, updated_at from session where id = ?";
-        RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
-                LocalDateMappingUtil.toLocalDateTime(rs.getTimestamp(8)),
-                LocalDateMappingUtil.toLocalDateTime(rs.getTimestamp(9)),
-                null,
-                rs.getLong(2),
-                rs.getInt(3),
-                rs.getString(4),
-                LocalDateMappingUtil.toLocalDate(rs.getTimestamp(6)),
-                LocalDateMappingUtil.toLocalDate(rs.getTimestamp(7)),
-                rs.getLong(5),
-                rs.getLong(1)
-        );
+        String sql = "select s.*, ci.* " +
+                "from session as s " +
+                "left join cover_image as ci on s.id = ci.session_id where s.id = ?";
+
+        RowMapper<Session> rowMapper = (rs, rowNum) -> {
+            CoverImage coverImage = new CoverImage(
+                    LocalDateMappingUtil.toLocalDateTime(rs.getTimestamp("cover_image.created_at")),
+                    LocalDateMappingUtil.toLocalDateTime(rs.getTimestamp("cover_image.updated_at")),
+                    rs.getLong("cover_image.capacity"),
+                    rs.getString("cover_image.type"),
+                    rs.getLong("cover_image.width"),
+                    rs.getLong("cover_image.height"),
+                    rs.getLong("cover_image.session_id"),
+                    rs.getLong("cover_image.id")
+            );
+            return new Session(
+                    LocalDateMappingUtil.toLocalDateTime(rs.getTimestamp("created_at")),
+                    LocalDateMappingUtil.toLocalDateTime(rs.getTimestamp("updated_at")),
+                    coverImage,
+                    rs.getLong("fee"),
+                    rs.getInt("count"),
+                    rs.getString("status"),
+                    LocalDateMappingUtil.toLocalDate(rs.getTimestamp("start_date")),
+                    LocalDateMappingUtil.toLocalDate(rs.getTimestamp("end_date")),
+                    rs.getLong("course_id"),
+                    rs.getLong("id")
+            );
+        };
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, sessionId));
     }
 }
