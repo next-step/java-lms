@@ -36,6 +36,10 @@ public class Course {
         return createdAt;
     }
 
+    public List<Session> getSessions() {
+        return sessions;
+    }
+
     @Override
     public String toString() {
         return "Course{" +

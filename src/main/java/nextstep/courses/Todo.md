@@ -42,7 +42,6 @@
 # Step 3
 
 ## 코드 리뷰 TODO
-- [ ] Course 조회 시에 Session도 같이 조회하도록 수정
 - [ ] CoverImage가 Session id가 아닌 Session을 참조하도록 수정
 
 ## 코드 리뷰 DONE
@@ -50,3 +49,4 @@
 - [X] CoverImage의 getter에서 원시값을 반환하도록 수정
 - [X] Repository 내에서 쿼리들을 대문자로 수정
 - [X] RepositoryTest 내에서 log 출력하는 코드 삭제
+- [X] Course 조회 시에 Session도 같이 조회하도록 수정
