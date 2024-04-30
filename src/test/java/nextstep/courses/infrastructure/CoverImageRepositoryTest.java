@@ -4,8 +4,6 @@ import nextstep.courses.domain.CoverImage;
 import nextstep.courses.domain.CoverImageRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,8 +14,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @JdbcTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class CoverImageRepositoryTest {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(CourseRepositoryTest.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -39,6 +35,5 @@ public class CoverImageRepositoryTest {
         assertThat(savedCoverImage.getType()).isEqualTo("GIF");
         assertThat(savedCoverImage.getWidth()).isEqualTo(300L);
         assertThat(savedCoverImage.getHeight()).isEqualTo(200L);
-        LOGGER.debug("CoverImage: {}", savedCoverImage);
     }
 }
