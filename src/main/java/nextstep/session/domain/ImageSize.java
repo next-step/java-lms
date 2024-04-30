@@ -16,4 +16,15 @@ public class ImageSize {
 		}
 	}
 
+	public int getImageSize() {
+		return imageSize;
+	}
+
+	@Override
+	public String toString() {
+		return "ImageSize{" +
+				"imageSize=" + imageSize +
+				'}';
+	}
+
 }

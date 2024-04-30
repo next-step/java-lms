@@ -10,7 +10,6 @@ public class Enrollment {
 	private SessionStatus sessionStatus;
 	private NsUsers nsUsers;
 
-
 	public Enrollment(int maximumNumberOfParticipants) {
 		this(0L, SessionStatus.PREPARING, maximumNumberOfParticipants);
 	}
@@ -40,7 +39,7 @@ public class Enrollment {
 		return numberOfParticipants <= maximumNumberOfParticipants;
 	}
 
-	public boolean isAddStudent() {
+	private boolean isAddStudent() {
 		return isSessionRegister() && isParticipantsSession();
 	}
 
