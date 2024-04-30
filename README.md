@@ -52,13 +52,12 @@
   - Long id
   - LocalDateTime startDate
   - LocalDateTime endDate
+  - Long sessionPrice
 
 - [ ] Enrollment 매핑
   - Long id 
   - String sessionStatus
-  - Long sessionPrice
-  - maximumNumberOfParticipants
-  - Long sessionid
+  - int maximumNumberOfParticipants
 
 - [ ] ImageInfo 매핑
   - int imageSize
