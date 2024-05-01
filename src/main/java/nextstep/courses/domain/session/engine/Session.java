@@ -39,10 +39,6 @@ public abstract class Session extends BaseEntity {
     }
 
     public Enrollment getEnrollment() {
-        return enrollment;
-    }
-
-    public Enrollment getEnrollment2() {
         return new Enrollment(enrollment.getId(), enrollment.getEnrollmentCount(),
             enrollment.getSessionState(), new Money(enrollment.getTuitionFee()),
             FeeType.valueOf(enrollment.getFeeType()));
