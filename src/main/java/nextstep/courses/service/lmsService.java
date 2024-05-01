@@ -65,7 +65,7 @@ public class lmsService {
             .orElseThrow(() -> new NotExistStudent(studentId));
 
         Student student = studentEntity.toStudent();
-        Student approvedStudent = student.approveCancelStudent();
+        Student approvedStudent = student.cancelStudent();
 
         studentRepository.updateApprovalState(studentEntity.from(approvedStudent));
     }

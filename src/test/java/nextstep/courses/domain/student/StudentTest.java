@@ -7,7 +7,6 @@ import nextstep.courses.error.exception.AlreadyApprovedCancelException;
 import nextstep.courses.error.exception.AlreadyApprovedException;
 import nextstep.courses.error.exception.ApprovalNotAllowedException;
 import nextstep.courses.fixture.builder.StudentBuilder;
-import nextstep.payments.domain.Money;
 import org.junit.jupiter.api.Test;
 
 class StudentTest {
@@ -82,7 +81,7 @@ class StudentTest {
             .withStudentType(StudentType.WOOWAHAN_TECH_CAMP_PRO)
             .build();
 
-        Student approvedStudent = student.approveCancelStudent();
+        Student approvedStudent = student.cancelStudent();
 
         assertThat(approvedStudent)
             .extracting("studentName", "email", "approvalState", "studentType")
@@ -99,7 +98,7 @@ class StudentTest {
             .withStudentType(StudentType.NORMAL)
             .build();
 
-        assertThatThrownBy(() -> student.approveCancelStudent())
+        assertThatThrownBy(() -> student.cancelStudent())
             .isInstanceOf(AlreadyApprovedCancelException.class)
             .hasMessage("이미 수강신청이 취소된 학생입니다. 현재 승인 상태: 미승인");
     }

@@ -53,7 +53,7 @@ public class Student extends BaseEntity {
             createdAt, updatedAt);
     }
 
-    public Student approveCancelStudent() {
+    public Student cancelStudent() {
         if (ApprovalState.NON_APPROVAL == approvalState) {
             throw new AlreadyApprovedCancelException(approvalState);
         }
