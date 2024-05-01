@@ -1,7 +1,6 @@
 package nextstep.courses.fixture.builder;
 
 import nextstep.courses.domain.session.enrollment.Enrollment;
-import nextstep.courses.domain.session.enrollment.SessionEnrollment;
 import nextstep.courses.domain.session.enrollment.count.engine.EnrollmentCount;
 import nextstep.courses.domain.session.enrollment.state.SessionState;
 import nextstep.courses.domain.session.feetype.FeeType;
@@ -48,6 +47,6 @@ public class EnrollmentBuilder {
     }
 
     public Enrollment build() {
-        return new SessionEnrollment(id, enrollmentCount, sessionState, tuitionFee, feeType);
+        return new Enrollment(id, enrollmentCount, sessionState, tuitionFee, feeType);
     }
 }

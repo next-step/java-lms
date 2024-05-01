@@ -3,7 +3,7 @@ package nextstep.courses.factory;
 import nextstep.courses.domain.session.FreeSession;
 import nextstep.courses.domain.session.PaidSession;
 import nextstep.courses.domain.session.engine.Session;
-import nextstep.courses.domain.session.enrollment.SessionEnrollment;
+import nextstep.courses.domain.session.enrollment.Enrollment;
 import nextstep.courses.domain.session.enrollment.count.MaxRegistrationCount;
 import nextstep.courses.domain.session.enrollment.state.SessionState;
 import nextstep.courses.domain.session.feetype.FeeType;
@@ -22,7 +22,7 @@ public class SessionFactory {
         if (FeeType.PAID == FeeType.valueOf(sessionEntity.getFeeType())) {
             return new PaidSession(sessionEntity.getId(),
                 new SessionName(sessionEntity.getSessionName()),
-                new SessionEnrollment(
+                new Enrollment(
                     sessionEntity.getId(),
                     EnrollmentCountFactory.get(FeeType.valueOf(sessionEntity.getFeeType()),
                         sessionEntity.getRegistrationCount(),
@@ -40,7 +40,7 @@ public class SessionFactory {
         if (FeeType.FREE == FeeType.valueOf(sessionEntity.getFeeType())) {
             return new FreeSession(sessionEntity.getId(),
                 new SessionName(sessionEntity.getSessionName()),
-                new SessionEnrollment(
+                new Enrollment(
                     sessionEntity.getId(),
                     EnrollmentCountFactory.get(FeeType.valueOf(sessionEntity.getFeeType()),
                         sessionEntity.getRegistrationCount(),

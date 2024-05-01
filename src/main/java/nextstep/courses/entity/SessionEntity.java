@@ -3,7 +3,6 @@ package nextstep.courses.entity;
 import java.time.LocalDateTime;
 import nextstep.courses.domain.session.engine.Session;
 import nextstep.courses.domain.session.enrollment.Enrollment;
-import nextstep.courses.domain.session.enrollment.SessionEnrollment;
 import nextstep.courses.domain.session.enrollment.count.engine.EnrollmentCount;
 import nextstep.courses.domain.session.enrollment.state.SessionState;
 import nextstep.courses.domain.session.feetype.FeeType;
@@ -76,7 +75,7 @@ public class SessionEntity extends BaseEntity {
     }
 
     public Enrollment enrollment() {
-        return new SessionEnrollment(
+        return new Enrollment(
             id,
             EnrollmentCountFactory.get(FeeType.valueOf(feeType),
                 registrationCount,
