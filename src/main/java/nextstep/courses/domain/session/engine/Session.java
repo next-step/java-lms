@@ -3,9 +3,11 @@ package nextstep.courses.domain.session.engine;
 import java.util.List;
 import nextstep.courses.domain.cover.Image;
 import nextstep.courses.domain.session.enrollment.Enrollment;
+import nextstep.courses.domain.session.feetype.FeeType;
 import nextstep.courses.domain.session.name.SessionName;
 import nextstep.courses.domain.session.period.Period;
 import nextstep.courses.entity.BaseEntity;
+import nextstep.payments.domain.Money;
 
 public abstract class Session extends BaseEntity {
 
@@ -38,6 +40,12 @@ public abstract class Session extends BaseEntity {
 
     public Enrollment getEnrollment() {
         return enrollment;
+    }
+
+    public Enrollment getEnrollment2() {
+        return new Enrollment(enrollment.getId(), enrollment.getEnrollmentCount(),
+            enrollment.getSessionState(), new Money(enrollment.getTuitionFee()),
+            FeeType.valueOf(enrollment.getFeeType()));
     }
 
     public List<Image> getImages() {
