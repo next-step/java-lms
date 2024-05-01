@@ -5,7 +5,6 @@ import nextstep.courses.entity.BaseEntity;
 import nextstep.courses.error.exception.AlreadyApprovedCancelException;
 import nextstep.courses.error.exception.AlreadyApprovedException;
 import nextstep.courses.error.exception.ApprovalNotAllowedException;
-import nextstep.payments.domain.Money;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
@@ -27,11 +26,7 @@ public class Student extends BaseEntity {
 
     public Student(Long id, StudentName studentName, Email email,
         ApprovalState approvalState, StudentType studentType) {
-        this.id = id;
-        this.studentName = studentName;
-        this.email = email;
-        this.approvalState = approvalState;
-        this.studentType = studentType;
+        this(id, studentName, email, approvalState, studentType, null, null);
     }
 
     public Student(Long id, StudentName studentName, Email email,
