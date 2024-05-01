@@ -17,7 +17,6 @@ class StudentTest {
         Student student = StudentBuilder.anStudent()
             .withStudentName(new StudentName("김남협"))
             .withEmail(new Email("namhyeop@gmail.com"))
-            .withPaymentAmount(new Money(50000))
             .withApprovalState(ApprovalState.NON_APPROVAL)
             .withStudentType(StudentType.WOOWAHAN_TECH_CAMP_PRO)
             .build();
@@ -25,8 +24,8 @@ class StudentTest {
         Student approvedStudent = student.approveStudent();
 
         assertThat(approvedStudent)
-            .extracting("studentName", "email", "paymentAmount", "approvalState", "studentType")
-            .containsExactly("김남협", "namhyeop@gmail.com", 50000, "승인",
+            .extracting("studentName", "email", "approvalState", "studentType")
+            .containsExactly("김남협", "namhyeop@gmail.com", "승인",
                 "우아한테크캠프 Pro(유료)");
     }
 
@@ -35,7 +34,6 @@ class StudentTest {
         Student student = StudentBuilder.anStudent()
             .withStudentName(new StudentName("김남협"))
             .withEmail(new Email("namhyeop@gmail.com"))
-            .withPaymentAmount(new Money(50000))
             .withApprovalState(ApprovalState.NON_APPROVAL)
             .withStudentType(StudentType.WOOWAHAN_TECH_COURSE_FREE)
             .build();
@@ -43,8 +41,8 @@ class StudentTest {
         Student approvedStudent = student.approveStudent();
 
         assertThat(approvedStudent)
-            .extracting("studentName", "email", "paymentAmount", "approvalState", "studentType")
-            .containsExactly("김남협", "namhyeop@gmail.com", 50000, "승인", "우아한테크코스(무료)");
+            .extracting("studentName", "email", "approvalState", "studentType")
+            .containsExactly("김남협", "namhyeop@gmail.com", "승인", "우아한테크코스(무료)");
     }
 
     @Test
@@ -52,7 +50,6 @@ class StudentTest {
         Student student = StudentBuilder.anStudent()
             .withStudentName(new StudentName("김남협"))
             .withEmail(new Email("namhyeop@gmail.com"))
-            .withPaymentAmount(new Money(50000))
             .withApprovalState(ApprovalState.APPROVAL)
             .withStudentType(StudentType.WOOWAHAN_TECH_COURSE_FREE)
             .build();
@@ -67,7 +64,6 @@ class StudentTest {
         Student student = StudentBuilder.anStudent()
             .withStudentName(new StudentName("김남협"))
             .withEmail(new Email("namhyeop@gmail.com"))
-            .withPaymentAmount(new Money(50000))
             .withApprovalState(ApprovalState.NON_APPROVAL)
             .withStudentType(StudentType.NORMAL)
             .build();
@@ -82,7 +78,6 @@ class StudentTest {
         Student student = StudentBuilder.anStudent()
             .withStudentName(new StudentName("김남협"))
             .withEmail(new Email("namhyeop@gmail.com"))
-            .withPaymentAmount(new Money(50000))
             .withApprovalState(ApprovalState.APPROVAL)
             .withStudentType(StudentType.WOOWAHAN_TECH_CAMP_PRO)
             .build();
@@ -90,8 +85,8 @@ class StudentTest {
         Student approvedStudent = student.approveCancelStudent();
 
         assertThat(approvedStudent)
-            .extracting("studentName", "email", "paymentAmount", "approvalState", "studentType")
-            .containsExactly("김남협", "namhyeop@gmail.com", 50000, "미승인",
+            .extracting("studentName", "email", "approvalState", "studentType")
+            .containsExactly("김남협", "namhyeop@gmail.com", "미승인",
                 "우아한테크캠프 Pro(유료)");
     }
 
@@ -100,7 +95,6 @@ class StudentTest {
         Student student = StudentBuilder.anStudent()
             .withStudentName(new StudentName("김남협"))
             .withEmail(new Email("namhyeop@gmail.com"))
-            .withPaymentAmount(new Money(50000))
             .withApprovalState(ApprovalState.NON_APPROVAL)
             .withStudentType(StudentType.NORMAL)
             .build();

@@ -45,8 +45,8 @@ class EnrollmentTest {
 
         Student student = enrollment.enroll(nsUser, payment);
 
-        assertThat(student).extracting("studentName", "email", "paymentAmount")
-            .containsExactly("kimnamhyoep", "nam@gmail.com", 0);
+        assertThat(student).extracting("studentName", "email")
+            .containsExactly("kimnamhyoep", "nam@gmail.com");
     }
 
     @Test
@@ -63,8 +63,8 @@ class EnrollmentTest {
 
         Student student = enrollment.enroll(nsUser, payment);
 
-        assertThat(student).extracting("studentName", "email", "paymentAmount")
-            .containsExactly("kimnamhyoep", "nam@gmail.com", 50000);
+        assertThat(student).extracting("studentName", "email")
+            .containsExactly("kimnamhyoep", "nam@gmail.com");
     }
 
     @Test

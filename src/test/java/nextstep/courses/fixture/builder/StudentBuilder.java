@@ -1,16 +1,10 @@
 package nextstep.courses.fixture.builder;
 
-import nextstep.courses.domain.cover.Image;
-import nextstep.courses.domain.cover.ImageHeight;
-import nextstep.courses.domain.cover.ImageSize;
-import nextstep.courses.domain.cover.ImageType;
-import nextstep.courses.domain.cover.ImageWidth;
 import nextstep.courses.domain.student.ApprovalState;
 import nextstep.courses.domain.student.Email;
 import nextstep.courses.domain.student.Student;
 import nextstep.courses.domain.student.StudentName;
 import nextstep.courses.domain.student.StudentType;
-import nextstep.payments.domain.Money;
 
 public class StudentBuilder {
 
@@ -19,8 +13,6 @@ public class StudentBuilder {
     private StudentName studentName;
 
     private Email email;
-
-    private Money paymentAmount;
 
     private ApprovalState approvalState;
 
@@ -47,11 +39,6 @@ public class StudentBuilder {
         return this;
     }
 
-    public StudentBuilder withPaymentAmount(Money paymentAmount) {
-        this.paymentAmount = paymentAmount;
-        return this;
-    }
-
     public StudentBuilder withApprovalState(ApprovalState approvalState) {
         this.approvalState = approvalState;
         return this;
@@ -63,6 +50,6 @@ public class StudentBuilder {
     }
 
     public Student build() {
-        return new Student(id, studentName, email, paymentAmount, approvalState, studentType);
+        return new Student(id, studentName, email, approvalState, studentType);
     }
 }

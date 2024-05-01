@@ -21,11 +21,10 @@ public class JdbcStudentEntityRepository implements StudentRepository {
 
     @Override
     public int save(StudentEntity studentEntity) {
-        String sql = "insert into student (name, email, payment_amount, approval_state, student_type, created_at) values (?, ?, ?, ?, ?, ?)";
+        String sql = "insert into student (name, email, approval_state, student_type, created_at) values (?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
             studentEntity.getStudentName(),
             studentEntity.getEmail(),
-            studentEntity.getPaymentAmount(),
             studentEntity.getApprovalState(),
             studentEntity.getStudentType(),
             studentEntity.getCreatedAt());
@@ -33,16 +32,15 @@ public class JdbcStudentEntityRepository implements StudentRepository {
 
     @Override
     public Optional<StudentEntity> findById(Long id) {
-        String sql = "select id, name, email, payment_amount, approval_state, student_type, created_at, updated_at from student where id = ?";
+        String sql = "select id, name, email, approval_state, student_type, created_at, updated_at from student where id = ?";
         RowMapper<StudentEntity> rowMapper = (rs, rowNum) -> new StudentEntity (
             rs.getLong(1),
             rs.getString(2),
             rs.getString(3),
-            rs.getInt(4),
+            rs.getString(4),
             rs.getString(5),
-            rs.getString(6),
-            toLocalDateTime(rs.getTimestamp(7)),
-            toLocalDateTime(rs.getTimestamp(8)));
+            toLocalDateTime(rs.getTimestamp(6)),
+            toLocalDateTime(rs.getTimestamp(7)));
 
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
     }

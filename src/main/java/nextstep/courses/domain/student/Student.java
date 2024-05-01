@@ -17,35 +17,30 @@ public class Student extends BaseEntity {
 
     private final Email email;
 
-    private final Money paymentAmount;
-
     private final ApprovalState approvalState;
 
     private final StudentType studentType;
 
     public Student(NsUser nsUser, Payment payment) {
-        this(null, new StudentName(nsUser.getName()), new Email(nsUser.getEmail()), new Money(
-            payment.getAmount()), ApprovalState.NON_APPROVAL, nsUser.getStudentType());
+        this(null, new StudentName(nsUser.getName()), new Email(nsUser.getEmail()), ApprovalState.NON_APPROVAL, nsUser.getStudentType());
     }
 
-    public Student(Long id, StudentName studentName, Email email, Money paymentAmount,
+    public Student(Long id, StudentName studentName, Email email,
         ApprovalState approvalState, StudentType studentType) {
         this.id = id;
         this.studentName = studentName;
         this.email = email;
-        this.paymentAmount = paymentAmount;
         this.approvalState = approvalState;
         this.studentType = studentType;
     }
 
-    public Student(Long id, StudentName studentName, Email email, Money paymentAmount,
+    public Student(Long id, StudentName studentName, Email email,
         ApprovalState approvalState, StudentType studentType, LocalDateTime createdAt,
         LocalDateTime updatedAt) {
         super(createdAt, updatedAt);
         this.id = id;
         this.studentName = studentName;
         this.email = email;
-        this.paymentAmount = paymentAmount;
         this.approvalState = approvalState;
         this.studentType = studentType;
     }
@@ -59,7 +54,7 @@ public class Student extends BaseEntity {
             throw new AlreadyApprovedException(approvalState);
         }
 
-        return new Student(id, studentName, email, paymentAmount, ApprovalState.APPROVAL, studentType,
+        return new Student(id, studentName, email, ApprovalState.APPROVAL, studentType,
             createdAt, updatedAt);
     }
 
@@ -68,7 +63,7 @@ public class Student extends BaseEntity {
             throw new AlreadyApprovedCancelException(approvalState);
         }
 
-        return new Student(id, studentName, email, paymentAmount, ApprovalState.NON_APPROVAL,
+        return new Student(id, studentName, email, ApprovalState.NON_APPROVAL,
             studentType, createdAt, updatedAt);
     }
 
@@ -82,10 +77,6 @@ public class Student extends BaseEntity {
 
     public String getEmail() {
         return email.getValue();
-    }
-
-    public int getPaymentAmount() {
-        return paymentAmount.getValue();
     }
 
     public String getApprovalState() {
