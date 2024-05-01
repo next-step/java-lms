@@ -7,9 +7,21 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
-public class Answer extends Post{
+public class Answer{
 
     private Question question;
+
+    private Long id;
+
+    private NsUser writer;
+
+    private String contents;
+
+    private boolean deleted = false;
+
+    private LocalDateTime createdDate = LocalDateTime.now();
+
+    private LocalDateTime updatedDate;
 
     public Answer() {
     }
@@ -37,6 +49,14 @@ public class Answer extends Post{
         return deleted;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public NsUser getWriter() {
+        return writer;
+    }
+
     private boolean isOwner(NsUser writer) {
         return this.writer.equals(writer);
     }
@@ -45,16 +65,20 @@ public class Answer extends Post{
         this.question = question;
     }
 
-    public void delete(NsUser loginUser) {
+    public DeleteHistory delete(NsUser loginUser) {
         validateAuthority(loginUser);
         this.deleted = true;
+        return makeDeleteHistory();
     }
 
-    @Override
-    protected void validateAuthority(NsUser loginUser) {
+    private void validateAuthority(NsUser loginUser) {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
+    }
+
+    private DeleteHistory makeDeleteHistory() {
+        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 
     @Override
@@ -62,8 +86,5 @@ public class Answer extends Post{
         return "Answer [id=" + this.id + ", writer=" + writer + ", contents=" + contents + "]";
     }
 
-    @Override
-    public DeleteHistory makeDeleteHistory() {
-        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
-    }
+
 }

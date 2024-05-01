@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -18,6 +19,6 @@ public class DeleteHistoryTest {
 
         Question question = QuestionTest.Q1;
 
-        assertThat(question.makeDeleteHistories()).hasSize(1);
+        assertThat(question.delete(NsUserTest.JAVAJIGI)).hasSize(1);
     }
 }
