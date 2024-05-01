@@ -86,7 +86,7 @@ public class Enrollment {
         return tuitionFee.getValue();
     }
 
-    public String getFeeType() {
-        return feeType.getValue();
+    public FeeType getFeeType() {
+        return feeType;
     }
 }

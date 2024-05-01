@@ -48,7 +48,7 @@ public class SessionEntity extends BaseEntity {
             imageId,
             sessionState.getProgressState(),
             sessionState.getRecruitmentState(),
-            enrollment.getFeeType(),
+            enrollment.getFeeType().name(),
             period.getStartDate(),
             period.getEndDate(),
             session.getCreatedAt(),
