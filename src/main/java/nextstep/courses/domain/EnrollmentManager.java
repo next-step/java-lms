@@ -12,6 +12,10 @@ public class EnrollmentManager {
         this(new SessionFee(fee), new EnrollmentCount(count), SessionStatus.RECRUITING);
     }
 
+    public EnrollmentManager(Long fee, Integer count, String status) {
+        this(new SessionFee(fee), new EnrollmentCount(count), SessionStatus.valueOf(status));
+    }
+
     public EnrollmentManager(Long fee, Integer count, SessionStatus status) {
         this(new SessionFee(fee), new EnrollmentCount(count), status);
     }
@@ -28,5 +32,17 @@ public class EnrollmentManager {
 
     public EnrollmentManager decreaseCount() {
         return new EnrollmentManager(this.fee, this.count.decreaseCount(), this.status);
+    }
+
+    public Long getFee() {
+        return fee.getFee();
+    }
+
+    public Integer getCount() {
+        return count.getCount();
+    }
+
+    public String getStatus() {
+        return status.name();
     }
 }

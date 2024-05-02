@@ -38,3 +38,15 @@
 - [X] 무료 강의는 최대 수강 인원 제한이 없다.
 - [X] 유료 강의는 강의 최대 수강 인원을 초과할 수 없다.
 - [X] 유료 강의는 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능하다.
+
+# Step 3
+
+## 코드 리뷰 TODO
+
+## 코드 리뷰 DONE
+- [X] JdbcSessionRepository에서 Session 조회 시에 CoverImage도 join으로 같이 조회하도록 수정
+- [X] CoverImage의 getter에서 원시값을 반환하도록 수정
+- [X] Repository 내에서 쿼리들을 대문자로 수정
+- [X] RepositoryTest 내에서 log 출력하는 코드 삭제
+- [X] Course 조회 시에 Session도 같이 조회하도록 수정
+- [X] CoverImage가 Session id가 아닌 Session을 참조하도록 수정

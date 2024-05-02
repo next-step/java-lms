@@ -15,4 +15,8 @@ public enum SessionStatus {
     public boolean isRecruiting() {
         return this.equals(RECRUITING);
     }
+
+    public String getDesc() {
+        return desc;
+    }
 }
