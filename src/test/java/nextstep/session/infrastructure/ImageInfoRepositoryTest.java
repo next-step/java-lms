@@ -1,10 +1,6 @@
 package nextstep.session.infrastructure;
 
 import nextstep.session.domain.*;
-import nextstep.users.domain.NsUser;
-import nextstep.users.domain.UserRepository;
-import nextstep.users.infrastructure.JdbcUserRepository;
-import nextstep.users.infrastructure.UserRepositoryTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;

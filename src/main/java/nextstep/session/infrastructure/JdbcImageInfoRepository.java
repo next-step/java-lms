@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository("ImageInfoRepository")
 public class JdbcImageInfoRepository implements ImageInfoRepository {
-	private JdbcOperations jdbcTemplate;
+	private final JdbcOperations jdbcTemplate;
 
 	public JdbcImageInfoRepository(JdbcOperations jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
