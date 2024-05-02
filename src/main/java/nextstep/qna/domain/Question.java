@@ -57,16 +57,21 @@ public class Question {
         return deleted;
     }
 
-    public void delete(NsUser user) throws CannotDeleteException {
+    public DeleteHistories delete(NsUser user) throws CannotDeleteException {
         if (!isOwner(user)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
         answers.delete(user);
-
         this.deleted = true;
-    }
 
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
+        deleteHistories.add(convertDeleteHistory(LocalDateTime.now()));
+        deleteHistories.addAll(answers.getDeleteHistories(LocalDateTime.now()));
+
+        return new DeleteHistories(deleteHistories);
+    }
 
     public DeleteHistories getDeleteHistories(LocalDateTime regDatetime) {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
