@@ -24,6 +24,18 @@ public class Student {
 
     }
 
+    public void approval() {
+        this.approvalStatus = EnrollmentApprovalStatus.APPROVED;
+    }
+
+    public void cancel() {
+        this.approvalStatus = EnrollmentApprovalStatus.CANCELLED;
+    }
+
+    public boolean isApproved() {
+        return this.approvalStatus == EnrollmentApprovalStatus.APPROVED;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
