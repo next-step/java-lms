@@ -21,4 +21,8 @@ public abstract class Session {
 		this.enrollment = enrollment;
 	}
 
+	public Period getPeriod() {
+		return period;
+	}
+
 }

@@ -18,4 +18,12 @@ public class Period {
 		}
 	}
 
+	public LocalDateTime getStartDate() {
+		return startDate;
+	}
+
+	public LocalDateTime getEndDate() {
+		return endDate;
+	}
+
 }
