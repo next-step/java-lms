@@ -84,7 +84,7 @@ public class Answer {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 
-    public DeleteHistory convertDeleteHistory(LocalDateTime regDatetime) {
+    public DeleteHistory createDeleteHistory(LocalDateTime regDatetime) {
         return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, regDatetime);
     }
 }

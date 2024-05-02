@@ -46,7 +46,7 @@ public class Answers {
 
     public List<DeleteHistory> getDeleteHistories(LocalDateTime regDatetime) {
         return this.answers.stream()
-                .map(answer -> answer.convertDeleteHistory(regDatetime))
+                .map(answer -> answer.createDeleteHistory(regDatetime))
                 .collect(Collectors.toList());
     }
 
