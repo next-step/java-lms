@@ -5,15 +5,19 @@ import nextstep.users.domain.NsUsers;
 
 public class Enrollment {
 	private static final int INCREASE_STUDENT = 1;
+
 	private long id;
 	private final int maximumNumberOfParticipants;
 	private final long sessionPrice;
-
 	private SessionStatus sessionStatus;
 	private NsUsers nsUsers;
 
 	public Enrollment(int maximumNumberOfParticipants, long sessionPrice) {
 		this(0L, maximumNumberOfParticipants, sessionPrice, SessionStatus.PREPARING, new NsUsers());
+	}
+
+	public Enrollment(long id, int maximumNumberOfParticipants, long sessionPrice) {
+		this(id, maximumNumberOfParticipants, sessionPrice, SessionStatus.PREPARING, new NsUsers());
 	}
 
 	public Enrollment(long id, int maximumNumberOfParticipants, long sessionPrice, SessionStatus sessionStatus, NsUsers nsUsers) {
@@ -67,6 +71,21 @@ public class Enrollment {
 
 	public int getSessionStatus() {
 		return sessionStatus.getStatusValue();
+	}
+
+	public long getSessionPrice() {
+		return sessionPrice;
+	}
+
+	@Override
+	public String toString() {
+		return "Enrollment{" +
+				"id=" + id +
+				", maximumNumberOfParticipants=" + maximumNumberOfParticipants +
+				", sessionPrice=" + sessionPrice +
+				", sessionStatus=" + sessionStatus +
+				", nsUsers=" + nsUsers +
+				'}';
 	}
 
 }

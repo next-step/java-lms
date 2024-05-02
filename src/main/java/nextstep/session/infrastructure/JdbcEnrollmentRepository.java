@@ -1,66 +1,57 @@
 package nextstep.session.infrastructure;
 
-import nextstep.session.domain.*;
+import nextstep.session.domain.Enrollment;
+import nextstep.session.domain.EnrollmentRepository;
+import nextstep.session.domain.SessionStatus;
+import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NsUsers;
+import nextstep.users.domain.UserRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository("EnrollmentRepository")
-public class JdbcEnrollmentRepository implements ImageInfoRepository {
-	@Override
-	public int save(ImageInfo imageInfo) {
-		return 0;
+public class JdbcEnrollmentRepository implements EnrollmentRepository {
+	private final JdbcOperations jdbcTemplate;
+	private final UserRepository userRepository;
+
+	public JdbcEnrollmentRepository(JdbcOperations jdbcTemplate, UserRepository userRepository) {
+		this.jdbcTemplate = jdbcTemplate;
+		this.userRepository = userRepository;
 	}
 
 	@Override
-	public Optional<ImageInfo> findById(long id) {
-		return Optional.empty();
+	public int save(Enrollment enrollment) {
+		String sql = "insert into enrollment (session_status, maximum_number_of_participants, session_price) values(?, ?, ?)";
+		return jdbcTemplate.update(sql, enrollment.getSessionStatus(), enrollment.getMaximumNumberOfParticipants(), enrollment.getSessionPrice());
 	}
 
 	@Override
-	public int update(ImageInfo imageInfo) {
-		return 0;
+	public Optional<Enrollment> findById(long id) {
+		List<NsUser> allBySessionId = userRepository.findAllBySessionId(id);
+		String sql = "select id, maximum_number_of_participants, session_price, session_status from enrollment where id = ?";
+		RowMapper<Enrollment> rowMapper = (rs, rowNum) -> new Enrollment(
+				rs.getLong(1),
+				rs.getInt(2),
+				rs.getLong(3),
+				SessionStatus.getSessionStatus(rs.getInt(4)),
+				new NsUsers(allBySessionId));
+		return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
+	}
+
+	@Override
+	public int update(Enrollment enrollment) {
+		String sql = "update enrollment set session_status = ?, maximum_number_of_participants = ?, session_price = ? where id = ?";
+		return jdbcTemplate.update(sql, enrollment.getSessionStatus(), enrollment.getMaximumNumberOfParticipants(), enrollment.getSessionPrice(), enrollment.getId());
 	}
 
 	@Override
 	public int deleteById(long id) {
-		return 0;
+		String sql = "delete from enrollment where id = ?";
+		return jdbcTemplate.update(sql, id);
 	}
-	//	private JdbcOperations jdbcTemplate;
-//
-//	public JdbcEnrollmentRepository(JdbcOperations jdbcTemplate) {
-//		this.jdbcTemplate = jdbcTemplate;
-//	}
-//
-//	@Override
-//	public int save(Enrollment enrollment) {
-//		String sql = "insert into enrollment (image_size, width, height, image_type) values(?, ?, ?, ?)";
-//		return jdbcTemplate.update(sql, imageInfo.getImageSize(), imageInfo.getImageWidth(), imageInfo.getImageHeight(), imageInfo.getImageType());
-//	}
-//
-//	@Override
-//	public Optional<ImageInfo> findById(long id) {
-//		String sql = "select id, image_size, width, height, image_type from image_info where id = ?";
-//		RowMapper<ImageInfo> rowMapper = (rs, rowNum) -> new ImageInfo(
-//				rs.getLong(1),
-//				new ImageSize(rs.getInt(2)),
-//				new ImageReSolution(rs.getInt(3), rs.getInt(4)),
-//				ImageType.getImageType(rs.getString(5)));
-//		return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
-//	}
-//
-//	@Override
-//	public int update(ImageInfo imageInfo) {
-//		String sql = "update image_info set image_size = ?, width = ?, height = ?, image_type = ? where id = ?";
-//		return jdbcTemplate.update(sql, imageInfo.getImageSize(), imageInfo.getImageWidth(), imageInfo.getImageHeight(), imageInfo.getImageType(), imageInfo.getId());
-//	}
-//
-//	@Override
-//	public int deleteById(long id) {
-//		String sql = "delete from image_info where id = ?";
-//		return jdbcTemplate.update(sql, id);
-//	}
 
 }
