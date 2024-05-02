@@ -105,7 +105,7 @@ public class Question {
             }
 
             if (StringUtils.isBlank(contents)) {
-                throw new IllegalArgumentException("질문의 제목이 비어있습니다.");
+                throw new IllegalArgumentException("질문의 내용이 비어있습니다.");
             }
 
             this.title = title;
