@@ -8,34 +8,55 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository("userRepository")
 public class JdbcUserRepository implements UserRepository {
-    private JdbcOperations jdbcTemplate;
+	private JdbcOperations jdbcTemplate;
 
-    public JdbcUserRepository(JdbcOperations jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+	public JdbcUserRepository(JdbcOperations jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
 
-    @Override
-    public Optional<NsUser> findByUserId(String userId) {
-        String sql = "select id, user_id, password, name, email, created_at, updated_at from ns_user where user_id = ?";
-        RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
-                rs.getLong(1),
-                rs.getString(2),
-                rs.getString(3),
-                rs.getString(4),
-                rs.getString(5),
-                toLocalDateTime(rs.getTimestamp(6)),
-                toLocalDateTime(rs.getTimestamp(7)));
-        return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, userId));
-    }
+	@Override
+	public Optional<NsUser> findByUserId(String userId) {
+		String sql = "select id, user_id, password, name, email, created_at, updated_at from ns_user where user_id = ?";
+		RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
+				rs.getLong(1),
+				rs.getString(2),
+				rs.getString(3),
+				rs.getString(4),
+				rs.getString(5),
+				toLocalDateTime(rs.getTimestamp(6)),
+				toLocalDateTime(rs.getTimestamp(7)));
+		return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, userId));
+	}
 
-    private LocalDateTime toLocalDateTime(Timestamp timestamp) {
-        if (timestamp == null) {
-            return null;
-        }
-        return timestamp.toLocalDateTime();
-    }
+	@Override
+	public List<NsUser> findAllBySessionId(long sessionId) {
+		String sql = "SELECT id, user_id, password, name, email, session_id, created_at, updated_at " +
+				" FROM ns_user" +
+				" WHERE session_id = ?";
+
+		RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
+				rs.getLong("id"),
+				rs.getString("user_id"),
+				rs.getString("password"),
+				rs.getString("name"),
+				rs.getString("email"),
+				rs.getLong("session_id"),
+				toLocalDateTime(rs.getTimestamp("created_at")),
+				toLocalDateTime(rs.getTimestamp("updated_at"))
+		);
+
+		return jdbcTemplate.query(sql, rowMapper, sessionId);
+	}
+
+	private LocalDateTime toLocalDateTime(Timestamp timestamp) {
+		if (timestamp == null) {
+			return null;
+		}
+		return timestamp.toLocalDateTime();
+	}
 }

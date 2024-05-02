@@ -18,6 +18,8 @@ public class NsUser {
 
     private String email;
 
+    private long sessionId;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
@@ -35,6 +37,17 @@ public class NsUser {
         this.password = password;
         this.name = name;
         this.email = email;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public NsUser(Long id, String userId, String password, String name, String email, long sessionId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.sessionId = sessionId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -77,6 +90,10 @@ public class NsUser {
     public NsUser setEmail(String email) {
         this.email = email;
         return this;
+    }
+
+    public long getSessionId() {
+        return sessionId;
     }
 
     public void update(NsUser loginUser, NsUser target) {
