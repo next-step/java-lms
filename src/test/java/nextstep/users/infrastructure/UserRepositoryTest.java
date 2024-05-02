@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,4 +35,11 @@ public class UserRepositoryTest {
         assertThat(nsUser.isEmpty()).isFalse();
         LOGGER.debug("NsUser: {}", nsUser.get());
     }
+
+    @Test
+    void findAllBySessionId() {
+        List<NsUser> allBySessionId = userRepository.findAllBySessionId(1L);
+        assertThat(allBySessionId).hasSize(2);
+    }
+
 }
