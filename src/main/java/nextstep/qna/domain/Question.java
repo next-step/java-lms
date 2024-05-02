@@ -94,7 +94,7 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title() + ", contents=" + contents() + ", writer=" + writer + "]";
     }
 
-    public class Detail {
+    public static class Detail {
         private String title;
 
         private String contents;
