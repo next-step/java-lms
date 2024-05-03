@@ -47,19 +47,20 @@
 
 # step3
 ## 수강 신청 기능 요구사항
-- [ ] 수강 신청 로직에 필요한 값만 가지도록 Enrollment와 같은 객체 추가
+- [x] 수강 신청 로직에 필요한 값만 가지도록 Enrollment와 같은 객체 추가
 - [ ] Session 매핑
   - Long id
+  - long course_id
   - LocalDateTime startDate
   - LocalDateTime endDate
-  - Long sessionPrice
 
-- [ ] Enrollment 매핑
+- [x] Enrollment 매핑
   - Long id 
-  - String sessionStatus
+  - int sessionStatus
   - int maximumNumberOfParticipants
+  - long sessionPrice
 
-- [ ] ImageInfo 매핑
+- [x] ImageInfo 매핑
   - int imageSize
   - int width
   - int height
