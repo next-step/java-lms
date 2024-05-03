@@ -13,4 +13,16 @@ public class SessionInfo {
         this.creatorId = creatorId;
         this.image = image;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public Image getImage() {
+        return image;
+    }
 }
