@@ -2,7 +2,7 @@ package nextstep.session.domain;
 
 import nextstep.courses.domain.Course;
 
-public abstract class Session {
+public class Session {
 	private Long id;
 	private Course course;
 	private ImageInfo imageType;
@@ -23,6 +23,10 @@ public abstract class Session {
 
 	public Period getPeriod() {
 		return period;
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 }
