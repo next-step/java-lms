@@ -4,6 +4,10 @@ public class ImageShape {
 	private ImageWidth width;
 	private ImageHeight height;
 
+	public ImageShape(final int width, final int height) {
+		this(new ImageWidth(width), new ImageHeight(height));
+	}
+
 	public ImageShape(ImageWidth width, ImageHeight height) {
 		validateShape(width, height);
 		this.width = width;
@@ -14,5 +18,13 @@ public class ImageShape {
 		if (width.getWidth() * 2 != height.getHeight() * 3) {
 			throw new IllegalArgumentException("가로 세로 비율은 3:2이어야 합니다.");
 		}
+	}
+
+	public int getWidth() {
+		return width.getWidth();
+	}
+
+	public int getHeight() {
+		return height.getHeight();
 	}
 }

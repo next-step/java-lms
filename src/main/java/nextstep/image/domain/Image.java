@@ -16,4 +16,28 @@ public class Image {
 		this.shape = shape;
 		this.size = size;
 	}
+
+	public Long getSessionId() {
+		return sessionId;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public String getType() {
+		return type.name();
+	}
+
+	public int getImageWidth() {
+		return shape.getWidth();
+	}
+
+	public int getImageHeight() {
+		return shape.getHeight();
+	}
+
+	public int getSize() {
+		return size;
+	}
 }
