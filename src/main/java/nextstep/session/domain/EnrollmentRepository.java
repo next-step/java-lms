@@ -7,5 +7,6 @@ public interface EnrollmentRepository {
 	Optional<Enrollment> findById(long id);
 	int update(Enrollment enrollment);
 	int deleteById(long id);
+	Optional<Enrollment> findBySessionId(long id);
 
 }

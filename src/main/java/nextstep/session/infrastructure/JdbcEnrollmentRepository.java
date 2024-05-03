@@ -40,7 +40,21 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
 				rs.getLong(4),
 				SessionStatus.getSessionStatus(rs.getInt(5)),
 				new NsUsers(allBySessionId));
-		return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
+		return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, id));
+	}
+
+	@Override
+	public Optional<Enrollment> findBySessionId(long id) {
+		List<NsUser> allBySessionId = userRepository.findAllBySessionId(id);
+		String sql = "select id, maximum_number_of_participants, session_price, session_status, session_id from enrollment where session_id = ?";
+		RowMapper<Enrollment> rowMapper = (rs, rowNum) -> new Enrollment(
+				rs.getLong(1),
+				rs.getInt(2),
+				rs.getLong(3),
+				rs.getLong(4),
+				SessionStatus.getSessionStatus(rs.getInt(5)),
+				new NsUsers(allBySessionId));
+		return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, id));
 	}
 
 	@Override

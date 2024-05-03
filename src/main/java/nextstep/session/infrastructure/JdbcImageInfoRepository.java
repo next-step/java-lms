@@ -30,7 +30,19 @@ public class JdbcImageInfoRepository implements ImageInfoRepository {
 				new ImageReSolution(rs.getInt(3), rs.getInt(4)),
 				ImageType.getImageType(rs.getString(5)),
 				rs.getLong(6));
-		return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
+		return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, id));
+	}
+
+	@Override
+	public Optional<ImageInfo> findBySessionId(long id) {
+		String sql = "select id, image_size, width, height, image_type, session_id from image_info where session_id = ?";
+		RowMapper<ImageInfo> rowMapper = (rs, rowNum) -> new ImageInfo(
+				rs.getLong(1),
+				new ImageSize(rs.getInt(2)),
+				new ImageReSolution(rs.getInt(3), rs.getInt(4)),
+				ImageType.getImageType(rs.getString(5)),
+				rs.getLong(6));
+		return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, id));
 	}
 
 	@Override
