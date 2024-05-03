@@ -14,4 +14,6 @@ INSERT INTO question (id, writer_id, title, contents, created_at, deleted) VALUE
 INSERT INTO image_info (image_size, width, height, image_type, session_id) VALUES (1024, 300, 200, 'jpg', 1);
 
 INSERT INTO enrollment (session_status, maximum_Number_Of_Participants, session_price, session_id) VALUES (1, 20, 10000, 1);
-INSERT INTO enrollment (session_status, maximum_Number_Of_Participants, session_price, session_id) VALUES (1, 15, 15000, 1);
+INSERT INTO enrollment (session_status, maximum_Number_Of_Participants, session_price, session_id) VALUES (1, 15, 15000, 2);
+
+INSERT INTO session (course_id, start_date, end_date) VALUES (1, CURRENT_TIMESTAMP(),CURRENT_TIMESTAMP());
