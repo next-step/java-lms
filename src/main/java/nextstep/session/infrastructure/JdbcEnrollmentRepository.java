@@ -25,27 +25,28 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
 
 	@Override
 	public int save(Enrollment enrollment) {
-		String sql = "insert into enrollment (session_status, maximum_number_of_participants, session_price) values(?, ?, ?)";
-		return jdbcTemplate.update(sql, enrollment.getSessionStatus(), enrollment.getMaximumNumberOfParticipants(), enrollment.getSessionPrice());
+		String sql = "insert into enrollment (session_status, maximum_number_of_participants, session_price, session_id) values(?, ?, ?, ?)";
+		return jdbcTemplate.update(sql, enrollment.getSessionStatus(), enrollment.getMaximumNumberOfParticipants(), enrollment.getSessionPrice(), enrollment.getSessionId());
 	}
 
 	@Override
 	public Optional<Enrollment> findById(long id) {
 		List<NsUser> allBySessionId = userRepository.findAllBySessionId(id);
-		String sql = "select id, maximum_number_of_participants, session_price, session_status from enrollment where id = ?";
+		String sql = "select id, maximum_number_of_participants, session_price, session_status, session_id from enrollment where id = ?";
 		RowMapper<Enrollment> rowMapper = (rs, rowNum) -> new Enrollment(
 				rs.getLong(1),
 				rs.getInt(2),
 				rs.getLong(3),
-				SessionStatus.getSessionStatus(rs.getInt(4)),
+				rs.getLong(4),
+				SessionStatus.getSessionStatus(rs.getInt(5)),
 				new NsUsers(allBySessionId));
 		return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
 	}
 
 	@Override
 	public int update(Enrollment enrollment) {
-		String sql = "update enrollment set session_status = ?, maximum_number_of_participants = ?, session_price = ? where id = ?";
-		return jdbcTemplate.update(sql, enrollment.getSessionStatus(), enrollment.getMaximumNumberOfParticipants(), enrollment.getSessionPrice(), enrollment.getId());
+		String sql = "update enrollment set session_status = ?, maximum_number_of_participants = ?, session_price = ?, session_id = ? where id = ?";
+		return jdbcTemplate.update(sql, enrollment.getSessionStatus(), enrollment.getMaximumNumberOfParticipants(), enrollment.getSessionPrice(), enrollment.getSessionId(), enrollment.getId());
 	}
 
 	@Override

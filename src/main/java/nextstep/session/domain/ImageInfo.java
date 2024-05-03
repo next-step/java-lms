@@ -5,6 +5,7 @@ public class ImageInfo {
 	private ImageSize imageSize;
 	private ImageReSolution imageReSolution;
 	private ImageType imageType;
+	private long sessionId;
 
 	public ImageInfo(String type) {
 		this(0L, null, null, ImageType.getImageType(type));
@@ -15,6 +16,14 @@ public class ImageInfo {
 		this.imageSize = imageSize;
 		this.imageReSolution = imageReSolution;
 		this.imageType = imageType;
+	}
+
+	public ImageInfo(long id, ImageSize imageSize, ImageReSolution imageReSolution, ImageType imageType, long sessionId) {
+		this.id = id;
+		this.imageSize = imageSize;
+		this.imageReSolution = imageReSolution;
+		this.imageType = imageType;
+		this.sessionId = sessionId;
 	}
 
 	public long getId() {
@@ -35,6 +44,10 @@ public class ImageInfo {
 
 	public String getImageType() {
 		return imageType.name();
+	}
+
+	public long getSessionId() {
+		return sessionId;
 	}
 
 	@Override

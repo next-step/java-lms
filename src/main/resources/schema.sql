@@ -56,6 +56,7 @@ create table image_info(
     width int not null,
     height int not null,
     image_type varchar(20),
+    session_id bigint not null,
     primary key (id)
 );
 
@@ -64,5 +65,6 @@ create table enrollment(
    session_status int not null,
    maximum_Number_Of_Participants int not null,
    session_price bigint not null,
+   session_id bigint not null,
    primary key (id)
 );
