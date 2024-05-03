@@ -45,7 +45,7 @@ class ImageInfoRepositoryTest {
 	@Test
 	void updateImageInfo() {
 		imageInfoRepository.save(I1);
-		ImageInfo changeImageInfo = new ImageInfo(1L, new ImageSize(1024), new ImageReSolution(300, 200), ImageType.GIF);
+		ImageInfo changeImageInfo = new ImageInfo(1L, new ImageSize(1024), new ImageReSolution(300, 200), ImageType.GIF, 1L);
 		imageInfoRepository.update(changeImageInfo);
 		Optional<ImageInfo> imageInfo = imageInfoRepository.findById(1L);
 		assertThat(imageInfo.isEmpty()).isFalse();

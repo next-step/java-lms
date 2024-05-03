@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
 class JdbcEnrollmentRepositoryTest {
-	public final static Enrollment CHANGE_E1 = new Enrollment(1L,1, 50000);
+	public final static Enrollment CHANGE_E1 = new Enrollment(1L,1, 50000, 1L);
 	public final static Enrollment E3 = new Enrollment(1, 50000);
 	private static final Logger LOGGER = LoggerFactory.getLogger(ImageInfoRepositoryTest.class);
 
