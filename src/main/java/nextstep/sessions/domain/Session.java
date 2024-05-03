@@ -36,8 +36,8 @@ public class Session {
 		return sessionInfo.getCreatorId();
 	}
 
-	public ChargeStatus getChargeStatus() {
-		return charge.getStatus();
+	public String getChargeStatus() {
+		return charge.getStatus().name();
 	}
 
 	public int getPrice() {
@@ -50,5 +50,13 @@ public class Session {
 
 	public LocalDate getEndedAt() {
 		return sessionDate.getEndedAt();
+	}
+
+	public String getSessionStatus() {
+		return enrollment.getSessionStatus().name();
+	}
+
+	public int getCapacity() {
+		return enrollment.getCapacity();
 	}
 }

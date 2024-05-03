@@ -18,8 +18,8 @@ public class JdbcSessionRepository implements SessionRepository {
 
 	@Override
 	public int save(Session session) {
-		String sql = "insert into session (title, creator_id, price, charge_status, start_at, ended_at) values(?, ?, ?)";
-		return jdbcTemplate.update(sql, session.getTitle(), session.getCreatorId(), session.getPrice(), session.getChargeStatus(), session.getStartedAt(), session.getEndedAt());
+		String sql = "insert into session (title, creator_id, charge_status, price, session_status, capacity, started_at, ended_at) values(?, ?, ?,?, ?, ?, ?, ?)";
+		return jdbcTemplate.update(sql, session.getTitle(), session.getCreatorId(),session.getChargeStatus(), session.getPrice(), session.getSessionStatus(), session.getCapacity(), session.getStartedAt(), session.getEndedAt());
 	}
 
 	@Override
@@ -55,8 +55,8 @@ public class JdbcSessionRepository implements SessionRepository {
 						rs.getObject(15, List.class)
 				),
 				new SessionDate(
-						new StartedAt(toLocalDate(rs.getTimestamp(5))),
-						new EndedAt(toLocalDate(rs.getTimestamp(6)))
+						new StartedAt(toLocalDate(rs.getTimestamp(16))),
+						new EndedAt(toLocalDate(rs.getTimestamp(17)))
 				)
 
 		);
