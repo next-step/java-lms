@@ -44,7 +44,12 @@ public class SessionService {
 
     @Transactional
     public void approveStudent(Long sessionId, NsUser user, Long studentId) {
-        validateUserAuthority(sessionId, user);
+        Session session = sessionRepository.findById(sessionId)
+                .orElseThrow(() -> new IllegalArgumentException("세션 정보가 없습니다."));
+
+        validateUserAuthority(session, user);
+        validateSessionSelectable(session);
+
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new IllegalArgumentException("학생 정보가 없습니다."));
 
@@ -52,10 +57,13 @@ public class SessionService {
         studentRepository.save(student);
     }
 
-    private void validateUserAuthority(Long sessionId, NsUser user) {
-        Session session = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new IllegalArgumentException("세션 정보가 없습니다."));
+    private void validateSessionSelectable(Session session) {
+        if (session.isNotSelected()) {
+            throw new IllegalArgumentException("해당 세션은 선발을 필요로 하지 않는 강의입니다.");
+        }
+    }
 
+    private void validateUserAuthority(Session session, NsUser user) {
         if (session.isOutOfControl(user)) {
             throw new IllegalArgumentException("해당 유저는 권한이 없습니다.");
         }
@@ -63,7 +71,12 @@ public class SessionService {
 
     @Transactional
     public void disApproveStudent(Long sessionId, NsUser user, Long studentId) {
-        validateUserAuthority(sessionId, user);
+        Session session = sessionRepository.findById(sessionId)
+                .orElseThrow(() -> new IllegalArgumentException("세션 정보가 없습니다."));
+
+        validateUserAuthority(session, user);
+        validateSessionSelectable(session);
+
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new IllegalArgumentException("학생 정보가 없습니다."));
 

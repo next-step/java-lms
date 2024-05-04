@@ -2,6 +2,7 @@ package nextstep.sessions.domain.builder;
 
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionRegisterDetails;
+import nextstep.sessions.domain.SessionSelectionStatus;
 
 import java.time.LocalDateTime;
 
@@ -17,6 +18,8 @@ public class SessionBuilder {
 
     private SessionRegisterDetails sessionRegisterDetails;
 
+    private SessionSelectionStatus sessionSelectionStatus;
+
     public SessionBuilder withSessionName(String sessionName) {
         this.sessionName = sessionName;
         return this;
@@ -27,8 +30,13 @@ public class SessionBuilder {
         return this;
     }
 
+    public SessionBuilder withSessionSelectionStatus(SessionSelectionStatus sessionSelectionStatus) {
+        this.sessionSelectionStatus = sessionSelectionStatus;
+        return this;
+    }
+
     public Session build() {
-        return new Session(id, startedAt, endedAt, sessionName, sessionRegisterDetails);
+        return new Session(id, startedAt, endedAt, sessionName, sessionRegisterDetails, sessionSelectionStatus);
     }
 
 }

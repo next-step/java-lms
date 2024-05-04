@@ -49,4 +49,25 @@ public class SessionTest {
                 .hasMessage("결제한 금액이 강의의 가격과 일치하지 않습니다.");
     }
 
+    @Test
+    void testIsNotSelected_isTrue() {
+        Session playGround = new SessionBuilder()
+                .withSessionName("자바 플레이그라운 with TDD, 클린코드")
+                .withSessionRegisterDetails(new SessionRegisterDetailsBuilder().withPrice(new Price(30000L)).build())
+                .withSessionSelectionStatus(SessionSelectionStatus.NOT_SELECTED)
+                .build();
+
+        assertThat(playGround.isNotSelected()).isTrue();
+    }
+
+    @Test
+    void testIsNotSelected_isFalse() {
+        Session wooWaHanTechCamp = new SessionBuilder()
+                .withSessionName("우아한테크캠프")
+                .withSessionRegisterDetails(new SessionRegisterDetailsBuilder().withPrice(new Price(30000L)).build())
+                .withSessionSelectionStatus(SessionSelectionStatus.SELECTED)
+                .build();
+
+        assertThat(wooWaHanTechCamp.isNotSelected()).isFalse();
+    }
 }

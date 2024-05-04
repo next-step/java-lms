@@ -8,6 +8,8 @@ import nextstep.utils.BaseEntity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static nextstep.sessions.domain.SessionSelectionStatus.*;
+
 public class Session extends BaseEntity {
 
     private final String sessionName;
@@ -16,12 +18,14 @@ public class Session extends BaseEntity {
 
     private final SessionRegisterDetails sessionRegisterDetails;
 
-    public Session(long id, LocalDateTime startedAt, LocalDateTime endedAt, String sessionName, SessionRegisterDetails sessionRegisterDetails) {
-        this(id, startedAt, endedAt, sessionName, null, sessionRegisterDetails);
+    private SessionSelectionStatus sessionSelectionStatus;
+
+    public Session(long id, LocalDateTime startedAt, LocalDateTime endedAt, String sessionName, SessionRegisterDetails sessionRegisterDetails, SessionSelectionStatus sessionSelectionStatus) {
+        this(id, startedAt, endedAt, sessionName, null, sessionRegisterDetails, sessionSelectionStatus);
     }
 
     public Session(long id, LocalDateTime startedAt, LocalDateTime endedAt, String sessionName) {
-        this(id, startedAt, endedAt, sessionName, null, null);
+        this(id, startedAt, endedAt, sessionName, null, null, NOT_SELECTED);
     }
 
     private Session(long id,
@@ -31,10 +35,23 @@ public class Session extends BaseEntity {
                     List<Image> images,
                     SessionRegisterDetails sessionRegisterDetails
     ) {
+        this(id, startedAt, endedAt, sessionName, images, sessionRegisterDetails, NOT_SELECTED);
+    }
+
+    private Session(long id,
+                   LocalDateTime startedAt,
+                   LocalDateTime endedAt,
+                   String sessionName,
+                   List<Image> images,
+                   SessionRegisterDetails sessionRegisterDetails,
+                   SessionSelectionStatus sessionSelectionStatus
+
+    ) {
         super(id, startedAt, endedAt);
         this.sessionName = sessionName;
         this.images = images;
         this.sessionRegisterDetails = sessionRegisterDetails;
+        this.sessionSelectionStatus = sessionSelectionStatus;
     }
 
     public Student enroll(NsUser nsUser, List<Student> students, Payment payment) {
@@ -45,6 +62,10 @@ public class Session extends BaseEntity {
 
     public boolean isOutOfControl(NsUser user) {
         return this.getId() != user.getId();
+    }
+
+    public boolean isNotSelected() {
+        return sessionSelectionStatus.isNotSelectable();
     }
 
     public long getId() {

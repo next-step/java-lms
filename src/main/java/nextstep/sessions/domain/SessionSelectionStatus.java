@@ -4,7 +4,7 @@ public enum SessionSelectionStatus {
     SELECTED,
     NOT_SELECTED;
 
-    public boolean isSelectable() {
-        return this == SELECTED;
+    public boolean isNotSelectable() {
+        return this != SELECTED;
     }
 }
