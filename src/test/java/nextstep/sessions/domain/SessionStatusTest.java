@@ -7,11 +7,12 @@ import static nextstep.sessions.domain.SessionStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SessionStatusTest {
-
-    @DisplayName("강의 상태가 모집중이 아닌지를 반환한다")
+    @DisplayName("강의 상태가 IN_PROGRESS인지 아닌지 확인한다")
     @Test
-    void isNotRecruiting() {
-        assertThat(END.isNotRecruiting()).isTrue();
-    }
+    void isNotInProgress() {
+        assertThat(PREPARING.isNotInProgress()).isTrue();
+        assertThat(END.isNotInProgress()).isTrue();
 
+        assertThat(IN_PROGRESS.isNotInProgress()).isFalse();
+    }
 }

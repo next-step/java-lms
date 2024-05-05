@@ -1,15 +1,26 @@
 package nextstep.sessions.domain;
 
-import org.junit.jupiter.api.DisplayName;
+import nextstep.sessions.domain.builder.StudentBuilder;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class StudentTest {
-
-    @DisplayName("student객체를 생성한다")
     @Test
-    void student() {
-        assertThat(new Student(1L, 1L)).isEqualTo(new Student(1L, 1L));
+    void approve() {
+        Student selectedStudent = new StudentBuilder().build();
+
+        selectedStudent.approve();
+
+        assertThat(selectedStudent).isEqualTo(new StudentBuilder().withIsApproved(true).build());
+    }
+
+    @Test
+    void disApprove() {
+        Student nonSelectedStudent = new StudentBuilder().build();
+
+        nonSelectedStudent.disApprove();
+
+        assertThat(nonSelectedStudent).isEqualTo(new StudentBuilder().withIsApproved(false).build());
     }
 }

@@ -1,6 +1,7 @@
 package nextstep.sessions.domain.builder;
 
 import nextstep.sessions.domain.Price;
+import nextstep.sessions.domain.RecruitmentStatus;
 import nextstep.sessions.domain.SessionRegisterDetails;
 import nextstep.sessions.domain.SessionStatus;
 
@@ -10,7 +11,9 @@ public class SessionRegisterDetailsBuilder {
 
     private Price price;
 
-    private SessionStatus recruiting = SessionStatus.RECRUITING;
+    private SessionStatus recruiting = SessionStatus.IN_PROGRESS;
+
+    private RecruitmentStatus recruitmentStatus = RecruitmentStatus.RECRUITING;
 
     private int maxOfStudents = 40;
 
@@ -20,7 +23,7 @@ public class SessionRegisterDetailsBuilder {
     }
 
     public SessionRegisterDetails build() {
-        return new SessionRegisterDetails(id, price, recruiting, maxOfStudents);
+        return new SessionRegisterDetails(id, price, recruiting, recruitmentStatus, maxOfStudents);
     }
 
 }
