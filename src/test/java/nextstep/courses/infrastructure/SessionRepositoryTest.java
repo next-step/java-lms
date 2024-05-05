@@ -3,6 +3,7 @@ package nextstep.courses.infrastructure;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import nextstep.courses.domain.cover.Image;
 import nextstep.courses.domain.cover.ImageHeight;
@@ -55,7 +56,8 @@ class SessionRepositoryTest {
     void Session은_저장되어야_한다() {
         Enrollment enrollment = EnrollmentBuilder.anEnrollment()
             .withEnrollmentCount(new FreeEnrollmentCount(new RegistrationCount(1)))
-            .withSessionState(new SessionState(SessionState.valueOfRecruitmentState("RECRUITING")))
+            .withSessionState(new SessionState(SessionState.valueOfProgressState("ONGOING"),
+                SessionState.valueOfRecruitmentState("RECRUITING")))
             .withTuitionFee(new Money(0))
             .withFeeType(FeeType.FREE)
             .build();
@@ -70,7 +72,7 @@ class SessionRepositoryTest {
         Session freeSession = FreeSessionBuilder.anFreeSession()
             .withName("강의이름")
             .withEnrollment(enrollment)
-            .withImage(image)
+            .withImages(List.of(image))
             .withValidityPeriod(new Period(LocalDateTime.now(), LocalDateTime.MAX))
             .build();
 
@@ -86,8 +88,8 @@ class SessionRepositoryTest {
         assertThat(sessionEntity.isPresent()).isTrue();
         assertThat(sessionEntity.get())
             .extracting("id", "sessionName", "registrationCount", "maxRegistrationCount",
-                "tuitionFee", "imageId", "recruitmentState", "startDate", "endDate", "createdAt", "updatedAt")
-            .containsExactly(1L, "무료강의1", 1, 2147483647, 0, 1L, "RECRUITING",
+                "tuitionFee", "imageId", "progressState", "recruitmentState", "startDate", "endDate", "createdAt", "updatedAt")
+            .containsExactly(1L, "무료강의1", 1, 2147483647, 0, 1L, "ONGOING", "RECRUITING",
                 LocalDateTime.parse("2024-01-01T00:00:00"),
                 LocalDateTime.parse("2024-01-07T00:00:00"),
                 LocalDateTime.parse("2024-01-01T00:00:00"),
@@ -97,7 +99,7 @@ class SessionRepositoryTest {
     @Test
     void Session의_등록회원수는_변경된값으로_업데이트되어야한다() {
         //given
-        Optional<SessionEntity> sessionEntityOptional = sessionRepository.findById(1L);
+        Optional<SessionEntity> sessionEntityOptional = sessionRepository.findById(2L);
         assertThat(sessionEntityOptional.isPresent()).isTrue();
 
         Session session = SessionFactory.get(sessionEntityOptional.get());

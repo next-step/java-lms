@@ -1,7 +1,11 @@
 package nextstep.courses.entity;
 
 import java.time.LocalDateTime;
+import nextstep.courses.domain.student.ApprovalState;
+import nextstep.courses.domain.student.Email;
 import nextstep.courses.domain.student.Student;
+import nextstep.courses.domain.student.StudentName;
+import nextstep.courses.domain.student.StudentType;
 
 public class StudentEntity extends BaseEntity {
 
@@ -11,26 +15,37 @@ public class StudentEntity extends BaseEntity {
 
     private String email;
 
-    private int paymentAmount;
+    private String approvalState;
+
+    private String studentType;
+
+
+    public Student toStudent() {
+        return new Student(id, new StudentName(studentName), new Email(email),
+            ApprovalState.valueOf(approvalState), StudentType.valueOf(studentType));
+    }
 
     public static StudentEntity from(Student student) {
-        return new StudentEntity(null, student.getStudentName(), student.getEmail(),
-            student.getPaymentAmount(), student.getCreatedAt());
+        return new StudentEntity(student.getId(), student.getStudentName(), student.getEmail(),
+            student.getApprovalState(),
+            student.getStudentType(), student.getCreatedAt());
     }
 
-    public StudentEntity(Long id, String studentName, String email, int paymentAmount,
+    public StudentEntity(Long id, String studentName, String email,
+        String approvalState, String studentType,
         LocalDateTime createdAt) {
-        this(id, studentName, email, paymentAmount, createdAt, null);
+        this(id, studentName, email, approvalState, studentType, createdAt, null);
     }
 
-    public StudentEntity(Long id,
-        String studentName,
-        String email, int paymentAmount, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public StudentEntity(Long id, String studentName, String email, String approvalState,
+        String studentType, LocalDateTime createdAt,
+        LocalDateTime updatedAt) {
         super(createdAt, updatedAt);
         this.id = id;
         this.studentName = studentName;
         this.email = email;
-        this.paymentAmount = paymentAmount;
+        this.approvalState = approvalState;
+        this.studentType = studentType;
     }
 
     public Long getId() {
@@ -45,7 +60,11 @@ public class StudentEntity extends BaseEntity {
         return email;
     }
 
-    public int getPaymentAmount() {
-        return paymentAmount;
+    public String getApprovalState() {
+        return approvalState;
+    }
+
+    public String getStudentType() {
+        return studentType;
     }
 }

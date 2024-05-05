@@ -1,5 +1,6 @@
 package nextstep.courses.fixture.builder;
 
+import java.util.List;
 import nextstep.courses.domain.cover.Image;
 import nextstep.courses.domain.session.FreeSession;
 import nextstep.courses.domain.session.enrollment.Enrollment;
@@ -12,7 +13,7 @@ public class FreeSessionBuilder {
 
     private Enrollment enrollment;
 
-    private Image image;
+    private List<Image> images;
 
     private Period period;
 
@@ -30,16 +31,17 @@ public class FreeSessionBuilder {
         return this;
     }
 
-    public FreeSessionBuilder withImage(Image image) {
-        this.image = image;
+    public FreeSessionBuilder withImages(List<Image> images) {
+        this.images = images;
         return this;
     }
+
     public FreeSessionBuilder withValidityPeriod(Period period) {
         this.period = period;
         return this;
     }
 
     public FreeSession build() {
-        return new FreeSession(SessionName, enrollment, image, period);
+        return new FreeSession(SessionName, enrollment, images, period);
     }
 }

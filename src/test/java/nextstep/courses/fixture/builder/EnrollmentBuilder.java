@@ -1,13 +1,14 @@
 package nextstep.courses.fixture.builder;
 
 import nextstep.courses.domain.session.enrollment.Enrollment;
-import nextstep.courses.domain.session.enrollment.SessionEnrollment;
 import nextstep.courses.domain.session.enrollment.count.engine.EnrollmentCount;
 import nextstep.courses.domain.session.enrollment.state.SessionState;
 import nextstep.courses.domain.session.feetype.FeeType;
 import nextstep.payments.domain.Money;
 
 public class EnrollmentBuilder {
+
+    private Long id;
 
     private EnrollmentCount enrollmentCount;
 
@@ -19,6 +20,11 @@ public class EnrollmentBuilder {
 
     public static EnrollmentBuilder anEnrollment() {
         return new EnrollmentBuilder();
+    }
+
+    public EnrollmentBuilder withId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public EnrollmentBuilder withEnrollmentCount(EnrollmentCount enrollmentCount) {
@@ -41,6 +47,6 @@ public class EnrollmentBuilder {
     }
 
     public Enrollment build() {
-        return new SessionEnrollment(enrollmentCount, sessionState, tuitionFee, feeType);
+        return new Enrollment(id, enrollmentCount, sessionState, tuitionFee, feeType);
     }
 }

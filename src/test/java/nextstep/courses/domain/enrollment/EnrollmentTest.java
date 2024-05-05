@@ -8,6 +8,7 @@ import nextstep.courses.domain.session.enrollment.count.FreeEnrollmentCount;
 import nextstep.courses.domain.session.enrollment.count.MaxRegistrationCount;
 import nextstep.courses.domain.session.enrollment.count.PaidEnrollmentCount;
 import nextstep.courses.domain.session.enrollment.count.RegistrationCount;
+import nextstep.courses.domain.session.enrollment.state.ProgressState;
 import nextstep.courses.domain.session.enrollment.state.RecruitmentState;
 import nextstep.courses.domain.session.enrollment.state.SessionState;
 import nextstep.courses.domain.session.feetype.FeeType;
@@ -35,7 +36,7 @@ class EnrollmentTest {
     void 무료강의는_수강신청_등록이_되어야_한다() {
         Enrollment enrollment = EnrollmentBuilder.anEnrollment()
             .withEnrollmentCount(new FreeEnrollmentCount(new RegistrationCount(1)))
-            .withSessionState(new SessionState(RecruitmentState.RECRUITING))
+            .withSessionState(new SessionState(ProgressState.ONGOING, RecruitmentState.RECRUITING))
             .withTuitionFee(new Money(0))
             .withFeeType(FeeType.FREE)
             .build();
@@ -44,8 +45,8 @@ class EnrollmentTest {
 
         Student student = enrollment.enroll(nsUser, payment);
 
-        assertThat(student).extracting("studentName", "email", "paymentAmount")
-            .containsExactly("kimnamhyoep", "nam@gmail.com", 0);
+        assertThat(student).extracting("studentName", "email")
+            .containsExactly("kimnamhyoep", "nam@gmail.com");
     }
 
     @Test
@@ -53,7 +54,7 @@ class EnrollmentTest {
         Enrollment enrollment = EnrollmentBuilder.anEnrollment()
             .withEnrollmentCount(
                 new PaidEnrollmentCount(new RegistrationCount(1), new MaxRegistrationCount(5)))
-            .withSessionState(new SessionState(RecruitmentState.RECRUITING))
+            .withSessionState(new SessionState(ProgressState.ONGOING, RecruitmentState.RECRUITING))
             .withTuitionFee(new Money(50000))
             .withFeeType(FeeType.PAID)
             .build();
@@ -62,15 +63,15 @@ class EnrollmentTest {
 
         Student student = enrollment.enroll(nsUser, payment);
 
-        assertThat(student).extracting("studentName", "email", "paymentAmount")
-            .containsExactly("kimnamhyoep", "nam@gmail.com", 50000);
+        assertThat(student).extracting("studentName", "email")
+            .containsExactly("kimnamhyoep", "nam@gmail.com");
     }
 
     @Test
     void 수강신청시_결제금액과_수강비용이_일치하지_않은_경우_예외가_발생한다() {
         Enrollment enrollment = EnrollmentBuilder.anEnrollment()
             .withEnrollmentCount(new FreeEnrollmentCount(new RegistrationCount(1)))
-            .withSessionState(new SessionState(RecruitmentState.RECRUITING))
+            .withSessionState(new SessionState(ProgressState.ONGOING, RecruitmentState.RECRUITING))
             .withTuitionFee(new Money(0))
             .withFeeType(FeeType.FREE)
             .build();
@@ -86,7 +87,7 @@ class EnrollmentTest {
     void 수강신청시_강의가_모집중이지_않은_경우에는_예외가_발생한다() {
         Enrollment enrollment = EnrollmentBuilder.anEnrollment()
             .withEnrollmentCount(new FreeEnrollmentCount(new RegistrationCount(1)))
-            .withSessionState(new SessionState(RecruitmentState.PREPARING))
+            .withSessionState(new SessionState(ProgressState.PREPARING, RecruitmentState.NON_RECRUITING))
             .withTuitionFee(new Money(0))
             .withFeeType(FeeType.FREE)
             .build();
@@ -95,14 +96,14 @@ class EnrollmentTest {
 
         assertThatThrownBy(() -> enrollment.enroll(nsUser, payment))
             .isInstanceOf(SessionNotOpenForEnrollmentException.class)
-            .hasMessage("강의는 모집중 상태에서만 등록 가능합니다 현재 강의 상태: 준비중");
+            .hasMessage("강의는 모집중이거나 진행중인 상태에서만 등록 가능합니다, 현재 강의 진행 상태: 준비중, 현재 강의 모집 상태: 비모집중");
     }
 
     @Test
     void 수강신청시_강의가_강의_등록_가능_인원이_최대_등록_인원_수를_초과한_경우_예외가_발생한다() {
         Enrollment enrollment = EnrollmentBuilder.anEnrollment()
             .withEnrollmentCount(new PaidEnrollmentCount(new RegistrationCount(10), new MaxRegistrationCount(1)))
-            .withSessionState(new SessionState(RecruitmentState.RECRUITING))
+            .withSessionState(new SessionState(ProgressState.ONGOING, RecruitmentState.RECRUITING))
             .withTuitionFee(new Money(0))
             .withFeeType(FeeType.PAID)
             .build();

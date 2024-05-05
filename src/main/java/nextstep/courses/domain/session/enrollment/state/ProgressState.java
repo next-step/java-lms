@@ -1,10 +1,11 @@
 package nextstep.courses.domain.session.enrollment.state;
 
-public enum RecruitmentState {
-    NON_RECRUITING("비모집중"),
-    RECRUITING("모집중");
+public enum ProgressState {
+    PREPARING("준비중"),
+    ONGOING("진행중"),
+    END("종료");
 
-    RecruitmentState(String value) {
+    ProgressState(String value) {
         this.value = value;
     }
 

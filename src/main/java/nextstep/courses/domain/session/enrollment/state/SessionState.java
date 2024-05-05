@@ -2,18 +2,33 @@ package nextstep.courses.domain.session.enrollment.state;
 
 public class SessionState {
 
+    private final ProgressState progressState;
+
     private final RecruitmentState recruitmentState;
 
-    public SessionState(RecruitmentState recruitmentState) {
+    public SessionState(ProgressState progressState, RecruitmentState recruitmentState) {
+        this.progressState = progressState;
         this.recruitmentState = recruitmentState;
     }
 
-    public boolean isRecruitmentOpen() {
+    public boolean isOnGoing() {
+        return progressState == ProgressState.ONGOING;
+    }
+
+    public boolean isRecruiting() {
         return recruitmentState == RecruitmentState.RECRUITING;
     }
 
     public static RecruitmentState valueOfRecruitmentState(String value) {
         return RecruitmentState.valueOf(value);
+    }
+
+    public static ProgressState valueOfProgressState(String value) {
+        return ProgressState.valueOf(value);
+    }
+
+    public String getProgressState() {
+        return progressState.getValue();
     }
 
     public String getRecruitmentState() {

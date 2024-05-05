@@ -2,27 +2,91 @@ package nextstep.courses.domain.session.enrollment;
 
 import nextstep.courses.domain.session.enrollment.count.engine.EnrollmentCount;
 import nextstep.courses.domain.session.enrollment.state.SessionState;
+import nextstep.courses.domain.session.feetype.FeeType;
 import nextstep.courses.domain.student.Student;
+import nextstep.courses.error.exception.MaxRegistrationExceededException;
+import nextstep.courses.error.exception.PaymentConditionNotMetException;
+import nextstep.courses.error.exception.SessionNotOpenForEnrollmentException;
+import nextstep.courses.error.exception.SessionRegisterFailException;
+import nextstep.payments.domain.Money;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
-public interface Enrollment {
+public class Enrollment {
 
-    Student enroll(NsUser nsUser, Payment payment);
+    private final Long id;
 
-    boolean checkRegistrationConditions(Payment payment);
+    private final EnrollmentCount enrollmentCount;
 
-    boolean isSatisfySessionState();
+    private final SessionState sessionState;
 
-    boolean isSatisfyPaymentCondition(Payment payment);
+    private final Money tuitionFee;
 
-    boolean isSatisfyCapacityCondition();
+    private final FeeType feeType;
 
-    EnrollmentCount getEnrollmentCount();
+    public Enrollment(Long id, EnrollmentCount enrollmentCount, SessionState sessionState,
+        Money tuitionFee, FeeType feeType) {
+        this.id = id;
+        this.enrollmentCount = enrollmentCount;
+        this.sessionState = sessionState;
+        this.tuitionFee = tuitionFee;
+        this.feeType = feeType;
+    }
 
-    SessionState getSessionState();
+    public Student enroll(NsUser nsUser, Payment payment) {
+        if (checkRegistrationConditions(payment)) {
+            enrollmentCount.addRegistrationCount();
+            return new Student(nsUser, payment);
+        }
 
-    int getTuitionFee();
+        throw new SessionRegisterFailException();
+    }
 
-    String getFeeType();
+    public boolean checkRegistrationConditions(Payment payment) {
+        if (!isSatisfyPaymentCondition(payment)) {
+            throw new PaymentConditionNotMetException(tuitionFee, payment);
+        }
+
+        if (!isSatisfySessionState()) {
+            throw new SessionNotOpenForEnrollmentException(sessionState);
+        }
+
+        if (!isSatisfyCapacityCondition()) {
+            throw new MaxRegistrationExceededException(enrollmentCount);
+        }
+
+        return true;
+    }
+
+    public boolean isSatisfyPaymentCondition(Payment payment) {
+        return payment.isSamePaymentAmount(tuitionFee);
+    }
+
+    public boolean isSatisfySessionState() {
+        return sessionState.isOnGoing() || sessionState.isRecruiting();
+    }
+
+    public boolean isSatisfyCapacityCondition() {
+        return enrollmentCount.isRegistrationWithinCapacity();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public EnrollmentCount getEnrollmentCount() {
+        return enrollmentCount;
+    }
+
+    public SessionState getSessionState() {
+        return sessionState;
+    }
+
+    public int getTuitionFee() {
+        return tuitionFee.getValue();
+    }
+
+    public FeeType getFeeType() {
+        return feeType;
+    }
 }
