@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
+
     private Long id;
 
     private String title;
@@ -66,12 +67,17 @@ public class Question {
 
     public void delete(NsUser logUser) throws CannotDeleteException {
         validUserCanDelete(logUser);
+        changeDeleted(true);
     }
 
     private void validUserCanDelete(NsUser logUser) throws CannotDeleteException {
-        if (!isOwner(logUser)){
+        if (!isOwner(logUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
+    }
+
+    private void changeDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public void addAnswer(Answer answer) {
@@ -98,6 +104,7 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents
+            + ", writer=" + writer + "]";
     }
 }
