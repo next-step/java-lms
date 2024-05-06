@@ -105,6 +105,14 @@ public class Session {
         return students.enrolledStudentCount();
     }
 
+    public void changeEnrollmentStatusOpen() {
+        this.sessionEnrollmentStatus = SessionEnrollmentStatus.OPEN;
+    }
+
+    public void changeEnrollmentStatusClosed() {
+        this.sessionEnrollmentStatus = SessionEnrollmentStatus.CLOSED;
+    }
+
     public Long getSessionId() {
         return id;
     }
