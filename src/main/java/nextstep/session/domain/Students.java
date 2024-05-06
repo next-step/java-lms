@@ -2,7 +2,6 @@ package nextstep.session.domain;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import nextstep.session.StudentAlreadyEnrolledException;
 
 public class Students {
@@ -47,11 +46,4 @@ public class Students {
             ).findFirst().orElseThrow(() -> new IllegalArgumentException("수강신청하지 않은 학생입니다."));
         targetStudent.cancel();
     }
-
-    public List<Student> getApprovedStudents() {
-        return students.stream().filter(enrolledStudent -> enrolledStudent.isApproved()).collect(
-            Collectors.toUnmodifiableList());
-    }
-
-
 }

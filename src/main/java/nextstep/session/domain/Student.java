@@ -16,11 +16,11 @@ public class Student {
         this.approvalStatus = EnrollmentApprovalStatus.HOLD;
     }
 
-    public Student(Long id, Long user_id, Long session_id) {
+    public Student(Long id, Long user_id, Long session_id, String status) {
         this.id = id;
         this.user_id = user_id;
         this.session_id = session_id;
-        this.approvalStatus = EnrollmentApprovalStatus.HOLD;
+        this.approvalStatus = EnrollmentApprovalStatus.convert(status);
 
     }
 
@@ -60,5 +60,9 @@ public class Student {
 
     public Long getSession_id() {
         return session_id;
+    }
+
+    public String getApprovalStatus() {
+        return approvalStatus.getDescription();
     }
 }
