@@ -8,6 +8,7 @@ import nextstep.session.domain.SessionEnrollmentStatus;
 import nextstep.session.domain.SessionProgressStatus;
 import nextstep.session.domain.SessionRepository;
 import nextstep.session.domain.SessionSchedule;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,11 @@ public class SessionRepositoryTest {
     @BeforeEach
     void setUp() {
         sessionRepository = new JdbcSessionRepository(jdbcTemplate);
+    }
+
+    @AfterEach
+    void tearDown() {
+        sessionRepository.clear();
     }
 
     @Test
@@ -46,7 +52,7 @@ public class SessionRepositoryTest {
             SessionProgressStatus.IN_PROGRESS, SessionEnrollmentStatus.CLOSED, 500, 50000);
 
         sessionRepository.save(session);
-        Session savedSession = sessionRepository.findById(1L);
+        Session savedSession = sessionRepository.findById(2L);
         assertThat(savedSession.getTitle()).isEqualTo(session.getTitle());
 
     }
