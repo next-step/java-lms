@@ -30,8 +30,9 @@ public class JdbcSessionStudentRepository implements SessionStudentRepository {
 
     @Override
     public int save(Student student) {
-        String sql = "insert into session_student(user_id, session_id) values(?,?)";
-        return jdbcTemplate.update(sql, student.getUser_id(), student.getSession_id());
+        String sql = "insert into session_student(user_id, session_id, enrollment_approval_status) values(?,?,?)";
+        return jdbcTemplate.update(sql, student.getUser_id(), student.getSession_id(),
+            student.getApprovalStatus());
     }
 
     @Override

@@ -45,9 +45,4 @@ public class JdbcSessionRepository implements SessionRepository {
             session.getSessionEnrollmentStatus(),
             session.getPriceType(), session.getMaxEnrollment(), session.getFee());
     }
-
-    @Override
-    public void clear() {
-        jdbcTemplate.update("DELETE FROM session");
-    }
 }

@@ -8,7 +8,6 @@ import nextstep.session.domain.SessionEnrollmentStatus;
 import nextstep.session.domain.SessionProgressStatus;
 import nextstep.session.domain.SessionRepository;
 import nextstep.session.domain.SessionSchedule;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +27,6 @@ public class SessionRepositoryTest {
         sessionRepository = new JdbcSessionRepository(jdbcTemplate);
     }
 
-    @AfterEach
-    void tearDown() {
-        sessionRepository.clear();
-    }
 
     @Test
     void 저장() {
