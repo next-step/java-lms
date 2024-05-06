@@ -34,7 +34,7 @@ class JdbcSessionStudentRepositoryTest {
     }
 
     @Test
-    void 수강중인_학생_목록_조회() {
+    void 수강신청한_학생_목록_조회() {
         Student student1 = new Student(1L, 2L);
         Student student2 = new Student(2L, 2L);
         sessionStudentRepository.save(student1);

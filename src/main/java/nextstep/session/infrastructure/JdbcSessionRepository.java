@@ -22,7 +22,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(Long id) {
-        String sql = "select id,course_id, title,start_date,end_date,status,price_type,max_enrollment, fee from session where id = ?";
+        String sql = "select id,course_id, title,start_date,end_date,progress_status,enrollment_status, price_type,max_enrollment, fee from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) ->
             new Session(
                 rs.getLong(1),
@@ -39,10 +39,15 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public int save(Session session) {
-        String sql = "insert into session(title,course_id, start_date, end_date,progress_status, enrollment_status,price_type,  max_enrollment,fee ) values(?,?,?,?,?,?,?,?)";
+        String sql = "insert into session(title,course_id, start_date, end_date,progress_status, enrollment_status,price_type,  max_enrollment,fee ) values(?,?,?,?,?,?,?,?,?)";
         return jdbcTemplate.update(sql, session.getTitle(), session.getCourseId(),
             session.getStartDate(), session.getEndDate(), session.getSessionProgressStatus(),
             session.getSessionEnrollmentStatus(),
             session.getPriceType(), session.getMaxEnrollment(), session.getFee());
+    }
+
+    @Override
+    public void clear() {
+        jdbcTemplate.update("DELETE FROM session");
     }
 }
