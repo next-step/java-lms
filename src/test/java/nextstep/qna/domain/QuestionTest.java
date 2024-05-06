@@ -3,13 +3,13 @@ package nextstep.qna.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.convert.DataSizeUnit;
 
 public class QuestionTest {
 
@@ -30,5 +30,14 @@ public class QuestionTest {
         NsUser logUser = NsUserTest.JAVAJIGI;
         Q1.delete(logUser);
         assertThat(Q1.isDeleted()).isEqualTo(true);
+    }
+
+    @Test
+    @DisplayName("Wrtier가 삭제 시 답변이 없으면 삭제 가능하다.")
+    void QUESTION_DO_NOT_HAVE_ANSWERS_THEN_DELETABLE() throws CannotDeleteException {
+        NsUser logUser = NsUserTest.JAVAJIGI;
+        List<DeleteHistory> deleteHistories = List.of(
+            new DeleteHistory(ContentType.QUESTION, Q1.getId(), Q1.getWriter(), LocalDateTime.now()));
+        assertThat(Q1.delete(logUser)).isEqualTo(deleteHistories);
     }
 }
