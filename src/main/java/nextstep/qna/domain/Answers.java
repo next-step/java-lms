@@ -15,12 +15,16 @@ public class Answers {
         this.answers = answers;
     }
 
-    public Answers(Answer ... answers){
+    public Answers(Answer... answers) {
         this(Arrays.stream(answers).collect(Collectors.toList()));
     }
 
-    public void delete(NsUser logUser) throws CannotDeleteException {
+    public List<DeleteHistory> delete(NsUser logUser) throws CannotDeleteException {
         validDeletable(logUser);
+
+        return answers.stream()
+            .map(answer -> answer.delete(logUser))
+            .collect(Collectors.toList());
     }
 
     public boolean isOwners(NsUser logUser) {
@@ -29,7 +33,7 @@ public class Answers {
     }
 
     private void validDeletable(NsUser logUser) throws CannotDeleteException {
-        if(!isOwners(logUser)){
+        if (!isOwners(logUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
     }

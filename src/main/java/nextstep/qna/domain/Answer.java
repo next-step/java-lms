@@ -53,8 +53,9 @@ public class Answer {
         return this;
     }
 
-    public void delete(NsUser logUser) {
+    public DeleteHistory delete(NsUser logUser) {
         changeDelete(true);
+        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 
     public boolean isDeleted() {
