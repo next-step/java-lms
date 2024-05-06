@@ -89,6 +89,14 @@ public class Session {
         return student;
     }
 
+    public void approvalStudent(Student student) {
+        this.students.approval(student);
+    }
+
+    public void cancelStudent(Student student) {
+        this.students.cancel(student);
+    }
+
     public void addCoverImage(SessionCoverImage coverImage) {
         coverImages.add(coverImage);
     }
