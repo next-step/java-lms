@@ -9,8 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.DirtiesContext;
 
 @JdbcTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class JdbcSessionCoverImageRepositoryTest {
 
     @Autowired
@@ -32,10 +34,10 @@ class JdbcSessionCoverImageRepositoryTest {
 
     @Test
     void 강의_커버_이미지_조회() {
-        SessionCoverImage coverImage = new SessionCoverImage(1L, 900, 600, 10000, "png");
+        SessionCoverImage coverImage = new SessionCoverImage(1L, 900, 600, 10000, "jpg");
         sessionCoverImageRepository.save(coverImage);
         SessionCoverImage savedCoverImage = sessionCoverImageRepository.findBySessionId(1L);
-        assertThat(savedCoverImage.isSameImageType("png")).isTrue();
+        assertThat(savedCoverImage.isSameImageType("jpg")).isTrue();
 
     }
 }

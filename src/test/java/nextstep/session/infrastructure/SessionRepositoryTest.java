@@ -13,8 +13,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.DirtiesContext;
 
 @JdbcTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class SessionRepositoryTest {
 
     @Autowired
@@ -41,13 +43,13 @@ public class SessionRepositoryTest {
 
     @Test
     void 조회() {
-        Session session = Session.createPaidSession(2L, "객체지향강의", new SessionSchedule(
+        Session session = Session.createPaidSession(2L, "TDD강의", new SessionSchedule(
                 LocalDate.of(2024, 6, 1),
-                LocalDate.of(2024, 12, 31)),
+                LocalDate.of(2024, 8, 15)),
             SessionProgressStatus.IN_PROGRESS, SessionEnrollmentStatus.CLOSED, 500, 50000);
 
         sessionRepository.save(session);
-        Session savedSession = sessionRepository.findById(2L);
+        Session savedSession = sessionRepository.findById(1L);
         assertThat(savedSession.getTitle()).isEqualTo(session.getTitle());
 
     }
