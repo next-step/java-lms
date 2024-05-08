@@ -27,9 +27,13 @@ public class Answers {
     public List<DeleteHistory> delete(NsUser logUser) throws CannotDeleteException {
         validDeletable(logUser);
 
+        for (Answer answer : answers) {
+            answer.delete(logUser);
+        }
+
         return Optional.of(answers.stream()
-                .map(answer -> answer.delete(logUser))
-                .collect(Collectors.toList()))
+            .map(Answer::toDeleteHistory)
+            .collect(Collectors.toList()))
             .orElse(new ArrayList<>());
     }
 

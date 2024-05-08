@@ -48,10 +48,14 @@ public class Question {
         return writer;
     }
 
-    public List<DeleteHistory> delete(NsUser logUser) throws CannotDeleteException {
+    public void delete(NsUser logUser) throws CannotDeleteException {
         validUserCanDelete(logUser);
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
         changeDeleted(true);
+    }
+
+    public List<DeleteHistory> toDeleteHistories(NsUser logUser) throws CannotDeleteException{
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
         deleteHistories.add(makeDeleteHistory());
         deleteHistories.addAll(answers.delete(logUser));
         return deleteHistories;
