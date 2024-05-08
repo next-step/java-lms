@@ -53,8 +53,13 @@ public class Answer {
         return this;
     }
 
-    public DeleteHistory delete(NsUser logUser) {
+    public void delete(NsUser logUser) throws CannotDeleteException {
+        if(!isOwner(logUser)){
+            throw new CannotDeleteException("삭제 권한이 없습니다.");
+        }
         changeDelete(true);
+    }
+    public DeleteHistory toDeleteHistory(){
         return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 
