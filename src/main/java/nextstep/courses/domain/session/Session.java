@@ -7,6 +7,8 @@ public class Session {
 
 	private SessionType type;
 
+	private SessionState sessionState;
+
 	private int maxNumberOfStudent;
 
 	private SessionImage sessionImage;
