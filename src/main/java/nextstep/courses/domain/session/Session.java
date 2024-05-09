@@ -1,15 +1,15 @@
 package nextstep.courses.domain.session;
 
+import nextstep.payments.domain.Payment;
+
 import java.time.LocalDateTime;
 
-public class Session {
+public class Session implements Enrollment {
 	private Long id;
-
-	private SessionType type;
 
 	private SessionState sessionState;
 
-	private int maxNumberOfStudent;
+	private int numberOfStudent;
 
 	private SessionImage sessionImage;
 
@@ -17,15 +17,29 @@ public class Session {
 
 	private LocalDateTime endDate;
 
-	public Session(SessionType type, int maxNumberOfStudent, SessionImage sessionImage, LocalDateTime startDate, LocalDateTime endDate) {
-		if(type.equals(SessionType.PAID) && maxNumberOfStudent <= 0) {
-			throw new IllegalArgumentException("유료 강의의 최대 수강 인원은 1 이상이여야 합니다.");
-		}
+	public int getNumberOfStudent() {
+		return numberOfStudent;
+	}
 
-		this.type = type;
-		this.maxNumberOfStudent = maxNumberOfStudent;
+	public Session(Long id, SessionState sessionState, int numberOfStudent, SessionImage sessionImage, LocalDateTime startDate, LocalDateTime endDate) {
+		this.id = id;
+		this.sessionState = sessionState;
+		this.numberOfStudent = numberOfStudent;
 		this.sessionImage = sessionImage;
 		this.startDate = startDate;
 		this.endDate = endDate;
+	}
+
+	@Override
+	public void enroll(Payment payment) {
+		if(!sessionState.equals(SessionState.RECRUITING)) {
+			throw new IllegalStateException("모집 중인 강의만 수강 신청 가능합니다.");
+		}
+
+		this.numberOfStudent++;
+	}
+
+	public void end() {
+		this.sessionState = SessionState.END;
 	}
 }
