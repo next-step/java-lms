@@ -3,6 +3,7 @@ package nextstep.courses.domain.Image;
 import nextstep.courses.OutOfImageCapacityException;
 
 public class ImageCapacity {
+    private final int LIMIT_CAPACITY = 1024;
 
     private final int capacity;
 
@@ -16,7 +17,7 @@ public class ImageCapacity {
     }
 
     private void validCapacity(int capacity) throws OutOfImageCapacityException {
-        if (capacity > 1000) {
+        if (capacity > LIMIT_CAPACITY) {
             throw new OutOfImageCapacityException("이미지 용량은 1MB 이하여야 합니다.");
         }
     }
