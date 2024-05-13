@@ -4,7 +4,7 @@ import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;
 
-public class Session implements Enrollment {
+abstract class Session implements Enrollment {
 	private Long id;
 
 	private SessionState sessionState;

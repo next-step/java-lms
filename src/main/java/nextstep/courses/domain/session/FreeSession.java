@@ -1,16 +1,9 @@
 package nextstep.courses.domain.session;
 
-import nextstep.payments.domain.Payment;
+import java.time.LocalDateTime;
 
-public class FreeSession implements Enrollment {
-	private Session session;
-
-	public FreeSession(Session session) {
-		this.session = session;
-	}
-
-	@Override
-	public void enroll(Payment payment) {
-		session.enroll(payment);
+public class FreeSession extends Session {
+	public FreeSession(Long id, SessionState sessionState, int numberOfStudent, SessionImage sessionImage, LocalDateTime startDate, LocalDateTime endDate) {
+		super(id, sessionState, numberOfStudent, sessionImage, startDate, endDate);
 	}
 }
