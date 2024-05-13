@@ -1,13 +1,14 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.CanNotApplyException;
+import nextstep.courses.domain.Course;
 import nextstep.courses.domain.Image.Image;
 
 public class FreeSession extends Session{
     private static final int FREE_COST = 0;
 
-    public FreeSession(Image image, Period period, SessionStatus status) {
-        super(image, period, status);
+    public FreeSession(Image image, Period period, SessionStatus status, Course course) {
+        super(image, period, status, course);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.CanNotApplyException;
+import nextstep.courses.domain.Course;
 import nextstep.courses.domain.Image.Image;
 import nextstep.courses.domain.user.NsUsers;
 import nextstep.users.domain.NsUser;
@@ -11,11 +12,13 @@ public abstract class Session {
     private final Period period;
     private final SessionStatus status;
     private final NsUsers users;
+    private final Course course;
 
-    public Session(Image image, Period period, SessionStatus status) {
+    public Session(Image image, Period period, SessionStatus status, Course course) {
         this.image = image;
         this.period = period;
         this.status = status;
+        this.course = course;
         this.users = new NsUsers();
     }
 

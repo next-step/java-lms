@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
 import nextstep.courses.CanNotApplyException;
+import nextstep.courses.domain.Course;
 import nextstep.courses.domain.Image.Image;
 import nextstep.courses.domain.Image.ImageCapacity;
 import nextstep.courses.domain.Image.ImageSize;
@@ -22,10 +23,11 @@ public class PaidSessionTest {
             LocalDateTime.of(2024, 5, 1, 13, 0),
             LocalDateTime.of(2024, 6, 1, 14, 0));
         SessionStatus status = SessionStatus.READY;
+        Course course = new Course("tdd", 1L);
 
         int fee = 20000;
         int limit = 10;
-        session = new PaidSession(image, period, status, fee, limit);
+        session = new PaidSession(image, period, status, course, fee, limit);
     }
 
     @Test
