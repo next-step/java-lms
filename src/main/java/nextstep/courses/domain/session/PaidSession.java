@@ -11,6 +11,11 @@ public class PaidSession extends Session {
 
 	public PaidSession(Long id, SessionState sessionState, int numberOfStudent, SessionImage sessionImage, LocalDateTime startDate, LocalDateTime endDate, int maxNumberOfStudent, Long fee) {
 		super(id, sessionState, numberOfStudent, sessionImage, startDate, endDate);
+
+		if(maxNumberOfStudent <= 0) {
+			throw new IllegalArgumentException("유료 강의의 최대 수강 인원은 1 이상이여야 합니다.");
+		}
+
 		this.maxNumberOfStudent = maxNumberOfStudent;
 		this.fee = fee;
 	}
