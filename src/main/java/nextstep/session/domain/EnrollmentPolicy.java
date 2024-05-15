@@ -21,13 +21,10 @@ public class EnrollmentPolicy {
         this.fee = fee;
     }
 
-    public static EnrollmentPolicy createFreePolicy() {
-        return new EnrollmentPolicy(PriceType.FREE, MIN_ENROLLMENT, 0);
+    public EnrollmentPolicy(String priceType, int maxEnrollment, int fee) {
+        this(PriceType.convert(priceType), maxEnrollment, fee);
     }
 
-    public static EnrollmentPolicy createPaidPolicy(int maxEnrollment, int fee) {
-        return new EnrollmentPolicy(PriceType.PAID, maxEnrollment, fee);
-    }
 
     private boolean validate(int maxEnrollment, int fee) {
         if (maxEnrollment < MIN_ENROLLMENT || fee < MIN_FEE) {

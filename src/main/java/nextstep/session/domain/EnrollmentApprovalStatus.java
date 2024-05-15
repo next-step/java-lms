@@ -17,7 +17,7 @@ public enum EnrollmentApprovalStatus {
     public static EnrollmentApprovalStatus convert(String status) {
         return Arrays.stream(values())
             .filter(sessionType -> sessionType.description.equals(status))
-            .findAny()
+            .findFirst()
             .orElseThrow(() -> new SessionStatusInvalidException("존재하지 않는 상태입니다."));
     }
 
