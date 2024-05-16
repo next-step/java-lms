@@ -14,19 +14,11 @@ public class Enrollment {
 	private NsUsers nsUsers;
 
 	public Enrollment(int maximumNumberOfParticipants, long sessionPrice) {
-		this(0L, maximumNumberOfParticipants, sessionPrice, SessionStatus.PREPARING, new NsUsers());
+		this(0L, maximumNumberOfParticipants, sessionPrice, 0L, SessionStatus.PREPARING, new NsUsers());
 	}
 
 	public Enrollment(long id, int maximumNumberOfParticipants, long sessionPrice, long sessionId) {
 		this(id, maximumNumberOfParticipants, sessionPrice, sessionId, SessionStatus.PREPARING, new NsUsers());
-	}
-
-	public Enrollment(long id, int maximumNumberOfParticipants, long sessionPrice, SessionStatus sessionStatus, NsUsers nsUsers) {
-		this.id = id;
-		this.maximumNumberOfParticipants = maximumNumberOfParticipants;
-		this.sessionPrice = sessionPrice;
-		this.sessionStatus = sessionStatus;
-		this.nsUsers = nsUsers;
 	}
 
 	public Enrollment(long id, int maximumNumberOfParticipants, long sessionPrice, long sessionId, SessionStatus sessionStatus, NsUsers nsUsers) {
