@@ -5,22 +5,24 @@ import java.util.Objects;
 public class Student {
 
     private Long id;
-    private Long user_id;
-    private Long session_id;
+    private Long userId;
+    private Long sessionId;
     private EnrollmentApprovalStatus approvalStatus;
 
-
-    public Student(Long user_id, Long session_id) {
-        this.user_id = user_id;
-        this.session_id = session_id;
-        this.approvalStatus = EnrollmentApprovalStatus.HOLD;
+    public Student(Long id, Long userId, Long sessionId,
+        EnrollmentApprovalStatus approvalStatus) {
+        this.id = id;
+        this.userId = userId;
+        this.sessionId = sessionId;
+        this.approvalStatus = approvalStatus;
     }
 
-    public Student(Long id, Long user_id, Long session_id, String status) {
-        this.id = id;
-        this.user_id = user_id;
-        this.session_id = session_id;
-        this.approvalStatus = EnrollmentApprovalStatus.convert(status);
+    public Student(Long user_id, Long sessionId) {
+        this(0L, user_id, sessionId, EnrollmentApprovalStatus.HOLD);
+    }
+
+    public Student(Long id, Long userId, Long sessionId, String status) {
+        this(id, userId, sessionId, EnrollmentApprovalStatus.convert(status));
 
     }
 
@@ -45,21 +47,21 @@ public class Student {
             return false;
         }
         Student student = (Student) o;
-        return Objects.equals(id, student.id) && Objects.equals(user_id,
-            student.user_id) && Objects.equals(session_id, student.session_id);
+        return Objects.equals(id, student.id) && Objects.equals(userId,
+            student.userId) && Objects.equals(sessionId, student.sessionId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user_id, session_id);
+        return Objects.hash(id, userId, sessionId);
     }
 
     public Long getUser_id() {
-        return user_id;
+        return userId;
     }
 
     public Long getSession_id() {
-        return session_id;
+        return sessionId;
     }
 
     public String getApprovalStatus() {
