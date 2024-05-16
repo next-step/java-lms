@@ -3,12 +3,9 @@ package nextstep.session.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-import java.time.LocalDate;
 import nextstep.session.domain.Session;
-import nextstep.session.domain.SessionEnrollmentStatus;
 import nextstep.session.domain.SessionProgressStatus;
 import nextstep.session.domain.SessionRepository;
-import nextstep.session.domain.SessionSchedule;
 import nextstep.session.domain.SessionStudentRepository;
 import nextstep.session.domain.Student;
 import nextstep.users.domain.NsUser;
@@ -39,10 +36,8 @@ class SessionStudentServiceTest {
     @BeforeEach
     public void setUp() {
         user = new NsUser(1L, "somin", "1111", "박소민", "test@naver.com");
-        session = Session.createPaidSession(1L, "객체지향강의", new SessionSchedule(
-                LocalDate.of(2024, 6, 1),
-                LocalDate.of(2024, 12, 31)),
-            SessionProgressStatus.IN_PROGRESS, SessionEnrollmentStatus.OPEN, 500, 50000);
+        session = Session.createSessionWithProgressStatusAndFee(
+            SessionProgressStatus.IN_PROGRESS, 50000);
         student = session.enroll(user, 50000);
     }
 
