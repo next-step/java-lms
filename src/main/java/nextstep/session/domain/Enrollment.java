@@ -37,7 +37,7 @@ public class Enrollment {
 		return true;
 	}
 
-	private boolean isParticipantsSession() {
+	private boolean validateParticipantsLimit() {
 		if (maximumNumberOfParticipants < nsUsers.getNumberOfStudent() + INCREASE_STUDENT) {
 			throw new IllegalArgumentException("수강인원이 초과되었습니다.");
 		}
@@ -54,7 +54,7 @@ public class Enrollment {
 
 
 	private boolean isAddStudent() {
-		return isSessionRegister() && isParticipantsSession();
+		return isSessionRegister() && validateParticipantsLimit();
 	}
 
 	public void applySession(NsUser student) {
