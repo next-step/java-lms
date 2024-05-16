@@ -26,7 +26,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(Long id) {
-        String sql = "select id,title, course_id,start_date,end_date,progress_status,enrollment_status, price_type,max_enrollment, fee from session where id = ?";
+        String sql = "select id,title, course_id,start_date,end_date,progress_status,enrollment_status, price_type,max_enrollment, fee, user_id from session where id = ?";
         String image_sql = "select id, session_id,width, height,size, image_type from session_image where session_id = ?";
         String student_sql = "select id, user_id, session_id, enrollment_approval_status from session_student where session_id = ?";
 
@@ -51,6 +51,7 @@ public class JdbcSessionRepository implements SessionRepository {
         RowMapper<Session> rowMapper = (rs, rowNum) ->
             new Session(
                 rs.getLong(1),
+                rs.getLong(11),
                 rs.getString(2),
                 rs.getLong(3),
                 new SessionSchedule(rs.getDate(4).toLocalDate(), rs.getDate(5).toLocalDate()),
@@ -65,8 +66,9 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public int save(Session session) {
-        String sql = "insert into session(title,course_id, start_date, end_date,progress_status, enrollment_status,price_type,  max_enrollment,fee ) values(?,?,?,?,?,?,?,?,?)";
-        return jdbcTemplate.update(sql, session.getTitle(), session.getCourseId(),
+        String sql = "insert into session(user_id, title,course_id, start_date, end_date,progress_status, enrollment_status,price_type,  max_enrollment,fee ) values(?,?,?,?,?,?,?,?,?,?)";
+        return jdbcTemplate.update(sql, session.getUserId(), session.getTitle(),
+            session.getCourseId(),
             session.getStartDate(), session.getEndDate(), session.getSessionProgressStatus(),
             session.getSessionEnrollmentStatus(),
             session.getPriceType(), session.getMaxEnrollment(), session.getFee());
