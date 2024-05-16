@@ -4,8 +4,10 @@ import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;
 
-abstract class Session implements Enrollment {
+public abstract class Session implements Enrollment {
 	private Long id;
+
+	private Long courseId;
 
 	private SessionState sessionState;
 
