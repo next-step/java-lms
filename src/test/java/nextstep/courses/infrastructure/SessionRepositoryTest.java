@@ -14,7 +14,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @JdbcTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SessionRepositoryTest {
-
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 

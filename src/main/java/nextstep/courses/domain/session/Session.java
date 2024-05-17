@@ -30,36 +30,12 @@ public abstract class Session implements Enrollment {
 		this.numberOfStudent = numberOfStudent;
 	}
 
-	public Long getCourseId() {
-		return course.getId();
-	}
-
-	public String getStateString() {
-		return state.name();
-	}
-
-	public Long getImageId() {
-		return image.getId();
-	}
-
-	public LocalDateTime getStartDate() {
-		return startDate;
-	}
-
-	public LocalDateTime getEndDate() {
-		return endDate;
+	public Long getId() {
+		return id;
 	}
 
 	public int getNumberOfStudent() {
 		return numberOfStudent;
-	}
-
-	public int getMaxNumberOfStudent() {
-		return 0;
-	}
-
-	public Long getFee() {
-		return 0L;
 	}
 
 	@Override

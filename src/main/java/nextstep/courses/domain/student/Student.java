@@ -14,4 +14,12 @@ public class Student {
 		this.nsUser = nsUser;
 		this.session = session;
 	}
+
+	public Long getUserId() {
+		return nsUser.getId();
+	}
+
+	public Long getSessionId() {
+		return session.getId();
+	}
 }
