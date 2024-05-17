@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.image.domain.Image;
+import nextstep.image.domain.ImageType;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

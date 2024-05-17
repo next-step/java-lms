@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.image.domain.Image;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;
