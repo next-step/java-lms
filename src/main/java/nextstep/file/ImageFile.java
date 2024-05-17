@@ -11,10 +11,15 @@ public class ImageFile {
 
 	private ImageFileType type;
 
-	public ImageFile(int size, int width, int height, String type) {
+	public ImageFile(Long id, int size, int width, int height, String type) {
+		this.id = id;
 		this.size = size;
 		this.width = width;
 		this.height = height;
 		this.type = ImageFileType.from(type);
+	}
+
+	public Long getId() {
+		return id;
 	}
 }

@@ -10,8 +10,7 @@ public class Student {
 
 	private Session session;
 
-	public Student(Long id, NsUser nsUser, Session session) {
-		this.id = id;
+	public Student(NsUser nsUser, Session session) {
 		this.nsUser = nsUser;
 		this.session = session;
 	}

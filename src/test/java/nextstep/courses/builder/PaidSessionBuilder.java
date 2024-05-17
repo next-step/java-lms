@@ -18,6 +18,6 @@ public class PaidSessionBuilder extends SessionBuilder{
 	}
 
 	public PaidSession build() {
-		return new PaidSession(id, sessionState, numberOfStudent, sessionImage, startDate, endDate, maxNumberOfStudent, fee);
+		return new PaidSession(id, course, sessionState, sessionImage, startDate, endDate, numberOfStudent, maxNumberOfStudent, fee);
 	}
 }

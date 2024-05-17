@@ -5,7 +5,7 @@ import nextstep.file.ImageFile;
 public class SessionImage {
 	ImageFile imageFile;
 
-	public SessionImage(int size, int width, int height, String type) {
+	public SessionImage(Long id, int size, int width, int height, String type) {
 		if(size > 1024) {
 			throw new IllegalArgumentException("이미지 크기는 1MB 이하여야 합니다.");
 		}
@@ -22,6 +22,10 @@ public class SessionImage {
 			throw new IllegalArgumentException("이미지 비율을 3:2 이어야 합니다.");
 		}
 
-		this.imageFile = new ImageFile(size, width, height, type);
+		this.imageFile = new ImageFile(id, size, width, height, type);
+	}
+
+	public Long getId() {
+		return imageFile.getId();
 	}
 }
