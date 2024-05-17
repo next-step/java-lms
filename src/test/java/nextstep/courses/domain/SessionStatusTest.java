@@ -11,9 +11,10 @@ class SessionStatusTest {
     @Test
     void check() {
         SessionStatus status = new SessionStatus("recruit");
+        String word = "Wrong";
         assertThatThrownBy(() -> {
-            new SessionStatus("Wrong");
-        }).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("잘못된 강의 상태 입니다");
+            new SessionStatus(word);
+        }).isInstanceOf(IllegalArgumentException.class).hasMessageContaining(word + "는 잘못된 강의 상태 입니다");
 
         assertThat(status.check()).isEqualTo(true);
     }
