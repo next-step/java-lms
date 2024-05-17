@@ -1,9 +1,11 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.entity.SessionEntity;
+
 public interface SessionRepository {
-    int save(Session session);
+    int save(SessionEntity session);
 
-    Session findById(Long sessionId);
+    SessionEntity findById(Long sessionId);
 
-    int updateNumberOfStudent(int numberOfStudent);
+    int updateNumberOfStudent(Long sessionId, int numberOfStudent);
 }
