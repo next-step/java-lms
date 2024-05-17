@@ -21,6 +21,14 @@ public class PaidSession extends Session {
 		this.fee = fee;
 	}
 
+	public int getMaxNumberOfStudent() {
+		return maxNumberOfStudent;
+	}
+
+	public Long getFee() {
+		return fee;
+	}
+
 	@Override
 	public void enroll(Payment payment) {
 		if(super.getNumberOfStudent() >= maxNumberOfStudent) {
