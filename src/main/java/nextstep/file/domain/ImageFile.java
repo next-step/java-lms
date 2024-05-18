@@ -1,4 +1,4 @@
-package nextstep.file;
+package nextstep.file.domain;
 
 public class ImageFile {
 	private Long id;
@@ -21,5 +21,21 @@ public class ImageFile {
 
 	public Long getId() {
 		return id;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public String getTypeString() {
+		return type.name();
 	}
 }

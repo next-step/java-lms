@@ -1,6 +1,6 @@
 package nextstep.courses.domain.session;
 
-import nextstep.file.ImageFile;
+import nextstep.file.domain.ImageFile;
 
 public class SessionImage {
 	ImageFile imageFile;
