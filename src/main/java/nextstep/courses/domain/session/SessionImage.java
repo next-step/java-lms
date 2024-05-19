@@ -5,7 +5,25 @@ import nextstep.file.domain.ImageFile;
 public class SessionImage {
 	ImageFile imageFile;
 
+	public SessionImage(Long id) {
+		this.imageFile = new ImageFile(id);
+	}
+
+	public SessionImage(ImageFile imageFile) {
+		valid(imageFile.getSize(), imageFile.getWidth(), imageFile.getHeight(), imageFile.getTypeString());
+		this.imageFile = imageFile;
+	}
+
 	public SessionImage(Long id, int size, int width, int height, String type) {
+		valid(size, width, height, type);
+		this.imageFile = new ImageFile(id, size, width, height, type);
+	}
+
+	public Long getId() {
+		return imageFile.getId();
+	}
+
+	private void valid(int size, int width, int height, String type) {
 		if(size > 1024) {
 			throw new IllegalArgumentException("이미지 크기는 1MB 이하여야 합니다.");
 		}
@@ -21,11 +39,5 @@ public class SessionImage {
 		if((double) width / height != 1.5) {
 			throw new IllegalArgumentException("이미지 비율을 3:2 이어야 합니다.");
 		}
-
-		this.imageFile = new ImageFile(id, size, width, height, type);
-	}
-
-	public Long getId() {
-		return imageFile.getId();
 	}
 }

@@ -11,6 +11,10 @@ public class ImageFile {
 
 	private ImageFileType type;
 
+	public ImageFile(Long id) {
+		this.id = id;
+	}
+
 	public ImageFile(Long id, int size, int width, int height, String type) {
 		this.id = id;
 		this.size = size;
