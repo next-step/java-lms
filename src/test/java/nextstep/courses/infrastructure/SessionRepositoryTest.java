@@ -1,5 +1,6 @@
 package nextstep.courses.infrastructure;
 
+import nextstep.courses.builder.SessionEntityBuilder;
 import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.entity.SessionEntity;
 import org.junit.jupiter.api.*;
@@ -19,14 +20,7 @@ class SessionRepositoryTest {
 
 	private SessionRepository sessionRepository;
 
-	private final SessionEntity sessionEntity = new SessionEntity(0L,
-			"PREPARING",
-			0L,
-			LocalDateTime.of(2024, 4, 20, 0, 0, 0),
-			LocalDateTime.of(2024, 5, 20, 0, 0, 0),
-			0,
-			0,
-			0L);
+	private final SessionEntity sessionEntity = new SessionEntityBuilder().build();
 
 	private Long id = 0L;
 

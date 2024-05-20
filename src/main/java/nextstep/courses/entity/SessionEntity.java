@@ -21,10 +21,6 @@ public class SessionEntity {
 
     private Long fee = 0L;
 
-    public SessionEntity(Long courseId, String state, Long imageId, LocalDateTime startDate, LocalDateTime endDate, int numberOfStudent, int maxNumberOfStudent, Long fee) {
-        this(null, courseId, state, imageId, startDate, endDate, numberOfStudent, maxNumberOfStudent, fee);
-    }
-
     public SessionEntity(Long id, Long courseId, String state, Long imageId, LocalDateTime startDate, LocalDateTime endDate, int numberOfStudent, int maxNumberOfStudent, Long fee) {
         this.id = id;
         this.courseId = courseId;
