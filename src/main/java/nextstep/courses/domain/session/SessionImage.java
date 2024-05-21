@@ -3,20 +3,20 @@ package nextstep.courses.domain.session;
 import nextstep.file.domain.ImageFile;
 
 public class SessionImage {
-	ImageFile imageFile;
+	private final ImageFile imageFile;
 
 	public SessionImage(Long id) {
-		this.imageFile = new ImageFile(id);
+		this(new ImageFile(id));
+	}
+
+
+	public SessionImage(Long id, int size, int width, int height, String type) {
+		this(new ImageFile(id, size, width, height, type));
 	}
 
 	public SessionImage(ImageFile imageFile) {
 		valid(imageFile.getSize(), imageFile.getWidth(), imageFile.getHeight(), imageFile.getTypeString());
 		this.imageFile = imageFile;
-	}
-
-	public SessionImage(Long id, int size, int width, int height, String type) {
-		valid(size, width, height, type);
-		this.imageFile = new ImageFile(id, size, width, height, type);
 	}
 
 	public Long getId() {
