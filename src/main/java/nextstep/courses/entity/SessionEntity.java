@@ -1,5 +1,8 @@
 package nextstep.courses.entity;
 
+import nextstep.courses.domain.course.Course;
+import nextstep.courses.domain.session.*;
+
 import java.time.LocalDateTime;
 
 public class SessionEntity {
@@ -33,8 +36,26 @@ public class SessionEntity {
         this.fee = fee;
     }
 
-    public Long getId() {
-        return id;
+    public Session convert() {
+        if(fee > 0) {
+            return new PaidSession(id,
+                    new Course(courseId),
+                    SessionState.valueOf(state),
+                    new SessionImage(imageId),
+                    startDate,
+                    endDate,
+                    numberOfStudent,
+                    maxNumberOfStudent,
+                    fee);
+        }
+
+        return new FreeSession(id,
+                new Course(courseId),
+                SessionState.valueOf(state),
+                new SessionImage(imageId),
+                startDate,
+                endDate,
+                numberOfStudent);
     }
 
     public Long getCourseId() {
