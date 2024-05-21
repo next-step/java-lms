@@ -2,6 +2,7 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.course.Course;
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
@@ -30,7 +31,7 @@ public class PaidSession extends Session {
 	}
 
 	@Override
-	public void enroll(Payment payment) {
+	public void enroll(NsUser nsUser, Payment payment) {
 		if(super.getNumberOfStudent() >= maxNumberOfStudent) {
 			throw new IllegalArgumentException("수강 신청 인원을 초과했습니다.");
 		}
@@ -39,6 +40,6 @@ public class PaidSession extends Session {
 			throw new IllegalArgumentException("결제 금액과 수강료가 일치하지 않습니다.");
 		}
 
-		super.enroll(payment);
+		super.enroll(nsUser, payment);
 	}
 }

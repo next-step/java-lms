@@ -22,7 +22,7 @@ public class SessionService {
 
 	public void enroll(Long sessionId, NsUser nsUser, Payment payment) {
 		Session session = convertToSession(sessionRepository.findById(sessionId));
-		session.enroll(payment);
+		session.enroll(nsUser, payment);
 
 		sessionRepository.updateNumberOfStudent(sessionId, session.getNumberOfStudent() + 1);
 
