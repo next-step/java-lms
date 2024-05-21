@@ -16,7 +16,7 @@ class DimensionTest {
     }
 
     @Test
-    public void 이미지는_너비와_높이가_3대2_이어야_한다() {
+    public void 이미지는_너비와_높이_비율이_존재한다() {
         assertThatThrownBy(() -> {
             new SessionCoverImage(1L, 350, 300, 10000, "png");
         }).isInstanceOf(InvalidImageConditionsException.class)

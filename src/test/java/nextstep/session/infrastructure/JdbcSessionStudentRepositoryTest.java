@@ -10,8 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.DirtiesContext;
 
 @JdbcTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class JdbcSessionStudentRepositoryTest {
 
     @Autowired
@@ -34,12 +36,22 @@ class JdbcSessionStudentRepositoryTest {
     }
 
     @Test
-    void 수강중인_학생_목록_조회() {
+    void 수강신청한_학생_목록_조회() {
         Student student1 = new Student(1L, 2L);
-        Student student2 = new Student(2L, 2L);
+        Student student2 = new Student(1L, 2L);
         sessionStudentRepository.save(student1);
         sessionStudentRepository.save(student2);
         List<Student> students = sessionStudentRepository.findAllEnrolledInSession(2L);
         assertThat(students.size()).isEqualTo(2);
+    }
+
+    @Test
+    void 수강_승인된_학생_목록_조회() {
+        Student student1 = new Student(1L, 1L, 2L, "대기");
+        Student student2 = new Student(1L, 1L, 2L, "승인");
+        sessionStudentRepository.save(student1);
+        sessionStudentRepository.save(student2);
+        List<Student> students = sessionStudentRepository.findAllApprovedStudents(2L);
+        assertThat(students.size()).isEqualTo(1);
     }
 }

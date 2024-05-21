@@ -19,7 +19,7 @@ public class Students {
 
     public void add(Student student) {
         if (isAlreadyEnrolled(student)) {
-            throw new StudentAlreadyEnrolledException("이미 등록된 학생입니다");
+            throw new StudentAlreadyEnrolledException("이미 수강신청 한 학생입니다");
         }
         students.add(student);
     }
@@ -33,4 +33,17 @@ public class Students {
         return students.size();
     }
 
+    public void approval(Student student) {
+        Student targetStudent = students.stream()
+            .filter(enrolledStudent -> enrolledStudent.equals(student)
+            ).findFirst().orElseThrow(() -> new IllegalArgumentException("수강신청하지 않은 학생입니다."));
+        targetStudent.approval();
+    }
+
+    public void cancel(Student student) {
+        Student targetStudent = students.stream()
+            .filter(enrolledStudent -> enrolledStudent.equals(student)
+            ).findFirst().orElseThrow(() -> new IllegalArgumentException("수강신청하지 않은 학생입니다."));
+        targetStudent.cancel();
+    }
 }
