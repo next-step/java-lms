@@ -2,6 +2,7 @@ package nextstep.session.infrastructure;
 
 import nextstep.session.domain.Enrollment;
 import nextstep.session.domain.EnrollmentRepository;
+import nextstep.session.domain.StudentEnrollmentInfomationRepository;
 import nextstep.users.domain.UserRepository;
 import nextstep.users.infrastructure.JdbcUserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,20 +19,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
 class EnrollmentRepositoryTest {
-	public final static Enrollment CHANGE_E1 = new Enrollment(1L,1, 50000, 1L);
+	public final static Enrollment CHANGE_E1 = new Enrollment(1L, 1, 50000, 1L);
 	public final static Enrollment E3 = new Enrollment(1, 50000);
 	private static final Logger LOGGER = LoggerFactory.getLogger(ImageInfoRepositoryTest.class);
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	private UserRepository userRepository;
-
 	private EnrollmentRepository enrollmentRepository;
+	private UserRepository userRepository;
+	private StudentEnrollmentInfomationRepository studentEnrollmentInfomationRepository;
 
 	@BeforeEach
 	void setUp() {
 		userRepository = new JdbcUserRepository(jdbcTemplate);
-		enrollmentRepository = new JdbcEnrollmentRepository(jdbcTemplate,userRepository);
+		studentEnrollmentInfomationRepository = new JdbcStudentEnrollmentInfomationRepository(jdbcTemplate);
+		enrollmentRepository = new JdbcEnrollmentRepository(jdbcTemplate, studentEnrollmentInfomationRepository, userRepository);
 	}
 
 	@Test

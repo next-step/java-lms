@@ -30,12 +30,13 @@ class SessionRepositoryTest {
 	private SessionRepository sessionRepository;
 	private ImageInfoRepository imageInfoRepository;
 	private EnrollmentRepository enrollmentRepository;
+	private StudentEnrollmentInfomationRepository studentEnrollmentInfomationRepository;
 	private UserRepository userRepository;
-
 	@BeforeEach
 	void setUp() {
+		studentEnrollmentInfomationRepository = new JdbcStudentEnrollmentInfomationRepository(jdbcTemplate);
 		userRepository = new JdbcUserRepository(jdbcTemplate);
-		enrollmentRepository = new JdbcEnrollmentRepository(jdbcTemplate, userRepository);
+		enrollmentRepository = new JdbcEnrollmentRepository(jdbcTemplate, studentEnrollmentInfomationRepository, userRepository);
 		imageInfoRepository = new JdbcImageInfoRepository(jdbcTemplate);
 		sessionRepository = new JdbcSessionRepository(jdbcTemplate, imageInfoRepository, enrollmentRepository);
 	}
