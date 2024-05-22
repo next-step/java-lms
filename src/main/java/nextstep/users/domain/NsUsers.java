@@ -10,12 +10,23 @@ public class NsUsers {
 		this.nsUsers = new ArrayList<>();
 	}
 
+	public NsUsers(List<NsUser> nsUsers) {
+		this.nsUsers = nsUsers;
+	}
+
 	public void addStudent(NsUser student) {
 		this.nsUsers.add(student);
 	}
 
 	public int getNumberOfStudent() {
 		return this.nsUsers.size();
+	}
+
+	@Override
+	public String toString() {
+		return "NsUsers{" +
+				"nsUsers=" + nsUsers +
+				'}';
 	}
 
 }

@@ -10,28 +10,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
 public class UserRepositoryTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserRepositoryTest.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserRepositoryTest.class);
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 
-    private UserRepository userRepository;
+	private UserRepository userRepository;
 
-    @BeforeEach
-    void setUp() {
-        userRepository = new JdbcUserRepository(jdbcTemplate);
-    }
+	@BeforeEach
+	void setUp() {
+		userRepository = new JdbcUserRepository(jdbcTemplate);
+	}
 
-    @Test
-    void findByUserId() {
-        Optional<NsUser> nsUser = userRepository.findByUserId("javajigi");
-        assertThat(nsUser.isEmpty()).isFalse();
-        LOGGER.debug("NsUser: {}", nsUser.get());
-    }
+	@Test
+	void findByUserId() {
+		Optional<NsUser> nsUser = userRepository.findByUserId("javajigi");
+		assertThat(nsUser.isEmpty()).isFalse();
+		LOGGER.debug("NsUser: {}", nsUser.get());
+	}
+
+	@Test
+	void findAllBySessionId() {
+		List<NsUser> allStudentById = userRepository.findAllByStudentId(List.of(1L, 2L));
+		assertThat(allStudentById).hasSize(2);
+	}
+
 }

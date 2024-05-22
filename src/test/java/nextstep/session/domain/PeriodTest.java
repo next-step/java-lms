@@ -3,7 +3,6 @@ package nextstep.session.domain;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

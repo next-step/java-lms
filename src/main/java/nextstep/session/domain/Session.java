@@ -1,62 +1,55 @@
 package nextstep.session.domain;
 
 import nextstep.courses.domain.Course;
-import nextstep.users.domain.NsUser;
-import nextstep.users.domain.NsUsers;
 
-public abstract class Session {
-    private static final int INCREASE_STUDENT = 1;
-    private Long id;
-    private SessionStatus sessionStatus;
-    private Course course;
-    private ImageInfo imageType;
-    private Period period;
-    private final int maximumNumberOfParticipants;
-    private NsUsers nsUsers;
+import java.time.LocalDateTime;
 
+public class Session {
+	private long id;
+	private long courseId;
+	private ImageInfo imageType;
+	private Period period;
+	private Enrollment enrollment;
 
-    public Session(Course course, ImageInfo imageInfo, Period period, int maximumNumberOfParticipants) {
-        this(0L, SessionStatus.PREPARING, course, imageInfo, period, maximumNumberOfParticipants);
-    }
+	public Session(long courseId, ImageInfo imageInfo, Period period, int maximumNumberOfParticipants, long sessionPrice) {
+		this(0L, courseId, imageInfo, period, new Enrollment(maximumNumberOfParticipants, sessionPrice));
+	}
 
-    public Session(Long id, SessionStatus sessionStatus, Course course, ImageInfo imageInfo, Period period, int maximumNumberOfParticipants) {
-        this.id = id;
-        this.sessionStatus = sessionStatus;
-        this.course = course;
-        this.imageType = imageInfo;
-        this.period = period;
-        this.nsUsers = new NsUsers();
-        this.maximumNumberOfParticipants = maximumNumberOfParticipants;
-    }
+	public Session(long id, long courseId, ImageInfo imageInfo, Period period, Enrollment enrollment) {
+		this.id = id;
+		this.courseId = courseId;
+		this.imageType = imageInfo;
+		this.period = period;
+		this.enrollment = enrollment;
+	}
 
-    public boolean isMaximumNumberOfParticipantsLimited(int numberOfParticipants) {
-        return numberOfParticipants <= maximumNumberOfParticipants;
-    }
+	public Session(long id, long courseId, LocalDateTime startDate, LocalDateTime endDate) {
+		this.id = id;
+		this.courseId = courseId;
+		this.period = new Period(startDate,endDate);
+	}
 
-    abstract boolean isSamePaymentAndSessionPrice(int price);
+	public Period getPeriod() {
+		return period;
+	}
 
-    private boolean isSessionRegister() {
-        if (sessionStatus != SessionStatus.PREPARING) {
-            throw new IllegalArgumentException("강의가 준비중이 아닙니다.");
-        }
-        return true;
-    }
+	public long getId() {
+		return id;
+	}
 
-    private boolean isParticipantsSession() {
-        if(maximumNumberOfParticipants < nsUsers.getNumberOfStudent() + INCREASE_STUDENT) {
-            throw new IllegalArgumentException("수강인원이 초과되었습니다.");
-        }
-        return true;
-    }
+	public long getCourseId() {
+		return courseId;
+	}
 
-    public void applySession(NsUser student) {
-        if (isAddStudent()) {
-            nsUsers.addStudent(student);
-        }
-    }
-
-    private boolean isAddStudent() {
-        return isSessionRegister() && isParticipantsSession();
-    }
+	@Override
+	public String toString() {
+		return "Session{" +
+				"id=" + id +
+				", courseId=" + courseId +
+				", imageType=" + imageType +
+				", period=" + period +
+				", enrollment=" + enrollment +
+				'}';
+	}
 
 }

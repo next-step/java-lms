@@ -31,4 +31,20 @@ public class ImageReSolution {
 		return width / WIDTH_RATIO * HEIGHT_RATIO;
 	}
 
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	@Override
+	public String toString() {
+		return "ImageReSolution{" +
+				"width=" + width +
+				", height=" + height +
+				'}';
+	}
+
 }

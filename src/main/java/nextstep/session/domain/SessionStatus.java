@@ -1,5 +1,7 @@
 package nextstep.session.domain;
 
+import java.util.Arrays;
+
 public enum SessionStatus {
 	PREPARING(0),
 	PROCEEDING(1),
@@ -9,6 +11,13 @@ public enum SessionStatus {
 
 	SessionStatus(int statusValue) {
 		this.statusValue = statusValue;
+	}
+
+	public static SessionStatus getSessionStatus(int value) {
+		return Arrays.stream(SessionStatus.values())
+				.filter(v -> v.statusValue == value)
+				.findFirst()
+				.orElseThrow(() -> new IllegalArgumentException("해당 value와 매칭되는 값이 없습니다."));
 	}
 
 	public int getStatusValue() {
