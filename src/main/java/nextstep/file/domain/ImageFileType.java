@@ -1,4 +1,4 @@
-package nextstep.file;
+package nextstep.file.domain;
 
 import java.util.Arrays;
 

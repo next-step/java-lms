@@ -3,6 +3,8 @@ package nextstep.courses.builder;
 import nextstep.courses.domain.session.SessionImage;
 
 public class SessionImageBuilder {
+	private Long id = 0L;
+
 	private int size = 1024;
 
 	private int width = 300;
@@ -32,6 +34,6 @@ public class SessionImageBuilder {
 	}
 
 	public SessionImage build() {
-		return new SessionImage(size, width, height, type);
+		return new SessionImage(id, size, width, height, type);
 	}
 }

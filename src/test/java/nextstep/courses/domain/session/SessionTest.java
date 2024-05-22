@@ -2,6 +2,7 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.builder.PaidSessionBuilder;
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
@@ -14,14 +15,16 @@ public class SessionTest {
 	private Session session = new PaidSessionBuilder()
 			.fee(fee)
 			.build();
+	
+	private NsUser user = NsUserTest.JAVAJIGI;
 
-	private Payment payment = new Payment("0", 0L, NsUserTest.JAVAJIGI.getId(), fee);
+	private Payment payment = new Payment("0", 0L, user.getId(), fee);
 
 	@Test
 	void 수강신청_성공_시_수강_인원이_증가한다() {
 		int numberOfStudent = session.getNumberOfStudent();
 
-		session.enroll(payment);
+		session.enroll(user, payment);
 
 		assertThat(session.getNumberOfStudent()).isEqualTo(numberOfStudent + 1);
 	}
@@ -30,7 +33,7 @@ public class SessionTest {
 	void 강의_상태가_모집중이_아닐_시_수강신청_실패() {
 		session.end();
 
-		assertThatThrownBy(() -> session.enroll(payment))
+		assertThatThrownBy(() -> session.enroll(user, payment))
 				.isInstanceOf(IllegalStateException.class)
 				.hasMessage("모집 중인 강의만 수강 신청 가능합니다.");
 	}
@@ -45,18 +48,18 @@ public class SessionTest {
 	@Test
 	void 최대_수강인원이_넘을_경우_수강신청_실패() {
 		Session sessionWithMaxNumberOfStudent = new PaidSessionBuilder().maxNumberOfStudent(1).build();
-		sessionWithMaxNumberOfStudent.enroll(payment);
+		sessionWithMaxNumberOfStudent.enroll(user, payment);
 
-		assertThatThrownBy(() -> sessionWithMaxNumberOfStudent.enroll(payment))
+		assertThatThrownBy(() -> sessionWithMaxNumberOfStudent.enroll(user, payment))
 				.isInstanceOf(IllegalArgumentException.class)
 				.hasMessage("수강 신청 인원을 초과했습니다.");
 	}
 
 	@Test
 	void 결제_금액과_수강료_불일치_시_수강신청_실패() {
-		Payment paymentWithDifferAmount = new Payment("0", 0L, NsUserTest.JAVAJIGI.getId(), 5000L);
+		Payment paymentWithDifferAmount = new Payment("0", 0L, user.getId(), 5000L);
 
-		assertThatThrownBy(() -> session.enroll(paymentWithDifferAmount))
+		assertThatThrownBy(() -> session.enroll(user, paymentWithDifferAmount))
 				.isInstanceOf(IllegalArgumentException.class)
 				.hasMessage("결제 금액과 수강료가 일치하지 않습니다.");
 	}
