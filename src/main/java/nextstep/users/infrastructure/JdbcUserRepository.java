@@ -33,30 +33,11 @@ public class JdbcUserRepository implements UserRepository {
 		return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, userId));
 	}
 
-	@Override
-	public List<NsUser> findAllBySessionId(long sessionId) {
-		String sql = "SELECT id, user_id, password, name, email, session_id, created_at, updated_at " +
-				" FROM ns_user" +
-				" WHERE session_id = ?";
-
-		RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
-				rs.getLong("id"),
-				rs.getString("user_id"),
-				rs.getString("password"),
-				rs.getString("name"),
-				rs.getString("email"),
-				rs.getLong("session_id"),
-				toLocalDateTime(rs.getTimestamp("created_at")),
-				toLocalDateTime(rs.getTimestamp("updated_at"))
-		);
-
-		return jdbcTemplate.query(sql, rowMapper, sessionId);
-	}
-
 	private LocalDateTime toLocalDateTime(Timestamp timestamp) {
 		if (timestamp == null) {
 			return null;
 		}
 		return timestamp.toLocalDateTime();
 	}
+
 }
