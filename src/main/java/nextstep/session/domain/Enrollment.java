@@ -9,7 +9,6 @@ public class Enrollment {
 	private final int maximumNumberOfParticipants;
 	private final long sessionPrice;
 	private long sessionId;
-
 	private SessionStatus sessionStatus;
 	private NsUsers nsUsers;
 
