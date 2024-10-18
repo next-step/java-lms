@@ -1,6 +1,8 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,7 +17,8 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    //private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers(new ArrayList<>());
 
     private boolean deleted = false;
 
@@ -27,6 +30,7 @@ public class Question {
     }
 
     public Question(NsUser writer, String title, String contents) {
+
         this(0L, writer, title, contents);
     }
 
@@ -81,12 +85,32 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
-    }
+//    public List<Answer> getAnswers() {
+//        return answers;
+//    }
 
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
+
+    public List<DeleteHistory> deleteQuestionAndAnswer(NsUser nsUser) throws CannotDeleteException {
+
+        List<DeleteHistory> deleteHistoryList = new ArrayList<>();
+
+        deleteHistoryList.add(delete(nsUser));
+
+        deleteHistoryList.addAll(answers.delete(nsUser));
+
+        return deleteHistoryList;
+    }
+
+    public DeleteHistory delete(NsUser user) throws CannotDeleteException {
+        if(!isOwner(user)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+        deleted  = true;
+        return new DeleteHistory(ContentType.QUESTION, id, user, LocalDateTime.now());
+    }
+
 }
