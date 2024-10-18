@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -25,8 +26,8 @@ public class QuestionTest {
     @Test
     @DisplayName("답변을 삭제하면 DeleteHistory에 담아 반환한다.")
     void 답변_삭제_리스트_반환() throws CannotDeleteException {
-        DeleteHistory deleteHistory = Q1.delete(NsUserTest.JAVAJIGI);
-        assertThat(deleteHistory).isEqualTo(new DeleteHistory(ContentType.QUESTION, Q1.getId(), Q1.getWriter(), LocalDateTime.now()));
+        List<DeleteHistory> deleteHistories = Q1.delete(NsUserTest.JAVAJIGI);
+        assertThat(deleteHistories).isEqualTo(List.of(new DeleteHistory(ContentType.QUESTION, Q1.getId(), Q1.getWriter(), LocalDateTime.now())));
     }
 
 

@@ -16,7 +16,7 @@ public class Question extends Auditable {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers(new ArrayList<>());
 
     private boolean deleted = false;
 
@@ -45,7 +45,7 @@ public class Question extends Auditable {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        answers.add(answer);
+        answers.addAnswer(answer);
     }
 
     public boolean isOwner(NsUser loginUser) {
@@ -56,20 +56,24 @@ public class Question extends Auditable {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
-    }
-
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public DeleteHistory delete(NsUser user) throws CannotDeleteException {
+    public List<DeleteHistory> delete(NsUser user) throws CannotDeleteException {
+        validateDelete(user);
+        this.deleted = true;
+
+        List<DeleteHistory> deleteAnswersHistory = answers.deleteAnswers(user);
+        DeleteHistory deleteQuestionHistory = new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
+        deleteAnswersHistory.add(deleteQuestionHistory);
+        return deleteAnswersHistory;
+    }
+
+    private void validateDelete(NsUser user) throws CannotDeleteException {
         if (!isOwner(user)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-        this.deleted = true;
-        return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
     }
 }

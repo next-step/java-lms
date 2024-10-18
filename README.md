@@ -27,3 +27,4 @@
   * Question에 delete 책임 이동
   * 삭제 시 DeleteHistory 반환
   * Answer, Question 주인이 아닐 시 삭제 불가 예외 추가
+* Question의 List<Answer> -> Answers로 대체

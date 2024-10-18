@@ -15,18 +15,25 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class AnswersTest {
 
     @Test
+    @DisplayName("답변을 추가한다.")
+    void 답변_추가() {
+        Answers answers = new Answers(List.of(A1));
+        answers.addAnswer(A2);
+        assertThat(answers).isEqualTo(new Answers(List.of(A1, A2)));
+    }
+
+    @Test
     @DisplayName("Qna를 삭제하면 그 하위에 있는 답변을 DeleteHistory에 담아 반환한다.")
-    void 답변_삭제_리스트_반환() {
-        List<DeleteHistory> deleteHistories = new Answers(List.of(A1, A2)).deleteAnswers();
+    void 답변_삭제_리스트_반환() throws CannotDeleteException {
+        List<DeleteHistory> deleteHistories = new Answers(List.of(A1, A1)).deleteAnswers(NsUserTest.JAVAJIGI);
         assertThat(deleteHistories).hasSize(2);
     }
 
     @Test
     @DisplayName("QnA를 삭제하면 그 하위에 있는 답변을 모두 삭제처리 한다.")
-    void 답변_삭제() {
-        new Answers(List.of(A1, A2)).deleteAnswers();
+    void 답변_삭제() throws CannotDeleteException {
+        new Answers(List.of(A1)).deleteAnswers(NsUserTest.JAVAJIGI);
         assertThat(A1.isDeleted()).isTrue();
-        assertThat(A2.isDeleted()).isTrue();
     }
 
     @Test
