@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Question {
+public class Question extends Auditable {
     private Long id;
 
     private String title;
@@ -18,10 +18,6 @@ public class Question {
     private List<Answer> answers = new ArrayList<>();
 
     private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
 
     public Question() {
     }

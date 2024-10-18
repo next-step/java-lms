@@ -6,7 +6,7 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
-public class Answer {
+public class Answer extends Auditable {
     private Long id;
 
     private NsUser writer;
@@ -17,9 +17,6 @@ public class Answer {
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
 
     public Answer() {
     }
