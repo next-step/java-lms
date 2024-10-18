@@ -19,3 +19,9 @@
 
 ## Step1. 기능 구현
 * Audit 분리
+* 일급 콜렉션 래핑 (List<Answer> -> Answers)
+* 서비스 레이어 로직 이동
+  * Answer에 delete 책임 이동
+  * 삭제 시 DeleteHistory 반환
+  * Answers에서 일괄 적용
+  * 
