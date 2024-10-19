@@ -19,9 +19,9 @@ public class QuestionTest {
     @Test
     void delete() throws CannotDeleteException {
         Question question = new Question(1L, NsUserTest.GREEN, "title", "content");
-        List<DeleteHistory> result = question.delete(NsUserTest.GREEN);
+        DeleteHistories result = question.delete(NsUserTest.GREEN);
         assertThat(result).isEqualTo(
-                List.of(new DeleteHistory(ContentType.QUESTION, 1L, NsUserTest.GREEN, LocalDateTime.now()))
+                new DeleteHistories(List.of(new DeleteHistory(ContentType.QUESTION, 1L, NsUserTest.GREEN, LocalDateTime.now())))
         );
     }
 }

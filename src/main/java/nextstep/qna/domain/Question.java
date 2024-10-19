@@ -4,7 +4,6 @@ import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
@@ -16,9 +15,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
-
-    private Answers answers2;
+    private Answers answers;
 
     private boolean deleted = false;
 
@@ -38,7 +35,7 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.answers2 = new Answers();
+        this.answers = new Answers();
     }
 
     public Long getId() {
@@ -70,7 +67,6 @@ public class Question {
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
         answers.add(answer);
-        answers2.add(answer);
     }
 
     public boolean isOwner(NsUser loginUser) {
@@ -91,29 +87,23 @@ public class Question {
     }
 
     public List<Answer> getAnswers() {
-        return answers;
+        return answers.getAnswers();
     }
 
-    public List<DeleteHistory> delete(NsUser user) throws CannotDeleteException {
+    public DeleteHistories delete(NsUser user) throws CannotDeleteException {
         if (isNotOwner(user)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-
-        answers2.validateOnwer(user);
-
-        DeleteHistories deleteHistories = new DeleteHistories();
+        answers.validateOnwer(user);
 
         deleted = true;
-        //TODO deletehistory에 편의 메소드 추가
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer,LocalDateTime.now()));
+        List<Answer> deletedAnswers = answers.deleteAll();
 
-        List<Answer> deletedAnswers = answers2.deleteAll();
-        //TODO deletehistory에 편의 메소드 추가
-        for (Answer answer : deletedAnswers) {
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
-        }
+        DeleteHistories deleteHistories = new DeleteHistories();
+        deleteHistories.add(DeleteHistory.questionOf(id, writer, LocalDateTime.now()));
+        deleteHistories.add(deletedAnswers);
 
-        return deleteHistories.getDeleteHistories();
+        return deleteHistories;
     }
 
     @Override
