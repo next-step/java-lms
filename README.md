@@ -7,3 +7,24 @@
 
 ## 온라인 코드 리뷰 과정
 * [텍스트와 이미지로 살펴보는 온라인 코드 리뷰 과정](https://github.com/next-step/nextstep-docs/tree/master/codereview)
+
+## Step1. 요구 사항
+* 질문 데이터를 완전히 삭제하는 것이 아니라 데이터의 상태를 삭제 상태(deleted - boolean type)로 변경한다. 
+* 로그인 사용자와 질문한 사람이 같은 경우 삭제 가능하다. 
+* 답변이 없는 경우 삭제가 가능하다. 
+* 질문자와 답변글의 모든 답변자 같은 경우 삭제가 가능하다. 
+* 질문을 삭제할 때 답변 또한 삭제해야 하며, 답변의 삭제 또한 삭제 상태(deleted)를 변경 한다. 
+* 질문자와 답변자가 다른경우 답변을 삭제할수 없다. 
+* 질문과 답변 삭제 이력에 대한 정보를 DeleteHistory를 활용해 남긴다.
+
+## Step1. 기능 구현
+* Audit 분리
+* 일급 콜렉션 래핑 (List<Answer> -> Answers)
+* 서비스 레이어 로직 이동
+  * Answer에 delete 책임 이동
+  * 삭제 시 DeleteHistory 반환
+  * Answers에서 일괄 적용
+  * Question에 delete 책임 이동
+  * 삭제 시 DeleteHistory 반환
+  * Answer, Question 주인이 아닐 시 삭제 불가 예외 추가
+* Question의 List<Answer> -> Answers로 대체

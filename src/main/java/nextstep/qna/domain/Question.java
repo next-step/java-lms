@@ -1,12 +1,13 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Question {
+public class Question extends Auditable {
     private Long id;
 
     private String title;
@@ -15,13 +16,9 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers(new ArrayList<>());
 
     private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
 
     public Question() {
     }
@@ -41,23 +38,6 @@ public class Question {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
 
     public NsUser getWriter() {
         return writer;
@@ -65,28 +45,35 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        answers.add(answer);
+        answers.addAnswer(answer);
     }
 
     public boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
     }
 
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
+
+    public List<DeleteHistory> delete(NsUser user) throws CannotDeleteException {
+        validateDelete(user);
+        this.deleted = true;
+
+        List<DeleteHistory> deleteAnswersHistory = answers.deleteAnswers(user);
+        DeleteHistory deleteQuestionHistory = new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
+        deleteAnswersHistory.add(deleteQuestionHistory);
+        return deleteAnswersHistory;
+    }
+
+    private void validateDelete(NsUser user) throws CannotDeleteException {
+        if (!isOwner(user)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
     }
 }
