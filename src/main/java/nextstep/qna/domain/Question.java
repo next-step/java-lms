@@ -64,6 +64,10 @@ public class Question {
         return writer;
     }
 
+    public void addAnswers(List<Answer> answerList) {
+        answerList.forEach(this::addAnswer);
+    }
+
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
         answers.add(answer);
