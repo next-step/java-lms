@@ -15,7 +15,7 @@ public class AnswerTest {
     @DisplayName("게시글 작성자와 답변의 작성자가 다를 경우 예외")
     @Test
     void 게시글_작성자와_답변의_작성자_다름_예외() {
-        assertThatThrownBy(() -> A1.deleteAnswer(NsUserTest.SANJIGI)).isInstanceOf(CannotDeleteException.class);
+        assertThatThrownBy(() -> A1.validate(NsUserTest.SANJIGI)).isInstanceOf(CannotDeleteException.class);
     }
 
 }

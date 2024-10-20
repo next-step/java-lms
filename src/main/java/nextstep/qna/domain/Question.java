@@ -91,7 +91,7 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public List<Answer> deletedQna(NsUser nsUser) throws CannotDeleteException{
+    public List<Answer> validate(NsUser nsUser) throws CannotDeleteException{
         if(!writer.matchUser(nsUser)){
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }

@@ -79,7 +79,7 @@ public class Answer {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 
-    public List<Answer> deleteAnswer(NsUser nsUser) throws CannotDeleteException{
+    public List<Answer> validate(NsUser nsUser) throws CannotDeleteException{
         if(!writer.matchUser(nsUser)){
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }

@@ -15,7 +15,7 @@ public class QuestionTest {
     @DisplayName("작성자와 이름이 다른 경우 예외")
     @Test
     void 작성자_이름_다름_예외() {
-        assertThatThrownBy(() -> Q1.deletedQna(NsUserTest.SANJIGI)).isInstanceOf(CannotDeleteException.class);
+        assertThatThrownBy(() -> Q1.validate(NsUserTest.SANJIGI)).isInstanceOf(CannotDeleteException.class);
     }
 
 
