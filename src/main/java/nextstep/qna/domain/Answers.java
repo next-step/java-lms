@@ -20,4 +20,8 @@ public class Answers {
         return answers.stream()
             .allMatch(answer -> answer.isOwner(user));
     }
+
+    public void add(final Answer answer) {
+        answers.add(answer);
+    }
 }
