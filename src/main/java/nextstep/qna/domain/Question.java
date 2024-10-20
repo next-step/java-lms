@@ -72,9 +72,17 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public List<DeleteHistory> delete() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
+        this.deleted = true;
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
+
+        for (Answer answer : answers) {
+            deleteHistories.add(answer.delete());
+        }
+
+        return deleteHistories;
     }
 
     public boolean isDeleted() {
@@ -88,5 +96,10 @@ public class Question {
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
+
+    public boolean anyAnswerByOthers() {
+        return answers.stream()
+                .anyMatch(answer -> !answer.isOwner(writer));
     }
 }
