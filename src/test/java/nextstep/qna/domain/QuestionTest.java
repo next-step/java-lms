@@ -5,6 +5,9 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class QuestionTest {
@@ -17,5 +20,21 @@ public class QuestionTest {
         assertThatThrownBy(() -> Q1.delete(NsUserTest.SANGHYUN))
             .hasMessage("질문을 삭제할 권한이 없습니다.")
             .isExactlyInstanceOf(CannotDeleteException.class);
+    }
+
+    @Test
+    @DisplayName("글에 답변이 없는 자신의 글일 경우 삭제가 가능하다.")
+    void shouldDeletePostWhenNoAnswersExist() throws CannotDeleteException {
+        final DeleteHistory deleteHistory = Q1.delete(NsUserTest.JAVAJIGI);
+
+        assertThat(deleteHistory)
+            .isEqualTo(
+                new DeleteHistory(
+                    ContentType.QUESTION,
+                    Q1.getId(),
+                    NsUserTest.JAVAJIGI,
+                    LocalDateTime.now()
+                )
+            );
     }
 }

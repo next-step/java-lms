@@ -86,10 +86,17 @@ public class Question {
         return answers;
     }
 
-    public void delete(final NsUser loginUser) throws CannotDeleteException {
+    public DeleteHistory delete(final NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
+
+        return new DeleteHistory(
+            ContentType.QUESTION,
+            id,
+            loginUser,
+            LocalDateTime.now()
+        );
     }
 
     @Override
