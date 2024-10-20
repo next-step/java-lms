@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service("qnaService")
 public class QnAService {
@@ -25,10 +26,8 @@ public class QnAService {
     @Transactional
     public void deleteQuestion(NsUser loginUser, long questionId) throws CannotDeleteException {
         Question question = findQuestion(questionId);
-        question.checkIfQuestionOwner(loginUser);
-        question.checkIfAnswerOwner(loginUser);
-        question.setDeleted();
-        deleteHistoryService.saveAll(question.generateDeleteHistories());
+        List<DeleteHistory> deleteHistories = question.delete(loginUser);
+        deleteHistoryService.saveAll(deleteHistories);
     }
 
     private Question findQuestion(long questionId) {

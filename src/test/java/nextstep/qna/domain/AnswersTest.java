@@ -18,13 +18,13 @@ class AnswersTest {
     @BeforeEach
     void setup() {
         answerList = List.of(A1, A2);
-        answers = Answers.createAnswers(answerList);
+        answers = new Answers(answerList);
     }
 
     @DisplayName("Answer 도메인의 일급컬렉션을 생성할 수 있다.")
     @Test
     void createAnswersTest() {
-        assertThat(Answers.createAnswers(answerList).size()).isEqualTo(2);
+        assertThat(answers.size()).isEqualTo(2);
     }
 
     @DisplayName("DeleteHistory 리스트를 생성할 수 있다.")

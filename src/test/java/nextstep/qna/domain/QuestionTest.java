@@ -18,24 +18,25 @@ public class QuestionTest {
     public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
 
 
-    @DisplayName("질문의 작성자가 다르면 예외가 발생한다.")
+    @DisplayName("질문 삭제 시 작성자가 다르면 예외가 발생한다.")
     @Test
     void checkIfQuestionOwnerTest() {
         assertThatThrownBy(
-                        () -> Q1.checkIfQuestionOwner(NsUserTest.SANJIGI)
+                        () -> Q1.delete(NsUserTest.SANJIGI)
                 )
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage(INVALID_OWNER_EXCEPTION_MESSAGE);
     }
 
-    @DisplayName("질문으로 질문과 그 답변글들의 DeleteHistory 를 생성할 수 있다.")
+    @DisplayName("질문을 삭제하면 답변글도 함께 삭제되며 DeleteHistory 리스트를 반환한다.")
     @Test
-    void generateDeleteHistoriesTest() {
+    void answerDeleteTest() throws CannotDeleteException {
         Q1.addAnswer(A1);
-        Q1.addAnswer(A2);
-        List<DeleteHistory> deleteHistories = Q1.generateDeleteHistories();
+        List<DeleteHistory> deleteHistories = Q1.delete(NsUserTest.JAVAJIGI);
 
-        assertThat(deleteHistories.size()).isEqualTo(3);
+        assertThat(deleteHistories.size()).isEqualTo(2);
+        assertThat(Q1.isDeleted()).isTrue();
+        assertThat(A1.isDeleted()).isTrue();
     }
 
 }

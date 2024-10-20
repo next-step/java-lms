@@ -35,7 +35,7 @@ public class Question extends BaseTime {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.answers = Answers.createAnswers(new ArrayList<>());
+        this.answers = new Answers(new ArrayList<>());
     }
 
     public Long getId() {
@@ -50,30 +50,29 @@ public class Question extends BaseTime {
         answers.addAnswer(answer);
     }
 
-    public Question setDeleted() {
+    public void deleteQuestion() {
         this.deleted = true;
-        return this;
     }
 
     public boolean isDeleted() {
         return deleted;
     }
 
-    public void checkIfQuestionOwner(NsUser loginUser) throws CannotDeleteException {
+    private void checkIfQuestionOwner(NsUser loginUser) throws CannotDeleteException {
         if (isDifferentOwner(loginUser)) {
             throw new CannotDeleteException(INVALID_OWNER_EXCEPTION_MESSAGE);
         }
     }
 
     private boolean isDifferentOwner(NsUser loginUser) {
-        return !writer.equals(loginUser);
+        return !writer.matchUser(loginUser);
     }
 
-    public void checkIfAnswerOwner(NsUser loginUser) throws CannotDeleteException {
+    private void checkIfAnswerOwner(NsUser loginUser) throws CannotDeleteException {
         answers.validateAnswerOwners(loginUser);
     }
 
-    public List<DeleteHistory> generateDeleteHistories() {
+    private List<DeleteHistory> generateDeleteHistories() {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(createDeleteHistory());
         deleteHistories.addAll(answers.generateAnswerDeleteHistories());
@@ -87,5 +86,12 @@ public class Question extends BaseTime {
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
+
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        checkIfQuestionOwner(loginUser);
+        checkIfAnswerOwner(loginUser);
+        deleteQuestion();
+        return generateDeleteHistories();
     }
 }

@@ -10,12 +10,8 @@ public class Answers {
 
     private final List<Answer> answers;
 
-    private Answers(List<Answer> answers) {
+    public Answers(List<Answer> answers) {
         this.answers = answers;
-    }
-
-    public static Answers createAnswers(List<Answer> answers) {
-        return new Answers(answers);
     }
 
     public int size() {
@@ -35,8 +31,7 @@ public class Answers {
     public List<DeleteHistory> generateAnswerDeleteHistories() {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : answers) {
-            answer.setDeleted();
-            deleteHistories.add(answer.createDeleteHistory());
+            deleteHistories.add(answer.delete());
         }
         return deleteHistories;
     }

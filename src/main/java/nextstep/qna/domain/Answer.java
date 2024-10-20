@@ -46,9 +46,8 @@ public class Answer extends BaseTime {
         return id;
     }
 
-    public Answer setDeleted() {
+    public void deleteAnswer() {
         this.deleted = true;
-        return this;
     }
 
     public boolean isDeleted() {
@@ -69,11 +68,16 @@ public class Answer extends BaseTime {
     }
 
     private boolean isDifferentOwner(NsUser writer) {
-        return !this.writer.equals(writer);
+        return !this.writer.matchUser(writer);
     }
 
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+    }
+
+    public DeleteHistory delete() {
+        deleteAnswer();
+        return createDeleteHistory();
     }
 }
