@@ -18,6 +18,8 @@ public class Question {
 
     private List<Answer> answers = new ArrayList<>();
 
+    private Answers answers2;
+
     private boolean deleted = false;
 
     private LocalDateTime createdDate = LocalDateTime.now();
@@ -36,6 +38,7 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.answers2 = new Answers();
     }
 
     public Long getId() {
@@ -91,10 +94,10 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public List<Answer> validate(NsUser nsUser) throws CannotDeleteException{
+    public Answers validate(NsUser nsUser) throws CannotDeleteException{
         if(!writer.matchUser(nsUser)){
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-        return null;
+        return answers2;
     }
 }
