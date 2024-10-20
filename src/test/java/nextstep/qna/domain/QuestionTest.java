@@ -4,6 +4,8 @@ import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 public class QuestionTest {
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
     public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
@@ -25,12 +27,14 @@ public class QuestionTest {
     void 삭제_상태로_변경() {
         // given
         final Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+        question.addAnswer(AnswerTest.A1);
 
         // when
-        question.delete();
+        List<DeleteHistory> deleteHistories = question.delete();
         boolean isDeleted = question.isDeleted();
 
         // then
         Assertions.assertThat(isDeleted).isTrue();
+        Assertions.assertThat(deleteHistories).hasSize(2);
     }
 }

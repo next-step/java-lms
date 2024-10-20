@@ -14,10 +14,11 @@ public class AnswerTest {
         final Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
 
         // when
-        answer.delete();
+        DeleteHistory deleteHistory = answer.delete();
         boolean isDeleted = answer.isDeleted();
 
         // then
         Assertions.assertThat(isDeleted).isTrue();
+        Assertions.assertThat(deleteHistory).isNotNull();
     }
 }

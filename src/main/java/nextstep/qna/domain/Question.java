@@ -72,8 +72,17 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public void delete() {
+    public List<DeleteHistory> delete() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
         this.deleted = true;
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
+
+        for (Answer answer : answers) {
+            deleteHistories.add(answer.delete());
+        }
+
+        return deleteHistories;
     }
 
     public boolean isDeleted() {
