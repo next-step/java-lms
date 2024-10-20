@@ -22,7 +22,6 @@ public class Answers {
         return answers.isEmpty();
     }
 
-
     public List<DeleteHistory> delete() {
         List<DeleteHistory> result = new ArrayList<>();
         for (Answer answer : answers) {
