@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 class AnswersTest {
@@ -24,7 +26,7 @@ class AnswersTest {
 
 
     @BeforeEach
-    void init(){
+    void init() {
         AS2.add(A1);
         AS2.add(A2);
 
@@ -34,23 +36,28 @@ class AnswersTest {
 
     @DisplayName("빈 값 검증")
     @Test
-    void isEmpty(){
+    void isEmpty() {
         boolean AS1result = AS1.isEmpty();
         boolean AS2result = AS2.isEmpty();
 
         assertAll(
-                ()->assertThat(AS1result).isTrue(),
-                ()->assertThat(AS2result).isFalse()
+                () -> assertThat(AS1result).isTrue(),
+                () -> assertThat(AS2result).isFalse()
         );
     }
 
     @DisplayName("답변 전체 삭제 시 히스토리 리스트 반환 사이즈 검증")
     @Test
-    void delete(){
+    void delete() {
         List<DeleteHistory> deleteHistories = AS2.delete();
 
         assertThat(deleteHistories).hasSize(2);
     }
 
+    @DisplayName("답변리스트 작성자 전체 검증")
+    @Test
+    void validate() {
+        assertThatThrownBy(() -> AS3.validate(NsUserTest.JAVAJIGI)).isInstanceOf(CannotDeleteException.class);
+    }
 
 }
