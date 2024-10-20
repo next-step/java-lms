@@ -1,6 +1,6 @@
 package nextstep.users.domain;
 
-import nextstep.qna.UnAuthorizedException;
+import nextstep.qna.exception.UnAuthorizedException;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -134,5 +134,24 @@ public class NsUser {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NsUser nsUser = (NsUser) o;
+        return Objects.equals(id, nsUser.id)
+                && Objects.equals(userId, nsUser.userId)
+                && Objects.equals(password, nsUser.password)
+                && Objects.equals(name, nsUser.name)
+                && Objects.equals(email, nsUser.email)
+                && Objects.equals(createdAt, nsUser.createdAt)
+                && Objects.equals(updatedAt, nsUser.updatedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userId, password, name, email, createdAt, updatedAt);
     }
 }
