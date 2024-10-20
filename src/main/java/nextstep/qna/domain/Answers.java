@@ -7,17 +7,24 @@ public class Answers {
 
     private final List<Answer> answers;
 
-    public Answers(){
+    public Answers() {
         this.answers = new ArrayList<>();
     }
 
-    public void add(Answer answer){
+    public void add(Answer answer) {
         answers.add(answer);
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return answers.isEmpty();
     }
 
 
+    public List<DeleteHistory> delete() {
+        List<DeleteHistory> result = new ArrayList<>();
+        for (Answer answer : answers) {
+            result.add(answer.delete());
+        }
+        return result;
+    }
 }
