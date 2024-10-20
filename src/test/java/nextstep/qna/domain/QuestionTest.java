@@ -37,4 +37,34 @@ public class QuestionTest {
                 )
             );
     }
+
+    @Test
+    @DisplayName("다른 사용자의 답변이 존재하는 글을 삭제하려 하는 경우 예외가 발생한다.")
+    void shouldThrowExceptionWhenAttemptingToDeletePostWithAnswersFromOtherUsers() throws CannotDeleteException {
+        Q1.addAnswer(AnswerTest.A2);
+        Q1.addAnswer(AnswerTest.A1);
+
+        assertThatThrownBy(() -> Q1.delete(NsUserTest.JAVAJIGI))
+            .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.")
+            .isExactlyInstanceOf(CannotDeleteException.class);
+    }
+
+    @Test
+    @DisplayName("답변 목록이 전부 글 작성자와 동일한 경우 삭제가 가능하다.")
+    void shouldDeletePostWhenAllAnswersAreByAuthor() throws CannotDeleteException {
+        Q1.addAnswer(AnswerTest.A1);
+        Q1.addAnswer(AnswerTest.A1);
+
+        final DeleteHistory deleteHistory = Q1.delete(NsUserTest.JAVAJIGI);
+
+        assertThat(deleteHistory)
+            .isEqualTo(
+                new DeleteHistory(
+                    ContentType.QUESTION,
+                    Q1.getId(),
+                    NsUserTest.JAVAJIGI,
+                    LocalDateTime.now()
+                )
+            );
+    }
 }
