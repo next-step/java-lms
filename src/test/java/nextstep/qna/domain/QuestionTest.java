@@ -18,6 +18,4 @@ public class QuestionTest {
         assertThatThrownBy(() -> Q1.validate(NsUserTest.SANJIGI)).isInstanceOf(CannotDeleteException.class);
     }
 
-
-
 }

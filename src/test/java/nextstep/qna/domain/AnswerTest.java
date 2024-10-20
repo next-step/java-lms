@@ -1,12 +1,16 @@
 package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
+import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class AnswerTest {
     public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
@@ -16,6 +20,19 @@ public class AnswerTest {
     @Test
     void 게시글_작성자와_답변의_작성자_다름_예외() {
         assertThatThrownBy(() -> A1.validate(NsUserTest.SANJIGI)).isInstanceOf(CannotDeleteException.class);
+    }
+
+    @Test
+    @DisplayName("삭제 시 상태 확인 및 히스토리 객체 검증")
+    void delete() {
+        DeleteHistory deleteHistory = A1.delete();
+
+        DeleteHistory history = new DeleteHistory(ContentType.ANSWER, A1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now());
+
+        assertAll(
+                () -> assertThat(deleteHistory).isEqualTo(history),
+                () -> assertThat(A1.isDeleted()).isTrue()
+        );
     }
 
 }
