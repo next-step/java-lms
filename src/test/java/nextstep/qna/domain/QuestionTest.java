@@ -20,4 +20,17 @@ public class QuestionTest {
         // then
         Assertions.assertThat(anyAnswerByOthers).isTrue();
     }
+
+    @Test
+    void 삭제_상태로_변경() {
+        // given
+        final Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+
+        // when
+        question.delete();
+        boolean isDeleted = question.isDeleted();
+
+        // then
+        Assertions.assertThat(isDeleted).isTrue();
+    }
 }
