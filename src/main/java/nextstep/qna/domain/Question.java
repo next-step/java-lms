@@ -16,9 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
-
-    private Answers answers2;
+    private Answers answers;
 
     private boolean deleted = false;
 
@@ -38,7 +36,7 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.answers2 = new Answers();
+        this.answers = new Answers();
     }
 
     public Long getId() {
@@ -85,7 +83,7 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
+    public Answers getAnswers() {
         return answers;
     }
 
@@ -94,10 +92,24 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public Answers validate(NsUser nsUser) throws CannotDeleteException{
-        if(!writer.matchUser(nsUser)){
+    public Answers validate(NsUser nsUser) throws CannotDeleteException {
+        if (!writer.matchUser(nsUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-        return answers2;
+        return answers;
+    }
+
+    public List<DeleteHistory> delete() {
+        List<DeleteHistory> result = new ArrayList<>();
+
+        this.deleted = true;
+        result.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
+
+        if (answers.isEmpty()) {
+            return result;
+        }
+
+        result.addAll(answers.delete());
+        return result;
     }
 }
