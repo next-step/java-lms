@@ -1,9 +1,9 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
@@ -15,7 +15,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers;
 
     private boolean deleted = false;
 
@@ -35,6 +35,7 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.answers = new Answers();
     }
 
     public Long getId() {
@@ -63,6 +64,10 @@ public class Question {
         return writer;
     }
 
+    public void addAnswers(List<Answer> answerList) {
+        answerList.forEach(this::addAnswer);
+    }
+
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
         answers.add(answer);
@@ -72,17 +77,37 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public boolean isNotOwner(NsUser loginUser) {
+        return !isOwner(loginUser);
     }
 
     public boolean isDeleted() {
         return deleted;
     }
 
+    public Question setDeleted(boolean deleted) {
+        this.deleted = deleted;
+        return this;
+    }
+
     public List<Answer> getAnswers() {
-        return answers;
+        return answers.getAnswers();
+    }
+
+    public DeleteHistories delete(NsUser user) throws CannotDeleteException {
+        if (isNotOwner(user)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+        answers.validateOnwer(user);
+
+        deleted = true;
+        List<Answer> deletedAnswers = answers.deleteAll();
+
+        DeleteHistories deleteHistories = new DeleteHistories();
+        deleteHistories.add(DeleteHistory.questionOf(id, writer, LocalDateTime.now()));
+        deleteHistories.add(deletedAnswers);
+
+        return deleteHistories;
     }
 
     @Override
