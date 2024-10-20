@@ -13,6 +13,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class QuestionTest {
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
     public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
+    public static final Question Q3 = new Question(NsUserTest.SANGHYUN, "title3", "contents3");
 
     @Test
     @DisplayName("글 작성자가 아닌 유저가 글을 삭제하려고 하는 경우 예외가 발생한다.")
