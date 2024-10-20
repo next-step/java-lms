@@ -24,7 +24,7 @@ public class AnswerTest {
 
     @Test
     @DisplayName("삭제 요청자와 답변 작성자가 같은 경우 삭제가 가능하다.")
-    void shouldAllowDeletionWhenDeleterIsSameAsAnswerAuthor() throws CannotDeleteException {
+    void shouldAllowDeletionWhenDeleterIsSameAsAnswerAuthor() {
         A1.delete(NsUserTest.JAVAJIGI);
 
         assertThat(A1.isDeleted()).isTrue();
@@ -32,7 +32,7 @@ public class AnswerTest {
 
     @Test
     @DisplayName("삭제가 된 경우 DeleteHistory 객체를 반환한다.")
-    void shouldReturnDeleteHistoryWhenPostIsDeleted() throws CannotDeleteException {
+    void shouldReturnDeleteHistoryWhenPostIsDeleted() {
         final DeleteHistory deleteHistory = A1.delete(NsUserTest.JAVAJIGI);
 
         assertThat(deleteHistory)

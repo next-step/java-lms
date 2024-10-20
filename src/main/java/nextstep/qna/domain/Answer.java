@@ -73,7 +73,7 @@ public class Answer {
         this.question = question;
     }
 
-    public DeleteHistory delete(final NsUser user) throws CannotDeleteException {
+    public DeleteHistory delete(final NsUser user) {
         if (!isOwner(user)) {
             throw new CannotDeleteException("자신의 답변이 아닌 경우 삭제가 불가능합니다.");
         }

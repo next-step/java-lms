@@ -23,7 +23,7 @@ public class QuestionTest {
 
     @Test
     @DisplayName("글에 답변이 없는 자신의 글일 경우 삭제가 가능하다.")
-    void shouldDeletePostWhenNoAnswersExist() throws CannotDeleteException {
+    void shouldDeletePostWhenNoAnswersExist() {
         Q1.delete(NsUserTest.JAVAJIGI);
 
         assertThat(Q1.isDeleted()).isTrue();
@@ -31,7 +31,7 @@ public class QuestionTest {
 
     @Test
     @DisplayName("다른 사용자의 답변이 존재하는 글을 삭제하려 하는 경우 예외가 발생한다.")
-    void shouldThrowExceptionWhenAttemptingToDeletePostWithAnswersFromOtherUsers() throws CannotDeleteException {
+    void shouldThrowExceptionWhenAttemptingToDeletePostWithAnswersFromOtherUsers() {
         Q1.addAnswer(AnswerTest.A2);
         Q1.addAnswer(AnswerTest.A1);
 
@@ -42,7 +42,7 @@ public class QuestionTest {
 
     @Test
     @DisplayName("답변 목록이 전부 글 작성자와 동일한 경우 삭제가 가능하다.")
-    void shouldDeletePostWhenAllAnswersAreByAuthor() throws CannotDeleteException {
+    void shouldDeletePostWhenAllAnswersAreByAuthor() {
         Q1.addAnswer(AnswerTest.A1);
         Q1.addAnswer(AnswerTest.A1);
 
