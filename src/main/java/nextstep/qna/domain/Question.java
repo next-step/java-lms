@@ -85,23 +85,6 @@ public class Question {
     }
     //endregion
 
-    public void markDeleted() {
-        this.deleted = true;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public Answers getAnswers() {
-        return answers;
-    }
-
-    @Override
-    public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
-    }
-
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         validate(loginUser);
         markDeleted();
@@ -109,6 +92,10 @@ public class Question {
         List<DeleteHistory> deleteHistories = getDeleteHistories();
 
         return deleteHistories;
+    }
+
+    public void markDeleted() {
+        this.deleted = true;
     }
 
     private void validate(NsUser loginUser) throws CannotDeleteException {
@@ -132,5 +119,18 @@ public class Question {
 
     private DeleteHistory QuestionDeleteHistory() {
         return new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now());
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public Answers getAnswers() {
+        return answers;
+    }
+
+    @Override
+    public String toString() {
+        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 }

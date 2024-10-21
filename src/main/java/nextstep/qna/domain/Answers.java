@@ -27,14 +27,6 @@ public class Answers {
         answers.add(answer);
     }
 
-    public void markAllDeleted() {
-        answers.forEach(Answer::markDeleted);
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
-    }
-
     public List<DeleteHistory> delete() {
         List<DeleteHistory> answerHistories = new ArrayList<>();
 
@@ -47,5 +39,13 @@ public class Answers {
                         LocalDateTime.now())
         ));
         return answerHistories;
+    }
+
+    public void markAllDeleted() {
+        answers.forEach(Answer::markDeleted);
+    }
+
+    public List<Answer> getAnswers() {
+        return answers;
     }
 }
