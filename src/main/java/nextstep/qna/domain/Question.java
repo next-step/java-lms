@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Question {
     private Long id;
@@ -86,7 +87,6 @@ public class Question {
 
     public void markDeleted() {
         this.deleted = true;
-        this.answers.markAllDeleted();
     }
 
     public boolean isDeleted() {
@@ -100,5 +100,37 @@ public class Question {
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
+
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        validate(loginUser);
+        markDeleted();
+
+        List<DeleteHistory> deleteHistories = getDeleteHistories();
+
+        return deleteHistories;
+    }
+
+    private void validate(NsUser loginUser) throws CannotDeleteException {
+        checkDeletePermission(loginUser);
+        checkAnswerDeletePermission(loginUser);
+    }
+
+    private void checkAnswerDeletePermission(NsUser loginUser) throws CannotDeleteException {
+        Answers answers = getAnswers();
+        answers.checkDeletePermission(loginUser);
+    }
+
+    private List<DeleteHistory> getDeleteHistories() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(QuestionDeleteHistory());
+
+        List<DeleteHistory> answerHistories = answers.delete();
+        deleteHistories.addAll(answerHistories);
+        return deleteHistories;
+    }
+
+    private DeleteHistory QuestionDeleteHistory() {
+        return new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now());
     }
 }
