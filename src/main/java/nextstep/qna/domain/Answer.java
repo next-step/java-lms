@@ -60,6 +60,10 @@ public class Answer {
         return this.writer.equals(writer);
     }
 
+    public boolean isNotOwner(NsUser writer) {
+        return !isOwner(writer);
+    }
+
     public NsUser getWriter() {
         return writer;
     }
