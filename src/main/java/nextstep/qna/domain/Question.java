@@ -1,10 +1,11 @@
 package nextstep.qna.domain;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Question {
     private Long id;
@@ -86,7 +87,50 @@ public class Question {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Question)) {
+            return false;
+        }
+        Question question = (Question) o;
+        return Objects.equals(getId(), question.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
+    }
+
+    @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
+
+    public boolean validateDeletion(NsUser loginUser) {
+        return isOwner(loginUser);
+    }
+
+    public boolean validateAnswerDeletion(NsUser loginUser) {
+        boolean match = answers.stream().anyMatch(it -> !it.validateDelete(loginUser));
+        return !match;
+    }
+
+    public Map<Question, List<Answer>> delete(NsUser loginUser) throws CannotDeleteException {
+        if (!validateDeletion(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+
+        if(!validateAnswerDeletion(loginUser)){
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
+
+        this.deleted = true;
+        List<Answer> deletedAnswers = this.answers.stream().map(Answer::delete).collect(Collectors.toList());
+
+        Map<Question, List<Answer>> deletedAnswerMap = new HashMap<>();
+        deletedAnswerMap.put(this, deletedAnswers);
+        return deletedAnswerMap;
     }
 }
