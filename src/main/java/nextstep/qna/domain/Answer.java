@@ -60,6 +60,10 @@ public class Answer {
         return this.writer.equals(writer);
     }
 
+    public boolean validateDelete(NsUser writer) {
+        return isOwner(writer);
+    }
+
     public NsUser getWriter() {
         return writer;
     }
@@ -70,6 +74,11 @@ public class Answer {
 
     public void toQuestion(Question question) {
         this.question = question;
+    }
+
+    public Long delete(){
+        this.deleted = true;
+        return this.id;
     }
 
     @Override

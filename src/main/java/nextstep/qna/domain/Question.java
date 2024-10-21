@@ -1,5 +1,9 @@
 package nextstep.qna.domain;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -88,5 +92,31 @@ public class Question {
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
+
+    public boolean validateDeletion(NsUser loginUser) {
+        return isOwner(loginUser);
+    }
+
+    public boolean validateAnswerDeletion(NsUser loginUser) {
+        boolean match = answers.stream().anyMatch(it -> !it.validateDelete(loginUser));
+        return !match;
+    }
+
+    public Map<Long, List<Long>> delete(NsUser loginUser) throws CannotDeleteException {
+        if (!validateDeletion(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+
+        if(!validateAnswerDeletion(loginUser)){
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
+
+        this.deleted = true;
+        List<Long> deletedAnswerIds = this.answers.stream().map(Answer::delete).collect(Collectors.toList());
+
+        Map<Long, List<Long>> deletedAnswers = new HashMap<>();
+        deletedAnswers.put(this.id, deletedAnswerIds);
+        return deletedAnswers;
     }
 }
