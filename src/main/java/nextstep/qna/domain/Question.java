@@ -69,15 +69,28 @@ public class Question {
         answers.add(answer);
     }
 
-    public void verifyOwner(NsUser loginUser) {
+    public List<DeleteHistory> delete(NsUser writer) {
+        verifyQuestionOwner(writer);
+        return questionAndAnswersDeleted();
+    }
+
+    private void verifyQuestionOwner(NsUser loginUser) {
         if (!writer.equals(loginUser)) {
            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    private List<DeleteHistory> questionAndAnswersDeleted() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
+        this.deleted = true;
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
+
+        for (Answer answer : answers) {
+            deleteHistories.add(answer.delete(writer));
+        }
+
+        return deleteHistories;
     }
 
     public boolean isDeleted() {
