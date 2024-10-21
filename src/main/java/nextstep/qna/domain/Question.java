@@ -88,10 +88,7 @@ public class Question {
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         validate(loginUser);
         markDeleted();
-
-        List<DeleteHistory> deleteHistories = getDeleteHistories();
-
-        return deleteHistories;
+        return getHistory();
     }
 
     public void markDeleted() {
@@ -108,7 +105,7 @@ public class Question {
         answers.checkDeletePermission(loginUser);
     }
 
-    private List<DeleteHistory> getDeleteHistories() {
+    private List<DeleteHistory> getHistory() {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(QuestionDeleteHistory());
 

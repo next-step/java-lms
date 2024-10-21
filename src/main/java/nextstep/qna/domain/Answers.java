@@ -28,17 +28,20 @@ public class Answers {
     }
 
     public List<DeleteHistory> delete() {
-        List<DeleteHistory> answerHistories = new ArrayList<>();
-
         markAllDeleted();
-        answers.forEach(answer -> answerHistories.add(
+        return createDeleteHistory();
+    }
+
+    private List<DeleteHistory> createDeleteHistory() {
+        List<DeleteHistory> histories = new ArrayList<>();
+        answers.forEach(answer -> histories.add(
                 new DeleteHistory(
                         ContentType.ANSWER,
                         answer.getId(),
                         answer.getWriter(),
                         LocalDateTime.now())
         ));
-        return answerHistories;
+        return histories;
     }
 
     public void markAllDeleted() {
