@@ -86,6 +86,7 @@ public class Question {
 
     public void markDeleted() {
         this.deleted = true;
+        this.answers.markAllDeleted();
     }
 
     public boolean isDeleted() {

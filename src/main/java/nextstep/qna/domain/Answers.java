@@ -25,6 +25,10 @@ public class Answers {
         answers.add(answer);
     }
 
+    public void markAllDeleted() {
+        answers.forEach(Answer::markDeleted);
+    }
+
     public List<Answer> getAnswers() {
         return answers;
     }
