@@ -43,13 +43,12 @@ public class Answer {
         this.contents = contents;
     }
 
-    public Long getId() {
-        return id;
+    public void markDeleted() {
+        this.deleted = true;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public Long getId() {
+        return id;
     }
 
     public boolean isDeleted() {
@@ -58,6 +57,10 @@ public class Answer {
 
     public boolean isOwner(NsUser writer) {
         return this.writer.equals(writer);
+    }
+
+    public boolean isNotOwner(NsUser writer) {
+        return !isOwner(writer);
     }
 
     public NsUser getWriter() {
