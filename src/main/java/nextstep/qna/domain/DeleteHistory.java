@@ -16,7 +16,7 @@ public class DeleteHistory {
 
     private LocalDateTime createdDate = LocalDateTime.now();
 
-    public DeleteHistory() {
+    private DeleteHistory() {
     }
 
     public DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
@@ -24,6 +24,14 @@ public class DeleteHistory {
         this.contentId = contentId;
         this.deletedBy = deletedBy;
         this.createdDate = createdDate;
+    }
+
+    public static DeleteHistory questionOf(Long contentId, NsUser nsUser){
+        return new DeleteHistory(ContentType.QUESTION, contentId, nsUser, LocalDateTime.now() );
+    }
+
+    public static DeleteHistory answerOf(Long contentId, NsUser nsUser){
+        return new DeleteHistory(ContentType.ANSWER, contentId, nsUser, LocalDateTime.now() );
     }
 
     @Override

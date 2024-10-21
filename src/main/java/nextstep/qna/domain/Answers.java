@@ -30,6 +30,16 @@ public class Answers {
         return result;
     }
 
+    public List<DeleteHistory> delete(NsUser nsUser) throws CannotDeleteException{
+        validate(nsUser);
+
+        List<DeleteHistory> result = new ArrayList<>();
+        for (Answer answer : answers) {
+            result.add(answer.delete());
+        }
+        return result;
+    }
+
     public void validate(NsUser nsUser) throws CannotDeleteException {
         for (Answer answer : answers) {
             answer.validate(nsUser);

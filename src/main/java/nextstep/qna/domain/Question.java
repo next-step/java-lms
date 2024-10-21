@@ -92,24 +92,24 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public Answers validate(NsUser nsUser) throws CannotDeleteException {
-        if (!writer.matchUser(nsUser)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-        return answers;
-    }
+    public List<DeleteHistory> delete(NsUser nsUser) throws CannotDeleteException{
+        validate(nsUser);
+        answers.validate(nsUser);
 
-    public List<DeleteHistory> delete() {
         List<DeleteHistory> result = new ArrayList<>();
-
         this.deleted = true;
-        result.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
 
+        result.add(DeleteHistory.questionOf(id, writer));
         if (answers.isEmpty()) {
             return result;
         }
-
         result.addAll(answers.delete());
         return result;
+    }
+
+    private void validate(NsUser nsUser) throws CannotDeleteException {
+        if (!writer.matchUser(nsUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
     }
 }
