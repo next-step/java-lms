@@ -84,9 +84,8 @@ public class Question {
     }
     //endregion
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public void markDeleted() {
+        this.deleted = true;
     }
 
     public boolean isDeleted() {

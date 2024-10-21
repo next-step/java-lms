@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class QuestionTest {
@@ -19,5 +20,17 @@ public class QuestionTest {
                         .hasMessage("질문을 삭제할 권한이 없습니다.");
 
     }
+
+
+    @DisplayName("질문의 삭제 상태 플래그를 true로 변경한다")
+    @Test
+    void markDeleted(){
+        Q1.markDeleted();
+
+        assertThat(Q1.isDeleted()).isEqualTo(true);
+    }
+
+    
+    
 
 }
