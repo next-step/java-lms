@@ -69,9 +69,9 @@ public class Question {
         answers.add(answer);
     }
 
-    public List<DeleteHistory> delete(NsUser writer) {
+    public List<DeleteHistory> delete(NsUser writer, LocalDateTime deleteDateTime) {
         verifyQuestionOwner(writer);
-        return questionAndAnswersDeleted();
+        return questionAndAnswersDeleted(deleteDateTime);
     }
 
     private void verifyQuestionOwner(NsUser loginUser) {
@@ -80,12 +80,12 @@ public class Question {
         }
     }
 
-    private List<DeleteHistory> questionAndAnswersDeleted() {
+    private List<DeleteHistory> questionAndAnswersDeleted(LocalDateTime deleteDateTime) {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
 
         this.deleted = true;
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
-        deleteHistories.addAll(answers.delete(writer));
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, deleteDateTime));
+        deleteHistories.addAll(answers.delete(writer, deleteDateTime));
 
         return deleteHistories;
     }

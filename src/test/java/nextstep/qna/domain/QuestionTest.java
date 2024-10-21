@@ -2,6 +2,7 @@ package nextstep.qna.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -16,14 +17,22 @@ public class QuestionTest {
     @Test
     void 질문을_삭제한다() {
         Q1.addAnswer(AnswerTest.A1);
-        List<DeleteHistory> deleteHistories = Q1.delete(NsUserTest.JAVAJIGI);
+        LocalDateTime deleteDateTime = LocalDateTime.of(2024, 10, 21, 10, 10);
+        List<DeleteHistory> deleteHistories = Q1.delete(NsUserTest.JAVAJIGI, deleteDateTime);
+
+        List<DeleteHistory> result = List.of(
+            new DeleteHistory(ContentType.QUESTION, Q1.getId(), NsUserTest.JAVAJIGI, deleteDateTime),
+            new DeleteHistory(ContentType.ANSWER, AnswerTest.A1.getId(), NsUserTest.JAVAJIGI, deleteDateTime)
+        );
 
         assertThat(deleteHistories).hasSize(2);
+        assertThat(deleteHistories).isEqualTo(result);
     }
 
     @Test
     void 질문작성자가_다르면_삭제에_실패한다() {
-        assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI))
+        LocalDateTime deleteDateTime = LocalDateTime.of(2024, 10, 21, 10, 10);
+        assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI, deleteDateTime))
             .isInstanceOf(CannotDeleteException.class)
             .hasMessage("질문을 삭제할 권한이 없습니다.");
     }
