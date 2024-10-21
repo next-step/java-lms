@@ -46,10 +46,6 @@ public class Answer extends BaseTime {
         return id;
     }
 
-    public void deleteAnswer() {
-        this.deleted = true;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
@@ -61,10 +57,11 @@ public class Answer extends BaseTime {
         return new DeleteHistory(ContentType.ANSWER, id, writer);
     }
 
-    public void checkIfAnotherOwnerExists(NsUser loginUser) throws CannotDeleteException {
+    private void deleteAnswer(NsUser loginUser) throws CannotDeleteException {
         if (isDifferentOwner(loginUser)) {
             throw new CannotDeleteException(ANOTHER_OWNER_EXISTS_EXCEPTION_MESSAGE);
         }
+        this.deleted = true;
     }
 
     private boolean isDifferentOwner(NsUser writer) {
@@ -76,8 +73,8 @@ public class Answer extends BaseTime {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 
-    public DeleteHistory delete() {
-        deleteAnswer();
+    public DeleteHistory delete(NsUser loginUser) throws CannotDeleteException {
+        deleteAnswer(loginUser);
         return createDeleteHistory();
     }
 }

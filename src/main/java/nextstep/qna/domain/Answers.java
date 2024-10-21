@@ -22,16 +22,10 @@ public class Answers {
         answers.add(answer);
     }
 
-    public void validateAnswerOwners(NsUser loginUser) throws CannotDeleteException {
-        for (Answer answer : answers) {
-            answer.checkIfAnotherOwnerExists(loginUser);
-        }
-    }
-
-    public List<DeleteHistory> generateAnswerDeleteHistories() {
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : answers) {
-            deleteHistories.add(answer.delete());
+            deleteHistories.add(answer.delete(loginUser));
         }
         return deleteHistories;
     }

@@ -15,9 +15,9 @@ public class AnswerTest {
 
     @DisplayName("답변글의 소유자가 다르면 예외를 던진다.")
     @Test
-    void checkIfAnotherOwnerExistsTest() {
+    void deleteAnswerTest() {
         assertThatThrownBy(
-                () -> A1.checkIfAnotherOwnerExists(NsUserTest.SANJIGI)
+                () -> A1.delete(NsUserTest.SANJIGI)
         )
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessageContaining(ANOTHER_OWNER_EXISTS_EXCEPTION_MESSAGE);
@@ -25,8 +25,8 @@ public class AnswerTest {
 
     @DisplayName("답변글을 삭제하고 DeleteHistory 를 반환한다.")
     @Test
-    void answerDeleteTest() {
-        DeleteHistory deleteHistory = A1.delete();
+    void answerDeleteTest() throws CannotDeleteException {
+        DeleteHistory deleteHistory = A1.delete(NsUserTest.JAVAJIGI);
 
         Assertions.assertThat(deleteHistory).isNotNull();
         Assertions.assertThat(A1.isDeleted()).isTrue();

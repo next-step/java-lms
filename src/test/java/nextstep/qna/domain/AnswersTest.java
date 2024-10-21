@@ -1,5 +1,8 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.exception.CannotDeleteException;
+import nextstep.users.domain.NsUserTest;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,9 +30,11 @@ class AnswersTest {
         assertThat(answers.size()).isEqualTo(2);
     }
 
-    @DisplayName("DeleteHistory 리스트를 생성할 수 있다.")
+    @DisplayName("답변글들에 다른 사람이 쓴 답변이 있으면 예외가 발생한다.")
     @Test
-    void generateAnswerDeleteHistoriesTest() {
-        assertThat(answers.generateAnswerDeleteHistories().size()).isEqualTo(2);
+    void deleteExceptionTest() {
+        Assertions.assertThatThrownBy(() -> answers.delete(NsUserTest.JAVAJIGI))
+                .isInstanceOf(CannotDeleteException.class)
+                .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
 }

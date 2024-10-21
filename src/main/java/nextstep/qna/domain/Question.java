@@ -50,36 +50,30 @@ public class Question extends BaseTime {
         answers.addAnswer(answer);
     }
 
-    public void deleteQuestion() {
-        this.deleted = true;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
 
-    private void checkIfQuestionOwner(NsUser loginUser) throws CannotDeleteException {
+    private void deleteQuestion(NsUser loginUser) throws CannotDeleteException {
         if (isDifferentOwner(loginUser)) {
             throw new CannotDeleteException(INVALID_OWNER_EXCEPTION_MESSAGE);
         }
+        this.deleted = true;
     }
 
     private boolean isDifferentOwner(NsUser loginUser) {
         return !writer.matchUser(loginUser);
     }
 
-    private void checkIfAnswerOwner(NsUser loginUser) throws CannotDeleteException {
-        answers.validateAnswerOwners(loginUser);
-    }
 
-    private List<DeleteHistory> generateDeleteHistories() {
+    private List<DeleteHistory> generateDeleteHistories(NsUser loginUser) throws CannotDeleteException {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(createDeleteHistory());
-        deleteHistories.addAll(answers.generateAnswerDeleteHistories());
+        deleteHistories.add(createQuestionDeleteHistory());
+        deleteHistories.addAll(answers.delete(loginUser));
         return deleteHistories;
     }
 
-    private DeleteHistory createDeleteHistory() {
+    private DeleteHistory createQuestionDeleteHistory() {
         return new DeleteHistory(ContentType.QUESTION, id, writer);
     }
 
@@ -89,9 +83,7 @@ public class Question extends BaseTime {
     }
 
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
-        checkIfQuestionOwner(loginUser);
-        checkIfAnswerOwner(loginUser);
-        deleteQuestion();
-        return generateDeleteHistories();
+        deleteQuestion(loginUser);
+        return generateDeleteHistories(loginUser);
     }
 }

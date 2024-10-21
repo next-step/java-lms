@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static nextstep.qna.domain.AnswerTest.A1;
-import static nextstep.qna.domain.AnswerTest.A2;
 import static nextstep.qna.domain.Question.INVALID_OWNER_EXCEPTION_MESSAGE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -20,7 +19,7 @@ public class QuestionTest {
 
     @DisplayName("질문 삭제 시 작성자가 다르면 예외가 발생한다.")
     @Test
-    void checkIfQuestionOwnerTest() {
+    void deleteQuestionTest() {
         assertThatThrownBy(
                         () -> Q1.delete(NsUserTest.SANJIGI)
                 )
