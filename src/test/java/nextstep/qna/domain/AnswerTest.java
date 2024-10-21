@@ -14,13 +14,14 @@ public class AnswerTest {
     @DisplayName("담변 삭제 권한 체크 - 질문자와 답변글의 모든 답변자 같은 경우")
     void checkAnswerDeletion_WithAllSameLoginUser(){
         //given
-        NsUser loginUser = NsUserTest.JAVAJIGI;
 
         //when
-        boolean checkAnswerDeletion = A1.validateDelete(loginUser);
+        boolean checkAnswerDeletion1 = A1.validateDelete(NsUserTest.JAVAJIGI);
+        boolean checkAnswerDeletion2 = A2.validateDelete(NsUserTest.SANJIGI);
 
         //then
-        Assertions.assertThat(checkAnswerDeletion).isEqualTo(true);
+        Assertions.assertThat(checkAnswerDeletion1).isEqualTo(true);
+        Assertions.assertThat(checkAnswerDeletion2).isEqualTo(true);
     }
 
     @Test

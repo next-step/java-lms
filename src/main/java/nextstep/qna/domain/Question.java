@@ -1,14 +1,11 @@
 package nextstep.qna.domain;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Question {
     private Long id;
@@ -90,6 +87,23 @@ public class Question {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Question)) {
+            return false;
+        }
+        Question question = (Question) o;
+        return Objects.equals(getId(), question.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
+    }
+
+    @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
@@ -103,7 +117,7 @@ public class Question {
         return !match;
     }
 
-    public Map<Long, List<Long>> delete(NsUser loginUser) throws CannotDeleteException {
+    public Map<Question, List<Answer>> delete(NsUser loginUser) throws CannotDeleteException {
         if (!validateDeletion(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
@@ -113,10 +127,10 @@ public class Question {
         }
 
         this.deleted = true;
-        List<Long> deletedAnswerIds = this.answers.stream().map(Answer::delete).collect(Collectors.toList());
+        List<Answer> deletedAnswers = this.answers.stream().map(Answer::delete).collect(Collectors.toList());
 
-        Map<Long, List<Long>> deletedAnswers = new HashMap<>();
-        deletedAnswers.put(this.id, deletedAnswerIds);
-        return deletedAnswers;
+        Map<Question, List<Answer>> deletedAnswerMap = new HashMap<>();
+        deletedAnswerMap.put(this, deletedAnswers);
+        return deletedAnswerMap;
     }
 }
