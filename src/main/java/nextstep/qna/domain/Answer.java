@@ -48,10 +48,10 @@ public class Answer {
         return id;
     }
 
-    public DeleteHistory delete(NsUser writer) {
+    public DeleteHistory delete(NsUser writer, LocalDateTime deleteDateTime) {
         verifyOwner(writer);
         this.deleted = true;
-        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
+        return new DeleteHistory(ContentType.ANSWER, id, writer, deleteDateTime);
     }
 
     private void verifyOwner(NsUser writer) {
