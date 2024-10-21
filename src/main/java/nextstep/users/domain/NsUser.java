@@ -1,6 +1,6 @@
 package nextstep.users.domain;
 
-import nextstep.qna.UnAuthorizedException;
+import nextstep.qna.exception.UnAuthorizedException;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -135,4 +135,5 @@ public class NsUser {
                 ", updatedAt=" + updatedAt +
                 '}';
     }
+
 }

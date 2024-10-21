@@ -1,12 +1,15 @@
 package nextstep.qna.domain;
 
-import nextstep.qna.NotFoundException;
-import nextstep.qna.UnAuthorizedException;
+import nextstep.qna.domain.common.BaseTime;
+import nextstep.qna.exception.CannotDeleteException;
+import nextstep.qna.exception.NotFoundException;
+import nextstep.qna.exception.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
+public class Answer extends BaseTime {
 
-public class Answer {
+    public static final String ANOTHER_OWNER_EXISTS_EXCEPTION_MESSAGE = "다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.";
+
     private Long id;
 
     private NsUser writer;
@@ -16,10 +19,6 @@ public class Answer {
     private String contents;
 
     private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
 
     public Answer() {
     }
@@ -47,33 +46,35 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
-
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
-    }
-
     public NsUser getWriter() {
         return writer;
     }
 
-    public String getContents() {
-        return contents;
+    public DeleteHistory createDeleteHistory() {
+        return new DeleteHistory(ContentType.ANSWER, id, writer);
     }
 
-    public void toQuestion(Question question) {
-        this.question = question;
+    private void deleteAnswer(NsUser loginUser) throws CannotDeleteException {
+        if (isDifferentOwner(loginUser)) {
+            throw new CannotDeleteException(ANOTHER_OWNER_EXISTS_EXCEPTION_MESSAGE);
+        }
+        this.deleted = true;
+    }
+
+    private boolean isDifferentOwner(NsUser writer) {
+        return !this.writer.matchUser(writer);
     }
 
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+    }
+
+    public DeleteHistory delete(NsUser loginUser) throws CannotDeleteException {
+        deleteAnswer(loginUser);
+        return createDeleteHistory();
     }
 }
