@@ -92,11 +92,8 @@ public class Question {
     private List<DeleteHistory> deleteHistories(NsUser loginUser) throws CannotDeleteException {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
 
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
-        for (Answer answer : answers) {
-            deleteHistories.add(answer.delete(loginUser));
-        }
-
+        deleteHistories.add(DeleteHistory.questionOf(id, writer, LocalDateTime.now()));
+        answers.forEach(answer -> deleteHistories.add(answer.delete(loginUser)));
         return deleteHistories;
     }
 
