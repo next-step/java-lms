@@ -2,8 +2,12 @@ package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
+import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -29,8 +33,14 @@ public class QuestionTest {
 
         assertThat(Q1.isDeleted()).isEqualTo(true);
     }
-
     
-    
+    @DisplayName("질문을 삭제 후, 삭제 이력을 반환한다")
+    @Test
+    void delete() throws CannotDeleteException {
+        List<DeleteHistory> deleteHistories = Q1.delete(NsUserTest.JAVAJIGI);
 
+        assertThat(deleteHistories).extracting("contentType", "deletedBy")
+                .containsExactly(new Tuple(ContentType.QUESTION, NsUserTest.JAVAJIGI));
+
+    }
 }
