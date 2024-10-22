@@ -29,7 +29,7 @@ public class QuestionTest {
         NsUser loginUser = NsUserTest.JAVAJIGI;
 
         //when
-        boolean checkDeletion = Q1.validateDeletion(loginUser);
+        boolean checkDeletion = Q1.isDeletionAvailable(loginUser);
 
         //then
         Assertions.assertThat(checkDeletion).isEqualTo(true);
@@ -42,7 +42,7 @@ public class QuestionTest {
         NsUser loginUser = NsUserTest.JAVAJIGI;
 
         //when
-        boolean checkDeletion = Q2.validateDeletion(loginUser);
+        boolean checkDeletion = Q2.isDeletionAvailable(loginUser);
 
         //then
         Assertions.assertThat(checkDeletion).isEqualTo(false);
@@ -56,7 +56,7 @@ public class QuestionTest {
         Q1.addAnswer(A1);
 
         //when
-        boolean checkAnswerDeletion = Q1.validateAnswerDeletion(loginUser);
+        boolean checkAnswerDeletion = Q1.isAnswerDeletionAvailable(loginUser);
 
         //then
         Assertions.assertThat(checkAnswerDeletion).isEqualTo(true);
@@ -70,7 +70,7 @@ public class QuestionTest {
         Q1.addAnswer(A1);
 
         //when
-        boolean checkAnswerDeletion = Q1.validateAnswerDeletion(loginUser);
+        boolean checkAnswerDeletion = Q1.isAnswerDeletionAvailable(loginUser);
 
         //then
         Assertions.assertThat(checkAnswerDeletion).isEqualTo(false);

@@ -61,7 +61,7 @@ public class Answer {
         return this.writer.equals(writer);
     }
 
-    public boolean validateDelete(NsUser writer) {
+    public boolean isDeleteAvailable(NsUser writer) {
         return isOwner(writer);
     }
 

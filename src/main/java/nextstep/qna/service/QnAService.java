@@ -30,12 +30,16 @@ public class QnAService {
 
         Map<Question, List<Answer>> deleted = question.delete(loginUser);
 
+        deleteHistoryService.saveAll(toDeleteHistory(deleted));
+    }
+
+    private static List<DeleteHistory> toDeleteHistory(Map<Question, List<Answer>> deleted) {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleted.forEach((key, value) -> {
             deleteHistories.add(DeleteHistory.fromQuestion(key.getId(), key.getWriter()));
 
             deleteHistories.addAll(value.stream().map(it -> DeleteHistory.fromAnswer(it.getId(), it.getWriter())).collect(Collectors.toList()));
         });
-        deleteHistoryService.saveAll(deleteHistories);
+        return deleteHistories;
     }
 }

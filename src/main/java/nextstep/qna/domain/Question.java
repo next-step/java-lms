@@ -108,21 +108,12 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public boolean validateDeletion(NsUser loginUser) {
-        return isOwner(loginUser);
-    }
-
-    public boolean validateAnswerDeletion(NsUser loginUser) {
-        boolean match = answers.stream().anyMatch(it -> !it.validateDelete(loginUser));
-        return !match;
-    }
-
     public Map<Question, List<Answer>> delete(NsUser loginUser) throws CannotDeleteException {
-        if (!validateDeletion(loginUser)) {
+        if (!isDeletionAvailable(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
-        if(!validateAnswerDeletion(loginUser)){
+        if(!isAnswerDeletionAvailable(loginUser)){
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
 
@@ -132,5 +123,14 @@ public class Question {
         Map<Question, List<Answer>> deletedAnswerMap = new HashMap<>();
         deletedAnswerMap.put(this, deletedAnswers);
         return deletedAnswerMap;
+    }
+
+    public boolean isDeletionAvailable(NsUser loginUser) {
+        return isOwner(loginUser);
+    }
+
+    public boolean isAnswerDeletionAvailable(NsUser loginUser) {
+        boolean match = answers.stream().anyMatch(it -> !it.isDeleteAvailable(loginUser));
+        return !match;
     }
 }

@@ -16,8 +16,8 @@ public class AnswerTest {
         //given
 
         //when
-        boolean checkAnswerDeletion1 = A1.validateDelete(NsUserTest.JAVAJIGI);
-        boolean checkAnswerDeletion2 = A2.validateDelete(NsUserTest.SANJIGI);
+        boolean checkAnswerDeletion1 = A1.isDeleteAvailable(NsUserTest.JAVAJIGI);
+        boolean checkAnswerDeletion2 = A2.isDeleteAvailable(NsUserTest.SANJIGI);
 
         //then
         Assertions.assertThat(checkAnswerDeletion1).isEqualTo(true);
@@ -31,7 +31,7 @@ public class AnswerTest {
         NsUser loginUser = NsUserTest.SANJIGI;
 
         //when
-        boolean checkAnswerDeletion = A1.validateDelete(loginUser);
+        boolean checkAnswerDeletion = A1.isDeleteAvailable(loginUser);
 
         //then
         Assertions.assertThat(checkAnswerDeletion).isEqualTo(false);

@@ -27,13 +27,11 @@ public class DeleteHistory {
     }
 
     public static DeleteHistory fromQuestion(Long questionId, NsUser writer) {
-        DeleteHistory deleteHistory = new DeleteHistory(ContentType.QUESTION, questionId, writer, LocalDateTime.now());
-        return deleteHistory;
+        return new DeleteHistory(ContentType.QUESTION, questionId, writer, LocalDateTime.now());
     }
 
     public static DeleteHistory fromAnswer(Long answerId, NsUser writer) {
-        DeleteHistory deleteHistory = new DeleteHistory(ContentType.ANSWER, answerId, writer, LocalDateTime.now());
-        return deleteHistory;
+        return new DeleteHistory(ContentType.ANSWER, answerId, writer, LocalDateTime.now());
     }
 
     @Override
