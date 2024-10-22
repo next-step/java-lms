@@ -23,9 +23,6 @@ public class Question {
 
     private LocalDateTime updatedDate;
 
-    public Question() {
-    }
-
     public Question(NsUser writer, String title, String contents) {
         this(0L, writer, title, contents);
     }
@@ -39,24 +36,6 @@ public class Question {
 
     public Long getId() {
         return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
     }
 
     public NsUser getWriter() {
