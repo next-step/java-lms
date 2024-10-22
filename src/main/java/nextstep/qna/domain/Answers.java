@@ -3,9 +3,8 @@ package nextstep.qna.domain;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Answers {
     private List<Answer> answers;
@@ -14,38 +13,24 @@ public class Answers {
         this.answers = answers;
     }
 
-    public void checkDeletePermission(NsUser loginUser) throws CannotDeleteException {
-        boolean isNoDeletePermission = answers.stream()
-                .anyMatch(answer -> answer.isNotOwner(loginUser));
-
-        if(isNoDeletePermission){
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-        }
-    }
-
     public void add(Answer answer) {
         answers.add(answer);
     }
 
-    public List<DeleteHistory> delete() {
-        markAllDeleted();
-        return createDeleteHistory();
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        return answers.stream()
+                .map(answer -> {
+                    return tryDelete(answer, loginUser);
+                })
+                .collect(Collectors.toList());
     }
 
-    private List<DeleteHistory> createDeleteHistory() {
-        List<DeleteHistory> histories = new ArrayList<>();
-        answers.forEach(answer -> histories.add(
-                new DeleteHistory(
-                        ContentType.ANSWER,
-                        answer.getId(),
-                        answer.getWriter(),
-                        LocalDateTime.now())
-        ));
-        return histories;
-    }
-
-    public void markAllDeleted() {
-        answers.forEach(Answer::markDeleted);
+    private DeleteHistory tryDelete(Answer answer, NsUser loginUser) {
+        try {
+            return answer.delete(loginUser);
+        } catch (CannotDeleteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public List<Answer> getAnswers() {
