@@ -26,10 +26,22 @@ public class DeleteHistory {
         this.createdDate = createdDate;
     }
 
+    public static DeleteHistory fromQuestion(Long questionId, NsUser writer) {
+        return new DeleteHistory(ContentType.QUESTION, questionId, writer, LocalDateTime.now());
+    }
+
+    public static DeleteHistory fromAnswer(Long answerId, NsUser writer) {
+        return new DeleteHistory(ContentType.ANSWER, answerId, writer, LocalDateTime.now());
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         DeleteHistory that = (DeleteHistory) o;
         return Objects.equals(id, that.id) &&
                 contentType == that.contentType &&

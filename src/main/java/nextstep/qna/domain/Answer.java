@@ -5,6 +5,7 @@ import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Answer {
     private Long id;
@@ -60,6 +61,10 @@ public class Answer {
         return this.writer.equals(writer);
     }
 
+    public boolean isDeleteAvailable(NsUser writer) {
+        return isOwner(writer);
+    }
+
     public NsUser getWriter() {
         return writer;
     }
@@ -72,8 +77,30 @@ public class Answer {
         this.question = question;
     }
 
+    public Answer delete(){
+        this.deleted = true;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Answer)) {
+            return false;
+        }
+        Answer answer = (Answer) o;
+        return Objects.equals(getId(), answer.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
     }
 }
