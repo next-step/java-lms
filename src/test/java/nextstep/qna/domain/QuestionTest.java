@@ -101,11 +101,9 @@ public class QuestionTest {
         Q1.addAnswer(A1);
 
         //when
-        Map<Question, List<Answer>> result = Q1.delete(loginUser);
+        List<DeleteHistory> result = Q1.delete(loginUser);
 
         //then
-        Assertions.assertThat(result).hasSize(1);
-        Assertions.assertThat(result).containsKey(Q1);
-        Assertions.assertThat(result).containsValue(List.of(A1));
+        Assertions.assertThat(result).hasSize(2);
     }
 }

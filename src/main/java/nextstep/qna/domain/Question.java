@@ -108,7 +108,7 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public Map<Question, List<Answer>> delete(NsUser loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         if (!isDeletionAvailable(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
@@ -120,9 +120,14 @@ public class Question {
         this.deleted = true;
         List<Answer> deletedAnswers = this.answers.stream().map(Answer::delete).collect(Collectors.toList());
 
-        Map<Question, List<Answer>> deletedAnswerMap = new HashMap<>();
-        deletedAnswerMap.put(this, deletedAnswers);
-        return deletedAnswerMap;
+        return toDeleteHistories(deletedAnswers);
+    }
+
+    private List<DeleteHistory> toDeleteHistories(List<Answer> deletedAnswers) {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(DeleteHistory.fromQuestion(this.getId(), this.getWriter()));
+        deleteHistories.addAll(deletedAnswers.stream().map(it -> DeleteHistory.fromAnswer(it.getId(), it.getWriter())).collect(Collectors.toList()));
+        return deleteHistories;
     }
 
     public boolean isDeletionAvailable(NsUser loginUser) {
