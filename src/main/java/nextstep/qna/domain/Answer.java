@@ -66,7 +66,7 @@ public class Answer {
             throw new CannotDeleteException("답변작성자가 아닙니다.");
         }
         deleted = true;
-        deleteHistories.add(new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now()));
+        deleteHistories.add(new DeleteHistory(this));
         return this;
     }
 

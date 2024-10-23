@@ -5,7 +5,6 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,11 +40,7 @@ public class QuestionTest {
         assertThat(deletedQuestion.isDeleted()).isTrue();
         assertThat(answer1.isDeleted()).isTrue();
         assertThat(answer2.isDeleted()).isTrue();
-        assertThat(deleteHistories).containsExactly(
-                new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now()),
-                new DeleteHistory(ContentType.ANSWER, answer1.getId(), answer1.getWriter(), LocalDateTime.now()),
-                new DeleteHistory(ContentType.ANSWER, answer2.getId(), answer2.getWriter(), LocalDateTime.now())
-        );
+        assertThat(deleteHistories).containsExactly(new DeleteHistory(question), new DeleteHistory(answer1), new DeleteHistory(answer2));
     }
 
     @Test
@@ -53,9 +48,7 @@ public class QuestionTest {
         Question deletedQuestion = question.deleteAll(NsUserTest.JAVAJIGI, deleteHistories);
 
         assertThat(deletedQuestion.isDeleted()).isTrue();
-        assertThat(deleteHistories).containsExactly(
-                new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now())
-        );
+        assertThat(deleteHistories).containsExactly(new DeleteHistory(question));
     }
 
     @Test
