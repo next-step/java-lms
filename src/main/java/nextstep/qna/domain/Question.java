@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers(new ArrayList<>());
 
     private boolean deleted = false;
 
@@ -82,7 +82,7 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
+    public Answers getAnswers() {
         return answers;
     }
 
@@ -99,24 +99,11 @@ public class Question {
 
     public List<DeleteHistory> delete (NsUser nsUser, long questionId) throws CannotDeleteException {
         validIfUserCanDeletePost(nsUser);
-        answers.forEach(
-                answer -> {
-                    try {
-                        answer.validEachPostHasAnswerWrittenByMe(nsUser);
-                    } catch (CannotDeleteException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-        for(Answer answer : answers) {
-            answer.validEachPostHasAnswerWrittenByMe(nsUser);
-        }
+        answers.postHasAnswersWrittenByMe(nsUser);
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         this.setDeleted(true);
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, this.getWriter(), LocalDateTime.now()));
-        for (Answer answer : answers) {
-            answer.setDeleted(true);
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
-        }
+        answers.delete(deleteHistories);
         return deleteHistories;
     }
 
