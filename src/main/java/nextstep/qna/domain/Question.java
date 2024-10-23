@@ -62,7 +62,7 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public void delete(NsUser loginUser) throws CannotDeleteException {
+    public void delete(NsUser loginUser) {
         confirmIsOwner(loginUser);
         this.answers.forEach(answer -> answer.confirmIsOwner(loginUser));
         this.deleted = true;
@@ -71,7 +71,7 @@ public class Question {
                 .collect(Collectors.toList());
     }
 
-    private void confirmIsOwner(NsUser loginUser) throws CannotDeleteException {
+    private void confirmIsOwner(NsUser loginUser) {
         if (!this.writer.equals(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }

@@ -26,7 +26,7 @@ public class QuestionTest {
     @DisplayName("Question을 삭제할 시 loginUser가 일치하지 않으면 예외가 발생한다.")
     @Test
     void deletedNotEqualsLoginUserThrowExceptionTest() {
-        assertThatThrownBy(() -> Q2.delete(NsUserTest.SANJIGI))
+        assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("질문을 삭제할 권한이 없습니다.");
     }
