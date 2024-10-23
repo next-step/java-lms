@@ -3,6 +3,7 @@ package nextstep.qna.domain;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Answers {
@@ -17,7 +18,7 @@ public class Answers {
     }
 
     public List<Answer> getAnswers() {
-        return answers;
+        return Collections.unmodifiableList(answers);
     }
 
     public boolean existOtherUser(NsUser user) {
