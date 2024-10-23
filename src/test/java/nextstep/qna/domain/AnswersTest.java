@@ -16,6 +16,7 @@ class AnswersTest {
         Answers answers = new Answers();
         answers.add(answer);
 
+        assertThat(answers.getAnswers()).hasSize(1);
         assertThat(answers.getAnswers()).containsExactly(answer);
     }
 
