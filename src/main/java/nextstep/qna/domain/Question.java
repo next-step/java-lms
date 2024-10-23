@@ -3,25 +3,16 @@ package nextstep.qna.domain;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Question {
     private Long id;
-
     private String title;
-
     private String contents;
-
     private NsUser writer;
-
-    private List<Answer> answers = new ArrayList<>();
-
     private boolean deleted = false;
-
     private LocalDateTime createdDate = LocalDateTime.now();
-
     private LocalDateTime updatedDate;
+    private Answers answers = new Answers();
 
     public Question(NsUser writer, String title, String contents) {
         this(0L, writer, title, contents);
@@ -51,7 +42,7 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public void delete() {
+    public void delete(){
         this.deleted = true;
     }
 
@@ -59,7 +50,7 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
+    public Answers getAnswers() {
         return answers;
     }
 
