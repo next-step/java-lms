@@ -14,7 +14,7 @@ class DeleteHistoriesTest {
     @Test
     @DisplayName("성공 - add 메서드가 삭제내역을 추가한다.")
     void addTest() {
-        DeleteHistory deleteHistory = new DeleteHistory(ContentType.QUESTION, 1L, Q1.getWriter(), LocalDateTime.now());
+        DeleteHistory deleteHistory = new DeleteHistory(ContentType.QUESTION, 1L, Q1.getWriter());
         DeleteHistories deleteHistories = new DeleteHistories();
         deleteHistories.add(deleteHistory);
 

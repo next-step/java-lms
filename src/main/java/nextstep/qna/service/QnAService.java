@@ -27,12 +27,15 @@ public class QnAService {
                 .orElseThrow(NotFoundException::new);
         Answers answers = question.getAnswers();
         question.delete(loginUser);
+
         DeleteHistories deleteHistories = new DeleteHistories();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, question.getWriter(), LocalDateTime.now()));
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, question.getWriter()));
+
         for (Answer answer : answers.getAnswers()) {
             answer.delete();
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
+            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter()));
         }
+
         deleteHistoryService.saveAll(deleteHistories);
     }
 }

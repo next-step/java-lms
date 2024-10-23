@@ -19,11 +19,11 @@ public class DeleteHistory {
     public DeleteHistory() {
     }
 
-    public DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+    public DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy) {
         this.contentType = contentType;
         this.contentId = contentId;
         this.deletedBy = deletedBy;
-        this.createdDate = createdDate;
+        this.createdDate = LocalDateTime.now();
     }
 
     @Override
