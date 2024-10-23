@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private Answers answers;
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 

@@ -9,6 +9,9 @@ import nextstep.users.domain.NsUser;
 public class Answers {
 	private List<Answer> answers = new ArrayList<>();
 
+	public Answers() {
+	}
+
 	public void add(Answer answer) {
 		this.answers.add(answer);
 	}
