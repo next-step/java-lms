@@ -22,8 +22,6 @@ public class Answer {
 
     private LocalDateTime updatedDate;
 
-    private DeleteHistory deleteHistory;
-
     public Answer() {
     }
 
@@ -48,11 +46,6 @@ public class Answer {
 
     public Long getId() {
         return id;
-    }
-
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
     }
 
     public boolean isDeleted() {
@@ -80,18 +73,14 @@ public class Answer {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 
-    public void delete(){
+    public void delete(NsUser loginUser) throws CannotDeleteException {
+        throwIfNotDeletable(loginUser);
         this.deleted = true;
-        deleteHistory = new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 
-    public void checkDeletable(NsUser loginUser) throws CannotDeleteException {
+    public void throwIfNotDeletable(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
-    }
-
-    public DeleteHistory getHistory() {
-        return this.deleteHistory;
     }
 }
