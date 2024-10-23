@@ -5,6 +5,8 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Question {
     private Long id;
@@ -15,7 +17,9 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers(new ArrayList<>());
+
+//    private List<Answer> answers = new ArrayList<>();
 
     private boolean deleted = false;
 
@@ -82,11 +86,25 @@ public class Question {
     }
 
     public List<Answer> getAnswers() {
-        return answers;
+        return answers.getAnswers();
     }
 
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
+
+    public boolean canDelete(NsUser loginUser) {
+        return answers.getAnswers().stream()
+                .allMatch(a -> a.isOwner(loginUser));
+    }
+
+    public List<DeleteHistory> delete() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleted = true;
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
+        List<DeleteHistory> answerDeleteHistories = answers.deleteAll();
+        return Stream.concat(deleteHistories.stream(), answerDeleteHistories.stream())
+                .collect(Collectors.toList());
     }
 }

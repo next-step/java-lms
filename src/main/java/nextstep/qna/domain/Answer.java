@@ -56,6 +56,11 @@ public class Answer {
         return deleted;
     }
 
+    public Answer isDeletedStatus() {
+        this.deleted = true;
+        return this;
+    }
+
     public boolean isOwner(NsUser writer) {
         return this.writer.equals(writer);
     }
