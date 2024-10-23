@@ -1,5 +1,7 @@
 package nextstep.qna.domain;
 
+import nextstep.users.domain.NsUser;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,5 +18,10 @@ public class Answers {
 
     public List<Answer> getAnswers() {
         return answers;
+    }
+
+    public boolean existOtherUser(NsUser user) {
+        return answers.stream()
+                .anyMatch(answer -> !answer.isOwner(user));
     }
 }
