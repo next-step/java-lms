@@ -31,7 +31,9 @@ QnaService의 deleteQuestion() 메서드에 대한 단위 테스트는 src/test/
 
 ### 단위테스트 TODO
 Question
-- [x] 질문 삭제 권한이 없습니다.
+- [x] 질문 삭제 권한없음 확인
+  - [x] 작성자가 본인이 아닌 경우
+  - [x] answer에 다른 사람 답변이 있는 경우
 
 Answer
-- [x] 다른 사람 답변이 있어 삭제할 수 없습니다.
+- [x] 작성자 본인인지 확인
