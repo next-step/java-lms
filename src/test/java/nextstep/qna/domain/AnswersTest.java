@@ -5,9 +5,6 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -18,7 +15,8 @@ public class AnswersTest {
     private Answer answer3;
     private Answers answers;
     private Question question;
-    private List<DeleteHistory> deleteHistories;
+//    private List<DeleteHistory> deleteHistories;
+    private DeleteHistories deleteHistories;
 
     @BeforeEach
     void setUp() {
@@ -27,7 +25,7 @@ public class AnswersTest {
         answer2 = new Answer(NsUserTest.SANJIGI, question, "Answers Contents2");
         answer3 = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents3");
         answers = new Answers(answer1, answer2);
-        deleteHistories = new ArrayList<>();
+        deleteHistories = new DeleteHistories();
 
     }
 

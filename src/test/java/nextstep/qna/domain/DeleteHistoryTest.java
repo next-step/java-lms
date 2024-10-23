@@ -9,15 +9,13 @@ import static nextstep.qna.domain.AnswerTest.A1;
 import static nextstep.qna.domain.QuestionTest.Q1;
 
 public class DeleteHistoryTest {
-
-
     private Question question;
     private Answer answer;
 
     @BeforeEach
     void setUp() {
         question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-        answer = new Answer(NsUserTest.JAVAJIGI, Q1, "Answers Contents1");
+        answer = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents1");
     }
 
     @Test

@@ -14,11 +14,17 @@ public class Answers {
     }
 
     public Answers(Answer... answers) {
-        this(new ArrayList<Answer>(Arrays.asList(answers)));
+        this(new ArrayList<>(Arrays.asList(answers)));
     }
 
     public void add(Answer answer) {
         this.answers.add(answer);
+    }
+
+    public void deleteAll(NsUser loginUser, DeleteHistories deleteHistories) throws CannotDeleteException {
+        for (Answer answer : answers) {
+            answer.delete(loginUser, deleteHistories);
+        }
     }
 
     @Override
@@ -32,11 +38,5 @@ public class Answers {
     @Override
     public int hashCode() {
         return Objects.hash(answers);
-    }
-
-    public void deleteAll(NsUser loginUser, List<DeleteHistory> deleteHistories) throws CannotDeleteException {
-        for (Answer answer : answers) {
-            answer.delete(loginUser, deleteHistories);
-        }
     }
 }

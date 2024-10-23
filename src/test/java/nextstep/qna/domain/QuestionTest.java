@@ -5,9 +5,6 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -18,7 +15,7 @@ public class QuestionTest {
     private Answer answer1;
     private Answer answer2;
     private Answer anotherWriteAnswer;
-    private List<DeleteHistory> deleteHistories;
+    private DeleteHistories deleteHistories;
 
     @BeforeEach
     void setUp() {
@@ -26,7 +23,7 @@ public class QuestionTest {
         answer1 = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents1");
         answer2 = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents2");
         anotherWriteAnswer = new Answer(NsUserTest.SANJIGI, question, "Answers Contents3");
-        deleteHistories = new ArrayList<>();
+        deleteHistories = new DeleteHistories();
     }
 
     @Test
@@ -40,7 +37,7 @@ public class QuestionTest {
         assertThat(deletedQuestion.isDeleted()).isTrue();
         assertThat(answer1.isDeleted()).isTrue();
         assertThat(answer2.isDeleted()).isTrue();
-        assertThat(deleteHistories).containsExactly(new DeleteHistory(question), new DeleteHistory(answer1), new DeleteHistory(answer2));
+        assertThat(deleteHistories).isEqualTo(new DeleteHistories(new DeleteHistory(question), new DeleteHistory(answer1), new DeleteHistory(answer2)));
     }
 
     @Test
@@ -48,7 +45,7 @@ public class QuestionTest {
         Question deletedQuestion = question.deleteAll(NsUserTest.JAVAJIGI, deleteHistories);
 
         assertThat(deletedQuestion.isDeleted()).isTrue();
-        assertThat(deleteHistories).containsExactly(new DeleteHistory(question));
+        assertThat(deleteHistories).isEqualTo(new DeleteHistories(new DeleteHistory(question)));
     }
 
     @Test
