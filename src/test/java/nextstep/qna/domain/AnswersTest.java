@@ -1,11 +1,11 @@
 package nextstep.qna.domain;
 
-import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class AnswersTest {
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
@@ -31,5 +31,14 @@ class AnswersTest {
         answers.add(answer2);
 
         assertThat(answers.existOtherUser(Q1.getWriter())).isTrue();
+    }
+
+    @Test
+    @DisplayName("실패 - getAnswers 메서드의 반환된 List를 수정했을 때 예외가 발생한다.")
+    void throwExceptionWhenModifyingReturnedDeleteAnswerList() {
+        Answers answers = new Answers();
+        assertThatThrownBy(() -> answers.getAnswers().add(
+                new Answer(Q1.getWriter(), Q1, "답변1")))
+                .isInstanceOf(UnsupportedOperationException.class);
     }
 }
