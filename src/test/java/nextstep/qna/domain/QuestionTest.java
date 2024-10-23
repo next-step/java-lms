@@ -12,9 +12,9 @@ public class QuestionTest {
 
 
     @Test
-    void 질문_삭제_권한이_없습니다(){
+    void 질문_삭제_권한없음(){
         assertThatThrownBy(() -> {
-            Q1.isOwner(NsUserTest.JAVAJIGI);
+            Q1.checkDeletePermission(NsUserTest.SANJIGI);
         }).isInstanceOf(CannotDeleteException.class);
     }
 
