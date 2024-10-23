@@ -2,6 +2,8 @@ package nextstep.qna.domain;
 
 import nextstep.users.domain.NsUser;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Answers {
@@ -21,7 +23,12 @@ public class Answers {
                 .allMatch(answer -> answer.isOwner(loginUser));
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
+    public List<DeleteHistory> createDeleteHistory() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        for (Answer answer : answers) {
+            answer.setDeleted(true);
+            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
+        }
+        return deleteHistories;
     }
 }
