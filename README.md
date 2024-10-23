@@ -10,8 +10,8 @@
 
 ## 요구사항
 ### 1단계 - 레거시 코드 리팩터링
-- [ ] Question을 deleted True로 변경한다.
-- [ ] Question을 삭제할 시 loginUser가 일치하지 않으면 예외가 발생한다.
+- [X] Question을 deleted True로 변경한다.
+- [X] Question을 삭제할 시 loginUser가 일치하지 않으면 예외가 발생한다.
 - [ ] Answer를 deleted True로 변경한다.
 - [ ] Answer 작성자가 loginUser와 일치하지 않으면 예외가 발생한다.
 - [ ] DateHistory List를 생성한다.
