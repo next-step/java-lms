@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class QuestionTest {
@@ -16,6 +17,13 @@ public class QuestionTest {
     void deleteTest_WhenUserIsNotOwner() {
         assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI))
             .isInstanceOf(CannotDeleteException.class);
+    }
+
+    @DisplayName("질문 삭제 시 답변이 없는 경우 삭제가 가능한지")
+    @Test
+    void deleteTest_WhenAnswersEmpty() {
+        assertThatNoException()
+                .isThrownBy(() -> Q1.delete(NsUserTest.JAVAJIGI));
     }
 
     @DisplayName("질문 삭제 시 다른 사람의 답변이 있는 경우 예외가 발생하는지")
