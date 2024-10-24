@@ -39,7 +39,7 @@ public class Question {
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
+    private boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
     }
 
@@ -47,9 +47,7 @@ public class Question {
         if (!isOwner(user)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-        if (answers.existOtherUser(user)) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-        }
+        answers.validateExistOtherUser(user);
         this.deleted = true;
     }
 
