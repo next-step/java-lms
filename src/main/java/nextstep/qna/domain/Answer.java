@@ -59,13 +59,13 @@ public class Answer {
     public void toQuestion(Question question) {
         this.question = question;
     }
-    public Answer delete(NsUser loginUser, DeleteHistories deleteHistories) throws CannotDeleteException {
+
+    public DeleteHistory delete(NsUser loginUser) throws CannotDeleteException {
         if (!writer.equals(loginUser)) {
             throw new CannotDeleteException("답변작성자가 아닙니다.");
         }
         deleted = true;
-        deleteHistories.add(new DeleteHistory(this));
-        return this;
+        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 
     @Override

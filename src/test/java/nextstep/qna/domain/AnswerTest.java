@@ -6,6 +6,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 public class AnswerTest {
     public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
     public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
@@ -21,14 +23,15 @@ public class AnswerTest {
 
     @Test
     void delete_성공() throws CannotDeleteException {
-        Answer delete = answer.delete(NsUserTest.JAVAJIGI, deleteHistories);
-        Assertions.assertThat(delete.isDeleted()).isTrue();
+        DeleteHistory deleteHistory = answer.delete(NsUserTest.JAVAJIGI);
+        Assertions.assertThat(answer.isDeleted()).isTrue();
+        Assertions.assertThat(deleteHistory).isEqualTo(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
     }
 
     @Test
     void delete_답변작성자가_아닐_경우() {
         Assertions.assertThatThrownBy(() -> {
-            Answer delete = answer.delete(NsUserTest.SANJIGI, deleteHistories);
+            DeleteHistory deleteHistory = answer.delete(NsUserTest.SANJIGI);
         }).isInstanceOf(CannotDeleteException.class);
     }
 }

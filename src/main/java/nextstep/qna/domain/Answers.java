@@ -23,7 +23,7 @@ public class Answers {
 
     public void deleteAll(NsUser loginUser, DeleteHistories deleteHistories) throws CannotDeleteException {
         for (Answer answer : answers) {
-            answer.delete(loginUser, deleteHistories);
+            DeleteHistory deleteHistory = answer.delete(loginUser);
         }
     }
 
