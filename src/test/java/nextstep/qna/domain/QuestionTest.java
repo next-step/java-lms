@@ -31,9 +31,7 @@ public class QuestionTest {
     @DisplayName("실패 - delete 메서드가 다른 사람이 쓴 답변이 있을 때 예외가 발생한다.")
     void throwExceptionWhen2() {
         Question question = createQuestion(NsUserTest.JAVAJIGI);
-        question.addAnswer(AnswerTest.A1);
-        question.addAnswer(AnswerTest.A2);
-
+        question.addAnswer(AnswerTest.createAnswer(NsUserTest.SANJIGI, question));
         assertThatThrownBy(() -> question.delete(NsUserTest.JAVAJIGI))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
@@ -43,7 +41,7 @@ public class QuestionTest {
     @DisplayName("성공 - delete 메서드가 다른 사람이 쓴 답변이 없을 때 정상 처리된다.")
     void deleteTest2() throws Exception{
         Question question = createQuestion(NsUserTest.JAVAJIGI);
-        question.addAnswer(AnswerTest.A1);
+        question.addAnswer(AnswerTest.createAnswer(NsUserTest.JAVAJIGI, question));
         question.delete(NsUserTest.JAVAJIGI);
         assertThat(question.isDeleted()).isTrue();
     }
