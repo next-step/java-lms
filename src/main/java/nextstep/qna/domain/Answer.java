@@ -64,12 +64,9 @@ public class Answer {
         return writer;
     }
 
-    public String getContents() {
-        return contents;
-    }
-
-    public void toQuestion(Question question) {
-        this.question = question;
+    public DeleteHistory delete() {
+        deleted = true;
+        return new DeleteHistory(this);
     }
 
     @Override
