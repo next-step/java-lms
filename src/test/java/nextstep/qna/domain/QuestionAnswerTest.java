@@ -20,10 +20,10 @@ public class QuestionAnswerTest {
     @DisplayName("저장되어있는 답변들 중 작성자가 일치하는지 확인한다.")
     @Test
     void confirmIsOwnerAnswerTest() {
-        QuestionAnswer questionAnswer = new QuestionAnswer();
-        questionAnswer.addAnswer(A1);
+        Answers answers = new Answers();
+        answers.addAnswer(A1);
 
-        assertThatThrownBy(() -> questionAnswer.confirmIsOwnerAnswer(NsUserTest.SANJIGI))
+        assertThatThrownBy(() -> answers.confirmIsOwnerAnswer(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
@@ -31,10 +31,10 @@ public class QuestionAnswerTest {
     @DisplayName("답변 삭제 후 삭제이력을 반환한다.")
     @Test
     void deleteTest() {
-        QuestionAnswer questionAnswer = new QuestionAnswer();
-        questionAnswer.addAnswer(A1);
+        Answers answers = new Answers();
+        answers.addAnswer(A1);
 
-        assertThat(questionAnswer.delete(NsUserTest.JAVAJIGI))
+        assertThat(answers.delete(NsUserTest.JAVAJIGI))
                 .extracting("contentType", "contentId", "deletedBy")
                 .containsExactly(
                         tuple(ContentType.ANSWER, null, NsUserTest.JAVAJIGI)
