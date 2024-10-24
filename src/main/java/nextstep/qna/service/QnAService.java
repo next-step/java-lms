@@ -28,13 +28,7 @@ public class QnAService {
         Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
         question.checkDeletePermission(loginUser);
 
-        List<Answer> answers = question.getAnswers();
-
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(question.delete());
-        for (Answer answer : answers) {
-            deleteHistories.add(answer.delete());
-        }
+        List<DeleteHistory> deleteHistories = question.delete();
         deleteHistoryService.saveAll(deleteHistories);
     }
 }

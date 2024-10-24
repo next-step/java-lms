@@ -101,13 +101,20 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
+    public List<DeleteHistory> delete() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        this.setDeleted(true);
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
+        deleteHistories.addAll(deleteAnswers());
+        return deleteHistories;
     }
 
-    public DeleteHistory delete() {
-        this.setDeleted(true);
-        return new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now());
+    private List<DeleteHistory> deleteAnswers() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        for (Answer answer : answers) {
+            deleteHistories.add(answer.delete());
+        }
+        return deleteHistories;
     }
 
     @Override
