@@ -17,4 +17,12 @@ public class QuestionTest {
         assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI))
             .isInstanceOf(CannotDeleteException.class);
     }
+
+    @DisplayName("질문 삭제 시 다른 사람의 답변이 있는 경우 예외가 발생하는지")
+    @Test
+    void deleteTest_WhenAnswersNotEmpty() {
+        Q1.addAnswer(new Answer(NsUserTest.SANJIGI, Q1, "Answers Contents1"));
+        assertThatThrownBy(() -> Q1.delete(NsUserTest.JAVAJIGI))
+            .isInstanceOf(CannotDeleteException.class);
+    }
 }
