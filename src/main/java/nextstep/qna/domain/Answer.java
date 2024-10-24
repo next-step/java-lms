@@ -47,13 +47,13 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
+    }
+
+    public Answer makeDeletedStatus() {
+        this.deleted = true;
+        return this;
     }
 
     public boolean isOwner(NsUser writer) {
