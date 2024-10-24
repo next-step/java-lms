@@ -103,7 +103,7 @@ public class Question {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         this.setDeleted(true);
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, this.getWriter(), LocalDateTime.now()));
-        answers.delete(deleteHistories);
+        answers.delete(nsUser, deleteHistories);
         return deleteHistories;
     }
 

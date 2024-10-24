@@ -78,13 +78,14 @@ public class Answer {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 
-    public void validEachPostHasAnswerWrittenByMe(NsUser nsUser) throws CannotDeleteException {
+    public void validEachAnswerWrittenByMe(NsUser nsUser) throws CannotDeleteException {
         if (!this.isOwner(nsUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
     }
 
-    public DeleteHistory delete() {
+    public DeleteHistory delete(NsUser nsUser) throws CannotDeleteException {
+        validEachAnswerWrittenByMe(nsUser);
         this.setDeleted(true);
         return new DeleteHistory(ContentType.ANSWER, this.getId(), this.getWriter(), LocalDateTime.now());
     }
