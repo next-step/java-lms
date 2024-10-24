@@ -5,8 +5,6 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -17,6 +15,7 @@ public class QuestionTest {
     private Answer answer1;
     private Answer answer2;
     private Answer anotherWriteAnswer;
+    private DeleteHistories deleteHistories;
 
     @BeforeEach
     void setUp() {
@@ -24,6 +23,7 @@ public class QuestionTest {
         answer1 = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents1");
         answer2 = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents2");
         anotherWriteAnswer = new Answer(NsUserTest.SANJIGI, question, "Answers Contents3");
+        deleteHistories = new DeleteHistories();
     }
 
     @Test
@@ -31,26 +31,26 @@ public class QuestionTest {
         question.addAnswer(answer1);
         question.addAnswer(answer2);
 
-        List<DeleteHistory> deleteHistories = question.delete(NsUserTest.JAVAJIGI);
+        deleteHistories = question.delete(NsUserTest.JAVAJIGI);
 
         assertThat(question.isDeleted()).isTrue();
         assertThat(answer1.isDeleted()).isTrue();
         assertThat(answer2.isDeleted()).isTrue();
-        assertThat(deleteHistories).containsExactly(new DeleteHistory(question), new DeleteHistory(answer1), new DeleteHistory(answer2));
+        assertThat(deleteHistories).isEqualTo(new DeleteHistories(new DeleteHistory(question), new DeleteHistory(answer1), new DeleteHistory(answer2)));
     }
 
     @Test
     void delete_성공_답변이_없는경우() throws CannotDeleteException {
-        List<DeleteHistory> deleteHistories = question.delete(NsUserTest.JAVAJIGI);
+        deleteHistories = question.delete(NsUserTest.JAVAJIGI);
 
         assertThat(question.isDeleted()).isTrue();
-        assertThat(deleteHistories).containsExactly(new DeleteHistory(question));
+        assertThat(deleteHistories).isEqualTo(new DeleteHistories(new DeleteHistory(question)));
     }
 
     @Test
     void delete_다른사람이_쓴_글() {
         assertThatThrownBy(() -> {
-            List<DeleteHistory> deleteHistories = question.delete(NsUserTest.SANJIGI);
+            deleteHistories = question.delete(NsUserTest.SANJIGI);
         }).isInstanceOf(CannotDeleteException.class);
     }
 
@@ -58,7 +58,7 @@ public class QuestionTest {
     void delete_답변_중_다른사람이_쓴_답변() {
         assertThatThrownBy(() -> {
             question.addAnswer(anotherWriteAnswer);
-            List<DeleteHistory> deleteHistories = question.delete(NsUserTest.JAVAJIGI);
+            deleteHistories = question.delete(NsUserTest.JAVAJIGI);
         }).isInstanceOf(CannotDeleteException.class);
     }
 }
