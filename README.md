@@ -15,3 +15,4 @@
 - [X] Answer를 deleted True로 변경한다.
 - [X] Answer 작성자가 loginUser와 일치하지 않으면 예외가 발생한다.
 - [X] DateHistory List를 생성한다.
+- [ ] QuestionAnswer 일급컬렉션을 생성한다.
