@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.ForbiddenException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -28,6 +29,7 @@ public class DeleteHistory {
 
     public DeleteHistory(Answer answer) {
         this(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now());
+        if (!answer.isDeleted()) throw new ForbiddenException("삭제할 수 없는 답변입니다.");
     }
 
     @Override
