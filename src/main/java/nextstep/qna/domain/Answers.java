@@ -1,5 +1,7 @@
 package nextstep.qna.domain;
 
+import nextstep.users.domain.NsUser;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +28,11 @@ public class  Answers {
 
     public List<Answer> getAnswers() {
         return Collections.unmodifiableList(answers);
+    }
+
+    public boolean isDeletable(NsUser questionUser) {
+        return answers.stream()
+                .allMatch(answer -> answer.isOwner(questionUser));
     }
 
 }
