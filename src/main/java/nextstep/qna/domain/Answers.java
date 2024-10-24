@@ -1,28 +1,33 @@
 package nextstep.qna.domain;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Answers {
-    private final List<Answer> list;
+    private final List<Answer> answers;
 
-    public Answers(List<Answer> list) {
-        this.list = list;
+    public Answers() {
+        this.answers = new ArrayList<>();
+    }
+
+    public Answers(List<Answer> answers) {
+        this.answers = answers;
     }
 
     public void add(Answer answer) {
-        list.add(answer);
+        answers.add(answer);
     }
 
     public List<Answer> getAnswers() {
-        return list;
+        return Collections.unmodifiableList(answers);
     }
 
     public List<DeleteHistory> deleteAll() {
-        return list.stream()
-                .peek(Answer::isDeletedStatus)
-                .map(answer -> new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()))
+        return answers.stream()
+                .peek(Answer::makeDeletedStatus)
+                .map(DeleteHistory::ofAnswer)
                 .collect(Collectors.toList());
     }
 }

@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
@@ -34,12 +35,12 @@ public class QuestionTest {
     }
 
     @Test
-    void delete() {
+    void delete() throws CannotDeleteException {
         NsUser user = new NsUser(1L, "test", "123", "name", "test@naver.com");
         Question question = new Question(user, "title", "contents");
         Answer answer = new Answer(user, question, "answer");
         question.addAnswer(answer);
 
-        assertThat(question.delete()).hasSize(2);
+        assertThat(question.delete(user)).hasSize(2);
     }
 }

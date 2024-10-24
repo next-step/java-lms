@@ -1,9 +1,11 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -17,7 +19,7 @@ public class Question {
 
     private NsUser writer;
 
-    private Answers answers = new Answers(new ArrayList<>());
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -69,7 +71,7 @@ public class Question {
     }
 
     public List<Answer> getAnswers() {
-        return answers.getAnswers();
+        return Collections.unmodifiableList(answers.getAnswers());
     }
 
     @Override
@@ -77,17 +79,26 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        validateDeletion(loginUser);
+        deleted = true;
+        DeleteHistories deleteHistories = new DeleteHistories(new ArrayList<>());
+        deleteHistories.add(DeleteHistory.ofQuestion(this));
+        deleteHistories.addAll(answers.deleteAll());
+        return deleteHistories.getHistories();
+    }
+
+    private void validateDeletion(NsUser loginUser) throws CannotDeleteException {
+        if (!isOwner(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+        if (!canDelete(loginUser)) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
+    }
+
     public boolean canDelete(NsUser loginUser) {
         return answers.getAnswers().stream()
                 .allMatch(a -> a.isOwner(loginUser));
-    }
-
-    public List<DeleteHistory> delete() {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleted = true;
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
-        List<DeleteHistory> answerDeleteHistories = answers.deleteAll();
-        return Stream.concat(deleteHistories.stream(), answerDeleteHistories.stream())
-                .collect(Collectors.toList());
     }
 }

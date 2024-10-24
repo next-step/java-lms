@@ -51,7 +51,7 @@ public class Answer {
         return deleted;
     }
 
-    public Answer isDeletedStatus() {
+    public Answer makeDeletedStatus() {
         this.deleted = true;
         return this;
     }
