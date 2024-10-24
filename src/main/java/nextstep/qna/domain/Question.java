@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private QuestionAnswer questionAnswer = new QuestionAnswer();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -45,7 +45,7 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        questionAnswer.addAnswer(answer);
+        this.answers.addAnswer(answer);
     }
 
     public boolean isDeleted() {
@@ -59,13 +59,17 @@ public class Question {
 
     public List<DeleteHistory> delete(NsUser loginUser) {
         confirmIsOwner(loginUser);
-        this.questionAnswer.confirmIsOwnerAnswer(loginUser);
-        this.deleted = true;
+        this.answers.confirmIsOwnerAnswer(loginUser);
+        deleted();
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(createDeleteHistoryQuestion());
-        deleteHistories.addAll(this.questionAnswer.delete(loginUser));
+        deleteHistories.addAll(this.answers.delete(loginUser));
         return deleteHistories;
+    }
+
+    private void deleted() {
+        this.deleted = true;
     }
 
     private void confirmIsOwner(NsUser loginUser) {
