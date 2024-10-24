@@ -27,6 +27,15 @@ public class Answers {
         }
     }
 
+    public List<DeleteHistory> deleteAll(NsUser loginUser) throws CannotDeleteException {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        for (Answer answer : answers) {
+            DeleteHistory deleteHistory = answer.delete(loginUser);
+            deleteHistories.add(deleteHistory);
+        }
+        return deleteHistories;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
