@@ -58,14 +58,19 @@ public class Question {
 
     public void delete(NsUser user) throws CannotDeleteException {
         validateDeletable(user);
+        deleteAnswers(user);
         this.deleted = true;
         this.updatedDate = LocalDateTime.now();
     }
 
     private void validateDeletable(NsUser user) throws CannotDeleteException {
-        if (!isOwner(user) || answers.isDeletable(writer)) {
+        if (!isOwner(user) || !answers.isDeletable(user)) {
             throw new CannotDeleteException("질문을 삭제할 수 없습니다.");
         }
+    }
+
+    private void deleteAnswers(NsUser user) {
+        answers.delete(user);
     }
 
     private boolean isOwner(NsUser loginUser) {

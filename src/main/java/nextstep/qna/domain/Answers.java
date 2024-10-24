@@ -35,4 +35,7 @@ public class  Answers {
                 .allMatch(answer -> answer.isOwner(questionUser));
     }
 
+    public void delete(NsUser user) {
+        answers.forEach(answer -> answer.delete(user));
+    }
 }
