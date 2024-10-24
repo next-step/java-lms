@@ -105,6 +105,11 @@ public class Question {
         return answers;
     }
 
+    public DeleteHistory delete() {
+        this.setDeleted(true);
+        return new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now());
+    }
+
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
