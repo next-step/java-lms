@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -12,11 +13,15 @@ public class  Answers {
     }
 
     public Answers() {
-        this(List.of());
+        this(new ArrayList<>());
     }
 
     public void add(Answer answer) {
         answers.add(answer);
+    }
+
+    public int size() {
+        return answers.size();
     }
 
     public List<Answer> getAnswers() {
