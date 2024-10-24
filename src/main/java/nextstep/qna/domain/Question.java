@@ -39,17 +39,28 @@ public class Question {
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
+    private boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
+    }
+
+    private DeleteHistory toDeleteHistory() {
+        return new DeleteHistory(ContentType.QUESTION, id, writer);
+    }
+
+    public DeleteHistories toDeleteHistories() {
+        if (!deleted) {
+            throw new IllegalArgumentException("삭제되지 않은 질문은 삭제 내역을 만들 수 없습니다.");
+        }
+        DeleteHistories deleteHistories = new DeleteHistories(answers);
+        deleteHistories.add(toDeleteHistory());
+        return deleteHistories;
     }
 
     public void delete(NsUser user) throws CannotDeleteException {
         if (!isOwner(user)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-        if (answers.existOtherUser(user)) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-        }
+        answers.delete(user);
         this.deleted = true;
     }
 

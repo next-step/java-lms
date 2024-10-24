@@ -12,6 +12,13 @@ public class DeleteHistories {
         this.deleteHistories = new ArrayList<>();
     }
 
+    public DeleteHistories(Answers answers) {
+        this.deleteHistories = new ArrayList<>();
+        for (Answer answer : answers.getAnswers()) {
+            add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter()));
+        }
+    }
+
     public void add(DeleteHistory deleteHistory) {
         deleteHistories.add(deleteHistory);
     }
