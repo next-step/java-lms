@@ -6,7 +6,6 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Question {
     private Long id;
@@ -17,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private QuestionAnswer questionAnswer = new QuestionAnswer();
 
     private boolean deleted = false;
 
@@ -46,15 +45,11 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        answers.add(answer);
+        questionAnswer.addAnswer(answer);
     }
 
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
     }
 
     @Override
@@ -62,13 +57,15 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public void delete(NsUser loginUser) {
+    public List<DeleteHistory> delete(NsUser loginUser) {
         confirmIsOwner(loginUser);
-        this.answers.forEach(answer -> answer.confirmIsOwner(loginUser));
+        this.questionAnswer.confirmIsOwnerAnswer(loginUser);
         this.deleted = true;
-        this.answers = this.answers.stream()
-                .map(answer -> answer.delete(loginUser))
-                .collect(Collectors.toList());
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(createDeleteHistoryQuestion());
+        deleteHistories.addAll(this.questionAnswer.delete(loginUser));
+        return deleteHistories;
     }
 
     private void confirmIsOwner(NsUser loginUser) {
@@ -76,4 +73,9 @@ public class Question {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
     }
+
+    private DeleteHistory createDeleteHistoryQuestion() {
+        return new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now());
+    }
+
 }

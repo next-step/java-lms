@@ -49,19 +49,4 @@ public class DeleteHistory {
         return "DeleteHistory [id=" + id + ", contentType=" + contentType + ", contentId=" + contentId + ", deletedBy="
                 + deletedBy + ", createdDate=" + createdDate + "]";
     }
-
-    public static List<DeleteHistory> createDeleteHistoryList(Question question) {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(createQuestion(question));
-        question.getAnswers().forEach(answer -> deleteHistories.add(createAnswer(answer)));
-        return deleteHistories;
-    }
-
-    private static DeleteHistory createQuestion(Question question) {
-        return new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now());
-    }
-
-    private static DeleteHistory createAnswer(Answer answer) {
-        return new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now());
-    }
 }

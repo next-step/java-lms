@@ -70,16 +70,20 @@ public class Answer {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 
-    public Answer delete(NsUser loginUser) {
+    public DeleteHistory delete(NsUser loginUser) {
         confirmIsOwner(loginUser);
         this.deleted = true;
-        return this;
+        return createDeleteHistoryAnswer();
     }
 
     public void confirmIsOwner(NsUser loginUser) {
         if (!this.writer.equals(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
+    }
+
+    private DeleteHistory createDeleteHistoryAnswer() {
+        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
     }
 
 }
