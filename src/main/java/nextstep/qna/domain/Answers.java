@@ -9,12 +9,12 @@ public class Answers {
 
     private final List<Answer> answers;
 
-    public Answers(List<Answer> answers) {
-        this.answers = answers;
+    private Answers(List<Answer> answers) {
+        this.answers = new ArrayList<>(answers);
     }
 
     public Answers(Answer... answers) {
-        this(new ArrayList<>(Arrays.asList(answers)));
+        this(Arrays.asList(answers));
     }
 
     public void add(Answer answer) {
