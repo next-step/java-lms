@@ -22,14 +22,15 @@ public class Answers {
         return Collections.unmodifiableList(answers);
     }
 
-    public void validateExistOtherUser(NsUser user) throws CannotDeleteException {
-        if (existOtherUser(user)) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-        }
-    }
-
     private boolean existOtherUser(NsUser user) {
         return answers.stream()
                 .anyMatch(answer -> !answer.isOwner(user));
+    }
+
+    public void delete(NsUser user) throws CannotDeleteException {
+        if (existOtherUser(user)) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
+        answers.forEach(Answer::delete);
     }
 }
