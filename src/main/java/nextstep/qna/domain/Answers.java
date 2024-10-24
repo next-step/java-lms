@@ -9,11 +9,11 @@ import java.util.List;
 public class Answers {
     private final List<Answer> answers;
 
-    public Answers(){
+    public Answers() {
         this.answers = new ArrayList<>();
     }
 
-    public void addAnswer(Answer answer){
+    public void addAnswer(Answer answer) {
         answers.add(answer);
     }
 
@@ -23,11 +23,9 @@ public class Answers {
         }
     }
 
-    public List<DeleteHistory> deleteQuestionAnswers(){
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
+    public void deleteQuestionAllAnswers(DeleteHistories deleteHistories) {
         for (Answer answer : answers) {
-            deleteHistories.add(answer.deleteAnswer());
+            deleteHistories.addDeleteHistory(answer.deleteAnswer());
         }
-        return deleteHistories;
     }
 }

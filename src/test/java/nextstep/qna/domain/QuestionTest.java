@@ -16,14 +16,14 @@ public class QuestionTest {
     @Test
     void 삭제_권한x(){
         assertThatThrownBy(() -> {
-            Q1.validateDeleteQuestion(NsUserTest.SANJIGI);
+            Q1.deleteQuestion(NsUserTest.SANJIGI);
         }).isInstanceOf(CannotDeleteException.class);
     }
 
     @DisplayName("질문 삭제")
     @Test
-    void 질문_삭제(){
-        Q1.deleteQuestion();
+    void 질문_삭제() throws CannotDeleteException {
+        Q1.deleteQuestion(NsUserTest.JAVAJIGI);
         assertThat(Q1.isDeleted()).isTrue();
     }
 }
