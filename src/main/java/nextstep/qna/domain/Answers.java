@@ -28,4 +28,8 @@ public class Answers {
     public void add(Answer answer) {
         answers.add(answer);
     }
+
+    public int getNumberOfAnswers() {
+        return answers.size();
+    }
 }
