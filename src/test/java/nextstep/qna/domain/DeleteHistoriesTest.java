@@ -29,4 +29,18 @@ class DeleteHistoriesTest {
                 new DeleteHistory(ContentType.QUESTION, 1L, Q1.getWriter())))
                 .isInstanceOf(UnsupportedOperationException.class);
     }
+
+    @Test
+    @DisplayName("성공 - DeleteHistories를 생성 시 Answers 요소 크기 만큼 값에 포함된다.")
+    void deleteHistoriesInitTest() {
+        Answer answer1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.createQuestion(NsUserTest.JAVAJIGI), "답변1");
+        Answer answer2 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.createQuestion(NsUserTest.JAVAJIGI), "답변1");
+        Answers answers = new Answers();
+        answers.add(answer1);
+        answers.add(answer2);
+
+        DeleteHistories deleteHistories = new DeleteHistories(answers);
+        assertThat(deleteHistories.getDeleteHistories())
+                .hasSize(2);
+    }
 }
