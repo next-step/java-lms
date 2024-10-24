@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -68,8 +69,27 @@ public class Question {
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
+    private boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
+    }
+
+    public void checkDeletePermission(NsUser loginUser) throws CannotDeleteException {
+        if (!this.isOwner(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+        for (Answer answer : this.answers) {
+            checkAnswerOwner(answer, loginUser);
+        }
+    }
+
+    //todo owner가 맞는지 체크하는 로직은 Answer에 있어야 할 것 같은데,
+    // Exception 문구를 보면 Question에 있어야할 내용 같아서 이곳에 작성함.
+
+    // 테스트만 아니면 public으로 작성할 필요가 없을 것 같아 고민됨.
+    public void checkAnswerOwner(Answer answer, NsUser loginUser) throws CannotDeleteException {
+        if (!answer.isOwner(loginUser)) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
     }
 
     public Question setDeleted(boolean deleted) {
@@ -81,8 +101,22 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        checkDeletePermission(loginUser);
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        this.setDeleted(true);
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
+        deleteHistories.addAll(deleteAnswers());
+        return deleteHistories;
+    }
+
+    private List<DeleteHistory> deleteAnswers() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        for (Answer answer : answers) {
+            deleteHistories.add(answer.delete());
+        }
+        return deleteHistories;
     }
 
     @Override
