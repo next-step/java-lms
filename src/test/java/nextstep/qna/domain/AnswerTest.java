@@ -18,21 +18,15 @@ public class AnswerTest {
     private DeleteHistoryService deleteHistoryService;
 
     @Test
-    void 작성자_본인인지_확인(){
+    void 작성자_본인인지_확인() {
         assertThat(A1.isOwner(NsUserTest.JAVAJIGI)).isTrue();
         assertThat(A1.isOwner(NsUserTest.SANJIGI)).isFalse();
     }
-    
-    @Test
-    void 답변_삭제_확인_및_삭제_이력_확인(){
-        DeleteHistory deleteHistory = A1.delete();
-        assertThat(A1.isDeleted()).isTrue();
-//        verifyDeleteHistories(deleteHistory);
-    }
 
-//    private void verifyDeleteHistories(DeleteHistory deleteHistory) {
-//        List<DeleteHistory> deleteHistories = Arrays.asList(deleteHistory);
-//        verify(deleteHistoryService).saveAll(deleteHistories);
-//    }
+    @Test
+    void 답변_삭제_확인_및_삭제_이력_확인() {
+        A1.delete();
+        assertThat(A1.isDeleted()).isTrue();
+    }
 
 }
