@@ -1,7 +1,12 @@
 package nextstep.qna.service;
 
 import nextstep.qna.CannotDeleteException;
-import nextstep.qna.domain.*;
+import nextstep.qna.domain.Answer;
+import nextstep.qna.domain.ContentType;
+import nextstep.qna.domain.DeleteHistory;
+import nextstep.qna.domain.Question;
+import nextstep.qna.domain.QuestionRepository;
+import nextstep.qna.domain.QuestionTest;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,7 +43,7 @@ public class QnaServiceTest {
     public void setUp() throws Exception {
         question = new Question(1L, NsUserTest.JAVAJIGI, "title1", "contents1");
         answer = new Answer(11L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
-        question.addAnswer(answer);
+        question.addAnswer(List.of(answer));
     }
 
     @Test
