@@ -29,7 +29,7 @@ public class QuestionTest {
     }
 
     @Test
-    void 질문_삭제_확인_및_삭제_이력_확인() {
+    void 질문_삭제_확인() {
         Q1.delete();
         assertThat(Q1.isDeleted()).isTrue();
     }
