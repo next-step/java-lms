@@ -48,11 +48,6 @@ public class Answer {
         return id;
     }
 
-    private Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
@@ -63,10 +58,6 @@ public class Answer {
 
     public NsUser getWriter() {
         return writer;
-    }
-
-    public String getContents() {
-        return contents;
     }
 
     public void toQuestion(Question question) {
@@ -80,12 +71,12 @@ public class Answer {
     }
 
     public DeleteHistory deleteAnswer(){
-        setDeleted(true);
+        this.deleted=true;
         return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 
     @Override
     public String toString() {
-        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+        return "Answer [id=" + id + ", writer=" + writer + ", contents=" + contents + "]";
     }
 }
