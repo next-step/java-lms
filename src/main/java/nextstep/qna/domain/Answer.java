@@ -2,8 +2,10 @@ package nextstep.qna.domain;
 
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
+import nextstep.qna.service.DeleteHistoryService;
 import nextstep.users.domain.NsUser;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 
 public class Answer {
@@ -72,8 +74,9 @@ public class Answer {
         this.question = question;
     }
 
-    public void delete(){
-
+    public DeleteHistory delete(){
+        this.setDeleted(true);
+        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
     }
 
     @Override
