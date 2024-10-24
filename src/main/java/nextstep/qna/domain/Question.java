@@ -56,11 +56,13 @@ public class Question {
         return answers;
     }
 
-    public void delete(NsUser user) throws CannotDeleteException {
+    public List<DeleteHistory> delete(NsUser user) throws CannotDeleteException {
         validateDeletable(user);
-        deleteAnswers(user);
-        this.deleted = true;
-        this.updatedDate = LocalDateTime.now();
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        setDeleteInfo();
+        deleteHistories.add(new DeleteHistory(this));
+        deleteHistories.addAll(deleteAnswers(user));
+        return deleteHistories;
     }
 
     private void validateDeletable(NsUser user) throws CannotDeleteException {
@@ -69,8 +71,13 @@ public class Question {
         }
     }
 
-    private void deleteAnswers(NsUser user) {
-        answers.delete(user);
+    private void setDeleteInfo() {
+        this.deleted = true;
+        this.updatedDate = LocalDateTime.now();
+    }
+
+    private List<DeleteHistory> deleteAnswers(NsUser user) {
+        return answers.delete();
     }
 
     private boolean isOwner(NsUser loginUser) {

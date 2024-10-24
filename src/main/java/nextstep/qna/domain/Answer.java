@@ -1,6 +1,5 @@
 package nextstep.qna.domain;
 
-import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
@@ -65,8 +64,9 @@ public class Answer {
         return writer;
     }
 
-    public void delete(NsUser loginUser) {
+    public DeleteHistory delete() {
         deleted = true;
+        return new DeleteHistory(this);
     }
 
     @Override
