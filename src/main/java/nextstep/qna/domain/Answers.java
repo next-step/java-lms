@@ -6,10 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class QuestionAnswer {
+public class Answers {
 
-
-    private List<Answer> answers = new ArrayList<>();
+    private final List<Answer> answers = new ArrayList<>();
 
     public void addAnswer(Answer answer) {
         answers.add(answer);
