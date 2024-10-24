@@ -21,12 +21,6 @@ public class Answers {
         this.answers.add(answer);
     }
 
-    public void deleteAll(NsUser loginUser, DeleteHistories deleteHistories) throws CannotDeleteException {
-        for (Answer answer : answers) {
-            DeleteHistory deleteHistory = answer.delete(loginUser);
-        }
-    }
-
     public List<DeleteHistory> deleteAll(NsUser loginUser) throws CannotDeleteException {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : answers) {
