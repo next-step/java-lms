@@ -1,17 +1,14 @@
 package nextstep.course;
 
 import nextstep.courses.domain.Course;
-import nextstep.courses.domain.Image;
+import nextstep.lecture.Image;
 import nextstep.lecture.Lecture;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.groups.Tuple.tuple;
@@ -56,7 +53,7 @@ public class CourseTest {
         Date startDate = simpleDateFormat.parse("2023-04-05");
         Date endDate = simpleDateFormat.parse("2023-05-05");
 
-        Image image = new Image(1L, "테스트이미지", 300, 200, 1);
+        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
         return Lecture.createFree((long) id, "테스트강의", image, startDate, endDate);
     }
 }

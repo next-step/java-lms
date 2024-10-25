@@ -1,6 +1,5 @@
 package nextstep.lecture;
 
-import nextstep.courses.domain.Image;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,7 +32,7 @@ public class LectureTest {
         Date startDate = simpleDateFormat.parse("2023-04-05");
         Date endDate = simpleDateFormat.parse("2023-05-05");
 
-        Image image = new Image(1L, "테스트이미지", 300, 200, 1);
+        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
 
         Lecture lecture = Lecture.createFree(1L, "테스트강의", image, startDate, endDate);
 
@@ -49,7 +48,7 @@ public class LectureTest {
         Date startDate = simpleDateFormat.parse("2023-04-05");
         Date endDate = simpleDateFormat.parse("2023-05-05");
 
-        Image image = new Image(1L, "테스트이미지", 300, 200, 1);
+        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
 
         Lecture lecture = Lecture.createPaid(1L, "테스트강의", image, 100, 800000, startDate, endDate);
 
@@ -65,7 +64,7 @@ public class LectureTest {
         Date startDate = simpleDateFormat.parse("2023-05-05");
         Date endDate = simpleDateFormat.parse("2023-04-05");
 
-        Image image = new Image(1L, "테스트이미지", 300, 200, 1);
+        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
 
         assertThatThrownBy(() -> Lecture.createPaid(1L, "테스트강의", image, 100, 800000, startDate, endDate))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -79,7 +78,7 @@ public class LectureTest {
         Date startDate = simpleDateFormat.parse("2023-04-05");
         Date endDate = simpleDateFormat.parse("2023-05-05");
 
-        Image image = new Image(1L, "테스트이미지", 300, 200, 1);
+        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
 
         Lecture lecture = Lecture.createFree(1L, "테스트강의", image, startDate, endDate);
         lecture.waitLecture();
@@ -93,7 +92,7 @@ public class LectureTest {
         Date startDate = simpleDateFormat.parse("2023-04-05");
         Date endDate = simpleDateFormat.parse("2023-05-05");
 
-        Image image = new Image(1L, "테스트이미지", 300, 200, 1);
+        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
 
         Lecture lecture = Lecture.createFree(1L, "테스트강의", image, startDate, endDate);
         lecture.closedLecture();
@@ -107,7 +106,7 @@ public class LectureTest {
         Date startDate = simpleDateFormat.parse("2023-04-05");
         Date endDate = simpleDateFormat.parse("2023-05-05");
 
-        Image image = new Image(1L, "테스트이미지", 300, 200, 1);
+        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
 
         Lecture lecture = Lecture.createFree(1L, "테스트강의", image, startDate, endDate);
         lecture.waitLecture();
@@ -122,7 +121,7 @@ public class LectureTest {
         Date startDate = simpleDateFormat.parse("2023-04-05");
         Date endDate = simpleDateFormat.parse("2023-05-05");
 
-        Image image = new Image(1L, "테스트이미지", 300, 200, 1);
+        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
 
         Lecture lecture = Lecture.createPaid(1L, "테스트강의", image, 100, 800000, startDate, endDate);
 
@@ -140,7 +139,7 @@ public class LectureTest {
         Date startDate = simpleDateFormat.parse("2023-04-05");
         Date endDate = simpleDateFormat.parse("2023-05-05");
 
-        Image image = new Image(1L, "테스트이미지", 300, 200, 1);
+        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
 
         Lecture lecture = Lecture.createPaid(1L, "테스트강의", image, 100, 800000, startDate, endDate);
 
@@ -160,7 +159,7 @@ public class LectureTest {
         Date startDate = simpleDateFormat.parse("2023-04-05");
         Date endDate = simpleDateFormat.parse("2023-05-05");
 
-        Image image = new Image(1L, "테스트이미지", 300, 200, 1);
+        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
 
         Lecture lecture = Lecture.createPaid(1L, "테스트강의", image, 100, 800000, startDate, endDate);
         lecture.waitLecture();
@@ -176,7 +175,7 @@ public class LectureTest {
         Date startDate = simpleDateFormat.parse("2023-04-05");
         Date endDate = simpleDateFormat.parse("2023-05-05");
 
-        Image image = new Image(1L, "테스트이미지", 300, 200, 1);
+        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
 
         Lecture lecture = Lecture.createPaid(1L, "테스트강의", image, 1, 800000, startDate, endDate);
         Payment payment = new Payment(1L, 1L, 1L, 800000);
