@@ -1,7 +1,6 @@
 package nextstep.course;
 
 import nextstep.courses.domain.Image;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +18,7 @@ public class ImageTest {
     @DisplayName("이미지를 생성한다.")
     @Test
     void createImageTest() {
-        Image image = new Image("테스트이미지", 300, 200, 1);
+        Image image = new Image(1L, "테스트이미지", 300, 200, 1);
 
         assertThat(image)
                 .extracting("name", "width", "height", "size")
@@ -30,7 +29,7 @@ public class ImageTest {
     @Test
     void createImageOverSizeThrowExceptionTest() {
 
-        assertThatThrownBy(() -> new Image("테스트이미지", 300, 200, 2))
+        assertThatThrownBy(() -> new Image(1L, "테스트이미지", 300, 200, 2))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("이미지 사이즈는 1MB를 초과하면 안됩니다.");
     }
@@ -39,7 +38,7 @@ public class ImageTest {
     @Test
     void createImageOverWidthHeightThrowExceptionTest() {
 
-        assertThatThrownBy(() -> new Image("테스트이미지", 600, 400, 1))
+        assertThatThrownBy(() -> new Image(1L, "테스트이미지", 600, 400, 1))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("이미지의 너비가 300px, 높이가 200px을 초과하면 안됩니다.");
     }
@@ -48,7 +47,7 @@ public class ImageTest {
     @Test
     void createImageRateThrowExceptionTest() {
 
-        assertThatThrownBy(() -> new Image("테스트이미지", 200, 200, 1))
+        assertThatThrownBy(() -> new Image(1L, "테스트이미지", 200, 200, 1))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("이미지의 너비 높이가 3:2 비율이여야 합니다.");
     }
