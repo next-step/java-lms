@@ -8,6 +8,7 @@ public class Lecture {
 
     private final static String DATE_MESSAGE = "종료일이 시작일보다 빠릅니다.";
     private final static String PAID_SUBSCRIBE_MESSAGE = "유료강의는 결제내역이 필수입니다.";
+    private final static String FREE_SUBSCRIBE_MESSAGE = "무료강의는 결제내역이 필요없습니다.";
     private final static String SUBSCRIBE_STATUS_NOT_WAIT_MESSAGE = "현재 강의가 모집중이 아닙니다.";
     private final static String SUBSCRIBE_COUNT_MAX_MESSAGE = "강의가 이미 만석입니다.";
 
@@ -67,7 +68,7 @@ public class Lecture {
     //수강신청을 한다(무료)
     public void subsribe() {
         confirmSubscribeStatus();
-        if (paymentType != PaymentType.FREE) {
+        if (paymentType == PaymentType.PAID) {
             throw new IllegalArgumentException(PAID_SUBSCRIBE_MESSAGE);
         }
         addSubscribeCount();
@@ -77,8 +78,7 @@ public class Lecture {
     public void subsribe(Payment payment) {
         confirmSubscribeStatus();
         if (paymentType == PaymentType.FREE) {
-            addSubscribeCount();
-            return;
+            throw new IllegalArgumentException(FREE_SUBSCRIBE_MESSAGE);
         }
         payment.checkMatchAmount(this.price);
         confirmSubscribeMax(this.subscribeCount + 1);
@@ -119,6 +119,7 @@ public class Lecture {
         }
     }
 
+    //수강신청인원이 다 찼는지 확인한다.
     private void confirmSubscribeMax(int subscribeCount) {
         if (this.subscribeMax < subscribeCount) {
             throw new IllegalArgumentException(SUBSCRIBE_COUNT_MAX_MESSAGE);
