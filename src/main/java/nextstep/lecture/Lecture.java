@@ -1,6 +1,5 @@
 package nextstep.lecture;
 
-import nextstep.courses.domain.Image;
 import nextstep.payments.domain.Payment;
 
 import java.util.Date;

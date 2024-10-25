@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.lecture;
 
 public class Image {
 
@@ -16,6 +16,7 @@ public class Image {
     private final int size;
 
     public Image(Long id, String name, int width, int height, int size) {
+        ImageExtension.confirmImageExtension((name));
         confirmRate(width, height);
         confirmWidthHeight(width, height);
         confirmImageSize(size);
