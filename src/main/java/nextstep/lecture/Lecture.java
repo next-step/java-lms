@@ -82,6 +82,7 @@ public class Lecture {
             return;
         }
         payment.checkMatchAmount(this.price);
+        confirmSubscribeMax(this.subscribeCount + 1);
         addSubscribeCount();
     }
 
@@ -102,7 +103,6 @@ public class Lecture {
 
     //수강신청하면 인원을 증가시킨다.
     private void addSubscribeCount() {
-        confirmSubscribeMax(this.subscribeCount + 1);
         this.subscribeCount++;
     }
 
