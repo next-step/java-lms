@@ -3,15 +3,12 @@ package nextstep.payments.domain;
 import java.time.LocalDateTime;
 
 public class Payment {
+
+    private final static String MATCH_AMOUNT_MESSAGE = "결제 금액이 일치하지 않습니다.";
+
     private Long id;
-
-    // 결제한 강의 아이디
     private Long sessionId;
-
-    // 결제한 사용자 아이디
     private Long nsUserId;
-
-    // 결제 금액
     private int amount;
 
     private LocalDateTime createdAt;
@@ -22,5 +19,11 @@ public class Payment {
         this.nsUserId = nsUserId;
         this.amount = amount;
         this.createdAt = LocalDateTime.now();
+    }
+
+    public void checkMatchAmount(int amount) {
+        if (this.amount != amount) {
+            throw new IllegalArgumentException(MATCH_AMOUNT_MESSAGE);
+        }
     }
 }
