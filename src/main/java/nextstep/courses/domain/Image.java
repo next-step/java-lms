@@ -9,15 +9,17 @@ public class Image {
     private final static String OVER_WIDTH_HEIGHT = "이미지의 너비가 300px, 높이가 200px을 초과하면 안됩니다.";
     private final static String NOT_CORRECT_RATE = "이미지의 너비 높이가 3:2 비율이여야 합니다.";
 
+    private final Long id;
     private final String name;
     private final int width;
     private final int height;
     private final int size;
 
-    public Image(String name, int width, int height, int size) {
+    public Image(Long id, String name, int width, int height, int size) {
         confirmRate(width, height);
         confirmWidthHeight(width, height);
         confirmImageSize(size);
+        this.id = id;
         this.name = name;
         this.width = width;
         this.height = height;
