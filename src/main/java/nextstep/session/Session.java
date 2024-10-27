@@ -4,8 +4,8 @@ import nextstep.payments.domain.Payment;
 import nextstep.session.image.Image;
 import nextstep.users.domain.NsUser;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Session {
@@ -25,7 +25,7 @@ public class Session {
     private final List<NsUser> subscribeUsers = new ArrayList<>();
     private final DateRange dateRange;
 
-    private Session(Long id, String title, Image image, PaymentType paymentType, int subscribeMax, int price, Date startDate, Date endDate) {
+    private Session(Long id, String title, Image image, PaymentType paymentType, int subscribeMax, int price, LocalDateTime startDate, LocalDateTime endDate) {
         this.id = id;
         this.title = title;
         this.image = image;
@@ -36,7 +36,7 @@ public class Session {
         this.dateRange = new DateRange(startDate, endDate);
     }
 
-    private Session(Long id, String title, Image image, PaymentType paymentType, Date startDate, Date endDate) {
+    private Session(Long id, String title, Image image, PaymentType paymentType, LocalDateTime startDate, LocalDateTime endDate) {
         this.id = id;
         this.title = title;
         this.image = image;
@@ -45,11 +45,11 @@ public class Session {
         this.dateRange = new DateRange(startDate, endDate);
     }
 
-    public static Session createFree(Long id, String title, Image image, Date startDate, Date endDate) {
+    public static Session createFree(Long id, String title, Image image, LocalDateTime startDate, LocalDateTime endDate) {
         return new Session(id, title, image, PaymentType.FREE, startDate, endDate);
     }
 
-    public static Session createPaid(Long id, String title, Image image, int subscribeMax, int price, Date startDate, Date endDate) {
+    public static Session createPaid(Long id, String title, Image image, int subscribeMax, int price, LocalDateTime startDate, LocalDateTime endDate) {
         return new Session(id, title, image, PaymentType.PAID, subscribeMax, price, startDate, endDate);
     }
 

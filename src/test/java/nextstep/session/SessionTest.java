@@ -6,9 +6,7 @@ import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -17,42 +15,39 @@ public class SessionTest {
 
     @DisplayName("무료 강의를 생성한다.")
     @Test
-    void createFreeSessionTest() throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date startDate = simpleDateFormat.parse("2023-04-05");
-        Date endDate = simpleDateFormat.parse("2023-05-05");
+    void createFreeSessionTest() {
+        LocalDateTime startDate = LocalDateTime.parse("2023-04-05T00:00:00");
+        LocalDateTime endDate = LocalDateTime.parse("2023-05-05T00:00:00");
 
         Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
 
         Session session = Session.createFree(1L, "테스트강의", image, startDate, endDate);
 
         assertThat(session)
-                .extracting("title", "image", "paymentType", "startDate", "endDate")
-                .contains("테스트강의", PaymentType.FREE, image, startDate, endDate);
+                .extracting("title", "image", "paymentType")
+                .contains("테스트강의", PaymentType.FREE, image);
     }
 
     @DisplayName("유료 강의를 생성한다.")
     @Test
-    void createPaidSessionTest() throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date startDate = simpleDateFormat.parse("2023-04-05");
-        Date endDate = simpleDateFormat.parse("2023-05-05");
+    void createPaidSessionTest() {
+        LocalDateTime startDate = LocalDateTime.parse("2023-04-05T00:00:00");
+        LocalDateTime endDate = LocalDateTime.parse("2023-05-05T00:00:00");
 
         Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
 
         Session session = Session.createPaid(1L, "테스트강의", image, 100, 800000, startDate, endDate);
 
         assertThat(session)
-                .extracting("title", "image", "paymentType", "startDate", "endDate", "subscribeMax", "price")
-                .contains("테스트강의", PaymentType.PAID, image, 100, 800000, startDate, endDate);
+                .extracting("title", "paymentType", "image", "subscribeMax", "price")
+                .contains("테스트강의", PaymentType.PAID, image, 100, 800000);
     }
 
     @DisplayName("강의를 모집중으로 변경한다.")
     @Test
-    void SessionWaitTest() throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date startDate = simpleDateFormat.parse("2023-04-05");
-        Date endDate = simpleDateFormat.parse("2023-05-05");
+    void SessionWaitTest() {
+        LocalDateTime startDate = LocalDateTime.parse("2023-04-05T00:00:00");
+        LocalDateTime endDate = LocalDateTime.parse("2023-05-05T00:00:00");
 
         Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
 
@@ -63,10 +58,9 @@ public class SessionTest {
 
     @DisplayName("강의를 종료한다.")
     @Test
-    void SessionClosedTest() throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date startDate = simpleDateFormat.parse("2023-04-05");
-        Date endDate = simpleDateFormat.parse("2023-05-05");
+    void SessionClosedTest() {
+        LocalDateTime startDate = LocalDateTime.parse("2023-04-05T00:00:00");
+        LocalDateTime endDate = LocalDateTime.parse("2023-05-05T00:00:00");
 
         Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
 
@@ -77,10 +71,9 @@ public class SessionTest {
 
     @DisplayName("무료 강의를 신청할 시 수강인원이 1 증가한다.")
     @Test
-    void subscribeSessionAddSubscribeCountTest() throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date startDate = simpleDateFormat.parse("2023-04-05");
-        Date endDate = simpleDateFormat.parse("2023-05-05");
+    void subscribeSessionAddSubscribeCountTest() {
+        LocalDateTime startDate = LocalDateTime.parse("2023-04-05T00:00:00");
+        LocalDateTime endDate = LocalDateTime.parse("2023-05-05T00:00:00");
 
         Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
 
@@ -95,10 +88,9 @@ public class SessionTest {
 
     @DisplayName("강의를 신청할 시 모집중이 아니면 예외가 발생한다")
     @Test
-    void subscribeSessionNotWaitThrowExceptionTest() throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date startDate = simpleDateFormat.parse("2023-04-05");
-        Date endDate = simpleDateFormat.parse("2023-05-05");
+    void subscribeSessionNotWaitThrowExceptionTest() {
+        LocalDateTime startDate = LocalDateTime.parse("2023-04-05T00:00:00");
+        LocalDateTime endDate = LocalDateTime.parse("2023-05-05T00:00:00");
 
         Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
 
@@ -115,11 +107,9 @@ public class SessionTest {
 
     @DisplayName("유료 강의를 신청할 시 수강생이 결제한 금액과 수강료가 일치하지 않으면 예외가 발생한다.")
     @Test
-    void subscribeSessionNotCorrectPaymentThrowExceptionTest() throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date startDate = simpleDateFormat.parse("2023-04-05");
-        Date endDate = simpleDateFormat.parse("2023-05-05");
-
+    void subscribeSessionNotCorrectPaymentThrowExceptionTest() {
+        LocalDateTime startDate = LocalDateTime.parse("2023-04-05T00:00:00");
+        LocalDateTime endDate = LocalDateTime.parse("2023-05-05T00:00:00");
         Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
 
         Session session = Session.createPaid(1L, "테스트강의", image, 100, 800000, startDate, endDate);
@@ -136,10 +126,9 @@ public class SessionTest {
 
     @DisplayName("유료 강의를 신청할 시 결제내역이 없으면 예외가 발생한다.")
     @Test
-    void subscribeSessionWithoutPaymentThrowExceptionTest() throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date startDate = simpleDateFormat.parse("2023-04-05");
-        Date endDate = simpleDateFormat.parse("2023-05-05");
+    void subscribeSessionWithoutPaymentThrowExceptionTest() {
+        LocalDateTime startDate = LocalDateTime.parse("2023-04-05T00:00:00");
+        LocalDateTime endDate = LocalDateTime.parse("2023-05-05T00:00:00");
 
         Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
 
@@ -155,10 +144,9 @@ public class SessionTest {
 
     @DisplayName("강의가 이미 만석이면 예외를 발생한다.")
     @Test
-    void subscribeSessionAlreadyMaxThrowExceptionTest() throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date startDate = simpleDateFormat.parse("2023-04-05");
-        Date endDate = simpleDateFormat.parse("2023-05-05");
+    void subscribeSessionAlreadyMaxThrowExceptionTest() {
+        LocalDateTime startDate = LocalDateTime.parse("2023-04-05T00:00:00");
+        LocalDateTime endDate = LocalDateTime.parse("2023-05-05T00:00:00");
 
         Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
 

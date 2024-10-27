@@ -1,13 +1,14 @@
 package nextstep.course;
 
 import nextstep.courses.domain.Course;
-import nextstep.session.image.Image;
 import nextstep.session.Session;
+import nextstep.session.image.Image;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,10 +45,9 @@ public class CourseTest {
                 );
     }
 
-    private Session createFreeSession(int id) throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date startDate = simpleDateFormat.parse("2023-04-05");
-        Date endDate = simpleDateFormat.parse("2023-05-05");
+    private Session createFreeSession(int id) {
+        LocalDateTime startDate = LocalDateTime.parse("2023-04-05T00:00:00");
+        LocalDateTime endDate = LocalDateTime.parse("2023-05-05T00:00:00");
 
         Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
         return Session.createFree((long) id, "테스트강의", image, startDate, endDate);
