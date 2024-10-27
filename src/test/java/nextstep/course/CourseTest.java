@@ -1,8 +1,8 @@
 package nextstep.course;
 
 import nextstep.courses.domain.Course;
-import nextstep.lecture.Image;
-import nextstep.lecture.Lecture;
+import nextstep.session.Image;
+import nextstep.session.Session;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +34,7 @@ public class CourseTest {
         Course course = new Course(1L, "TDD클린코드", 1L, 1L);
 
         for (int i = 1; i < 6; i++) {
-            course.addLecture(createFreeLecture(i));
+            course.addSession(createFreeSession(i));
         }
 
         assertThat(course.getLectures())
@@ -48,12 +48,12 @@ public class CourseTest {
                 );
     }
 
-    private Lecture createFreeLecture(int id) throws ParseException {
+    private Session createFreeSession(int id) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date startDate = simpleDateFormat.parse("2023-04-05");
         Date endDate = simpleDateFormat.parse("2023-05-05");
 
         Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
-        return Lecture.createFree((long) id, "테스트강의", image, startDate, endDate);
+        return Session.createFree((long) id, "테스트강의", image, startDate, endDate);
     }
 }
