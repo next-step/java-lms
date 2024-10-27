@@ -1,8 +1,11 @@
 package nextstep.session;
 
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Session {
 
@@ -19,7 +22,7 @@ public class Session {
     private SubscribeStatus subscribeStatus;
     private int subscribeMax;
     private int price;
-    private int subscribeCount = 0;
+    private final List<NsUser> subscribeUsers = new ArrayList<>();
     private final Date startDate;
     private final Date endDate;
 
@@ -57,32 +60,24 @@ public class Session {
         return new Session(id, title, image, PaymentType.PAID, subscribeMax, price, startDate, endDate);
     }
 
-    public int getSubscribeCount() {
-        return subscribeCount;
-    }
-
-    public SubscribeStatus getSubscribeStatus() {
-        return subscribeStatus;
-    }
-
     //수강신청을 한다(무료)
-    public void subsribe() {
+    public void subsribe(NsUser user) {
         confirmSubscribeStatus();
         if (paymentType == PaymentType.PAID) {
             throw new IllegalArgumentException(PAID_SUBSCRIBE_MESSAGE);
         }
-        addSubscribeCount();
+        subscribeUser(user);
     }
 
     //수강신청을 한다(유료)
-    public void subsribe(Payment payment) {
+    public void subsribe(NsUser user, Payment payment) {
         confirmSubscribeStatus();
         if (paymentType == PaymentType.FREE) {
             throw new IllegalArgumentException(FREE_SUBSCRIBE_MESSAGE);
         }
         payment.checkMatchAmount(this.price);
-        confirmSubscribeMax(this.subscribeCount + 1);
-        addSubscribeCount();
+        confirmSubscribeMax();
+        subscribeUser(user);
     }
 
     //모집중으로 상태를 변경한다.
@@ -95,14 +90,22 @@ public class Session {
         changeSubscribeStatus(SubscribeStatus.CLOSED);
     }
 
+    public int getSubscribeCount() {
+        return this.subscribeUsers.size();
+    }
+
+    public SubscribeStatus getSubscribeStatus() {
+        return subscribeStatus;
+    }
+
     //수강신청 상태를 변경한다.
     private void changeSubscribeStatus(SubscribeStatus subscribeStatus) {
         this.subscribeStatus = subscribeStatus;
     }
 
     //수강신청하면 인원을 증가시킨다.
-    private void addSubscribeCount() {
-        this.subscribeCount++;
+    private void subscribeUser(NsUser user) {
+        this.subscribeUsers.add(user);
     }
 
     //시작일 종료일 날짜를 점검한다.
@@ -120,8 +123,8 @@ public class Session {
     }
 
     //수강신청인원이 다 찼는지 확인한다.
-    private void confirmSubscribeMax(int subscribeCount) {
-        if (this.subscribeMax < subscribeCount) {
+    private void confirmSubscribeMax() {
+        if (this.subscribeMax < this.subscribeUsers.size() + 1) {
             throw new IllegalArgumentException(SUBSCRIBE_COUNT_MAX_MESSAGE);
         }
     }
