@@ -1,35 +1,21 @@
 package nextstep.session.image;
 
-import java.util.Objects;
-
 public class ImageSize {
 
-    private static final int MAXIMUM_IMAGE_SIZE = 1;
-    private static final String OVER_SIZE_MESSAGE = "이미지 사이즈는 1MB를 초과하면 안됩니다.";
+    private static final String NOT_CORRECT_RATE = "이미지의 너비 높이가 3:2 비율이여야 합니다.";
 
-    private final int size;
+    private final ImageWidth width;
+    private final ImageHeight height;
 
-    public ImageSize(int size) {
-        confirmImageSize(size);
-        this.size = size;
+    public ImageSize(int width, int height) {
+        confirmRate(width, height);
+        this.width = new ImageWidth(width);
+        this.height = new ImageHeight(height);
     }
 
-    private void confirmImageSize(int size) {
-        if (size > MAXIMUM_IMAGE_SIZE) {
-            throw new IllegalArgumentException(OVER_SIZE_MESSAGE);
+    private void confirmRate(int width, int height) {
+        if (width * 2 != height * 3) {
+            throw new IllegalArgumentException(NOT_CORRECT_RATE);
         }
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        ImageSize imageSize = (ImageSize) object;
-        return size == imageSize.size;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(size);
     }
 }
