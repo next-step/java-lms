@@ -25,4 +25,61 @@
   * 단, Service 클래스는 단위 테스트가 없어도 된다.
 * 다음 동영상을 참고해 DB 테이블보다 도메인 모델을 먼저 설계하고 구현한다.
 
-## 
+## TODO
+* Course
+  - 생성
+  - 강의 추가
+  * Sessions
+    * Session Model
+      - 생성
+        * FreeSession
+        * PaidSession
+      * Session 시작종료일 VO
+        - 생성
+        - 종료일이 시작일보다 과거일수 없다.
+      * Session 커버 이미지 정보 VO
+        - 생성
+        * 이미지 용량 VO
+          - 생성
+          - 이미지 용량을 체크한다(이미지 크기는 1MB 이하여야 한다)
+        * 이미지 타입 VO
+          - 생성
+          - 이미지 타입을 체크한다(이미지 타입은 이미지 타입은 gif, jpg(jpeg 포함),, png, svg만 허용한다.)
+        * 이미지 가로세로 VO
+          - 생성
+          - 이미지 가로세로를 체크한다(이미지의 width는 300픽셀, height는 200픽셀 이상)
+          - 이미지 가로세로 비율을 체크한다(width와 height의 비율은 3:2여야 한다.)
+      * Session 등록 학생 목록 VO
+        - 생성
+        - 추가
+      * Session 상태 생성 VO
+        * 준비중 
+          - 강의 신청 불가
+        * 모집중
+          - 강의 신청 가능
+        * 종료
+          - 강의 신청 불가
+    * FreeSession Model
+      - 생성
+        * session id 
+        * 등록 학생 목록
+      - register(NsUser 가 Session 등록한다.)
+        - 강의 최대 수강 인원 제한 없다.
+    * PaidSession Model
+      - 생성
+        * session id
+        * 등록 학생 목록
+        * 강의 최대 수강 인원
+        * 등록 금액
+      - Payment 정보 Session 등록한다.
+        - 강의 최대 수강 인원 초과할수 없다.
+        - 중복 수강 신청
+        - 결제 정보의 결제한 금액과 수강료가 일치할 때 수강신청이 가능하다.
+        * ~~Payment~~ 
+          - 생성
+            * payment id
+            * 강의 session
+            * 결제 유저 nsUser
+            * 결제 금액 amount
+
+### TODO 는 indent depth 가 깊은쪽부터 시작한다.
