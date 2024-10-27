@@ -5,8 +5,6 @@ import nextstep.session.image.Image;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Session {
 
@@ -22,7 +20,7 @@ public class Session {
     private SubscribeStatus subscribeStatus;
     private int subscribeMax;
     private int price;
-    private final List<NsUser> subscribeUsers = new ArrayList<>();
+    private final Subscribers subscribers = new Subscribers();
     private final DateRange dateRange;
 
     private Session(Long id, String title, Image image, PaymentType paymentType, int subscribeMax, int price, LocalDateTime startDate, LocalDateTime endDate) {
@@ -80,7 +78,7 @@ public class Session {
     }
 
     public int getSubscribeCount() {
-        return this.subscribeUsers.size();
+        return this.subscribers.subscribeUsersSize();
     }
 
     public SubscribeStatus getSubscribeStatus() {
@@ -92,7 +90,7 @@ public class Session {
     }
 
     private void subscribeUser(NsUser user) {
-        this.subscribeUsers.add(user);
+        this.subscribers.addUser(user);
     }
 
     private void confirmSubscribeStatus() {
@@ -102,7 +100,7 @@ public class Session {
     }
 
     private void confirmSubscribeMax() {
-        if (this.subscribeMax < this.subscribeUsers.size() + 1) {
+        if (this.subscribeMax < this.subscribers.subscribeUsersSize() + 1) {
             throw new IllegalArgumentException(SUBSCRIBE_COUNT_MAX_MESSAGE);
         }
     }
