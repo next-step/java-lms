@@ -49,7 +49,6 @@ public class Image {
         }
     }
 
-    // 최대 공약수를 계산하는 메소드
     private int getGreatestCommonDenominator(int a, int b) {
         while (b != 0) {
             int temp = b;
