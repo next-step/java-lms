@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public class ImageHeight {
 
-    private static final int MAXIMUM_HEIGHT = 200;
-    private static final String OVER_HEIGHT_MESSAGE = "이미지의 높이가 200px을 초과하면 안됩니다.";
+    private static final int MINIMUM_HEIGHT = 200;
+    private static final String OVER_HEIGHT_MESSAGE = "이미지의 높이가 200px 이상이여야 합니다.";
 
     private final int height;
 
@@ -15,7 +15,7 @@ public class ImageHeight {
     }
 
     private void confirmHeight(int height) {
-        if (height > MAXIMUM_HEIGHT) {
+        if (height < MINIMUM_HEIGHT) {
             throw new IllegalArgumentException(OVER_HEIGHT_MESSAGE);
         }
     }

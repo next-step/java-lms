@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public class ImageWidth {
 
-    private static final int MAXIMUM_WIDTH = 300;
-    private static final String OVER_WIDTH_MESSAGE = "이미지의 너비가 300px을 초과하면 안됩니다.";
+    private static final int MINIMUM_WIDTH = 300;
+    private static final String OVER_WIDTH_MESSAGE = "이미지의 너비가 300px 이상이여야 합니다.";
 
     private final int width;
 
@@ -15,7 +15,7 @@ public class ImageWidth {
     }
 
     private void confirmWidthHeight(int width) {
-        if (width > MAXIMUM_WIDTH) {
+        if (width < MINIMUM_WIDTH) {
             throw new IllegalArgumentException(OVER_WIDTH_MESSAGE);
         }
     }
