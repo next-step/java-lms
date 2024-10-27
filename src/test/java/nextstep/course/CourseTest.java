@@ -1,7 +1,7 @@
 package nextstep.course;
 
 import nextstep.courses.domain.Course;
-import nextstep.session.Image;
+import nextstep.session.image.Image;
 import nextstep.session.Session;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

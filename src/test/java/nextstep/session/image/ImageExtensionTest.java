@@ -1,6 +1,5 @@
-package nextstep.course;
+package nextstep.session.image;
 
-import nextstep.session.ImageExtension;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

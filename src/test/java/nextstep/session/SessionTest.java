@@ -1,6 +1,7 @@
 package nextstep.session;
 
 import nextstep.payments.domain.Payment;
+import nextstep.session.image.Image;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
