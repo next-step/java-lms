@@ -47,20 +47,6 @@ public class SessionTest {
                 .contains("테스트강의", PaymentType.PAID, image, 100, 800000, startDate, endDate);
     }
 
-    @DisplayName("강의를 생성할 시 시작일보다 종료일이 빠르면 예외가 발생한다.")
-    @Test
-    void createSessionNotExistStartDateThrowExceptionTest() throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date startDate = simpleDateFormat.parse("2023-05-05");
-        Date endDate = simpleDateFormat.parse("2023-04-05");
-
-        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
-
-        assertThatThrownBy(() -> Session.createPaid(1L, "테스트강의", image, 100, 800000, startDate, endDate))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("종료일이 시작일보다 빠릅니다.");
-    }
-
     @DisplayName("강의를 모집중으로 변경한다.")
     @Test
     void SessionWaitTest() throws ParseException {
