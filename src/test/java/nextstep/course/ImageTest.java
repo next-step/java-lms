@@ -7,12 +7,6 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-/*
-- 이미지를 생성한다.
-- 이미지가 1MB를 초과하면 예외가 발생한다.
-- 이미지의 너비가 300px, 높이가 200px을 초과하면 예외가 발생한다.
-- 이미지의 너비 높이가 3:2 비율이 아니라면 예외가 발생한다.
-*/
 public class ImageTest {
 
     @DisplayName("이미지를 생성한다.")

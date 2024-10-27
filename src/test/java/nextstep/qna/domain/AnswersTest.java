@@ -9,11 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.groups.Tuple.tuple;
 
-/*
-- 저장되어있는 답변들 중 작성자가 일치하는지 확인한다.
-- 답변 삭제 후 삭제이력을 반환한다.
-*/
-public class QuestionAnswerTest {
+public class AnswersTest {
     public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
     public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
 

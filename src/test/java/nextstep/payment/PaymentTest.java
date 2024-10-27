@@ -6,9 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/*
-- 결제 내역을 생성한다.
-*/
 public class PaymentTest {
 
     @DisplayName("결재 내역을 생성한다.")

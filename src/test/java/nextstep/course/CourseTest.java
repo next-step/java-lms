@@ -13,10 +13,6 @@ import java.util.Date;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.groups.Tuple.tuple;
 
-/*
-- 과정(Course)을 기수 단위로 생성한다.
-- Course를 여러개의 강의로 생성한다.
-*/
 public class CourseTest {
 
     @DisplayName("과정(Course)을 기수 단위로 생성한다.")

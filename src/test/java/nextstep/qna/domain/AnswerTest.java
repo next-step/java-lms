@@ -8,10 +8,6 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-/*
-- Answer를 deleted True로 변경한다.
-- Answer 작성자가 loginUser와 일치하지 않으면 예외가 발생한다.
-*/
 public class AnswerTest {
     public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
     public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");

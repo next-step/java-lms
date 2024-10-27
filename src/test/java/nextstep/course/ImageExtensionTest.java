@@ -6,10 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-/*
-- gif, jpg, jpeg, png, svg 확장자가 아니면 예외를 발생시킨다.
-- 확장자가 없다면 예외를 발생시킨다.
-*/
 public class ImageExtensionTest {
 
     @DisplayName("gif, jpg, jpeg, png, svg 확장자가 아니면 예외를 발생시킨다.")
