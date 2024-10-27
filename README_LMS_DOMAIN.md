@@ -29,7 +29,7 @@
 * ~~Course~~
   - 생성
   - 강의 추가
-  * Sessions
+  * ~~Sessions~~
     * ~~Session Model~~
       - 생성
         * FreeSession

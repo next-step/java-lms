@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.vo.course.Sessions;
 import nextstep.courses.domain.vo.session.Students;
 
 import java.time.LocalDateTime;
@@ -17,7 +18,9 @@ public class Course {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
-    private List<Session> sessions = new ArrayList<>();
+
+//    private List<Session> sessions = new ArrayList<>();
+    private Sessions sessions = new Sessions();
 
     public Course() {
     }
