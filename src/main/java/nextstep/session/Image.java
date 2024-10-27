@@ -2,12 +2,12 @@ package nextstep.session;
 
 public class Image {
 
-    private final static int MAXIMUM_IMAGE_SIZE = 1;
-    private final static int MAXIMUM_WIDTH = 300;
-    private final static int MAXIMUM_HEIGHT = 200;
-    private final static String OVER_SIZE_MESSAGE = "이미지 사이즈는 1MB를 초과하면 안됩니다.";
-    private final static String OVER_WIDTH_HEIGHT = "이미지의 너비가 300px, 높이가 200px을 초과하면 안됩니다.";
-    private final static String NOT_CORRECT_RATE = "이미지의 너비 높이가 3:2 비율이여야 합니다.";
+    private static final int MAXIMUM_IMAGE_SIZE = 1;
+    private static final int MAXIMUM_WIDTH = 300;
+    private static final int MAXIMUM_HEIGHT = 200;
+    private static final String OVER_SIZE_MESSAGE = "이미지 사이즈는 1MB를 초과하면 안됩니다.";
+    private static final String OVER_WIDTH_HEIGHT = "이미지의 너비가 300px, 높이가 200px을 초과하면 안됩니다.";
+    private static final String NOT_CORRECT_RATE = "이미지의 너비 높이가 3:2 비율이여야 합니다.";
 
     private final Long id;
     private final String name;

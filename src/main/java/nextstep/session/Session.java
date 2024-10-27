@@ -6,11 +6,11 @@ import java.util.Date;
 
 public class Session {
 
-    private final static String DATE_MESSAGE = "종료일이 시작일보다 빠릅니다.";
-    private final static String PAID_SUBSCRIBE_MESSAGE = "유료강의는 결제내역이 필수입니다.";
-    private final static String FREE_SUBSCRIBE_MESSAGE = "무료강의는 결제내역이 필요없습니다.";
-    private final static String SUBSCRIBE_STATUS_NOT_WAIT_MESSAGE = "현재 강의가 모집중이 아닙니다.";
-    private final static String SUBSCRIBE_COUNT_MAX_MESSAGE = "강의가 이미 만석입니다.";
+    private static final String DATE_MESSAGE = "종료일이 시작일보다 빠릅니다.";
+    private static final String PAID_SUBSCRIBE_MESSAGE = "유료강의는 결제내역이 필수입니다.";
+    private static final String FREE_SUBSCRIBE_MESSAGE = "무료강의는 결제내역이 필요없습니다.";
+    private static final String SUBSCRIBE_STATUS_NOT_WAIT_MESSAGE = "현재 강의가 모집중이 아닙니다.";
+    private static final String SUBSCRIBE_COUNT_MAX_MESSAGE = "강의가 이미 만석입니다.";
 
     private final Long id;
     private final String title;

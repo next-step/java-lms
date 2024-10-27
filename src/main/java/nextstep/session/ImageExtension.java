@@ -9,7 +9,7 @@ public enum ImageExtension {
     PNG("png"),
     SVG("svg");
 
-    private final static String NOT_APPLY_EXTENSION_MESSAGE = "유효하지 않은 이미지 확장자입니다.";
+    private static final String NOT_APPLY_EXTENSION_MESSAGE = "유효하지 않은 이미지 확장자입니다.";
 
     private String extension;
 

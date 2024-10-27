@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class Payment {
 
-    private final static String MATCH_AMOUNT_MESSAGE = "결제 금액이 일치하지 않습니다.";
+    private static final String MATCH_AMOUNT_MESSAGE = "결제 금액이 일치하지 않습니다.";
 
     private Long id;
     private Long sessionId;
