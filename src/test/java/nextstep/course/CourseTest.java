@@ -7,9 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.groups.Tuple.tuple;
@@ -19,7 +17,10 @@ public class CourseTest {
     @DisplayName("과정(Course)을 기수 단위로 생성한다.")
     @Test
     void createCourse() {
+        //given, when
         Course course = new Course(1L, "TDD클린코드", 1L, 1L);
+
+        //then
         assertThat(course)
                 .extracting("id", "title", "term", "creatorId")
                 .contains(1L, "TDD클린코드", 1L, 1L);
@@ -28,12 +29,15 @@ public class CourseTest {
     @DisplayName("Course를 여러개의 강의로 생성한다.")
     @Test
     void addLectureTest() throws ParseException {
+        //given
         Course course = new Course(1L, "TDD클린코드", 1L, 1L);
 
+        //when
         for (int i = 1; i < 6; i++) {
             course.addSession(createFreeSession(i));
         }
 
+        //then
         assertThat(course.getLectures())
                 .extracting("id", "title")
                 .contains(
