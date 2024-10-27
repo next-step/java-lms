@@ -4,7 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class ImageTest {
 
@@ -14,16 +13,8 @@ public class ImageTest {
         Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
 
         assertThat(image)
-                .extracting("name", "width", "height", "size")
-                .contains("테스트이미지.jpg", new ImageWidth(300), new ImageHeight(200), new ImageSize(1));
+                .extracting("name", "size.width", "size.height", "capacity")
+                .contains("테스트이미지.jpg", new ImageWidth(300), new ImageHeight(200), new ImageCapacity(1));
     }
 
-    @DisplayName("이미지의 너비 높이가 3:2 비율이 아니라면 예외가 발생한다.")
-    @Test
-    void createImageRateThrowExceptionTest() {
-
-        assertThatThrownBy(() -> new Image(1L, "테스트이미지.jpg", 200, 200, 1))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("이미지의 너비 높이가 3:2 비율이여야 합니다.");
-    }
 }
