@@ -10,8 +10,9 @@ public enum ImageExtension {
     SVG("svg");
 
     private static final String NOT_APPLY_EXTENSION_MESSAGE = "유효하지 않은 이미지 확장자입니다.";
+    private static final String NOT_EXIST_EXTENSION_MESSAGE = "이미지 확장자가 존재하지 않습니다.";
 
-    private String extension;
+    private final String extension;
 
     ImageExtension(String extension) {
         this.extension = extension;
@@ -32,6 +33,6 @@ public enum ImageExtension {
         if (lastIndex != -1 && lastIndex < fileName.length() - 1) {
             return fileName.substring(lastIndex + 1);
         }
-        return "";
+        throw new IllegalArgumentException(NOT_EXIST_EXTENSION_MESSAGE);
     }
 }
