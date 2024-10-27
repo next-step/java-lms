@@ -1,10 +1,10 @@
-package nextstep.lecture;
+package nextstep.session;
 
 import nextstep.payments.domain.Payment;
 
 import java.util.Date;
 
-public class Lecture {
+public class Session {
 
     private final static String DATE_MESSAGE = "종료일이 시작일보다 빠릅니다.";
     private final static String PAID_SUBSCRIBE_MESSAGE = "유료강의는 결제내역이 필수입니다.";
@@ -23,7 +23,7 @@ public class Lecture {
     private final Date startDate;
     private final Date endDate;
 
-    private Lecture(Long id, String title, Image image, PaymentType paymentType, int subscribeMax, int price, Date startDate, Date endDate) {
+    private Session(Long id, String title, Image image, PaymentType paymentType, int subscribeMax, int price, Date startDate, Date endDate) {
         confirmDate(startDate, endDate);
         this.id = id;
         this.title = title;
@@ -36,7 +36,7 @@ public class Lecture {
         this.endDate = endDate;
     }
 
-    private Lecture(Long id, String title, Image image, PaymentType paymentType, Date startDate, Date endDate) {
+    private Session(Long id, String title, Image image, PaymentType paymentType, Date startDate, Date endDate) {
         confirmDate(startDate, endDate);
         this.id = id;
         this.title = title;
@@ -48,13 +48,13 @@ public class Lecture {
     }
 
     //무료강의를 생성한다.
-    public static Lecture createFree(Long id, String title, Image image, Date startDate, Date endDate) {
-        return new Lecture(id, title, image, PaymentType.FREE, startDate, endDate);
+    public static Session createFree(Long id, String title, Image image, Date startDate, Date endDate) {
+        return new Session(id, title, image, PaymentType.FREE, startDate, endDate);
     }
 
     //유료강의를 생성한다.
-    public static Lecture createPaid(Long id, String title, Image image, int subscribeMax, int price, Date startDate, Date endDate) {
-        return new Lecture(id, title, image, PaymentType.PAID, subscribeMax, price, startDate, endDate);
+    public static Session createPaid(Long id, String title, Image image, int subscribeMax, int price, Date startDate, Date endDate) {
+        return new Session(id, title, image, PaymentType.PAID, subscribeMax, price, startDate, endDate);
     }
 
     public int getSubscribeCount() {
@@ -86,12 +86,12 @@ public class Lecture {
     }
 
     //모집중으로 상태를 변경한다.
-    public void waitLecture() {
+    public void waitSession() {
         changeSubscribeStatus(SubscribeStatus.WAIT);
     }
 
     //종료로 상태를 변경한다.
-    public void closedLecture() {
+    public void closedSession() {
         changeSubscribeStatus(SubscribeStatus.CLOSED);
     }
 

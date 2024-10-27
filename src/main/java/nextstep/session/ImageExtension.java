@@ -1,4 +1,4 @@
-package nextstep.lecture;
+package nextstep.session;
 
 import java.util.Arrays;
 

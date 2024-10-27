@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.lecture.Lecture;
+import nextstep.session.Session;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ public class Course {
 
     private Long term;
 
-    private List<Lecture> lectures = new ArrayList<>();
+    private List<Session> sessions = new ArrayList<>();
 
     private Long creatorId;
 
@@ -34,12 +34,12 @@ public class Course {
         return title;
     }
 
-    public List<Lecture> getLectures() {
-        return lectures;
+    public List<Session> getLectures() {
+        return sessions;
     }
 
-    public void addLecture(Lecture lecture) {
-        this.lectures.add(lecture);
+    public void addSession(Session lecture) {
+        this.sessions.add(lecture);
     }
 
     @Override
