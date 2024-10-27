@@ -1,4 +1,4 @@
-package nextstep.session;
+package nextstep.session.image;
 
 import java.util.Arrays;
 

@@ -1,6 +1,7 @@
 package nextstep.session;
 
 import nextstep.payments.domain.Payment;
+import nextstep.session.image.Image;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
