@@ -34,7 +34,7 @@
       - 생성
         * FreeSession
         * PaidSession
-      * Session 시작종료일 VO
+      * ~~Session 시작종료일 VO~~
         - 생성
         - 종료일이 시작일보다 과거일수 없다.
       * Session 커버 이미지 정보 VO
