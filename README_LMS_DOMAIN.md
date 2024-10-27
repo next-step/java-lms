@@ -59,13 +59,13 @@
           - 강의 신청 가능
         * 종료
           - 강의 신청 불가
-    * FreeSession Model
+    * ~~FreeSession Model~~
       - 생성
         * session id 
         * 등록 학생 목록
       - register(NsUser 가 Session 등록한다.)
         - 강의 최대 수강 인원 제한 없다.
-    * PaidSession Model
+    * ~~PaidSession Model~~
       - 생성
         * session id
         * 등록 학생 목록
