@@ -28,33 +28,21 @@ public class Image {
     }
 
     private void confirmImageSize(int size) {
-        if(size > MAXIMUM_IMAGE_SIZE) {
+        if (size > MAXIMUM_IMAGE_SIZE) {
             throw new IllegalArgumentException(OVER_SIZE_MESSAGE);
         }
     }
 
     private void confirmWidthHeight(int width, int height) {
-        if(width > MAXIMUM_WIDTH || height > MAXIMUM_HEIGHT) {
+        if (width > MAXIMUM_WIDTH || height > MAXIMUM_HEIGHT) {
             throw new IllegalArgumentException(OVER_WIDTH_HEIGHT);
         }
     }
 
     private void confirmRate(int width, int height) {
-        int greatestCommonDenominator = getGreatestCommonDenominator(width, height);
-        int ratioWidth = width / greatestCommonDenominator;
-        int ratioHeight = height / greatestCommonDenominator;
-
-        if (ratioWidth != 3 || ratioHeight != 2) {
+        if (width * 2 != height * 3) {
             throw new IllegalArgumentException(NOT_CORRECT_RATE);
         }
     }
 
-    private int getGreatestCommonDenominator(int a, int b) {
-        while (b != 0) {
-            int temp = b;
-            b = a % b;
-            a = temp;
-        }
-        return a;
-    }
 }
