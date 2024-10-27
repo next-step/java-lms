@@ -7,12 +7,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ImageWidthTest {
 
-    @DisplayName("이미지의 너비가 300px을 초과하면 예외가 발생한다.")
+    @DisplayName("이미지의 너비가 300px 미만이면 예외가 발생한다.")
     @Test
     void createImageOverWidthThrowExceptionTest() {
 
-        assertThatThrownBy(() -> new ImageWidth(600))
+        assertThatThrownBy(() -> new ImageWidth(200))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("이미지의 너비가 300px을 초과하면 안됩니다.");
+                .hasMessage("이미지의 너비가 300px 이상이여야 합니다.");
     }
 }
