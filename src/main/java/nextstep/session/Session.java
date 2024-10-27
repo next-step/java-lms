@@ -10,7 +10,6 @@ import java.util.List;
 
 public class Session {
 
-    private static final String DATE_MESSAGE = "종료일이 시작일보다 빠릅니다.";
     private static final String PAID_SUBSCRIBE_MESSAGE = "유료강의는 결제내역이 필수입니다.";
     private static final String FREE_SUBSCRIBE_MESSAGE = "무료강의는 결제내역이 필요없습니다.";
     private static final String SUBSCRIBE_STATUS_NOT_WAIT_MESSAGE = "현재 강의가 모집중이 아닙니다.";
@@ -24,11 +23,9 @@ public class Session {
     private int subscribeMax;
     private int price;
     private final List<NsUser> subscribeUsers = new ArrayList<>();
-    private final Date startDate;
-    private final Date endDate;
+    private final DateRange dateRange;
 
     private Session(Long id, String title, Image image, PaymentType paymentType, int subscribeMax, int price, Date startDate, Date endDate) {
-        confirmDate(startDate, endDate);
         this.id = id;
         this.title = title;
         this.image = image;
@@ -36,19 +33,16 @@ public class Session {
         this.subscribeStatus = SubscribeStatus.READY;
         this.subscribeMax = subscribeMax;
         this.price = price;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.dateRange = new DateRange(startDate, endDate);
     }
 
     private Session(Long id, String title, Image image, PaymentType paymentType, Date startDate, Date endDate) {
-        confirmDate(startDate, endDate);
         this.id = id;
         this.title = title;
         this.image = image;
         this.paymentType = paymentType;
         this.subscribeStatus = SubscribeStatus.READY;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.dateRange = new DateRange(startDate, endDate);
     }
 
     public static Session createFree(Long id, String title, Image image, Date startDate, Date endDate) {
@@ -99,12 +93,6 @@ public class Session {
 
     private void subscribeUser(NsUser user) {
         this.subscribeUsers.add(user);
-    }
-
-    private void confirmDate(Date startDate, Date endDate) {
-        if (startDate.after(endDate)) {
-            throw new IllegalArgumentException(DATE_MESSAGE);
-        }
     }
 
     private void confirmSubscribeStatus() {
