@@ -1,6 +1,11 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.vo.session.Students;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class Course {
     private Long id;
@@ -12,6 +17,7 @@ public class Course {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+    private List<Session> sessions = new ArrayList<>();
 
     public Course() {
     }
@@ -49,5 +55,22 @@ public class Course {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    public void addSession(Session session) {
+        this.sessions.add(session);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Course course = (Course) o;
+        return Objects.equals(id, course.id) && Objects.equals(title, course.title) && Objects.equals(creatorId, course.creatorId) && Objects.equals(sessions, course.sessions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, creatorId, sessions);
     }
 }

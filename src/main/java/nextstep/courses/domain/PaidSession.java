@@ -1,38 +1,34 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.MaxStudentCapacityException;
+import nextstep.courses.domain.vo.session.CoverImage;
+import nextstep.courses.domain.vo.session.DateRange;
+import nextstep.courses.domain.vo.session.Status;
+import nextstep.courses.domain.vo.session.Students;
 import nextstep.payments.PaymentMismatchException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-public class PaidSession {
+public class PaidSession extends Session {
 
     public static final String MAX_STUDENT_CAPACITY_MESSAGE = "강의 최대 수강인원을 초과하였습니다.";
     public static final String PAYMENT_MISMATCH_MESSAGE = "금액이 맞지 않습니다.";
-    private final long id;
     private final int maxRegisterCount;
     private final long amount;
-    private final List<NsUser> students;
-
-    private PaidSession(long id,
-                        int maxRegisterCount,
-                        long amount,
-                        List<NsUser> students) {
-        this.id = id;
-        this.maxRegisterCount = maxRegisterCount;
-        this.amount = amount;
-        this.students = students;
-    }
+    private final Students students = new Students();
 
     public PaidSession(long id,
+                       long creatorId,
+                       DateRange dateRange,
+                       CoverImage coverImage,
+                       Status status,
                        int maxRegisterCount,
-                       long amount,
-                       NsUser... students) {
-        this(id, maxRegisterCount, amount, new ArrayList<>(List.of(students)));
+                       long amount) {
+        super(id, dateRange, coverImage, status, creatorId);
+        this.maxRegisterCount = maxRegisterCount;
+        this.amount = amount;
     }
 
     public void register(Payment payment) {
@@ -50,12 +46,13 @@ public class PaidSession {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         PaidSession that = (PaidSession) o;
-        return id == that.id && maxRegisterCount == that.maxRegisterCount && amount == that.amount && Objects.equals(students, that.students);
+        return maxRegisterCount == that.maxRegisterCount && amount == that.amount && Objects.equals(students, that.students);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, students, maxRegisterCount, amount);
+        return Objects.hash(super.hashCode(), maxRegisterCount, amount, students);
     }
 }

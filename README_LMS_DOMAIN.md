@@ -26,11 +26,11 @@
 * 다음 동영상을 참고해 DB 테이블보다 도메인 모델을 먼저 설계하고 구현한다.
 
 ## TODO
-* Course
+* ~~Course~~
   - 생성
   - 강의 추가
   * Sessions
-    * Session Model
+    * ~~Session Model~~
       - 생성
         * FreeSession
         * PaidSession
