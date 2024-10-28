@@ -1,4 +1,4 @@
-package nextstep.session.image;
+package nextstep.session.domain.image;
 
 import java.util.Objects;
 
@@ -12,6 +12,10 @@ public class ImageWidth {
     public ImageWidth(int width) {
         confirmWidthHeight(width);
         this.width = width;
+    }
+
+    public int getWidth() {
+        return width;
     }
 
     private void confirmWidthHeight(int width) {

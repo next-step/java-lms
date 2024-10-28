@@ -1,4 +1,4 @@
-package nextstep.session.image;
+package nextstep.session.domain.image;
 
 public class ImageSize {
 
@@ -11,6 +11,14 @@ public class ImageSize {
         confirmRate(width, height);
         this.width = new ImageWidth(width);
         this.height = new ImageHeight(height);
+    }
+
+    public ImageWidth getWidth() {
+        return width;
+    }
+
+    public ImageHeight getHeight() {
+        return height;
     }
 
     private void confirmRate(int width, int height) {
