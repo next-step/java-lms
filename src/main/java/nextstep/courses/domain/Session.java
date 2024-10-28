@@ -1,8 +1,8 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.vo.session.CoverImage;
-import nextstep.courses.domain.vo.session.DateRange;
-import nextstep.courses.domain.vo.session.Status;
+import nextstep.courses.domain.session.CoverImage;
+import nextstep.courses.domain.session.DateRange;
+import nextstep.courses.domain.session.Status;
 
 import java.time.LocalDateTime;
 import java.util.Objects;

@@ -1,9 +1,9 @@
-package nextstep.courses.domain.vo.session.image;
+package nextstep.courses.domain.session.image;
 
 import nextstep.courses.ImageSizeExceededException;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.courses.domain.vo.session.image.ImageFileSize.IMAGE_SIZE_EXCEED_MESSAGE;
+import static nextstep.courses.domain.session.image.ImageFileSize.IMAGE_SIZE_EXCEED_MESSAGE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

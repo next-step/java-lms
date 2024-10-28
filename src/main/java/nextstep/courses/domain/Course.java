@@ -1,11 +1,8 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.vo.course.Sessions;
-import nextstep.courses.domain.vo.session.Students;
+import nextstep.courses.domain.course.Sessions;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class Course {

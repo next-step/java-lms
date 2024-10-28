@@ -1,4 +1,4 @@
-package nextstep.courses.domain.vo.course;
+package nextstep.courses.domain.course;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

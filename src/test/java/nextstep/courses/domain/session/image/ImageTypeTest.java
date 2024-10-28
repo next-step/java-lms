@@ -1,4 +1,4 @@
-package nextstep.courses.domain.vo.session.image;
+package nextstep.courses.domain.session.image;
 
 import nextstep.courses.ImageTypeMismatchException;
 import org.assertj.core.api.Assertions;
@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static nextstep.courses.domain.vo.session.image.ImageType.IMAGE_TYPE_MISMATCH_MESSAGE;
+import static nextstep.courses.domain.session.image.ImageType.IMAGE_TYPE_MISMATCH_MESSAGE;
 
 public class ImageTypeTest {
     @Test

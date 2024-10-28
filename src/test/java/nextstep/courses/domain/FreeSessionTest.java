@@ -1,14 +1,14 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.vo.session.CoverImage;
-import nextstep.courses.domain.vo.session.DateRange;
-import nextstep.courses.domain.vo.session.Status;
+import nextstep.courses.domain.session.CoverImage;
+import nextstep.courses.domain.session.DateRange;
+import nextstep.courses.domain.session.Status;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.courses.domain.vo.session.CoverImageTest.*;
-import static nextstep.courses.domain.vo.session.DateRangeTest.END;
-import static nextstep.courses.domain.vo.session.DateRangeTest.START;
+import static nextstep.courses.domain.session.CoverImageTest.*;
+import static nextstep.courses.domain.session.DateRangeTest.END;
+import static nextstep.courses.domain.session.DateRangeTest.START;
 import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static org.assertj.core.api.Assertions.assertThat;
 

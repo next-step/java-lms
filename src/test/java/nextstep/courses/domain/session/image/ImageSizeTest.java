@@ -1,4 +1,4 @@
-package nextstep.courses.domain.vo.session.image;
+package nextstep.courses.domain.session.image;
 
 import nextstep.courses.ImageWidthHeightRatioMismatchException;
 import nextstep.courses.WidthHeightMinimumException;
@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import static nextstep.courses.domain.vo.session.image.ImageSize.IMAGE_DIMENSION_MISMATCH_MESSAGE;
-import static nextstep.courses.domain.vo.session.image.ImageSize.WIDTH_HEIGHT_MINIMUM_MESSAGE;
+import static nextstep.courses.domain.session.image.ImageSize.IMAGE_DIMENSION_MISMATCH_MESSAGE;
+import static nextstep.courses.domain.session.image.ImageSize.WIDTH_HEIGHT_MINIMUM_MESSAGE;
 import static org.assertj.core.api.Assertions.*;
 
 public class ImageSizeTest {

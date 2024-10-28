@@ -1,4 +1,4 @@
-package nextstep.courses.domain.vo.session;
+package nextstep.courses.domain.session;
 
 public enum Status {
 

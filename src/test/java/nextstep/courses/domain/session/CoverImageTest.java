@@ -1,8 +1,8 @@
-package nextstep.courses.domain.vo.session;
+package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.vo.session.image.ImageFileSize;
-import nextstep.courses.domain.vo.session.image.ImageType;
-import nextstep.courses.domain.vo.session.image.ImageSize;
+import nextstep.courses.domain.session.image.ImageFileSize;
+import nextstep.courses.domain.session.image.ImageType;
+import nextstep.courses.domain.session.image.ImageSize;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,4 @@
-package nextstep.courses.domain.vo.session;
+package nextstep.courses.domain.session;
 
 import nextstep.courses.EndBeforeStartException;
 import org.assertj.core.api.Assertions;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static nextstep.courses.domain.vo.session.DateRange.END_BEFORE_START_MESSAGE;
+import static nextstep.courses.domain.session.DateRange.END_BEFORE_START_MESSAGE;
 
 public class DateRangeTest {
 

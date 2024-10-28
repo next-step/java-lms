@@ -1,4 +1,4 @@
-package nextstep.courses.domain.vo.session.image;
+package nextstep.courses.domain.session.image;
 
 import nextstep.courses.ImageTypeMismatchException;
 

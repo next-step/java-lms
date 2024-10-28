@@ -1,19 +1,19 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.vo.session.CoverImage;
-import nextstep.courses.domain.vo.session.DateRange;
-import nextstep.courses.domain.vo.session.Status;
-import nextstep.courses.domain.vo.session.image.ImageFileSize;
-import nextstep.courses.domain.vo.session.image.ImageType;
-import nextstep.courses.domain.vo.session.image.ImageSize;
+import nextstep.courses.domain.session.CoverImage;
+import nextstep.courses.domain.session.DateRange;
+import nextstep.courses.domain.session.Status;
+import nextstep.courses.domain.session.image.ImageFileSize;
+import nextstep.courses.domain.session.image.ImageType;
+import nextstep.courses.domain.session.image.ImageSize;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static nextstep.courses.domain.PaidSessionTest.MAX_REGISTER_COUNT;
 import static nextstep.courses.domain.PaidSessionTest.SESSION_AMOUNT;
-import static nextstep.courses.domain.vo.session.CoverImageTest.*;
-import static nextstep.courses.domain.vo.session.DateRangeTest.END;
-import static nextstep.courses.domain.vo.session.DateRangeTest.START;
+import static nextstep.courses.domain.session.CoverImageTest.*;
+import static nextstep.courses.domain.session.DateRangeTest.END;
+import static nextstep.courses.domain.session.DateRangeTest.START;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SessionTest {

@@ -1,4 +1,4 @@
-package nextstep.courses.domain.vo.course;
+package nextstep.courses.domain.course;
 
 import nextstep.courses.domain.Session;
 

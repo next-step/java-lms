@@ -1,9 +1,9 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.MaxStudentCapacityException;
-import nextstep.courses.domain.vo.session.CoverImage;
-import nextstep.courses.domain.vo.session.DateRange;
-import nextstep.courses.domain.vo.session.Status;
+import nextstep.courses.domain.session.CoverImage;
+import nextstep.courses.domain.session.DateRange;
+import nextstep.courses.domain.session.Status;
 import nextstep.payments.PaymentMismatchException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Test;
 
 import static nextstep.courses.domain.PaidSession.MAX_STUDENT_CAPACITY_MESSAGE;
 import static nextstep.courses.domain.PaidSession.PAYMENT_MISMATCH_MESSAGE;
-import static nextstep.courses.domain.vo.session.CoverImageTest.*;
-import static nextstep.courses.domain.vo.session.DateRangeTest.END;
-import static nextstep.courses.domain.vo.session.DateRangeTest.START;
+import static nextstep.courses.domain.session.CoverImageTest.*;
+import static nextstep.courses.domain.session.DateRangeTest.END;
+import static nextstep.courses.domain.session.DateRangeTest.START;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
