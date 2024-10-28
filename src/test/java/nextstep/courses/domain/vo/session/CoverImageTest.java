@@ -1,8 +1,8 @@
 package nextstep.courses.domain.vo.session;
 
-import nextstep.courses.domain.vo.session.image.ImageSize;
+import nextstep.courses.domain.vo.session.image.ImageFileSize;
 import nextstep.courses.domain.vo.session.image.ImageType;
-import nextstep.courses.domain.vo.session.image.ImageWidthHeight;
+import nextstep.courses.domain.vo.session.image.ImageSize;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +17,7 @@ public class CoverImageTest {
     @Test
     void create() {
         CoverImage actual = new CoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT);
-        CoverImage expected = new CoverImage(new ImageSize(SIZE), IMAGE_TYPE, new ImageWidthHeight(WIDTH, HEIGHT));
+        CoverImage expected = new CoverImage(new ImageFileSize(SIZE), IMAGE_TYPE, new ImageSize(WIDTH, HEIGHT));
 
         Assertions.assertThat(actual).isEqualTo(expected);
     }

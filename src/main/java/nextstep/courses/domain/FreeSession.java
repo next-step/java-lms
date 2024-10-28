@@ -6,6 +6,7 @@ import nextstep.courses.domain.vo.session.Status;
 import nextstep.courses.domain.vo.session.Students;
 import nextstep.users.domain.NsUser;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class FreeSession extends Session {
@@ -16,7 +17,7 @@ public class FreeSession extends Session {
                        DateRange dateRange,
                        CoverImage coverImage,
                        Status status) {
-        super(id, dateRange, coverImage, status, creatorId);
+        super(id, dateRange, coverImage, status, creatorId, LocalDateTime.now(), LocalDateTime.now());
         this.students = new Students();
     }
 

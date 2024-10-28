@@ -3,7 +3,6 @@ package nextstep.courses.domain.vo.session;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,7 +22,7 @@ public class Students {
     }
 
     public int size() {
-        return Collections.unmodifiableList(students).size();
+        return students.size();
     }
 
     @Override

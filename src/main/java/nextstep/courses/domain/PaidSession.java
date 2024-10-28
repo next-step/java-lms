@@ -9,6 +9,7 @@ import nextstep.payments.PaymentMismatchException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class PaidSession extends Session {
@@ -26,7 +27,7 @@ public class PaidSession extends Session {
                        Status status,
                        int maxRegisterCount,
                        long amount) {
-        super(id, dateRange, coverImage, status, creatorId);
+        super(id, dateRange, coverImage, status, creatorId, LocalDateTime.now(), LocalDateTime.now());
         this.maxRegisterCount = maxRegisterCount;
         this.amount = amount;
     }

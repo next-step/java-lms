@@ -3,9 +3,9 @@ package nextstep.courses.domain;
 import nextstep.courses.domain.vo.session.CoverImage;
 import nextstep.courses.domain.vo.session.DateRange;
 import nextstep.courses.domain.vo.session.Status;
-import nextstep.courses.domain.vo.session.image.ImageSize;
+import nextstep.courses.domain.vo.session.image.ImageFileSize;
 import nextstep.courses.domain.vo.session.image.ImageType;
-import nextstep.courses.domain.vo.session.image.ImageWidthHeight;
+import nextstep.courses.domain.vo.session.image.ImageSize;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,9 +23,9 @@ public class SessionTest {
 
     private DateRange dateRange;
     private CoverImage coverImage;
-    private ImageSize imageSize;
+    private ImageFileSize imageFileSize;
     private ImageType imageType;
-    private ImageWidthHeight imageWidthHeight;
+    private ImageSize imageSize;
     private CoverImage wrappedCoverImage;
     private Status status;
 
@@ -34,14 +34,14 @@ public class SessionTest {
         dateRange = new DateRange(START, END);
         coverImage = new CoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT);
 
-        imageSize = new ImageSize(SIZE);
+        imageFileSize = new ImageFileSize(SIZE);
         imageType = ImageType.toImageType(IMAGE_TYPE_TEXT);
-        imageWidthHeight = new ImageWidthHeight(WIDTH, HEIGHT);
+        imageSize = new ImageSize(WIDTH, HEIGHT);
 
         wrappedCoverImage = new CoverImage(
-                imageSize,
+                imageFileSize,
                 imageType,
-                imageWidthHeight);
+                imageSize);
 
         status = Status.PREPARE;
     }

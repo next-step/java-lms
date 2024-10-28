@@ -20,14 +20,16 @@ public abstract class Session {
                    DateRange dateRange,
                    CoverImage coverImage,
                    Status status,
-                   Long creatorId) {
+                   Long creatorId,
+                   LocalDateTime createdAt,
+                   LocalDateTime updatedAt) {
         this.id = id;
         this.dateRange = dateRange;
         this.coverImage = coverImage;
         this.status = status;
         this.creatorId = creatorId;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     @Override

@@ -1,31 +1,42 @@
 package nextstep.courses.domain.vo.session.image;
 
-import nextstep.courses.ImageSizeExceededException;
+import nextstep.courses.ImageWidthHeightRatioMismatchException;
+import nextstep.courses.WidthHeightMinimumException;
 
 import java.util.Objects;
 
 public class ImageSize {
-    public static final int MAX_IMAGE_SIZE = 1024 * 1024;
-    public static final String IMAGE_SIZE_EXCEED_MESSAGE = "이미지 크기는 1MB 이하여야 한다";
-    private final int size;
 
-    public ImageSize(int size) {
-        if (size > MAX_IMAGE_SIZE) {
-            throw new ImageSizeExceededException(IMAGE_SIZE_EXCEED_MESSAGE);
+    public static final String WIDTH_HEIGHT_MINIMUM_MESSAGE = "이미지의 width는 300픽셀, height는 200픽셀 이상";
+    public static final String IMAGE_DIMENSION_MISMATCH_MESSAGE = "width와 height의 비율은 3:2여야 한다";
+    public static final int MIN_WIDTH = 300;
+    public static final int MIN_HEIGHT = 200;
+    public static final double WIDTH_HEIGHT_RATIO = 1.5d;
+    private final double width;
+    private final double height;
+
+    public ImageSize(double width, double height) {
+        if (width < MIN_WIDTH || height < MIN_HEIGHT) {
+            throw new WidthHeightMinimumException(WIDTH_HEIGHT_MINIMUM_MESSAGE);
         }
-        this.size = size;
+        boolean ratio = width / height == WIDTH_HEIGHT_RATIO;
+        if (!ratio) {
+            throw new ImageWidthHeightRatioMismatchException(IMAGE_DIMENSION_MISMATCH_MESSAGE);
+        }
+        this.width = width;
+        this.height = height;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ImageSize imageSize = (ImageSize) o;
-        return size == imageSize.size;
+        ImageSize that = (ImageSize) o;
+        return Double.compare(that.width, width) == 0 && Double.compare(that.height, height) == 0;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(size);
+        return Objects.hash(width, height);
     }
 }
