@@ -76,7 +76,7 @@ public class Answer {
 
     public DeleteHistory delete() {
         deleted = true;
-        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
+        return DeleteHistory.createAnswerDeleteHistory(this.id, this.writer, createdDate);
     }
 
     @Override
