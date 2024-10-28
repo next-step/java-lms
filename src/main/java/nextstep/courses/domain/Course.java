@@ -19,7 +19,6 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
-//    private List<Session> sessions = new ArrayList<>();
     private Sessions sessions = new Sessions();
 
     public Course() {
