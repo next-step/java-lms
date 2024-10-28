@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository("courseRepository")
 public class JdbcCourseRepository implements CourseRepository {
@@ -19,22 +20,35 @@ public class JdbcCourseRepository implements CourseRepository {
 
     @Override
     public int save(Course course) {
-//        String sql = "insert into course (title, creator_id, created_at) values(?, ?, ?)";
-//        return jdbcTemplate.update(sql, course.getTitle(), course.getCreatorId(), course.getCreatedAt());
-        return 1;
+        String sql = "insert into course (title, term, creator_id, created_at, updated_at) values(?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, course.getTitle(), course.getTerm(), course.getCreatorId(), course.getCreatedAt(), course.getUpdatedAt());
     }
 
     @Override
     public Course findById(Long id) {
-//        String sql = "select id, title, creator_id, created_at, updated_at from course where id = ?";
-//        RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(
-//                rs.getLong(1),
-//                rs.getString(2),
-//                rs.getLong(3),
-//                toLocalDateTime(rs.getTimestamp(4)),
-//                toLocalDateTime(rs.getTimestamp(5)));
-//        return jdbcTemplate.queryForObject(sql, rowMapper, id);
-        return new Course(1L, "TDD클린코드", 1L, 1L);
+        String sql = "select id, title, term, creator_id, created_at, updated_at from course where id = ?";
+        RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(
+                rs.getLong(1),
+                rs.getString(2),
+                rs.getLong(3),
+                rs.getLong(4),
+                toLocalDateTime(rs.getTimestamp(5)),
+                toLocalDateTime(rs.getTimestamp(6)));
+        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+    }
+
+    @Override
+    public List<Course> findAll() {
+        String sql = "select id, title, term, creator_id, created_at, updated_at from course";
+        RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(
+                rs.getLong("id"),
+                rs.getString("title"),
+                rs.getLong("term"),
+                rs.getLong("creator_id"),
+                toLocalDateTime(rs.getTimestamp("created_at")),
+                toLocalDateTime(rs.getTimestamp("updated_at"))
+        );
+        return jdbcTemplate.query(sql, rowMapper);
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

@@ -21,6 +21,14 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
+    public Course(String title, Long term, Long creatorId) {
+        this.title = title;
+        this.term = term;
+        this.creatorId = creatorId;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();;
+    }
+
     public Course(Long id, String title, Long term, Long creatorId) {
         this.id = id;
         this.title = title;
@@ -30,16 +38,50 @@ public class Course {
         this.updatedAt = LocalDateTime.now();;
     }
 
+    public Course(Long id, String title, Long term, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.title = title;
+        this.term = term;
+        this.sessions = sessions;
+        this.creatorId = creatorId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     public String getTitle() {
         return title;
+    }
+
+    public void addSession(Session lecture) {
+        this.sessions.add(lecture);
     }
 
     public List<Session> getLectures() {
         return sessions;
     }
 
-    public void addSession(Session lecture) {
-        this.sessions.add(lecture);
+    public Long getId() {
+        return id;
+    }
+
+    public Long getTerm() {
+        return term;
+    }
+
+    public List<Session> getSessions() {
+        return sessions;
+    }
+
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
     @Override
