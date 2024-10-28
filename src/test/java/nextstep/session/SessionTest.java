@@ -1,7 +1,10 @@
 package nextstep.session;
 
 import nextstep.payments.domain.Payment;
-import nextstep.session.image.Image;
+import nextstep.session.domain.PaymentType;
+import nextstep.session.domain.Session;
+import nextstep.session.domain.SubscribeStatus;
+import nextstep.session.domain.image.Image;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +22,7 @@ public class SessionTest {
         //given
         LocalDateTime startDate = LocalDateTime.parse("2023-04-05T00:00:00");
         LocalDateTime endDate = LocalDateTime.parse("2023-05-05T00:00:00");
-        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
+        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1, 1L);
 
         //when
         Session session = Session.createFree(1L, "테스트강의", image, startDate, endDate);
@@ -36,7 +39,7 @@ public class SessionTest {
         //given
         LocalDateTime startDate = LocalDateTime.parse("2023-04-05T00:00:00");
         LocalDateTime endDate = LocalDateTime.parse("2023-05-05T00:00:00");
-        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
+        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1, 1L);
 
         //when
         Session session = Session.createPaid(1L, "테스트강의", image, 100, 800000, startDate, endDate);
@@ -54,7 +57,7 @@ public class SessionTest {
         LocalDateTime startDate = LocalDateTime.parse("2023-04-05T00:00:00");
         LocalDateTime endDate = LocalDateTime.parse("2023-05-05T00:00:00");
 
-        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
+        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1, 1L);
         Session session = Session.createFree(1L, "테스트강의", image, startDate, endDate);
 
         //when
@@ -71,7 +74,7 @@ public class SessionTest {
         LocalDateTime startDate = LocalDateTime.parse("2023-04-05T00:00:00");
         LocalDateTime endDate = LocalDateTime.parse("2023-05-05T00:00:00");
 
-        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
+        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1, 1L);
 
         Session session = Session.createFree(1L, "테스트강의", image, startDate, endDate);
 
@@ -89,7 +92,7 @@ public class SessionTest {
         LocalDateTime startDate = LocalDateTime.parse("2023-04-05T00:00:00");
         LocalDateTime endDate = LocalDateTime.parse("2023-05-05T00:00:00");
 
-        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
+        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1, 1L);
 
         Session session = Session.createFree(1L, "테스트강의", image, startDate, endDate);
         session.waitSession();
@@ -110,7 +113,7 @@ public class SessionTest {
         LocalDateTime startDate = LocalDateTime.parse("2023-04-05T00:00:00");
         LocalDateTime endDate = LocalDateTime.parse("2023-05-05T00:00:00");
 
-        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
+        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1, 1L);
         Session session = Session.createPaid(1L, "테스트강의", image, 100, 800000, startDate, endDate);
         Payment payment = new Payment(1L, 1L, 1L, 700000);
         NsUser user = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
@@ -128,7 +131,7 @@ public class SessionTest {
         LocalDateTime startDate = LocalDateTime.parse("2023-04-05T00:00:00");
         LocalDateTime endDate = LocalDateTime.parse("2023-05-05T00:00:00");
 
-        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
+        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1, 1L);
         Session session = Session.createPaid(1L, "테스트강의", image, 100, 800000, startDate, endDate);
         NsUser user = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
         Payment payment = new Payment(1L, 1L, 1L, 700000);
@@ -147,7 +150,7 @@ public class SessionTest {
         LocalDateTime startDate = LocalDateTime.parse("2023-04-05T00:00:00");
         LocalDateTime endDate = LocalDateTime.parse("2023-05-05T00:00:00");
 
-        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
+        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1, 1L);
         Session session = Session.createPaid(1L, "테스트강의", image, 100, 800000, startDate, endDate);
         session.waitSession();
         NsUser user = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
@@ -165,7 +168,7 @@ public class SessionTest {
         LocalDateTime startDate = LocalDateTime.parse("2023-04-05T00:00:00");
         LocalDateTime endDate = LocalDateTime.parse("2023-05-05T00:00:00");
 
-        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
+        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1, 1L);
         Session session = Session.createPaid(1L, "테스트강의", image, 1, 800000, startDate, endDate);
 
         NsUser user1 = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");

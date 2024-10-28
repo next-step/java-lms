@@ -1,12 +1,11 @@
 package nextstep.course.domain;
 
 import nextstep.courses.domain.Course;
-import nextstep.session.Session;
-import nextstep.session.image.Image;
+import nextstep.session.domain.Session;
+import nextstep.session.domain.image.Image;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.text.ParseException;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,7 +27,7 @@ public class CourseTest {
 
     @DisplayName("Course를 여러개의 강의로 생성한다.")
     @Test
-    void addLectureTest() throws ParseException {
+    void addLectureTest() {
         //given
         Course course = new Course(1L, "TDD클린코드", 1L, 1L);
 
@@ -53,7 +52,7 @@ public class CourseTest {
         LocalDateTime startDate = LocalDateTime.parse("2023-04-05T00:00:00");
         LocalDateTime endDate = LocalDateTime.parse("2023-05-05T00:00:00");
 
-        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
+        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1, 1L);
         return Session.createFree((long) id, "테스트강의", image, startDate, endDate);
     }
 }

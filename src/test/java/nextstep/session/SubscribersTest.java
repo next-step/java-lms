@@ -1,5 +1,6 @@
 package nextstep.session;
 
+import nextstep.session.domain.Subscribers;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
