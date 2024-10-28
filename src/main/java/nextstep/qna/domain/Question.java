@@ -105,7 +105,7 @@ public class Question {
         checkDeletePermission(loginUser);
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        this.setDeleted(true);
+        deleted = true;
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
         deleteHistories.addAll(deleteAnswers());
         return deleteHistories;

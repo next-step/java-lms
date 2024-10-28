@@ -75,7 +75,7 @@ public class Answer {
     }
 
     public DeleteHistory delete() {
-        this.setDeleted(true);
+        deleted = true;
         return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
     }
 
