@@ -50,7 +50,7 @@ create table course (
   - id
     - (bigint / pk)
   - creator_id
-    - (bigint / fk / session 생성자)
+    - (bigint / fk / session 생성자; NsUser 가 아닌 관리자 domain 으로 추측)
   - course_id
     - (bigint / fk / course 저장)
   - start
@@ -69,18 +69,14 @@ create table course (
     - (varchar(20) / not null / 강의상태를 저장한다)
   - created_at
     - (timestamp / not null / 생성시간)
-  - modified_at
+  - updated_at
     - (timestamp / 수정시간)
 * free_session
-  - id
-    - (bigint / pk)
   - session_id
-    - (bigint / fk / session 저장)
+    - (bigint / pk / session 저장)
 * paid_session
-  - id
-    - (bigint / pk)
   - session_id
-    - (bigint / fk / session 저장)
+    - (bigint / pk / session 저장)
   - max_register_count
     - (integer / not null / 강의 최대 수강 인원을 저장)
   - amount
@@ -93,3 +89,7 @@ create table course (
     - (bigint / fk / session 저장)
   - ns_user_id
     - (bigint / fk / ns_user 저장)
+  - created_at
+    - (timestamp / not null / 생성시간)
+  - updated_at
+    - (timestamp / 수정시간)
