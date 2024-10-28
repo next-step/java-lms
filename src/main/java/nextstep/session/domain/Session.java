@@ -14,7 +14,7 @@ public class Session {
     private static final String SUBSCRIBE_STATUS_NOT_WAIT_MESSAGE = "현재 강의가 모집중이 아닙니다.";
     private static final String SUBSCRIBE_COUNT_MAX_MESSAGE = "강의가 이미 만석입니다.";
 
-    private final Long id;
+    private Long id;
     private final String title;
     private Image image;
     private final PaymentType paymentType;
@@ -24,6 +24,17 @@ public class Session {
     private final Subscribers subscribers = new Subscribers();
     private final DateRange dateRange;
     private final DateDomain dateDomain;
+
+    public Session(String title, Image image, PaymentType paymentType, int subscribeMax, int price, LocalDateTime startDate, LocalDateTime endDate) {
+        this.title = title;
+        this.image = image;
+        this.paymentType = paymentType;
+        this.subscribeStatus = SubscribeStatus.READY;
+        this.subscribeMax = subscribeMax;
+        this.price = price;
+        this.dateRange = new DateRange(startDate, endDate);
+        this.dateDomain = new DateDomain();
+    }
 
     private Session(Long id, String title, Image image, PaymentType paymentType, int subscribeMax, int price, LocalDateTime startDate, LocalDateTime endDate) {
         this.id = id;
