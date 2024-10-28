@@ -1,4 +1,4 @@
-package nextstep.course;
+package nextstep.course.domain;
 
 import nextstep.courses.domain.Course;
 import nextstep.session.Session;
@@ -18,7 +18,7 @@ public class CourseTest {
     @Test
     void createCourse() {
         //given, when
-        Course course = new Course(1L, "TDD클린코드", 1L, 1L);
+        Course course = new Course("TDD클린코드", 1L, 1L);
 
         //then
         assertThat(course)
