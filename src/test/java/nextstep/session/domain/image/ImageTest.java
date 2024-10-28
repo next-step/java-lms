@@ -1,4 +1,4 @@
-package nextstep.session.image;
+package nextstep.session.domain.image;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,7 @@ public class ImageTest {
     @Test
     void createImageTest() {
         //given
-        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
+        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1, 1L);
 
         //when, then
         assertThat(image)
