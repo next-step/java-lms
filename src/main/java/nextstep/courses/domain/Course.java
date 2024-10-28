@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
-import nextstep.session.Session;
+import nextstep.DateDomain;
+import nextstep.session.domain.Session;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,16 +18,14 @@ public class Course {
 
     private Long creatorId;
 
-    private LocalDateTime createdAt;
+    private DateDomain dateDomain;
 
-    private LocalDateTime updatedAt;
 
     public Course(String title, Long term, Long creatorId) {
         this.title = title;
         this.term = term;
         this.creatorId = creatorId;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();;
+        this.dateDomain = new DateDomain();
     }
 
     public Course(Long id, String title, Long term, Long creatorId) {
@@ -34,18 +33,15 @@ public class Course {
         this.title = title;
         this.term = term;
         this.creatorId = creatorId;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();;
+        this.dateDomain = new DateDomain();
     }
 
     public Course(Long id, String title, Long term, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.term = term;
-        this.sessions = sessions;
         this.creatorId = creatorId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.dateDomain = new DateDomain(createdAt, updatedAt);
     }
 
     public String getTitle() {
@@ -68,30 +64,12 @@ public class Course {
         return term;
     }
 
-    public List<Session> getSessions() {
-        return sessions;
+    public DateDomain getDateDomain() {
+        return dateDomain;
     }
 
     public Long getCreatorId() {
         return creatorId;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    @Override
-    public String toString() {
-        return "Course{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", creatorId=" + creatorId +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
-    }
 }
