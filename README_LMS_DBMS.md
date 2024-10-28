@@ -48,23 +48,48 @@ create table course (
 ## TODO
 * session
   - id
-  - course_id(course 저장)
-  - start(시작일과 종료일; 시작일)
-  - end(시작일과 종료일; 종료일)
-  - image_file_size(커버 이미지 정보; 이미지 크기)
-  - image_type(커버 이미지 정보; 이미지 타입)
-  - image_width(커버 이미지 정보; 이미지 가로)
-  - image_height(커버 이미지 정보; 이미지 세로)
-  - status(강의상태를 저장한다) 
+    - (bigint / pk)
+  - creator_id
+    - (bigint / fk / session 생성자)
+  - course_id
+    - (bigint / fk / course 저장)
+  - start
+    - (timestamp / not null / 시작일과 종료일; 시작일)
+  - end
+    - (timestamp / not null / 시작일과 종료일; 종료일)
+  - cover_image_file_size
+    - (integer / not null / 커버 이미지 정보; 이미지 크기)
+  - cover_image_type
+    - (varchar(4) / not null / 커버 이미지 정보; 이미지 타입)
+  - cover_image_width
+    - (integer / not null / 커버 이미지 정보; 이미지 가로)
+  - cover_image_height
+    - (integer / not null / 커버 이미지 정보; 이미지 세로)
+  - status
+    - (varchar(20) / not null / 강의상태를 저장한다)
+  - created_at
+    - (timestamp / not null / 생성시간)
+  - modified_at
+    - (timestamp / 수정시간)
 * free_session
   - id
-  - session_id(session 저장)
+    - (bigint / pk)
+  - session_id
+    - (bigint / fk / session 저장)
 * paid_session
   - id
-  - session_id(session 저장)
-  - max_register_count(강의 최대 수강 인원을 저장)
-  - amount(수강료 저장)
-* student
+    - (bigint / pk)
+  - session_id
+    - (bigint / fk / session 저장)
+  - max_register_count
+    - (integer / not null / 강의 최대 수강 인원을 저장)
+  - amount
+    - (integer / not null / 수강료 저장)
+* students
+  - `/* 네이밍: student / students */`
   - id
-  - session_id(session 저장)
-  - ns_user_id(ns_user 저장)
+    - (bigint / pk)
+  - session_id
+    - (bigint / fk / session 저장)
+  - ns_user_id
+    - (bigint / fk / ns_user 저장)
