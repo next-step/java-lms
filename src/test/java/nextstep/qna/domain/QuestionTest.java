@@ -20,11 +20,9 @@ public class QuestionTest {
 
     @Test
     void 질문_삭제_권한없음__다른_사람_답변_존재(){
+        Q1.addAnswer(new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1"));
         assertThatThrownBy(() -> {
-            Q1.checkAnswerOwner(
-                    new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1"),
-                    NsUserTest.SANJIGI
-            );
+            Q1.checkDeletePermission(NsUserTest.SANJIGI);
         }).isInstanceOf(CannotDeleteException.class);
     }
 

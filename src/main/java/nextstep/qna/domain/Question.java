@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers;
 
     private boolean deleted = false;
 
@@ -25,6 +25,7 @@ public class Question {
     private LocalDateTime updatedDate;
 
     public Question() {
+        this(null, null, null, null);
     }
 
     public Question(NsUser writer, String title, String contents) {
@@ -36,6 +37,7 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.answers = new Answers();
     }
 
     public Long getId() {
@@ -48,51 +50,32 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        answers.add(answer);
+        this.answers.add(answer);
     }
 
     private boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
     }
 
-    public void checkDeletePermission(NsUser loginUser) throws CannotDeleteException {
-        if (!this.isOwner(loginUser)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-        for (Answer answer : this.answers) {
-            checkAnswerOwner(answer, loginUser);
-        }
-    }
-
-    //todo owner가 맞는지 체크하는 로직은 Answer에 있어야 할 것 같은데,
-    // Exception 문구를 보면 Question에 있어야할 내용 같아서 이곳에 작성함.
-
-    // 테스트만 아니면 public으로 작성할 필요가 없을 것 같아 고민됨.
-    public void checkAnswerOwner(Answer answer, NsUser loginUser) throws CannotDeleteException {
-        if (!answer.isOwner(loginUser)) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-        }
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
 
+    public void checkDeletePermission(NsUser loginUser) throws CannotDeleteException {
+        if (!this.isOwner(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+        this.answers.checkDeletePermission(loginUser);
+    }
+
+
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         checkDeletePermission(loginUser);
 
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleted = true;
-        deleteHistories.add(DeleteHistory.createQuestionDeleteHistory(this.id, this.writer, createdDate));
-        deleteHistories.addAll(deleteAnswers());
-        return deleteHistories;
-    }
-
-    private List<DeleteHistory> deleteAnswers() {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        for (Answer answer : answers) {
-            deleteHistories.add(answer.delete());
-        }
+        deleteHistories.add(DeleteHistory.createQuestionDeleteHistory(this.id, this.writer, createdDate));
+        deleteHistories.addAll(this.answers.deleteAnswers());
         return deleteHistories;
     }
 
