@@ -23,7 +23,7 @@ class JdbcSessionRepositoryTest extends TestSupport {
         LocalDateTime startDate = LocalDateTime.parse("2023-04-05T00:00:00");
         LocalDateTime endDate = LocalDateTime.parse("2023-05-05T00:00:00");
 
-        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1, 1L);
+        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
         Session session = Session.createPaid(1L, "테스트강의", image, 1, 800000, startDate, endDate);
 
         sessionRepository.save(session);

@@ -14,7 +14,7 @@ class JdbcImageRepositoryTest extends TestSupport {
     @Test
     void saveImageTest() {
         ImageRepository imageRepository = new JdbcImageRepository(jdbcTemplate);
-        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1, 1L);
+        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
 
         imageRepository.save(image);
 
