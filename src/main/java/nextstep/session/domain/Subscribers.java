@@ -1,4 +1,4 @@
-package nextstep.session;
+package nextstep.session.domain;
 
 import nextstep.users.domain.NsUser;
 

@@ -1,7 +1,8 @@
-package nextstep.session;
+package nextstep.session.domain;
 
+import nextstep.DateDomain;
 import nextstep.payments.domain.Payment;
-import nextstep.session.image.Image;
+import nextstep.session.domain.image.Image;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -15,13 +16,14 @@ public class Session {
 
     private final Long id;
     private final String title;
-    private final Image image;
+    private Image image;
     private final PaymentType paymentType;
     private SubscribeStatus subscribeStatus;
     private int subscribeMax;
     private int price;
     private final Subscribers subscribers = new Subscribers();
     private final DateRange dateRange;
+    private final DateDomain dateDomain;
 
     private Session(Long id, String title, Image image, PaymentType paymentType, int subscribeMax, int price, LocalDateTime startDate, LocalDateTime endDate) {
         this.id = id;
@@ -32,6 +34,7 @@ public class Session {
         this.subscribeMax = subscribeMax;
         this.price = price;
         this.dateRange = new DateRange(startDate, endDate);
+        this.dateDomain = new DateDomain();
     }
 
     private Session(Long id, String title, Image image, PaymentType paymentType, LocalDateTime startDate, LocalDateTime endDate) {
@@ -41,6 +44,18 @@ public class Session {
         this.paymentType = paymentType;
         this.subscribeStatus = SubscribeStatus.READY;
         this.dateRange = new DateRange(startDate, endDate);
+        this.dateDomain = new DateDomain();
+    }
+
+    public Session(Long id, String title, String paymentType, String subscribeStatus, int subscribeMax, int price, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.title = title;
+        this.paymentType = PaymentType.valueOf(paymentType);
+        this.price = price;
+        this.subscribeMax = subscribeMax;
+        this.subscribeStatus = SubscribeStatus.valueOf(subscribeStatus);
+        this.dateRange = new DateRange(startDate, endDate);
+        this.dateDomain = new DateDomain(createdAt, updatedAt);
     }
 
     public static Session createFree(Long id, String title, Image image, LocalDateTime startDate, LocalDateTime endDate) {
@@ -85,6 +100,42 @@ public class Session {
         return subscribeStatus;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public PaymentType getPaymentType() {
+        return paymentType;
+    }
+
+    public int getSubscribeMax() {
+        return subscribeMax;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public Subscribers getSubscribers() {
+        return subscribers;
+    }
+
+    public DateRange getDateRange() {
+        return dateRange;
+    }
+
+    public DateDomain getDateDomain() {
+        return dateDomain;
+    }
+
     private void changeSubscribeStatus(SubscribeStatus subscribeStatus) {
         this.subscribeStatus = subscribeStatus;
     }
@@ -92,6 +143,7 @@ public class Session {
     private void subscribeUser(NsUser user) {
         this.subscribers.addUser(user);
     }
+
 
     private void confirmSubscribeStatus() {
         if (this.subscribeStatus != SubscribeStatus.WAIT) {

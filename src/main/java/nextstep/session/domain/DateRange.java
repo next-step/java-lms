@@ -1,4 +1,4 @@
-package nextstep.session;
+package nextstep.session.domain;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +13,14 @@ public class DateRange {
         confirmDate(startDate, endDate);
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
     }
 
     private void confirmDate(LocalDateTime startDate, LocalDateTime endDate) {

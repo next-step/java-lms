@@ -1,4 +1,4 @@
-package nextstep.session;
+package nextstep.session.domain;
 
 public enum PaymentType {
     FREE, PAID;
