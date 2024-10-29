@@ -51,8 +51,8 @@ public class PaidSessionTest {
                 Status.PREPARE,
                 MAX_REGISTER_COUNT,
                 SESSION_AMOUNT,
-                LocalDateTime.now(),
-                LocalDateTime.now());
+                START,
+                START);
 
         exceedMaxRegisterCountPaidSession = new PaidSession(1L,
                 1L,
@@ -62,8 +62,8 @@ public class PaidSessionTest {
                 Status.PREPARE,
                 2,
                 SESSION_AMOUNT,
-                LocalDateTime.now(),
-                LocalDateTime.now());
+                START,
+                START);
 
         payment1 = new Payment("pay1", 1L, NsUserTest.JAVAJIGI, SESSION_AMOUNT);
         payment2 = new Payment("pay2", 1L, NsUserTest.SANJIGI, SESSION_AMOUNT);
@@ -81,8 +81,8 @@ public class PaidSessionTest {
                 Status.PREPARE,
                 MAX_REGISTER_COUNT,
                 SESSION_AMOUNT,
-                LocalDateTime.now(),
-                LocalDateTime.now());
+                START,
+                START);
 
         paidSession.register(payment1);
         assertThat(actual).isNotEqualTo(paidSession);
