@@ -1,0 +1,48 @@
+package nextstep.session.service;
+
+import nextstep.payments.domain.Payment;
+import nextstep.session.domain.PaymentType;
+import nextstep.session.domain.Session;
+import nextstep.session.domain.Subscriber;
+import nextstep.session.domain.SubscriberRepository;
+import nextstep.session.service.request.SubscriberRequest;
+import nextstep.users.domain.NsUser;
+import nextstep.users.domain.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional
+public class SubscriberService {
+
+    private final SessionService sessionService;
+    private final UserRepository userRepository;
+    private final SubscriberRepository subscriberRepository;
+
+    @Autowired
+    public SubscriberService(SessionService sessionService, UserRepository userRepository, SubscriberRepository subscriberRepository) {
+        this.sessionService = sessionService;
+        this.userRepository = userRepository;
+        this.subscriberRepository = subscriberRepository;
+    }
+
+    public void subscribe(SubscriberRequest subscriberRequest) {
+        Session session = sessionService.findById(subscriberRequest.toSessionFindRequest());
+        NsUser nsUser = userRepository.findById(subscriberRequest.getUserId());
+
+        //무료
+        if (session.checkFreePaid()) {
+            Subscriber subscriber = session.subsribe(nsUser);
+            subscriberRepository.save(subscriber);
+            return;
+        }
+
+        //유료
+        Payment payment = new Payment(1L, session.getId(), nsUser.getId(), 800000); //가상의 결제 이력
+        Subscriber subscriber = session.subsribe(nsUser, payment);
+
+        subscriberRepository.save(subscriber);
+    }
+
+}
