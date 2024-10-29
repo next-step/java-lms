@@ -32,7 +32,7 @@ public class FreeSessionRepositoryTest {
     @BeforeEach
     void setUp() {
         courseRepository = new JdbcCourseRepository(jdbcTemplate);
-        freeSessionRepository = new JdbcFreeSessionRepository(jdbcTemplate, courseRepository);
+        freeSessionRepository = new JdbcFreeSessionRepository(jdbcTemplate);
     }
 
     @Test

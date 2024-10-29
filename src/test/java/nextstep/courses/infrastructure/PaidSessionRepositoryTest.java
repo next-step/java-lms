@@ -32,12 +32,10 @@ public class PaidSessionRepositoryTest {
     private JdbcTemplate jdbcTemplate;
 
     private PaidSessionRepository paidSessionRepository;
-    private JdbcCourseRepository courseRepository;
 
     @BeforeEach
     void setUp() {
-        courseRepository = new JdbcCourseRepository(jdbcTemplate);
-        paidSessionRepository = new JdbcPaidSessionRepository(jdbcTemplate, courseRepository);
+        paidSessionRepository = new JdbcPaidSessionRepository(jdbcTemplate);
     }
 
     @Test

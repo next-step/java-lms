@@ -11,10 +11,8 @@ import org.springframework.jdbc.core.RowMapper;
 
 public class JdbcPaidSessionRepository extends JdbcSessionRepository implements PaidSessionRepository {
 
-    private final CourseRepository courseRepository;
-    public JdbcPaidSessionRepository(JdbcTemplate jdbcTemplate, CourseRepository courseRepository) {
+    public JdbcPaidSessionRepository(JdbcTemplate jdbcTemplate) {
         super(jdbcTemplate);
-        this.courseRepository = courseRepository;
     }
 
     @Override

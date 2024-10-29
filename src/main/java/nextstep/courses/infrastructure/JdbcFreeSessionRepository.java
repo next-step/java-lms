@@ -10,10 +10,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 public class JdbcFreeSessionRepository extends JdbcSessionRepository implements FreeSessionRepository {
-    private final CourseRepository courseRepository;
-    public JdbcFreeSessionRepository(JdbcTemplate jdbcTemplate, CourseRepository courseRepository) {
+    public JdbcFreeSessionRepository(JdbcTemplate jdbcTemplate) {
         super(jdbcTemplate);
-        this.courseRepository = courseRepository;
     }
 
     @Override
