@@ -33,14 +33,14 @@ public class SubscriberService {
 
         //무료
         if (session.checkFreePaid()) {
-            Subscriber subscriber = session.subsribe(nsUser);
+            Subscriber subscriber = session.subscribe(nsUser);
             subscriberRepository.save(subscriber);
             return;
         }
 
         //유료
         Payment payment = new Payment(1L, session.getId(), nsUser.getId(), 800000); //가상의 결제 이력
-        Subscriber subscriber = session.subsribe(nsUser, payment);
+        Subscriber subscriber = session.subscribe(nsUser, payment);
 
         subscriberRepository.save(subscriber);
     }

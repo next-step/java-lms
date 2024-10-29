@@ -97,7 +97,7 @@ public class SessionTest {
         NsUser user = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
 
         //when
-        session.subsribe(user);
+        session.subscribe(user);
 
         //then
         assertThat(session.getSubscribeCount()).isEqualTo(1);
@@ -116,7 +116,7 @@ public class SessionTest {
         NsUser user = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
 
         //when, then
-        assertThatThrownBy(() -> session.subsribe(user, payment))
+        assertThatThrownBy(() -> session.subscribe(user, payment))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("현재 강의가 모집중이 아닙니다.");
     }
@@ -135,7 +135,7 @@ public class SessionTest {
         session.waitSession();
 
         //when, then
-        assertThatThrownBy(() -> session.subsribe(user, payment))
+        assertThatThrownBy(() -> session.subscribe(user, payment))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("결제 금액이 일치하지 않습니다.");
     }
@@ -153,7 +153,7 @@ public class SessionTest {
         NsUser user = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
 
         //when, then
-        assertThatThrownBy(() -> session.subsribe(user))
+        assertThatThrownBy(() -> session.subscribe(user))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("유료강의는 결제내역이 필수입니다.");
     }
@@ -173,10 +173,10 @@ public class SessionTest {
         Payment payment = new Payment(1L, 1L, 1L, 800000);
 
         session.waitSession();
-        session.subsribe(user1, payment);
+        session.subscribe(user1, payment);
 
         //when, then
-        assertThatThrownBy(() -> session.subsribe(user2, payment))
+        assertThatThrownBy(() -> session.subscribe(user2, payment))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("강의가 이미 만석입니다.");
     }

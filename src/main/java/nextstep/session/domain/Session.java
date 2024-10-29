@@ -93,7 +93,7 @@ public class Session {
         return new Session(id, title, image, PaymentType.PAID, subscribeMax, price, startDate, endDate);
     }
 
-    public Subscriber subsribe(NsUser user) {
+    public Subscriber subscribe(NsUser user) {
         confirmSubscribeStatus();
         if (paymentType == PaymentType.PAID) {
             throw new IllegalArgumentException(PAID_SUBSCRIBE_MESSAGE);
@@ -101,7 +101,7 @@ public class Session {
         return subscribeUser(user);
     }
 
-    public Subscriber subsribe(NsUser user, Payment payment) {
+    public Subscriber subscribe(NsUser user, Payment payment) {
         confirmSubscribeStatus();
         if (paymentType == PaymentType.FREE) {
             throw new IllegalArgumentException(FREE_SUBSCRIBE_MESSAGE);
