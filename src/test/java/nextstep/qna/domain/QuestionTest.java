@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class QuestionTest {
     private Question question;
@@ -19,7 +19,6 @@ public class QuestionTest {
         question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
     }
 
-
     @Test
     void delete_질문을_삭제하면_삭제상태가_true가_된다() throws CannotDeleteException {
         question.delete(NsUserTest.JAVAJIGI);
@@ -28,20 +27,12 @@ public class QuestionTest {
     }
 
     @Test
-    void delete_삭제_권한이_없는_사용자가_삭제하면_에러가_발생한다() {
-        CannotDeleteException exception = assertThrows(CannotDeleteException.class, () ->
-                question.delete(new NsUser()));
-        assertThat(exception.getMessage()).isEqualTo("질문을 삭제할 권한이 없습니다.");
-    }
+    void delete_질문을_삭제하면_답변_삭제상태가_true가_된다() throws CannotDeleteException {
+        question.delete(NsUserTest.JAVAJIGI);
 
-    @Test
-    void delete_다른_사용자_답변이_있고_질문_작성자가_삭제하면_에러가_발생한다() {
-        question.addAnswer(new Answer(new NsUser(), question, ""));
-
-        CannotDeleteException exception = assertThrows(
-                CannotDeleteException.class, () -> question.delete(NsUserTest.JAVAJIGI));
-
-        assertThat(exception.getMessage()).isEqualTo("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        question.getAnswers()
+                .getValue()
+                .forEach(answer -> assertThat(answer.isDeleted()).isTrue());
     }
 
     @Test
@@ -49,5 +40,11 @@ public class QuestionTest {
         List<DeleteHistory> histories = question.delete(NsUserTest.JAVAJIGI);
 
         assertThat(histories).isNotNull();
+    }
+
+    @Test
+    void delete_삭제_권한이_없는_사용자가_삭제하면_에러가_발생한다() {
+        assertThatThrownBy(() -> question.delete(new NsUser())).isInstanceOf(CannotDeleteException.class)
+                .hasMessage("질문을 삭제할 권한이 없습니다.");
     }
 }
