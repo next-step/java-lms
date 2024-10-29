@@ -2,9 +2,7 @@ package nextstep.session.service;
 
 import nextstep.session.domain.Session;
 import nextstep.session.domain.SessionRepository;
-import nextstep.session.service.request.SessionFindRequest;
-import nextstep.session.service.request.SessionRequest;
-import nextstep.session.service.request.SessionStatusRequest;
+import nextstep.session.domain.SubscribeStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,17 +18,16 @@ public class SessionService {
         this.sessionRepository = sessionRepository;
     }
 
-    public void save(SessionRequest sessionRequest) {
-        Session session = sessionRequest.toDomain();
+    public void save(Session session) {
         sessionRepository.save(session);
     }
 
-    public Session findById(SessionFindRequest sessionFindRequest) {
-        return sessionRepository.findById(sessionFindRequest.getSessionId());
+    public Session findById(Long sessionId) {
+        return sessionRepository.findById(sessionId);
     }
 
-    public void changeSubscribeStatus(SessionStatusRequest sessionStatusRequest) {
-        sessionRepository.updateSubscribeStatus(sessionStatusRequest.getSessionId(), sessionStatusRequest.getSubscribeStatus());
+    public void changeSubscribeStatus(Long sessionId, SubscribeStatus subscribeStatus) {
+        sessionRepository.updateSubscribeStatus(sessionId, subscribeStatus);
     }
 
 }

@@ -1,11 +1,9 @@
 package nextstep.session.service;
 
 import nextstep.payments.domain.Payment;
-import nextstep.session.domain.PaymentType;
 import nextstep.session.domain.Session;
 import nextstep.session.domain.Subscriber;
 import nextstep.session.domain.SubscriberRepository;
-import nextstep.session.service.request.SubscriberRequest;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +25,9 @@ public class SubscriberService {
         this.subscriberRepository = subscriberRepository;
     }
 
-    public void subscribe(SubscriberRequest subscriberRequest) {
-        Session session = sessionService.findById(subscriberRequest.toSessionFindRequest());
-        NsUser nsUser = userRepository.findById(subscriberRequest.getUserId());
+    public void subscribe(Long sessionId, Long userId) {
+        Session session = sessionService.findById(sessionId);
+        NsUser nsUser = userRepository.findById(userId);
 
         //무료
         if (session.checkFreePaid()) {

@@ -1,11 +1,9 @@
 package nextstep.session.service;
 
 import nextstep.session.domain.PaymentType;
+import nextstep.session.domain.Session;
 import nextstep.session.domain.SubscribeStatus;
-import nextstep.session.service.request.ImageRequest;
-import nextstep.session.service.request.SessionFindRequest;
-import nextstep.session.service.request.SessionRequest;
-import nextstep.session.service.request.SessionStatusRequest;
+import nextstep.session.domain.image.Image;
 import nextstep.support.TestSupport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,18 +24,16 @@ class SessionServiceTest extends TestSupport {
 
     @BeforeEach
     void setUp() {
-        ImageRequest imageRequest = new ImageRequest("테스트이미지.jpg", 300, 200, 1);
-        SessionRequest sessionRequest = new SessionRequest("테스트강의", PaymentType.PAID, startDate, endDate, 800000, 1, imageRequest);
+        Image image = new Image("테스트이미지.jpg", 300, 200, 1);
+        Session session = Session.createPaid(1L, "테스트강의", image, 1, 800000, startDate, endDate);
 
-        sessionService.save(sessionRequest);
+        sessionService.save(session);
     }
 
     @DisplayName("강의를 저장한다 후 조회한다.")
     @Test
     void saveTest() {
-        SessionFindRequest sessionFindRequest = new SessionFindRequest(1L);
-
-        assertThat(sessionService.findById(sessionFindRequest))
+        assertThat(sessionService.findById(1L))
                 .extracting("id", "title", "paymentType", "subscribeStatus", "subscribeMax", "price", "dateRange.startDate", "dateRange.endDate", "image.name", "image.size.width.width", "image.size.height.height", "image.capacity.capacity")
                 .contains(1L, "테스트강의", PaymentType.PAID, SubscribeStatus.READY, 1, 800000, startDate, endDate, "테스트이미지.jpg", 300, 200, 1);
     }
@@ -45,10 +41,9 @@ class SessionServiceTest extends TestSupport {
     @DisplayName("강의의 상태를 변경한다.")
     @Test
     void changeSubscribeStatusTest() {
-        SessionStatusRequest sessionStatusRequest = new SessionStatusRequest(1L, SubscribeStatus.WAIT);
-        sessionService.changeSubscribeStatus(sessionStatusRequest);
+        sessionService.changeSubscribeStatus(1L, SubscribeStatus.WAIT);
 
-        assertThat(sessionService.findById(new SessionFindRequest(1L)))
+        assertThat(sessionService.findById(1L))
                 .extracting("id", "title", "paymentType", "subscribeStatus", "subscribeMax", "price", "dateRange.startDate", "dateRange.endDate", "image.name", "image.size.width.width", "image.size.height.height", "image.capacity.capacity")
                 .contains(1L, "테스트강의", PaymentType.PAID, SubscribeStatus.WAIT, 1, 800000, startDate, endDate, "테스트이미지.jpg", 300, 200, 1);
     }
