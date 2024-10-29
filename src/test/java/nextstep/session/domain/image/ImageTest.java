@@ -11,7 +11,7 @@ public class ImageTest {
     @Test
     void createImageTest() {
         //given
-        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
+        Image image = new Image("테스트이미지.jpg", 300, 200, 1);
 
         //when, then
         assertThat(image)

@@ -52,7 +52,7 @@ public class CourseTest {
         LocalDateTime startDate = LocalDateTime.parse("2023-04-05T00:00:00");
         LocalDateTime endDate = LocalDateTime.parse("2023-05-05T00:00:00");
 
-        Image image = new Image(1L, "테스트이미지.jpg", 300, 200, 1);
+        Image image = new Image("테스트이미지.jpg", 300, 200, 1);
         return Session.createFree((long) id, "테스트강의", image, startDate, endDate);
     }
 }
