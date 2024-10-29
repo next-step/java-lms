@@ -2,7 +2,6 @@ package nextstep.session.service.request;
 
 import nextstep.session.domain.PaymentType;
 import nextstep.session.domain.Session;
-import nextstep.session.domain.image.Image;
 
 import java.time.LocalDateTime;
 

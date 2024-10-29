@@ -7,17 +7,26 @@ import java.util.List;
 
 public class Subscribers {
 
-    private final List<NsUser> subscribeUsers = new ArrayList<>();
+    private List<Subscriber> subscribeUsers = new ArrayList<>();
+
+    public Subscribers() {
+    }
+
+    public Subscribers(List<Subscriber> subscribeUsers) {
+        this.subscribeUsers = subscribeUsers;
+    }
 
     public int subscribeUsersSize() {
         return this.subscribeUsers.size();
     }
 
-    public void addUser(NsUser user) {
-        this.subscribeUsers.add(user);
+    public Subscriber addUser(Session session, NsUser nsUser) {
+        Subscriber subscriber = new Subscriber(session, nsUser);
+        this.subscribeUsers.add(subscriber);
+        return subscriber;
     }
 
-    public List<NsUser> getSubscribeUsers() {
+    public List<Subscriber> getSubscribeUsers() {
         return subscribeUsers;
     }
 }
