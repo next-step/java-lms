@@ -21,6 +21,18 @@ public class CoverImage {
         this(new ImageFileSize(size), ImageType.toImageType(imageTypeText), new ImageSize(width, height));
     }
 
+    public ImageFileSize getImageFileSize() {
+        return imageFileSize;
+    }
+
+    public ImageType getImageType() {
+        return imageType;
+    }
+
+    public ImageSize getImageSize() {
+        return imageSize;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -33,4 +45,6 @@ public class CoverImage {
     public int hashCode() {
         return Objects.hash(imageFileSize, imageType, imageSize);
     }
+
+
 }

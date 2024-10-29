@@ -32,6 +32,9 @@ public class Course {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
+    public long getId() {
+        return id;
+    }
 
     public String getTitle() {
         return title;

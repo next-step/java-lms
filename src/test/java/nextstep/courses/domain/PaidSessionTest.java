@@ -10,6 +10,8 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 import static nextstep.courses.domain.PaidSession.MAX_STUDENT_CAPACITY_MESSAGE;
 import static nextstep.courses.domain.PaidSession.PAYMENT_MISMATCH_MESSAGE;
 import static nextstep.courses.domain.session.CoverImageTest.*;
@@ -22,6 +24,16 @@ public class PaidSessionTest {
 
     public static final int MAX_REGISTER_COUNT = 30;
     public static final long SESSION_AMOUNT = 10000L;
+    public static final PaidSession PS1 = new PaidSession(1L,
+            1L,
+            CourseTest.C1.getId(),
+            new DateRange(START, END),
+            new CoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT),
+            Status.PREPARE,
+            MAX_REGISTER_COUNT,
+            SESSION_AMOUNT,
+            START,
+            START);
     private PaidSession paidSession;
     private PaidSession exceedMaxRegisterCountPaidSession;
     private Payment payment1;
@@ -33,19 +45,25 @@ public class PaidSessionTest {
     void setUp() {
         paidSession = new PaidSession(1L,
                 1L,
+                CourseTest.C1.getId(),
                 new DateRange(START, END),
                 new CoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT),
                 Status.PREPARE,
                 MAX_REGISTER_COUNT,
-                SESSION_AMOUNT);
+                SESSION_AMOUNT,
+                LocalDateTime.now(),
+                LocalDateTime.now());
 
         exceedMaxRegisterCountPaidSession = new PaidSession(1L,
                 1L,
+                CourseTest.C1.getId(),
                 new DateRange(START, END),
                 new CoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT),
                 Status.PREPARE,
                 2,
-                SESSION_AMOUNT);
+                SESSION_AMOUNT,
+                LocalDateTime.now(),
+                LocalDateTime.now());
 
         payment1 = new Payment("pay1", 1L, NsUserTest.JAVAJIGI, SESSION_AMOUNT);
         payment2 = new Payment("pay2", 1L, NsUserTest.SANJIGI, SESSION_AMOUNT);
@@ -57,11 +75,14 @@ public class PaidSessionTest {
     void register_성공() {
         PaidSession actual = new PaidSession(1L,
                 1L,
+                CourseTest.C1.getId(),
                 new DateRange(START, END),
                 new CoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT),
                 Status.PREPARE,
                 MAX_REGISTER_COUNT,
-                SESSION_AMOUNT);
+                SESSION_AMOUNT,
+                LocalDateTime.now(),
+                LocalDateTime.now());
 
         paidSession.register(payment1);
         assertThat(actual).isNotEqualTo(paidSession);
@@ -86,5 +107,14 @@ public class PaidSessionTest {
             paidSession.register(paymentNotMatched);
         }).isInstanceOf(PaymentMismatchException.class)
                 .hasMessage(PAYMENT_MISMATCH_MESSAGE);
+    }
+
+    @Test
+    void toPaidParameters() {
+        Object[] actual = PS1.toPaidParameters();
+        Object[] expected = {
+                1L, MAX_REGISTER_COUNT, SESSION_AMOUNT
+        };
+        assertThat(actual).isEqualTo(expected);
     }
 }

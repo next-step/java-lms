@@ -73,16 +73,15 @@ create table course (
     - (timestamp / 수정시간)
 * free_session
   - session_id
-    - (bigint / pk / session 저장)
+    - (bigint / fk / session 저장)
 * paid_session
   - session_id
-    - (bigint / pk / session 저장)
+    - (bigint / fk / session 저장)
   - max_register_count
     - (integer / not null / 강의 최대 수강 인원을 저장)
   - amount
     - (integer / not null / 수강료 저장)
-* students
-  - `/* 네이밍: student / students */`
+* student
   - id
     - (bigint / pk)
   - session_id

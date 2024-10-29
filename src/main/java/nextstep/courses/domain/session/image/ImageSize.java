@@ -27,6 +27,14 @@ public class ImageSize {
         this.height = height;
     }
 
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

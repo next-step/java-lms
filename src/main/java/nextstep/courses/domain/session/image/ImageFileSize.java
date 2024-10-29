@@ -16,6 +16,10 @@ public class ImageFileSize {
         this.size = size;
     }
 
+    public int getSize() {
+        return size;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

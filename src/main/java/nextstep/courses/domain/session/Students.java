@@ -1,28 +1,31 @@
 package nextstep.courses.domain.session;
 
-import nextstep.users.domain.NsUser;
+import nextstep.courses.domain.Student;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Students {
-    private final List<NsUser> students;
+    private final List<Student> students;
 
-    public Students(NsUser... students) {
+
+    public Students(Student... students) {
         this(List.of(students));
     }
 
-    public Students(List<NsUser> students) {
+    public Students(List<Student> students) {
         this.students = new ArrayList<>(students);
     }
 
-    public void add(NsUser student) {
+    public void add(Student student) {
         this.students.add(student);
     }
 
     public int size() {
         return students.size();
+    }
+
+    public List<Student> getStudents() {
+        return Collections.unmodifiableList(this.students);
     }
 
     @Override
@@ -36,5 +39,12 @@ public class Students {
     @Override
     public int hashCode() {
         return Objects.hash(students);
+    }
+
+    @Override
+    public String toString() {
+        return "Students{" +
+                "students=" + students +
+                '}';
     }
 }

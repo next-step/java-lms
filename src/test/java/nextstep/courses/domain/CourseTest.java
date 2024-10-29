@@ -12,6 +12,7 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 
 public class CourseTest {
 
+    public static final Course C1 = new Course(1L, "title1", 1L, LocalDateTime.now(), LocalDateTime.now());
     private Course course;
 
     @BeforeEach
