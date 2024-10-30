@@ -15,7 +15,7 @@ public class Answer {
 
     private String contents;
 
-    private boolean deleted = false;
+    private Deleted deleted;
 
     private LocalDateTime createdDate = LocalDateTime.now();
 
@@ -41,6 +41,7 @@ public class Answer {
         this.writer = writer;
         this.question = question;
         this.contents = contents;
+        this.deleted = new Deleted();
     }
 
     public Long getId() {
@@ -48,7 +49,7 @@ public class Answer {
     }
 
     public boolean isDeleted() {
-        return deleted;
+        return this.deleted.isDeleted();
     }
 
     public boolean isOwner(NsUser writer) {
@@ -64,7 +65,7 @@ public class Answer {
     }
 
     public DeleteHistory delete() {
-        deleted = true;
+        this.deleted.setDeleted(true);
         return DeleteHistory.createAnswerDeleteHistory(this.id, this.writer, createdDate);
     }
 
