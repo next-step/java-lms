@@ -67,10 +67,7 @@ public class Question {
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
 
-        List<Answer> originAnswers = this.answers.getValue();
-        originAnswers.add(answer);
-
-        answers = new Answers(originAnswers);
+        this.answers.add(answer);
     }
 
     public boolean isOwner(NsUser loginUser) {
@@ -99,7 +96,6 @@ public class Question {
 
         List<DeleteHistory> deleteHistories = new ArrayList<>(
                 List.of(DeleteHistory.createQuestionHistory(id, writer, LocalDateTime.now())));
-
 
         deleteHistories.addAll(answers.delete(user));
 

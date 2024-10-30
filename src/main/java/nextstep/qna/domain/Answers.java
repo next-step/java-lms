@@ -21,12 +21,18 @@ public class Answers {
     }
 
     public List<DeleteHistory> delete(NsUser user) {
-        return answers.stream().map(answer -> {
-            try {
-                return answer.delete(user);
-            } catch (CannotDeleteException e) {
-                throw new RuntimeException(e);
-            }
-        }).collect(Collectors.toList());
+        return answers.stream()
+                .map(answer -> {
+                    try {
+                        return answer.delete(user);
+                    } catch (CannotDeleteException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .collect(Collectors.toList());
+    }
+
+    public void add(Answer answer) {
+        this.answers.add(answer);
     }
 }
