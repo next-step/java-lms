@@ -9,11 +9,7 @@ import java.util.List;
 
 public class Question {
     private Long id;
-
-    private String title;
-
-    private String contents;
-
+    private QuestionBody questionBody;
     private NsUser writer;
 
     private Answers answers;
@@ -35,8 +31,7 @@ public class Question {
     public Question(Long id, NsUser writer, String title, String contents) {
         this.id = id;
         this.writer = writer;
-        this.title = title;
-        this.contents = contents;
+        this.questionBody = new QuestionBody(title, contents);
         this.answers = new Answers();
     }
 
@@ -68,7 +63,6 @@ public class Question {
         this.answers.checkDeletePermission(loginUser);
     }
 
-
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         checkDeletePermission(loginUser);
 
@@ -81,6 +75,6 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+        return "Question [id=" + getId() + ", " + questionBody.toString() + " writer=" + writer + "]";
     }
 }
