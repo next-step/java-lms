@@ -72,7 +72,7 @@ Answer
   - 강의 상태
 
 
-- [ ] 커버 이미지 정보
+- [x] 커버 이미지 정보
   - gif, jpg, jpeg, png, svg만 허용
   - width >= 300, height >= 200 / width * 2 = height * 3
 
