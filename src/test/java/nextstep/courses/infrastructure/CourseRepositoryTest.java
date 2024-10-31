@@ -1,7 +1,6 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.Course;
-import nextstep.courses.domain.CourseRepository;
+import nextstep.courses.domain.course.Course;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -28,7 +27,7 @@ public class CourseRepositoryTest {
 
     @Test
     void crud() {
-        Course course = new Course("TDD, 클린 코드 with Java", 1L);
+        Course course = new Course("TDD, 클린 코드 with Java", 1, 1L);
         int count = courseRepository.save(course);
         assertThat(count).isEqualTo(1);
         Course savedCourse = courseRepository.findById(1L);
