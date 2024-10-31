@@ -1,14 +1,12 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public class Session {
 
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private SessionDate sessionDate;
     private SessionCoverImage sessionCoverImage;
     private SessionStatus sessionStatus;
     private SessionStrategy sessionStrategy;
@@ -18,8 +16,7 @@ public class Session {
     }
 
     public Session(LocalDate startDate, LocalDate endDate, SessionCoverImage sessionCoverImage, SessionStatus sessionStatus, SessionStrategy sessionStrategy) {
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.sessionDate = new SessionDate(startDate, endDate);
         this.sessionCoverImage = sessionCoverImage;
         this.sessionStatus = sessionStatus;
         this.sessionStrategy = sessionStrategy;

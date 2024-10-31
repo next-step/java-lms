@@ -1,5 +1,6 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
+import nextstep.payments.domain.Payments;
 import nextstep.payments.domain.Payment;
 
 public class PaidSession implements SessionStrategy {
@@ -21,7 +22,7 @@ public class PaidSession implements SessionStrategy {
         return maxEnrollmentCount <= currentEnrollmentCount;
     }
 
-    public void enroll(Payment payment){
+    public void enroll(Payment payment){ //todo
         if(canEnroll(payment)){
             payments.add(payment);
         }

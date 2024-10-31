@@ -1,6 +1,6 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.PaidSession;
+import nextstep.courses.domain.session.PaidSession;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.Test;
 

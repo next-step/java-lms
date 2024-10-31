@@ -1,6 +1,4 @@
-package nextstep.courses.domain;
-
-import nextstep.payments.domain.Payment;
+package nextstep.payments.domain;
 
 import java.util.ArrayList;
 import java.util.List;
