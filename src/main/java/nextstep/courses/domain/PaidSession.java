@@ -1,29 +1,37 @@
 package nextstep.courses.domain;
 
+import nextstep.payments.domain.Payment;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class PaidSession implements SessionStrategy {
 
     private int maxEnrollmentCount;
     private int currentEnrollmentCount;
     private int tuitionFee;
 
-    private int paymentAmount; //todo
+    private List<Payment> payments;
 
-    public PaidSession(int maxEnrollmentCount, int currentEnrollmentCount, int tuitionFee, int paymentAmount){
+    public PaidSession(int maxEnrollmentCount, int currentEnrollmentCount, int tuitionFee){
         this.maxEnrollmentCount = maxEnrollmentCount;
         this.currentEnrollmentCount = currentEnrollmentCount;
         this.tuitionFee = tuitionFee;
-        this.paymentAmount = paymentAmount;
+        this.payments = new ArrayList<>();
     }
 
     private boolean isFull() {
         return maxEnrollmentCount <= currentEnrollmentCount;
     }
-    private boolean isTuitionPaid() {
-        return tuitionFee == paymentAmount;
-    }
 
     @Override
-    public boolean canEnroll() {
-        return !isFull() && isTuitionPaid(); //todo
+    public boolean canEnroll(Payment payment) {
+        return !isFull() && payment.isTuitionPaid(tuitionFee); //todo
+    }
+
+    public void enroll(Payment payment){
+        if(canEnroll(payment)){
+            payments.add(payment);
+        }
     }
 }

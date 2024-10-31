@@ -86,14 +86,11 @@ Answer
     - 강의 최대 수강인원 초과 불가
   - 수강료
     - 수강생이 결제한 금액 == 수강료 일 때만 수강신청 가능
-
+ - 결제 완료 List<Payment>
 
 - [x] 강의 상태
   - 준비중(Preparing)/모집중(Recruiting)/종료(Closed)
     - 모집중일 때만 신청 가능
 
-
 - [ ] Payments
-  - 결제 완료 List<Payment>
-
-- [ ] Payment
+  - List<Payment>
