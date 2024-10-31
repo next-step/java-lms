@@ -1,21 +1,21 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.session.CoverImage;
-import nextstep.courses.domain.session.DateRange;
-import nextstep.courses.domain.session.Status;
-import nextstep.courses.domain.session.Students;
+import nextstep.courses.domain.session.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import static nextstep.courses.domain.session.Category.FREE;
+
 public abstract class Session {
     protected final long id;
     protected final long courseId;
+    protected final Category category;
     protected final DateRange dateRange;
     protected final CoverImage coverImage;
     protected final Status status;
-    protected long creatorId;
-    protected LocalDateTime createdAt;
+    protected final long creatorId;
+    protected final LocalDateTime createdAt;
     protected LocalDateTime updatedAt;
 
     public Session(long id,
@@ -27,6 +27,27 @@ public abstract class Session {
                    LocalDateTime createdAt,
                    LocalDateTime updatedAt) {
         this.id = id;
+        this.category = FREE;
+        this.courseId = courseId;
+        this.dateRange = dateRange;
+        this.coverImage = coverImage;
+        this.status = status;
+        this.creatorId = creatorId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public Session(long id,
+                   long courseId,
+                   Category category,
+                   DateRange dateRange,
+                   CoverImage coverImage,
+                   Status status,
+                   long creatorId,
+                   LocalDateTime createdAt,
+                   LocalDateTime updatedAt) {
+        this.id = id;
+        this.category = category;
         this.courseId = courseId;
         this.dateRange = dateRange;
         this.coverImage = coverImage;
@@ -40,20 +61,36 @@ public abstract class Session {
         return id;
     }
 
-    public Object[] toParameters() {
-        return new Object[]{
-                id,
-                creatorId,
-                courseId,
-                dateRange.getStartAt(),
-                dateRange.getEndAt(),
-                coverImage.getImageFileSize().getSize(),
-                coverImage.getImageType().name(),
-                coverImage.getImageSize().getWidth(),
-                coverImage.getImageSize().getHeight(),
-                status.name(),
-                createdAt
-        };
+    public long getCourseId() {
+        return courseId;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public DateRange getDateRange() {
+        return dateRange;
+    }
+
+    public CoverImage getCoverImage() {
+        return coverImage;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public long getCreatorId() {
+        return creatorId;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
     @Override

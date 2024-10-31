@@ -36,11 +36,11 @@ public class StudentsRepositoryTest {
     void setUp() {
         studentsRepository = new JdbcStudentsRepository(jdbcTemplate);
         freeSession = new FreeSession(1L,
-                1L,
                 CourseTest.C1.getId(),
                 new DateRange(START, END),
                 new CoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT),
                 Status.PREPARE,
+                1L,
                 START,
                 START);
     }

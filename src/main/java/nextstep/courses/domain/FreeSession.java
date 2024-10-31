@@ -1,28 +1,39 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.session.CoverImage;
-import nextstep.courses.domain.session.DateRange;
-import nextstep.courses.domain.session.Status;
-import nextstep.courses.domain.session.Students;
+import nextstep.courses.domain.session.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+
+import static nextstep.courses.domain.session.Category.FREE;
 
 public class FreeSession extends Session {
     private final Students students;
 
     public FreeSession(long id,
-                       long creatorId,
                        long courseId,
                        DateRange dateRange,
                        CoverImage coverImage,
                        Status status,
+                       long creatorId,
                        LocalDateTime createdAt,
                        LocalDateTime updatedAt) {
-        super(id, courseId, dateRange, coverImage, status, creatorId, createdAt, updatedAt);
+        super(id, courseId, FREE, dateRange, coverImage, status, creatorId, createdAt, updatedAt);
         this.students = new Students();
     }
 
+    public FreeSession(long id,
+                       long courseId,
+                       Category category,
+                       DateRange dateRange,
+                       CoverImage coverImage,
+                       Status status,
+                       long creatorId,
+                       LocalDateTime createdAt,
+                       LocalDateTime updatedAt) {
+        super(id, courseId, category, dateRange, coverImage, status, creatorId, createdAt, updatedAt);
+        this.students = new Students();
+    }
 
     public void register(Student student) {
         students.add(student);
@@ -39,9 +50,5 @@ public class FreeSession extends Session {
     @Override
     public int hashCode() {
         return Objects.hash(students);
-    }
-
-    public Object[] toFreeParameters() {
-        return new Object[]{id};
     }
 }

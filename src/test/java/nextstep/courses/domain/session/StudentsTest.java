@@ -27,11 +27,11 @@ public class StudentsTest {
     @BeforeEach
     void setUp() {
         freeSession = new FreeSession(1L,
-                1L,
                 CourseTest.C1.getId(),
                 new DateRange(START, END),
                 new CoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT),
                 Status.PREPARE,
+                1L,
                 LocalDateTime.now(),
                 LocalDateTime.now());
         students = new Student[]{new Student(freeSession, NsUserTest.JAVAJIGI, START), new Student(freeSession, NsUserTest.SANJIGI, START)};

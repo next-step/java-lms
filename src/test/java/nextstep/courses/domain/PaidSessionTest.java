@@ -25,13 +25,13 @@ public class PaidSessionTest {
     public static final int MAX_REGISTER_COUNT = 30;
     public static final long SESSION_AMOUNT = 10000L;
     public static final PaidSession PS1 = new PaidSession(1L,
-            1L,
             CourseTest.C1.getId(),
             new DateRange(START, END),
             new CoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT),
             Status.PREPARE,
             MAX_REGISTER_COUNT,
             SESSION_AMOUNT,
+            1L,
             START,
             START);
     private PaidSession paidSession;
@@ -44,24 +44,24 @@ public class PaidSessionTest {
     @BeforeEach
     void setUp() {
         paidSession = new PaidSession(1L,
-                1L,
                 CourseTest.C1.getId(),
                 new DateRange(START, END),
                 new CoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT),
                 Status.PREPARE,
                 MAX_REGISTER_COUNT,
                 SESSION_AMOUNT,
+                1L,
                 START,
                 START);
 
         exceedMaxRegisterCountPaidSession = new PaidSession(1L,
-                1L,
                 CourseTest.C1.getId(),
                 new DateRange(START, END),
                 new CoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT),
                 Status.PREPARE,
                 2,
                 SESSION_AMOUNT,
+                1L,
                 START,
                 START);
 
@@ -74,13 +74,13 @@ public class PaidSessionTest {
     @Test
     void register_성공() {
         PaidSession actual = new PaidSession(1L,
-                1L,
                 CourseTest.C1.getId(),
                 new DateRange(START, END),
                 new CoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT),
                 Status.PREPARE,
                 MAX_REGISTER_COUNT,
                 SESSION_AMOUNT,
+                1L,
                 START,
                 START);
 
@@ -109,12 +109,4 @@ public class PaidSessionTest {
                 .hasMessage(PAYMENT_MISMATCH_MESSAGE);
     }
 
-    @Test
-    void toPaidParameters() {
-        Object[] actual = PS1.toPaidParameters();
-        Object[] expected = {
-                1L, MAX_REGISTER_COUNT, SESSION_AMOUNT
-        };
-        assertThat(actual).isEqualTo(expected);
-    }
 }

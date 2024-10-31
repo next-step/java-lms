@@ -1,16 +1,15 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.MaxStudentCapacityException;
-import nextstep.courses.domain.session.CoverImage;
-import nextstep.courses.domain.session.DateRange;
-import nextstep.courses.domain.session.Status;
-import nextstep.courses.domain.session.Students;
+import nextstep.courses.domain.session.*;
 import nextstep.payments.PaymentMismatchException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+
+import static nextstep.courses.domain.session.Category.PAID;
 
 public class PaidSession extends Session {
 
@@ -21,16 +20,33 @@ public class PaidSession extends Session {
     private final Students students;
 
     public PaidSession(long id,
-                       long creatorId,
                        long courseId,
                        DateRange dateRange,
                        CoverImage coverImage,
                        Status status,
                        int maxRegisterCount,
                        long amount,
+                       long creatorId,
                        LocalDateTime createdAt,
                        LocalDateTime updatedAt) {
-        super(id, courseId, dateRange, coverImage, status, creatorId, createdAt, updatedAt);
+        super(id, courseId, PAID, dateRange, coverImage, status, creatorId, createdAt, updatedAt);
+        this.maxRegisterCount = maxRegisterCount;
+        this.amount = amount;
+        this.students = new Students();
+    }
+
+    public PaidSession(long id,
+                       long courseId,
+                       Category category,
+                       DateRange dateRange,
+                       CoverImage coverImage,
+                       Status status,
+                       int maxRegisterCount,
+                       long amount,
+                       long creatorId,
+                       LocalDateTime createdAt,
+                       LocalDateTime updatedAt) {
+        super(id, courseId, category, dateRange, coverImage, status, creatorId, createdAt, updatedAt);
         this.maxRegisterCount = maxRegisterCount;
         this.amount = amount;
         this.students = new Students();
@@ -53,12 +69,6 @@ public class PaidSession extends Session {
 
     public long getAmount() {
         return amount;
-    }
-
-    public Object[] toPaidParameters() {
-        return new Object[]{
-                id, maxRegisterCount, amount
-        };
     }
 
     @Override

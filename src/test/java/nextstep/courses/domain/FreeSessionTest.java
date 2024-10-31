@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.session.Category;
 import nextstep.courses.domain.session.CoverImage;
 import nextstep.courses.domain.session.DateRange;
 import nextstep.courses.domain.session.Status;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
+import static nextstep.courses.domain.session.Category.FREE;
 import static nextstep.courses.domain.session.CoverImageTest.*;
 import static nextstep.courses.domain.session.DateRangeTest.END;
 import static nextstep.courses.domain.session.DateRangeTest.START;
@@ -16,11 +18,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class FreeSessionTest {
     public static final FreeSession FS1 = new FreeSession(1L,
-            1L,
             CourseTest.C1.getId(),
             new DateRange(START, END),
             new CoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT),
             Status.PREPARE,
+            1L,
             START,
             START);
 
@@ -29,11 +31,11 @@ public class FreeSessionTest {
     @BeforeEach
     void setUp() {
         freeSession = new FreeSession(1L,
-                1L,
                 CourseTest.C1.getId(),
                 new DateRange(START, END),
                 new CoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT),
                 Status.PREPARE,
+                1L,
                 LocalDateTime.now(),
                 LocalDateTime.now());
     }
@@ -41,11 +43,11 @@ public class FreeSessionTest {
     @Test
     void register_성공() {
         FreeSession actual = new FreeSession(1L,
-                1L,
                 CourseTest.C1.getId(),
                 new DateRange(START, END),
                 new CoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT),
                 Status.PREPARE,
+                1L,
                 LocalDateTime.now(),
                 LocalDateTime.now());
         freeSession.register(new Student(freeSession,JAVAJIGI, START));
@@ -53,13 +55,5 @@ public class FreeSessionTest {
 
         actual.register(new Student(freeSession,JAVAJIGI, START));
         assertThat(actual).isEqualTo(freeSession);
-    }
-
-    @Test
-    void toFreeParameters() {
-        Object[] actual = freeSession.toFreeParameters();
-        Object[] expected = {freeSession.id};
-
-        assertThat(actual).isEqualTo(expected);
     }
 }

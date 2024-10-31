@@ -2,6 +2,7 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -34,5 +35,11 @@ public class CourseRepositoryTest {
         Course savedCourse = courseRepository.findById(1L);
         assertThat(course.getTitle()).isEqualTo(savedCourse.getTitle());
         LOGGER.debug("Course: {}", savedCourse);
+    }
+
+    @AfterEach
+    void tearDown() {
+        jdbcTemplate.execute("delete from course");
+        jdbcTemplate.execute("ALTER TABLE course ALTER COLUMN id RESTART WITH 1");
     }
 }
