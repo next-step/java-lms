@@ -92,5 +92,5 @@ Answer
   - 준비중(Preparing)/모집중(Recruiting)/종료(Closed)
     - 모집중일 때만 신청 가능
 
-- [ ] Payments
+- [x] Payments
   - List<Payment>
