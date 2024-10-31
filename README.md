@@ -65,6 +65,8 @@ Answer
   - 기수
   - List<Session>
 
+- [x] Sessions
+  - List<Session>
 
 - [x] Session
   - 시작일, 종료일

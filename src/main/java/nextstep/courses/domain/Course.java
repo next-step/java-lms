@@ -1,8 +1,6 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Course {
     private Long id;
@@ -15,27 +13,28 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
-    private int batchNumber;
+    private Integer batchNumber;
 
-    private List<Session> sessions;
+    private Sessions sessions;
 
     public Course() {
     }
 
     public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null, new ArrayList<>());
+        this(0L, title, creatorId, LocalDateTime.now(), null, null, new Sessions());
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this(id, title, creatorId, createdAt, updatedAt, new ArrayList<>());
+        this(id, title, creatorId, createdAt, updatedAt, null, new Sessions());
     }
 
-    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt, List<Session> sessions) {
+    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt, Integer batchNumber, Sessions sessions) {
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.batchNumber = batchNumber;
         this.sessions = sessions;
     }
 
