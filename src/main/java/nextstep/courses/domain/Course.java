@@ -15,6 +15,8 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
+    private int batchNumber;
+
     private List<Session> sessions;
 
     public Course() {

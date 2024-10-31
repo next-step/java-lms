@@ -62,6 +62,7 @@ Answer
 
 ### TODO
 - [x] Course
+  - 기수
   - List<Session>
 
 
