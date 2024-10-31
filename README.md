@@ -49,7 +49,7 @@ Answer
 강의는 시작일과 종료일을 가진다.
 강의는 강의 커버 이미지 정보를 가진다.
 이미지 크기는 1MB 이하여야 한다.
-이미지 타입은 gif, jpg(jpeg 포함),, png, svg만 허용한다.
+이미지 타입은 gif, jpg(jpeg 포함), png, svg만 허용한다.
 이미지의 width는 300픽셀, height는 200픽셀 이상이어야 하며, width와 height의 비율은 3:2여야 한다.
 강의는 무료 강의와 유료 강의로 나뉜다.
 무료 강의는 최대 수강 인원 제한이 없다.
@@ -61,7 +61,7 @@ Answer
 결제를 완료한 결제 정보는 payments 모듈을 통해 관리되며, 결제 정보는 Payment 객체에 담겨 반환된다.
 
 ### TODO
-- [ ] Course
+- [x] Course
   - List<Session>
 
 
