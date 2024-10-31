@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.session.coverImage.SessionCoverImage;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDate;

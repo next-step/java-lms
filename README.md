@@ -77,6 +77,7 @@ Answer
 
 - [x] 커버 이미지 정보
   - gif, jpg, jpeg, png, svg만 허용
+  - 이미지 크기 < 1
   - width >= 300, height >= 200 / width * 2 = height * 3
 
 - [x] 무료 강의
