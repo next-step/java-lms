@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.*;
 
 class CoverImageTest {
 
@@ -18,13 +18,15 @@ class CoverImageTest {
         int width = 300;
         int height = 200;
 
-        CoverImage coverImage = CoverImage.of(imageSize, extension, width, height);
+        CoverImage coverImage = CoverImage.of(ImageSize.of(imageSize), extension, ImageDimension.of(width, height));
 
-        assertThat(coverImage).isNotNull();
-        assertThat(coverImage.getWidth()).isEqualTo(width);
-        assertThat(coverImage.getHeight()).isEqualTo(height);
-        assertThat(coverImage.getImageSize()).isEqualTo(imageSize);
-        assertThat(coverImage.getExtension().getText()).isEqualTo(extension.toLowerCase());
+        assertAll(
+                () -> assertNotNull(coverImage),
+                () -> assertEquals(width, coverImage.getWidth()),
+                () -> assertEquals(height, coverImage.getHeight()),
+                () -> assertEquals(imageSize, coverImage.getImageSize()),
+                () -> assertEquals(extension.toLowerCase(), coverImage.getExtension().getText())
+        );
     }
 
     @DisplayName("허용되지 않는 이미지 확장자 사용 시 예외 발생")
@@ -35,40 +37,11 @@ class CoverImageTest {
         int width = 300;
         int height = 200;
 
-        assertThatThrownBy(() -> CoverImage.of(imageSize, extension, width, height))
+        assertThatThrownBy(
+                () -> CoverImage.of(ImageSize.of(imageSize), extension, ImageDimension.of(width, height))
+        )
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("허용되지 않는 이미지 형식입니다.");
     }
 
-    @DisplayName("이미지 크기가 1MB를 초과할 경우 예외가 발생한다.")
-    @Test
-    void throwExceptionWhenImageSizeExceedsLimit() {
-        int imageSize = 2 * 1024 * 1024;
-        String extension = "jpg";
-        int width = 300;
-        int height = 200;
-
-        assertThatThrownBy(() -> CoverImage.of(imageSize, extension, width, height))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("이미지 크기는 1MB 이하여야 합니다.");
-    }
-
-    @DisplayName("이미지의 크기 또는 비율이 유효하지 않을 때 예외가 발생한다.")
-    @Test
-    void throwExceptionWhenDimensionsAreInvalid() {
-        int imageSize = 500 * 1024;
-        String extension = "jpg";
-
-        assertThatThrownBy(() -> CoverImage.of(imageSize, extension, 250, 200))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("이미지의 크기와 비율이 유효하지 않습니다.");
-
-        assertThatThrownBy(() -> CoverImage.of(imageSize, extension, 300, 150))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("이미지의 크기와 비율이 유효하지 않습니다.");
-
-        assertThatThrownBy(() -> CoverImage.of(imageSize, extension, 400, 200))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("이미지의 크기와 비율이 유효하지 않습니다.");
-    }
 }
