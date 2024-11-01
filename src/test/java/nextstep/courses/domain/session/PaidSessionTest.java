@@ -1,6 +1,8 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.cover.CoverImage;
+import nextstep.courses.domain.cover.ImageDimension;
+import nextstep.courses.domain.cover.ImageSize;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +13,8 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PaidSessionTest {
 
@@ -24,18 +28,20 @@ class PaidSessionTest {
         endDate = LocalDateTime.of(2024, 1, 10, 18, 0);
         SessionPeriod period = new SessionPeriod(startDate,
                 endDate);
-        CoverImage coverImage = CoverImage.of(500 * 1024, "jpg", 300, 200);
-        paidSession = new PaidSession("이펙티브 자바", period, coverImage,  50000L, 2);
+        CoverImage coverImage = CoverImage.of(ImageSize.of(500 * 1024), "jpg", ImageDimension.of(300, 200));
+        paidSession = new PaidSession(1L, "이펙티브 자바", period, coverImage, 50000L, 2);
     }
 
     @Test
-    @DisplayName("무료 강의 생성 시 필드가 올바르게 설정되는지 확인")
+    @DisplayName("무료 강의 생성 시 필드가 올바르게 설정되는지 확인한다.")
     void createPaidSessionTest() {
-        assertThat(paidSession.getTitle()).isEqualTo("이펙티브 자바");
-        assertThat(paidSession.getPeriod().getStartDate()).isEqualTo(startDate);
-        assertThat(paidSession.getPeriod().getEndDate()).isEqualTo(endDate);
-        assertThat(paidSession.getCoverImage().getWidth()).isEqualTo(300);
-        assertThat(paidSession.getCoverImage().getHeight()).isEqualTo(200);
+        assertAll(
+                () -> assertEquals("이펙티브 자바", paidSession.getTitle()),
+                () -> assertEquals(startDate, paidSession.getPeriod().getStartDate()),
+                () -> assertEquals(endDate, paidSession.getPeriod().getEndDate()),
+                () -> assertEquals(300, paidSession.getCoverImage().getWidth()),
+                () -> assertEquals(200, paidSession.getCoverImage().getHeight())
+        );
     }
 
     @DisplayName("유료강의 모집중 상태이고, 수강 인원이 초과하지 않았고, 유효한 결제가 이루어지면 수강신청이 가능하다.")
