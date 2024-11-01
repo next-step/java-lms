@@ -12,7 +12,7 @@ class ImageExtensionTest {
     @ParameterizedTest
     @ValueSource(strings = {"jpg", "jpeg", "png", "gif", "svg"})
     void validExtensionTest(String extension) {
-        assertThat(ImageExtension.isInvalidImageExtension(extension)).isFalse();;
+        assertThat(ImageExtension.isInvalidImageExtension(extension)).isFalse();
     }
 
     @DisplayName("유효하지 않은 확장자인 경우 true를 반환한다.")
