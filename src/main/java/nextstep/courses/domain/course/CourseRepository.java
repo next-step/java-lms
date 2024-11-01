@@ -1,6 +1,4 @@
-package nextstep.courses.infrastructure;
-
-import nextstep.courses.domain.course.Course;
+package nextstep.courses.domain.course;
 
 public interface CourseRepository {
     int save(Course course);
