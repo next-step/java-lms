@@ -11,4 +11,8 @@ public enum SessionStatus {
         this.description = description;
     }
 
+    public boolean isNotOpen() {
+        return this != OPEN;
+    }
+
 }
