@@ -17,7 +17,7 @@ class SessionPeriodTest {
         LocalDateTime startDate = LocalDateTime.of(2024, 1, 1, 10, 0);
         LocalDateTime endDate = LocalDateTime.of(2024, 1, 10, 18, 0);
 
-        SessionPeriod period = new SessionPeriod(startDate, endDate);
+        SessionPeriod period = SessionPeriod.of(startDate, endDate);
 
         assertThat(period.getStartDate()).isEqualTo(startDate);
         assertThat(period.getEndDate()).isEqualTo(endDate);
@@ -29,7 +29,7 @@ class SessionPeriodTest {
         LocalDateTime startDate = LocalDateTime.of(2024, 1, 10, 10, 0);
         LocalDateTime endDate = LocalDateTime.of(2024, 1, 1, 18, 0);
 
-        assertThatThrownBy(() -> new SessionPeriod(startDate, endDate))
+        assertThatThrownBy(() -> SessionPeriod.of(startDate, endDate))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("시작 날짜는 종료 날짜보다 이후일 수 없습니다.");
     }

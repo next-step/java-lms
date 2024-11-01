@@ -1,16 +1,15 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.cover.CoverImage;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 public class PaidSession extends Session {
 
-    private Long fee;
-    private int maxEnrollments;
+    private final Long fee;
+    private final int maxEnrollments;
 
-    public PaidSession(Long id, String title, SessionPeriod period, CoverImage coverImage, Long fee, int maxEnrollments) {
-        super(id, title, period, coverImage);
+    public PaidSession(Long id, SessionBody sessionBody, Long fee, int maxEnrollments) {
+        super(id, sessionBody);
 
         this.fee = fee;
         this.maxEnrollments = maxEnrollments;

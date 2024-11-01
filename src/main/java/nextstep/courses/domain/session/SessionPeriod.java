@@ -7,11 +7,15 @@ public class SessionPeriod {
     private final LocalDateTime startDate;
     private final LocalDateTime endDate;
 
-    public SessionPeriod(LocalDateTime startDate, LocalDateTime endDate) {
+    private SessionPeriod(LocalDateTime startDate, LocalDateTime endDate) {
         validateSessionPeriod(startDate, endDate);
 
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public static SessionPeriod of(LocalDateTime startDate, LocalDateTime endDate) {
+        return new SessionPeriod(startDate, endDate);
     }
 
     private void validateSessionPeriod(LocalDateTime startDate, LocalDateTime endDate) {

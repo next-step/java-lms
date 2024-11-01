@@ -4,28 +4,23 @@ import nextstep.courses.domain.cover.CoverImage;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class Session {
 
     protected Long id;
-    protected String title;
-    protected SessionPeriod period;
-    protected CoverImage coverImage;
-    protected SessionStatus sessionStatus;
+    protected SessionBody sessionBody;
     protected Set<NsUser> enrolledUsers;
 
-    protected Session(Long id, String title, SessionPeriod period, CoverImage coverImage) {
+    protected Session(Long id, SessionBody sessionBody) {
         this.id = id;
-        this.title = title;
-        this.period = period;
-        this.coverImage = coverImage;
-        this.sessionStatus = SessionStatus.PREPARE;
+        this.sessionBody = sessionBody;
         this.enrolledUsers = new HashSet<>();
     }
 
     abstract public void enroll(NsUser nsUser, Payment payment);
-
 
     public void validateSessionStatus() {
         if (isEnrollmentNotOpen()) {
@@ -40,7 +35,7 @@ public abstract class Session {
     }
 
     public void openEnrollment() {
-        sessionStatus = SessionStatus.OPEN;
+        sessionBody.openSession();
     }
 
     private boolean isDuplicateEnrolledUser(NsUser nsUser) {
@@ -48,19 +43,19 @@ public abstract class Session {
     }
 
     private boolean isEnrollmentNotOpen() {
-        return sessionStatus.isNotOpen();
+        return sessionBody.isNotOpen();
     }
 
     public String getTitle() {
-        return title;
+        return sessionBody.getTitle();
     }
 
     public SessionPeriod getPeriod() {
-        return period;
+        return sessionBody.getPeriod();
     }
 
     public CoverImage getCoverImage() {
-        return coverImage;
+        return sessionBody.getCoverImage();
     }
 
     public Set<NsUser> getEnrolledUsers() {

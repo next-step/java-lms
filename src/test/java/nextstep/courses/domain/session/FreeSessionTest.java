@@ -25,12 +25,12 @@ class FreeSessionTest {
         String title = "자바의 정석";
         startDate = LocalDateTime.of(2024, 1, 1, 10, 0);
         endDate = LocalDateTime.of(2024, 1, 10, 18, 0);
-        freeSession = new FreeSession(
-                1L,
-                title,
-                new SessionPeriod(startDate, endDate),
-                CoverImage.of(ImageSize.of(500 * 1024), "jpg", ImageDimension.of(300, 200))
-        );
+        ImageSize imageSize = ImageSize.of(500 * 1024);
+        ImageDimension imageDimension = ImageDimension.of(300, 200);
+
+        SessionBody sessionBody = SessionBody.of(title, SessionPeriod.of(startDate, endDate), CoverImage.of(imageSize, "jpg", imageDimension));
+
+        freeSession = new FreeSession(1L, sessionBody);
     }
 
     @Test

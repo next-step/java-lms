@@ -26,10 +26,9 @@ class PaidSessionTest {
     void setUp() {
         startDate = LocalDateTime.of(2024, 1, 1, 10, 0);
         endDate = LocalDateTime.of(2024, 1, 10, 18, 0);
-        SessionPeriod period = new SessionPeriod(startDate,
-                endDate);
+        SessionPeriod period = SessionPeriod.of(startDate, endDate);
         CoverImage coverImage = CoverImage.of(ImageSize.of(500 * 1024), "jpg", ImageDimension.of(300, 200));
-        paidSession = new PaidSession(1L, "이펙티브 자바", period, coverImage, 50000L, 2);
+        paidSession = new PaidSession(1L, SessionBody.of("이펙티브 자바", period, coverImage), 50000L, 2);
     }
 
     @Test
