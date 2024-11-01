@@ -32,8 +32,4 @@ public class SessionPeriod {
         return endDate;
     }
 
-    public boolean isWithinPeriod(LocalDateTime dateTime) {
-        return (dateTime.isEqual(startDate) || dateTime.isAfter(startDate)) &&
-                (dateTime.isEqual(endDate) || dateTime.isBefore(endDate));
-    }
 }
