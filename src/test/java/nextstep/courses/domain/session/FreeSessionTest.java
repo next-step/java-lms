@@ -1,6 +1,8 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.cover.CoverImage;
+import nextstep.courses.domain.cover.ImageDimension;
+import nextstep.courses.domain.cover.ImageSize;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -9,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FreeSessionTest {
 
@@ -22,26 +26,23 @@ class FreeSessionTest {
         startDate = LocalDateTime.of(2024, 1, 1, 10, 0);
         endDate = LocalDateTime.of(2024, 1, 10, 18, 0);
         freeSession = new FreeSession(
+                1L,
                 title,
                 new SessionPeriod(startDate, endDate),
-                CoverImage.of(500 * 1024, "jpg", 300, 200)
+                CoverImage.of(ImageSize.of(500 * 1024), "jpg", ImageDimension.of(300, 200))
         );
     }
 
     @Test
     @DisplayName("무료 강의 생성 시 필드가 올바르게 설정되는지 확인")
     void createFreeSessionTest() {
-        assertThat(freeSession.getTitle()).isEqualTo("자바의 정석");
-        assertThat(freeSession.getPeriod().getStartDate()).isEqualTo(startDate);
-        assertThat(freeSession.getPeriod().getEndDate()).isEqualTo(endDate);
-        assertThat(freeSession.getCoverImage().getWidth()).isEqualTo(300);
-        assertThat(freeSession.getCoverImage().getHeight()).isEqualTo(200);
-    }
-
-    @Test
-    @DisplayName("무료 강의는 isPaid() 호출 시 false 반환한다.")
-    void isPaidTest() {
-        assertThat(freeSession.isPaid()).isFalse();
+        assertAll(
+                () -> assertEquals("자바의 정석", freeSession.getTitle()),
+                () -> assertEquals(startDate, freeSession.getPeriod().getStartDate()),
+                () -> assertEquals(endDate, freeSession.getPeriod().getEndDate()),
+                () -> assertEquals(300, freeSession.getCoverImage().getWidth()),
+                () -> assertEquals(200, freeSession.getCoverImage().getHeight())
+        );
     }
 
     @Test
