@@ -14,27 +14,31 @@ public enum ImageExtension {
     SVG("svg"),
     ;
 
-    private final String text;
-    ImageExtension(String text) {
-        this.text = text;
-    }
-
-    public String getText() {
-        return text;
-    }
-
     private static final Map<String, ImageExtension> IMAGE_EXTENSION_MAP =
             Collections.unmodifiableMap(
                     Stream.of(values())
                             .collect(Collectors.toMap(ImageExtension::getText, Function.identity()))
             );
 
+    private final String text;
+
+    ImageExtension(String text) {
+        this.text = text;
+    }
+
     public static Boolean isInvalidImageExtension(String text) {
         return !IMAGE_EXTENSION_MAP.containsKey(text.toLowerCase());
     }
 
     public static ImageExtension getExtension(String text) {
+        if (isInvalidImageExtension(text)) {
+            throw new IllegalArgumentException("허용되지 않는 이미지 형식입니다.");
+        }
         return IMAGE_EXTENSION_MAP.get(text.toLowerCase());
+    }
+
+    public String getText() {
+        return text;
     }
 
 
