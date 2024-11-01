@@ -18,37 +18,37 @@
 ## 2단계 1차 리뷰 사항 
 
 ### 전반
-- [ ] 개행 컨벤션 
-- [ ] reformat 코드
-- [ ] 작은 단위로 커밋
-- [ ] 사용하지 않는 코드 제거
-- [ ] assertAll 메서드 활용 테스트
+- [X] 개행 컨벤션 
+- [X] reformat 코드
+- [X] 작은 단위로 커밋
+- [X] 사용하지 않는 코드 제거
+- [X] assertAll 메서드 활용 테스트
 
 ### Course
-- [ ] 기존 코드 유지해서 테스트 
+- [X] 기존 코드 유지해서 테스트 
 
 ### BaseTime
-- [ ] 클래스명 오타 BaseTIme
+- [X] 클래스명 오타 BaseTIme
 
 ### CoverImage
-- [ ] id 필드 필요 여부
-- [ ] 이미지 파일 이름 변수 추가
-- [ ] 관계 있는 필드 객체 도출
-- [ ] 용량 표현 바이트 단위 표현
-- [ ] 비율 검증과 크기 검증 분리
+- [X] id 필드 필요 여부
+- [X] 이미지 파일 이름 변수 추가
+- [X] 관계 있는 필드 객체 도출
+- [X] 용량 표현 바이트 단위 표현
+- [X] 비율 검증과 크기 검증 분리
 
 ### Session, PaidSession, FreeSession
-- [ ] Session 공통 필드 줄이기
-- [ ] 중복 신청 여부 검증
-- [ ] 모집중인 상태 여부 검증 메시지 sessionStatus 에 메시지 보내기
-- [ ] final 키워드 필요 여부
-- [ ] enroll 메서드 호출 Service 클래스 추가
+- [X] Session 공통 필드 줄이기
+- [X] 중복 신청 여부 검증
+- [X] 모집중인 상태 여부 검증 메시지 sessionStatus 에 메시지 보내기
+- [X] final 키워드 필요 여부
+- [X] enroll 메서드 호출 Service 클래스 추가
 
 ### SessionPeriod
-- [ ] 사용하지 않는 코드 제거
+- [X] 사용하지 않는 코드 제거
 
 ### CourseRepository
-- [ ] infra 패키지 이동 관련
+- [X] infra 패키지 이동 관련
 
 ### CourseTest, CoverImageTest, PaidSessionTest, FreeSessionTest
-- [ ] assertAll 메서드 활용 테스트
+- [X] assertAll 메서드 활용 테스트
