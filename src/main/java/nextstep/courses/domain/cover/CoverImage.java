@@ -2,9 +2,9 @@ package nextstep.courses.domain.cover;
 
 public class CoverImage {
 
-    private ImageSize imageSize;
-    private ImageExtension extension;
-    private ImageDimension imageDimension;
+    private final ImageSize imageSize;
+    private final ImageExtension extension;
+    private final ImageDimension imageDimension;
 
     private CoverImage(ImageSize imageSize, String extension, ImageDimension imageDimension) {
         this.imageSize = imageSize;

@@ -6,14 +6,18 @@ public class ImageDimension {
     private static final int MIN_HEIGHT = 200;
     private static final double ASPECT_RATIO = 3.0 / 2.0;
 
-    private int width;
-    private int height;
+    private final int width;
+    private final int height;
 
     private ImageDimension(int width, int height) {
         validateDimension(width, height);
 
         this.width = width;
         this.height = height;
+    }
+
+    public static ImageDimension of(int width, int height) {
+        return new ImageDimension(width, height);
     }
 
     private void validateDimension(int width, int height) {
@@ -24,10 +28,6 @@ public class ImageDimension {
 
     private boolean isInvalidImageSize(int width, int height) {
         return width < MIN_WIDTH || height < MIN_HEIGHT || (double) width / height != ASPECT_RATIO;
-    }
-
-    public static ImageDimension of(int width, int height) {
-        return new ImageDimension(width, height);
     }
 
     public int getWidth() {

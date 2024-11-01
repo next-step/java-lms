@@ -4,7 +4,7 @@ public class ImageSize {
 
     private static final int MAX_IMAGE_SIZE = 1 * 1024 * 1024;
 
-    private int imageSize;
+    private final int imageSize;
 
     private ImageSize(int imageSize) {
         validateImageSize(imageSize);
