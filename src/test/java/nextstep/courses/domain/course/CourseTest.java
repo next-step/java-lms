@@ -3,8 +3,9 @@ package nextstep.courses.domain.course;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CourseTest {
 
@@ -16,33 +17,35 @@ class CourseTest {
         Integer classNumber = 1;
         Course course = new Course(title, classNumber, creatorId);
 
-        assertThat(course.getTitle()).isEqualTo(title);
-        assertThat(course.getClassNumber()).isEqualTo(classNumber);
-        assertThat(course.getCreatorId()).isEqualTo(creatorId);
+        assertAll(
+                () -> assertEquals(course.getTitle(), title),
+                () -> assertEquals(course.getClassNumber(), classNumber),
+                () -> assertEquals(course.getCreatorId(), creatorId)
+        );
     }
 
     @Test
-    @DisplayName("title이 없으면 예외가 발생한다.")
+    @DisplayName("제목이 없으면 예외가 발생한다.")
     void throwExceptionWhenTitleIsNull() {
         assertThatThrownBy(() -> new Course(null, 1, 100L))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Title은 필수 입력 사항입니다.");
+                .hasMessage("제목은 필수 입력 사항입니다.");
     }
 
     @Test
-    @DisplayName("creatorId가 없으면 예외가 발생한다.")
+    @DisplayName("작성자 아이디가 없으면 예외가 발생한다.")
     void throwExceptionWhenCreatorIdIsNull() {
         assertThatThrownBy(() -> new Course("Java Programming", 1, null))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("CreatorId는 필수 입력 사항입니다.");
+                .hasMessage("작성자 아이디는 필수 입력 사항입니다.");
     }
 
     @Test
-    @DisplayName("classNumber가 없으면예외가 발생한다.")
+    @DisplayName("기수가 없으면 예외가 발생한다.")
     void throwExceptionWhenClassNumberIsNull() {
         assertThatThrownBy(() -> new Course("Java Programming", null, 100L))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("ClassNumber는 필수 입력 사항입니다.");
+                .hasMessage("기수는 필수 입력 사항입니다.");
     }
 
 }
