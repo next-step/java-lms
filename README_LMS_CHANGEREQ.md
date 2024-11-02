@@ -20,7 +20,7 @@
   * 즉, 기존에 쌓인 데이터를 제거하지 않은 상태로 리팩터링 해야 한다.
 
 ## TODO
-- TobeSessions 생성
+- ~~TobeSessions 생성~~
 - ~~TobeSession(TobeFreeSession, TobePaidSession) 생성~~
   - ~~ProcessStatus(READY, PROCESS, ENDED) 변경~~
     - status -> process_status column 변경 

@@ -4,6 +4,7 @@ import nextstep.courses.domain.session.Category;
 import nextstep.courses.domain.session.DateRange;
 import nextstep.courses.tobe.RecruitmentClosedException;
 import nextstep.courses.tobe.domain.session.TobeCoverImage;
+import nextstep.courses.tobe.domain.session.TobeStudents;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class TobeFreeSession extends TobeSession {
-    private final List<TobeStudent> students;
+    private final TobeStudents students;
     public TobeFreeSession(long id,
                            long courseId,
                            DateRange dateRange,
@@ -22,7 +23,7 @@ public class TobeFreeSession extends TobeSession {
                            LocalDateTime createdAt,
                            LocalDateTime updatedAt) {
         super(id, courseId, Category.FREE, dateRange, coverImage, processStatus, recruitmentStatus, creatorId, createdAt, updatedAt);
-        this.students = new ArrayList<>();
+        this.students = new TobeStudents();
     }
 
     public void register(TobeStudent student) {

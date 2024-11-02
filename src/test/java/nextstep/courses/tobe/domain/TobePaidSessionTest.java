@@ -19,6 +19,9 @@ import static nextstep.courses.domain.PaidSession.PAYMENT_MISMATCH_MESSAGE;
 import static nextstep.courses.domain.session.CoverImageTest.*;
 import static nextstep.courses.domain.session.DateRangeTest.END;
 import static nextstep.courses.domain.session.DateRangeTest.START;
+import static nextstep.courses.tobe.domain.ProcessStatus.READY;
+import static nextstep.courses.tobe.domain.RecruitmentStatus.CLOSED;
+import static nextstep.courses.tobe.domain.RecruitmentStatus.OPEN;
 import static nextstep.courses.tobe.domain.TobePaidSession.NOT_MATCHED_PAYMENT_STUDENT_NS_USER_MESSAGE;
 import static nextstep.courses.tobe.domain.TobeSession.NOT_ALLOWED_REGISTER_TO_CLOSED_SESSION_MESSAGE;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,20 +30,16 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class TobePaidSessionTest {
 
     public static final int MAX_REGISTER_COUNT = 30;
-    public static final long SESSION_AMOUNT = 10000L;
     public static final int EXCEED_MAX_REGISTER_COUNT = 2;
+    public static final long SESSION_AMOUNT = 10000L;
     public static final long NOT_MATCHED_AMOUNT = 9999L;
     public static final TobePaidSession TPS1 = new TobePaidSession(1L,
             CourseTest.C1.getId(),
             new DateRange(START, END),
             new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT, 1L),
-            ProcessStatus.READY,
-            RecruitmentStatus.CLOSED,
-            MAX_REGISTER_COUNT,
-            SESSION_AMOUNT,
-            1L,
-            START,
-            START);
+            READY, CLOSED,
+            MAX_REGISTER_COUNT, SESSION_AMOUNT,
+            1L, START, START);
 
     private TobePaidSession paidSession;
     private TobePaidSession exceedMaxRegisterCountPaidSession;
@@ -59,37 +58,25 @@ public class TobePaidSessionTest {
                 CourseTest.C1.getId(),
                 new DateRange(START, END),
                 new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT, 1L),
-                ProcessStatus.READY,
-                RecruitmentStatus.OPEN,
-                MAX_REGISTER_COUNT,
-                SESSION_AMOUNT,
-                1L,
-                START,
-                START);
+                READY, OPEN,
+                MAX_REGISTER_COUNT, SESSION_AMOUNT,
+                1L, START, START);
 
         exceedMaxRegisterCountPaidSession = new TobePaidSession(1L,
                 CourseTest.C1.getId(),
                 new DateRange(START, END),
                 new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT, 1L),
-                ProcessStatus.READY,
-                RecruitmentStatus.OPEN,
-                EXCEED_MAX_REGISTER_COUNT,
-                SESSION_AMOUNT,
-                1L,
-                START,
-                START);
+                READY, OPEN,
+                EXCEED_MAX_REGISTER_COUNT, SESSION_AMOUNT,
+                1L, START, START);
 
         closedPaidSession = new TobePaidSession(1L,
                 CourseTest.C1.getId(),
                 new DateRange(START, END),
                 new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT, 1L),
-                ProcessStatus.READY,
-                RecruitmentStatus.CLOSED,
-                EXCEED_MAX_REGISTER_COUNT,
-                SESSION_AMOUNT,
-                1L,
-                START,
-                START);
+                READY, CLOSED,
+                MAX_REGISTER_COUNT, SESSION_AMOUNT,
+                1L, START, START);
 
         payment1 = new Payment("pay1", 1L, NsUserTest.JAVAJIGI, SESSION_AMOUNT);
         student1 = new TobeStudent(paidSession, NsUserTest.JAVAJIGI, SelectedStatus.SELECTED, ApprovedStatus.APPROVED, LocalDateTime.now());
@@ -107,13 +94,9 @@ public class TobePaidSessionTest {
                 CourseTest.C1.getId(),
                 new DateRange(START, END),
                 new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT, 1L),
-                ProcessStatus.READY,
-                RecruitmentStatus.OPEN,
-                MAX_REGISTER_COUNT,
-                SESSION_AMOUNT,
-                1L,
-                START,
-                START);
+                READY, OPEN,
+                MAX_REGISTER_COUNT, SESSION_AMOUNT,
+                1L, START, START);
 
         paidSession.register(payment1, student1);
         assertThat(actual).isNotEqualTo(paidSession);

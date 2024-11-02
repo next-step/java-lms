@@ -63,7 +63,6 @@ public class TobePaidSession extends TobeSession {
             throw new RecruitmentClosedException(NOT_ALLOWED_REGISTER_TO_CLOSED_SESSION_MESSAGE);
         }
         NsUser payingUser = payment.payingUser();
-        // TODO: exception 핸들링
         if (!payingUser.getId().equals(student.getNsUserId())) {
             throw new PaymentStudentNsUserNotMatchException(NOT_MATCHED_PAYMENT_STUDENT_NS_USER_MESSAGE);
         }

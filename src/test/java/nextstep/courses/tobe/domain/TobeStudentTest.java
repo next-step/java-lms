@@ -61,8 +61,9 @@ public class TobeStudentTest {
     void getter() {
         TobeStudent student = new TobeStudent(TFS1, NsUserTest.JAVAJIGI, SelectedStatus.REJECTED, ApprovedStatus.DENIED, START);
 
-        assertThat(student.getNsUserId()).isEqualTo(1L);
-        assertThat(student.getSessionId()).isEqualTo(1L);
+        assertThat(student.getId()).isEqualTo(0L);
+        assertThat(student.getNsUserId()).isEqualTo(NsUserTest.JAVAJIGI.getId());
+        assertThat(student.getSessionId()).isEqualTo(TFS1.getId());
         assertThat(student.getCreatedAt()).isEqualTo(START);
     }
 }
