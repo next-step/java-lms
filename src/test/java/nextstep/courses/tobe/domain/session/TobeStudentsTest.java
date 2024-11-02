@@ -18,6 +18,8 @@ import static nextstep.courses.domain.session.CoverImageTest.*;
 import static nextstep.courses.domain.session.DateRangeTest.END;
 import static nextstep.courses.domain.session.DateRangeTest.START;
 import static nextstep.courses.tobe.domain.ApprovedStatus.DENIED;
+import static nextstep.courses.tobe.domain.ProcessStatus.*;
+import static nextstep.courses.tobe.domain.RecruitmentStatus.*;
 import static nextstep.courses.tobe.domain.SelectedStatus.SELECTED;
 import static nextstep.users.domain.NsUserTest.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,25 +32,27 @@ public class TobeStudentsTest {
     private TobeStudent student1;
     private TobeStudent student2;
     private TobeStudent student3;
+    private long courseId;
+    private DateRange dateRange;
+    private List<TobeCoverImage> coverImages;
 
     @BeforeEach
     void setUp() {
+        courseId = CourseTest.C1.getId();
+        dateRange = new DateRange(START, END);
+        coverImages = List.of(new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT, 1L));
+
         freeSession = new TobeFreeSession(1L,
-                CourseTest.C1.getId(),
-                new DateRange(START, END),
-                new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT, 1L),
-                ProcessStatus.PROCESS,
-                RecruitmentStatus.OPEN,
-                1L,
-                LocalDateTime.now(),
-                LocalDateTime.now());
+                courseId, dateRange, coverImages,
+                PROCESS, OPEN,
+                1L, LocalDateTime.now(), LocalDateTime.now());
+
         student1 = new TobeStudent(freeSession, JAVAJIGI, SELECTED, DENIED, START);
         student2 = new TobeStudent(freeSession, SANJIGI, SELECTED, DENIED, START);
         student3 = new TobeStudent(freeSession, THIRDJIGI, SELECTED, DENIED, START);
-        students = new TobeStudent[]{
-                student1,
-                student2
-        };
+
+        students = new TobeStudent[]{student1, student2};
+
         studentList = new ArrayList<>(Arrays.asList(students));
         studentList.forEach(nsUser -> freeSession.register(nsUser));
     }

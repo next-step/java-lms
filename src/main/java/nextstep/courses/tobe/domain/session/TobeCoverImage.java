@@ -77,11 +77,11 @@ public class TobeCoverImage {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TobeCoverImage that = (TobeCoverImage) o;
-        return id == that.id && creatorId == that.creatorId && Objects.equals(imageFileSize, that.imageFileSize) && imageType == that.imageType && Objects.equals(imageSize, that.imageSize);
+        return id == that.id && Objects.equals(imageFileSize, that.imageFileSize) && imageType == that.imageType && Objects.equals(imageSize, that.imageSize);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, imageFileSize, imageType, imageSize, creatorId);
+        return Objects.hash(id, imageFileSize, imageType, imageSize);
     }
 }

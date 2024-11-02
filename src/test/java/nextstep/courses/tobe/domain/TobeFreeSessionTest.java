@@ -8,10 +8,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static nextstep.courses.domain.session.CoverImageTest.*;
 import static nextstep.courses.domain.session.DateRangeTest.END;
 import static nextstep.courses.domain.session.DateRangeTest.START;
+import static nextstep.courses.tobe.domain.ApprovedStatus.*;
+import static nextstep.courses.tobe.domain.ProcessStatus.*;
+import static nextstep.courses.tobe.domain.RecruitmentStatus.*;
+import static nextstep.courses.tobe.domain.SelectedStatus.*;
 import static nextstep.courses.tobe.domain.TobeSession.NOT_ALLOWED_REGISTER_TO_CLOSED_SESSION_MESSAGE;
 import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,43 +26,36 @@ public class TobeFreeSessionTest {
     public static final TobeFreeSession TFS1 = new TobeFreeSession(1L,
             CourseTest.C1.getId(),
             new DateRange(START, END),
-            new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT, 1L),
-            ProcessStatus.READY,
-            RecruitmentStatus.CLOSED,
-            1L,
-            START,
-            START);
+            List.of(new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT, 1L)),
+            READY, CLOSED,
+            1L, START, START);
 
     private TobeFreeSession freeSession;
+    private long courseId;
+    private DateRange dateRange;
+    private List<TobeCoverImage> coverImages;
+
     @BeforeEach
     void setUp() {
+        courseId = CourseTest.C1.getId();
+        dateRange = new DateRange(START, END);
+        coverImages = List.of(new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT, 1L));
         freeSession = new TobeFreeSession(1L,
-                CourseTest.C1.getId(),
-                new DateRange(START, END),
-                new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT,1L),
-                ProcessStatus.READY,
-                RecruitmentStatus.OPEN,
-                1L,
-                LocalDateTime.now(),
-                LocalDateTime.now());
+                courseId, dateRange, coverImages,
+                READY, OPEN,
+                1L, LocalDateTime.now(), LocalDateTime.now());
     }
 
     @Test
     void register_성공() {
         TobeFreeSession actual = new TobeFreeSession(1L,
-                CourseTest.C1.getId(),
-                new DateRange(START, END),
-                new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT,1L),
-                ProcessStatus.READY,
-                RecruitmentStatus.OPEN,
-                1L,
-                LocalDateTime.now(),
-                LocalDateTime.now());
+                courseId, dateRange, coverImages,
+                READY, OPEN,
+                1L, LocalDateTime.now(), LocalDateTime.now());
         freeSession.register(new TobeStudent(
                 freeSession,
                 JAVAJIGI,
-                SelectedStatus.REJECTED,
-                ApprovedStatus.DENIED,
+                REJECTED, DENIED,
                 START)
         );
         assertThat(actual).isNotEqualTo(freeSession);
@@ -65,8 +63,7 @@ public class TobeFreeSessionTest {
         actual.register(new TobeStudent(
                 freeSession,
                 JAVAJIGI,
-                SelectedStatus.REJECTED,
-                ApprovedStatus.DENIED,
+                REJECTED, DENIED,
                 START));
         assertThat(actual).isEqualTo(freeSession);
     }
@@ -74,21 +71,15 @@ public class TobeFreeSessionTest {
     @Test
     void register_CLOSED_실패() {
         TobeFreeSession actual = new TobeFreeSession(1L,
-                CourseTest.C1.getId(),
-                new DateRange(START, END),
-                new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT,1L),
-                ProcessStatus.READY,
-                RecruitmentStatus.CLOSED,
-                1L,
-                LocalDateTime.now(),
-                LocalDateTime.now());
+                courseId, dateRange, coverImages,
+                READY, CLOSED,
+                1L, LocalDateTime.now(), LocalDateTime.now());
 
         assertThatThrownBy(() -> {
             actual.register(new TobeStudent(
                     freeSession,
                     JAVAJIGI,
-                    SelectedStatus.REJECTED,
-                    ApprovedStatus.DENIED,
+                    REJECTED, DENIED,
                     START)
             );
         }).isInstanceOf(RecruitmentClosedException.class)

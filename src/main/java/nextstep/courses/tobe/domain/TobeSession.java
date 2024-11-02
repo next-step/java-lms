@@ -6,7 +6,12 @@ import nextstep.courses.tobe.ProcessEndedException;
 import nextstep.courses.tobe.domain.session.TobeCoverImage;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import static nextstep.courses.tobe.domain.ProcessStatus.*;
+import static nextstep.courses.tobe.domain.RecruitmentStatus.*;
 
 public abstract class TobeSession {
     public static final String NOT_ALLOWED_PROCESS_ENDED_RECRUITMENT_OPEN_MESSAGE = "종료된 강의를 모집중 상태로 바꿀수 없습니다.";
@@ -15,7 +20,7 @@ public abstract class TobeSession {
     protected final long courseId;
     protected final Category category;
     protected final DateRange dateRange;
-    protected final TobeCoverImage coverImage;
+    protected final List<TobeCoverImage> coverImages;
     protected final ProcessStatus processStatus;
     protected final RecruitmentStatus recruitmentStatus;
     protected final long creatorId;
@@ -26,7 +31,7 @@ public abstract class TobeSession {
                        long courseId,
                        Category category,
                        DateRange dateRange,
-                       TobeCoverImage coverImage,
+                       List<TobeCoverImage> coverImages,
                        ProcessStatus processStatus,
                        RecruitmentStatus recruitmentStatus,
                        long creatorId,
@@ -39,7 +44,7 @@ public abstract class TobeSession {
         this.category = category;
         this.courseId = courseId;
         this.dateRange = dateRange;
-        this.coverImage = coverImage;
+        this.coverImages = new ArrayList<>(coverImages);
         this.processStatus = processStatus;
         this.recruitmentStatus = recruitmentStatus;
         this.creatorId = creatorId;
@@ -52,8 +57,8 @@ public abstract class TobeSession {
     }
 
     private static boolean isInvalidProcess(ProcessStatus processStatus, RecruitmentStatus recruitmentStatus) {
-        return ProcessStatus.ENDED.equals(processStatus) &&
-                RecruitmentStatus.OPEN.equals(recruitmentStatus);
+        return ENDED.equals(processStatus) &&
+                OPEN.equals(recruitmentStatus);
     }
 
     @Override
@@ -61,11 +66,11 @@ public abstract class TobeSession {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TobeSession that = (TobeSession) o;
-        return id == that.id && courseId == that.courseId && creatorId == that.creatorId && category == that.category && Objects.equals(dateRange, that.dateRange) && Objects.equals(coverImage, that.coverImage) && processStatus == that.processStatus && recruitmentStatus == that.recruitmentStatus;
+        return id == that.id && courseId == that.courseId && creatorId == that.creatorId && category == that.category && Objects.equals(dateRange, that.dateRange) && Objects.equals(coverImages, that.coverImages) && processStatus == that.processStatus && recruitmentStatus == that.recruitmentStatus;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, courseId, category, dateRange, coverImage, processStatus, recruitmentStatus, creatorId);
+        return Objects.hash(id, courseId, category, dateRange, coverImages, processStatus, recruitmentStatus, creatorId);
     }
 }

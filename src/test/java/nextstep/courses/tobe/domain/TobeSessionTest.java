@@ -11,10 +11,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static nextstep.courses.domain.PaidSessionTest.MAX_REGISTER_COUNT;
 import static nextstep.courses.domain.PaidSessionTest.SESSION_AMOUNT;
-import static nextstep.courses.domain.session.CoverImageTest.*;
+import static nextstep.courses.tobe.domain.ProcessStatus.*;
+import static nextstep.courses.tobe.domain.RecruitmentStatus.*;
+import static nextstep.courses.tobe.domain.session.TobeCoverImageTest.*;
 import static nextstep.courses.domain.session.DateRangeTest.END;
 import static nextstep.courses.domain.session.DateRangeTest.START;
 import static nextstep.courses.tobe.domain.TobeSession.NOT_ALLOWED_PROCESS_ENDED_RECRUITMENT_OPEN_MESSAGE;
@@ -23,40 +26,53 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class TobeSessionTest {
     private DateRange dateRange;
-    private TobeCoverImage coverImage;
-    private ImageFileSize imageFileSize;
-    private ImageType imageType;
-    private ImageSize imageSize;
-    private TobeCoverImage wrappedCoverImage;
+    private List<TobeCoverImage> coverImages;
+    private ImageFileSize imageFileSize1;
+    private ImageType imageType1;
+    private ImageSize imageSize1;
+    private ImageFileSize imageFileSize2;
+    private ImageType imageType2;
+    private ImageSize imageSize2;
+    private List<TobeCoverImage> wrappedCoverImages;
     private ProcessStatus processStatus;
     private RecruitmentStatus recruitmentStatus;
+    private TobeCoverImage tobeCoverImage1;
+    private TobeCoverImage tobeCoverImage2;
+    private TobeCoverImage wrappedTobeCoverImage1;
+    private TobeCoverImage wrappedTobeCoverImage2;
+    private long courseId;
 
     @BeforeEach
     void setUp() {
+        courseId = CourseTest.C1.getId();
         dateRange = new DateRange(START, END);
-        coverImage = new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT, 1L);
 
-        imageFileSize = new ImageFileSize(SIZE);
-        imageType = ImageType.toImageType(IMAGE_TYPE_TEXT);
-        imageSize = new ImageSize(WIDTH, HEIGHT);
+        tobeCoverImage1 = new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200, 1L);
+        tobeCoverImage2 = new TobeCoverImage(SIZE2, IMAGE_TYPE_TEXT_JPG, WIDTH_450, HEIGHT_300, 1L);
+        coverImages = List.of(tobeCoverImage1, tobeCoverImage2);
 
-        wrappedCoverImage = new TobeCoverImage(
-                imageFileSize,
-                imageType,
-                imageSize,
-                1L
-        );
+        imageFileSize1 = new ImageFileSize(SIZE);
+        imageType1 = IMAGE_TYPE_GIF;
+        imageSize1 = new ImageSize(WIDTH_300, HEIGHT_200);
 
-        processStatus = ProcessStatus.READY;
-        recruitmentStatus = RecruitmentStatus.CLOSED;
+        imageFileSize2 = new ImageFileSize(SIZE2);
+        imageType2 = IMAGE_TYPE_JPG;
+        imageSize2 = new ImageSize(WIDTH_450, HEIGHT_300);
+
+        wrappedTobeCoverImage1 = new TobeCoverImage(imageFileSize1, imageType1, imageSize1, 1L);
+        wrappedTobeCoverImage2 = new TobeCoverImage(imageFileSize2, imageType2, imageSize2, 1L);
+        wrappedCoverImages = List.of(wrappedTobeCoverImage1, wrappedTobeCoverImage2);
+
+        processStatus = READY;
+        recruitmentStatus = CLOSED;
     }
 
     @Test
     void createFreeSession_성공() {
-        TobeFreeSession actual = new TobeFreeSession(1L, CourseTest.C1.getId(), dateRange, coverImage,
+        TobeFreeSession actual = new TobeFreeSession(1L, courseId, dateRange, coverImages,
                 processStatus, recruitmentStatus,
                 1L, LocalDateTime.now(), LocalDateTime.now());
-        TobeFreeSession expected = new TobeFreeSession(1L, CourseTest.C1.getId(), dateRange, wrappedCoverImage,
+        TobeFreeSession expected = new TobeFreeSession(1L, courseId, dateRange, wrappedCoverImages,
                 processStatus, recruitmentStatus,
                 1L, LocalDateTime.now(), LocalDateTime.now());
 
@@ -66,8 +82,9 @@ public class TobeSessionTest {
     @Test
     void createFreeSession_ENDED_OPEN_실패() {
         assertThatThrownBy(() -> {
-            new TobeFreeSession(1L, CourseTest.C1.getId(), dateRange, coverImage,
-                    ProcessStatus.ENDED, RecruitmentStatus.OPEN,
+            new TobeFreeSession(1L,
+                    courseId, dateRange, coverImages,
+                    ENDED, OPEN,
                     1L, LocalDateTime.now(), LocalDateTime.now());
         }).isInstanceOf(ProcessEndedException.class)
                 .hasMessage(NOT_ALLOWED_PROCESS_ENDED_RECRUITMENT_OPEN_MESSAGE);
@@ -75,11 +92,13 @@ public class TobeSessionTest {
 
     @Test
     void createPaidSession_성공() {
-        TobePaidSession actual = new TobePaidSession(1L, CourseTest.C1.getId(), dateRange, coverImage,
+        TobePaidSession actual = new TobePaidSession(1L,
+                courseId, dateRange, coverImages,
                 processStatus, recruitmentStatus,
                 MAX_REGISTER_COUNT, SESSION_AMOUNT,
                 1L, LocalDateTime.now(), LocalDateTime.now());
-        TobePaidSession expected = new TobePaidSession(1L, CourseTest.C1.getId(), dateRange, wrappedCoverImage,
+        TobePaidSession expected = new TobePaidSession(1L,
+                courseId, dateRange, wrappedCoverImages,
                 processStatus, recruitmentStatus,
                 MAX_REGISTER_COUNT, SESSION_AMOUNT,
                 1L, LocalDateTime.now(), LocalDateTime.now());
@@ -90,8 +109,9 @@ public class TobeSessionTest {
     @Test
     void createPaidSession_ENDED_OPEN_실패() {
         assertThatThrownBy(() -> {
-                    new TobePaidSession(1L, CourseTest.C1.getId(), dateRange, coverImage,
-                            ProcessStatus.ENDED, RecruitmentStatus.OPEN,
+                    new TobePaidSession(1L,
+                            courseId, dateRange, coverImages,
+                            ENDED, OPEN,
                             MAX_REGISTER_COUNT, SESSION_AMOUNT,
                             1L, LocalDateTime.now(), LocalDateTime.now());
                 }).isInstanceOf(ProcessEndedException.class)

@@ -27,7 +27,7 @@ public class TobePaidSession extends TobeSession {
     public TobePaidSession(long id,
                            long courseId,
                            DateRange dateRange,
-                           TobeCoverImage coverImage,
+                           List<TobeCoverImage> coverImages,
                            ProcessStatus processStatus,
                            RecruitmentStatus recruitmentStatus,
                            int maxRegisterCount,
@@ -35,22 +35,11 @@ public class TobePaidSession extends TobeSession {
                            long creatorId,
                            LocalDateTime createdAt,
                            LocalDateTime updatedAt) {
-        super(id,
-                courseId,
-                Category.PAID,
-                dateRange,
-                coverImage,
-                processStatus,
-                recruitmentStatus,
-                creatorId,
-                createdAt,
-                updatedAt
-        );
+        super(id, courseId, Category.PAID, dateRange, coverImages, processStatus, recruitmentStatus, creatorId, createdAt, updatedAt);
         this.maxRegisterCount = maxRegisterCount;
         this.amount = amount;
         this.students = new ArrayList<>();
     }
-
 
     public void register(Payment payment, TobeStudent student) {
         if (maxRegisterCount <= students.size()) {
@@ -63,7 +52,9 @@ public class TobePaidSession extends TobeSession {
             throw new RecruitmentClosedException(NOT_ALLOWED_REGISTER_TO_CLOSED_SESSION_MESSAGE);
         }
         NsUser payingUser = payment.payingUser();
-        if (!payingUser.getId().equals(student.getNsUserId())) {
+        Long payingUserId = payingUser.getId();
+        Long studentUserId = student.getNsUserId();
+        if (!payingUserId.equals(studentUserId)) {
             throw new PaymentStudentNsUserNotMatchException(NOT_MATCHED_PAYMENT_STUDENT_NS_USER_MESSAGE);
         }
         this.students.add(student);

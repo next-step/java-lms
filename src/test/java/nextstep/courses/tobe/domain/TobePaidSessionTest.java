@@ -13,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static nextstep.courses.domain.PaidSession.MAX_STUDENT_CAPACITY_MESSAGE;
 import static nextstep.courses.domain.PaidSession.PAYMENT_MISMATCH_MESSAGE;
@@ -36,7 +37,7 @@ public class TobePaidSessionTest {
     public static final TobePaidSession TPS1 = new TobePaidSession(1L,
             CourseTest.C1.getId(),
             new DateRange(START, END),
-            new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT, 1L),
+            List.of(new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT, 1L)),
             READY, CLOSED,
             MAX_REGISTER_COUNT, SESSION_AMOUNT,
             1L, START, START);
@@ -51,37 +52,40 @@ public class TobePaidSessionTest {
     private Payment payment3;
     private TobeStudent student3;
     private Payment notMatchedPayment;
+    private List<TobeCoverImage> tobeCoverImages;
+    private DateRange dateRange;
+    private long courseId;
 
     @BeforeEach
     void setUp() {
+        dateRange = new DateRange(START, END);
+        tobeCoverImages = List.of(new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT, 1L));
+        courseId = CourseTest.C1.getId();
+
         paidSession = new TobePaidSession(1L,
-                CourseTest.C1.getId(),
-                new DateRange(START, END),
-                new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT, 1L),
+                courseId, dateRange, tobeCoverImages,
                 READY, OPEN,
                 MAX_REGISTER_COUNT, SESSION_AMOUNT,
                 1L, START, START);
 
         exceedMaxRegisterCountPaidSession = new TobePaidSession(1L,
-                CourseTest.C1.getId(),
-                new DateRange(START, END),
-                new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT, 1L),
+                courseId, dateRange, tobeCoverImages,
                 READY, OPEN,
                 EXCEED_MAX_REGISTER_COUNT, SESSION_AMOUNT,
                 1L, START, START);
 
         closedPaidSession = new TobePaidSession(1L,
-                CourseTest.C1.getId(),
-                new DateRange(START, END),
-                new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT, 1L),
+                courseId, dateRange, tobeCoverImages,
                 READY, CLOSED,
                 MAX_REGISTER_COUNT, SESSION_AMOUNT,
                 1L, START, START);
 
         payment1 = new Payment("pay1", 1L, NsUserTest.JAVAJIGI, SESSION_AMOUNT);
         student1 = new TobeStudent(paidSession, NsUserTest.JAVAJIGI, SelectedStatus.SELECTED, ApprovedStatus.APPROVED, LocalDateTime.now());
+
         payment2 = new Payment("pay2", 1L, NsUserTest.SANJIGI, SESSION_AMOUNT);
         student2 = new TobeStudent(paidSession, NsUserTest.SANJIGI, SelectedStatus.SELECTED, ApprovedStatus.APPROVED, LocalDateTime.now());
+
         payment3 = new Payment("pay3", 1L, NsUserTest.THIRDJIGI, SESSION_AMOUNT);
         student3 = new TobeStudent(paidSession, NsUserTest.THIRDJIGI, SelectedStatus.SELECTED, ApprovedStatus.APPROVED, LocalDateTime.now());
 
@@ -91,9 +95,7 @@ public class TobePaidSessionTest {
     @Test
     void register_성공() {
         TobePaidSession actual = new TobePaidSession(1L,
-                CourseTest.C1.getId(),
-                new DateRange(START, END),
-                new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT, 1L),
+                courseId, dateRange, tobeCoverImages,
                 READY, OPEN,
                 MAX_REGISTER_COUNT, SESSION_AMOUNT,
                 1L, START, START);

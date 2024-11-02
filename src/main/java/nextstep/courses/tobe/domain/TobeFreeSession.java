@@ -13,16 +13,17 @@ import java.util.Objects;
 
 public class TobeFreeSession extends TobeSession {
     private final TobeStudents students;
+
     public TobeFreeSession(long id,
                            long courseId,
                            DateRange dateRange,
-                           TobeCoverImage coverImage,
+                           List<TobeCoverImage> coverImages,
                            ProcessStatus processStatus,
                            RecruitmentStatus recruitmentStatus,
                            long creatorId,
                            LocalDateTime createdAt,
                            LocalDateTime updatedAt) {
-        super(id, courseId, Category.FREE, dateRange, coverImage, processStatus, recruitmentStatus, creatorId, createdAt, updatedAt);
+        super(id, courseId, Category.FREE, dateRange, coverImages, processStatus, recruitmentStatus, creatorId, createdAt, updatedAt);
         this.students = new TobeStudents();
     }
 
