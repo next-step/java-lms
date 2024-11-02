@@ -20,25 +20,6 @@ public abstract class Session {
 
     public Session(long id,
                    long courseId,
-                   DateRange dateRange,
-                   CoverImage coverImage,
-                   Status status,
-                   long creatorId,
-                   LocalDateTime createdAt,
-                   LocalDateTime updatedAt) {
-        this.id = id;
-        this.category = FREE;
-        this.courseId = courseId;
-        this.dateRange = dateRange;
-        this.coverImage = coverImage;
-        this.status = status;
-        this.creatorId = creatorId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
-    public Session(long id,
-                   long courseId,
                    Category category,
                    DateRange dateRange,
                    CoverImage coverImage,
