@@ -1,10 +1,12 @@
-package nextstep.courses.tobe.domain.session;
+package nextstep.courses.tobe.domain;
 
 import nextstep.courses.domain.session.image.ImageFileSize;
 import nextstep.courses.domain.session.image.ImageSize;
 import nextstep.courses.domain.session.image.ImageType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static nextstep.courses.domain.session.DateRangeTest.START;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,6 +23,11 @@ public class TobeCoverImageTest {
     public static final double WIDTH_450 = 450;
     public static final double HEIGHT_200 = 200;
     public static final double HEIGHT_300 = 300;
+
+    public static final List<TobeCoverImage> TOBE_COVER_IMAGE_LIST1 = List.of(
+            new TobeCoverImage(1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200, 1L, START),
+            new TobeCoverImage(2L, SIZE_512, IMAGE_TYPE_TEXT_JPG, WIDTH_450, HEIGHT_300, 1L, START)
+    );
 
     @Test
     void create() {

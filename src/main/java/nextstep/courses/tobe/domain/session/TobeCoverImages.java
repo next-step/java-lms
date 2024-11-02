@@ -1,5 +1,7 @@
 package nextstep.courses.tobe.domain.session;
 
+import nextstep.courses.tobe.domain.TobeCoverImage;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

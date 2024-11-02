@@ -4,7 +4,6 @@ import nextstep.courses.domain.session.Category;
 import nextstep.courses.domain.session.DateRange;
 import nextstep.courses.tobe.NotMatchedInstructorException;
 import nextstep.courses.tobe.ProcessEndedException;
-import nextstep.courses.tobe.domain.session.TobeCoverImage;
 import nextstep.courses.tobe.domain.session.TobeCoverImages;
 import nextstep.courses.tobe.domain.session.TobeStudents;
 
@@ -45,6 +44,19 @@ public abstract class TobeSession {
                        long creatorId,
                        LocalDateTime createdAt,
                        LocalDateTime updatedAt) {
+        this(id, courseId, category, dateRange, coverImages, instructor.getId(), processStatus, recruitmentStatus, creatorId, createdAt, updatedAt);
+    }
+    public TobeSession(long id,
+                       long courseId,
+                       Category category,
+                       DateRange dateRange,
+                       List<TobeCoverImage> coverImages,
+                       long instructorId,
+                       ProcessStatus processStatus,
+                       RecruitmentStatus recruitmentStatus,
+                       long creatorId,
+                       LocalDateTime createdAt,
+                       LocalDateTime updatedAt) {
         if (isInvalidProcess(processStatus, recruitmentStatus)) {
             throw new ProcessEndedException(NOT_ALLOWED_PROCESS_ENDED_RECRUITMENT_OPEN_MESSAGE);
         }
@@ -53,17 +65,13 @@ public abstract class TobeSession {
         this.courseId = courseId;
         this.dateRange = dateRange;
         this.coverImages = new TobeCoverImages(coverImages);
-        this.instructorId = instructor.getId();
+        this.instructorId = instructorId;
         this.processStatus = processStatus;
         this.recruitmentStatus = recruitmentStatus;
         this.students = new TobeStudents();
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public void approveAll(Instructor instructor) {
@@ -80,6 +88,46 @@ public abstract class TobeSession {
         }
 
         this.students.each(TobeStudent::denied);
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public long getCourseId() {
+        return courseId;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public DateRange getDateRange() {
+        return dateRange;
+    }
+
+    public long getInstructorId() {
+        return instructorId;
+    }
+
+    public ProcessStatus getProcessStatus() {
+        return processStatus;
+    }
+
+    public RecruitmentStatus getRecruitmentStatus() {
+        return recruitmentStatus;
+    }
+
+    public long getCreatorId() {
+        return creatorId;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
     private static boolean isInvalidProcess(ProcessStatus processStatus, RecruitmentStatus recruitmentStatus) {

@@ -1,12 +1,13 @@
 package nextstep.courses.tobe.domain.session;
 
+import nextstep.courses.tobe.domain.TobeCoverImage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static nextstep.courses.domain.session.DateRangeTest.START;
-import static nextstep.courses.tobe.domain.session.TobeCoverImageTest.*;
+import static nextstep.courses.tobe.domain.TobeCoverImageTest.*;
 import static org.assertj.core.api.Assertions.*;
 
 public class TobeCoverImagesTest {

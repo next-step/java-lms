@@ -1,12 +1,12 @@
 package nextstep.courses.tobe.domain;
 
 import nextstep.courses.domain.CourseTest;
+import nextstep.courses.domain.session.Category;
 import nextstep.courses.domain.session.DateRange;
 import nextstep.courses.domain.session.image.ImageFileSize;
 import nextstep.courses.domain.session.image.ImageSize;
 import nextstep.courses.domain.session.image.ImageType;
 import nextstep.courses.tobe.ProcessEndedException;
-import nextstep.courses.tobe.domain.session.TobeCoverImage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +23,7 @@ import static nextstep.courses.tobe.domain.ProcessStatus.READY;
 import static nextstep.courses.tobe.domain.RecruitmentStatus.CLOSED;
 import static nextstep.courses.tobe.domain.RecruitmentStatus.OPEN;
 import static nextstep.courses.tobe.domain.TobeSession.NOT_ALLOWED_PROCESS_ENDED_RECRUITMENT_OPEN_MESSAGE;
-import static nextstep.courses.tobe.domain.session.TobeCoverImageTest.*;
+import static nextstep.courses.tobe.domain.TobeCoverImageTest.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -119,5 +119,24 @@ public class TobeSessionTest {
                             1L, LocalDateTime.now(), LocalDateTime.now());
                 }).isInstanceOf(ProcessEndedException.class)
                 .hasMessage(NOT_ALLOWED_PROCESS_ENDED_RECRUITMENT_OPEN_MESSAGE);
+    }
+
+    @Test
+    void getter() {
+        TobePaidSession paidSession = new TobePaidSession(1L,
+                courseId, dateRange, coverImages, IN1,
+                ENDED, OPEN,
+                MAX_REGISTER_COUNT, SESSION_AMOUNT,
+                1L, START, START);
+        assertThat(paidSession.getId()).isEqualTo(1L);
+        assertThat(paidSession.getCourseId()).isEqualTo(courseId);
+        assertThat(paidSession.getCategory()).isEqualTo(Category.PAID);
+        assertThat(paidSession.getDateRange()).isEqualTo(dateRange);
+        assertThat(paidSession.getInstructorId()).isEqualTo(IN1.getId());
+        assertThat(paidSession.getProcessStatus()).isEqualTo(ENDED);
+        assertThat(paidSession.getRecruitmentStatus()).isEqualTo(OPEN);
+        assertThat(paidSession.getCreatorId()).isEqualTo(1L);
+        assertThat(paidSession.getCreatedAt()).isEqualTo(START);
+        assertThat(paidSession.getUpdatedAt()).isEqualTo(START);
     }
 }

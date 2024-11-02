@@ -1,4 +1,4 @@
-package nextstep.courses.tobe.domain.session;
+package nextstep.courses.tobe.domain;
 
 import nextstep.courses.domain.session.image.ImageFileSize;
 import nextstep.courses.domain.session.image.ImageSize;

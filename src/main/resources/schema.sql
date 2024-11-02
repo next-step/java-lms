@@ -125,7 +125,6 @@ create table tobe_student (
      ns_user_id bigint not null,
      selected_status varchar(10) not null,
      approved_status varchar(10) not null,
-     creator_id bigint not null,
      created_at timestamp not null,
      updated_at timestamp,
      primary key (id)

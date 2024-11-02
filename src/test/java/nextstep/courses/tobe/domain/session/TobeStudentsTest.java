@@ -2,6 +2,7 @@ package nextstep.courses.tobe.domain.session;
 
 import nextstep.courses.domain.CourseTest;
 import nextstep.courses.domain.session.DateRange;
+import nextstep.courses.tobe.domain.TobeCoverImage;
 import nextstep.courses.tobe.domain.TobeFreeSession;
 import nextstep.courses.tobe.domain.TobeStudent;
 import org.junit.jupiter.api.BeforeEach;

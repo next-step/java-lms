@@ -4,8 +4,6 @@ import nextstep.courses.domain.CourseTest;
 import nextstep.courses.domain.session.DateRange;
 import nextstep.courses.tobe.NotMatchedInstructorException;
 import nextstep.courses.tobe.RecruitmentClosedException;
-import nextstep.courses.tobe.domain.session.TobeCoverImage;
-import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

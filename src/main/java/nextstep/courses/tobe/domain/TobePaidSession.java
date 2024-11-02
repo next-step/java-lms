@@ -3,11 +3,8 @@ package nextstep.courses.tobe.domain;
 import nextstep.courses.MaxStudentCapacityException;
 import nextstep.courses.domain.session.Category;
 import nextstep.courses.domain.session.DateRange;
-import nextstep.courses.tobe.NotMatchedInstructorException;
 import nextstep.courses.tobe.PaymentStudentNsUserNotMatchException;
 import nextstep.courses.tobe.RecruitmentClosedException;
-import nextstep.courses.tobe.domain.session.TobeCoverImage;
-import nextstep.courses.tobe.domain.session.TobeStudents;
 import nextstep.payments.PaymentMismatchException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -15,7 +12,6 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
 
 public class TobePaidSession extends TobeSession {
     public static final String MAX_STUDENT_CAPACITY_MESSAGE = "강의 최대 수강인원을 초과하였습니다.";
@@ -41,6 +37,22 @@ public class TobePaidSession extends TobeSession {
         this.amount = amount;
     }
 
+    public TobePaidSession(long id,
+                           long courseId,
+                           DateRange dateRange,
+                           long instructorId,
+                           ProcessStatus processStatus,
+                           RecruitmentStatus recruitmentStatus,
+                           int maxRegisterCount,
+                           long amount,
+                           long creatorId,
+                           LocalDateTime createdAt,
+                           LocalDateTime updatedAt) {
+        super(id, courseId, Category.PAID, dateRange, List.of(), instructorId, processStatus, recruitmentStatus, creatorId, createdAt, updatedAt);
+        this.maxRegisterCount = maxRegisterCount;
+        this.amount = amount;
+    }
+
     public void register(Payment payment, TobeStudent student) {
         if (maxRegisterCount <= students.size()) {
             throw new MaxStudentCapacityException(MAX_STUDENT_CAPACITY_MESSAGE);
@@ -60,6 +72,14 @@ public class TobePaidSession extends TobeSession {
         this.students.add(student);
     }
 
+    public int getMaxRegisterCount() {
+        return maxRegisterCount;
+    }
+
+    public long getAmount() {
+        return amount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -72,5 +92,25 @@ public class TobePaidSession extends TobeSession {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), maxRegisterCount, amount, students);
+    }
+
+    @Override
+    public String toString() {
+        return "TobePaidSession{" +
+                "maxRegisterCount=" + maxRegisterCount +
+                ", amount=" + amount +
+                ", id=" + id +
+                ", courseId=" + courseId +
+                ", category=" + category +
+                ", dateRange=" + dateRange +
+                ", coverImages=" + coverImages +
+                ", instructorId=" + instructorId +
+                ", processStatus=" + processStatus +
+                ", recruitmentStatus=" + recruitmentStatus +
+                ", students=" + students +
+                ", creatorId=" + creatorId +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }

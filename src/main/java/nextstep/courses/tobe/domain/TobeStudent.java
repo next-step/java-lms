@@ -63,6 +63,14 @@ public class TobeStudent {
         return nsUserId;
     }
 
+    public SelectedStatus getSelectedStatus() {
+        return selectedStatus;
+    }
+
+    public ApprovedStatus getApprovedStatus() {
+        return approvedStatus;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
