@@ -25,7 +25,7 @@
     - status -> process_status column 변경 
   - RecruitmentStatus(CLOSED, OPEN) 추가
     - recruitment_status column 추가
-  - CoverImages table 추가
+  - ~~TobeCoverImages table 추가~~
     - cover_image table 추가
   - ~~Instructor 추가~~
     - instructor table 추가
