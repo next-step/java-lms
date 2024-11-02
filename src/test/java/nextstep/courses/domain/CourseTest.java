@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 
 import static nextstep.courses.domain.SessionTest.FREE_SESSION1;
 import static nextstep.courses.domain.SessionTest.PAID_SESSION1;
+import static nextstep.courses.tobe.domain.TobeFreeSessionTest.TFS1;
+import static nextstep.courses.tobe.domain.TobePaidSessionTest.TPS1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
@@ -37,6 +39,19 @@ public class CourseTest {
         assertThat(actual).isNotEqualTo(course);
 
         actual.addSession(PAID_SESSION1);
+        assertThat(actual).isEqualTo(course);
+    }
+
+    @Test
+    void addTobeSession() {
+        course.addTobeSession(TFS1);
+        course.addTobeSession(TPS1);
+
+        Course actual = new Course(1L, "title1", 1L, LocalDateTime.now(), LocalDateTime.now());
+        actual.addTobeSession(TFS1);
+        assertThat(actual).isNotEqualTo(course);
+
+        actual.addTobeSession(TPS1);
         assertThat(actual).isEqualTo(course);
     }
 }
