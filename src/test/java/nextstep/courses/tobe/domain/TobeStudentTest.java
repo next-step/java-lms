@@ -3,8 +3,8 @@ package nextstep.courses.tobe.domain;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.courses.domain.FreeSessionTest.FS1;
 import static nextstep.courses.domain.session.DateRangeTest.START;
+import static nextstep.courses.tobe.domain.TobeFreeSessionTest.TFS1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
@@ -13,7 +13,7 @@ public class TobeStudentTest {
     void create_REJECT_DENIED_성공() {
         assertThatNoException().isThrownBy(() -> {
             TobeStudent student = new TobeStudent(
-                    FS1,
+                    TFS1,
                     NsUserTest.JAVAJIGI,
                     SelectedStatus.REJECTED,
                     ApprovedStatus.DENIED,
@@ -25,7 +25,7 @@ public class TobeStudentTest {
     void create_REJECT_APPROVED_성공() {
         assertThatNoException().isThrownBy(() -> {
             TobeStudent student = new TobeStudent(
-                    FS1,
+                    TFS1,
                     NsUserTest.JAVAJIGI,
                     SelectedStatus.REJECTED,
                     ApprovedStatus.APPROVED,
@@ -37,7 +37,7 @@ public class TobeStudentTest {
     void create_SELECTED_DENIED_성공() {
         assertThatNoException().isThrownBy(() -> {
             TobeStudent student = new TobeStudent(
-                    FS1,
+                    TFS1,
                     NsUserTest.JAVAJIGI,
                     SelectedStatus.SELECTED,
                     ApprovedStatus.DENIED,
@@ -49,7 +49,7 @@ public class TobeStudentTest {
     void create_SELECTED_APPROVED_성공() {
         assertThatNoException().isThrownBy(() -> {
             TobeStudent student = new TobeStudent(
-                    FS1,
+                    TFS1,
                     NsUserTest.JAVAJIGI,
                     SelectedStatus.SELECTED,
                     ApprovedStatus.DENIED,
@@ -59,7 +59,7 @@ public class TobeStudentTest {
 
     @Test
     void getter() {
-        TobeStudent student = new TobeStudent(FS1, NsUserTest.JAVAJIGI, SelectedStatus.REJECTED, ApprovedStatus.DENIED, START);
+        TobeStudent student = new TobeStudent(TFS1, NsUserTest.JAVAJIGI, SelectedStatus.REJECTED, ApprovedStatus.DENIED, START);
 
         assertThat(student.getNsUserId()).isEqualTo(1L);
         assertThat(student.getSessionId()).isEqualTo(1L);

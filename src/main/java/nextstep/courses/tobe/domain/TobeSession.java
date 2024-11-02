@@ -45,6 +45,10 @@ public abstract class TobeSession {
         this.updatedAt = updatedAt;
     }
 
+    public long getId() {
+        return id;
+    }
+
     private static boolean isInvalidProcess(ProcessStatus processStatus, RecruitmentStatus recruitmentStatus) {
         return ProcessStatus.ENDED.equals(processStatus) &&
                 RecruitmentStatus.OPEN.equals(recruitmentStatus);

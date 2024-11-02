@@ -26,7 +26,7 @@ public class TobeStudent {
         this.updatedAt = updatedAt;
     }
 
-    public TobeStudent(Session session, NsUser nsUser, SelectedStatus selectedStatus, ApprovedStatus approvedStatus, LocalDateTime createdAt) {
+    public TobeStudent(TobeSession session, NsUser nsUser, SelectedStatus selectedStatus, ApprovedStatus approvedStatus, LocalDateTime createdAt) {
         this(0L, session.getId(), nsUser.getId(), selectedStatus, approvedStatus, createdAt, LocalDateTime.now());
 
     }
@@ -52,11 +52,11 @@ public class TobeStudent {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TobeStudent that = (TobeStudent) o;
-        return id == that.id && sessionId == that.sessionId && nsUserId == that.nsUserId;
+        return id == that.id && sessionId == that.sessionId && nsUserId == that.nsUserId && selectedStatus == that.selectedStatus && approvedStatus == that.approvedStatus;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, sessionId, nsUserId);
+        return Objects.hash(id, sessionId, nsUserId, selectedStatus, approvedStatus);
     }
 }
