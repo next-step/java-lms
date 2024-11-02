@@ -20,24 +20,24 @@
   * 즉, 기존에 쌓인 데이터를 제거하지 않은 상태로 리팩터링 해야 한다.
 
 ## TODO
-- TobeSession 생성
+- TobeSession(TobeFreeSession, TobePaidSession) 생성
   - ProcessStatus(READY, PROCESS, ENDED) 변경
     - status -> process_status column 변경 
   - RecruitmentStatus(CLOSED, OPEN) 추가
     - recruitment_status column 추가
-  - SessionCoverImage 추가
-    - tobe_session table 추가
+  - CoverImages table 추가
+    - cover_image table 추가
   - Instructor 추가
     - instructor table 추가
-  - TobeStudent(Student 수정) 추가
-    - SelectedStatus field 추가
+  - ~~TobeStudent(Student 수정) 추가~~
+    - ~~SelectedStatus field 추가~~
       - selected_status column 추가 
-      - REJECTED(탈락)
-      - SELECTED(선발)
-    - ApprovedStatus field 추가
+      - ~~REJECTED(탈락)~~
+      - ~~SELECTED(선발)~~
+    - ~~ApprovedStatus field 추가~~
       - approved_status column 추가 
-      - DENIED(승인취소)
-      - APPROVED(승인)
+      - ~~DENIED(승인취소)~~
+      - ~~APPROVED(승인)~~
 - 수강신청은 RecruitmentStatus(OPEN) 일때 가능하다
 - 강의는 하나 이상의 커버 이미지를 가질 수 있다.
 - 학생은 수강신청을 할 수 있다.

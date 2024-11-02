@@ -17,11 +17,11 @@ public class StudentTest {
     }
 
     @Test
-    void toParameters() {
+    void getter() {
         Student student = new Student(FS1, NsUserTest.JAVAJIGI, START);
-        Object[] actual = student.toParameters();
-        Object[] expected = {1L, 1L, START};
 
-        assertThat(actual).isEqualTo(expected);
+        assertThat(student.getNsUserId()).isEqualTo(1L);
+        assertThat(student.getSessionId()).isEqualTo(1L);
+        assertThat(student.getCreatedAt()).isEqualTo(START);
     }
 }

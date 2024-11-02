@@ -24,12 +24,20 @@ public class Student {
         this.updatedAt = updatedAt;
     }
 
-    public Object[] toParameters() {
-        return new Object[]{
-                sessionId,
-                nsUserId,
-                createdAt
-        };
+    public long getId() {
+        return id;
+    }
+
+    public long getSessionId() {
+        return sessionId;
+    }
+
+    public long getNsUserId() {
+        return nsUserId;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     @Override

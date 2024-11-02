@@ -24,7 +24,10 @@ public class JdbcStudentsRepository implements StudentsRepository {
 
         return students.getStudents()
                 .stream()
-                .mapToInt(student -> jdbcTemplate.update(sql, student.toParameters()))
+                .mapToInt(student -> jdbcTemplate.update(sql,
+                        student.getSessionId(),
+                        student.getNsUserId(),
+                        student.getCreatedAt()))
                 .sum();
     }
 
