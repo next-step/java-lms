@@ -42,11 +42,11 @@ public class Instructor {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Instructor that = (Instructor) o;
-        return id == that.id && Objects.equals(instructorId, that.instructorId) && Objects.equals(password, that.password) && Objects.equals(name, that.name) && Objects.equals(email, that.email);
+        return id == that.id && creatorId == that.creatorId && Objects.equals(instructorId, that.instructorId) && Objects.equals(password, that.password) && Objects.equals(name, that.name) && Objects.equals(email, that.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, instructorId, password, name, email);
+        return Objects.hash(id, instructorId, password, name, email, creatorId);
     }
 }
