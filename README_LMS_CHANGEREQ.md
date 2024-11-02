@@ -25,12 +25,11 @@
     - status -> process_status column 변경 
   - RecruitmentStatus(CLOSED, OPEN) 추가
     - recruitment_status column 추가
-  - TobeSessionCoverImage 추가
+  - SessionCoverImage 추가
     - tobe_session table 추가
   - Instructor 추가
     - instructor table 추가
-    - TobeSession field -> instructor_id 추가
-  - Student 수정
+  - TobeStudent(Student 수정) 추가
     - SelectedStatus field 추가
       - selected_status column 추가 
       - REJECTED(탈락)
@@ -41,8 +40,13 @@
       - APPROVED(승인)
 - 수강신청은 RecruitmentStatus(OPEN) 일때 가능하다
 - 강의는 하나 이상의 커버 이미지를 가질 수 있다.
-- 강사가 Student(SelectedStatus:SELECTED) 조건일 경우 ApprovedStatus(DENIED -> APPROVED)수강 승인한다
-- 강사가 Student(SelectedStatus:REJECTED) 조건일 경우 ApprovedStatus(APPROVED -> DENIED)수강 취소한다
+- 학생은 수강신청을 할 수 있다.
+  - (SelectedStatus:SELECTED) 경우 가능
+  - (SelectedStatus:REJECTED) 경우 불가능
+- 강사가 수강 승인한다
+  - Student(SelectedStatus:SELECTED) 인 경우 Student(ApprovedStatus:DENIED -> APPROVED))
+- 강사가 수강 취소한다
+  - Student(SelectedStatus:REJECTED) 인 경우 Student(ApprovedStatus:APPROVED -> DENIED))
 - 리팩터링할 때 컴파일 에러와 기존의 단위 테스트의 실패를 최소화하면서 점진적인 리팩터링이 가능하도록 한다.
 - 기존 domain 이 존재하는 상태에서 리팩토링 진행
   - TobeSession domain, TobeSession 하위의 domain 들을 모두 새로 생성
