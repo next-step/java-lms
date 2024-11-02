@@ -50,15 +50,15 @@ public class TobeSessionTest {
         courseId = CourseTest.C1.getId();
         dateRange = new DateRange(START, END);
 
-        tobeCoverImage1 = new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200, 1L);
-        tobeCoverImage2 = new TobeCoverImage(SIZE2, IMAGE_TYPE_TEXT_JPG, WIDTH_450, HEIGHT_300, 1L);
+        tobeCoverImage1 = new TobeCoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200, 1L);
+        tobeCoverImage2 = new TobeCoverImage(SIZE_512, IMAGE_TYPE_TEXT_JPG, WIDTH_450, HEIGHT_300, 1L);
         coverImages = List.of(tobeCoverImage1, tobeCoverImage2);
 
-        imageFileSize1 = new ImageFileSize(SIZE);
+        imageFileSize1 = new ImageFileSize(SIZE_1024);
         imageType1 = IMAGE_TYPE_GIF;
         imageSize1 = new ImageSize(WIDTH_300, HEIGHT_200);
 
-        imageFileSize2 = new ImageFileSize(SIZE2);
+        imageFileSize2 = new ImageFileSize(SIZE_512);
         imageType2 = IMAGE_TYPE_JPG;
         imageSize2 = new ImageSize(WIDTH_450, HEIGHT_300);
 

@@ -11,8 +11,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TobeCoverImageTest {
 
-    public static final int SIZE = 1024 * 1024;
-    public static final int SIZE2 = 512 * 1024;
+    public static final int SIZE_1024 = 1024 * 1024;
+    public static final int SIZE_512 = 512 * 1024;
     public static final String IMAGE_TYPE_TEXT_GIF = "gif";
     public static final String IMAGE_TYPE_TEXT_JPG = "gif";
     public static final ImageType IMAGE_TYPE_GIF = ImageType.toImageType(IMAGE_TYPE_TEXT_GIF);
@@ -24,10 +24,10 @@ public class TobeCoverImageTest {
 
     @Test
     void create() {
-        TobeCoverImage actual0 = new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200, 1L);
-        TobeCoverImage expected0 = new TobeCoverImage(new ImageFileSize(SIZE), IMAGE_TYPE_GIF, new ImageSize(WIDTH_300, HEIGHT_200), 1L);
-        TobeCoverImage actual1 = new TobeCoverImage(0L, SIZE, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200, 1L, START);
-        TobeCoverImage expected1 = new TobeCoverImage(0L, new ImageFileSize(SIZE), IMAGE_TYPE_GIF, new ImageSize(WIDTH_300, HEIGHT_200), 1L, START);
+        TobeCoverImage actual0 = new TobeCoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200, 1L);
+        TobeCoverImage expected0 = new TobeCoverImage(new ImageFileSize(SIZE_1024), IMAGE_TYPE_GIF, new ImageSize(WIDTH_300, HEIGHT_200), 1L);
+        TobeCoverImage actual1 = new TobeCoverImage(0L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200, 1L, START);
+        TobeCoverImage expected1 = new TobeCoverImage(0L, new ImageFileSize(SIZE_1024), IMAGE_TYPE_GIF, new ImageSize(WIDTH_300, HEIGHT_200), 1L, START);
 
         Assertions.assertThat(actual0).isEqualTo(expected0);
         Assertions.assertThat(actual0).isEqualTo(expected1);
@@ -37,14 +37,14 @@ public class TobeCoverImageTest {
 
     @Test
     void getter() {
-        TobeCoverImage coverImage = new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200,1L);
+        TobeCoverImage coverImage = new TobeCoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200,1L);
         long actualId = coverImage.getId();
         ImageFileSize actualImageFileSize = coverImage.getImageFileSize();
         ImageSize actualImageSize = coverImage.getImageSize();
         ImageType actualImageType = coverImage.getImageType();
 
         assertThat(actualId).isEqualTo(0L);
-        assertThat(actualImageFileSize).isEqualTo(new ImageFileSize(SIZE));
+        assertThat(actualImageFileSize).isEqualTo(new ImageFileSize(SIZE_1024));
         assertThat(actualImageSize).isEqualTo(new ImageSize(WIDTH_300, HEIGHT_200));
         assertThat(actualImageType).isEqualTo(ImageType.gif);
     }

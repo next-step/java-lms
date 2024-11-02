@@ -4,6 +4,7 @@ import nextstep.courses.domain.session.Category;
 import nextstep.courses.domain.session.DateRange;
 import nextstep.courses.tobe.ProcessEndedException;
 import nextstep.courses.tobe.domain.session.TobeCoverImage;
+import nextstep.courses.tobe.domain.session.TobeCoverImages;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public abstract class TobeSession {
     protected final long courseId;
     protected final Category category;
     protected final DateRange dateRange;
-    protected final List<TobeCoverImage> coverImages;
+    protected final TobeCoverImages coverImages;
     protected final long instructorId;
     protected final ProcessStatus processStatus;
     protected final RecruitmentStatus recruitmentStatus;
@@ -46,7 +47,7 @@ public abstract class TobeSession {
         this.category = category;
         this.courseId = courseId;
         this.dateRange = dateRange;
-        this.coverImages = new ArrayList<>(coverImages);
+        this.coverImages = new TobeCoverImages(coverImages);
         this.instructorId = instructor.getId();
         this.processStatus = processStatus;
         this.recruitmentStatus = recruitmentStatus;
