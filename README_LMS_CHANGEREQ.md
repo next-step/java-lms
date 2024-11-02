@@ -20,10 +20,11 @@
   * 즉, 기존에 쌓인 데이터를 제거하지 않은 상태로 리팩터링 해야 한다.
 
 ## TODO
-- TobeSession(TobeFreeSession, TobePaidSession) 생성
-  - ProcessStatus(READY, PROCESS, ENDED) 변경
+- TobeSessions 생성
+- ~~TobeSession(TobeFreeSession, TobePaidSession) 생성~~
+  - ~~ProcessStatus(READY, PROCESS, ENDED) 변경~~
     - status -> process_status column 변경 
-  - RecruitmentStatus(CLOSED, OPEN) 추가
+  - ~~RecruitmentStatus(CLOSED, OPEN) 추가~~
     - recruitment_status column 추가
   - ~~TobeCoverImages 추가~~
     - cover_image table 추가
