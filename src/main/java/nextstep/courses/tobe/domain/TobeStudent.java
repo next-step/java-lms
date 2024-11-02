@@ -26,9 +26,12 @@ public class TobeStudent {
         this.updatedAt = updatedAt;
     }
 
-    public TobeStudent(TobeSession session, NsUser nsUser, SelectedStatus selectedStatus, ApprovedStatus approvedStatus, LocalDateTime createdAt) {
+    public TobeStudent(TobeSession session,
+                       NsUser nsUser,
+                       SelectedStatus selectedStatus,
+                       ApprovedStatus approvedStatus,
+                       LocalDateTime createdAt) {
         this(0L, session.getId(), nsUser.getId(), selectedStatus, approvedStatus, createdAt, LocalDateTime.now());
-
     }
 
     public long getId() {
@@ -39,7 +42,7 @@ public class TobeStudent {
         return sessionId;
     }
 
-    public long getNsUserId() {
+    public Long getNsUserId() {
         return nsUserId;
     }
 

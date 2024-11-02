@@ -2,6 +2,7 @@ package nextstep.courses.tobe.domain;
 
 import nextstep.courses.domain.session.Category;
 import nextstep.courses.domain.session.DateRange;
+import nextstep.courses.tobe.ProcessEndedException;
 import nextstep.courses.tobe.domain.session.TobeCoverImage;
 
 import java.time.LocalDateTime;
@@ -9,6 +10,7 @@ import java.util.Objects;
 
 public abstract class TobeSession {
     public static final String NOT_ALLOWED_PROCESS_ENDED_RECRUITMENT_OPEN_MESSAGE = "종료된 강의를 모집중 상태로 바꿀수 없습니다.";
+    public static final String NOT_ALLOWED_REGISTER_TO_CLOSED_SESSION_MESSAGE = "닫힌 강의는 수강신청할 수 없습니다.";
     protected final long id;
     protected final long courseId;
     protected final Category category;

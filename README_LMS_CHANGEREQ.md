@@ -26,7 +26,8 @@
     - status -> process_status column 변경 
   - ~~RecruitmentStatus(CLOSED, OPEN) 추가~~
     - recruitment_status column 추가
-  - ~~TobeCoverImages 추가~~
+  - TobeCoverImages 추가
+    - ~~TobeCoverImage 추가~~
     - cover_image table 추가
   - ~~Instructor 추가~~
     - instructor table 추가
@@ -39,7 +40,7 @@
       - approved_status column 추가 
       - ~~DENIED(승인취소)~~
       - ~~APPROVED(승인)~~
-- 수강신청은 RecruitmentStatus(OPEN) 일때 가능하다
+- ~~수강신청은 RecruitmentStatus(OPEN) 일때 가능하다~~
 - 강의는 하나 이상의 커버 이미지를 가질 수 있다.
 - 학생은 수강신청을 할 수 있다.
 - 강사가 수강 승인한다

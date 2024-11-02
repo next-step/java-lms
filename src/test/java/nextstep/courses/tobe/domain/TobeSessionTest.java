@@ -5,8 +5,8 @@ import nextstep.courses.domain.session.DateRange;
 import nextstep.courses.domain.session.image.ImageFileSize;
 import nextstep.courses.domain.session.image.ImageSize;
 import nextstep.courses.domain.session.image.ImageType;
+import nextstep.courses.tobe.ProcessEndedException;
 import nextstep.courses.tobe.domain.session.TobeCoverImage;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
