@@ -18,8 +18,7 @@ import static nextstep.courses.domain.PaidSessionTest.SESSION_AMOUNT;
 import static nextstep.courses.domain.session.DateRangeTest.END;
 import static nextstep.courses.domain.session.DateRangeTest.START;
 import static nextstep.courses.tobe.domain.InstructorTest.IN1;
-import static nextstep.courses.tobe.domain.ProcessStatus.ENDED;
-import static nextstep.courses.tobe.domain.ProcessStatus.READY;
+import static nextstep.courses.tobe.domain.ProcessStatus.*;
 import static nextstep.courses.tobe.domain.RecruitmentStatus.CLOSED;
 import static nextstep.courses.tobe.domain.RecruitmentStatus.OPEN;
 import static nextstep.courses.tobe.domain.TobeSession.NOT_ALLOWED_PROCESS_ENDED_RECRUITMENT_OPEN_MESSAGE;
@@ -125,7 +124,7 @@ public class TobeSessionTest {
     void getter() {
         TobePaidSession paidSession = new TobePaidSession(1L,
                 courseId, dateRange, coverImages, IN1,
-                ENDED, OPEN,
+                READY, OPEN,
                 MAX_REGISTER_COUNT, SESSION_AMOUNT,
                 1L, START, START);
         assertThat(paidSession.getId()).isEqualTo(1L);
@@ -133,7 +132,7 @@ public class TobeSessionTest {
         assertThat(paidSession.getCategory()).isEqualTo(Category.PAID);
         assertThat(paidSession.getDateRange()).isEqualTo(dateRange);
         assertThat(paidSession.getInstructorId()).isEqualTo(IN1.getId());
-        assertThat(paidSession.getProcessStatus()).isEqualTo(ENDED);
+        assertThat(paidSession.getProcessStatus()).isEqualTo(READY);
         assertThat(paidSession.getRecruitmentStatus()).isEqualTo(OPEN);
         assertThat(paidSession.getCreatorId()).isEqualTo(1L);
         assertThat(paidSession.getCreatedAt()).isEqualTo(START);
