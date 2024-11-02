@@ -13,13 +13,12 @@ public class Instructor {
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Instructor(long id,
-                      String instructorId,
+    public Instructor(String instructorId,
                       String password,
                       String name,
                       String email,
                       long creatorId) {
-        this(id, instructorId, password, name, email, creatorId, LocalDateTime.now());
+        this(0L, instructorId, password, name, email, creatorId, LocalDateTime.now());
     }
 
     public Instructor(long id,

@@ -11,12 +11,12 @@ public class InstructorTest {
 
     @BeforeEach
     void setUp() {
-        instructor = new Instructor(1L, "javajigi", "password", "name", "javajigi@slipp.net", 1L, LocalDateTime.now());
+        instructor = new Instructor(0L, "javajigi", "password", "name", "javajigi@slipp.net", 1L, LocalDateTime.now());
     }
 
     @Test
     void create() {
-        Instructor actual = new Instructor(1L, "javajigi", "password", "name", "javajigi@slipp.net", 1L);
+        Instructor actual = new Instructor("javajigi", "password", "name", "javajigi@slipp.net", 1L);
         Assertions.assertThat(actual).isEqualTo(instructor);
     }
 
