@@ -20,6 +20,7 @@ import static nextstep.courses.domain.PaidSession.PAYMENT_MISMATCH_MESSAGE;
 import static nextstep.courses.domain.session.CoverImageTest.*;
 import static nextstep.courses.domain.session.DateRangeTest.END;
 import static nextstep.courses.domain.session.DateRangeTest.START;
+import static nextstep.courses.tobe.domain.InstructorTest.IN1;
 import static nextstep.courses.tobe.domain.ProcessStatus.READY;
 import static nextstep.courses.tobe.domain.RecruitmentStatus.CLOSED;
 import static nextstep.courses.tobe.domain.RecruitmentStatus.OPEN;
@@ -38,6 +39,7 @@ public class TobePaidSessionTest {
             CourseTest.C1.getId(),
             new DateRange(START, END),
             List.of(new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT, 1L)),
+            IN1,
             READY, CLOSED,
             MAX_REGISTER_COUNT, SESSION_AMOUNT,
             1L, START, START);
@@ -63,19 +65,19 @@ public class TobePaidSessionTest {
         courseId = CourseTest.C1.getId();
 
         paidSession = new TobePaidSession(1L,
-                courseId, dateRange, tobeCoverImages,
+                courseId, dateRange, tobeCoverImages, IN1,
                 READY, OPEN,
                 MAX_REGISTER_COUNT, SESSION_AMOUNT,
                 1L, START, START);
 
         exceedMaxRegisterCountPaidSession = new TobePaidSession(1L,
-                courseId, dateRange, tobeCoverImages,
+                courseId, dateRange, tobeCoverImages, IN1,
                 READY, OPEN,
                 EXCEED_MAX_REGISTER_COUNT, SESSION_AMOUNT,
                 1L, START, START);
 
         closedPaidSession = new TobePaidSession(1L,
-                courseId, dateRange, tobeCoverImages,
+                courseId, dateRange, tobeCoverImages,IN1,
                 READY, CLOSED,
                 MAX_REGISTER_COUNT, SESSION_AMOUNT,
                 1L, START, START);
@@ -95,7 +97,7 @@ public class TobePaidSessionTest {
     @Test
     void register_성공() {
         TobePaidSession actual = new TobePaidSession(1L,
-                courseId, dateRange, tobeCoverImages,
+                courseId, dateRange, tobeCoverImages,IN1,
                 READY, OPEN,
                 MAX_REGISTER_COUNT, SESSION_AMOUNT,
                 1L, START, START);

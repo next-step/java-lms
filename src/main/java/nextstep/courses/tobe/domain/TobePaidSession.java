@@ -1,7 +1,6 @@
 package nextstep.courses.tobe.domain;
 
 import nextstep.courses.MaxStudentCapacityException;
-import nextstep.courses.domain.Student;
 import nextstep.courses.domain.session.Category;
 import nextstep.courses.domain.session.DateRange;
 import nextstep.courses.tobe.PaymentStudentNsUserNotMatchException;
@@ -28,6 +27,7 @@ public class TobePaidSession extends TobeSession {
                            long courseId,
                            DateRange dateRange,
                            List<TobeCoverImage> coverImages,
+                           Instructor instructor,
                            ProcessStatus processStatus,
                            RecruitmentStatus recruitmentStatus,
                            int maxRegisterCount,
@@ -35,7 +35,7 @@ public class TobePaidSession extends TobeSession {
                            long creatorId,
                            LocalDateTime createdAt,
                            LocalDateTime updatedAt) {
-        super(id, courseId, Category.PAID, dateRange, coverImages, processStatus, recruitmentStatus, creatorId, createdAt, updatedAt);
+        super(id, courseId, Category.PAID, dateRange, coverImages, instructor, processStatus, recruitmentStatus, creatorId, createdAt, updatedAt);
         this.maxRegisterCount = maxRegisterCount;
         this.amount = amount;
         this.students = new ArrayList<>();

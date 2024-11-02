@@ -15,12 +15,15 @@ import java.util.List;
 
 import static nextstep.courses.domain.PaidSessionTest.MAX_REGISTER_COUNT;
 import static nextstep.courses.domain.PaidSessionTest.SESSION_AMOUNT;
-import static nextstep.courses.tobe.domain.ProcessStatus.*;
-import static nextstep.courses.tobe.domain.RecruitmentStatus.*;
-import static nextstep.courses.tobe.domain.session.TobeCoverImageTest.*;
 import static nextstep.courses.domain.session.DateRangeTest.END;
 import static nextstep.courses.domain.session.DateRangeTest.START;
+import static nextstep.courses.tobe.domain.InstructorTest.IN1;
+import static nextstep.courses.tobe.domain.ProcessStatus.ENDED;
+import static nextstep.courses.tobe.domain.ProcessStatus.READY;
+import static nextstep.courses.tobe.domain.RecruitmentStatus.CLOSED;
+import static nextstep.courses.tobe.domain.RecruitmentStatus.OPEN;
 import static nextstep.courses.tobe.domain.TobeSession.NOT_ALLOWED_PROCESS_ENDED_RECRUITMENT_OPEN_MESSAGE;
+import static nextstep.courses.tobe.domain.session.TobeCoverImageTest.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -69,10 +72,10 @@ public class TobeSessionTest {
 
     @Test
     void createFreeSession_성공() {
-        TobeFreeSession actual = new TobeFreeSession(1L, courseId, dateRange, coverImages,
+        TobeFreeSession actual = new TobeFreeSession(1L, courseId, dateRange, coverImages, IN1,
                 processStatus, recruitmentStatus,
                 1L, LocalDateTime.now(), LocalDateTime.now());
-        TobeFreeSession expected = new TobeFreeSession(1L, courseId, dateRange, wrappedCoverImages,
+        TobeFreeSession expected = new TobeFreeSession(1L, courseId, dateRange, wrappedCoverImages, IN1,
                 processStatus, recruitmentStatus,
                 1L, LocalDateTime.now(), LocalDateTime.now());
 
@@ -83,7 +86,7 @@ public class TobeSessionTest {
     void createFreeSession_ENDED_OPEN_실패() {
         assertThatThrownBy(() -> {
             new TobeFreeSession(1L,
-                    courseId, dateRange, coverImages,
+                    courseId, dateRange, coverImages, IN1,
                     ENDED, OPEN,
                     1L, LocalDateTime.now(), LocalDateTime.now());
         }).isInstanceOf(ProcessEndedException.class)
@@ -93,12 +96,12 @@ public class TobeSessionTest {
     @Test
     void createPaidSession_성공() {
         TobePaidSession actual = new TobePaidSession(1L,
-                courseId, dateRange, coverImages,
+                courseId, dateRange, coverImages, IN1,
                 processStatus, recruitmentStatus,
                 MAX_REGISTER_COUNT, SESSION_AMOUNT,
                 1L, LocalDateTime.now(), LocalDateTime.now());
         TobePaidSession expected = new TobePaidSession(1L,
-                courseId, dateRange, wrappedCoverImages,
+                courseId, dateRange, wrappedCoverImages, IN1,
                 processStatus, recruitmentStatus,
                 MAX_REGISTER_COUNT, SESSION_AMOUNT,
                 1L, LocalDateTime.now(), LocalDateTime.now());
@@ -110,7 +113,7 @@ public class TobeSessionTest {
     void createPaidSession_ENDED_OPEN_실패() {
         assertThatThrownBy(() -> {
                     new TobePaidSession(1L,
-                            courseId, dateRange, coverImages,
+                            courseId, dateRange, coverImages, IN1,
                             ENDED, OPEN,
                             MAX_REGISTER_COUNT, SESSION_AMOUNT,
                             1L, LocalDateTime.now(), LocalDateTime.now());

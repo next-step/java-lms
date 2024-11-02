@@ -21,6 +21,7 @@ public abstract class TobeSession {
     protected final Category category;
     protected final DateRange dateRange;
     protected final List<TobeCoverImage> coverImages;
+    protected final long instructorId;
     protected final ProcessStatus processStatus;
     protected final RecruitmentStatus recruitmentStatus;
     protected final long creatorId;
@@ -32,6 +33,7 @@ public abstract class TobeSession {
                        Category category,
                        DateRange dateRange,
                        List<TobeCoverImage> coverImages,
+                       Instructor instructor,
                        ProcessStatus processStatus,
                        RecruitmentStatus recruitmentStatus,
                        long creatorId,
@@ -45,6 +47,7 @@ public abstract class TobeSession {
         this.courseId = courseId;
         this.dateRange = dateRange;
         this.coverImages = new ArrayList<>(coverImages);
+        this.instructorId = instructor.getId();
         this.processStatus = processStatus;
         this.recruitmentStatus = recruitmentStatus;
         this.creatorId = creatorId;
@@ -66,11 +69,11 @@ public abstract class TobeSession {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TobeSession that = (TobeSession) o;
-        return id == that.id && courseId == that.courseId && creatorId == that.creatorId && category == that.category && Objects.equals(dateRange, that.dateRange) && Objects.equals(coverImages, that.coverImages) && processStatus == that.processStatus && recruitmentStatus == that.recruitmentStatus;
+        return id == that.id && courseId == that.courseId && instructorId == that.instructorId && creatorId == that.creatorId && category == that.category && Objects.equals(dateRange, that.dateRange) && Objects.equals(coverImages, that.coverImages) && processStatus == that.processStatus && recruitmentStatus == that.recruitmentStatus;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, courseId, category, dateRange, coverImages, processStatus, recruitmentStatus, creatorId);
+        return Objects.hash(id, courseId, category, dateRange, coverImages, instructorId, processStatus, recruitmentStatus, creatorId);
     }
 }

@@ -7,7 +7,6 @@ import nextstep.courses.tobe.domain.session.TobeCoverImage;
 import nextstep.courses.tobe.domain.session.TobeStudents;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,12 +17,13 @@ public class TobeFreeSession extends TobeSession {
                            long courseId,
                            DateRange dateRange,
                            List<TobeCoverImage> coverImages,
+                           Instructor instructor,
                            ProcessStatus processStatus,
                            RecruitmentStatus recruitmentStatus,
                            long creatorId,
                            LocalDateTime createdAt,
                            LocalDateTime updatedAt) {
-        super(id, courseId, Category.FREE, dateRange, coverImages, processStatus, recruitmentStatus, creatorId, createdAt, updatedAt);
+        super(id, courseId, Category.FREE, dateRange, coverImages, instructor, processStatus, recruitmentStatus, creatorId, createdAt, updatedAt);
         this.students = new TobeStudents();
     }
 

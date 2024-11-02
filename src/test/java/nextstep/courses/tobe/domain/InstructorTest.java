@@ -7,11 +7,15 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 
 public class InstructorTest {
+
+    public static final Instructor IN1 = new Instructor(1L, "javajigi", "password", "name", "javajigi@slipp.net", 1L, LocalDateTime.now(), LocalDateTime.now());
+
     private Instructor instructor;
 
     @BeforeEach
     void setUp() {
-        instructor = new Instructor(0L, "javajigi", "password", "name", "javajigi@slipp.net", 1L, LocalDateTime.now());
+        instructor = new Instructor(0L, "javajigi", "password", "name", "javajigi@slipp.net",
+                1L, LocalDateTime.now(), LocalDateTime.now());
     }
 
     @Test
@@ -20,5 +24,12 @@ public class InstructorTest {
         Assertions.assertThat(actual).isEqualTo(instructor);
     }
 
+    @Test
+    void getter() {
+        Instructor actual = new Instructor(1L, "javajigi", "password", "name", "javajigi@slipp.net",
+                1L, LocalDateTime.now(), LocalDateTime.now());
+        long actualInstructorId = actual.getId();
 
+        Assertions.assertThat(actualInstructorId).isEqualTo(1L);
+    }
 }

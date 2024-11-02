@@ -13,10 +13,12 @@ import java.util.List;
 import static nextstep.courses.domain.session.CoverImageTest.*;
 import static nextstep.courses.domain.session.DateRangeTest.END;
 import static nextstep.courses.domain.session.DateRangeTest.START;
-import static nextstep.courses.tobe.domain.ApprovedStatus.*;
-import static nextstep.courses.tobe.domain.ProcessStatus.*;
-import static nextstep.courses.tobe.domain.RecruitmentStatus.*;
-import static nextstep.courses.tobe.domain.SelectedStatus.*;
+import static nextstep.courses.tobe.domain.ApprovedStatus.DENIED;
+import static nextstep.courses.tobe.domain.InstructorTest.IN1;
+import static nextstep.courses.tobe.domain.ProcessStatus.READY;
+import static nextstep.courses.tobe.domain.RecruitmentStatus.CLOSED;
+import static nextstep.courses.tobe.domain.RecruitmentStatus.OPEN;
+import static nextstep.courses.tobe.domain.SelectedStatus.REJECTED;
 import static nextstep.courses.tobe.domain.TobeSession.NOT_ALLOWED_REGISTER_TO_CLOSED_SESSION_MESSAGE;
 import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,6 +29,7 @@ public class TobeFreeSessionTest {
             CourseTest.C1.getId(),
             new DateRange(START, END),
             List.of(new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT, 1L)),
+            IN1,
             READY, CLOSED,
             1L, START, START);
 
@@ -41,7 +44,7 @@ public class TobeFreeSessionTest {
         dateRange = new DateRange(START, END);
         coverImages = List.of(new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT, 1L));
         freeSession = new TobeFreeSession(1L,
-                courseId, dateRange, coverImages,
+                courseId, dateRange, coverImages, IN1,
                 READY, OPEN,
                 1L, LocalDateTime.now(), LocalDateTime.now());
     }
@@ -49,7 +52,7 @@ public class TobeFreeSessionTest {
     @Test
     void register_성공() {
         TobeFreeSession actual = new TobeFreeSession(1L,
-                courseId, dateRange, coverImages,
+                courseId, dateRange, coverImages, IN1,
                 READY, OPEN,
                 1L, LocalDateTime.now(), LocalDateTime.now());
         freeSession.register(new TobeStudent(
@@ -71,7 +74,7 @@ public class TobeFreeSessionTest {
     @Test
     void register_CLOSED_실패() {
         TobeFreeSession actual = new TobeFreeSession(1L,
-                courseId, dateRange, coverImages,
+                courseId, dateRange, coverImages, IN1,
                 READY, CLOSED,
                 1L, LocalDateTime.now(), LocalDateTime.now());
 

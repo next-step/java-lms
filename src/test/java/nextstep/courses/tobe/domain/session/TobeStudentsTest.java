@@ -2,8 +2,6 @@ package nextstep.courses.tobe.domain.session;
 
 import nextstep.courses.domain.CourseTest;
 import nextstep.courses.domain.session.DateRange;
-import nextstep.courses.tobe.domain.ProcessStatus;
-import nextstep.courses.tobe.domain.RecruitmentStatus;
 import nextstep.courses.tobe.domain.TobeFreeSession;
 import nextstep.courses.tobe.domain.TobeStudent;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,8 +16,9 @@ import static nextstep.courses.domain.session.CoverImageTest.*;
 import static nextstep.courses.domain.session.DateRangeTest.END;
 import static nextstep.courses.domain.session.DateRangeTest.START;
 import static nextstep.courses.tobe.domain.ApprovedStatus.DENIED;
-import static nextstep.courses.tobe.domain.ProcessStatus.*;
-import static nextstep.courses.tobe.domain.RecruitmentStatus.*;
+import static nextstep.courses.tobe.domain.InstructorTest.IN1;
+import static nextstep.courses.tobe.domain.ProcessStatus.PROCESS;
+import static nextstep.courses.tobe.domain.RecruitmentStatus.OPEN;
 import static nextstep.courses.tobe.domain.SelectedStatus.SELECTED;
 import static nextstep.users.domain.NsUserTest.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,7 +42,7 @@ public class TobeStudentsTest {
         coverImages = List.of(new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT, 1L));
 
         freeSession = new TobeFreeSession(1L,
-                courseId, dateRange, coverImages,
+                courseId, dateRange, coverImages, IN1,
                 PROCESS, OPEN,
                 1L, LocalDateTime.now(), LocalDateTime.now());
 
