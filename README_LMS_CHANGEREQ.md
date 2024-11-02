@@ -27,7 +27,7 @@
     - recruitment_status column 추가
   - CoverImages table 추가
     - cover_image table 추가
-  - Instructor 추가
+  - ~~Instructor 추가~~
     - instructor table 추가
   - ~~TobeStudent(Student 수정) 추가~~
     - ~~SelectedStatus field 추가~~
@@ -41,8 +41,6 @@
 - 수강신청은 RecruitmentStatus(OPEN) 일때 가능하다
 - 강의는 하나 이상의 커버 이미지를 가질 수 있다.
 - 학생은 수강신청을 할 수 있다.
-  - (SelectedStatus:SELECTED) 경우 가능
-  - (SelectedStatus:REJECTED) 경우 불가능
 - 강사가 수강 승인한다
   - Student(SelectedStatus:SELECTED) 인 경우
     Student(ApprovedStatus:DENIED -> APPROVED)) 로 변경
