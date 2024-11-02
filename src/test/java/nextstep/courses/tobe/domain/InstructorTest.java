@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 public class InstructorTest {
 
     public static final Instructor IN1 = new Instructor(1L, "javajigi", "password", "name", "javajigi@slipp.net", 1L, LocalDateTime.now(), LocalDateTime.now());
+    public static final Instructor IN2 = new Instructor(2L, "sanjigi", "password", "name", "sanjigi@slipp.net", 1L, LocalDateTime.now(), LocalDateTime.now());
 
     private Instructor instructor;
 

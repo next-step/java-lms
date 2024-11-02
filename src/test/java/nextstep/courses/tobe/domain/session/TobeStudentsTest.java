@@ -15,6 +15,7 @@ import java.util.List;
 import static nextstep.courses.domain.session.CoverImageTest.*;
 import static nextstep.courses.domain.session.DateRangeTest.END;
 import static nextstep.courses.domain.session.DateRangeTest.START;
+import static nextstep.courses.tobe.domain.ApprovedStatus.APPROVED;
 import static nextstep.courses.tobe.domain.ApprovedStatus.DENIED;
 import static nextstep.courses.tobe.domain.InstructorTest.IN1;
 import static nextstep.courses.tobe.domain.ProcessStatus.PROCESS;
@@ -86,6 +87,18 @@ public class TobeStudentsTest {
         int size = students.size();
 
         assertThat(size).isEqualTo(3);
+    }
+
+    @Test
+    void each() {
+        TobeStudents actual = new TobeStudents(studentList);
+        actual.each(TobeStudent::approved);
+        TobeStudents expected = new TobeStudents(List.of(
+                new TobeStudent(freeSession, JAVAJIGI, SELECTED, APPROVED, START),
+                new TobeStudent(freeSession, SANJIGI, SELECTED, APPROVED, START)
+        ));
+
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test

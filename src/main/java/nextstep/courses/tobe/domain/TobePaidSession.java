@@ -3,17 +3,19 @@ package nextstep.courses.tobe.domain;
 import nextstep.courses.MaxStudentCapacityException;
 import nextstep.courses.domain.session.Category;
 import nextstep.courses.domain.session.DateRange;
+import nextstep.courses.tobe.NotMatchedInstructorException;
 import nextstep.courses.tobe.PaymentStudentNsUserNotMatchException;
 import nextstep.courses.tobe.RecruitmentClosedException;
 import nextstep.courses.tobe.domain.session.TobeCoverImage;
+import nextstep.courses.tobe.domain.session.TobeStudents;
 import nextstep.payments.PaymentMismatchException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class TobePaidSession extends TobeSession {
     public static final String MAX_STUDENT_CAPACITY_MESSAGE = "강의 최대 수강인원을 초과하였습니다.";
@@ -21,7 +23,6 @@ public class TobePaidSession extends TobeSession {
     public static final String NOT_MATCHED_PAYMENT_STUDENT_NS_USER_MESSAGE = "결제 유저와 수강신청 유저가 다릅니다.";
     private final int maxRegisterCount;
     private final long amount;
-    private final List<TobeStudent> students;
 
     public TobePaidSession(long id,
                            long courseId,
@@ -38,7 +39,6 @@ public class TobePaidSession extends TobeSession {
         super(id, courseId, Category.PAID, dateRange, coverImages, instructor, processStatus, recruitmentStatus, creatorId, createdAt, updatedAt);
         this.maxRegisterCount = maxRegisterCount;
         this.amount = amount;
-        this.students = new ArrayList<>();
     }
 
     public void register(Payment payment, TobeStudent student) {

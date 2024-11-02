@@ -5,12 +5,17 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import static nextstep.courses.tobe.domain.ApprovedStatus.APPROVED;
+import static nextstep.courses.tobe.domain.ApprovedStatus.DENIED;
+import static nextstep.courses.tobe.domain.SelectedStatus.REJECTED;
+import static nextstep.courses.tobe.domain.SelectedStatus.SELECTED;
+
 public class TobeStudent {
     private final long id;
     private final long sessionId;
     private final long nsUserId;
     private final SelectedStatus selectedStatus;
-    private final ApprovedStatus approvedStatus;
+    private ApprovedStatus approvedStatus;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -29,7 +34,21 @@ public class TobeStudent {
                        SelectedStatus selectedStatus,
                        ApprovedStatus approvedStatus,
                        LocalDateTime createdAt) {
-        this(0L, session.getId(), nsUser.getId(), selectedStatus, approvedStatus, createdAt, LocalDateTime.now());
+        this(0L, session.getId(), nsUser.getId(), selectedStatus, approvedStatus, createdAt, null);
+    }
+
+    public void approved() {
+        if (REJECTED.equals(selectedStatus)) {
+            return;
+        }
+        approvedStatus = APPROVED;
+    }
+
+    public void denied() {
+        if (SELECTED.equals(selectedStatus)) {
+            return;
+        }
+        approvedStatus = DENIED;
     }
 
     public long getId() {

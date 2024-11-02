@@ -2,21 +2,25 @@ package nextstep.courses.tobe.domain;
 
 import nextstep.courses.domain.session.Category;
 import nextstep.courses.domain.session.DateRange;
+import nextstep.courses.tobe.NotMatchedInstructorException;
 import nextstep.courses.tobe.ProcessEndedException;
 import nextstep.courses.tobe.domain.session.TobeCoverImage;
 import nextstep.courses.tobe.domain.session.TobeCoverImages;
+import nextstep.courses.tobe.domain.session.TobeStudents;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static nextstep.courses.tobe.domain.ProcessStatus.*;
-import static nextstep.courses.tobe.domain.RecruitmentStatus.*;
+import static nextstep.courses.tobe.domain.ProcessStatus.ENDED;
+import static nextstep.courses.tobe.domain.RecruitmentStatus.OPEN;
 
 public abstract class TobeSession {
     public static final String NOT_ALLOWED_PROCESS_ENDED_RECRUITMENT_OPEN_MESSAGE = "종료된 강의를 모집중 상태로 바꿀수 없습니다.";
     public static final String NOT_ALLOWED_REGISTER_TO_CLOSED_SESSION_MESSAGE = "닫힌 강의는 수강신청할 수 없습니다.";
+    public static final String NO_AUTH_INSTRUCTOR_TO_UPDATE_APPROVE_STATUS_MESSAGE = "승인 권한이 없는 강사입니다.";
+    public static final String NO_AUTH_INSTRUCTOR_TO_UPDATE_DENIED_STATUS_MESSAGE = "승인취소 권한이 없는 강사입니다.";
+
     protected final long id;
     protected final long courseId;
     protected final Category category;
@@ -25,6 +29,7 @@ public abstract class TobeSession {
     protected final long instructorId;
     protected final ProcessStatus processStatus;
     protected final RecruitmentStatus recruitmentStatus;
+    protected final TobeStudents students;
     protected final long creatorId;
     protected final LocalDateTime createdAt;
     protected LocalDateTime updatedAt;
@@ -51,6 +56,7 @@ public abstract class TobeSession {
         this.instructorId = instructor.getId();
         this.processStatus = processStatus;
         this.recruitmentStatus = recruitmentStatus;
+        this.students = new TobeStudents();
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -58,6 +64,22 @@ public abstract class TobeSession {
 
     public long getId() {
         return id;
+    }
+
+    public void approveAll(Instructor instructor) {
+        if (instructorId != instructor.getId()) {
+            throw new NotMatchedInstructorException(NO_AUTH_INSTRUCTOR_TO_UPDATE_APPROVE_STATUS_MESSAGE);
+        }
+
+        this.students.each(TobeStudent::approved);
+    }
+
+    public void deniedAll(Instructor instructor) {
+        if (instructorId != instructor.getId()) {
+            throw new NotMatchedInstructorException(NO_AUTH_INSTRUCTOR_TO_UPDATE_DENIED_STATUS_MESSAGE);
+        }
+
+        this.students.each(TobeStudent::denied);
     }
 
     private static boolean isInvalidProcess(ProcessStatus processStatus, RecruitmentStatus recruitmentStatus) {
@@ -70,11 +92,11 @@ public abstract class TobeSession {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TobeSession that = (TobeSession) o;
-        return id == that.id && courseId == that.courseId && instructorId == that.instructorId && creatorId == that.creatorId && category == that.category && Objects.equals(dateRange, that.dateRange) && Objects.equals(coverImages, that.coverImages) && processStatus == that.processStatus && recruitmentStatus == that.recruitmentStatus;
+        return id == that.id && courseId == that.courseId && instructorId == that.instructorId && creatorId == that.creatorId && category == that.category && Objects.equals(dateRange, that.dateRange) && Objects.equals(coverImages, that.coverImages) && processStatus == that.processStatus && recruitmentStatus == that.recruitmentStatus && Objects.equals(students, that.students);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, courseId, category, dateRange, coverImages, instructorId, processStatus, recruitmentStatus, creatorId);
+        return Objects.hash(id, courseId, category, dateRange, coverImages, instructorId, processStatus, recruitmentStatus, students, creatorId);
     }
 }

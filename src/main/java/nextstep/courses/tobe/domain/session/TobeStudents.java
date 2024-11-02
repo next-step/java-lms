@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class TobeStudents {
     private final List<TobeStudent> students;
@@ -24,6 +25,10 @@ public class TobeStudents {
 
     public int size() {
         return students.size();
+    }
+
+    public void each(Consumer<TobeStudent> consumer) {
+        students.forEach(consumer);
     }
 
     public List<TobeStudent> getStudents() {
