@@ -44,7 +44,7 @@
   - (SelectedStatus:SELECTED) 경우 가능
   - (SelectedStatus:REJECTED) 경우 불가능
 - 강사가 수강 승인한다
-  - Student(SelectedStatus:SELECTED) 인 경우 
+  - Student(SelectedStatus:SELECTED) 인 경우
     Student(ApprovedStatus:DENIED -> APPROVED)) 로 변경
 - 강사가 수강 취소한다
   - Student(SelectedStatus:REJECTED) 인 경우
@@ -54,5 +54,5 @@
   - 기존 domain, table 그대로 유지
     - TobeSession domain, tobe_session table 새로 생성
     - TobeStudent domain, tobe_student table 새로 생성
-    - ProcessStatus, RecruitmentStatus, SessionCoverImage, Instructor 추가이므로 AS-IS 구조가 없으므로 바로 추가
-    - session_cover_image, instructor table 추가이므로 AS-IS 구조가 없으므로 바로 추가
+    - ProcessStatus, RecruitmentStatus, SessionCoverImage, Instructor AS-IS 구조가 없으므로 바로 추가
+    - session_cover_image, instructor table AS-IS 구조가 없으므로 바로 추가
