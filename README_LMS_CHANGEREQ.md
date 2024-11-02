@@ -49,6 +49,8 @@
   - Student(SelectedStatus:REJECTED) 인 경우 Student(ApprovedStatus:APPROVED -> DENIED))
 - 리팩터링할 때 컴파일 에러와 기존의 단위 테스트의 실패를 최소화하면서 점진적인 리팩터링이 가능하도록 한다.
 - 기존 domain 이 존재하는 상태에서 리팩토링 진행
-  - TobeSession domain, TobeSession 하위의 domain 들을 모두 새로 생성
-  - tobe_session, tobe_session 하위의 컬럼속성들을 모두 새로 생성
   - 기존 domain, table 그대로 유지
+    - TobeSession domain, tobe_session table 새로 생성
+    - TobeStudent domain, tobe_student table 새로 생성
+    - ProcessStatus, RecruitmentStatus, SessionCoverImage, Instructor 추가이므로 AS-IS 구조가 없으므로 바로 추가
+    - session_cover_image, instructor table 추가이므로 AS-IS 구조가 없으므로 바로 추가
