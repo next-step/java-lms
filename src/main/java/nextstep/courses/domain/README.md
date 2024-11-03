@@ -74,6 +74,6 @@
 - [X] 신청 기능을 가진 객체 만들기 (sessionStatus, enrolledUsers)
 
 ### CoverImageTest
-- [ ] 확장자에 대한 책임이 ImageExtension 에 있으므로 확장자 테스트 skip
+- [X] 확장자에 대한 책임이 ImageExtension 에 있으므로 확장자 테스트 skip
 - [ ] 테스트 하려는 대상 명확하게 하기 - of 메서드로 객체 생성 상단에서 미리 진행
 

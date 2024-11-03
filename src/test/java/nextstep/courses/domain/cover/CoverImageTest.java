@@ -29,19 +29,4 @@ class CoverImageTest {
         );
     }
 
-    @DisplayName("허용되지 않는 이미지 확장자 사용 시 예외 발생")
-    @ParameterizedTest
-    @ValueSource(strings = {"bmp", "tiff", "pdf", "txt", "exe"})
-    void throwExceptionForInvalidImageExtension(String extension) {
-        int imageSize = 500 * 1024; // 500KB
-        int width = 300;
-        int height = 200;
-
-        assertThatThrownBy(
-                () -> CoverImage.of(ImageSize.of(imageSize), extension, ImageDimension.of(width, height))
-        )
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("허용되지 않는 이미지 형식입니다.");
-    }
-
 }
