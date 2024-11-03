@@ -1,6 +1,5 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain;
 
-import nextstep.courses.domain.CoverImage;
 import nextstep.courses.domain.session.image.ImageFileSize;
 import nextstep.courses.domain.session.image.ImageType;
 import nextstep.courses.domain.session.image.ImageSize;
@@ -24,7 +23,7 @@ public class CoverImageTest {
     public static final double HEIGHT_200 = 200;
     public static final double HEIGHT_300 = 300;
 
-    public static final List<CoverImage> TOBE_COVER_IMAGE_LIST1 = List.of(
+    public static final List<CoverImage> COVER_IMAGE_LIST1 = List.of(
             new CoverImage(1L, 1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200, START, START),
             new CoverImage(2L, 1L, SIZE_512, IMAGE_TYPE_TEXT_JPG, WIDTH_450, HEIGHT_300, START, START)
     );

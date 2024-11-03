@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 
 import static nextstep.courses.domain.PaidSessionTest.MAX_REGISTER_COUNT;
 import static nextstep.courses.domain.PaidSessionTest.SESSION_AMOUNT;
-import static nextstep.courses.domain.session.CoverImageTest.*;
+import static nextstep.courses.domain.CoverImageTest.*;
 import static nextstep.courses.domain.session.DateRangeTest.END;
 import static nextstep.courses.domain.session.DateRangeTest.START;
 import static org.assertj.core.api.Assertions.assertThat;

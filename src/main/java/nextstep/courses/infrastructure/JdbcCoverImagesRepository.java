@@ -1,12 +1,11 @@
 package nextstep.courses.infrastructure;
 
+import nextstep.courses.domain.CoverImage;
 import nextstep.courses.domain.CoverImagesRepository;
+import nextstep.courses.domain.session.CoverImages;
 import nextstep.courses.domain.session.image.ImageFileSize;
 import nextstep.courses.domain.session.image.ImageSize;
 import nextstep.courses.domain.session.image.ImageType;
-import nextstep.courses.tobe.domain.TobeCoverImage;
-import nextstep.courses.tobe.domain.TobeCoverImagesRepository;
-import nextstep.courses.tobe.domain.session.TobeCoverImages;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -22,7 +21,7 @@ public class JdbcCoverImagesRepository implements CoverImagesRepository {
     }
 
     @Override
-    public int saveAll(TobeCoverImages images) {
+    public int saveAll(CoverImages images) {
         String sql = "insert into cover_image (session_id, cover_image_file_size, cover_image_type, cover_image_width, cover_image_height, created_at) values(?, ?, ?, ?, ?, ?) ";
 
         return images.getCoverImages()
@@ -38,11 +37,11 @@ public class JdbcCoverImagesRepository implements CoverImagesRepository {
     }
 
     @Override
-    public TobeCoverImages findAllBySessionId(long sessionId) {
+    public CoverImages findAllBySessionId(long sessionId) {
         String sql = "select id, session_id, cover_image_file_size, cover_image_type, cover_image_width, cover_image_height, created_at, updated_at " +
                 "from cover_image " +
                 "where session_id = ?";
-        RowMapper<TobeCoverImage> rowMapper = (rs, rowNum) -> new TobeCoverImage(
+        RowMapper<CoverImage> rowMapper = (rs, rowNum) -> new CoverImage(
                 rs.getLong("id"),
                 rs.getLong("session_id"),
                 new ImageFileSize(rs.getInt("cover_image_file_size")),
@@ -53,9 +52,9 @@ public class JdbcCoverImagesRepository implements CoverImagesRepository {
                 ),
                 toLocalDateTime(rs.getTimestamp("created_at")),
                 toLocalDateTime(rs.getTimestamp("updated_at"))
-                );
-        List<TobeCoverImage> students = jdbcTemplate.query(sql, rowMapper, sessionId);
-        return new TobeCoverImages(students);
+        );
+        List<CoverImage> students = jdbcTemplate.query(sql, rowMapper, sessionId);
+        return new CoverImages(students);
     }
 
 }

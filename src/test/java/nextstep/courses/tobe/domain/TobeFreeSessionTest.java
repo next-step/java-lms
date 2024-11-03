@@ -1,7 +1,6 @@
 package nextstep.courses.tobe.domain;
 
 import nextstep.courses.domain.CourseTest;
-import nextstep.courses.domain.session.CoverImageTest;
 import nextstep.courses.domain.session.DateRange;
 import nextstep.courses.tobe.NotMatchedInstructorException;
 import nextstep.courses.tobe.RecruitmentClosedException;
@@ -11,11 +10,10 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static nextstep.courses.domain.session.CoverImageTest.*;
-import static nextstep.courses.domain.session.CoverImageTest.HEIGHT_200;
-import static nextstep.courses.domain.session.CoverImageTest.IMAGE_TYPE_TEXT_GIF;
-import static nextstep.courses.domain.session.CoverImageTest.SIZE_1024;
-import static nextstep.courses.domain.session.CoverImageTest.WIDTH_300;
+import static nextstep.courses.domain.CoverImageTest.HEIGHT_200;
+import static nextstep.courses.domain.CoverImageTest.IMAGE_TYPE_TEXT_GIF;
+import static nextstep.courses.domain.CoverImageTest.SIZE_1024;
+import static nextstep.courses.domain.CoverImageTest.WIDTH_300;
 import static nextstep.courses.domain.session.DateRangeTest.END;
 import static nextstep.courses.domain.session.DateRangeTest.START;
 import static nextstep.courses.domain.ApprovedStatus.APPROVED;
@@ -27,7 +25,6 @@ import static nextstep.courses.tobe.domain.RecruitmentStatus.CLOSED;
 import static nextstep.courses.tobe.domain.RecruitmentStatus.OPEN;
 import static nextstep.courses.domain.SelectedStatus.REJECTED;
 import static nextstep.courses.domain.SelectedStatus.SELECTED;
-import static nextstep.courses.tobe.domain.TobeCoverImageTest.*;
 import static nextstep.courses.tobe.domain.TobeSession.*;
 import static nextstep.users.domain.NsUserTest.*;
 import static nextstep.users.domain.NsUserTest.THIRDJIGI;

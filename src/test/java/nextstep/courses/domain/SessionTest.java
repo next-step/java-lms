@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 
 import static nextstep.courses.domain.PaidSessionTest.*;
-import static nextstep.courses.domain.session.CoverImageTest.*;
+import static nextstep.courses.domain.CoverImageTest.*;
 import static nextstep.courses.domain.session.DateRangeTest.END;
 import static nextstep.courses.domain.session.DateRangeTest.START;
 import static org.assertj.core.api.Assertions.assertThat;

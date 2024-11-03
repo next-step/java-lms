@@ -1,8 +1,8 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.tobe.domain.session.TobeCoverImages;
+import nextstep.courses.domain.session.CoverImages;
 
 public interface CoverImagesRepository {
-    int saveAll(TobeCoverImages images);
-    TobeCoverImages findAllBySessionId(long sessionId);
+    int saveAll(CoverImages images);
+    CoverImages findAllBySessionId(long sessionId);
 }
