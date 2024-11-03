@@ -9,16 +9,14 @@ public class Instructor {
     private final String password;
     private final String name;
     private final String email;
-    private final long creatorId;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     public Instructor(String userId,
                       String password,
                       String name,
-                      String email,
-                      long creatorId) {
-        this(0L, userId, password, name, email, creatorId, LocalDateTime.now(), LocalDateTime.now());
+                      String email) {
+        this(0L, userId, password, name, email, LocalDateTime.now(), LocalDateTime.now());
     }
 
     public Instructor(long id,
@@ -26,7 +24,6 @@ public class Instructor {
                       String password,
                       String name,
                       String email,
-                      long creatorId,
                       LocalDateTime createdAt,
                       LocalDateTime updatedAt
                       ) {
@@ -35,9 +32,36 @@ public class Instructor {
         this.password = password;
         this.name = name;
         this.email = email;
-        this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
     @Override
@@ -45,15 +69,11 @@ public class Instructor {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Instructor that = (Instructor) o;
-        return id == that.id && creatorId == that.creatorId && Objects.equals(userId, that.userId) && Objects.equals(password, that.password) && Objects.equals(name, that.name) && Objects.equals(email, that.email);
+        return id == that.id && Objects.equals(userId, that.userId) && Objects.equals(password, that.password) && Objects.equals(name, that.name) && Objects.equals(email, that.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, password, name, email, creatorId);
-    }
-
-    public long getId() {
-        return id;
+        return Objects.hash(id, userId, password, name, email);
     }
 }

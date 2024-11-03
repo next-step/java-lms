@@ -1,0 +1,52 @@
+package nextstep.courses.tobe.infrastructure;
+
+import nextstep.courses.tobe.domain.*;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
+public class TobeJdbcInstructorRepository implements TobeInstructorRepository {
+    private final JdbcTemplate jdbcTemplate;
+
+    public TobeJdbcInstructorRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Override
+    public int save(Instructor instructor) {
+        String sql = "insert into instructor (" +
+                "user_id, password, name, email, " +
+                "created_at, updated_at " +
+                ") values (" +
+                "?, ?, ?, ?, ?, ? ) ";
+        return jdbcTemplate.update(sql,
+                instructor.getUserId(), instructor.getPassword(), instructor.getName(), instructor.getEmail(), instructor.getCreatedAt(), instructor.getUpdatedAt()
+        );
+    }
+
+    @Override
+    public Instructor findById(long instructorId) {
+        String sql = "select id, user_id, password, name, email, created_at, updated_at " +
+                "from instructor " +
+                "where id = ? ";
+        RowMapper<Instructor> rowMapper = (rs, rowNum) -> new Instructor(
+                rs.getLong("id"),
+                rs.getString("user_id"),
+                rs.getString("password"),
+                rs.getString("name"),
+                rs.getString("email"),
+                toLocalDateTime(rs.getTimestamp("created_at")),
+                toLocalDateTime(rs.getTimestamp("updated_at"))
+        );
+        return jdbcTemplate.queryForObject(sql, rowMapper, instructorId);
+    }
+
+    protected static LocalDateTime toLocalDateTime(Timestamp timestamp) {
+        if (timestamp == null) {
+            return null;
+        }
+        return timestamp.toLocalDateTime();
+    }
+}

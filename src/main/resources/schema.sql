@@ -113,7 +113,6 @@ create table instructor (
      password varchar(20) not null,
      name varchar(20) not null,
      email varchar(50),
-     creator_id bigint not null,
      created_at timestamp not null,
      updated_at timestamp,
      primary key (id)
