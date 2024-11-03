@@ -1,7 +1,7 @@
 package nextstep.courses.tobe.infrastructure;
 
 import nextstep.courses.infrastructure.CourseRepositoryTest;
-import nextstep.courses.tobe.domain.Instructor;
+import nextstep.courses.domain.Instructor;
 import nextstep.courses.tobe.domain.TobeInstructorRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import static nextstep.courses.tobe.domain.InstructorTest.IN1;
+import static nextstep.courses.domain.InstructorTest.IN1;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest

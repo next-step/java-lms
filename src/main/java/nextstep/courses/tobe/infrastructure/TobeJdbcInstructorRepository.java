@@ -1,11 +1,9 @@
 package nextstep.courses.tobe.infrastructure;
 
+import nextstep.courses.domain.Instructor;
 import nextstep.courses.tobe.domain.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 import static nextstep.courses.infrastructure.util.LocalDateTimeFormatter.toLocalDateTime;
 

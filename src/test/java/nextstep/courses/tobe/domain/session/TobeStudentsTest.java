@@ -17,7 +17,7 @@ import static nextstep.courses.domain.session.DateRangeTest.END;
 import static nextstep.courses.domain.session.DateRangeTest.START;
 import static nextstep.courses.domain.ApprovedStatus.APPROVED;
 import static nextstep.courses.domain.ApprovedStatus.DENIED;
-import static nextstep.courses.tobe.domain.InstructorTest.IN1;
+import static nextstep.courses.domain.InstructorTest.IN1;
 import static nextstep.courses.tobe.domain.ProcessStatus.PROCESS;
 import static nextstep.courses.tobe.domain.RecruitmentStatus.OPEN;
 import static nextstep.courses.domain.SelectedStatus.SELECTED;

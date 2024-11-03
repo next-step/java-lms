@@ -1,4 +1,4 @@
-package nextstep.courses.tobe.domain;
+package nextstep.courses.domain;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

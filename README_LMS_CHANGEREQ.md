@@ -30,7 +30,7 @@
     - cover_image table 추가
     - CoverImage 수정
       - id, 
-  - Instructor 추가
+  - ~~Instructor 추가~~
     - instructor table 추가
   - ~~Student 수정~~
     - ~~SelectedStatus field 추가~~
