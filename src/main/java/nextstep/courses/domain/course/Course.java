@@ -21,7 +21,14 @@ public class Course extends BaseTime {
 
     private List<Session> sessions;
 
-    private Course() {
+    private Course() {}
+
+    public Course(String title, Integer classNumber, Long creatorId) {
+        this(0L, title, creatorId, classNumber, null, LocalDateTime.now(), LocalDateTime.now());
+    }
+
+    public Course(Long id, String title, Long creatorId, LocalDateTime createAt, LocalDateTime updateAt) {
+        this(id, title, creatorId, 1, null, createAt, updateAt);
     }
 
     private Course(Long id, String title, Long creatorId, Integer classNumber, CoverImage coverImage, LocalDateTime createAt, LocalDateTime updateAt) {
@@ -35,14 +42,6 @@ public class Course extends BaseTime {
         this.createdAt = createAt;
         this.updatedAt = updateAt;
         sessions = new ArrayList<>();
-    }
-
-    public Course(String title, Integer classNumber, Long creatorId) {
-        this(0L, title, creatorId, classNumber, null, LocalDateTime.now(), LocalDateTime.now());
-    }
-
-    public Course(Long id, String title, Long creatorId, LocalDateTime createAt, LocalDateTime updateAt) {
-        this(id, title, creatorId, 1, null, createAt, updateAt);
     }
 
     private void validateRequiredFields(String title, Long creatorId, Integer classNumber) {
