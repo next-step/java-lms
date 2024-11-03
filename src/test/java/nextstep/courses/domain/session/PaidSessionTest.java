@@ -18,22 +18,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PaidSessionTest {
 
-    private PaidSession paidSession;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private SessionPeriod period;
+    private CoverImage coverImage;
+    private SessionBody sessionBody;
 
     @BeforeEach
     void setUp() {
         startDate = LocalDateTime.of(2024, 1, 1, 10, 0);
         endDate = LocalDateTime.of(2024, 1, 10, 18, 0);
-        SessionPeriod period = SessionPeriod.of(startDate, endDate);
-        CoverImage coverImage = CoverImage.of(ImageSize.of(500 * 1024), "jpg", ImageDimension.of(300, 200));
-        paidSession = new PaidSession(1L, SessionBody.of("이펙티브 자바", period, coverImage), 50000L, 2);
+        period = SessionPeriod.of(startDate, endDate);
+        coverImage = CoverImage.of(ImageSize.of(500 * 1024), "jpg", ImageDimension.of(300, 200));
+        sessionBody = SessionBody.of("이펙티브 자바", period, coverImage);
     }
 
     @Test
     @DisplayName("무료 강의 생성 시 필드가 올바르게 설정되는지 확인한다.")
     void createPaidSessionTest() {
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
+        PaidSession paidSession = new PaidSession(1L, sessionBody, sessionEnrollment,50000L,        2);
         assertAll(
                 () -> assertEquals("이펙티브 자바", paidSession.getTitle()),
                 () -> assertEquals(startDate, paidSession.getPeriod().getStartDate()),
@@ -46,7 +50,8 @@ class PaidSessionTest {
     @DisplayName("유료강의 모집중 상태이고, 수강 인원이 초과하지 않았고, 유효한 결제가 이루어지면 수강신청이 가능하다.")
     @Test
     void enrollUserSuccessfullyWhenStatusIsOpen() {
-        paidSession.openEnrollment();
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
+        PaidSession paidSession = new PaidSession(1L, sessionBody, sessionEnrollment,50000L,        2);
 
         paidSession.enroll(NsUserTest.JAVAJIGI, new Payment("1", 1L, 1L, 50000L));
 
@@ -56,6 +61,9 @@ class PaidSessionTest {
     @DisplayName("모집중인 상태가 아닌 유료강의를 수강신청하면 예외가 발생한다.")
     @Test
     void enrollTestThrowExceptionWhenStatusIsNotOpen() {
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.PREPARE);
+        PaidSession paidSession = new PaidSession(1L, sessionBody, sessionEnrollment,50000L,        2);
+
         assertThatThrownBy(() -> paidSession.enroll(NsUserTest.SANJIGI, new Payment("1", 1L, 1L, 50000L)))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("모집중인 상태에서만 신청 가능합니다.");
@@ -64,7 +72,8 @@ class PaidSessionTest {
     @DisplayName("결제금액이 일치하지 않으면 예외가 발생한다.")
     @Test
     void failToEnrollUserWhenPaidAmountDoesNotMatchFee() {
-        paidSession.openEnrollment();
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
+        PaidSession paidSession = new PaidSession(1L, sessionBody, sessionEnrollment,50000L,        2);
 
         assertThatThrownBy(() -> paidSession.enroll(NsUserTest.SANJIGI, new Payment("1", 1L, 1L, 49000L)))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -74,7 +83,8 @@ class PaidSessionTest {
     @DisplayName("수강인원이 초과되면 예외가 발생한다.")
     @Test
     void failToEnrollUserWhenMaxEnrollmentsReached() {
-        paidSession.openEnrollment();
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
+        PaidSession paidSession = new PaidSession(1L, sessionBody, sessionEnrollment,50000L,        2);
 
         paidSession.enroll(NsUserTest.JAVAJIGI, new Payment("1", 1L, 1L, 50000L));
         paidSession.enroll(NsUserTest.SANJIGI, new Payment("1", 1L, 2L, 50000L));

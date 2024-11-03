@@ -5,8 +5,8 @@ import nextstep.users.domain.NsUser;
 
 public class FreeSession extends Session {
 
-    public FreeSession(Long id, SessionBody sessionBody) {
-        super(id, sessionBody);
+    public FreeSession(Long id, SessionBody sessionBody, SessionEnrollment sessionEnrollment) {
+        super(id, sessionBody, sessionEnrollment);
     }
 
     @Override
@@ -14,7 +14,7 @@ public class FreeSession extends Session {
         validateSessionStatus();
         validateDuplicateEnrollment(nsUser);
 
-        enrolledUsers.add(nsUser);
+        sessionEnrollment.enrollUser(nsUser);
     }
 
 }

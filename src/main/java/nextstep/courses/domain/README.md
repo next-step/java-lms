@@ -70,8 +70,8 @@
 - [X] 원시 타입 사용 (이펙티브 자바 아이템 61 참고)
 
 ### Session
-- [ ] 생성자에서 강의 상태 주입 
-- [ ] 신청 기능을 가진 객체 만들기 (sessionStatus, enrolledUsers)
+- [X] 생성자에서 강의 상태 주입 
+- [X] 신청 기능을 가진 객체 만들기 (sessionStatus, enrolledUsers)
 
 ### CoverImageTest
 - [ ] 확장자에 대한 책임이 ImageExtension 에 있으므로 확장자 테스트 skip

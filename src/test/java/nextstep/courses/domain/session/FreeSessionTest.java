@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FreeSessionTest {
 
-    private FreeSession freeSession;
+    private SessionBody sessionBody;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
@@ -28,14 +28,15 @@ class FreeSessionTest {
         ImageSize imageSize = ImageSize.of(500 * 1024);
         ImageDimension imageDimension = ImageDimension.of(300, 200);
 
-        SessionBody sessionBody = SessionBody.of(title, SessionPeriod.of(startDate, endDate), CoverImage.of(imageSize, "jpg", imageDimension));
-
-        freeSession = new FreeSession(1L, sessionBody);
+        sessionBody = SessionBody.of(title, SessionPeriod.of(startDate, endDate), CoverImage.of(imageSize, "jpg", imageDimension));
     }
 
     @Test
     @DisplayName("무료 강의 생성 시 필드가 올바르게 설정되는지 확인")
     void createFreeSessionTest() {
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
+        FreeSession freeSession = new FreeSession(1L, sessionBody, sessionEnrollment);
+
         assertAll(
                 () -> assertEquals("자바의 정석", freeSession.getTitle()),
                 () -> assertEquals(startDate, freeSession.getPeriod().getStartDate()),
@@ -48,7 +49,8 @@ class FreeSessionTest {
     @Test
     @DisplayName("무료 강의는 모집중 상태일 때만 수강 신청 가능하다.")
     void freeSessionEnrollTest() {
-        freeSession.openEnrollment();
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
+        FreeSession freeSession = new FreeSession(1L, sessionBody, sessionEnrollment);
 
         assertThatCode(() -> freeSession.enroll(NsUserTest.SANJIGI, null))
                 .doesNotThrowAnyException();
@@ -59,6 +61,9 @@ class FreeSessionTest {
     @Test
     @DisplayName("무료 강의는 모집중 상태가 아니면 수강 신청 시 예외가 발생한다.")
     void throwExceptionWhenStatusIsNotOpen() {
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.CLOSED);
+        FreeSession freeSession = new FreeSession(1L, sessionBody, sessionEnrollment);
+
         assertThatThrownBy(() -> freeSession.enroll(NsUserTest.JAVAJIGI, null))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("모집중인 상태에서만 신청 가능합니다.");

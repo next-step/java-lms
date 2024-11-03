@@ -12,20 +12,24 @@ public abstract class Session {
 
     protected Long id;
     protected SessionBody sessionBody;
-    protected Set<NsUser> enrolledUsers;
+    protected SessionEnrollment sessionEnrollment;
 
-    protected Session(Long id, SessionBody sessionBody) {
+    protected Session(Long id, SessionBody sessionBody, SessionEnrollment sessionEnrollment) {
         this.id = id;
         this.sessionBody = sessionBody;
-        this.enrolledUsers = new HashSet<>();
+        this.sessionEnrollment = sessionEnrollment;
     }
 
     abstract public void enroll(NsUser nsUser, Payment payment);
 
     public void validateSessionStatus() {
-        if (isEnrollmentNotOpen()) {
+        if (isNotOpen()) {
             throw new IllegalStateException("모집중인 상태에서만 신청 가능합니다.");
         }
+    }
+
+    private boolean isNotOpen() {
+        return sessionEnrollment.isNotOpen();
     }
 
     public void validateDuplicateEnrollment(NsUser nsUser) {
@@ -34,16 +38,8 @@ public abstract class Session {
         }
     }
 
-    public void openEnrollment() {
-        sessionBody.openSession();
-    }
-
     private boolean isDuplicateEnrolledUser(NsUser nsUser) {
-        return enrolledUsers.contains(nsUser);
-    }
-
-    private boolean isEnrollmentNotOpen() {
-        return sessionBody.isNotOpen();
+        return sessionEnrollment.contains(nsUser);
     }
 
     public String getTitle() {
@@ -59,6 +55,6 @@ public abstract class Session {
     }
 
     public Set<NsUser> getEnrolledUsers() {
-        return Collections.unmodifiableSet(enrolledUsers);
+        return sessionEnrollment.getEnrolledUsers();
     }
 }

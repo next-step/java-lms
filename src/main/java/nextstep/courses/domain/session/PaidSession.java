@@ -8,8 +8,8 @@ public class PaidSession extends Session {
     private final Long fee;
     private final int maxEnrollments;
 
-    public PaidSession(Long id, SessionBody sessionBody, Long fee, int maxEnrollments) {
-        super(id, sessionBody);
+    public PaidSession(Long id, SessionBody sessionBody, SessionEnrollment sessionEnrollment, Long fee, int maxEnrollments) {
+        super(id, sessionBody, sessionEnrollment);
 
         this.fee = fee;
         this.maxEnrollments = maxEnrollments;
@@ -22,7 +22,7 @@ public class PaidSession extends Session {
         validatePaymentAmount(payment);
         validateNumberOfEnrollment();
 
-        enrolledUsers.add(nsUser);
+        sessionEnrollment.enrollUser(nsUser);
     }
 
     private void validatePaymentAmount(Payment payment) {
@@ -42,7 +42,7 @@ public class PaidSession extends Session {
     }
 
     private boolean isEnrollmentFull() {
-        return enrolledUsers.size() >= maxEnrollments;
+        return sessionEnrollment.isEnrollmentFull(maxEnrollments);
     }
 
 }
