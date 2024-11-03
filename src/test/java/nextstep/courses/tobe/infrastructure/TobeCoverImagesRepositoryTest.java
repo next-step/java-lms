@@ -2,6 +2,7 @@ package nextstep.courses.tobe.infrastructure;
 
 import nextstep.courses.infrastructure.CourseRepositoryTest;
 import nextstep.courses.tobe.domain.*;
+import nextstep.courses.tobe.domain.session.TobeCoverImages;
 import nextstep.courses.tobe.domain.session.TobeStudents;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,18 +24,18 @@ import static nextstep.users.domain.NsUserTest.SANJIGI;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-public class TobeStudentsRepositoryTest {
+public class TobeCoverImagesRepositoryTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(CourseRepositoryTest.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private TobeStudentsRepository studentsRepository;
+    private TobeCoverImagesRepository coverImagesRepository;
     private TobeFreeSession freeSession;
 
     @BeforeEach
     void setUp() {
-        studentsRepository = new TobeJdbcStudentsRepository(jdbcTemplate);
+        coverImagesRepository = new TobeJdbcCoverImagesRepository(jdbcTemplate);
         freeSession = new TobeFreeSession(1L,
                 C1.getId(),
                 DATE_RANGE1,
@@ -49,21 +50,21 @@ public class TobeStudentsRepositoryTest {
 
     @Test
     void crud() {
-        TobeStudents students = new TobeStudents(new TobeStudent(freeSession, JAVAJIGI, SELECTED, DENIED, START));
-        students.add(new TobeStudent(freeSession, SANJIGI, SELECTED, DENIED, START));
-        int freeSessionSavedCount = studentsRepository.saveAll(students);
+        TobeCoverImages coverImages = new TobeCoverImages(TOBE_COVER_IMAGE_LIST1.get(0));
+        coverImages.add(TOBE_COVER_IMAGE_LIST1.get(1));
+        int freeSessionSavedCount = coverImagesRepository.saveAll(coverImages);
         assertThat(freeSessionSavedCount).isEqualTo(2);
 
-        TobeStudents savedTobeStudents = studentsRepository.findAllBySessionId(1L);
-        LOGGER.info("savedTobeStudents = {}", savedTobeStudents);
-        LOGGER.info("students = {}", students);
+        TobeCoverImages savedCoverImages = coverImagesRepository.findAllBySessionId(1L);
+        LOGGER.info("savedCoverImages = {}", savedCoverImages);
+        LOGGER.info("coverImages = {}", coverImages);
 
-        assertThat(students.size()).isEqualTo(savedTobeStudents.size());
+        assertThat(coverImages.size()).isEqualTo(savedCoverImages.size());
     }
 
     @AfterEach
     void tearDown() {
-        jdbcTemplate.execute("delete from tobe_student");
-        jdbcTemplate.execute("ALTER TABLE tobe_student ALTER COLUMN id RESTART WITH 1");
+        jdbcTemplate.execute("delete from cover_image");
+        jdbcTemplate.execute("ALTER TABLE cover_image ALTER COLUMN id RESTART WITH 1");
     }
 }

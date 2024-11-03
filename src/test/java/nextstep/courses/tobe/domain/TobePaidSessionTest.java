@@ -43,7 +43,7 @@ public class TobePaidSessionTest {
     public static final TobePaidSession TPS1 = new TobePaidSession(1L,
             CourseTest.C1.getId(),
             new DateRange(START, END),
-            List.of(new TobeCoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200, 1L)),
+            List.of(new TobeCoverImage(1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200)),
             IN1,
             READY, CLOSED,
             MAX_REGISTER_COUNT, SESSION_AMOUNT,
@@ -76,7 +76,7 @@ public class TobePaidSessionTest {
     void setUp() {
         courseId = CourseTest.C1.getId();
         dateRange = new DateRange(START, END);
-        coverImages = List.of(new TobeCoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200, 1L));
+        coverImages = List.of(new TobeCoverImage(1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200));
 
         paidSession = new TobePaidSession(1L,
                 courseId, dateRange, coverImages, IN1,

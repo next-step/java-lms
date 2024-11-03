@@ -17,8 +17,8 @@ public class TobeCoverImagesTest {
 
     @BeforeEach
     void setUp() {
-        coverImage1 = new TobeCoverImage(1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200, 1L, START);
-        coverImage2 = new TobeCoverImage(2L, SIZE_512, IMAGE_TYPE_TEXT_JPG, WIDTH_450, HEIGHT_300, 1L, START);
+        coverImage1 = new TobeCoverImage(1L, 1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200, START, START);
+        coverImage2 = new TobeCoverImage(2L, 1L, SIZE_512, IMAGE_TYPE_TEXT_JPG, WIDTH_450, HEIGHT_300, START, START);
     }
 
     @Test
@@ -27,5 +27,31 @@ public class TobeCoverImagesTest {
         TobeCoverImages expected = new TobeCoverImages(coverImage1, coverImage2);
 
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void add() {
+        TobeCoverImages actual = new TobeCoverImages(coverImage1);
+        actual.add(coverImage2);
+        TobeCoverImages expected = new TobeCoverImages(coverImage1, coverImage2);
+
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void size() {
+        TobeCoverImages coverImages = new TobeCoverImages(coverImage1);
+        coverImages.add(coverImage2);
+        int actual = coverImages.size();
+
+        assertThat(actual).isEqualTo(2);
+    }
+
+    @Test
+    void getter() {
+        TobeCoverImages coverImages = new TobeCoverImages(List.of(coverImage1, coverImage2));
+        List<TobeCoverImage> actual = coverImages.getCoverImages();
+
+        assertThat(actual).isEqualTo(List.of(coverImage1, coverImage2));
     }
 }

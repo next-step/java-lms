@@ -22,6 +22,7 @@ import static nextstep.courses.tobe.domain.RecruitmentStatus.CLOSED;
 import static nextstep.courses.tobe.domain.RecruitmentStatus.OPEN;
 import static nextstep.courses.tobe.domain.SelectedStatus.REJECTED;
 import static nextstep.courses.tobe.domain.SelectedStatus.SELECTED;
+import static nextstep.courses.tobe.domain.TobeCoverImageTest.*;
 import static nextstep.courses.tobe.domain.TobeSession.*;
 import static nextstep.users.domain.NsUserTest.*;
 import static nextstep.users.domain.NsUserTest.THIRDJIGI;
@@ -32,7 +33,7 @@ public class TobeFreeSessionTest {
     public static final TobeFreeSession TFS1 = new TobeFreeSession(1L,
             CourseTest.C1.getId(),
             new DateRange(START, END),
-            List.of(new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT, 1L)),
+            List.of(new TobeCoverImage(1L, SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT)),
             IN1,
             READY, CLOSED,
             1L, START, START);
@@ -58,7 +59,7 @@ public class TobeFreeSessionTest {
     void setUp() {
         courseId = CourseTest.C1.getId();
         dateRange = new DateRange(START, END);
-        coverImages = List.of(new TobeCoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT, 1L));
+        coverImages = List.of(new TobeCoverImage(1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200));
 
         freeSession = new TobeFreeSession(1L,
                 courseId, dateRange, coverImages, IN1,

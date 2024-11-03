@@ -3,6 +3,7 @@ package nextstep.courses.tobe.domain.session;
 import nextstep.courses.tobe.domain.TobeCoverImage;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,5 +29,17 @@ public class TobeCoverImages {
     @Override
     public int hashCode() {
         return Objects.hash(coverImages);
+    }
+
+    public List<TobeCoverImage> getCoverImages() {
+        return Collections.unmodifiableList(coverImages);
+    }
+
+    public void add(TobeCoverImage coverImage) {
+        coverImages.add(coverImage);
+    }
+
+    public int size() {
+        return coverImages.size();
     }
 }

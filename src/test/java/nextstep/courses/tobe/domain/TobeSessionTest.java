@@ -49,8 +49,8 @@ public class TobeSessionTest {
         courseId = CourseTest.C1.getId();
         dateRange = new DateRange(START, END);
 
-        tobeCoverImage1 = new TobeCoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200, 1L);
-        tobeCoverImage2 = new TobeCoverImage(SIZE_512, IMAGE_TYPE_TEXT_JPG, WIDTH_450, HEIGHT_300, 1L);
+        tobeCoverImage1 = new TobeCoverImage(1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200);
+        tobeCoverImage2 = new TobeCoverImage(1L, SIZE_512, IMAGE_TYPE_TEXT_JPG, WIDTH_450, HEIGHT_300);
         coverImages = List.of(tobeCoverImage1, tobeCoverImage2);
 
         imageFileSize1 = new ImageFileSize(SIZE_1024);
@@ -61,8 +61,8 @@ public class TobeSessionTest {
         imageType2 = IMAGE_TYPE_JPG;
         imageSize2 = new ImageSize(WIDTH_450, HEIGHT_300);
 
-        wrappedTobeCoverImage1 = new TobeCoverImage(imageFileSize1, imageType1, imageSize1, 1L);
-        wrappedTobeCoverImage2 = new TobeCoverImage(imageFileSize2, imageType2, imageSize2, 1L);
+        wrappedTobeCoverImage1 = new TobeCoverImage(1L, imageFileSize1, imageType1, imageSize1);
+        wrappedTobeCoverImage2 = new TobeCoverImage(1L, imageFileSize2, imageType2, imageSize2);
         wrappedCoverImages = List.of(wrappedTobeCoverImage1, wrappedTobeCoverImage2);
 
         processStatus = READY;

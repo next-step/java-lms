@@ -25,16 +25,16 @@ public class TobeCoverImageTest {
     public static final double HEIGHT_300 = 300;
 
     public static final List<TobeCoverImage> TOBE_COVER_IMAGE_LIST1 = List.of(
-            new TobeCoverImage(1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200, 1L, START),
-            new TobeCoverImage(2L, SIZE_512, IMAGE_TYPE_TEXT_JPG, WIDTH_450, HEIGHT_300, 1L, START)
+            new TobeCoverImage(1L, 1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200, START, START),
+            new TobeCoverImage(2L, 1L, SIZE_512, IMAGE_TYPE_TEXT_JPG, WIDTH_450, HEIGHT_300, START, START)
     );
 
     @Test
     void create() {
-        TobeCoverImage actual0 = new TobeCoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200, 1L);
-        TobeCoverImage expected0 = new TobeCoverImage(new ImageFileSize(SIZE_1024), IMAGE_TYPE_GIF, new ImageSize(WIDTH_300, HEIGHT_200), 1L);
-        TobeCoverImage actual1 = new TobeCoverImage(0L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200, 1L, START);
-        TobeCoverImage expected1 = new TobeCoverImage(0L, new ImageFileSize(SIZE_1024), IMAGE_TYPE_GIF, new ImageSize(WIDTH_300, HEIGHT_200), 1L, START);
+        TobeCoverImage actual0 = new TobeCoverImage(1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200);
+        TobeCoverImage expected0 = new TobeCoverImage(1L, new ImageFileSize(SIZE_1024), IMAGE_TYPE_GIF, new ImageSize(WIDTH_300, HEIGHT_200));
+        TobeCoverImage actual1 = new TobeCoverImage(0L, 1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200, START, START);
+        TobeCoverImage expected1 = new TobeCoverImage(0L, 1L, new ImageFileSize(SIZE_1024), IMAGE_TYPE_GIF, new ImageSize(WIDTH_300, HEIGHT_200), START, START);
 
         Assertions.assertThat(actual0).isEqualTo(expected0);
         Assertions.assertThat(actual0).isEqualTo(expected1);
@@ -44,7 +44,7 @@ public class TobeCoverImageTest {
 
     @Test
     void getter() {
-        TobeCoverImage coverImage = new TobeCoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200,1L);
+        TobeCoverImage coverImage = new TobeCoverImage(1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200);
         long actualId = coverImage.getId();
         ImageFileSize actualImageFileSize = coverImage.getImageFileSize();
         ImageSize actualImageSize = coverImage.getImageSize();

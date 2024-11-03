@@ -9,55 +9,61 @@ import java.util.Objects;
 
 public class TobeCoverImage {
     private final long id;
+    private final long sessionId;
     private final ImageFileSize imageFileSize;
     private final ImageType imageType;
     private final ImageSize imageSize;
-    private final long creatorId;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public TobeCoverImage(int imageFileSize,
+    public TobeCoverImage(long sessionId,
+                          int imageFileSize,
                           String imageTypeText,
                           double width,
-                          double height,
-                          long creatorId) {
-        this(0L, new ImageFileSize(imageFileSize), ImageType.toImageType(imageTypeText), new ImageSize(width, height), creatorId, LocalDateTime.now());
-
+                          double height) {
+        this(0L, sessionId, new ImageFileSize(imageFileSize), ImageType.toImageType(imageTypeText), new ImageSize(width, height), LocalDateTime.now(), LocalDateTime.now());
     }
 
-    public TobeCoverImage(ImageFileSize imageFileSize,
+    public TobeCoverImage(long sessionId,
+                          ImageFileSize imageFileSize,
                           ImageType imageType,
-                          ImageSize imageSize,
-                          long creatorId) {
-        this(0L, imageFileSize, imageType, imageSize, creatorId, LocalDateTime.now());
+                          ImageSize imageSize) {
+        this(0L, sessionId, imageFileSize, imageType, imageSize, LocalDateTime.now(), LocalDateTime.now());
     }
 
     public TobeCoverImage(long id,
+                          long sessionId,
                           int imageFileSize,
                           String imageTypeText,
                           double width,
                           double height,
-                          long creatorId,
-                          LocalDateTime createdAt) {
-        this(id, new ImageFileSize(imageFileSize), ImageType.toImageType(imageTypeText), new ImageSize(width, height), creatorId, createdAt);
+                          LocalDateTime createdAt,
+                          LocalDateTime updatedAt) {
+        this(id, sessionId, new ImageFileSize(imageFileSize), ImageType.toImageType(imageTypeText), new ImageSize(width, height), createdAt, updatedAt);
     }
 
     public TobeCoverImage(long id,
+                          long sessionId,
                           ImageFileSize imageFileSize,
                           ImageType imageType,
                           ImageSize imageSize,
-                          long creatorId,
-                          LocalDateTime createdAt) {
+                          LocalDateTime createdAt,
+                          LocalDateTime updatedAt) {
         this.id = id;
+        this.sessionId = sessionId;
         this.imageFileSize = imageFileSize;
         this.imageType = imageType;
         this.imageSize = imageSize;
-        this.creatorId = creatorId;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public long getId() {
         return id;
+    }
+
+    public long getSessionId() {
+        return sessionId;
     }
 
     public ImageFileSize getImageFileSize() {
@@ -66,6 +72,14 @@ public class TobeCoverImage {
 
     public ImageType getImageType() {
         return imageType;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
     public ImageSize getImageSize() {
