@@ -32,12 +32,12 @@
       - id, 
   - Instructor 추가
     - instructor table 추가
-  - Student 수정
-    - SelectedStatus field 추가
+  - ~~Student 수정~~
+    - ~~SelectedStatus field 추가~~
       - selected_status column 추가 
       - REJECTED(탈락)
       - SELECTED(선발)
-    - ApprovedStatus field 추가
+    - ~~ApprovedStatus field 추가~~
       - approved_status column 추가
       - DENIED(승인취소)
       - APPROVED(승인)

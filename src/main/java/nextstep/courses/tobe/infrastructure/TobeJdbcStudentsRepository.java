@@ -1,15 +1,13 @@
 package nextstep.courses.tobe.infrastructure;
 
-import nextstep.courses.tobe.domain.ApprovedStatus;
-import nextstep.courses.tobe.domain.SelectedStatus;
+import nextstep.courses.domain.ApprovedStatus;
+import nextstep.courses.domain.SelectedStatus;
 import nextstep.courses.tobe.domain.TobeStudent;
 import nextstep.courses.tobe.domain.TobeStudentsRepository;
 import nextstep.courses.tobe.domain.session.TobeStudents;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static nextstep.courses.infrastructure.util.LocalDateTimeFormatter.toLocalDateTime;

@@ -1,11 +1,10 @@
 package nextstep.courses.tobe.domain;
 
-import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
 import static nextstep.courses.domain.session.DateRangeTest.START;
-import static nextstep.courses.tobe.domain.ApprovedStatus.*;
-import static nextstep.courses.tobe.domain.SelectedStatus.*;
+import static nextstep.courses.domain.ApprovedStatus.*;
+import static nextstep.courses.domain.SelectedStatus.*;
 import static nextstep.courses.tobe.domain.TobeFreeSessionTest.TFS1;
 import static nextstep.users.domain.NsUserTest.*;
 import static org.assertj.core.api.Assertions.assertThat;

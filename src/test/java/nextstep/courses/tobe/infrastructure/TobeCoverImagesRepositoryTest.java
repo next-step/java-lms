@@ -3,7 +3,6 @@ package nextstep.courses.tobe.infrastructure;
 import nextstep.courses.infrastructure.CourseRepositoryTest;
 import nextstep.courses.tobe.domain.*;
 import nextstep.courses.tobe.domain.session.TobeCoverImages;
-import nextstep.courses.tobe.domain.session.TobeStudents;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,11 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import static nextstep.courses.domain.CourseTest.C1;
 import static nextstep.courses.domain.session.DateRangeTest.DATE_RANGE1;
 import static nextstep.courses.domain.session.DateRangeTest.START;
-import static nextstep.courses.tobe.domain.ApprovedStatus.DENIED;
-import static nextstep.courses.tobe.domain.SelectedStatus.SELECTED;
 import static nextstep.courses.tobe.domain.TobeCoverImageTest.TOBE_COVER_IMAGE_LIST1;
-import static nextstep.users.domain.NsUserTest.JAVAJIGI;
-import static nextstep.users.domain.NsUserTest.SANJIGI;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest

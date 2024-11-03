@@ -13,15 +13,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static nextstep.courses.domain.session.CoverImageTest.*;
 import static nextstep.courses.domain.session.DateRangeTest.END;
 import static nextstep.courses.domain.session.DateRangeTest.START;
-import static nextstep.courses.tobe.domain.ApprovedStatus.APPROVED;
-import static nextstep.courses.tobe.domain.ApprovedStatus.DENIED;
+import static nextstep.courses.domain.ApprovedStatus.APPROVED;
+import static nextstep.courses.domain.ApprovedStatus.DENIED;
 import static nextstep.courses.tobe.domain.InstructorTest.IN1;
 import static nextstep.courses.tobe.domain.ProcessStatus.PROCESS;
 import static nextstep.courses.tobe.domain.RecruitmentStatus.OPEN;
-import static nextstep.courses.tobe.domain.SelectedStatus.SELECTED;
+import static nextstep.courses.domain.SelectedStatus.SELECTED;
 import static nextstep.courses.tobe.domain.TobeCoverImageTest.*;
 import static nextstep.users.domain.NsUserTest.*;
 import static org.assertj.core.api.Assertions.assertThat;

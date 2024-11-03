@@ -3,16 +3,12 @@ package nextstep.courses.tobe.infrastructure;
 import nextstep.courses.domain.session.image.ImageFileSize;
 import nextstep.courses.domain.session.image.ImageSize;
 import nextstep.courses.domain.session.image.ImageType;
-import nextstep.courses.tobe.domain.ApprovedStatus;
-import nextstep.courses.tobe.domain.SelectedStatus;
 import nextstep.courses.tobe.domain.TobeCoverImage;
 import nextstep.courses.tobe.domain.TobeCoverImagesRepository;
 import nextstep.courses.tobe.domain.session.TobeCoverImages;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static nextstep.courses.infrastructure.util.LocalDateTimeFormatter.toLocalDateTime;

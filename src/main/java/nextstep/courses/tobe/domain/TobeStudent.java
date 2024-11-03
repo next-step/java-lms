@@ -1,15 +1,18 @@
 package nextstep.courses.tobe.domain;
 
+import nextstep.courses.domain.ApprovedStatus;
+import nextstep.courses.domain.SelectedStatus;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import static nextstep.courses.tobe.domain.ApprovedStatus.APPROVED;
-import static nextstep.courses.tobe.domain.ApprovedStatus.DENIED;
-import static nextstep.courses.tobe.domain.SelectedStatus.REJECTED;
-import static nextstep.courses.tobe.domain.SelectedStatus.SELECTED;
+import static nextstep.courses.domain.ApprovedStatus.APPROVED;
+import static nextstep.courses.domain.ApprovedStatus.DENIED;
+import static nextstep.courses.domain.SelectedStatus.REJECTED;
+import static nextstep.courses.domain.SelectedStatus.SELECTED;
 
+// TODO: remove, 메인 패키지에 migration 되었으나 레거시코드 참조로인해 최종삭제
 public class TobeStudent {
     private final long id;
     private final long sessionId;

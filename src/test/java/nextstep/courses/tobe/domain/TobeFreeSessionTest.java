@@ -13,15 +13,15 @@ import java.util.List;
 import static nextstep.courses.domain.session.CoverImageTest.*;
 import static nextstep.courses.domain.session.DateRangeTest.END;
 import static nextstep.courses.domain.session.DateRangeTest.START;
-import static nextstep.courses.tobe.domain.ApprovedStatus.APPROVED;
-import static nextstep.courses.tobe.domain.ApprovedStatus.DENIED;
+import static nextstep.courses.domain.ApprovedStatus.APPROVED;
+import static nextstep.courses.domain.ApprovedStatus.DENIED;
 import static nextstep.courses.tobe.domain.InstructorTest.IN1;
 import static nextstep.courses.tobe.domain.InstructorTest.IN2;
 import static nextstep.courses.tobe.domain.ProcessStatus.READY;
 import static nextstep.courses.tobe.domain.RecruitmentStatus.CLOSED;
 import static nextstep.courses.tobe.domain.RecruitmentStatus.OPEN;
-import static nextstep.courses.tobe.domain.SelectedStatus.REJECTED;
-import static nextstep.courses.tobe.domain.SelectedStatus.SELECTED;
+import static nextstep.courses.domain.SelectedStatus.REJECTED;
+import static nextstep.courses.domain.SelectedStatus.SELECTED;
 import static nextstep.courses.tobe.domain.TobeCoverImageTest.*;
 import static nextstep.courses.tobe.domain.TobeSession.*;
 import static nextstep.users.domain.NsUserTest.*;
@@ -59,7 +59,7 @@ public class TobeFreeSessionTest {
     void setUp() {
         courseId = CourseTest.C1.getId();
         dateRange = new DateRange(START, END);
-        coverImages = List.of(new TobeCoverImage(1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200));
+        coverImages = List.of(new TobeCoverImage(1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200 ));
 
         freeSession = new TobeFreeSession(1L,
                 courseId, dateRange, coverImages, IN1,
