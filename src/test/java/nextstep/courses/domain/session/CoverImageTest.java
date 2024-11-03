@@ -1,10 +1,9 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.CoverImage;
 import nextstep.courses.domain.session.image.ImageFileSize;
 import nextstep.courses.domain.session.image.ImageType;
 import nextstep.courses.domain.session.image.ImageSize;
-import nextstep.courses.domain.session.image.ImageTypeTest;
-import nextstep.courses.tobe.domain.TobeCoverImage;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

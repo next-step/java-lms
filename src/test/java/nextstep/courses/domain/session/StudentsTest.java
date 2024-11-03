@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.CourseTest;
+import nextstep.courses.domain.CoverImage;
 import nextstep.courses.domain.FreeSession;
 import nextstep.courses.domain.Student;
 import nextstep.users.domain.NsUserTest;

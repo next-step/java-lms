@@ -1,7 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
-import nextstep.courses.domain.session.CoverImage;
+import nextstep.courses.domain.CoverImage;
 import nextstep.courses.domain.session.DateRange;
 import nextstep.courses.domain.session.Status;
 import org.junit.jupiter.api.AfterEach;

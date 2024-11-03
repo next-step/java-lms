@@ -4,7 +4,7 @@ import nextstep.courses.domain.CourseTest;
 import nextstep.courses.domain.FreeSession;
 import nextstep.courses.domain.Student;
 import nextstep.courses.domain.StudentsRepository;
-import nextstep.courses.domain.session.CoverImage;
+import nextstep.courses.domain.CoverImage;
 import nextstep.courses.domain.session.DateRange;
 import nextstep.courses.domain.session.Status;
 import nextstep.courses.domain.session.Students;

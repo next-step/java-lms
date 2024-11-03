@@ -1,7 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.session.Category;
-import nextstep.courses.domain.session.CoverImage;
 import nextstep.courses.domain.session.DateRange;
 import nextstep.courses.domain.session.Status;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static nextstep.courses.domain.session.Category.FREE;
 import static nextstep.courses.domain.session.CoverImageTest.*;
 import static nextstep.courses.domain.session.DateRangeTest.END;
 import static nextstep.courses.domain.session.DateRangeTest.START;

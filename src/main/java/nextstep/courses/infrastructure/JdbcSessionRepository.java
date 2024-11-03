@@ -4,7 +4,7 @@ import nextstep.courses.domain.FreeSession;
 import nextstep.courses.domain.PaidSession;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.courses.domain.session.Category;
-import nextstep.courses.domain.session.CoverImage;
+import nextstep.courses.domain.CoverImage;
 import nextstep.courses.domain.session.DateRange;
 import nextstep.courses.domain.session.Status;
 import nextstep.courses.domain.session.image.ImageFileSize;
@@ -12,9 +12,6 @@ import nextstep.courses.domain.session.image.ImageSize;
 import nextstep.courses.domain.session.image.ImageType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 import static nextstep.courses.infrastructure.util.LocalDateTimeFormatter.toLocalDateTime;
 

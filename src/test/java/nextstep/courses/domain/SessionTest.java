@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.session.CoverImage;
 import nextstep.courses.domain.session.DateRange;
 import nextstep.courses.domain.session.Status;
 import nextstep.courses.domain.session.image.ImageFileSize;
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static nextstep.courses.domain.FreeSessionTest.FS1;
 import static nextstep.courses.domain.PaidSessionTest.*;
 import static nextstep.courses.domain.session.CoverImageTest.*;
 import static nextstep.courses.domain.session.DateRangeTest.END;

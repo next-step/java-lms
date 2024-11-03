@@ -1,7 +1,6 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.MaxStudentCapacityException;
-import nextstep.courses.domain.session.CoverImage;
 import nextstep.courses.domain.session.DateRange;
 import nextstep.courses.domain.session.Status;
 import nextstep.payments.PaymentMismatchException;
@@ -9,8 +8,6 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDateTime;
 
 import static nextstep.courses.domain.PaidSession.MAX_STUDENT_CAPACITY_MESSAGE;
 import static nextstep.courses.domain.PaidSession.PAYMENT_MISMATCH_MESSAGE;

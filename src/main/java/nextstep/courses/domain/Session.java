@@ -5,8 +5,6 @@ import nextstep.courses.domain.session.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import static nextstep.courses.domain.session.Category.FREE;
-
 public abstract class Session {
     protected final long id;
     protected final long courseId;

@@ -1,9 +1,9 @@
-package nextstep.courses.tobe.infrastructure;
+package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.InstructorTest;
-import nextstep.courses.infrastructure.CourseRepositoryTest;
 import nextstep.courses.tobe.domain.*;
 import nextstep.courses.tobe.domain.session.TobeCoverImages;
+import nextstep.courses.tobe.infrastructure.TobeJdbcCoverImagesRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ import static nextstep.courses.tobe.domain.TobeCoverImageTest.TOBE_COVER_IMAGE_L
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-public class TobeCoverImagesRepositoryTest {
+public class CoverImagesRepositoryTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(CourseRepositoryTest.class);
 
     @Autowired
