@@ -7,8 +7,6 @@ import java.time.LocalDateTime;
 
 import static nextstep.courses.domain.SessionTest.FREE_SESSION1;
 import static nextstep.courses.domain.SessionTest.PAID_SESSION1;
-import static nextstep.courses.tobe.domain.TobeFreeSessionTest.TFS1;
-import static nextstep.courses.tobe.domain.TobePaidSessionTest.TPS1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 

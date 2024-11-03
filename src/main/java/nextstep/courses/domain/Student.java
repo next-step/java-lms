@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.tobe.domain.TobeSession;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;

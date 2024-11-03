@@ -1,9 +1,6 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.course.Sessions;
-import nextstep.courses.tobe.domain.TobePaidSession;
-import nextstep.courses.tobe.domain.TobeSession;
-import nextstep.courses.tobe.domain.course.TobeSessions;
 
 import java.time.LocalDateTime;
 import java.util.Objects;

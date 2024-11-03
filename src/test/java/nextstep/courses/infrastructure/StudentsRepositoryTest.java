@@ -1,15 +1,11 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.*;
-import nextstep.courses.domain.session.DateRange;
+import nextstep.courses.domain.CoverImage;
+import nextstep.courses.domain.FreeSession;
+import nextstep.courses.domain.Student;
+import nextstep.courses.domain.StudentsRepository;
 import nextstep.courses.domain.session.Status;
 import nextstep.courses.domain.session.Students;
-import nextstep.courses.tobe.domain.TobeFreeSession;
-import nextstep.courses.tobe.domain.TobeStudent;
-import nextstep.courses.tobe.domain.TobeStudentsRepository;
-import nextstep.courses.tobe.domain.session.TobeStudents;
-import nextstep.courses.tobe.infrastructure.TobeJdbcStudentsRepository;
-import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,20 +15,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.List;
-
 import static nextstep.courses.domain.ApprovedStatus.DENIED;
 import static nextstep.courses.domain.CourseTest.C1;
 import static nextstep.courses.domain.CoverImageTest.*;
-import static nextstep.courses.domain.InstructorTest.*;
 import static nextstep.courses.domain.InstructorTest.IN1;
-import static nextstep.courses.domain.ProcessStatus.*;
-import static nextstep.courses.domain.ProcessStatus.READY;
-import static nextstep.courses.domain.RecruitmentStatus.*;
-import static nextstep.courses.domain.RecruitmentStatus.CLOSED;
+import static nextstep.courses.domain.ProcessStatus.PROCESS;
+import static nextstep.courses.domain.RecruitmentStatus.OPEN;
 import static nextstep.courses.domain.SelectedStatus.SELECTED;
-import static nextstep.courses.domain.session.DateRangeTest.*;
-import static nextstep.courses.tobe.domain.TobeCoverImageTest.TOBE_COVER_IMAGE_LIST1;
+import static nextstep.courses.domain.session.DateRangeTest.DATE_RANGE1;
+import static nextstep.courses.domain.session.DateRangeTest.START;
 import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static nextstep.users.domain.NsUserTest.SANJIGI;
 import static org.assertj.core.api.Assertions.assertThat;
