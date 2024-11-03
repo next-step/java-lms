@@ -3,9 +3,9 @@ package nextstep.courses.domain.course;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CourseTest {
 
@@ -18,9 +18,9 @@ class CourseTest {
         Course course = new Course(title, classNumber, creatorId);
 
         assertAll(
-                () -> assertEquals(course.getTitle(), title),
-                () -> assertEquals(course.getClassNumber(), classNumber),
-                () -> assertEquals(course.getCreatorId(), creatorId)
+                () -> assertThat(course.getTitle()).isEqualTo(title),
+                () -> assertThat(course.getClassNumber()).isEqualTo(classNumber),
+                () -> assertThat(course.getCreatorId()).isEqualTo(creatorId)
         );
     }
 

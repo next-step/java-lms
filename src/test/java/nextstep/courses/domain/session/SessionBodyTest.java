@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SessionBodyTest {
 
@@ -31,13 +31,13 @@ class SessionBodyTest {
         SessionBody sessionBody = SessionBody.of(title, sessionPeriod, coverImage);
 
         assertAll(
-                () -> assertEquals(title, sessionBody.getTitle()),
-                () -> assertEquals(ImageExtension.JPG, sessionBody.getCoverImage().getExtension()),
-                () -> assertEquals(imageSize, sessionBody.getCoverImage().getImageSize()),
-                () -> assertEquals(width, sessionBody.getCoverImage().getWidth()),
-                () -> assertEquals(height, sessionBody.getCoverImage().getHeight()),
-                () -> assertEquals(startDate, sessionBody.getPeriod().getStartDate()),
-                () -> assertEquals(endDate, sessionBody.getPeriod().getEndDate())
+                () -> assertThat(title).isEqualTo(sessionBody.getTitle()),
+                () -> assertThat(ImageExtension.JPG).isEqualTo(sessionBody.getCoverImage().getExtension()),
+                () -> assertThat(imageSize).isEqualTo(sessionBody.getCoverImage().getImageSize()),
+                () -> assertThat(width).isEqualTo(sessionBody.getCoverImage().getWidth()),
+                () -> assertThat(height).isEqualTo(sessionBody.getCoverImage().getHeight()),
+                () -> assertThat(startDate).isEqualTo(sessionBody.getPeriod().getStartDate()),
+                () -> assertThat(endDate).isEqualTo(sessionBody.getPeriod().getEndDate())
         );
     }
 }

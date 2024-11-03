@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PaidSessionTest {
 
@@ -39,11 +38,11 @@ class PaidSessionTest {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
         PaidSession paidSession = new PaidSession(1L, sessionBody, sessionEnrollment,50000L,        2);
         assertAll(
-                () -> assertEquals("이펙티브 자바", paidSession.getTitle()),
-                () -> assertEquals(startDate, paidSession.getPeriod().getStartDate()),
-                () -> assertEquals(endDate, paidSession.getPeriod().getEndDate()),
-                () -> assertEquals(300, paidSession.getCoverImage().getWidth()),
-                () -> assertEquals(200, paidSession.getCoverImage().getHeight())
+                () -> assertThat("이펙티브 자바").isEqualTo(paidSession.getTitle()),
+                () -> assertThat(startDate).isEqualTo(paidSession.getPeriod().getStartDate()),
+                () -> assertThat(endDate).isEqualTo(paidSession.getPeriod().getEndDate()),
+                () -> assertThat(300).isEqualTo(paidSession.getCoverImage().getWidth()),
+                () -> assertThat(200).isEqualTo(paidSession.getCoverImage().getHeight())
         );
     }
 

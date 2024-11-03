@@ -2,11 +2,9 @@ package nextstep.courses.domain.cover;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class CoverImageTest {
 
@@ -21,11 +19,11 @@ class CoverImageTest {
         CoverImage coverImage = CoverImage.of(ImageSize.of(imageSize), extension, ImageDimension.of(width, height));
 
         assertAll(
-                () -> assertNotNull(coverImage),
-                () -> assertEquals(width, coverImage.getWidth()),
-                () -> assertEquals(height, coverImage.getHeight()),
-                () -> assertEquals(imageSize, coverImage.getImageSize()),
-                () -> assertEquals(extension.toLowerCase(), coverImage.getExtension().getText())
+                () -> assertThat(coverImage).isNotNull(),
+                () -> assertThat(width).isEqualTo(coverImage.getWidth()),
+                () -> assertThat(height).isEqualTo(coverImage.getHeight()),
+                () -> assertThat(imageSize).isEqualTo(coverImage.getImageSize()),
+                () -> assertThat(extension.toLowerCase()).isEqualTo(coverImage.getExtension().getText())
         );
     }
 

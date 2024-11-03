@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FreeSessionTest {
 
@@ -38,11 +37,11 @@ class FreeSessionTest {
         FreeSession freeSession = new FreeSession(1L, sessionBody, sessionEnrollment);
 
         assertAll(
-                () -> assertEquals("자바의 정석", freeSession.getTitle()),
-                () -> assertEquals(startDate, freeSession.getPeriod().getStartDate()),
-                () -> assertEquals(endDate, freeSession.getPeriod().getEndDate()),
-                () -> assertEquals(300, freeSession.getCoverImage().getWidth()),
-                () -> assertEquals(200, freeSession.getCoverImage().getHeight())
+                () -> assertThat("자바의 정석").isEqualTo(freeSession.getTitle()),
+                () -> assertThat(startDate).isEqualTo(freeSession.getPeriod().getStartDate()),
+                () -> assertThat(endDate).isEqualTo(freeSession.getPeriod().getEndDate()),
+                () -> assertThat(300).isEqualTo(freeSession.getCoverImage().getWidth()),
+                () -> assertThat(200).isEqualTo(freeSession.getCoverImage().getHeight())
         );
     }
 
