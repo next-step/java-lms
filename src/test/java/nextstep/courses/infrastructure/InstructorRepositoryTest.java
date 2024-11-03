@@ -1,8 +1,7 @@
-package nextstep.courses.tobe.infrastructure;
+package nextstep.courses.infrastructure;
 
-import nextstep.courses.infrastructure.CourseRepositoryTest;
 import nextstep.courses.domain.Instructor;
-import nextstep.courses.tobe.domain.TobeInstructorRepository;
+import nextstep.courses.domain.InstructorRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,17 +15,17 @@ import static nextstep.courses.domain.InstructorTest.IN1;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-public class TobeInstructorRepositoryTest {
+public class InstructorRepositoryTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CourseRepositoryTest.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    private TobeInstructorRepository instructorRepository;
+    private InstructorRepository instructorRepository;
 
     @BeforeEach
     void setUp() {
-        instructorRepository = new TobeJdbcInstructorRepository(jdbcTemplate);
+        instructorRepository = new JdbcInstructorRepository(jdbcTemplate);
     }
     @Test
     void crud() {

@@ -1,16 +1,16 @@
-package nextstep.courses.tobe.infrastructure;
+package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Instructor;
-import nextstep.courses.tobe.domain.*;
+import nextstep.courses.domain.InstructorRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import static nextstep.courses.infrastructure.util.LocalDateTimeFormatter.toLocalDateTime;
 
-public class TobeJdbcInstructorRepository implements TobeInstructorRepository {
+public class JdbcInstructorRepository implements InstructorRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    public TobeJdbcInstructorRepository(JdbcTemplate jdbcTemplate) {
+    public JdbcInstructorRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
