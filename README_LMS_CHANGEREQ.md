@@ -21,12 +21,12 @@
     * 
 
 ## TODO
-- Sessions 변경
-  - Status -> ProcessStatus(READY, PROCESS, ENDED) 변경
-    - status -> process_status column 변경 
-  - RecruitmentStatus(CLOSED, OPEN) 추가
+- ~~Sessions 변경~~
+  - ~~ProcessStatus(READY, PROCESS, ENDED) 추가~~
+    - process_status column 추가 
+  - ~~RecruitmentStatus(CLOSED, OPEN) 추가~~
     - recruitment_status column 추가
-  - CoverImages 추가(coverImageId 필드 추가)
+  - ~~CoverImages 추가(coverImageId 필드 추가)~~
     - cover_image table 추가
     - ~~CoverImage 수정~~
   - ~~Instructor 추가~~
@@ -40,15 +40,15 @@
       - approved_status column 추가
       - DENIED(승인취소)
       - APPROVED(승인)
-- 수강신청은 RecruitmentStatus(OPEN) 일때 가능하다
-- 강의는 하나 이상의 커버 이미지를 가질 수 있다.
-- 학생은 수강신청을 할 수 있다.
-- 강사가 선발된 인원들을 수강 승인한다
-  - Student(SelectedStatus:SELECTED) 인 경우
-    Student(ApprovedStatus:DENIED -> APPROVED)) 로 변경
-- 강사가 선발되지 않은 인원들을 수강 취소한다
-  - Student(SelectedStatus:REJECTED) 인 경우
-    Student(ApprovedStatus:APPROVED -> DENIED)) 로 변경
+- ~~수강신청은 RecruitmentStatus(OPEN) 일때 가능하다~~
+- ~~강의는 하나 이상의 커버 이미지를 가질 수 있다.~~
+- ~~학생은 수강신청을 할 수 있다.~~
+- ~~강사가 선발된 인원들을 수강 승인한다~~
+  - ~~Student(SelectedStatus:SELECTED) 인 경우
+    Student(ApprovedStatus:DENIED -> APPROVED)) 로 변경~~
+- ~~강사가 선발되지 않은 인원들을 수강 취소한다~~
+  - ~~Student(SelectedStatus:REJECTED) 인 경우
+    Student(ApprovedStatus:APPROVED -> DENIED)) 로 변경~~
 - 리팩터링할 때 컴파일 에러와 기존의 단위 테스트의 실패를 최소화하면서 점진적인 리팩터링이 가능하도록 한다.
 - 기존 domain 이 존재하는 상태에서 리팩토링 진행
   - 기존 domain, table 그대로 유지

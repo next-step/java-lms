@@ -20,7 +20,7 @@ public class Student {
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    private Student(long id, long sessionId, long nsUserId, SelectedStatus selectedStatus, ApprovedStatus approvedStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Student(long id, long sessionId, long nsUserId, SelectedStatus selectedStatus, ApprovedStatus approvedStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.sessionId = sessionId;
         this.nsUserId = nsUserId;
@@ -30,28 +30,12 @@ public class Student {
         this.updatedAt = updatedAt;
     }
 
-    public Student(TobeSession session,
+    public Student(Session session,
                    NsUser nsUser,
                    SelectedStatus selectedStatus,
                    ApprovedStatus approvedStatus,
                    LocalDateTime createdAt) {
         this(0L, session.getId(), nsUser.getId(), selectedStatus, approvedStatus, createdAt, null);
-    }
-
-    // TODO : remove target(legacy code dependency)
-    public Student(Session session,
-                   NsUser nsUser,
-                   LocalDateTime createdAt) {
-        this(0L, session.getId(), nsUser.getId(), null, null, createdAt, null);
-    }
-
-    // TODO : remove target(legacy code dependency)
-    public Student(long id,
-                   long sessionId,
-                   long nsUserId,
-                   LocalDateTime createdAt,
-                   LocalDateTime updatedAt) {
-        this(id, sessionId, nsUserId, null, null, createdAt, updatedAt);
     }
 
     public void approved() {

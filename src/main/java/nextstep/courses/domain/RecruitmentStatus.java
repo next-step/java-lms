@@ -1,4 +1,4 @@
-package nextstep.courses.tobe.domain;
+package nextstep.courses.domain;
 
 public enum RecruitmentStatus {
     CLOSED, OPEN

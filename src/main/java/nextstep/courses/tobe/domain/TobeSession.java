@@ -1,6 +1,8 @@
 package nextstep.courses.tobe.domain;
 
 import nextstep.courses.domain.Instructor;
+import nextstep.courses.domain.ProcessStatus;
+import nextstep.courses.domain.RecruitmentStatus;
 import nextstep.courses.domain.session.Category;
 import nextstep.courses.domain.session.DateRange;
 import nextstep.courses.tobe.NotMatchedInstructorException;
@@ -12,8 +14,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-import static nextstep.courses.tobe.domain.ProcessStatus.ENDED;
-import static nextstep.courses.tobe.domain.RecruitmentStatus.OPEN;
+import static nextstep.courses.domain.ProcessStatus.ENDED;
+import static nextstep.courses.domain.RecruitmentStatus.OPEN;
 
 public abstract class TobeSession {
     public static final String NOT_ALLOWED_PROCESS_ENDED_RECRUITMENT_OPEN_MESSAGE = "종료된 강의를 모집중 상태로 바꿀수 없습니다.";

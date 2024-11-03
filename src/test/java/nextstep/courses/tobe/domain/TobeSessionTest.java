@@ -1,6 +1,8 @@
 package nextstep.courses.tobe.domain;
 
 import nextstep.courses.domain.CourseTest;
+import nextstep.courses.domain.ProcessStatus;
+import nextstep.courses.domain.RecruitmentStatus;
 import nextstep.courses.domain.session.Category;
 import nextstep.courses.domain.session.DateRange;
 import nextstep.courses.domain.session.image.ImageFileSize;
@@ -18,9 +20,9 @@ import static nextstep.courses.domain.PaidSessionTest.SESSION_AMOUNT;
 import static nextstep.courses.domain.session.DateRangeTest.END;
 import static nextstep.courses.domain.session.DateRangeTest.START;
 import static nextstep.courses.domain.InstructorTest.IN1;
-import static nextstep.courses.tobe.domain.ProcessStatus.*;
-import static nextstep.courses.tobe.domain.RecruitmentStatus.CLOSED;
-import static nextstep.courses.tobe.domain.RecruitmentStatus.OPEN;
+import static nextstep.courses.domain.ProcessStatus.*;
+import static nextstep.courses.domain.RecruitmentStatus.CLOSED;
+import static nextstep.courses.domain.RecruitmentStatus.OPEN;
 import static nextstep.courses.tobe.domain.TobeSession.NOT_ALLOWED_PROCESS_ENDED_RECRUITMENT_OPEN_MESSAGE;
 import static nextstep.courses.tobe.domain.TobeCoverImageTest.*;
 import static org.assertj.core.api.Assertions.assertThat;

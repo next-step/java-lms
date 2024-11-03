@@ -2,6 +2,8 @@ package nextstep.courses.tobe.domain;
 
 import nextstep.courses.MaxStudentCapacityException;
 import nextstep.courses.domain.Instructor;
+import nextstep.courses.domain.ProcessStatus;
+import nextstep.courses.domain.RecruitmentStatus;
 import nextstep.courses.domain.session.Category;
 import nextstep.courses.domain.session.DateRange;
 import nextstep.courses.tobe.PaymentStudentNsUserNotMatchException;

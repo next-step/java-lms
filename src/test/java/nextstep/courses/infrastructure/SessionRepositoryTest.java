@@ -14,10 +14,14 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import static nextstep.courses.domain.InstructorTest.IN1;
 import static nextstep.courses.domain.PaidSessionTest.MAX_REGISTER_COUNT;
 import static nextstep.courses.domain.PaidSessionTest.SESSION_AMOUNT;
 import static nextstep.courses.domain.CoverImageTest.*;
+import static nextstep.courses.domain.ProcessStatus.READY;
+import static nextstep.courses.domain.RecruitmentStatus.CLOSED;
 import static nextstep.courses.domain.session.DateRangeTest.END;
 import static nextstep.courses.domain.session.DateRangeTest.START;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,6 +35,10 @@ public class SessionRepositoryTest {
     private JdbcTemplate jdbcTemplate;
     private SessionRepository sessionRepository;
     private CourseRepository courseRepository;
+    private Course course;
+    private CoverImage coverImage;
+    private Status prepare;
+    private List<CoverImage> coverImages;
 
     @BeforeEach
     void setUp() {
@@ -38,15 +46,18 @@ public class SessionRepositoryTest {
         courseRepository = new JdbcCourseRepository(jdbcTemplate);
 
         courseRepository.save(new Course("TDD, 클린 코드 with Java", 1L));
+
+        course = courseRepository.findById(1L);
+        coverImage = new CoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200);
+        prepare = Status.PREPARE;
+        coverImages = List.of();
     }
     @Test
     void free_crud() {
-        Course course = courseRepository.findById(1L);
         FreeSession freeSession = new FreeSession(1L,
-                course.getId(),
-                new DateRange(START, END),
-                new CoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200),
-                Status.PREPARE,
+                course.getId(), new DateRange(START, END),
+                coverImage, prepare,
+                coverImages, IN1, READY, CLOSED,
                 1L,
                 LocalDateTime.now(),
                 LocalDateTime.now());
@@ -62,14 +73,11 @@ public class SessionRepositoryTest {
 
     @Test
     void paid_crud() {
-        Course course = courseRepository.findById(1L);
         PaidSession paidSession = new PaidSession(1L,
-                course.getId(),
-                new DateRange(START, END),
-                new CoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200),
-                Status.PREPARE,
-                MAX_REGISTER_COUNT,
-                SESSION_AMOUNT,
+                course.getId(), new DateRange(START, END),
+                coverImage, prepare,
+                coverImages, IN1, READY, CLOSED,
+                MAX_REGISTER_COUNT, SESSION_AMOUNT,
                 1L,
                 LocalDateTime.now(),
                 LocalDateTime.now());

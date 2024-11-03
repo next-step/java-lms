@@ -1,5 +1,7 @@
 package nextstep.courses.tobe.infrastructure;
 
+import nextstep.courses.domain.ProcessStatus;
+import nextstep.courses.domain.RecruitmentStatus;
 import nextstep.courses.domain.session.Category;
 import nextstep.courses.domain.session.DateRange;
 import nextstep.courses.tobe.domain.*;

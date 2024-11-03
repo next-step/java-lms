@@ -20,8 +20,8 @@ import static nextstep.courses.domain.PaidSessionTest.MAX_REGISTER_COUNT;
 import static nextstep.courses.domain.PaidSessionTest.SESSION_AMOUNT;
 import static nextstep.courses.domain.session.DateRangeTest.*;
 import static nextstep.courses.domain.InstructorTest.IN1;
-import static nextstep.courses.tobe.domain.ProcessStatus.*;
-import static nextstep.courses.tobe.domain.RecruitmentStatus.*;
+import static nextstep.courses.domain.ProcessStatus.*;
+import static nextstep.courses.domain.RecruitmentStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest

@@ -1,6 +1,8 @@
 package nextstep.courses.tobe.infrastructure;
 
 import nextstep.courses.domain.InstructorTest;
+import nextstep.courses.domain.ProcessStatus;
+import nextstep.courses.domain.RecruitmentStatus;
 import nextstep.courses.infrastructure.CourseRepositoryTest;
 import nextstep.courses.tobe.domain.*;
 import nextstep.courses.tobe.domain.session.TobeStudents;
