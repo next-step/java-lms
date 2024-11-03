@@ -15,8 +15,6 @@ public class Course {
 
     private Sessions sessions = new Sessions();
 
-    private TobeSessions tobeSessions = new TobeSessions();
-
     private Long creatorId;
 
     private LocalDateTime createdAt;
@@ -58,21 +56,17 @@ public class Course {
         this.sessions.add(session);
     }
 
-    public void addTobeSession(TobeSession session) {
-        this.tobeSessions.add(session);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Course course = (Course) o;
-        return Objects.equals(id, course.id) && Objects.equals(title, course.title) && Objects.equals(creatorId, course.creatorId) && Objects.equals(sessions, course.sessions) && Objects.equals(tobeSessions, course.tobeSessions);
+        return Objects.equals(id, course.id) && Objects.equals(title, course.title) && Objects.equals(sessions, course.sessions) && Objects.equals(creatorId, course.creatorId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, creatorId, sessions, tobeSessions);
+        return Objects.hash(id, title, sessions, creatorId);
     }
 
     @Override

@@ -42,16 +42,4 @@ public class CourseTest {
         assertThat(actual).isEqualTo(course);
     }
 
-    @Test
-    void addTobeSession() {
-        course.addTobeSession(TFS1);
-        course.addTobeSession(TPS1);
-
-        Course actual = new Course(1L, "title1", 1L, LocalDateTime.now(), LocalDateTime.now());
-        actual.addTobeSession(TFS1);
-        assertThat(actual).isNotEqualTo(course);
-
-        actual.addTobeSession(TPS1);
-        assertThat(actual).isEqualTo(course);
-    }
 }
