@@ -52,3 +52,26 @@
 
 ### CourseTest, CoverImageTest, PaidSessionTest, FreeSessionTest
 - [X] assertAll 메서드 활용 테스트
+
+## 2단계 2차 리뷰 사항
+
+### 전반
+- [ ] 각 건마다 리뷰 반영 후 체크하여 커밋
+- [ ] assertAll 내부의 검증부는 assertj 로 통일
+
+### Course
+- [ ] 점층적 생성 패턴에 따라 주 생성자는 생성자 중 가장 마지막에 배치
+
+### ImageDimension
+- [ ] 크기 검증과 비율 검증도 분리
+- [ ] 비율을 검증할 때에는 연산 오차를 제거하기 위해 int 타입으로 연산
+- [ ] 원시 타입 사용 (이펙티브 자바 아이템 61 참고)
+
+### Session
+- [ ] 생성자에서 강의 상태 주입 
+- [ ] 신청 기능을 가진 객체 만들기 (sessionStatus, enrolledUsers)
+
+### CoverImageTest
+- [ ] 확장자에 대한 책임이 ImageExtension 에 있으므로 확장자 테스트 skip
+- [ ] 테스트 하려는 대상 명확하게 하기 - of 메서드로 객체 생성 상단에서 미리 진행
+
