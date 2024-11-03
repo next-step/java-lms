@@ -11,6 +11,8 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static nextstep.courses.infrastructure.util.LocalDateTimeFormatter.toLocalDateTime;
+
 public class JdbcStudentsRepository implements StudentsRepository {
     private final JdbcTemplate jdbcTemplate;
 
@@ -44,10 +46,4 @@ public class JdbcStudentsRepository implements StudentsRepository {
         return new Students(students);
     }
 
-    protected static LocalDateTime toLocalDateTime(Timestamp timestamp) {
-        if (timestamp == null) {
-            return null;
-        }
-        return timestamp.toLocalDateTime();
-    }
 }

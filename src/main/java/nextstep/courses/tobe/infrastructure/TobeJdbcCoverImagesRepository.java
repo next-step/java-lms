@@ -15,6 +15,8 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static nextstep.courses.infrastructure.util.LocalDateTimeFormatter.toLocalDateTime;
+
 public class TobeJdbcCoverImagesRepository implements TobeCoverImagesRepository {
     private final JdbcTemplate jdbcTemplate;
 
@@ -59,10 +61,4 @@ public class TobeJdbcCoverImagesRepository implements TobeCoverImagesRepository 
         return new TobeCoverImages(students);
     }
 
-    protected static LocalDateTime toLocalDateTime(Timestamp timestamp) {
-        if (timestamp == null) {
-            return null;
-        }
-        return timestamp.toLocalDateTime();
-    }
 }

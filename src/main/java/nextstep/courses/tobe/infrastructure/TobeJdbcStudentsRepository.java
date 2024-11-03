@@ -12,6 +12,8 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static nextstep.courses.infrastructure.util.LocalDateTimeFormatter.toLocalDateTime;
+
 public class TobeJdbcStudentsRepository implements TobeStudentsRepository {
     private final JdbcTemplate jdbcTemplate;
 
@@ -47,12 +49,5 @@ public class TobeJdbcStudentsRepository implements TobeStudentsRepository {
                 toLocalDateTime(rs.getTimestamp("updated_at")));
         List<TobeStudent> students = jdbcTemplate.query(sql, rowMapper, sessionId);
         return new TobeStudents(students);
-    }
-
-    protected static LocalDateTime toLocalDateTime(Timestamp timestamp) {
-        if (timestamp == null) {
-            return null;
-        }
-        return timestamp.toLocalDateTime();
     }
 }

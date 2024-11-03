@@ -18,6 +18,8 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static nextstep.courses.infrastructure.util.LocalDateTimeFormatter.toLocalDateTime;
+
 public class TobeJdbcSessionRepository implements TobeSessionRepository {
     private final JdbcTemplate jdbcTemplate;
 
@@ -116,13 +118,6 @@ public class TobeJdbcSessionRepository implements TobeSessionRepository {
                 toLocalDateTime(rs.getTimestamp("updated_at"))
         );
         return jdbcTemplate.queryForObject(sql, rowMapper, sessionId);
-    }
-
-    protected static LocalDateTime toLocalDateTime(Timestamp timestamp) {
-        if (timestamp == null) {
-            return null;
-        }
-        return timestamp.toLocalDateTime();
     }
 
 }

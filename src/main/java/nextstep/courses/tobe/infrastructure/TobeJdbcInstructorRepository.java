@@ -7,6 +7,8 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+import static nextstep.courses.infrastructure.util.LocalDateTimeFormatter.toLocalDateTime;
+
 public class TobeJdbcInstructorRepository implements TobeInstructorRepository {
     private final JdbcTemplate jdbcTemplate;
 
@@ -41,12 +43,5 @@ public class TobeJdbcInstructorRepository implements TobeInstructorRepository {
                 toLocalDateTime(rs.getTimestamp("updated_at"))
         );
         return jdbcTemplate.queryForObject(sql, rowMapper, instructorId);
-    }
-
-    protected static LocalDateTime toLocalDateTime(Timestamp timestamp) {
-        if (timestamp == null) {
-            return null;
-        }
-        return timestamp.toLocalDateTime();
     }
 }
