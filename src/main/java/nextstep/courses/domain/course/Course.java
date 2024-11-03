@@ -21,7 +21,8 @@ public class Course extends BaseTime {
 
     private List<Session> sessions;
 
-    private Course() {}
+    private Course() {
+    }
 
     public Course(String title, Integer classNumber, Long creatorId) {
         this(0L, title, creatorId, classNumber, null, LocalDateTime.now(), LocalDateTime.now());

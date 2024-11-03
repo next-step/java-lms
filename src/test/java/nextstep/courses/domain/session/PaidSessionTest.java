@@ -36,7 +36,7 @@ class PaidSessionTest {
     @DisplayName("무료 강의 생성 시 필드가 올바르게 설정되는지 확인한다.")
     void createPaidSessionTest() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
-        PaidSession paidSession = new PaidSession(1L, sessionBody, sessionEnrollment,50000L,        2);
+        PaidSession paidSession = new PaidSession(1L, sessionBody, sessionEnrollment, 50000L, 2);
         assertAll(
                 () -> assertThat("이펙티브 자바").isEqualTo(paidSession.getTitle()),
                 () -> assertThat(startDate).isEqualTo(paidSession.getPeriod().getStartDate()),
@@ -50,7 +50,7 @@ class PaidSessionTest {
     @Test
     void enrollUserSuccessfullyWhenStatusIsOpen() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
-        PaidSession paidSession = new PaidSession(1L, sessionBody, sessionEnrollment,50000L,        2);
+        PaidSession paidSession = new PaidSession(1L, sessionBody, sessionEnrollment, 50000L, 2);
 
         paidSession.enroll(NsUserTest.JAVAJIGI, new Payment("1", 1L, 1L, 50000L));
 
@@ -61,7 +61,7 @@ class PaidSessionTest {
     @Test
     void enrollTestThrowExceptionWhenStatusIsNotOpen() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.PREPARE);
-        PaidSession paidSession = new PaidSession(1L, sessionBody, sessionEnrollment,50000L,        2);
+        PaidSession paidSession = new PaidSession(1L, sessionBody, sessionEnrollment, 50000L, 2);
 
         assertThatThrownBy(() -> paidSession.enroll(NsUserTest.SANJIGI, new Payment("1", 1L, 1L, 50000L)))
                 .isInstanceOf(IllegalStateException.class)
@@ -72,7 +72,7 @@ class PaidSessionTest {
     @Test
     void failToEnrollUserWhenPaidAmountDoesNotMatchFee() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
-        PaidSession paidSession = new PaidSession(1L, sessionBody, sessionEnrollment,50000L,        2);
+        PaidSession paidSession = new PaidSession(1L, sessionBody, sessionEnrollment, 50000L, 2);
 
         assertThatThrownBy(() -> paidSession.enroll(NsUserTest.SANJIGI, new Payment("1", 1L, 1L, 49000L)))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -83,7 +83,7 @@ class PaidSessionTest {
     @Test
     void failToEnrollUserWhenMaxEnrollmentsReached() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
-        PaidSession paidSession = new PaidSession(1L, sessionBody, sessionEnrollment,50000L,        2);
+        PaidSession paidSession = new PaidSession(1L, sessionBody, sessionEnrollment, 50000L, 2);
 
         paidSession.enroll(NsUserTest.JAVAJIGI, new Payment("1", 1L, 1L, 50000L));
         paidSession.enroll(NsUserTest.SANJIGI, new Payment("1", 1L, 2L, 50000L));

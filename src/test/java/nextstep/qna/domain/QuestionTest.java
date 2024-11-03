@@ -21,8 +21,8 @@ public class QuestionTest {
     @Test
     void deleteQuestionTest() {
         assertThatThrownBy(
-                        () -> Q1.delete(NsUserTest.SANJIGI)
-                )
+                () -> Q1.delete(NsUserTest.SANJIGI)
+        )
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage(INVALID_OWNER_EXCEPTION_MESSAGE);
     }

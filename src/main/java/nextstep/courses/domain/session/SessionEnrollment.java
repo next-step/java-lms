@@ -33,7 +33,7 @@ public class SessionEnrollment {
     }
 
     public Set<NsUser> getEnrolledUsers() {
-        return Collections.unmodifiableSet(enrolledUsers)   ;
+        return Collections.unmodifiableSet(enrolledUsers);
     }
 
     public boolean isNotOpen() {

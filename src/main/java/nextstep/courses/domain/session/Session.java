@@ -4,8 +4,6 @@ import nextstep.courses.domain.cover.CoverImage;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 public abstract class Session {

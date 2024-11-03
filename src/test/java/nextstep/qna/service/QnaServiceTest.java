@@ -1,8 +1,8 @@
 package nextstep.qna.service;
 
-import nextstep.qna.exception.CannotDeleteException;
 import nextstep.qna.domain.*;
 import nextstep.qna.domain.repository.QuestionRepository;
+import nextstep.qna.exception.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
