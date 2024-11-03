@@ -26,7 +26,7 @@ public enum ImageExtension {
         this.text = text;
     }
 
-    public static Boolean isInvalidImageExtension(String text) {
+    public static boolean isInvalidImageExtension(String text) {
         return !IMAGE_EXTENSION_MAP.containsKey(text.toLowerCase());
     }
 
