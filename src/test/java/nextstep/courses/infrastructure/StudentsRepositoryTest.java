@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.time.LocalDateTime;
+
 import static nextstep.courses.domain.ApprovedStatus.DENIED;
 import static nextstep.courses.domain.CourseTest.C1;
 import static nextstep.courses.domain.CoverImageTest.*;
@@ -37,9 +39,13 @@ public class StudentsRepositoryTest {
 
     private StudentsRepository studentsRepository;
     private FreeSession freeSession;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     @BeforeEach
     void setUp() {
+        createdAt = LocalDateTime.of(2024, 10, 26, 10, 0);
+        updatedAt = LocalDateTime.of(2024, 11, 26, 10, 0);
         studentsRepository = new JdbcStudentsRepository(jdbcTemplate);
         Status prepare = Status.PREPARE;
         CoverImage coverImage = new CoverImage(1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200);
@@ -47,13 +53,13 @@ public class StudentsRepositoryTest {
                 C1.getId(), DATE_RANGE1,
                 coverImage, prepare,
                 COVER_IMAGE_LIST1, IN1, PROCESS, OPEN,
-                1L, START, START);
+                1L, createdAt, updatedAt);
     }
 
     @Test
     void crud() {
-        Students students = new Students(new Student(freeSession, JAVAJIGI, SELECTED, DENIED, START));
-        students.add(new Student(freeSession, SANJIGI, SELECTED, DENIED, START));
+        Students students = new Students(new Student(freeSession, JAVAJIGI, SELECTED, DENIED, createdAt));
+        students.add(new Student(freeSession, SANJIGI, SELECTED, DENIED, createdAt));
         int freeSessionSavedCount = studentsRepository.saveAll(students);
         assertThat(freeSessionSavedCount).isEqualTo(2);
 
@@ -69,33 +75,4 @@ public class StudentsRepositoryTest {
         jdbcTemplate.execute("delete from student");
         jdbcTemplate.execute("ALTER TABLE student ALTER COLUMN id RESTART WITH 1");
     }
-
-//    @Autowired
-//    private JdbcTemplate jdbcTemplate;
-//
-//    private StudentsRepository studentsRepository;
-//    private FreeSession freeSession;
-//
-//    @BeforeEach
-//    void setUp() {
-//        studentsRepository = new JdbcStudentsRepository(jdbcTemplate);
-//        freeSession = new FreeSession(1L, CourseTest.C1.getId(), new DateRange(START, END),
-//                new CoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200), Status.PREPARE,
-//                List.of(new CoverImage(1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200)), IN1, READY, CLOSED,
-//                1L, START, START);
-//    }
-//
-//    @Test
-//    void crud() {
-//        Students students = new Students(new Student(freeSession, NsUserTest.JAVAJIGI, START));
-//        students.add(new Student(freeSession, NsUserTest.SANJIGI, START));
-//        int freeSessionSavedCount = studentsRepository.saveAll(students);
-//        assertThat(freeSessionSavedCount).isEqualTo(2);
-//
-//        Students savedStudents = studentsRepository.findAllBySessionId(1L);
-//        LOGGER.info("savedStudents = {}", savedStudents);
-//        LOGGER.info("students = {}", students);
-//
-//        assertThat(students.size()).isEqualTo(savedStudents.size());
-//    }
 }

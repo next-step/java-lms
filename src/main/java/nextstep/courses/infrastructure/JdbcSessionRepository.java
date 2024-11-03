@@ -66,6 +66,7 @@ public class JdbcSessionRepository implements SessionRepository {
                         toLocalDateTime(rs.getTimestamp("end_at"))
                 ),
                 new CoverImage(
+                        rs.getLong("id"),
                         rs.getInt("cover_image_file_size"),
                         rs.getString("cover_image_type"),
                         rs.getInt("cover_image_width"),
@@ -123,7 +124,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 "creator_id, created_at, updated_at " +
                 "from session " +
                 "where id = ? ";
-        RowMapper<FreeSession> rowMapper = (rs, rowNum) -> new FreeSession(
+        RowMapper<FreeSession> rowMapper = (rs, rowNum) -> new FreeSession (
                 rs.getLong("id"),
                 rs.getLong("course_id"),
                 Category.valueOf(rs.getString("category")),
@@ -132,6 +133,7 @@ public class JdbcSessionRepository implements SessionRepository {
                         toLocalDateTime(rs.getTimestamp("end_at"))
                 ),
                 new CoverImage(
+                        rs.getLong("id"),
                         rs.getInt("cover_image_file_size"),
                         rs.getString("cover_image_type"),
                         rs.getInt("cover_image_width"),

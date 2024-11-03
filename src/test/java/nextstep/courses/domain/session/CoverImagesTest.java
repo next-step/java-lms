@@ -4,6 +4,7 @@ import nextstep.courses.domain.CoverImage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static nextstep.courses.domain.CoverImageTest.*;
@@ -14,11 +15,15 @@ public class CoverImagesTest {
 
     private CoverImage coverImage1;
     private CoverImage coverImage2;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     @BeforeEach
     void setUp() {
-        coverImage1 = new CoverImage(1L, 1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200, START, START);
-        coverImage2 = new CoverImage(2L, 1L, SIZE_512, IMAGE_TYPE_TEXT_JPG, WIDTH_450, HEIGHT_300, START, START);
+        createdAt = LocalDateTime.of(2024, 10, 26, 10, 0);
+        updatedAt = LocalDateTime.of(2024, 11, 26, 10, 0);
+        coverImage1 = new CoverImage(1L, 1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200, createdAt, updatedAt);
+        coverImage2 = new CoverImage(2L, 1L, SIZE_512, IMAGE_TYPE_TEXT_JPG, WIDTH_450, HEIGHT_300, createdAt, updatedAt);
     }
 
     @Test

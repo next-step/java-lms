@@ -37,14 +37,8 @@ public class PaidSessionTest {
     public static final int EXCEED_MAX_REGISTER_COUNT = 2;
     public static final long SESSION_AMOUNT = 10000L;
     public static final long NOT_MATCHED_AMOUNT = 9999L;
-    public static final PaidSession PS1 = new PaidSession(1L,
-            CourseTest.C1.getId(),
-            new DateRange(START, END),
-            new CoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200), Status.PREPARE,
-            List.of(new CoverImage(1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200)), IN1, READY, CLOSED,
-            MAX_REGISTER_COUNT, SESSION_AMOUNT,
-            1L, START, START);
 
+    private long sessionId;
     private PaidSession paidSession;
     private PaidSession exceedMaxRegisterCountPaidSession;
     private PaidSession closedPaidSession;
@@ -69,49 +63,53 @@ public class PaidSessionTest {
     private long courseId;
     private CoverImage coverImage;
     private Status status;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     @BeforeEach
     void setUp() {
-
-        coverImage = new CoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200);
+        sessionId = 1L;
+        coverImage = new CoverImage(sessionId, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200);
         status = Status.PREPARE;
         courseId = CourseTest.C1.getId();
         dateRange = new DateRange(START, END);
-        coverImages = List.of(new CoverImage(1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200));
+        coverImages = List.of(new CoverImage(sessionId, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200));
+        createdAt = LocalDateTime.of(2024, 10, 26, 10, 0);
+        updatedAt = LocalDateTime.of(2024, 11, 26, 10, 0);
 
-        paidSession = new PaidSession(1L,
+        paidSession = new PaidSession(sessionId,
                 courseId, dateRange,
                 coverImage, status,
                 coverImages, IN1, READY, OPEN,
                 MAX_REGISTER_COUNT, SESSION_AMOUNT,
-                1L, START, START);
+                1L, createdAt, updatedAt);
 
-        exceedMaxRegisterCountPaidSession = new PaidSession(1L,
+        exceedMaxRegisterCountPaidSession = new PaidSession(sessionId,
                 courseId, dateRange,
                 coverImage, status,
                 coverImages, IN1, READY, OPEN,
                 EXCEED_MAX_REGISTER_COUNT, SESSION_AMOUNT,
-                1L, START, START);
+                1L, createdAt, updatedAt);
 
-        closedPaidSession = new PaidSession(1L,
+        closedPaidSession = new PaidSession(sessionId,
                 courseId, dateRange, coverImage, status,
                 coverImages, IN1, READY, CLOSED,
                 MAX_REGISTER_COUNT, SESSION_AMOUNT,
-                1L, START, START);
+                1L, createdAt, updatedAt);
 
-        payment1 = new Payment("pay1", 1L, JAVAJIGI, SESSION_AMOUNT);
+        payment1 = new Payment("pay1", sessionId, JAVAJIGI, SESSION_AMOUNT);
         studentSelectedDenied1 = new Student(paidSession, JAVAJIGI, SELECTED, DENIED, LocalDateTime.now());
         studentSelectedApproved1 = new Student(paidSession, JAVAJIGI, SELECTED, APPROVED, LocalDateTime.now());
         studentRejectApproved1 = new Student(paidSession, JAVAJIGI, REJECTED, APPROVED, LocalDateTime.now());
         studentRejectDenied1 = new Student(paidSession, JAVAJIGI, REJECTED, DENIED, LocalDateTime.now());
 
-        payment2 = new Payment("pay2", 1L, SANJIGI, SESSION_AMOUNT);
+        payment2 = new Payment("pay2", sessionId, SANJIGI, SESSION_AMOUNT);
         studentSelectedDenied2 = new Student(paidSession, SANJIGI, SELECTED, DENIED, LocalDateTime.now());
         studentSelectedApproved2 = new Student(paidSession, SANJIGI, SELECTED, APPROVED, LocalDateTime.now());
         studentRejectApproved2 = new Student(paidSession, SANJIGI, REJECTED, APPROVED, LocalDateTime.now());
         studentRejectDenied2 = new Student(paidSession, SANJIGI, REJECTED, DENIED, LocalDateTime.now());
 
-        payment3 = new Payment("pay3", 1L, THIRDJIGI, SESSION_AMOUNT);
+        payment3 = new Payment("pay3", sessionId, THIRDJIGI, SESSION_AMOUNT);
         studentSelectedDenied3 = new Student(paidSession, THIRDJIGI, SELECTED, DENIED, LocalDateTime.now());
         studentSelectedApproved3 = new Student(paidSession, THIRDJIGI, SELECTED, APPROVED, LocalDateTime.now());
         studentRejectApproved3 = new Student(paidSession, THIRDJIGI, REJECTED, APPROVED, LocalDateTime.now());
@@ -124,11 +122,11 @@ public class PaidSessionTest {
 
     @Test
     void register_성공() {
-        PaidSession actual = new PaidSession(1L,
+        PaidSession actual = new PaidSession(sessionId,
                 courseId, dateRange, coverImage, status,
                 coverImages, IN1, READY, OPEN,
                 MAX_REGISTER_COUNT, SESSION_AMOUNT,
-                1L, START, START);
+                1L, createdAt, updatedAt);
 
         paidSession.register(payment1, studentSelectedDenied1);
         assertThat(actual).isNotEqualTo(paidSession);
@@ -182,7 +180,7 @@ public class PaidSessionTest {
                 courseId, dateRange, coverImage, status,
                 coverImages, IN1, READY, OPEN,
                 MAX_REGISTER_COUNT, SESSION_AMOUNT,
-                1L, START, START);
+                1L, createdAt, updatedAt);
         expected.register(payment1, studentSelectedApproved1);
         expected.register(payment2, studentSelectedApproved2);
         expected.register(payment3, studentSelectedApproved3);
@@ -213,7 +211,7 @@ public class PaidSessionTest {
                 courseId, dateRange, coverImage, status,
                 coverImages, IN1, READY, OPEN,
                 MAX_REGISTER_COUNT, SESSION_AMOUNT,
-                1L, START, START);
+                1L, createdAt, updatedAt);
         expected.register(payment1, studentRejectDenied1);
         expected.register(payment2, studentRejectDenied2);
         expected.register(payment3, studentRejectDenied3);
@@ -233,92 +231,4 @@ public class PaidSessionTest {
                 .isInstanceOf(NotMatchedInstructorException.class)
                 .hasMessage(NO_AUTH_INSTRUCTOR_TO_UPDATE_DENIED_STATUS_MESSAGE);
     }
-
-//    public static final int MAX_REGISTER_COUNT = 30;
-//    public static final long SESSION_AMOUNT = 10000L;
-//    public static final PaidSession PS1 = new PaidSession(1L,
-//            CourseTest.C1.getId(),
-//            new DateRange(START, END),
-//            new CoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200),
-//            Status.PREPARE,
-//            MAX_REGISTER_COUNT,
-//            SESSION_AMOUNT,
-//            1L,
-//            START,
-//            START);
-//    private PaidSession paidSession;
-//    private PaidSession exceedMaxRegisterCountPaidSession;
-//    private Payment payment1;
-//    private Payment payment2;
-//    private Payment payment3;
-//    private Payment paymentNotMatched;
-//
-//    @BeforeEach
-//    void setUp() {
-//        paidSession = new PaidSession(1L,
-//                CourseTest.C1.getId(),
-//                new DateRange(START, END),
-//                new CoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200),
-//                Status.PREPARE,
-//                MAX_REGISTER_COUNT,
-//                SESSION_AMOUNT,
-//                1L,
-//                START,
-//                START);
-//
-//        exceedMaxRegisterCountPaidSession = new PaidSession(1L,
-//                CourseTest.C1.getId(),
-//                new DateRange(START, END),
-//                new CoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200),
-//                Status.PREPARE,
-//                2,
-//                SESSION_AMOUNT,
-//                1L,
-//                START,
-//                START);
-//
-//        payment1 = new Payment("pay1", 1L, NsUserTest.JAVAJIGI, SESSION_AMOUNT);
-//        payment2 = new Payment("pay2", 1L, NsUserTest.SANJIGI, SESSION_AMOUNT);
-//        payment3 = new Payment("pay3", 1L, NsUserTest.THIRDJIGI, SESSION_AMOUNT);
-//        paymentNotMatched = new Payment("pay4", 1L, NsUserTest.JAVAJIGI, 9999L);
-//    }
-//
-//    @Test
-//    void register_성공() {
-//        PaidSession actual = new PaidSession(1L,
-//                CourseTest.C1.getId(),
-//                new DateRange(START, END),
-//                new CoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200),
-//                Status.PREPARE,
-//                MAX_REGISTER_COUNT,
-//                SESSION_AMOUNT,
-//                1L,
-//                START,
-//                START);
-//
-//        paidSession.register(payment1);
-//        assertThat(actual).isNotEqualTo(paidSession);
-//
-//        actual.register(payment1);
-//        assertThat(actual).isEqualTo(paidSession);
-//    }
-//
-//    @Test
-//    void register_강의_최대_수강인원_초과() {
-//        assertThatThrownBy(() -> {
-//            exceedMaxRegisterCountPaidSession.register(payment1);
-//            exceedMaxRegisterCountPaidSession.register(payment2);
-//            exceedMaxRegisterCountPaidSession.register(payment3);
-//        }).isInstanceOf(MaxStudentCapacityException.class)
-//                .hasMessage(MAX_STUDENT_CAPACITY_MESSAGE);
-//    }
-//
-//    @Test
-//    void register_결제한_금액과_수강료_불일치() {
-//        assertThatThrownBy(() -> {
-//            paidSession.register(paymentNotMatched);
-//        }).isInstanceOf(PaymentMismatchException.class)
-//                .hasMessage(PAYMENT_MISMATCH_MESSAGE);
-//    }
-
 }

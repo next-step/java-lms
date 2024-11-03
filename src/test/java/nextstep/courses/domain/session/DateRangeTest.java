@@ -5,7 +5,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.xml.crypto.Data;
 import java.time.LocalDateTime;
 
 import static nextstep.courses.domain.session.DateRange.END_BEFORE_START_MESSAGE;

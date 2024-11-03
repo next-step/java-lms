@@ -1,9 +1,9 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.RecruitmentClosedException;
 import nextstep.courses.domain.session.Category;
 import nextstep.courses.domain.session.DateRange;
 import nextstep.courses.domain.session.Status;
-import nextstep.courses.RecruitmentClosedException;
 
 import java.time.LocalDateTime;
 import java.util.List;

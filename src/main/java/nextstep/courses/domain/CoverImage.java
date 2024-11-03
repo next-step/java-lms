@@ -31,20 +31,6 @@ public class CoverImage {
         this(0L, sessionId, imageFileSize, imageType, imageSize, LocalDateTime.now(), LocalDateTime.now());
     }
 
-    // TODO : remove target(legacy code dependency)
-    public CoverImage(int imageFileSize,
-                      String imageTypeText,
-                      double width,
-                      double height) {
-        this(0L, 0L, new ImageFileSize(imageFileSize), ImageType.toImageType(imageTypeText), new ImageSize(width, height), LocalDateTime.now(), LocalDateTime.now());
-    }
-    // TODO : remove target(legacy code dependency)
-    public CoverImage(ImageFileSize imageFileSize,
-                      ImageType imageType,
-                      ImageSize imageSize) {
-        this(0L, 0L, imageFileSize, imageType, imageSize, LocalDateTime.now(), LocalDateTime.now());
-    }
-
     public CoverImage(long id,
                       long sessionId,
                       int imageFileSize,

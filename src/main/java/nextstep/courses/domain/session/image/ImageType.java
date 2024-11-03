@@ -2,9 +2,6 @@ package nextstep.courses.domain.session.image;
 
 import nextstep.courses.ImageTypeMismatchException;
 
-import java.util.Arrays;
-import java.util.Optional;
-
 public enum ImageType {
 
     gif,

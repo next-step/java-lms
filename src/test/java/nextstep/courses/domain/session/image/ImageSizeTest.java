@@ -9,7 +9,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import static nextstep.courses.domain.session.image.ImageSize.IMAGE_DIMENSION_MISMATCH_MESSAGE;
 import static nextstep.courses.domain.session.image.ImageSize.WIDTH_HEIGHT_MINIMUM_MESSAGE;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class ImageSizeTest {
 

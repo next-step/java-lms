@@ -1,9 +1,9 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.session.DateRange;
-import nextstep.courses.domain.session.Status;
 import nextstep.courses.NotMatchedInstructorException;
 import nextstep.courses.RecruitmentClosedException;
+import nextstep.courses.domain.session.DateRange;
+import nextstep.courses.domain.session.Status;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,29 +12,30 @@ import java.util.List;
 
 import static nextstep.courses.domain.ApprovedStatus.APPROVED;
 import static nextstep.courses.domain.ApprovedStatus.DENIED;
+import static nextstep.courses.domain.CourseTest.*;
+import static nextstep.courses.domain.CoverImageTest.*;
 import static nextstep.courses.domain.InstructorTest.IN1;
 import static nextstep.courses.domain.InstructorTest.IN2;
-import static nextstep.courses.domain.SelectedStatus.REJECTED;
-import static nextstep.courses.domain.SelectedStatus.SELECTED;
-import static nextstep.courses.domain.CoverImageTest.*;
-import static nextstep.courses.domain.session.DateRangeTest.END;
-import static nextstep.courses.domain.session.DateRangeTest.START;
 import static nextstep.courses.domain.ProcessStatus.READY;
 import static nextstep.courses.domain.RecruitmentStatus.CLOSED;
 import static nextstep.courses.domain.RecruitmentStatus.OPEN;
+import static nextstep.courses.domain.SelectedStatus.REJECTED;
+import static nextstep.courses.domain.SelectedStatus.SELECTED;
 import static nextstep.courses.domain.Session.*;
+import static nextstep.courses.domain.session.DateRangeTest.END;
+import static nextstep.courses.domain.session.DateRangeTest.START;
 import static nextstep.users.domain.NsUserTest.*;
-import static nextstep.users.domain.NsUserTest.THIRDJIGI;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class FreeSessionTest {
     public static final FreeSession FS1 = new FreeSession(1L,
-            CourseTest.C1.getId(),
+            C1.getId(),
             new DateRange(START, END),
             new CoverImage(1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200), Status.PREPARE,
             List.of(new CoverImage(1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200)), IN1, READY, CLOSED,
-            1L, START, START);
+            1L, LocalDateTime.of(2024, 10, 26, 10, 0), LocalDateTime.of(2024, 11, 26, 10, 0)
+    );
 
     private FreeSession freeSession;
     private long courseId;
@@ -54,12 +55,17 @@ public class FreeSessionTest {
     private Student studentRejectDenied3;
     private CoverImage coverImage;
     private Status status;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     @BeforeEach
     void setUp() {
-        courseId = CourseTest.C1.getId();
+        courseId = C1.getId();
         dateRange = new DateRange(START, END);
-        coverImages = List.of(new CoverImage(1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200 ));
+        coverImages = List.of(new CoverImage(1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200));
+
+        createdAt = LocalDateTime.of(2024, 10, 26, 10, 0);
+        updatedAt = LocalDateTime.of(2024, 11, 26, 10, 0);
 
         freeSession = new FreeSession(1L,
                 courseId, dateRange,
@@ -139,7 +145,7 @@ public class FreeSessionTest {
                 courseId, dateRange,
                 coverImage, status,
                 coverImages, IN1, READY, OPEN,
-                1L, START, START);
+                1L, createdAt, updatedAt);
         expected.register(studentSelectedApproved1);
         expected.register(studentSelectedApproved2);
         expected.register(studentSelectedApproved3);
@@ -170,7 +176,7 @@ public class FreeSessionTest {
                 courseId, dateRange,
                 coverImage, status,
                 coverImages, IN1, READY, OPEN,
-                1L, START, START);
+                1L, createdAt, updatedAt);
         expected.register(studentRejectDenied1);
         expected.register(studentRejectDenied2);
         expected.register(studentRejectDenied3);
@@ -190,43 +196,4 @@ public class FreeSessionTest {
                 .isInstanceOf(NotMatchedInstructorException.class)
                 .hasMessage(NO_AUTH_INSTRUCTOR_TO_UPDATE_DENIED_STATUS_MESSAGE);
     }
-//    public static final FreeSession FS1 = new FreeSession(1L,
-//            CourseTest.C1.getId(),
-//            new DateRange(START, END),
-//            new CoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200),
-//            Status.PREPARE,
-//            1L,
-//            START,
-//            START);
-//
-//    private FreeSession freeSession;
-//
-//    @BeforeEach
-//    void setUp() {
-//        freeSession = new FreeSession(1L,
-//                CourseTest.C1.getId(),
-//                new DateRange(START, END),
-//                new CoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200),
-//                Status.PREPARE,
-//                1L,
-//                LocalDateTime.now(),
-//                LocalDateTime.now());
-//    }
-//
-//    @Test
-//    void register_성공() {
-//        FreeSession actual = new FreeSession(1L,
-//                CourseTest.C1.getId(),
-//                new DateRange(START, END),
-//                new CoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200),
-//                Status.PREPARE,
-//                1L,
-//                LocalDateTime.now(),
-//                LocalDateTime.now());
-//        freeSession.register(new Student(freeSession,JAVAJIGI, START));
-//        assertThat(actual).isNotEqualTo(freeSession);
-//
-//        actual.register(new Student(freeSession,JAVAJIGI, START));
-//        assertThat(actual).isEqualTo(freeSession);
-//    }
 }

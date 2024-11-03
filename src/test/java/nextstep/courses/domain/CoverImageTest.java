@@ -1,15 +1,16 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.session.image.ImageFileSize;
-import nextstep.courses.domain.session.image.ImageType;
 import nextstep.courses.domain.session.image.ImageSize;
+import nextstep.courses.domain.session.image.ImageType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static nextstep.courses.domain.session.DateRangeTest.START;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CoverImageTest {
     public static final int SIZE_1024 = 1024 * 1024;
@@ -24,8 +25,8 @@ public class CoverImageTest {
     public static final double HEIGHT_300 = 300;
 
     public static final List<CoverImage> COVER_IMAGE_LIST1 = List.of(
-            new CoverImage(1L, 1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200, START, START),
-            new CoverImage(2L, 1L, SIZE_512, IMAGE_TYPE_TEXT_JPG, WIDTH_450, HEIGHT_300, START, START)
+            new CoverImage(1L, 1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200, LocalDateTime.of(2024, 10, 26, 10, 0), LocalDateTime.of(2024, 11, 26, 10, 0)),
+            new CoverImage(2L, 1L, SIZE_512, IMAGE_TYPE_TEXT_JPG, WIDTH_450, HEIGHT_300,LocalDateTime.of(2024, 10, 26, 10, 0), LocalDateTime.of(2024, 11, 26, 10, 0))
     );
 
     @Test

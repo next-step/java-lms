@@ -6,9 +6,6 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-
 import static nextstep.courses.infrastructure.util.LocalDateTimeFormatter.toLocalDateTime;
 
 @Repository("courseRepository")

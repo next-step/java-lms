@@ -1,11 +1,10 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.session.*;
 import nextstep.courses.NotMatchedInstructorException;
 import nextstep.courses.ProcessEndedException;
+import nextstep.courses.domain.session.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -72,12 +71,10 @@ public abstract class Session {
         this.coverImage = coverImage;
         this.status = status;
         this.coverImages = new CoverImages(coverImages);
-//        this.coverImages = coverImages;
         this.instructorId = instructorId;
         this.processStatus = processStatus;
         this.recruitmentStatus = recruitmentStatus;
         this.students = new Students();
-//        this.students = new ArrayList<>();
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -89,7 +86,6 @@ public abstract class Session {
         }
 
         this.students.each(Student::approved);
-//        this.students.forEach(Student::approved);
     }
 
     public void deniedAll(Instructor instructor) {
@@ -98,7 +94,6 @@ public abstract class Session {
         }
 
         this.students.each(Student::denied);
-//        this.students.forEach(Student::denied);
     }
 
     public long getId() {
@@ -166,82 +161,4 @@ public abstract class Session {
     public int hashCode() {
         return Objects.hash(id, courseId, category, dateRange, coverImages, instructorId, processStatus, recruitmentStatus, students, creatorId);
     }
-//    protected final long id;
-//    protected final long courseId;
-//    protected final Category category;
-//    protected final DateRange dateRange;
-//    protected final CoverImage coverImage;
-//    protected final Status status;
-//    protected final long creatorId;
-//    protected final LocalDateTime createdAt;
-//    protected LocalDateTime updatedAt;
-//
-//    public Session(long id,
-//                   long courseId,
-//                   Category category,
-//                   DateRange dateRange,
-//                   CoverImage coverImage,
-//                   Status status,
-//                   long creatorId,
-//                   LocalDateTime createdAt,
-//                   LocalDateTime updatedAt) {
-//        this.id = id;
-//        this.category = category;
-//        this.courseId = courseId;
-//        this.dateRange = dateRange;
-//        this.coverImage = coverImage;
-//        this.status = status;
-//        this.creatorId = creatorId;
-//        this.createdAt = createdAt;
-//        this.updatedAt = updatedAt;
-//    }
-//
-//    public long getId() {
-//        return id;
-//    }
-//
-//    public long getCourseId() {
-//        return courseId;
-//    }
-//
-//    public Category getCategory() {
-//        return category;
-//    }
-//
-//    public DateRange getDateRange() {
-//        return dateRange;
-//    }
-//
-//    public CoverImage getCoverImage() {
-//        return coverImage;
-//    }
-//
-//    public Status getStatus() {
-//        return status;
-//    }
-//
-//    public long getCreatorId() {
-//        return creatorId;
-//    }
-//
-//    public LocalDateTime getCreatedAt() {
-//        return createdAt;
-//    }
-//
-//    public LocalDateTime getUpdatedAt() {
-//        return updatedAt;
-//    }
-//
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        Session session = (Session) o;
-//        return id == session.id && courseId == session.courseId && creatorId == session.creatorId && Objects.equals(dateRange, session.dateRange) && Objects.equals(coverImage, session.coverImage) && status == session.status;
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(id, courseId, dateRange, coverImage, status, creatorId);
-//    }
 }
