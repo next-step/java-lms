@@ -19,20 +19,20 @@ class ImageDimensionTest {
         assertThat(imageDimension.getHeight()).isEqualTo(height);
     }
 
-    @DisplayName("이미지의 크기 또는 비율이 유효하지 않을 때 예외가 발생한다.")
+    @DisplayName("이미지의 크기가 유효하지 않으면 예외가 발생한다.")
     @Test
-    void throwExceptionWhenDimensionsAreInvalid() {
+    void throwExceptionWhenImageSizeInvalid() {
         assertThatThrownBy(() -> ImageDimension.of(250, 200))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("이미지의 크기와 비율이 유효하지 않습니다.");
+                .hasMessage("이미지의 크기가 유효하지 않습니다.");
+    }
 
-        assertThatThrownBy(() -> ImageDimension.of(250, 200))
+    @DisplayName("이미지의 비율이 유효하지 않으면 예외가 발생한다.")
+    @Test
+    void throwExceptionWhenImageRatioInvalid() {
+        assertThatThrownBy(() -> ImageDimension.of(400, 300))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("이미지의 크기와 비율이 유효하지 않습니다.");
-
-        assertThatThrownBy(() -> ImageDimension.of(250, 200))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("이미지의 크기와 비율이 유효하지 않습니다.");
+                .hasMessage("이미지의 비율이 유효하지 않습니다.");
     }
 }
 
