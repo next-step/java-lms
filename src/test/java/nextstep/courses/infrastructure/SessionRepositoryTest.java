@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 import static nextstep.courses.domain.PaidSessionTest.MAX_REGISTER_COUNT;
 import static nextstep.courses.domain.PaidSessionTest.SESSION_AMOUNT;
 import static nextstep.courses.domain.session.CoverImageTest.*;
-import static nextstep.courses.domain.session.CoverImageTest.HEIGHT;
 import static nextstep.courses.domain.session.DateRangeTest.END;
 import static nextstep.courses.domain.session.DateRangeTest.START;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,7 +45,7 @@ public class SessionRepositoryTest {
         FreeSession freeSession = new FreeSession(1L,
                 course.getId(),
                 new DateRange(START, END),
-                new CoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT),
+                new CoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200),
                 Status.PREPARE,
                 1L,
                 LocalDateTime.now(),
@@ -67,7 +66,7 @@ public class SessionRepositoryTest {
         PaidSession paidSession = new PaidSession(1L,
                 course.getId(),
                 new DateRange(START, END),
-                new CoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT),
+                new CoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200),
                 Status.PREPARE,
                 MAX_REGISTER_COUNT,
                 SESSION_AMOUNT,

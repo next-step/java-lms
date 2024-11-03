@@ -38,7 +38,7 @@ public class StudentsRepositoryTest {
         freeSession = new FreeSession(1L,
                 CourseTest.C1.getId(),
                 new DateRange(START, END),
-                new CoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT),
+                new CoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200),
                 Status.PREPARE,
                 1L,
                 START,

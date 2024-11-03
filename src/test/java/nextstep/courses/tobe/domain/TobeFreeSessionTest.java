@@ -1,6 +1,7 @@
 package nextstep.courses.tobe.domain;
 
 import nextstep.courses.domain.CourseTest;
+import nextstep.courses.domain.session.CoverImageTest;
 import nextstep.courses.domain.session.DateRange;
 import nextstep.courses.tobe.NotMatchedInstructorException;
 import nextstep.courses.tobe.RecruitmentClosedException;
@@ -11,6 +12,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static nextstep.courses.domain.session.CoverImageTest.*;
+import static nextstep.courses.domain.session.CoverImageTest.HEIGHT_200;
+import static nextstep.courses.domain.session.CoverImageTest.IMAGE_TYPE_TEXT_GIF;
+import static nextstep.courses.domain.session.CoverImageTest.SIZE_1024;
+import static nextstep.courses.domain.session.CoverImageTest.WIDTH_300;
 import static nextstep.courses.domain.session.DateRangeTest.END;
 import static nextstep.courses.domain.session.DateRangeTest.START;
 import static nextstep.courses.domain.ApprovedStatus.APPROVED;
@@ -33,7 +38,7 @@ public class TobeFreeSessionTest {
     public static final TobeFreeSession TFS1 = new TobeFreeSession(1L,
             CourseTest.C1.getId(),
             new DateRange(START, END),
-            List.of(new TobeCoverImage(1L, SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT)),
+            List.of(new TobeCoverImage(1L, SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200)),
             IN1,
             READY, CLOSED,
             1L, START, START);

@@ -28,8 +28,7 @@
     - recruitment_status column 추가
   - CoverImages 추가(coverImageId 필드 추가)
     - cover_image table 추가
-    - CoverImage 수정
-      - id, 
+    - ~~CoverImage 수정~~
   - ~~Instructor 추가~~
     - instructor table 추가
   - ~~Student 수정~~

@@ -20,8 +20,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SessionTest {
 
-    public static final FreeSession FREE_SESSION1 = new FreeSession(1L, CourseTest.C1.getId(), new DateRange(START, END), new CoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT), Status.PREPARE, 1L, LocalDateTime.now(), LocalDateTime.now());
-    public static final PaidSession PAID_SESSION1 = new PaidSession(1L, CourseTest.C1.getId(), new DateRange(START, END), new CoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT), Status.PREPARE, MAX_REGISTER_COUNT, SESSION_AMOUNT, 1L, LocalDateTime.now(), LocalDateTime.now());
+    public static final FreeSession FREE_SESSION1 = new FreeSession(1L, CourseTest.C1.getId(), new DateRange(START, END), new CoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200), Status.PREPARE, 1L, LocalDateTime.now(), LocalDateTime.now());
+    public static final PaidSession PAID_SESSION1 = new PaidSession(1L, CourseTest.C1.getId(), new DateRange(START, END), new CoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200), Status.PREPARE, MAX_REGISTER_COUNT, SESSION_AMOUNT, 1L, LocalDateTime.now(), LocalDateTime.now());
 
     private DateRange dateRange;
     private CoverImage coverImage;
@@ -34,11 +34,11 @@ public class SessionTest {
     @BeforeEach
     void setUp() {
         dateRange = new DateRange(START, END);
-        coverImage = new CoverImage(SIZE, IMAGE_TYPE_TEXT, WIDTH, HEIGHT);
+        coverImage =new CoverImage(SIZE_1024, IMAGE_TYPE_TEXT_GIF, WIDTH_300, HEIGHT_200);
 
-        imageFileSize = new ImageFileSize(SIZE);
-        imageType = ImageType.toImageType(IMAGE_TYPE_TEXT);
-        imageSize = new ImageSize(WIDTH, HEIGHT);
+        imageFileSize = new ImageFileSize(SIZE_1024);
+        imageType = ImageType.toImageType(IMAGE_TYPE_TEXT_GIF);
+        imageSize = new ImageSize(WIDTH_300, HEIGHT_200);
 
         wrappedCoverImage = new CoverImage(
                 imageFileSize,
