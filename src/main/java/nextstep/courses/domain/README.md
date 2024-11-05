@@ -79,3 +79,4 @@
 ## 2단계 3차 리뷰 사항
 - [X] 중복 신청 예외 처리 SessionEnrollment 이동
 - [X] DisplayName 오타 수정
+- [X] isEnrollmentFull 테스트 추가

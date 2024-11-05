@@ -34,4 +34,16 @@ class SessionEnrollmentTest {
         assertThat(sessionEnrollmentCloses.isNotOpen()).isTrue();
     }
 
+    @Test
+    @DisplayName("수강인원 초과여부를 알 수 있다.")
+    void isEnrollmentFullTest() {
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
+        sessionEnrollment.enrollUser(NsUserTest.SANJIGI);
+        sessionEnrollment.enrollUser(NsUserTest.JAVAJIGI);
+
+        assertThat(sessionEnrollment.isEnrollmentFull(2)).isTrue();
+        assertThat(sessionEnrollment.isEnrollmentFull(3)).isFalse();
+    }
+
+
 }
