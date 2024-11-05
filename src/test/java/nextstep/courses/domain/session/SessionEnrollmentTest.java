@@ -5,18 +5,20 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SessionEnrollmentTest {
 
 
-    @DisplayName("동일한 유저를 중복 등록하지 않는다.")
+    @DisplayName("동일한 유저를 중복 등록하려고 하면 예외가 발생한다.")
     @Test
     void enrollUserDoesNotAllowDuplicates() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
+        sessionEnrollment.enrollUser(NsUserTest.SANJIGI);
 
-        sessionEnrollment.enrollUser(NsUserTest.SANJIGI);
-        sessionEnrollment.enrollUser(NsUserTest.SANJIGI);
-        assertThat(sessionEnrollment.size()).isEqualTo(1);
+        assertThatThrownBy(() -> sessionEnrollment.enrollUser(NsUserTest.SANJIGI))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("중복된 수강신청입니다.");
     }
 
     @Test

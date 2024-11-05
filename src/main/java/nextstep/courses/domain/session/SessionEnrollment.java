@@ -21,7 +21,19 @@ public class SessionEnrollment {
     }
 
     public void enrollUser(NsUser user) {
+        validateDuplicateEnrollment(user);
+
         enrolledUsers.add(user);
+    }
+
+    public void validateDuplicateEnrollment(NsUser nsUser) {
+        if (isDuplicateEnrolledUser(nsUser)) {
+            throw new IllegalStateException("중복된 수강신청입니다.");
+        }
+    }
+
+    private boolean isDuplicateEnrolledUser(NsUser nsUser) {
+        return enrolledUsers.contains(nsUser);
     }
 
     public int size() {

@@ -30,16 +30,6 @@ public abstract class Session {
         return sessionEnrollment.isNotOpen();
     }
 
-    public void validateDuplicateEnrollment(NsUser nsUser) {
-        if (isDuplicateEnrolledUser(nsUser)) {
-            throw new IllegalStateException("중복된 수강신청입니다.");
-        }
-    }
-
-    private boolean isDuplicateEnrolledUser(NsUser nsUser) {
-        return sessionEnrollment.contains(nsUser);
-    }
-
     public String getTitle() {
         return sessionBody.getTitle();
     }

@@ -12,7 +12,6 @@ public class FreeSession extends Session {
     @Override
     public void enroll(NsUser nsUser, Payment payment) {
         validateSessionStatus();
-        validateDuplicateEnrollment(nsUser);
 
         sessionEnrollment.enrollUser(nsUser);
     }

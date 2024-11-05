@@ -18,7 +18,6 @@ public class PaidSession extends Session {
     @Override
     public void enroll(NsUser nsUser, Payment payment) {
         validateSessionStatus();
-        validateDuplicateEnrollment(nsUser);
         validatePaymentAmount(payment);
         validateNumberOfEnrollment();
 
