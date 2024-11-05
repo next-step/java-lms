@@ -33,7 +33,7 @@ class PaidSessionTest {
     }
 
     @Test
-    @DisplayName("무료 강의 생성 시 필드가 올바르게 설정되는지 확인한다.")
+    @DisplayName("유료 강의 생성 시 필드가 올바르게 설정되는지 확인한다.")
     void createPaidSessionTest() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
         PaidSession paidSession = new PaidSession(1L, sessionBody, sessionEnrollment, 50000L, 2);
