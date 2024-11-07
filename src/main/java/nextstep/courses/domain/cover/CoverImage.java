@@ -2,18 +2,24 @@ package nextstep.courses.domain.cover;
 
 public class CoverImage {
 
+    private final String fileName;
     private final ImageSize imageSize;
     private final ImageExtension extension;
     private final ImageDimension imageDimension;
 
-    private CoverImage(ImageSize imageSize, String extension, ImageDimension imageDimension) {
+    private CoverImage(String fileName, ImageSize imageSize, String extension, ImageDimension imageDimension) {
+        this.fileName = fileName;
         this.imageSize = imageSize;
         this.extension = ImageExtension.getExtension(extension);
         this.imageDimension = imageDimension;
     }
 
-    public static CoverImage of(ImageSize imageSize, String extension, ImageDimension imageDimension) {
-        return new CoverImage(imageSize, extension, imageDimension);
+    public static CoverImage of(String filename, ImageSize imageSize, String extension, ImageDimension imageDimension) {
+        return new CoverImage(filename, imageSize, extension, imageDimension);
+    }
+
+    public String getFileName() {
+        return fileName;
     }
 
     public int getImageSize() {
