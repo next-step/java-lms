@@ -1,0 +1,74 @@
+package nextstep.courses.infrastructure;
+
+import nextstep.courses.domain.cover.CoverImage;
+import nextstep.courses.domain.cover.ImageDimension;
+import nextstep.courses.domain.cover.ImageExtension;
+import nextstep.courses.domain.cover.ImageSize;
+import nextstep.courses.domain.session.*;
+import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NsUserTest;
+import nextstep.users.domain.UserRepository;
+import nextstep.users.infrastructure.JdbcUserRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.time.LocalDateTime;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@JdbcTest
+class EnrollmentRepositoryTest {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    private EnrollmentRepository enrollmentRepository;
+
+    private UserRepository userRepository;
+
+    private SessionRepository sessionRepository;
+
+    private Long sessionId;
+
+    @BeforeEach
+    void setUp() {
+        userRepository = new JdbcUserRepository(jdbcTemplate);
+        enrollmentRepository = new JdbcEnrollmentRepository(jdbcTemplate, userRepository);
+        sessionRepository = new JdbcSessionRepository(jdbcTemplate, new JdbcCoverImageRepository(jdbcTemplate), enrollmentRepository);
+
+        CoverImage coverImage = CoverImage.of("file.jpg", ImageSize.of(1000), ImageExtension.JPG.name(), ImageDimension.of(300, 200));
+        SessionPeriod period = SessionPeriod.of(LocalDateTime.now(), LocalDateTime.now().plusDays(7));
+        Session session = new FreeSession(1L, SessionBody.of(1L, "테스트 세션", period, coverImage), SessionEnrollment.of(SessionStatus.OPEN, Set.of()));
+        sessionRepository.save(session);
+        sessionId = session.getId();
+    }
+
+    @DisplayName("사용자를 수강신청하고 수강신청된 사용자들을 조회할 수 있다.")
+    @Test
+    void enrollAndFindEnrolledUsersBySessionId() {
+        enrollmentRepository.enrollUser(sessionId, NsUserTest.JAVAJIGI);
+        enrollmentRepository.enrollUser(sessionId, NsUserTest.SANJIGI);
+
+        Set<NsUser> enrolledUsers = enrollmentRepository.findEnrolledUsersBySessionId(sessionId);
+
+        assertThat(enrolledUsers).hasSize(2);
+    }
+
+    @DisplayName("중복 수강 신청 시 동일한 사용자는 한 번만 등록된다.")
+    @Test
+    void duplicateEnrollment() {
+        enrollmentRepository.enrollUser(sessionId, NsUserTest.JAVAJIGI);
+        enrollmentRepository.enrollUser(sessionId, NsUserTest.JAVAJIGI);
+
+        Set<NsUser> enrolledUsers = enrollmentRepository.findEnrolledUsersBySessionId(sessionId);
+
+        assertThat(enrolledUsers).hasSize(1);
+    }
+
+
+}
