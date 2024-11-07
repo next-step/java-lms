@@ -16,8 +16,17 @@ public class SessionEnrollment {
         this.enrolledUsers = new HashSet<>();
     }
 
+    private SessionEnrollment(SessionStatus sessionStatus, Set<NsUser> enrolledUsers) {
+        this.sessionStatus = sessionStatus;
+        this.enrolledUsers = enrolledUsers;
+    }
+
     public static SessionEnrollment of(SessionStatus sessionStatus) {
         return new SessionEnrollment(sessionStatus);
+    }
+
+    public static SessionEnrollment of(SessionStatus sessionStatus, Set<NsUser> enrolledUsers) {
+        return new SessionEnrollment(sessionStatus, enrolledUsers);
     }
 
     public void enrollUser(NsUser user) {
@@ -52,7 +61,8 @@ public class SessionEnrollment {
         return sessionStatus != SessionStatus.OPEN;
     }
 
-    public boolean contains(NsUser nsUser) {
-        return enrolledUsers.contains(nsUser);
+    public SessionStatus getSessionStatus() {
+        return sessionStatus;
     }
+
 }

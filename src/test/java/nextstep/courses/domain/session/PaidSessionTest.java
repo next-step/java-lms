@@ -28,8 +28,8 @@ class PaidSessionTest {
         startDate = LocalDateTime.of(2024, 1, 1, 10, 0);
         endDate = LocalDateTime.of(2024, 1, 10, 18, 0);
         period = SessionPeriod.of(startDate, endDate);
-        coverImage = CoverImage.of(ImageSize.of(500 * 1024), "jpg", ImageDimension.of(300, 200));
-        sessionBody = SessionBody.of("이펙티브 자바", period, coverImage);
+        coverImage = CoverImage.of("effective java", ImageSize.of(500 * 1024), "jpg", ImageDimension.of(300, 200));
+        sessionBody = SessionBody.of(1L, "이펙티브 자바", period, coverImage);
     }
 
     @Test
@@ -91,6 +91,34 @@ class PaidSessionTest {
         assertThatThrownBy(() -> paidSession.enroll(NsUserTest.POBIJIGI, new Payment("1", 1L, 3L, 50000L)))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("수강 인원이 초과되었습니다.");
+    }
+
+    @Test
+    @DisplayName("수강료(fee)가 0이거나 음수일 때 예외 발생")
+    void validateFeeTest() {
+        long invalidFee = 0;
+        int validMaxEnrollments = 10;
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
+
+        assertThatThrownBy(
+                () -> new PaidSession(1L, sessionBody, sessionEnrollment, invalidFee, validMaxEnrollments)
+        )
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("유료 강의는 수강료가 0원을 초과하여야 합니다.");
+    }
+
+    @Test
+    @DisplayName("최대 수강 인원이 0이거나 음수일 때 예외 발생한다.")
+    void validateMaxEnrollmentsTest() {
+        long validFee = 10000;
+        int invalidMaxEnrollments = 0;
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
+
+        assertThatThrownBy(
+                () -> new PaidSession(1L, sessionBody, sessionEnrollment, validFee, invalidMaxEnrollments)
+        )
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("유료 강의는 최대 수강 인원 1명 이상이어야 합니다.");
     }
 
 }

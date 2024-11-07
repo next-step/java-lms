@@ -27,7 +27,7 @@ class FreeSessionTest {
         ImageSize imageSize = ImageSize.of(500 * 1024);
         ImageDimension imageDimension = ImageDimension.of(300, 200);
 
-        sessionBody = SessionBody.of(title, SessionPeriod.of(startDate, endDate), CoverImage.of(imageSize, "jpg", imageDimension));
+        sessionBody = SessionBody.of(1L, title, SessionPeriod.of(startDate, endDate), CoverImage.of("learning java", imageSize, "jpg", imageDimension));
     }
 
     @Test

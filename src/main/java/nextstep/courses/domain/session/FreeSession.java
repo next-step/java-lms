@@ -5,6 +5,9 @@ import nextstep.users.domain.NsUser;
 
 public class FreeSession extends Session {
 
+    private final long fee = 0;
+    private final int maxEnrollments = 0;
+
     public FreeSession(Long id, SessionBody sessionBody, SessionEnrollment sessionEnrollment) {
         super(id, sessionBody, sessionEnrollment);
     }
@@ -16,4 +19,13 @@ public class FreeSession extends Session {
         sessionEnrollment.enrollUser(nsUser);
     }
 
+    @Override
+    public long getFee() {
+        return fee;
+    }
+
+    @Override
+    public int getMaxEnrollments() {
+        return maxEnrollments;
+    }
 }

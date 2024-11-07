@@ -4,18 +4,21 @@ import nextstep.courses.domain.cover.CoverImage;
 
 public class SessionBody {
 
-    private final String title;
-    private final SessionPeriod period;
-    private final CoverImage coverImage;
+    private long courseId;
+    private String title;
+    private SessionPeriod period;
+    private CoverImage coverImage;
 
-    private SessionBody(String title, SessionPeriod period, CoverImage coverImage) {
+
+    private SessionBody(long courseId, String title, SessionPeriod period, CoverImage coverImage) {
+        this.courseId = courseId;
         this.title = title;
         this.period = period;
         this.coverImage = coverImage;
     }
 
-    public static SessionBody of(String title, SessionPeriod period, CoverImage coverImage) {
-        return new SessionBody(title, period, coverImage);
+    public static SessionBody of(long courseId, String title, SessionPeriod period, CoverImage coverImage) {
+        return new SessionBody(courseId, title, period, coverImage);
     }
 
     public String getTitle() {
@@ -29,5 +32,10 @@ public class SessionBody {
     public CoverImage getCoverImage() {
         return coverImage;
     }
+
+    public long getCourseId() {
+        return courseId;
+    }
+
 
 }
