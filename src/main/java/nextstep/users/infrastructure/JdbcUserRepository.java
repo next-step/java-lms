@@ -38,4 +38,20 @@ public class JdbcUserRepository implements UserRepository {
         }
         return timestamp.toLocalDateTime();
     }
+
+    @Override
+    public Optional<NsUser> findById(Long id) {
+        String sql = "SELECT * FROM ns_user WHERE id = ?";
+        return Optional.of(jdbcTemplate.queryForObject(sql, userRowMapper, id));
+    }
+
+    private final RowMapper<NsUser> userRowMapper = (rs, rowNum) -> new NsUser(
+            rs.getLong("id"),
+            rs.getString("user_id"),
+            rs.getString("password"),
+            rs.getString("name"),
+            rs.getString("email"),
+            rs.getTimestamp("created_at").toLocalDateTime(),
+            rs.getTimestamp("updated_at") != null ? rs.getTimestamp("updated_at").toLocalDateTime() : null
+    );
 }
