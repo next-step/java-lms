@@ -51,8 +51,8 @@ class EnrollmentRepositoryTest {
     @DisplayName("사용자를 수강신청하고 수강신청된 사용자들을 조회할 수 있다.")
     @Test
     void enrollAndFindEnrolledUsersBySessionId() {
-        enrollmentRepository.enrollUser(sessionId, NsUserTest.JAVAJIGI);
-        enrollmentRepository.enrollUser(sessionId, NsUserTest.SANJIGI);
+        enrollmentRepository.save(sessionId, NsUserTest.JAVAJIGI);
+        enrollmentRepository.save(sessionId, NsUserTest.SANJIGI);
 
         Set<NsUser> enrolledUsers = enrollmentRepository.findEnrolledUsersBySessionId(sessionId);
 
@@ -62,8 +62,8 @@ class EnrollmentRepositoryTest {
     @DisplayName("중복 수강 신청 시 동일한 사용자는 한 번만 등록된다.")
     @Test
     void duplicateEnrollment() {
-        enrollmentRepository.enrollUser(sessionId, NsUserTest.JAVAJIGI);
-        enrollmentRepository.enrollUser(sessionId, NsUserTest.JAVAJIGI);
+        enrollmentRepository.save(sessionId, NsUserTest.JAVAJIGI);
+        enrollmentRepository.save(sessionId, NsUserTest.JAVAJIGI);
 
         Set<NsUser> enrolledUsers = enrollmentRepository.findEnrolledUsersBySessionId(sessionId);
 

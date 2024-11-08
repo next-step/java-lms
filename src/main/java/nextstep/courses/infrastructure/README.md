@@ -1,7 +1,7 @@
 ## 3단계 1차 리뷰 사항
 
 ### EnrollmentRepository
-- [ ] enrollUser -> save 로 변경
+- [X] enrollUser -> save 로 변경
 
 ### FreeSession
 - [ ] getFee 메서드 리턴값 0 고정

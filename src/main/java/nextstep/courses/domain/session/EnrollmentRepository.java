@@ -7,5 +7,5 @@ import java.util.Set;
 public interface EnrollmentRepository {
     Set<NsUser> findEnrolledUsersBySessionId(Long sessionId);
 
-    void enrollUser(Long sessionId, NsUser user);
+    void save(Long sessionId, NsUser user);
 }

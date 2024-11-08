@@ -29,6 +29,6 @@ public class SessionService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강의입니다."));
 
         session.enroll(loginUser, paymentService.payment(loginUser.getUserId()));
-        enrollmentRepository.enrollUser(sessionId, loginUser);
+        enrollmentRepository.save(sessionId, loginUser);
     }
 }

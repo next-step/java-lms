@@ -36,7 +36,7 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
     }
 
     @Override
-    public void enrollUser(Long sessionId, NsUser user) {
+    public void save(Long sessionId, NsUser user) {
         String sql = "INSERT INTO enrollment (session_id, user_id) VALUES (?, ?)";
         jdbcTemplate.update(sql, sessionId, user.getId());
     }
