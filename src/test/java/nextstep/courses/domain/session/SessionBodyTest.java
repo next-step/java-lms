@@ -28,7 +28,7 @@ class SessionBodyTest {
         CoverImage coverImage = CoverImage.of("effective java",ImageSize.of(imageSize), "jpg", ImageDimension.of(width, height));
 
 
-        SessionBody sessionBody = SessionBody.of(1L, title, sessionPeriod, coverImage);
+        SessionBody sessionBody = SessionBody.of(title, sessionPeriod, coverImage);
 
         assertAll(
                 () -> assertThat(title).isEqualTo(sessionBody.getTitle()),

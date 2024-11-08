@@ -8,8 +8,8 @@ public class PaidSession extends Session {
     private final long fee;
     private final int maxEnrollments;
 
-    public PaidSession(Long id, SessionBody sessionBody, SessionEnrollment sessionEnrollment, long fee, int maxEnrollments) {
-        super(id, sessionBody, sessionEnrollment);
+    public PaidSession(long id, long courseId, SessionBody sessionBody, SessionEnrollment sessionEnrollment, long fee, int maxEnrollments) {
+        super(id, courseId, sessionBody, sessionEnrollment);
 
         validatePaidSession(fee, maxEnrollments);
 

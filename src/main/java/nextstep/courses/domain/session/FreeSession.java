@@ -8,8 +8,8 @@ public class FreeSession extends Session {
     private final long fee = 0;
     private final int maxEnrollments = 0;
 
-    public FreeSession(Long id, SessionBody sessionBody, SessionEnrollment sessionEnrollment) {
-        super(id, sessionBody, sessionEnrollment);
+    public FreeSession(long id, long courseId, SessionBody sessionBody, SessionEnrollment sessionEnrollment) {
+        super(id, courseId, sessionBody, sessionEnrollment);
     }
 
     @Override

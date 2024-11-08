@@ -10,11 +10,13 @@ import java.util.Set;
 public abstract class Session {
 
     protected long id;
+    protected long courseId;
     protected SessionBody sessionBody;
     protected SessionEnrollment sessionEnrollment;
 
-    protected Session(long id, SessionBody sessionBody, SessionEnrollment sessionEnrollment) {
+    protected Session(long id, long courseId, SessionBody sessionBody, SessionEnrollment sessionEnrollment) {
         this.id = id;
+        this.courseId = courseId;
         this.sessionBody = sessionBody;
         this.sessionEnrollment = sessionEnrollment;
     }
@@ -68,9 +70,7 @@ public abstract class Session {
     }
 
     public long getCourseId() {
-        return sessionBody.getCourseId();
+        return courseId;
     }
-
-
 
 }

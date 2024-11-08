@@ -29,14 +29,14 @@ class PaidSessionTest {
         endDate = LocalDateTime.of(2024, 1, 10, 18, 0);
         period = SessionPeriod.of(startDate, endDate);
         coverImage = CoverImage.of("effective java", ImageSize.of(500 * 1024), "jpg", ImageDimension.of(300, 200));
-        sessionBody = SessionBody.of(1L, "이펙티브 자바", period, coverImage);
+        sessionBody = SessionBody.of("이펙티브 자바", period, coverImage);
     }
 
     @Test
     @DisplayName("유료 강의 생성 시 필드가 올바르게 설정되는지 확인한다.")
     void createPaidSessionTest() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
-        PaidSession paidSession = new PaidSession(1L, sessionBody, sessionEnrollment, 50000L, 2);
+        PaidSession paidSession = new PaidSession(1L, 1L, sessionBody, sessionEnrollment, 50000L, 2);
         assertAll(
                 () -> assertThat("이펙티브 자바").isEqualTo(paidSession.getTitle()),
                 () -> assertThat(startDate).isEqualTo(paidSession.getPeriod().getStartDate()),
@@ -50,7 +50,7 @@ class PaidSessionTest {
     @Test
     void enrollUserSuccessfullyWhenStatusIsOpen() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
-        PaidSession paidSession = new PaidSession(1L, sessionBody, sessionEnrollment, 50000L, 2);
+        PaidSession paidSession = new PaidSession(1L, 1L, sessionBody, sessionEnrollment, 50000L, 2);
 
         paidSession.enroll(NsUserTest.JAVAJIGI, new Payment("1", 1L, 1L, 50000L));
 
@@ -61,7 +61,7 @@ class PaidSessionTest {
     @Test
     void enrollTestThrowExceptionWhenStatusIsNotOpen() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.PREPARE);
-        PaidSession paidSession = new PaidSession(1L, sessionBody, sessionEnrollment, 50000L, 2);
+        PaidSession paidSession = new PaidSession(1L, 1L, sessionBody, sessionEnrollment, 50000L, 2);
 
         assertThatThrownBy(() -> paidSession.enroll(NsUserTest.SANJIGI, new Payment("1", 1L, 1L, 50000L)))
                 .isInstanceOf(IllegalStateException.class)
@@ -72,7 +72,7 @@ class PaidSessionTest {
     @Test
     void failToEnrollUserWhenPaidAmountDoesNotMatchFee() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
-        PaidSession paidSession = new PaidSession(1L, sessionBody, sessionEnrollment, 50000L, 2);
+        PaidSession paidSession = new PaidSession(1L, 1L, sessionBody, sessionEnrollment, 50000L, 2);
 
         assertThatThrownBy(() -> paidSession.enroll(NsUserTest.SANJIGI, new Payment("1", 1L, 1L, 49000L)))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -83,7 +83,7 @@ class PaidSessionTest {
     @Test
     void failToEnrollUserWhenMaxEnrollmentsReached() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
-        PaidSession paidSession = new PaidSession(1L, sessionBody, sessionEnrollment, 50000L, 2);
+        PaidSession paidSession = new PaidSession(1L, 1L, sessionBody, sessionEnrollment, 50000L, 2);
 
         paidSession.enroll(NsUserTest.JAVAJIGI, new Payment("1", 1L, 1L, 50000L));
         paidSession.enroll(NsUserTest.SANJIGI, new Payment("1", 1L, 2L, 50000L));
@@ -101,7 +101,7 @@ class PaidSessionTest {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
 
         assertThatThrownBy(
-                () -> new PaidSession(1L, sessionBody, sessionEnrollment, invalidFee, validMaxEnrollments)
+                () -> new PaidSession(1L, 1L, sessionBody, sessionEnrollment, invalidFee, validMaxEnrollments)
         )
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("유료 강의는 수강료가 0원을 초과하여야 합니다.");
@@ -115,7 +115,7 @@ class PaidSessionTest {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
 
         assertThatThrownBy(
-                () -> new PaidSession(1L, sessionBody, sessionEnrollment, validFee, invalidMaxEnrollments)
+                () -> new PaidSession(1L, 1L, sessionBody, sessionEnrollment, validFee, invalidMaxEnrollments)
         )
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("유료 강의는 최대 수강 인원 1명 이상이어야 합니다.");

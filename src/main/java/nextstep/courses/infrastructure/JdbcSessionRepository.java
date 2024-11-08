@@ -66,13 +66,13 @@ public class JdbcSessionRepository implements SessionRepository {
 
         SessionPeriod period = SessionPeriod.of(startDate, endDate);
         CoverImage coverImage = getCoverImageBySessionId(sessionId);
-        SessionBody sessionBody = SessionBody.of(courseId, title, period, coverImage);
+        SessionBody sessionBody = SessionBody.of(title, period, coverImage);
         SessionEnrollment sessionEnrollment = getSessionEnrollmentBySessionId(status, sessionId);
 
         if (isPaidSession(fee, maxEnrollments)) {
-            return new PaidSession(sessionId, sessionBody, sessionEnrollment, fee, maxEnrollments);
+            return new PaidSession(sessionId, courseId, sessionBody, sessionEnrollment, fee, maxEnrollments);
         }
-        return new FreeSession(sessionId, sessionBody, sessionEnrollment);
+        return new FreeSession(sessionId, courseId, sessionBody, sessionEnrollment);
     }
 
     private CoverImage getCoverImageBySessionId(long sessionId) {

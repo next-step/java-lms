@@ -43,10 +43,10 @@ class SessionRepositoryTest {
         SessionPeriod period = SessionPeriod.of(LocalDateTime.now(), LocalDateTime.now().plusDays(7));
 
 
-        paidSession = new PaidSession(1L, SessionBody.of(1L, "유료 세션", period, coverImage),
+        paidSession = new PaidSession(1L, 1L, SessionBody.of("유료 세션", period, coverImage),
                 SessionEnrollment.of(SessionStatus.OPEN, Set.of()), 10000L, 100);
 
-        freeSession = new FreeSession(2L, SessionBody.of(1L, "무료 세션", period, coverImage),
+        freeSession = new FreeSession(2L, 1L, SessionBody.of("무료 세션", period, coverImage),
                 SessionEnrollment.of(SessionStatus.OPEN, Set.of()));
     }
 

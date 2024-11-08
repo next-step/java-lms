@@ -98,7 +98,7 @@
 - [X] 접근제한자와 abstract 위치, 컨벤션 확인
 
 ### SessionBody
-- [ ] courseId 필드 Session 클래스로 이동
+- [X] courseId 필드 Session 클래스로 이동
 - [ ] final 키워드 제거 이유
 
 ### JdbcSessionRepository
