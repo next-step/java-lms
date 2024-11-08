@@ -27,7 +27,7 @@ public class Payment {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Long getAmount() {
-        return amount;
+    public boolean isPaymentMismatched(long fee) {
+        return fee != amount;
     }
 }

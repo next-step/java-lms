@@ -50,7 +50,7 @@ public class PaidSession extends Session {
     }
 
     private boolean isPaymentMismatched(Payment payment) {
-        return fee != payment.getAmount();
+        return payment.isPaymentMismatched(fee);
     }
 
     private void validateNumberOfEnrollment() {
