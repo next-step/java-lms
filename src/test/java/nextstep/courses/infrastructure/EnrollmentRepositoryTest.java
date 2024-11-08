@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @JdbcTest
 class EnrollmentRepositoryTest {
@@ -52,11 +53,8 @@ class EnrollmentRepositoryTest {
     @Test
     void enrollAndFindEnrolledUsersBySessionId() {
         enrollmentRepository.save(sessionId, NsUserTest.JAVAJIGI);
-        enrollmentRepository.save(sessionId, NsUserTest.SANJIGI);
 
-        Set<NsUser> enrolledUsers = enrollmentRepository.findEnrolledUsersBySessionId(sessionId);
-
-        assertThat(enrolledUsers).hasSize(2);
+        assertSingleEnrolledUser();
     }
 
     @DisplayName("중복 수강 신청 시 동일한 사용자는 한 번만 등록된다.")
@@ -65,9 +63,21 @@ class EnrollmentRepositoryTest {
         enrollmentRepository.save(sessionId, NsUserTest.JAVAJIGI);
         enrollmentRepository.save(sessionId, NsUserTest.JAVAJIGI);
 
-        Set<NsUser> enrolledUsers = enrollmentRepository.findEnrolledUsersBySessionId(sessionId);
+        assertSingleEnrolledUser();
+    }
 
+    private void assertSingleEnrolledUser() {
+        Set<NsUser> enrolledUsers = enrollmentRepository.findEnrolledUsersBySessionId(sessionId);
         assertThat(enrolledUsers).hasSize(1);
+
+        NsUser enrolledUser = enrolledUsers.iterator().next();
+        assertAll(
+                () -> assertThat(enrolledUser.getId()).isEqualTo(NsUserTest.JAVAJIGI.getId()),
+                () -> assertThat(enrolledUser.getUserId()).isEqualTo(NsUserTest.JAVAJIGI.getUserId()),
+                () -> assertThat(enrolledUser.getPassword()).isEqualTo(NsUserTest.JAVAJIGI.getPassword()),
+                () -> assertThat(enrolledUser.getName()).isEqualTo(NsUserTest.JAVAJIGI.getName()),
+                () -> assertThat(enrolledUser.getEmail()).isEqualTo(NsUserTest.JAVAJIGI.getEmail())
+        );
     }
 
 

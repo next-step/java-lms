@@ -116,7 +116,7 @@
 - [X] 매직넘버 추출하여 변수명으로 의도 나타내기
 
 ### EnrollmentRepositoryTest
-- [ ] 테스트의 의도대로 size 검증이 아닌 NsUser 값들을 검증
+- [X] 테스트의 의도대로 size 검증이 아닌 NsUser 값들을 검증
 
 ## 자체 추가
 
