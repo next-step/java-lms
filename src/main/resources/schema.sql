@@ -66,7 +66,8 @@ CREATE TABLE enrollment (
     session_id bigint not null,
     user_id bigint not null,
     enrolled_at timestamp default current_timestamp,
-    primary key (enrollment_id)
+    primary key (enrollment_id),
+    unique (session_id, user_id)
 );
 
 CREATE TABLE cover_image (
