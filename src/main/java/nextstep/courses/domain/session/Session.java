@@ -9,10 +9,10 @@ import java.util.Set;
 
 public abstract class Session {
 
-    protected long id;
-    protected long courseId;
-    protected SessionBody sessionBody;
-    protected SessionEnrollment sessionEnrollment;
+    protected final long id;
+    protected final long courseId;
+    protected final SessionBody sessionBody;
+    protected final SessionEnrollment sessionEnrollment;
 
     protected Session(long id, long courseId, SessionBody sessionBody, SessionEnrollment sessionEnrollment) {
         this.id = id;

@@ -8,8 +8,8 @@ import java.util.Set;
 
 public class SessionEnrollment {
 
-    private SessionStatus sessionStatus;
-    private Set<NsUser> enrolledUsers;
+    private final SessionStatus sessionStatus;
+    private final Set<NsUser> enrolledUsers;
 
     private SessionEnrollment(SessionStatus sessionStatus) {
         this.sessionStatus = sessionStatus;

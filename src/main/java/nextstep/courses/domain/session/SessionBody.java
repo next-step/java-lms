@@ -4,9 +4,9 @@ import nextstep.courses.domain.cover.CoverImage;
 
 public class SessionBody {
 
-    private String title;
-    private SessionPeriod period;
-    private CoverImage coverImage;
+    private final String title;
+    private final SessionPeriod period;
+    private final CoverImage coverImage;
 
     private SessionBody(String title, SessionPeriod period, CoverImage coverImage) {
         this.title = title;

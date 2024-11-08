@@ -99,7 +99,9 @@
 
 ### SessionBody
 - [X] courseId 필드 Session 클래스로 이동
-- [ ] final 키워드 제거 이유
+
+### Session, SessionBody, SessionEnrollment
+- [X] 필드 final 키워드 추가
 
 ### JdbcSessionRepository
 - [ ] 무료/유료 등 구현체 결정 책임 도메인으로 위임
