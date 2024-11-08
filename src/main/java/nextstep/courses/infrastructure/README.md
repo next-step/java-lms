@@ -4,7 +4,7 @@
 - [X] enrollUser -> save 로 변경
 
 ### FreeSession
-- [ ] getFee 메서드 리턴값 0 고정
+- [X] getFee 메서드 리턴값 0 고정
 
 ### PaidSession
 - [ ] validaPaymentAmount public -> private 으로 변경

@@ -21,11 +21,11 @@ public class FreeSession extends Session {
 
     @Override
     public long getFee() {
-        return fee;
+        return 0;
     }
 
     @Override
     public int getMaxEnrollments() {
-        return maxEnrollments;
+        return 0;
     }
 }
