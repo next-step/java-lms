@@ -104,7 +104,7 @@
 - [X] 필드 final 키워드 추가
 
 ### JdbcSessionRepository
-- [ ] 무료/유료 등 구현체 결정 책임 도메인으로 위임
+- [X] 무료/유료 등 구현체 결정 책임 도메인으로 위임
 
 ### enrollment 테이블
 - [X] 중복 신청 데이터가 존재할 수 있는 구조. unique 제약 추가. repository 중복 처리 로직 제거 가능

@@ -69,20 +69,12 @@ public class JdbcSessionRepository implements SessionRepository {
         SessionBody sessionBody = SessionBody.of(title, period, coverImage);
         SessionEnrollment sessionEnrollment = getSessionEnrollmentBySessionId(status, sessionId);
 
-        if (isPaidSession(fee, maxEnrollments)) {
-            return new PaidSession(sessionId, courseId, sessionBody, sessionEnrollment, fee, maxEnrollments);
-        }
-        return new FreeSession(sessionId, courseId, sessionBody, sessionEnrollment);
+        return SessionFactory.create(sessionId, courseId, sessionBody, sessionEnrollment, fee, maxEnrollments);
     }
 
     private SessionEnrollment getSessionEnrollmentBySessionId(SessionStatus status, long sessionId) {
         Set<NsUser> enrolledUsers = enrollmentRepository.findEnrolledUsersBySessionId(sessionId);
         return SessionEnrollment.of(status, enrolledUsers);
     }
-
-    private boolean isPaidSession(long fee, int maxEnrollments) {
-        return fee != 0 && maxEnrollments != 0;
-    }
-
 
 }
