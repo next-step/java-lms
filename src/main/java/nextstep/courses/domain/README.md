@@ -117,3 +117,8 @@
 
 ### EnrollmentRepositoryTest
 - [ ] 테스트의 의도대로 size 검증이 아닌 NsUser 값들을 검증
+
+## 자체 추가
+
+### SessionEnrollment
+- [X] SessionStatus isNotOpen 메서드 사용

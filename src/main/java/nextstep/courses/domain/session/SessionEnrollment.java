@@ -58,7 +58,7 @@ public class SessionEnrollment {
     }
 
     public boolean isNotOpen() {
-        return sessionStatus != SessionStatus.OPEN;
+        return sessionStatus.isNotOpen();
     }
 
     public SessionStatus getSessionStatus() {
