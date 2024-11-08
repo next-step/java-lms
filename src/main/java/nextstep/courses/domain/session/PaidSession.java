@@ -43,7 +43,7 @@ public class PaidSession extends Session {
         sessionEnrollment.enrollUser(nsUser);
     }
 
-    public void validatePaymentAmount(Payment payment) {
+    private void validatePaymentAmount(Payment payment) {
         if (isPaymentMismatched(payment)) {
             throw new IllegalArgumentException("결제 금액이 일치하지 않습니다.");
         }
@@ -53,7 +53,7 @@ public class PaidSession extends Session {
         return fee != payment.getAmount();
     }
 
-    public void validateNumberOfEnrollment() {
+    private void validateNumberOfEnrollment() {
         if (isEnrollmentFull()) {
             throw new IllegalStateException("수강 인원이 초과되었습니다.");
         }

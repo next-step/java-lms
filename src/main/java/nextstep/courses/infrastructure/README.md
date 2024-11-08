@@ -7,7 +7,7 @@
 - [X] getFee 메서드 리턴값 0 고정
 
 ### PaidSession
-- [ ] validaPaymentAmount public -> private 으로 변경
+- [X] validaPaymentAmount public -> private 으로 변경
 - [ ] isPaymentMismatched 에서 payment 객체의 getAmount 대신 메시지 보내기 
 
 ### Session
