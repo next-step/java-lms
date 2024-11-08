@@ -21,8 +21,8 @@ class SessionEnrollmentTest {
                 .hasMessage("중복된 수강신청입니다.");
     }
 
-    @Test
     @DisplayName("수강 상태가 모집중이 아닌 경우를 알 수 있다.")
+    @Test
     void isNotOpen() {
         SessionEnrollment sessionEnrollmentOpen = SessionEnrollment.of(SessionStatus.OPEN);
         assertThat(sessionEnrollmentOpen.isNotOpen()).isFalse();
@@ -34,15 +34,18 @@ class SessionEnrollmentTest {
         assertThat(sessionEnrollmentCloses.isNotOpen()).isTrue();
     }
 
-    @Test
     @DisplayName("수강인원 초과여부를 알 수 있다.")
+    @Test
     void isEnrollmentFullTest() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
         sessionEnrollment.enrollUser(NsUserTest.SANJIGI);
         sessionEnrollment.enrollUser(NsUserTest.JAVAJIGI);
 
-        assertThat(sessionEnrollment.isEnrollmentFull(2)).isTrue();
-        assertThat(sessionEnrollment.isEnrollmentFull(3)).isFalse();
+        int MAX_ENROLLMENTS = 2;
+        int EXCEEDED_ENROLLMENT_LIMIT = 3;
+
+        assertThat(sessionEnrollment.isEnrollmentFull(MAX_ENROLLMENTS)).isTrue();
+        assertThat(sessionEnrollment.isEnrollmentFull(EXCEEDED_ENROLLMENT_LIMIT)).isFalse();
     }
 
 
