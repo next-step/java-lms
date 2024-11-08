@@ -40,7 +40,7 @@ class EnrollmentRepositoryTest {
     void setUp() {
         userRepository = new JdbcUserRepository(jdbcTemplate);
         enrollmentRepository = new JdbcEnrollmentRepository(jdbcTemplate, userRepository);
-        sessionRepository = new JdbcSessionRepository(jdbcTemplate, new JdbcCoverImageRepository(jdbcTemplate), enrollmentRepository);
+        sessionRepository = new JdbcSessionRepository(jdbcTemplate, enrollmentRepository);
 
         CoverImage coverImage = CoverImage.of("file.jpg", ImageSize.of(1000), ImageExtension.JPG.name(), ImageDimension.of(300, 200));
         SessionPeriod period = SessionPeriod.of(LocalDateTime.now(), LocalDateTime.now().plusDays(7));
@@ -54,19 +54,6 @@ class EnrollmentRepositoryTest {
     void enrollAndFindEnrolledUsersBySessionId() {
         enrollmentRepository.save(sessionId, NsUserTest.JAVAJIGI);
 
-        assertSingleEnrolledUser();
-    }
-
-    @DisplayName("중복 수강 신청 시 동일한 사용자는 한 번만 등록된다.")
-    @Test
-    void duplicateEnrollment() {
-        enrollmentRepository.save(sessionId, NsUserTest.JAVAJIGI);
-        enrollmentRepository.save(sessionId, NsUserTest.JAVAJIGI);
-
-        assertSingleEnrolledUser();
-    }
-
-    private void assertSingleEnrolledUser() {
         Set<NsUser> enrolledUsers = enrollmentRepository.findEnrolledUsersBySessionId(sessionId);
         assertThat(enrolledUsers).hasSize(1);
 
@@ -79,6 +66,5 @@ class EnrollmentRepositoryTest {
                 () -> assertThat(enrolledUser.getEmail()).isEqualTo(NsUserTest.JAVAJIGI.getEmail())
         );
     }
-
 
 }

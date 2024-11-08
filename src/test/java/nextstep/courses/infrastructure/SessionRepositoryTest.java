@@ -25,7 +25,6 @@ class SessionRepositoryTest {
     private JdbcTemplate jdbcTemplate;
 
     private SessionRepository sessionRepository;
-    private CoverImageRepository coverImageRepository;
     private EnrollmentRepository enrollmentRepository;
     private UserRepository userRepository;
 
@@ -36,8 +35,7 @@ class SessionRepositoryTest {
     void setUp() {
         userRepository = new JdbcUserRepository(jdbcTemplate);
         enrollmentRepository = new JdbcEnrollmentRepository(jdbcTemplate, userRepository);
-        coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
-        sessionRepository = new JdbcSessionRepository(jdbcTemplate, coverImageRepository, enrollmentRepository);
+        sessionRepository = new JdbcSessionRepository(jdbcTemplate, enrollmentRepository);
 
         CoverImage coverImage = CoverImage.of("nextstep", ImageSize.of(1000), ImageExtension.JPG.name(), ImageDimension.of(300, 200));
         SessionPeriod period = SessionPeriod.of(LocalDateTime.now(), LocalDateTime.now().plusDays(7));

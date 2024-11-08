@@ -73,4 +73,24 @@ public abstract class Session {
         return courseId;
     }
 
+    public String getFileName() {
+        return sessionBody.getCoverImage().getFileName();
+    }
+
+    public int getImageSize() {
+        return sessionBody.getCoverImage().getImageSize();
+    }
+
+    public String getImageExtension() {
+        return sessionBody.getCoverImage().getExtension().name();
+    }
+
+    public int getWidth() {
+        return sessionBody.getCoverImage().getWidth();
+    }
+
+    public int getHeight() {
+        return sessionBody.getCoverImage().getHeight();
+    }
+
 }

@@ -1,9 +1,9 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.cover.CoverImage;
-import nextstep.courses.domain.cover.CoverImageRepository;
+import nextstep.courses.domain.cover.ImageDimension;
+import nextstep.courses.domain.cover.ImageSize;
 import nextstep.courses.domain.session.*;
-import nextstep.qna.exception.NotFoundException;
 import nextstep.users.domain.NsUser;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
@@ -18,37 +18,32 @@ import java.util.Set;
 public class JdbcSessionRepository implements SessionRepository {
     private final JdbcOperations jdbcTemplate;
 
-    private final CoverImageRepository coverImageRepository;
     private final EnrollmentRepository enrollmentRepository;
 
-    public JdbcSessionRepository(JdbcOperations jdbcTemplate, CoverImageRepository coverImageRepository, EnrollmentRepository enrollmentRepository) {
+    public JdbcSessionRepository(JdbcOperations jdbcTemplate, EnrollmentRepository enrollmentRepository) {
         this.jdbcTemplate = jdbcTemplate;
-        this.coverImageRepository = coverImageRepository;
         this.enrollmentRepository = enrollmentRepository;
     }
 
     @Override
     public int save(Session session) {
-        saveCoverImage(session);
         return saveSession(session);
     }
 
-    private void saveCoverImage(Session session) {
-        coverImageRepository.save(session.getCoverImage(), session.getId());
-    }
-
     private int saveSession(Session session) {
-        String sql = "INSERT INTO session (session_id, course_id, title, status, start_date, end_date, fee, max_enrollments) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO session (session_id, course_id, title, status, start_date, end_date, fee, " +
+                "max_enrollments, file_name, image_size, extension, width, height) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         return jdbcTemplate.update(sql, session.getId(), session.getCourseId(), session.getTitle(), session.getSessionStatus(),
-                session.getStartDate(), session.getEndDate(), session.getFee(), session.getMaxEnrollments());
+                session.getStartDate(), session.getEndDate(), session.getFee(), session.getMaxEnrollments(), session.getFileName(),
+                session.getImageSize(), session.getImageExtension(), session.getWidth(), session.getHeight()
+        );
     }
-
 
     @Override
     public Optional<Session> findById(Long id) {
-        String sql = "SELECT session_id, course_id, title, status, start_date, end_date, fee, max_enrollments " +
+        String sql = "SELECT session_id, course_id, title, status, start_date, end_date, fee, max_enrollments, file_name, image_size, extension, width, height " +
                 "FROM session WHERE session_id = ?";
 
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, this::mapSession, id));
@@ -63,9 +58,14 @@ public class JdbcSessionRepository implements SessionRepository {
         LocalDateTime endDate = rs.getTimestamp("end_date").toLocalDateTime();
         long fee = rs.getLong("fee");
         int maxEnrollments = rs.getInt("max_enrollments");
+        String fileName = rs.getString("file_name");
+        ImageSize imageSize = ImageSize.of(rs.getInt("image_size"));
+        String extension = rs.getString("extension");
+        int width = rs.getInt("width");
+        int height = rs.getInt("height");
 
         SessionPeriod period = SessionPeriod.of(startDate, endDate);
-        CoverImage coverImage = getCoverImageBySessionId(sessionId);
+        CoverImage coverImage = CoverImage.of(fileName, imageSize, extension, ImageDimension.of(width, height));
         SessionBody sessionBody = SessionBody.of(title, period, coverImage);
         SessionEnrollment sessionEnrollment = getSessionEnrollmentBySessionId(status, sessionId);
 
@@ -73,11 +73,6 @@ public class JdbcSessionRepository implements SessionRepository {
             return new PaidSession(sessionId, courseId, sessionBody, sessionEnrollment, fee, maxEnrollments);
         }
         return new FreeSession(sessionId, courseId, sessionBody, sessionEnrollment);
-    }
-
-    private CoverImage getCoverImageBySessionId(long sessionId) {
-        return coverImageRepository.findBySessionId(sessionId)
-                .orElseThrow(NotFoundException::new);
     }
 
     private SessionEnrollment getSessionEnrollmentBySessionId(SessionStatus status, long sessionId) {
