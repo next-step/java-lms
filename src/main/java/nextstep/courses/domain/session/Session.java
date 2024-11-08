@@ -19,11 +19,11 @@ public abstract class Session {
         this.sessionEnrollment = sessionEnrollment;
     }
 
-    abstract public void enroll(NsUser nsUser, Payment payment);
+    public abstract void enroll(NsUser nsUser, Payment payment);
 
-    abstract public long getFee();
+    public abstract long getFee();
 
-    abstract public int getMaxEnrollments();
+    public abstract int getMaxEnrollments();
 
     public void validateSessionStatus() {
         if (isNotOpen()) {

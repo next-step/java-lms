@@ -11,7 +11,7 @@
 - [X] isPaymentMismatched 에서 payment 객체에 결제금액 일치여부 메시지 보내기
 
 ### Session
-- [ ] 접근제한자와 abstract 위치, 컨벤션 확인
+- [X] 접근제한자와 abstract 위치, 컨벤션 확인
 
 ### SessionBody
 - [ ] courseId 필드 Session 클래스로 이동
