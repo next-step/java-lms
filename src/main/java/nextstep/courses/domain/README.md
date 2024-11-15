@@ -122,3 +122,11 @@
 
 ### SessionEnrollment
 - [X] SessionStatus isNotOpen 메서드 사용
+
+## 3단계 2차 리뷰 사항
+
+### JdbcEnrollmentRepository
+- [ ] 수강생 수 만큼 쿼리 반복이 아닌 join 쿼리 사용
+
+### SessionService
+- [ ] enroll 메서드 단위 테스트 추가
