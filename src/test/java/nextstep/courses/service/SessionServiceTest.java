@@ -42,10 +42,10 @@ class SessionServiceTest {
         SessionPeriod period = SessionPeriod.of(LocalDateTime.now(), LocalDateTime.now().plusDays(7));
 
         paidSession = new PaidSession(1L, 1L, SessionBody.of("유료 세션", period, coverImage),
-                SessionEnrollment.of(SessionStatus.OPEN), 10000L, 100);
+                SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING), 10000L, 100);
 
         freeSession = new FreeSession(2L, 1L, SessionBody.of("무료 세션", period, coverImage),
-                SessionEnrollment.of(SessionStatus.OPEN));
+                SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING));
     }
 
     @DisplayName("무료 강의에 등록할 수 있다.")

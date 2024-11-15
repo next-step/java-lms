@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,7 +40,7 @@ class EnrollmentRepositoryTest {
 
         CoverImage coverImage = CoverImage.of("file.jpg", ImageSize.of(1000), ImageExtension.JPG.name(), ImageDimension.of(300, 200));
         SessionPeriod period = SessionPeriod.of(LocalDateTime.now(), LocalDateTime.now().plusDays(7));
-        Session session = new FreeSession(1L, 1L, SessionBody.of("테스트 세션", period, coverImage), SessionEnrollment.of(SessionStatus.OPEN, Set.of()));
+        Session session = new FreeSession(1L, 1L, SessionBody.of("테스트 세션", period, coverImage), SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING, new HashSet<>()));
         sessionRepository.save(session);
         sessionId = session.getId();
     }

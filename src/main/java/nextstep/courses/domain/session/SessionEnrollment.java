@@ -8,25 +8,28 @@ import java.util.Set;
 
 public class SessionEnrollment {
 
-    private final SessionStatus sessionStatus;
+    private final ProgressStatus progressStatus;
+    private final RecruitmentStatus recruitmentStatus;
     private final Set<NsUser> enrolledUsers;
 
-    private SessionEnrollment(SessionStatus sessionStatus) {
-        this.sessionStatus = sessionStatus;
+    private SessionEnrollment(ProgressStatus progressStatus, RecruitmentStatus recruitmentStatus) {
+        this.progressStatus = progressStatus;
+        this.recruitmentStatus = recruitmentStatus;
         this.enrolledUsers = new HashSet<>();
     }
 
-    private SessionEnrollment(SessionStatus sessionStatus, Set<NsUser> enrolledUsers) {
-        this.sessionStatus = sessionStatus;
+    private SessionEnrollment(ProgressStatus progressStatus, RecruitmentStatus recruitmentStatus, Set<NsUser> enrolledUsers) {
+        this.progressStatus = progressStatus;
+        this.recruitmentStatus = recruitmentStatus;
         this.enrolledUsers = enrolledUsers;
     }
 
-    public static SessionEnrollment of(SessionStatus sessionStatus) {
-        return new SessionEnrollment(sessionStatus);
+    public static SessionEnrollment of(ProgressStatus progressStatus, RecruitmentStatus recruitmentStatus) {
+        return new SessionEnrollment(progressStatus, recruitmentStatus);
     }
 
-    public static SessionEnrollment of(SessionStatus sessionStatus, Set<NsUser> enrolledUsers) {
-        return new SessionEnrollment(sessionStatus, enrolledUsers);
+    public static SessionEnrollment of(ProgressStatus progressStatus, RecruitmentStatus recruitmentStatus, Set<NsUser> enrolledUsers) {
+        return new SessionEnrollment(progressStatus, recruitmentStatus, enrolledUsers);
     }
 
     public void enrollUser(NsUser user) {
@@ -57,12 +60,20 @@ public class SessionEnrollment {
         return Collections.unmodifiableSet(enrolledUsers);
     }
 
-    public boolean isNotOpen() {
-        return sessionStatus.isNotOpen();
+    public boolean isNotInProgress() {
+        return progressStatus.isNotInProgress();
     }
 
-    public SessionStatus getSessionStatus() {
-        return sessionStatus;
+    public boolean isNotRecruiting() {
+        return recruitmentStatus.isNotRecruiting();
+    }
+
+    public ProgressStatus getProgressStatus() {
+        return progressStatus;
+    }
+
+    public RecruitmentStatus getRecruitmentStatus() {
+        return recruitmentStatus;
     }
 
 }

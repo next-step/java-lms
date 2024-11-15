@@ -31,11 +31,11 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     private int saveSession(Session session) {
-        String sql = "INSERT INTO session (session_id, course_id, title, status, start_date, end_date, fee, " +
+        String sql = "INSERT INTO session (session_id, course_id, title, progress_status, recruitment_status, start_date, end_date, fee, " +
                 "max_enrollments, file_name, image_size, extension, width, height) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        return jdbcTemplate.update(sql, session.getId(), session.getCourseId(), session.getTitle(), session.getSessionStatus(),
+        return jdbcTemplate.update(sql, session.getId(), session.getCourseId(), session.getTitle(), session.getProgressStatus(), session.getRecruitmentStatus(),
                 session.getStartDate(), session.getEndDate(), session.getFee(), session.getMaxEnrollments(), session.getFileName(),
                 session.getImageSize(), session.getImageExtension(), session.getWidth(), session.getHeight()
         );
@@ -43,7 +43,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Optional<Session> findById(Long id) {
-        String sql = "SELECT session_id, course_id, title, status, start_date, end_date, fee, max_enrollments, file_name, image_size, extension, width, height " +
+        String sql = "SELECT session_id, course_id, title, progress_status, recruitment_status, start_date, end_date, fee, max_enrollments, file_name, image_size, extension, width, height " +
                 "FROM session WHERE session_id = ?";
 
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, this::mapSession, id));
@@ -53,7 +53,8 @@ public class JdbcSessionRepository implements SessionRepository {
         long sessionId = rs.getLong("session_id");
         long courseId = rs.getLong("course_id");
         String title = rs.getString("title");
-        SessionStatus status = SessionStatus.valueOf(rs.getString("status"));
+        ProgressStatus progressStatus = ProgressStatus.valueOf(rs.getString("progress_status"));
+        RecruitmentStatus recruitmentStatus = RecruitmentStatus.valueOf(rs.getString("recruitment_status"));
         LocalDateTime startDate = rs.getTimestamp("start_date").toLocalDateTime();
         LocalDateTime endDate = rs.getTimestamp("end_date").toLocalDateTime();
         long fee = rs.getLong("fee");
@@ -67,14 +68,14 @@ public class JdbcSessionRepository implements SessionRepository {
         SessionPeriod period = SessionPeriod.of(startDate, endDate);
         CoverImage coverImage = CoverImage.of(fileName, imageSize, extension, ImageDimension.of(width, height));
         SessionBody sessionBody = SessionBody.of(title, period, coverImage);
-        SessionEnrollment sessionEnrollment = getSessionEnrollmentBySessionId(status, sessionId);
+        SessionEnrollment sessionEnrollment = getSessionEnrollmentBySessionId(progressStatus, recruitmentStatus, sessionId);
 
         return SessionFactory.create(sessionId, courseId, sessionBody, sessionEnrollment, fee, maxEnrollments);
     }
 
-    private SessionEnrollment getSessionEnrollmentBySessionId(SessionStatus status, long sessionId) {
+    private SessionEnrollment getSessionEnrollmentBySessionId(ProgressStatus progressStatus, RecruitmentStatus recruitmentStatus, long sessionId) {
         Set<NsUser> enrolledUsers = enrollmentRepository.findEnrolledUsersBySessionId(sessionId);
-        return SessionEnrollment.of(status, enrolledUsers);
+        return SessionEnrollment.of(progressStatus, recruitmentStatus, enrolledUsers);
     }
 
 }

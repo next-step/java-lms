@@ -25,7 +25,7 @@ class SessionBodyTest {
         int imageSize = 500 * 1024;
         int width = 300;
         int height = 200;
-        CoverImage coverImage = CoverImage.of("effective java",ImageSize.of(imageSize), "jpg", ImageDimension.of(width, height));
+        CoverImage coverImage = CoverImage.of("effective java", ImageSize.of(imageSize), "jpg", ImageDimension.of(width, height));
 
 
         SessionBody sessionBody = SessionBody.of(title, sessionPeriod, coverImage);

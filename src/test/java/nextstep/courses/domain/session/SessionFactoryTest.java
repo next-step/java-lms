@@ -20,7 +20,7 @@ class SessionFactoryTest {
         CoverImage coverImage = CoverImage.of("java", ImageSize.of(1000), ImageExtension.JPG.name(), ImageDimension.of(300, 200));
         SessionPeriod period = SessionPeriod.of(LocalDateTime.now(), LocalDateTime.now().plusDays(7));
         SessionBody sessionBody = SessionBody.of("무료 세션", period, coverImage);
-        SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.PREPARE, RecruitmentStatus.RECRUITING);
 
         Session session = SessionFactory.create(1L, 1L, sessionBody, sessionEnrollment, 0, 0);
 
@@ -43,7 +43,7 @@ class SessionFactoryTest {
         CoverImage coverImage = CoverImage.of("python", ImageSize.of(1000), ImageExtension.JPG.name(), ImageDimension.of(300, 200));
         SessionPeriod period = SessionPeriod.of(LocalDateTime.now(), LocalDateTime.now().plusDays(7));
         SessionBody sessionBody = SessionBody.of("유료 세션", period, coverImage);
-        SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.PREPARE, RecruitmentStatus.RECRUITING);
 
         Session session = SessionFactory.create(1L, 1L, sessionBody, sessionEnrollment, 10000, 100);
 

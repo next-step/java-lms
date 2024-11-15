@@ -35,7 +35,7 @@ class PaidSessionTest {
     @Test
     @DisplayName("유료 강의 생성 시 필드가 올바르게 설정되는지 확인한다.")
     void createPaidSessionTest() {
-        SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING);
         PaidSession paidSession = new PaidSession(1L, 1L, sessionBody, sessionEnrollment, 50000L, 2);
         assertAll(
                 () -> assertThat("이펙티브 자바").isEqualTo(paidSession.getTitle()),
@@ -46,10 +46,10 @@ class PaidSessionTest {
         );
     }
 
-    @DisplayName("유료강의 모집중 상태이고, 수강 인원이 초과하지 않았고, 유효한 결제가 이루어지면 수강신청이 가능하다.")
+    @DisplayName("유료강의 모집중 또는 진행중 상태이고, 수강 인원이 초과하지 않았고, 유효한 결제가 이루어지면 수강신청이 가능하다.")
     @Test
     void enrollUserSuccessfullyWhenStatusIsOpen() {
-        SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING);
         PaidSession paidSession = new PaidSession(1L, 1L, sessionBody, sessionEnrollment, 50000L, 2);
 
         paidSession.enroll(NsUserTest.JAVAJIGI, new Payment("1", 1L, 1L, 50000L));
@@ -57,21 +57,21 @@ class PaidSessionTest {
         assertThat(paidSession.getEnrolledUsers()).contains(NsUserTest.JAVAJIGI);
     }
 
-    @DisplayName("모집중인 상태가 아닌 유료강의를 수강신청하면 예외가 발생한다.")
+    @DisplayName("모집중 또는 진행중이 아닌 유료강의를 수강신청하면 예외가 발생한다.")
     @Test
-    void enrollTestThrowExceptionWhenStatusIsNotOpen() {
-        SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.PREPARE);
+    void enrollTestThrowExceptionWhenStatusIsNotInProgress() {
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.PREPARE, RecruitmentStatus.NOT_RECRUITING);
         PaidSession paidSession = new PaidSession(1L, 1L, sessionBody, sessionEnrollment, 50000L, 2);
 
         assertThatThrownBy(() -> paidSession.enroll(NsUserTest.SANJIGI, new Payment("1", 1L, 1L, 50000L)))
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("모집중인 상태에서만 신청 가능합니다.");
+                .hasMessage("진행중 또는 모집중인 상태에서만 신청 가능합니다.");
     }
 
     @DisplayName("결제금액이 일치하지 않으면 예외가 발생한다.")
     @Test
     void failToEnrollUserWhenPaidAmountDoesNotMatchFee() {
-        SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.RECRUITING);
         PaidSession paidSession = new PaidSession(1L, 1L, sessionBody, sessionEnrollment, 50000L, 2);
 
         assertThatThrownBy(() -> paidSession.enroll(NsUserTest.SANJIGI, new Payment("1", 1L, 1L, 49000L)))
@@ -82,7 +82,7 @@ class PaidSessionTest {
     @DisplayName("수강인원이 초과되면 예외가 발생한다.")
     @Test
     void failToEnrollUserWhenMaxEnrollmentsReached() {
-        SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.RECRUITING);
         PaidSession paidSession = new PaidSession(1L, 1L, sessionBody, sessionEnrollment, 50000L, 2);
 
         paidSession.enroll(NsUserTest.JAVAJIGI, new Payment("1", 1L, 1L, 50000L));
@@ -98,7 +98,7 @@ class PaidSessionTest {
     void validateFeeTest() {
         long invalidFee = 0;
         int validMaxEnrollments = 10;
-        SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.RECRUITING);
 
         assertThatThrownBy(
                 () -> new PaidSession(1L, 1L, sessionBody, sessionEnrollment, invalidFee, validMaxEnrollments)
@@ -112,7 +112,7 @@ class PaidSessionTest {
     void validateMaxEnrollmentsTest() {
         long validFee = 10000;
         int invalidMaxEnrollments = 0;
-        SessionEnrollment sessionEnrollment = SessionEnrollment.of(SessionStatus.OPEN);
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.RECRUITING);
 
         assertThatThrownBy(
                 () -> new PaidSession(1L, 1L, sessionBody, sessionEnrollment, validFee, invalidMaxEnrollments)

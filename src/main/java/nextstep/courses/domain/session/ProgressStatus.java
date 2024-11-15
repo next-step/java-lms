@@ -1,18 +1,18 @@
 package nextstep.courses.domain.session;
 
-public enum SessionStatus {
+public enum ProgressStatus {
     PREPARE("준비중"),
-    OPEN("모집중"),
+    IN_PROGRESS("진행중"),
     CLOSED("종료");
 
     private final String description;
 
-    SessionStatus(String description) {
+    ProgressStatus(String description) {
         this.description = description;
     }
 
-    public boolean isNotOpen() {
-        return this != OPEN;
+    public boolean isNotInProgress() {
+        return this != IN_PROGRESS;
     }
 
 }

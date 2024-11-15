@@ -13,8 +13,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -41,10 +41,10 @@ class SessionRepositoryTest {
 
 
         paidSession = new PaidSession(1L, 1L, SessionBody.of("유료 세션", period, coverImage),
-                SessionEnrollment.of(SessionStatus.OPEN, Set.of()), 10000L, 100);
+                SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING, new HashSet<>()), 10000L, 100);
 
         freeSession = new FreeSession(2L, 1L, SessionBody.of("무료 세션", period, coverImage),
-                SessionEnrollment.of(SessionStatus.OPEN, Set.of()));
+                SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING, new HashSet<>()));
     }
 
     @DisplayName("유료 강의를 저장하고 조회할 수 있다.")
@@ -62,7 +62,8 @@ class SessionRepositoryTest {
                 () -> assertThat(retrievedSession.getTitle()).isEqualTo(paidSession.getTitle()),
                 () -> assertThat(retrievedSession.getFee()).isEqualTo(paidSession.getFee()),
                 () -> assertThat(retrievedSession.getMaxEnrollments()).isEqualTo(paidSession.getMaxEnrollments()),
-                () -> assertThat(retrievedSession.getSessionStatus()).isEqualTo(paidSession.getSessionStatus())
+                () -> assertThat(retrievedSession.getProgressStatus()).isEqualTo(paidSession.getProgressStatus()),
+                () -> assertThat(retrievedSession.getRecruitmentStatus()).isEqualTo(paidSession.getRecruitmentStatus())
         );
     }
 
@@ -81,7 +82,8 @@ class SessionRepositoryTest {
                 () -> assertThat(retrievedSession.getTitle()).isEqualTo(freeSession.getTitle()),
                 () -> assertThat(retrievedSession.getFee()).isEqualTo(freeSession.getFee()),
                 () -> assertThat(retrievedSession.getMaxEnrollments()).isEqualTo(freeSession.getMaxEnrollments()),
-                () -> assertThat(retrievedSession.getSessionStatus()).isEqualTo(freeSession.getSessionStatus())
+                () -> assertThat(retrievedSession.getProgressStatus()).isEqualTo(freeSession.getProgressStatus()),
+                () -> assertThat(retrievedSession.getRecruitmentStatus()).isEqualTo(freeSession.getRecruitmentStatus())
         );
     }
 

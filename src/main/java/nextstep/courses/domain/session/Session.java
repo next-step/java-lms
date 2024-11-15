@@ -28,13 +28,21 @@ public abstract class Session {
     public abstract int getMaxEnrollments();
 
     public void validateSessionStatus() {
-        if (isNotOpen()) {
-            throw new IllegalStateException("모집중인 상태에서만 신청 가능합니다.");
+        if (isInValidSessionStatus()) {
+            throw new IllegalStateException("진행중 또는 모집중인 상태에서만 신청 가능합니다.");
         }
     }
 
-    public boolean isNotOpen() {
-        return sessionEnrollment.isNotOpen();
+    private boolean isInValidSessionStatus() {
+        return isNotInProgress() && isNotRecruiting();
+    }
+
+    private boolean isNotInProgress() {
+        return sessionEnrollment.isNotInProgress();
+    }
+
+    private boolean isNotRecruiting() {
+        return sessionEnrollment.isNotRecruiting();
     }
 
     public long getId() {
@@ -65,8 +73,12 @@ public abstract class Session {
         return sessionBody.getPeriod().getEndDate();
     }
 
-    public String getSessionStatus() {
-        return sessionEnrollment.getSessionStatus().name();
+    public String getProgressStatus() {
+        return sessionEnrollment.getProgressStatus().name();
+    }
+
+    public String getRecruitmentStatus() {
+        return sessionEnrollment.getRecruitmentStatus().name();
     }
 
     public long getCourseId() {
