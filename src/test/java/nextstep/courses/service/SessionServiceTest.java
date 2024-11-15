@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,10 +42,10 @@ class SessionServiceTest {
         CoverImage coverImage = CoverImage.of("nextstep", ImageSize.of(1000), ImageExtension.JPG.name(), ImageDimension.of(300, 200));
         SessionPeriod period = SessionPeriod.of(LocalDateTime.now(), LocalDateTime.now().plusDays(7));
 
-        paidSession = new PaidSession(1L, 1L, SessionBody.of("유료 세션", period, coverImage),
+        paidSession = new PaidSession(1L, 1L, SessionBody.of("유료 세션", period, List.of(coverImage)),
                 SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING), 10000L, 100);
 
-        freeSession = new FreeSession(2L, 1L, SessionBody.of("무료 세션", period, coverImage),
+        freeSession = new FreeSession(2L, 1L, SessionBody.of("무료 세션", period, List.of(coverImage)),
                 SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING));
     }
 

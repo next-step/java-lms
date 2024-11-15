@@ -2,20 +2,23 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.cover.CoverImage;
 
+import java.util.Collections;
+import java.util.List;
+
 public class SessionBody {
 
     private final String title;
     private final SessionPeriod period;
-    private final CoverImage coverImage;
+    private final List<CoverImage> coverImages;
 
-    private SessionBody(String title, SessionPeriod period, CoverImage coverImage) {
+    private SessionBody(String title, SessionPeriod period, List<CoverImage> coverImages) {
         this.title = title;
         this.period = period;
-        this.coverImage = coverImage;
+        this.coverImages = coverImages;
     }
 
-    public static SessionBody of(String title, SessionPeriod period, CoverImage coverImage) {
-        return new SessionBody(title, period, coverImage);
+    public static SessionBody of(String title, SessionPeriod period, List<CoverImage> coverImages) {
+        return new SessionBody(title, period, coverImages);
     }
 
     public String getTitle() {
@@ -26,8 +29,8 @@ public class SessionBody {
         return period;
     }
 
-    public CoverImage getCoverImage() {
-        return coverImage;
+    public List<CoverImage> getCoverImages() {
+        return Collections.unmodifiableList(coverImages);
     }
 
 }

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -20,7 +21,6 @@ class PaidSessionTest {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private SessionPeriod period;
-    private CoverImage coverImage;
     private SessionBody sessionBody;
 
     @BeforeEach
@@ -28,8 +28,8 @@ class PaidSessionTest {
         startDate = LocalDateTime.of(2024, 1, 1, 10, 0);
         endDate = LocalDateTime.of(2024, 1, 10, 18, 0);
         period = SessionPeriod.of(startDate, endDate);
-        coverImage = CoverImage.of("effective java", ImageSize.of(500 * 1024), "jpg", ImageDimension.of(300, 200));
-        sessionBody = SessionBody.of("이펙티브 자바", period, coverImage);
+        CoverImage coverImage = CoverImage.of("effective java", ImageSize.of(500 * 1024), "jpg", ImageDimension.of(300, 200));
+        sessionBody = SessionBody.of("이펙티브 자바", period, List.of(coverImage));
     }
 
     @Test
@@ -37,12 +37,15 @@ class PaidSessionTest {
     void createPaidSessionTest() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING);
         PaidSession paidSession = new PaidSession(1L, 1L, sessionBody, sessionEnrollment, 50000L, 2);
+
+        CoverImage retrievedCoverImage = CoverImageHelper.getSingleCoverImage(paidSession.getCoverImages());
+
         assertAll(
                 () -> assertThat("이펙티브 자바").isEqualTo(paidSession.getTitle()),
                 () -> assertThat(startDate).isEqualTo(paidSession.getPeriod().getStartDate()),
                 () -> assertThat(endDate).isEqualTo(paidSession.getPeriod().getEndDate()),
-                () -> assertThat(300).isEqualTo(paidSession.getCoverImage().getWidth()),
-                () -> assertThat(200).isEqualTo(paidSession.getCoverImage().getHeight())
+                () -> assertThat(300).isEqualTo(retrievedCoverImage.getWidth()),
+                () -> assertThat(200).isEqualTo(retrievedCoverImage.getHeight())
         );
     }
 

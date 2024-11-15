@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -18,6 +19,7 @@ class FreeSessionTest {
     private SessionBody sessionBody;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private CoverImage coverImage;
 
     @BeforeEach
     void setUp() {
@@ -27,21 +29,24 @@ class FreeSessionTest {
         ImageSize imageSize = ImageSize.of(500 * 1024);
         ImageDimension imageDimension = ImageDimension.of(300, 200);
 
-        sessionBody = SessionBody.of(title, SessionPeriod.of(startDate, endDate), CoverImage.of("learning java", imageSize, "jpg", imageDimension));
+        coverImage = CoverImage.of("learning java", imageSize, "jpg", imageDimension);
+        sessionBody = SessionBody.of(title, SessionPeriod.of(startDate, endDate), List.of(coverImage));
     }
 
     @Test
     @DisplayName("무료 강의 생성 시 필드가 올바르게 설정되는지 확인")
     void createFreeSessionTest() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.RECRUITING);
+
         FreeSession freeSession = new FreeSession(1L, 1L, sessionBody, sessionEnrollment);
+        CoverImage retrievedCoverImage = CoverImageHelper.getSingleCoverImage(freeSession.getCoverImages());
 
         assertAll(
                 () -> assertThat("자바의 정석").isEqualTo(freeSession.getTitle()),
                 () -> assertThat(startDate).isEqualTo(freeSession.getPeriod().getStartDate()),
                 () -> assertThat(endDate).isEqualTo(freeSession.getPeriod().getEndDate()),
-                () -> assertThat(300).isEqualTo(freeSession.getCoverImage().getWidth()),
-                () -> assertThat(200).isEqualTo(freeSession.getCoverImage().getHeight())
+                () -> assertThat(300).isEqualTo(retrievedCoverImage.getWidth()),
+                () -> assertThat(200).isEqualTo(retrievedCoverImage.getHeight())
         );
     }
 

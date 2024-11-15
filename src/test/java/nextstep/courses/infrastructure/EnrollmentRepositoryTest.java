@@ -1,9 +1,6 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.cover.CoverImage;
-import nextstep.courses.domain.cover.ImageDimension;
-import nextstep.courses.domain.cover.ImageExtension;
-import nextstep.courses.domain.cover.ImageSize;
+import nextstep.courses.domain.cover.*;
 import nextstep.courses.domain.session.*;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
@@ -16,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,6 +26,7 @@ class EnrollmentRepositoryTest {
     private JdbcTemplate jdbcTemplate;
 
     private EnrollmentRepository enrollmentRepository;
+    private CoverImageRepository coverImageRepository;
 
     private SessionRepository sessionRepository;
 
@@ -36,11 +35,12 @@ class EnrollmentRepositoryTest {
     @BeforeEach
     void setUp() {
         enrollmentRepository = new JdbcEnrollmentRepository(jdbcTemplate);
-        sessionRepository = new JdbcSessionRepository(jdbcTemplate, enrollmentRepository);
+        coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
+        sessionRepository = new JdbcSessionRepository(jdbcTemplate, enrollmentRepository, coverImageRepository);
 
         CoverImage coverImage = CoverImage.of("file.jpg", ImageSize.of(1000), ImageExtension.JPG.name(), ImageDimension.of(300, 200));
         SessionPeriod period = SessionPeriod.of(LocalDateTime.now(), LocalDateTime.now().plusDays(7));
-        Session session = new FreeSession(1L, 1L, SessionBody.of("테스트 세션", period, coverImage), SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING, new HashSet<>()));
+        Session session = new FreeSession(1L, 1L, SessionBody.of("테스트 세션", period, List.of(coverImage)), SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING, new HashSet<>()));
         sessionRepository.save(session);
         sessionId = session.getId();
     }

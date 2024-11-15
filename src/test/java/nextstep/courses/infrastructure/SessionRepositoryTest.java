@@ -1,9 +1,6 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.cover.CoverImage;
-import nextstep.courses.domain.cover.ImageDimension;
-import nextstep.courses.domain.cover.ImageExtension;
-import nextstep.courses.domain.cover.ImageSize;
+import nextstep.courses.domain.cover.*;
 import nextstep.courses.domain.session.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,6 +25,7 @@ class SessionRepositoryTest {
 
     private SessionRepository sessionRepository;
     private EnrollmentRepository enrollmentRepository;
+    private CoverImageRepository coverImageRepository;
 
     private Session paidSession;
     private Session freeSession;
@@ -34,16 +33,17 @@ class SessionRepositoryTest {
     @BeforeEach
     void setUp() {
         enrollmentRepository = new JdbcEnrollmentRepository(jdbcTemplate);
-        sessionRepository = new JdbcSessionRepository(jdbcTemplate, enrollmentRepository);
+        coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
+        sessionRepository = new JdbcSessionRepository(jdbcTemplate, enrollmentRepository, coverImageRepository);
 
         CoverImage coverImage = CoverImage.of("nextstep", ImageSize.of(1000), ImageExtension.JPG.name(), ImageDimension.of(300, 200));
         SessionPeriod period = SessionPeriod.of(LocalDateTime.now(), LocalDateTime.now().plusDays(7));
 
 
-        paidSession = new PaidSession(1L, 1L, SessionBody.of("유료 세션", period, coverImage),
+        paidSession = new PaidSession(1L, 1L, SessionBody.of("유료 세션", period, List.of(coverImage)),
                 SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING, new HashSet<>()), 10000L, 100);
 
-        freeSession = new FreeSession(2L, 1L, SessionBody.of("무료 세션", period, coverImage),
+        freeSession = new FreeSession(2L, 1L, SessionBody.of("무료 세션", period, List.of(coverImage)),
                 SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING, new HashSet<>()));
     }
 

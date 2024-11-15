@@ -5,6 +5,7 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 public abstract class Session {
@@ -57,8 +58,8 @@ public abstract class Session {
         return sessionBody.getPeriod();
     }
 
-    public CoverImage getCoverImage() {
-        return sessionBody.getCoverImage();
+    public List<CoverImage> getCoverImages() {
+        return sessionBody.getCoverImages();
     }
 
     public Set<NsUser> getEnrolledUsers() {
@@ -83,26 +84,6 @@ public abstract class Session {
 
     public long getCourseId() {
         return courseId;
-    }
-
-    public String getFileName() {
-        return sessionBody.getCoverImage().getFileName();
-    }
-
-    public int getImageSize() {
-        return sessionBody.getCoverImage().getImageSize();
-    }
-
-    public String getImageExtension() {
-        return sessionBody.getCoverImage().getExtension().name();
-    }
-
-    public int getWidth() {
-        return sessionBody.getCoverImage().getWidth();
-    }
-
-    public int getHeight() {
-        return sessionBody.getCoverImage().getHeight();
     }
 
 }
