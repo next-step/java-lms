@@ -1,9 +1,10 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.cover.*;
+import nextstep.courses.domain.cover.CoverImage;
+import nextstep.courses.domain.cover.ImageDimension;
+import nextstep.courses.domain.cover.ImageExtension;
+import nextstep.courses.domain.cover.ImageSize;
 import nextstep.courses.domain.session.*;
-import nextstep.users.domain.UserRepository;
-import nextstep.users.infrastructure.JdbcUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,15 +27,13 @@ class SessionRepositoryTest {
 
     private SessionRepository sessionRepository;
     private EnrollmentRepository enrollmentRepository;
-    private UserRepository userRepository;
 
     private Session paidSession;
     private Session freeSession;
 
     @BeforeEach
     void setUp() {
-        userRepository = new JdbcUserRepository(jdbcTemplate);
-        enrollmentRepository = new JdbcEnrollmentRepository(jdbcTemplate, userRepository);
+        enrollmentRepository = new JdbcEnrollmentRepository(jdbcTemplate);
         sessionRepository = new JdbcSessionRepository(jdbcTemplate, enrollmentRepository);
 
         CoverImage coverImage = CoverImage.of("nextstep", ImageSize.of(1000), ImageExtension.JPG.name(), ImageDimension.of(300, 200));

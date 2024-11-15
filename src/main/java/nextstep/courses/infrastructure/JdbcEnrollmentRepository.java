@@ -2,38 +2,38 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.EnrollmentRepository;
 import nextstep.users.domain.NsUser;
-import nextstep.users.domain.UserRepository;
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Repository("enrollmentRepository")
 public class JdbcEnrollmentRepository implements EnrollmentRepository {
     private final JdbcOperations jdbcTemplate;
-    private final UserRepository userRepository;
 
-    public JdbcEnrollmentRepository(JdbcOperations jdbcTemplate, UserRepository userRepository) {
+    public JdbcEnrollmentRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.userRepository = userRepository;
     }
 
     @Override
     public Set<NsUser> findEnrolledUsersBySessionId(Long sessionId) {
-        String sql = "SELECT user_id FROM enrollment WHERE session_id = ?";
-        List<Long> userIds = jdbcTemplate.query(sql, (rs, rowNum) -> rs.getLong("user_id"), sessionId);
-        Set<NsUser> enrolledUsers = new HashSet<>();
-
-        userIds.forEach(id -> {
-            Optional<NsUser> byId = userRepository.findById(id);
-            byId.ifPresent(enrolledUsers::add);
-        });
-
-        return enrolledUsers;
+        String sql = "SELECT us.* FROM enrollment e JOIN ns_user us ON e.user_id = us.id WHERE session_id = ?";
+        List<NsUser> enrolledUsers = jdbcTemplate.query(sql, userRowMapper, sessionId);
+        return new HashSet<>(enrolledUsers);
     }
+
+    private final RowMapper<NsUser> userRowMapper = (rs, rowNum) -> new NsUser(
+            rs.getLong("id"),
+            rs.getString("user_id"),
+            rs.getString("password"),
+            rs.getString("name"),
+            rs.getString("email"),
+            rs.getTimestamp("created_at").toLocalDateTime(),
+            rs.getTimestamp("updated_at") != null ? rs.getTimestamp("updated_at").toLocalDateTime() : null
+    );
 
     @Override
     public void save(Long sessionId, NsUser user) {
