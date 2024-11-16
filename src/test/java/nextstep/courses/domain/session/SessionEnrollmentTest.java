@@ -1,8 +1,11 @@
 package nextstep.courses.domain.session;
 
+import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -56,6 +59,48 @@ class SessionEnrollmentTest {
 
         assertThat(sessionEnrollment.isEnrollmentFull(MAX_ENROLLMENTS)).isTrue();
         assertThat(sessionEnrollment.isEnrollmentFull(EXCEEDED_ENROLLMENT_LIMIT)).isFalse();
+    }
+
+    @DisplayName("사용자의 수강신청을 승인 할 수 있다.")
+    @Test
+    void approveUserTest() {
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.CLOSED, RecruitmentStatus.RECRUITING);
+        sessionEnrollment.enrollUser(NsUserTest.SANJIGI);
+        sessionEnrollment.approveUser(NsUserTest.SANJIGI);
+
+        NsUser approvedUser = SessionDomainTestHelper.getSingleNsUser(sessionEnrollment);
+
+        assertThat(approvedUser.isApproved()).isTrue();
+    }
+
+    @DisplayName("사용자의 수강신청을 취소 할 수 있다.")
+    @Test
+    void rejectUserTest() {
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.CLOSED, RecruitmentStatus.RECRUITING);
+        sessionEnrollment.enrollUser(NsUserTest.SANJIGI);
+        sessionEnrollment.rejectUser(NsUserTest.SANJIGI);
+
+        NsUser rejectedUser = SessionDomainTestHelper.getSingleNsUser(sessionEnrollment);
+
+        assertThat(rejectedUser.isRejected()).isTrue();
+    }
+
+
+    @DisplayName("수강신청하지 않은 사용자의 수강신청을 승인하거나 취소하면 예외가 발생한다.")
+    @Test
+    void approveOrRejectUserWithNotEnrolledUserExceptionTest() {
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.CLOSED, RecruitmentStatus.RECRUITING);
+        sessionEnrollment.enrollUser(NsUserTest.SANJIGI);
+
+        assertThatThrownBy(
+                () -> sessionEnrollment.approveUser(NsUserTest.JAVAJIGI)
+        ).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("수강신청하지 않은 사용자입니다.");
+
+        assertThatThrownBy(
+                () -> sessionEnrollment.approveUser(NsUserTest.POBIJIGI)
+        ).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("수강신청하지 않은 사용자입니다.");
     }
 
 

@@ -24,7 +24,7 @@ class SessionFactoryTest {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.PREPARE, RecruitmentStatus.RECRUITING);
 
         Session session = SessionFactory.create(1L, 1L, sessionBody, sessionEnrollment, 0, 0);
-        CoverImage retrievedCoverImage = CoverImageHelper.getSingleCoverImage(session.getCoverImages());
+        CoverImage retrievedCoverImage = SessionDomainTestHelper.getSingleCoverImage(session.getCoverImages());
 
         assertAll(
                 () -> assertThat(session).isInstanceOf(FreeSession.class),
@@ -50,7 +50,7 @@ class SessionFactoryTest {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.PREPARE, RecruitmentStatus.RECRUITING);
 
         Session session = SessionFactory.create(1L, 1L, sessionBody, sessionEnrollment, 10000, 100);
-        CoverImage retrievedCoverImage = CoverImageHelper.getSingleCoverImage(session.getCoverImages());
+        CoverImage retrievedCoverImage = SessionDomainTestHelper.getSingleCoverImage(session.getCoverImages());
 
         assertAll(
                 () -> assertThat(session).isInstanceOf(PaidSession.class),

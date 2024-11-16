@@ -3,6 +3,7 @@ package nextstep.courses.domain.session;
 import nextstep.courses.domain.cover.CoverImage;
 import nextstep.courses.domain.cover.ImageDimension;
 import nextstep.courses.domain.cover.ImageSize;
+import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -39,7 +40,7 @@ class FreeSessionTest {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.RECRUITING);
 
         FreeSession freeSession = new FreeSession(1L, 1L, sessionBody, sessionEnrollment);
-        CoverImage retrievedCoverImage = CoverImageHelper.getSingleCoverImage(freeSession.getCoverImages());
+        CoverImage retrievedCoverImage = SessionDomainTestHelper.getSingleCoverImage(freeSession.getCoverImages());
 
         assertAll(
                 () -> assertThat("자바의 정석").isEqualTo(freeSession.getTitle()),
@@ -72,4 +73,31 @@ class FreeSessionTest {
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("진행중 또는 모집중인 상태에서만 신청 가능합니다.");
     }
+
+    @DisplayName("무료 강의에 수강신청된 사용자의 수강을 승인합니다.")
+    @Test
+    void freeSessionApproveUserTest() {
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.PREPARE, RecruitmentStatus.RECRUITING);
+        FreeSession freeSession = new FreeSession(1L, 1L, sessionBody, sessionEnrollment);
+        freeSession.enroll(NsUserTest.SANJIGI, null);
+        freeSession.approve(NsUserTest.SANJIGI);
+
+        NsUser approvedUser = SessionDomainTestHelper.getSingleUser(freeSession);
+
+        assertThat(approvedUser.isApproved()).isTrue();
+    }
+
+    @DisplayName("무료 강의에 수강신청된 사용자의 수강을 취소합니다.")
+    @Test
+    void freeSessionRejectUserTest() {
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.PREPARE, RecruitmentStatus.RECRUITING);
+        FreeSession freeSession = new FreeSession(1L, 1L, sessionBody, sessionEnrollment);
+        freeSession.enroll(NsUserTest.SANJIGI, null);
+        freeSession.reject(NsUserTest.SANJIGI);
+
+        NsUser approvedUser = SessionDomainTestHelper.getSingleUser(freeSession);
+
+        assertThat(approvedUser.isRejected()).isTrue();
+    }
+
 }

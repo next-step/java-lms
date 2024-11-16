@@ -4,6 +4,7 @@ import nextstep.courses.domain.cover.CoverImage;
 import nextstep.courses.domain.cover.ImageDimension;
 import nextstep.courses.domain.cover.ImageSize;
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -38,7 +39,7 @@ class PaidSessionTest {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING);
         PaidSession paidSession = new PaidSession(1L, 1L, sessionBody, sessionEnrollment, 50000L, 2);
 
-        CoverImage retrievedCoverImage = CoverImageHelper.getSingleCoverImage(paidSession.getCoverImages());
+        CoverImage retrievedCoverImage = SessionDomainTestHelper.getSingleCoverImage(paidSession.getCoverImages());
 
         assertAll(
                 () -> assertThat("이펙티브 자바").isEqualTo(paidSession.getTitle()),
@@ -122,6 +123,32 @@ class PaidSessionTest {
         )
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("유료 강의는 최대 수강 인원 1명 이상이어야 합니다.");
+    }
+
+    @DisplayName("유료 강의에 수강신청된 사용자의 수강을 승인합니다.")
+    @Test
+    void paidSessionApproveUserTest() {
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING);
+        PaidSession paidSession = new PaidSession(1L, 1L, sessionBody, sessionEnrollment, 50000L, 2);
+        paidSession.enroll(NsUserTest.SANJIGI, new Payment("1", 1L, NsUserTest.SANJIGI.getId(), 50000L));
+        paidSession.approve(NsUserTest.SANJIGI);
+
+        NsUser approvedUser = SessionDomainTestHelper.getSingleUser(paidSession);
+
+        assertThat(approvedUser.isApproved()).isTrue();
+    }
+
+    @DisplayName("유료 강의에 수강신청된 사용자의 수강을 취소합니다.")
+    @Test
+    void paidSessionRejectUserTest() {
+        SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING);
+        PaidSession paidSession = new PaidSession(1L, 1L, sessionBody, sessionEnrollment, 50000L, 2);
+        paidSession.enroll(NsUserTest.SANJIGI, new Payment("1", 1L, NsUserTest.SANJIGI.getId(), 50000L));
+        paidSession.reject(NsUserTest.SANJIGI);
+
+        NsUser approvedUser = SessionDomainTestHelper.getSingleUser(paidSession);
+
+        assertThat(approvedUser.isRejected()).isTrue();
     }
 
 }

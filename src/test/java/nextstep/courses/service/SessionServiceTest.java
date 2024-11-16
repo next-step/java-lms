@@ -6,6 +6,7 @@ import nextstep.courses.domain.cover.ImageExtension;
 import nextstep.courses.domain.cover.ImageSize;
 import nextstep.courses.domain.session.*;
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -69,5 +71,49 @@ class SessionServiceTest {
         assertThat(paidSession.getEnrolledUsers()).contains(NsUserTest.JAVAJIGI);
     }
 
+    @DisplayName("수강신청 시 강의를 찾지 못하면 예외가 발생한다.")
+    @Test
+    void throwsExceptionWhenSessionNotFound() {
+        long invalidSessionId = 999L;
+        when(sessionRepository.findById(invalidSessionId)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(
+                () ->   sessionService.enroll(NsUserTest.JAVAJIGI, invalidSessionId, new Payment("1", paidSession.getId(), NsUserTest.JAVAJIGI.getId(), 10000L))
+        ).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("존재하지 않는 강의입니다.");
+    }
+
+
+    @DisplayName("수강신청된 사용자의 수강을 승인할 수 있다.")
+    @Test
+    void approveTest() {
+        when(sessionRepository.findById(paidSession.getId())).thenReturn(Optional.of(paidSession));
+        sessionService.enroll(NsUserTest.JAVAJIGI, paidSession.getId(), new Payment("1", paidSession.getId(), NsUserTest.JAVAJIGI.getId(), 10000L));
+        assertThat(paidSession.getEnrolledUsers()).contains(NsUserTest.JAVAJIGI);
+
+        assertThat(getSingleNsUser().isApproved()).isFalse();
+
+        sessionService.approve(NsUserTest.JAVAJIGI, paidSession.getId());
+
+        assertThat(getSingleNsUser().isApproved()).isTrue();
+    }
+
+    @DisplayName("수강신청된 사용자의 수강을 취소할 수 있다.")
+    @Test
+    void rejectTest() {
+        when(sessionRepository.findById(paidSession.getId())).thenReturn(Optional.of(paidSession));
+        sessionService.enroll(NsUserTest.JAVAJIGI, paidSession.getId(), new Payment("1", paidSession.getId(), NsUserTest.JAVAJIGI.getId(), 10000L));
+        assertThat(paidSession.getEnrolledUsers()).contains(NsUserTest.JAVAJIGI);
+        assertThat(getSingleNsUser().isRejected()).isFalse();
+
+        sessionService.reject(NsUserTest.JAVAJIGI, paidSession.getId());
+
+        assertThat(getSingleNsUser().isRejected()).isTrue();
+    }
+
+    private NsUser getSingleNsUser() {
+        assertThat(paidSession.getEnrolledUsers()).hasSize(1);
+        return  paidSession.getEnrolledUsers().iterator().next();
+    }
 
 }

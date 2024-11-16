@@ -24,6 +24,14 @@ public abstract class Session {
 
     public abstract void enroll(NsUser nsUser, Payment payment);
 
+    public void approve(NsUser nsUser) {
+        sessionEnrollment.approveUser(nsUser);
+    }
+
+    public void reject(NsUser nsUser) {
+        sessionEnrollment.rejectUser(nsUser);
+    }
+
     public abstract long getFee();
 
     public abstract int getMaxEnrollments();

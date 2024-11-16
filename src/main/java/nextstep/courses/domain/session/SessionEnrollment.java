@@ -48,6 +48,21 @@ public class SessionEnrollment {
         return enrolledUsers.contains(nsUser);
     }
 
+    public void approveUser(NsUser nsUser) {
+        findEnrolledUser(nsUser).approve();
+    }
+
+    public void rejectUser(NsUser nsUser) {
+        findEnrolledUser(nsUser).reject();
+    }
+
+    private NsUser findEnrolledUser(NsUser nsUser) {
+        return enrolledUsers.stream()
+                .filter(user -> user.matchUser(nsUser))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("수강신청하지 않은 사용자입니다."));
+    }
+
     public int size() {
         return enrolledUsers.size();
     }

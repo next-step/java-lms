@@ -2,16 +2,13 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.cover.CoverImage;
 import nextstep.courses.domain.cover.ImageDimension;
-import nextstep.courses.domain.cover.ImageExtension;
 import nextstep.courses.domain.cover.ImageSize;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -31,7 +28,7 @@ class SessionBodyTest {
         CoverImage coverImage = CoverImage.of("effective java", ImageSize.of(imageSize), "jpg", ImageDimension.of(width, height));
 
         SessionBody sessionBody = SessionBody.of(title, sessionPeriod, List.of(coverImage));
-        CoverImage retrievedCoverImage = CoverImageHelper.getSingleCoverImage(sessionBody.getCoverImages());
+        CoverImage retrievedCoverImage = SessionDomainTestHelper.getSingleCoverImage(sessionBody.getCoverImages());
 
         assertAll(
                 () -> assertThat(sessionBody.getTitle()).isEqualTo(title),

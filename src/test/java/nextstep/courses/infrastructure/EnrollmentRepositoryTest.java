@@ -49,18 +49,43 @@ class EnrollmentRepositoryTest {
     @Test
     void enrollAndFindEnrolledUsersBySessionId() {
         enrollmentRepository.save(sessionId, NsUserTest.JAVAJIGI);
+        NsUser enrolledUser = getSingleEnrolledUser();
 
-        Set<NsUser> enrolledUsers = enrollmentRepository.findEnrolledUsersBySessionId(sessionId);
-        assertThat(enrolledUsers).hasSize(1);
-
-        NsUser enrolledUser = enrolledUsers.iterator().next();
         assertAll(
                 () -> assertThat(enrolledUser.getId()).isEqualTo(NsUserTest.JAVAJIGI.getId()),
                 () -> assertThat(enrolledUser.getUserId()).isEqualTo(NsUserTest.JAVAJIGI.getUserId()),
                 () -> assertThat(enrolledUser.getPassword()).isEqualTo(NsUserTest.JAVAJIGI.getPassword()),
                 () -> assertThat(enrolledUser.getName()).isEqualTo(NsUserTest.JAVAJIGI.getName()),
-                () -> assertThat(enrolledUser.getEmail()).isEqualTo(NsUserTest.JAVAJIGI.getEmail())
+                () -> assertThat(enrolledUser.getEmail()).isEqualTo(NsUserTest.JAVAJIGI.getEmail()),
+                () -> assertThat(enrolledUser.getEnrollmentStatus()).isEqualTo(NsUserTest.JAVAJIGI.getEnrollmentStatus())
         );
+    }
+
+    @DisplayName("수강신청한 사용자의 수강 상태를 변경할 수 있다.")
+    @Test
+    void updateEnrollmentStatusTest() {
+        NsUser user = new NsUser(1L, "pobijigi", "test", "포비지기", "pobijigi@slipp.net", EnrollmentStatus.PENDING, LocalDateTime.now(), LocalDateTime.now());
+        enrollmentRepository.save(sessionId, user);
+
+        NsUser enrolledUser = getSingleEnrolledUser();
+        assertThat(enrolledUser.getEnrollmentStatus()).isEqualTo(EnrollmentStatus.PENDING);
+
+        enrollmentRepository.updateEnrollmentStatus(sessionId, user.getId(), EnrollmentStatus.APPROVED);
+
+        NsUser approvedUser = getSingleEnrolledUser();
+        assertThat(approvedUser.getEnrollmentStatus()).isEqualTo(EnrollmentStatus.APPROVED);
+
+        enrollmentRepository.updateEnrollmentStatus(sessionId, user.getId(), EnrollmentStatus.REJECTED);
+
+        NsUser rejectedUser = getSingleEnrolledUser();
+        assertThat(rejectedUser.getEnrollmentStatus()).isEqualTo(EnrollmentStatus.REJECTED);
+
+    }
+
+    private NsUser getSingleEnrolledUser() {
+        Set<NsUser> enrolledUsers = enrollmentRepository.findEnrolledUsersBySessionId(sessionId);
+        assertThat(enrolledUsers).hasSize(1);
+        return enrolledUsers.iterator().next();
     }
 
 }

@@ -1,7 +1,10 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.EnrollmentRepository;
+import nextstep.courses.domain.session.EnrollmentStatus;
 import nextstep.users.domain.NsUser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -12,6 +15,7 @@ import java.util.Set;
 
 @Repository("enrollmentRepository")
 public class JdbcEnrollmentRepository implements EnrollmentRepository {
+    private static final Logger log = LoggerFactory.getLogger(JdbcEnrollmentRepository.class);
     private final JdbcOperations jdbcTemplate;
 
     public JdbcEnrollmentRepository(JdbcOperations jdbcTemplate) {
@@ -19,8 +23,8 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
     }
 
     @Override
-    public Set<NsUser> findEnrolledUsersBySessionId(Long sessionId) {
-        String sql = "SELECT us.* FROM enrollment e JOIN ns_user us ON e.user_id = us.id WHERE session_id = ?";
+    public Set<NsUser> findEnrolledUsersBySessionId(long sessionId) {
+        String sql = "SELECT e.enrollment_status, us.* FROM enrollment e JOIN ns_user us ON e.user_id = us.id WHERE session_id = ?";
         List<NsUser> enrolledUsers = jdbcTemplate.query(sql, userRowMapper, sessionId);
         return new HashSet<>(enrolledUsers);
     }
@@ -31,13 +35,22 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
             rs.getString("password"),
             rs.getString("name"),
             rs.getString("email"),
+            EnrollmentStatus.valueOf(rs.getString("enrollment_status")),
             rs.getTimestamp("created_at").toLocalDateTime(),
             rs.getTimestamp("updated_at") != null ? rs.getTimestamp("updated_at").toLocalDateTime() : null
     );
 
     @Override
-    public void save(Long sessionId, NsUser user) {
-        String sql = "INSERT INTO enrollment (session_id, user_id) VALUES (?, ?)";
-        jdbcTemplate.update(sql, sessionId, user.getId());
+    public void save(long sessionId, NsUser user) {
+        log.info("[save] enrollmentStatus {}", user.getEnrollmentStatus());
+        String sql = "INSERT INTO enrollment (session_id, user_id, enrollment_status) VALUES (?, ?, ?)";
+        jdbcTemplate.update(sql, sessionId, user.getId(), user.getEnrollmentStatus().name());
     }
+
+    @Override
+    public void updateEnrollmentStatus(long sessionId, long userId, EnrollmentStatus status) {
+        String sql = "UPDATE enrollment SET enrollment_status = ? WHERE session_id = ? AND user_id = ?";
+        jdbcTemplate.update(sql, status.name(), sessionId, userId);
+    }
+
 }
