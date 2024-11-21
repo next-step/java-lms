@@ -161,7 +161,7 @@
 - [ ] 일급컬렉션 사용
 
 ### JdbcCoverImageRepository
-- [ ] batchUpdate 활용
+- [x] batchUpdate 활용
 
 ### Repository 공통
 - [ ] RowMapper 정의 방법 통일

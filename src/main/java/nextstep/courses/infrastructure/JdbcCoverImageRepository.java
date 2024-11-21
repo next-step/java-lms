@@ -4,10 +4,13 @@ import nextstep.courses.domain.cover.CoverImage;
 import nextstep.courses.domain.cover.CoverImageRepository;
 import nextstep.courses.domain.cover.ImageDimension;
 import nextstep.courses.domain.cover.ImageSize;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository("coverImageRepository")
@@ -35,16 +38,23 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
         String sql = "INSERT INTO cover_image (session_id, file_name, image_size, extension, width, height) " +
                      "VALUES (?, ?, ?, ?, ?, ?)";
 
-        for (CoverImage coverImage : coverImages) {
-            jdbcTemplate.update(sql,
-                    sessionId,
-                    coverImage.getFileName(),
-                    coverImage.getImageSize(),
-                    coverImage.getExtension().name(),
-                    coverImage.getWidth(),
-                    coverImage.getHeight()
-            );
-        }
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                CoverImage coverImage = coverImages.get(i);
+                ps.setLong(1, sessionId);
+                ps.setString(2, coverImage.getFileName());
+                ps.setInt(3, coverImage.getImageSize());
+                ps.setString(4, coverImage.getExtension().name());
+                ps.setInt(5, coverImage.getWidth());
+                ps.setInt(6, coverImage.getHeight());
+            }
+
+            @Override
+            public int getBatchSize() {
+                return coverImages.size();
+            }
+        });
 
     }
 }
