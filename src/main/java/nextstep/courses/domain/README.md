@@ -154,3 +154,26 @@
 - 리팩터링할 때 컴파일 에러와 기존의 단위 테스트의 실패를 최소화하면서 점진적인 리팩터링이 가능하도록 한다.
 - DB 테이블에 데이터가 존재한다는 가정하에 리팩터링해야 한다.
   - 즉, 기존에 쌓인 데이터를 제거하지 않은 상태로 리팩터링 해야 한다.
+
+## 4단계 1차 리뷰 사항
+
+### EnrolledUsers
+- [ ] 일급컬렉션 사용
+
+### JdbcCoverImageRepository
+- [ ] batchUpdate 활용
+
+### Repository 공통
+- [ ] RowMapper 정의 방법 통일
+
+### NsUser
+- [ ] 수강생 객체 도출해서 책임 위임
+
+### SessionService
+- [ ] NsUser id 를 파라미터로 넘기기
+
+### schema.sql
+- [ ] 데이터가 존재한다는 가정이므로 default 값이 있거나 null 을 허용해야 리팩토링 가능
+
+### CoverImageRepositoryTest
+- [ ] usingRecursiveComparison 활용
