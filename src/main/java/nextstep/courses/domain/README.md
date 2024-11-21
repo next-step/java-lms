@@ -173,7 +173,7 @@
 - [ ] NsUser id 를 파라미터로 넘기기
 
 ### schema.sql
-- [ ] 데이터가 존재한다는 가정이므로 default 값이 있거나 null 을 허용해야 리팩토링 가능
+- [x] 기존 데이터가 존재한다는 가정이므로 default 값이 있거나 null 을 허용해야 리팩토링 가능
 
 ### CoverImageRepositoryTest
 - [ ] usingRecursiveComparison 활용
