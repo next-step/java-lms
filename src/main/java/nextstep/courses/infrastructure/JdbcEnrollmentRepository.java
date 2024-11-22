@@ -24,20 +24,23 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
 
     @Override
     public Set<NsUser> findEnrolledUsersBySessionId(long sessionId) {
-        String sql = "SELECT e.enrollment_status, us.* FROM enrollment e JOIN ns_user us ON e.user_id = us.id WHERE session_id = ?";
-        List<NsUser> enrolledUsers = jdbcTemplate.query(sql, userRowMapper, sessionId);
+        String sql = "SELECT us.id, us.user_id, us.password, us.name, us.email, e.enrollment_status, us.created_at, us.updated_at " +
+                "FROM enrollment e JOIN ns_user us ON e.user_id = us.id WHERE session_id = ?";
+
+        List<NsUser> enrolledUsers = jdbcTemplate.query(sql, rowMapper, sessionId);
+
         return new HashSet<>(enrolledUsers);
     }
 
-    private final RowMapper<NsUser> userRowMapper = (rs, rowNum) -> new NsUser(
-            rs.getLong("id"),
-            rs.getString("user_id"),
-            rs.getString("password"),
-            rs.getString("name"),
-            rs.getString("email"),
-            EnrollmentStatus.valueOf(rs.getString("enrollment_status")),
-            rs.getTimestamp("created_at").toLocalDateTime(),
-            rs.getTimestamp("updated_at") != null ? rs.getTimestamp("updated_at").toLocalDateTime() : null
+    private final RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
+            rs.getLong(1),
+            rs.getString(2),
+            rs.getString(3),
+            rs.getString(4),
+            rs.getString(5),
+            EnrollmentStatus.valueOf(rs.getString(6)),
+            rs.getTimestamp(7).toLocalDateTime(),
+            rs.getTimestamp(8) != null ? rs.getTimestamp(8).toLocalDateTime() : null
     );
 
     @Override

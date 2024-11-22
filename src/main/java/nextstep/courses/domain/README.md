@@ -164,7 +164,7 @@
 - [x] batchUpdate 활용
 
 ### Repository 공통
-- [ ] RowMapper 정의 방법 통일
+- [x] RowMapper 정의 방법 통일
 
 ### NsUser
 - [ ] 수강생 객체 도출해서 책임 위임
