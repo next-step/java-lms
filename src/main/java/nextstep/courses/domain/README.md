@@ -158,7 +158,7 @@
 ## 4단계 1차 리뷰 사항
 
 ### EnrolledUsers
-- [ ] 일급컬렉션 사용
+- [x] 일급컬렉션 사용
 
 ### JdbcCoverImageRepository
 - [x] batchUpdate 활용

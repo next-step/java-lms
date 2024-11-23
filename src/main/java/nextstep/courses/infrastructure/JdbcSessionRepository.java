@@ -72,7 +72,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     private SessionEnrollment getSessionEnrollmentBySessionId(ProgressStatus progressStatus, RecruitmentStatus recruitmentStatus, long sessionId) {
         Set<NsUser> enrolledUsers = enrollmentRepository.findEnrolledUsersBySessionId(sessionId);
-        return SessionEnrollment.of(progressStatus, recruitmentStatus, enrolledUsers);
+        return SessionEnrollment.of(progressStatus, recruitmentStatus, EnrolledUsers.of(enrolledUsers));
     }
 
 }

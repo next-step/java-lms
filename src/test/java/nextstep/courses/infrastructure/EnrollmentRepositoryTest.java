@@ -40,7 +40,10 @@ class EnrollmentRepositoryTest {
 
         CoverImage coverImage = CoverImage.of("file.jpg", ImageSize.of(1000), ImageExtension.JPG.name(), ImageDimension.of(300, 200));
         SessionPeriod period = SessionPeriod.of(LocalDateTime.now(), LocalDateTime.now().plusDays(7));
-        Session session = new FreeSession(1L, 1L, SessionBody.of("테스트 세션", period, List.of(coverImage)), SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING, new HashSet<>()));
+        Session session = new FreeSession(
+                1L, 1L, SessionBody.of("테스트 세션", period, List.of(coverImage)),
+                SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING, EnrolledUsers.of(new HashSet<>()))
+        );
         sessionRepository.save(session);
         sessionId = session.getId();
     }

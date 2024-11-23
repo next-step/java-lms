@@ -2,7 +2,6 @@ package nextstep.courses.domain.session;
 
 import nextstep.users.domain.NsUser;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,15 +9,15 @@ public class SessionEnrollment {
 
     private final ProgressStatus progressStatus;
     private final RecruitmentStatus recruitmentStatus;
-    private final Set<NsUser> enrolledUsers;
+    private final EnrolledUsers enrolledUsers;
 
     private SessionEnrollment(ProgressStatus progressStatus, RecruitmentStatus recruitmentStatus) {
         this.progressStatus = progressStatus;
         this.recruitmentStatus = recruitmentStatus;
-        this.enrolledUsers = new HashSet<>();
+        this.enrolledUsers = EnrolledUsers.of(new HashSet<>());
     }
 
-    private SessionEnrollment(ProgressStatus progressStatus, RecruitmentStatus recruitmentStatus, Set<NsUser> enrolledUsers) {
+    private SessionEnrollment(ProgressStatus progressStatus, RecruitmentStatus recruitmentStatus, EnrolledUsers enrolledUsers) {
         this.progressStatus = progressStatus;
         this.recruitmentStatus = recruitmentStatus;
         this.enrolledUsers = enrolledUsers;
@@ -28,7 +27,7 @@ public class SessionEnrollment {
         return new SessionEnrollment(progressStatus, recruitmentStatus);
     }
 
-    public static SessionEnrollment of(ProgressStatus progressStatus, RecruitmentStatus recruitmentStatus, Set<NsUser> enrolledUsers) {
+    public static SessionEnrollment of(ProgressStatus progressStatus, RecruitmentStatus recruitmentStatus, EnrolledUsers enrolledUsers) {
         return new SessionEnrollment(progressStatus, recruitmentStatus, enrolledUsers);
     }
 
@@ -57,7 +56,7 @@ public class SessionEnrollment {
     }
 
     private NsUser findEnrolledUser(NsUser nsUser) {
-        return enrolledUsers.stream()
+        return enrolledUsers.getEnrolledUsers().stream()
                 .filter(user -> user.matchUser(nsUser))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("수강신청하지 않은 사용자입니다."));
@@ -72,7 +71,7 @@ public class SessionEnrollment {
     }
 
     public Set<NsUser> getEnrolledUsers() {
-        return Collections.unmodifiableSet(enrolledUsers);
+        return enrolledUsers.getEnrolledUsers();
     }
 
     public boolean isNotInProgress() {
