@@ -46,12 +46,8 @@ class CoverImageRepositoryTest {
 
         CoverImage retrievedCoverImage = foundCoverImages.get(0);
 
-        assertAll(
-                () -> assertThat(retrievedCoverImage.getFileName()).isEqualTo(coverImage.getFileName()),
-                () -> assertThat(retrievedCoverImage.getImageSize()).isEqualTo(coverImage.getImageSize()),
-                () -> assertThat(retrievedCoverImage.getExtension()).isEqualTo(coverImage.getExtension()),
-                () -> assertThat(retrievedCoverImage.getWidth()).isEqualTo(coverImage.getWidth()),
-                () -> assertThat(retrievedCoverImage.getHeight()).isEqualTo(coverImage.getHeight())
-        );
+        assertThat(retrievedCoverImage)
+                .usingRecursiveComparison()
+                .isEqualTo(coverImage);
     }
 }

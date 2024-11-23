@@ -33,12 +33,11 @@ class SessionBodyTest {
         assertAll(
                 () -> assertThat(sessionBody.getTitle()).isEqualTo(title),
                 () -> assertThat(sessionBody.getPeriod().getStartDate()).isEqualTo(startDate),
-                () -> assertThat(sessionBody.getPeriod().getEndDate()).isEqualTo(endDate),
-                () -> assertThat(retrievedCoverImage.getFileName()).isEqualTo(coverImage.getFileName()),
-                () -> assertThat(retrievedCoverImage.getExtension()).isEqualTo(coverImage.getExtension()),
-                () -> assertThat(retrievedCoverImage.getImageSize()).isEqualTo(coverImage.getImageSize()),
-                () -> assertThat(retrievedCoverImage.getWidth()).isEqualTo(coverImage.getWidth()),
-                () -> assertThat(retrievedCoverImage.getHeight()).isEqualTo(coverImage.getHeight())
+                () -> assertThat(sessionBody.getPeriod().getEndDate()).isEqualTo(endDate)
         );
+
+        assertThat(retrievedCoverImage)
+                .usingRecursiveComparison()
+                .isEqualTo(coverImage);
     }
 }

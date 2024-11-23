@@ -51,14 +51,10 @@ class EnrollmentRepositoryTest {
         enrollmentRepository.save(sessionId, NsUserTest.JAVAJIGI);
         NsUser enrolledUser = getSingleEnrolledUser();
 
-        assertAll(
-                () -> assertThat(enrolledUser.getId()).isEqualTo(NsUserTest.JAVAJIGI.getId()),
-                () -> assertThat(enrolledUser.getUserId()).isEqualTo(NsUserTest.JAVAJIGI.getUserId()),
-                () -> assertThat(enrolledUser.getPassword()).isEqualTo(NsUserTest.JAVAJIGI.getPassword()),
-                () -> assertThat(enrolledUser.getName()).isEqualTo(NsUserTest.JAVAJIGI.getName()),
-                () -> assertThat(enrolledUser.getEmail()).isEqualTo(NsUserTest.JAVAJIGI.getEmail()),
-                () -> assertThat(enrolledUser.getEnrollmentStatus()).isEqualTo(NsUserTest.JAVAJIGI.getEnrollmentStatus())
-        );
+        assertThat(enrolledUser)
+                .usingRecursiveComparison()
+                .ignoringFields("createdAt", "updatedAt")
+                .isEqualTo(NsUserTest.JAVAJIGI);
     }
 
     @DisplayName("수강신청한 사용자의 수강 상태를 변경할 수 있다.")
