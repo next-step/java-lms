@@ -1,7 +1,6 @@
 package nextstep.courses.domain.session;
 
 import nextstep.payments.domain.Payment;
-import nextstep.users.domain.NsUser;
 
 public class FreeSession extends Session {
 
@@ -13,10 +12,10 @@ public class FreeSession extends Session {
     }
 
     @Override
-    public void enroll(NsUser nsUser, Payment payment) {
+    public void enroll(Student student, Payment payment) {
         validateSessionStatus();
 
-        sessionEnrollment.enrollUser(nsUser);
+        sessionEnrollment.enrollStudent(student);
     }
 
     @Override

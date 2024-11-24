@@ -56,11 +56,12 @@ class FreeSessionTest {
     void freeSessionEnrollTest() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.RECRUITING);
         FreeSession freeSession = new FreeSession(1L, 1L, sessionBody, sessionEnrollment);
+        Student student = Student.of(NsUserTest.SANJIGI.getId(), freeSession.getId());
 
-        assertThatCode(() -> freeSession.enroll(NsUserTest.SANJIGI, null))
+        assertThatCode(() -> freeSession.enroll(student, null))
                 .doesNotThrowAnyException();
 
-        assertThat(freeSession.getEnrolledUsers()).contains(NsUserTest.SANJIGI);
+        assertThat(freeSession.getEnrolledStudents()).contains(student);
     }
 
     @Test
@@ -68,8 +69,9 @@ class FreeSessionTest {
     void throwExceptionWhenStatusIsNotInProgress() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.CLOSED, RecruitmentStatus.NOT_RECRUITING);
         FreeSession freeSession = new FreeSession(1L, 1L, sessionBody, sessionEnrollment);
+        Student student = Student.of(NsUserTest.JAVAJIGI.getId(), freeSession.getId());
 
-        assertThatThrownBy(() -> freeSession.enroll(NsUserTest.JAVAJIGI, null))
+        assertThatThrownBy(() -> freeSession.enroll(student, null))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("진행중 또는 모집중인 상태에서만 신청 가능합니다.");
     }
@@ -79,12 +81,14 @@ class FreeSessionTest {
     void freeSessionApproveUserTest() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.PREPARE, RecruitmentStatus.RECRUITING);
         FreeSession freeSession = new FreeSession(1L, 1L, sessionBody, sessionEnrollment);
-        freeSession.enroll(NsUserTest.SANJIGI, null);
-        freeSession.approve(NsUserTest.SANJIGI);
+        Student student = Student.of(NsUserTest.SANJIGI.getId(), freeSession.getId());
 
-        NsUser approvedUser = SessionDomainTestHelper.getSingleUser(freeSession);
+        freeSession.enroll(student, null);
+        freeSession.approve(student);
 
-        assertThat(approvedUser.isApproved()).isTrue();
+        Student approvedStudent = SessionDomainTestHelper.getSingleStudent(freeSession);
+
+        assertThat(approvedStudent.isApproved()).isTrue();
     }
 
     @DisplayName("무료 강의에 수강신청된 사용자의 수강을 취소합니다.")
@@ -92,12 +96,14 @@ class FreeSessionTest {
     void freeSessionRejectUserTest() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.PREPARE, RecruitmentStatus.RECRUITING);
         FreeSession freeSession = new FreeSession(1L, 1L, sessionBody, sessionEnrollment);
-        freeSession.enroll(NsUserTest.SANJIGI, null);
-        freeSession.reject(NsUserTest.SANJIGI);
+        Student student = Student.of(NsUserTest.SANJIGI.getId(), freeSession.getId());
 
-        NsUser approvedUser = SessionDomainTestHelper.getSingleUser(freeSession);
+        freeSession.enroll(student, null);
+        freeSession.reject(student);
 
-        assertThat(approvedUser.isRejected()).isTrue();
+        Student approvedStudent = SessionDomainTestHelper.getSingleStudent(freeSession);
+
+        assertThat(approvedStudent.isRejected()).isTrue();
     }
 
 }

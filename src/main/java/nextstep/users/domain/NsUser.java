@@ -19,8 +19,6 @@ public class NsUser {
 
     private String email;
 
-    private EnrollmentStatus enrollmentStatus;
-
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
@@ -29,7 +27,7 @@ public class NsUser {
     }
 
     public NsUser(Long id, String userId, String password, String name, String email) {
-        this(id, userId, password, name, email, EnrollmentStatus.PENDING, LocalDateTime.now(), null);
+        this(id, userId, password, name, email, LocalDateTime.now(), null);
     }
 
     public NsUser(Long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -38,7 +36,6 @@ public class NsUser {
         this.password = password;
         this.name = name;
         this.email = email;
-        this.enrollmentStatus = EnrollmentStatus.PENDING;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -49,17 +46,8 @@ public class NsUser {
         this.password = password;
         this.name = name;
         this.email = email;
-        this.enrollmentStatus = enrollmentStatus;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-    }
-
-    public boolean isApproved() {
-        return enrollmentStatus.isApproved();
-    }
-
-    public boolean isRejected() {
-        return enrollmentStatus.isRejected();
     }
 
     public Long getId() {
@@ -102,10 +90,6 @@ public class NsUser {
         return this;
     }
 
-    public EnrollmentStatus getEnrollmentStatus() {
-        return enrollmentStatus;
-    }
-
     public void update(NsUser loginUser, NsUser target) {
         if (!matchUserId(loginUser.getUserId())) {
             throw new UnAuthorizedException();
@@ -142,14 +126,6 @@ public class NsUser {
 
     public boolean isGuestUser() {
         return false;
-    }
-
-    public void approve() {
-        enrollmentStatus = EnrollmentStatus.APPROVED;
-    }
-
-    public void reject() {
-        enrollmentStatus = EnrollmentStatus.REJECTED;
     }
 
     private static class GuestNsUser extends NsUser {

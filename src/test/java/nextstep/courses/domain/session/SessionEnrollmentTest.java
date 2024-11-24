@@ -1,11 +1,8 @@
 package nextstep.courses.domain.session;
 
-import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -13,13 +10,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class SessionEnrollmentTest {
 
 
-    @DisplayName("동일한 유저를 중복 등록하려고 하면 예외가 발생한다.")
+    @DisplayName("동일한 수강생을 중복 등록하려고 하면 예외가 발생한다.")
     @Test
-    void enrollUserDoesNotAllowDuplicates() {
+    void enrollStudentDoesNotAllowDuplicates() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING);
-        sessionEnrollment.enrollUser(NsUserTest.SANJIGI);
+        Student student = Student.of(NsUserTest.SANJIGI.getId(), 1L);
+        sessionEnrollment.enrollStudent(student);
 
-        assertThatThrownBy(() -> sessionEnrollment.enrollUser(NsUserTest.SANJIGI))
+        assertThatThrownBy(() -> sessionEnrollment.enrollStudent(student))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("중복된 수강신청입니다.");
     }
@@ -51,8 +49,10 @@ class SessionEnrollmentTest {
     @Test
     void isEnrollmentFullTest() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.CLOSED, RecruitmentStatus.RECRUITING);
-        sessionEnrollment.enrollUser(NsUserTest.SANJIGI);
-        sessionEnrollment.enrollUser(NsUserTest.JAVAJIGI);
+        Student student1 = Student.of(NsUserTest.SANJIGI.getId(), 1L);
+        Student student2 = Student.of(NsUserTest.JAVAJIGI.getId(), 1L);
+        sessionEnrollment.enrollStudent(student1);
+        sessionEnrollment.enrollStudent(student2);
 
         int MAX_ENROLLMENTS = 2;
         int EXCEEDED_ENROLLMENT_LIMIT = 3;
@@ -61,46 +61,51 @@ class SessionEnrollmentTest {
         assertThat(sessionEnrollment.isEnrollmentFull(EXCEEDED_ENROLLMENT_LIMIT)).isFalse();
     }
 
-    @DisplayName("사용자의 수강신청을 승인 할 수 있다.")
+    @DisplayName("수강생의 수강신청을 승인 할 수 있다.")
     @Test
-    void approveUserTest() {
+    void approveStudentTest() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.CLOSED, RecruitmentStatus.RECRUITING);
-        sessionEnrollment.enrollUser(NsUserTest.SANJIGI);
-        sessionEnrollment.approveUser(NsUserTest.SANJIGI);
+        Student student = Student.of(NsUserTest.SANJIGI.getId(), 1L);
+        sessionEnrollment.enrollStudent(student);
+        sessionEnrollment.approveStudent(student);
 
-        NsUser approvedUser = SessionDomainTestHelper.getSingleNsUser(sessionEnrollment);
+        Student approvedStudent = SessionDomainTestHelper.getSingleNsUser(sessionEnrollment);
 
-        assertThat(approvedUser.isApproved()).isTrue();
+        assertThat(approvedStudent.isApproved()).isTrue();
     }
 
-    @DisplayName("사용자의 수강신청을 취소 할 수 있다.")
+    @DisplayName("수강생의 수강신청을 취소 할 수 있다.")
     @Test
-    void rejectUserTest() {
+    void rejectStudentTest() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.CLOSED, RecruitmentStatus.RECRUITING);
-        sessionEnrollment.enrollUser(NsUserTest.SANJIGI);
-        sessionEnrollment.rejectUser(NsUserTest.SANJIGI);
+        Student student = Student.of(NsUserTest.SANJIGI.getId(), 1L);
+        sessionEnrollment.enrollStudent(student);
+        sessionEnrollment.rejectStudent(student);
 
-        NsUser rejectedUser = SessionDomainTestHelper.getSingleNsUser(sessionEnrollment);
+        Student rejectedStudent = SessionDomainTestHelper.getSingleNsUser(sessionEnrollment);
 
-        assertThat(rejectedUser.isRejected()).isTrue();
+        assertThat(rejectedStudent.isRejected()).isTrue();
     }
 
 
-    @DisplayName("수강신청하지 않은 사용자의 수강신청을 승인하거나 취소하면 예외가 발생한다.")
+    @DisplayName("수강신청하지 않은 수강생의 수강신청을 승인하거나 취소하면 예외가 발생한다.")
     @Test
-    void approveOrRejectUserWithNotEnrolledUserExceptionTest() {
+    void approveOrRejectUserWithNotEnrolledStudentExceptionTest() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.CLOSED, RecruitmentStatus.RECRUITING);
-        sessionEnrollment.enrollUser(NsUserTest.SANJIGI);
+        Student student1 = Student.of(NsUserTest.SANJIGI.getId(), 1L);
+        sessionEnrollment.enrollStudent(student1);
+
+        Student student2 = Student.of(NsUserTest.JAVAJIGI.getId(), 1L);
 
         assertThatThrownBy(
-                () -> sessionEnrollment.approveUser(NsUserTest.JAVAJIGI)
+                () -> sessionEnrollment.approveStudent(student2)
         ).isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("수강신청하지 않은 사용자입니다.");
+                .hasMessage("수강신청하지 않은 수강생입니다.");
 
         assertThatThrownBy(
-                () -> sessionEnrollment.approveUser(NsUserTest.POBIJIGI)
+                () -> sessionEnrollment.approveStudent(student2)
         ).isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("수강신청하지 않은 사용자입니다.");
+                .hasMessage("수강신청하지 않은 수강생입니다.");
     }
 
 

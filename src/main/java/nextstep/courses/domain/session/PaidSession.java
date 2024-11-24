@@ -35,12 +35,12 @@ public class PaidSession extends Session {
     }
 
     @Override
-    public void enroll(NsUser nsUser, Payment payment) {
+    public void enroll(Student student, Payment payment) {
         validateSessionStatus();
         validatePaymentAmount(payment);
         validateNumberOfEnrollment();
 
-        sessionEnrollment.enrollUser(nsUser);
+        sessionEnrollment.enrollStudent(student);
     }
 
     private void validatePaymentAmount(Payment payment) {

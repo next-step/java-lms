@@ -2,7 +2,6 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.cover.CoverImage;
 import nextstep.payments.domain.Payment;
-import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,14 +21,14 @@ public abstract class Session {
         this.sessionEnrollment = sessionEnrollment;
     }
 
-    public abstract void enroll(NsUser nsUser, Payment payment);
+    public abstract void enroll(Student student, Payment payment);
 
-    public void approve(NsUser nsUser) {
-        sessionEnrollment.approveUser(nsUser);
+    public void approve(Student student) {
+        sessionEnrollment.approveStudent(student);
     }
 
-    public void reject(NsUser nsUser) {
-        sessionEnrollment.rejectUser(nsUser);
+    public void reject(Student student) {
+        sessionEnrollment.rejectStudent(student);
     }
 
     public abstract long getFee();
@@ -70,8 +69,8 @@ public abstract class Session {
         return sessionBody.getCoverImages();
     }
 
-    public Set<NsUser> getEnrolledUsers() {
-        return sessionEnrollment.getEnrolledUsers();
+    public Set<Student> getEnrolledStudents() {
+        return sessionEnrollment.getEnrolledStudents();
     }
 
     public LocalDateTime getStartDate() {

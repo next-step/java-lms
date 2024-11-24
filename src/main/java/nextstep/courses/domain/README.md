@@ -167,10 +167,10 @@
 - [x] RowMapper 정의 방법 통일
 
 ### NsUser
-- [ ] 수강생 객체 도출해서 책임 위임
+- [x] 수강생 객체 도출해서 책임 위임
 
 ### SessionService
-- [ ] NsUser id 를 파라미터로 넘기기
+- [x] NsUser id 를 파라미터로 넘기기
 
 ### schema.sql
 - [x] 기존 데이터가 존재한다는 가정이므로 default 값이 있거나 null 을 허용해야 리팩토링 가능

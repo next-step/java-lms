@@ -55,20 +55,22 @@ class SessionServiceTest {
     @Test
     void enrollFreeSessionTest() {
         when(sessionRepository.findById(freeSession.getId())).thenReturn(Optional.of(freeSession));
+        Student student = Student.of(NsUserTest.JAVAJIGI.getId(), freeSession.getId());
 
-        sessionService.enroll(NsUserTest.JAVAJIGI, freeSession.getId(), new Payment("1", freeSession.getId(), NsUserTest.JAVAJIGI.getId(), 0L));
+        sessionService.enroll(student.getNsUserId(), freeSession.getId(), new Payment("1", freeSession.getId(), NsUserTest.JAVAJIGI.getId(), 0L));
 
-        assertThat(freeSession.getEnrolledUsers()).contains(NsUserTest.JAVAJIGI);
+        assertThat(freeSession.getEnrolledStudents()).contains(student);
     }
 
     @DisplayName("유료 강의에 등록할 수 있다.")
     @Test
     void enrollPaidSessionTest() {
         when(sessionRepository.findById(paidSession.getId())).thenReturn(Optional.of(paidSession));
+        Student student = Student.of(NsUserTest.JAVAJIGI.getId(), paidSession.getId());
 
-        sessionService.enroll(NsUserTest.JAVAJIGI, paidSession.getId(), new Payment("1", paidSession.getId(), NsUserTest.JAVAJIGI.getId(), 10000L));
+        sessionService.enroll(student.getNsUserId(), paidSession.getId(), new Payment("1", paidSession.getId(), NsUserTest.JAVAJIGI.getId(), 10000L));
 
-        assertThat(paidSession.getEnrolledUsers()).contains(NsUserTest.JAVAJIGI);
+        assertThat(paidSession.getEnrolledStudents()).contains(student);
     }
 
     @DisplayName("수강신청 시 강의를 찾지 못하면 예외가 발생한다.")
@@ -78,7 +80,7 @@ class SessionServiceTest {
         when(sessionRepository.findById(invalidSessionId)).thenReturn(Optional.empty());
 
         assertThatThrownBy(
-                () ->   sessionService.enroll(NsUserTest.JAVAJIGI, invalidSessionId, new Payment("1", paidSession.getId(), NsUserTest.JAVAJIGI.getId(), 10000L))
+                () ->   sessionService.enroll(NsUserTest.JAVAJIGI.getId(), invalidSessionId, new Payment("1", paidSession.getId(), NsUserTest.JAVAJIGI.getId(), 10000L))
         ).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("존재하지 않는 강의입니다.");
     }
@@ -88,32 +90,35 @@ class SessionServiceTest {
     @Test
     void approveTest() {
         when(sessionRepository.findById(paidSession.getId())).thenReturn(Optional.of(paidSession));
-        sessionService.enroll(NsUserTest.JAVAJIGI, paidSession.getId(), new Payment("1", paidSession.getId(), NsUserTest.JAVAJIGI.getId(), 10000L));
-        assertThat(paidSession.getEnrolledUsers()).contains(NsUserTest.JAVAJIGI);
+        Student student = Student.of(NsUserTest.JAVAJIGI.getId(), paidSession.getId());
 
-        assertThat(getSingleNsUser().isApproved()).isFalse();
+        sessionService.enroll(student.getNsUserId(), paidSession.getId(), new Payment("1", paidSession.getId(), NsUserTest.JAVAJIGI.getId(), 10000L));
+        assertThat(paidSession.getEnrolledStudents()).contains(student);
 
-        sessionService.approve(NsUserTest.JAVAJIGI, paidSession.getId());
+        assertThat(getSingleStudent().isApproved()).isFalse();
 
-        assertThat(getSingleNsUser().isApproved()).isTrue();
+        sessionService.approve(student.getNsUserId(), paidSession.getId());
+
+        assertThat(getSingleStudent().isApproved()).isTrue();
     }
 
-    @DisplayName("수강신청된 사용자의 수강을 취소할 수 있다.")
+    @DisplayName("수강신청된 수강생의 수강을 취소할 수 있다.")
     @Test
     void rejectTest() {
         when(sessionRepository.findById(paidSession.getId())).thenReturn(Optional.of(paidSession));
-        sessionService.enroll(NsUserTest.JAVAJIGI, paidSession.getId(), new Payment("1", paidSession.getId(), NsUserTest.JAVAJIGI.getId(), 10000L));
-        assertThat(paidSession.getEnrolledUsers()).contains(NsUserTest.JAVAJIGI);
-        assertThat(getSingleNsUser().isRejected()).isFalse();
+        Student student = Student.of(NsUserTest.JAVAJIGI.getId(), paidSession.getId());
+        sessionService.enroll(student.getNsUserId(), paidSession.getId(), new Payment("1", paidSession.getId(), NsUserTest.JAVAJIGI.getId(), 10000L));
+        assertThat(paidSession.getEnrolledStudents()).contains(student);
+        assertThat(getSingleStudent().isRejected()).isFalse();
 
-        sessionService.reject(NsUserTest.JAVAJIGI, paidSession.getId());
+        sessionService.reject(student.getNsUserId(), paidSession.getId());
 
-        assertThat(getSingleNsUser().isRejected()).isTrue();
+        assertThat(getSingleStudent().isRejected()).isTrue();
     }
 
-    private NsUser getSingleNsUser() {
-        assertThat(paidSession.getEnrolledUsers()).hasSize(1);
-        return  paidSession.getEnrolledUsers().iterator().next();
+    private Student getSingleStudent() {
+        assertThat(paidSession.getEnrolledStudents()).hasSize(1);
+        return  paidSession.getEnrolledStudents().iterator().next();
     }
 
 }

@@ -1,6 +1,5 @@
 package nextstep.courses.domain.session;
 
-import nextstep.users.domain.NsUser;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,69 +8,69 @@ public class SessionEnrollment {
 
     private final ProgressStatus progressStatus;
     private final RecruitmentStatus recruitmentStatus;
-    private final EnrolledUsers enrolledUsers;
+    private final EnrolledStudents enrolledStudents;
 
     private SessionEnrollment(ProgressStatus progressStatus, RecruitmentStatus recruitmentStatus) {
         this.progressStatus = progressStatus;
         this.recruitmentStatus = recruitmentStatus;
-        this.enrolledUsers = EnrolledUsers.of(new HashSet<>());
+        this.enrolledStudents = EnrolledStudents.of(new HashSet<>());
     }
 
-    private SessionEnrollment(ProgressStatus progressStatus, RecruitmentStatus recruitmentStatus, EnrolledUsers enrolledUsers) {
+    private SessionEnrollment(ProgressStatus progressStatus, RecruitmentStatus recruitmentStatus, EnrolledStudents enrolledStudents) {
         this.progressStatus = progressStatus;
         this.recruitmentStatus = recruitmentStatus;
-        this.enrolledUsers = enrolledUsers;
+        this.enrolledStudents = enrolledStudents;
     }
 
     public static SessionEnrollment of(ProgressStatus progressStatus, RecruitmentStatus recruitmentStatus) {
         return new SessionEnrollment(progressStatus, recruitmentStatus);
     }
 
-    public static SessionEnrollment of(ProgressStatus progressStatus, RecruitmentStatus recruitmentStatus, EnrolledUsers enrolledUsers) {
+    public static SessionEnrollment of(ProgressStatus progressStatus, RecruitmentStatus recruitmentStatus, EnrolledStudents enrolledUsers) {
         return new SessionEnrollment(progressStatus, recruitmentStatus, enrolledUsers);
     }
 
-    public void enrollUser(NsUser user) {
-        validateDuplicateEnrollment(user);
+    public void enrollStudent(Student student) {
+        validateDuplicateEnrollment(student);
 
-        enrolledUsers.add(user);
+        enrolledStudents.add(student);
     }
 
-    public void validateDuplicateEnrollment(NsUser nsUser) {
-        if (isDuplicateEnrolledUser(nsUser)) {
+    public void validateDuplicateEnrollment(Student student) {
+        if (isDuplicateEnrolledStudent(student)) {
             throw new IllegalStateException("중복된 수강신청입니다.");
         }
     }
 
-    private boolean isDuplicateEnrolledUser(NsUser nsUser) {
-        return enrolledUsers.contains(nsUser);
+    private boolean isDuplicateEnrolledStudent(Student student) {
+        return enrolledStudents.contains(student);
     }
 
-    public void approveUser(NsUser nsUser) {
-        findEnrolledUser(nsUser).approve();
+    public void approveStudent(Student student) {
+        findEnrolledStudents(student).approve();
     }
 
-    public void rejectUser(NsUser nsUser) {
-        findEnrolledUser(nsUser).reject();
+    public void rejectStudent(Student student) {
+        findEnrolledStudents(student).reject();
     }
 
-    private NsUser findEnrolledUser(NsUser nsUser) {
-        return enrolledUsers.getEnrolledUsers().stream()
-                .filter(user -> user.matchUser(nsUser))
+    private Student findEnrolledStudents(Student student) {
+        return enrolledStudents.getEnrolledStudents().stream()
+                .filter(enrolledStudent -> enrolledStudent.matchStudents(student))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("수강신청하지 않은 사용자입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("수강신청하지 않은 수강생입니다."));
     }
 
     public int size() {
-        return enrolledUsers.size();
+        return enrolledStudents.size();
     }
 
     public boolean isEnrollmentFull(int maxEnrollments) {
-        return enrolledUsers.size() >= maxEnrollments;
+        return enrolledStudents.size() >= maxEnrollments;
     }
 
-    public Set<NsUser> getEnrolledUsers() {
-        return enrolledUsers.getEnrolledUsers();
+    public Set<Student> getEnrolledStudents() {
+        return enrolledStudents.getEnrolledStudents();
     }
 
     public boolean isNotInProgress() {

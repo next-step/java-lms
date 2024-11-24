@@ -3,7 +3,6 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.cover.CoverImage;
 import nextstep.courses.domain.cover.CoverImageRepository;
 import nextstep.courses.domain.session.*;
-import nextstep.users.domain.NsUser;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
 
@@ -51,15 +50,15 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     private Session mapSession(ResultSet rs, int rowNum) throws SQLException {
-        long sessionId = rs.getLong("session_id");
-        long courseId = rs.getLong("course_id");
-        String title = rs.getString("title");
-        ProgressStatus progressStatus = ProgressStatus.valueOf(rs.getString("progress_status"));
-        RecruitmentStatus recruitmentStatus = RecruitmentStatus.valueOf(rs.getString("recruitment_status"));
-        LocalDateTime startDate = rs.getTimestamp("start_date").toLocalDateTime();
-        LocalDateTime endDate = rs.getTimestamp("end_date").toLocalDateTime();
-        long fee = rs.getLong("fee");
-        int maxEnrollments = rs.getInt("max_enrollments");
+        long sessionId = rs.getLong(1);
+        long courseId = rs.getLong(2);
+        String title = rs.getString(3);
+        ProgressStatus progressStatus = ProgressStatus.valueOf(rs.getString(4));
+        RecruitmentStatus recruitmentStatus = RecruitmentStatus.valueOf(rs.getString(5));
+        LocalDateTime startDate = rs.getTimestamp(6).toLocalDateTime();
+        LocalDateTime endDate = rs.getTimestamp(7).toLocalDateTime();
+        long fee = rs.getLong(8);
+        int maxEnrollments = rs.getInt(9);
 
         List<CoverImage> coverImages = coverImageRepository.findBySessionId(sessionId);
 
@@ -71,8 +70,8 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     private SessionEnrollment getSessionEnrollmentBySessionId(ProgressStatus progressStatus, RecruitmentStatus recruitmentStatus, long sessionId) {
-        Set<NsUser> enrolledUsers = enrollmentRepository.findEnrolledUsersBySessionId(sessionId);
-        return SessionEnrollment.of(progressStatus, recruitmentStatus, EnrolledUsers.of(enrolledUsers));
+        Set<Student> enrolledStudents = enrollmentRepository.findEnrolledStudentsBySessionId(sessionId);
+        return SessionEnrollment.of(progressStatus, recruitmentStatus, EnrolledStudents.of(enrolledStudents));
     }
 
 }

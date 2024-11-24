@@ -1,9 +1,6 @@
 package nextstep.courses.service;
 
-import nextstep.courses.domain.session.EnrollmentRepository;
-import nextstep.courses.domain.session.EnrollmentStatus;
-import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionRepository;
+import nextstep.courses.domain.session.*;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
@@ -23,30 +20,33 @@ public class SessionService {
     }
 
     @Transactional
-    public void enroll(NsUser loginUser, long sessionId, Payment payment) {
+    public void enroll(long nsUserId, long sessionId, Payment payment) {
         Session session = findSessionById(sessionId);
+        Student student = Student.of(nsUserId, sessionId, EnrollmentStatus.PENDING);
 
-        session.enroll(loginUser, payment);
+        session.enroll(student, payment);
 
-        enrollmentRepository.save(sessionId, loginUser);
+        enrollmentRepository.save(sessionId, student);
     }
 
     @Transactional
-    public void approve(NsUser user, long sessionId) {
+    public void approve(long nsUserId, long sessionId) {
         Session session = findSessionById(sessionId);
+        Student student = Student.of(nsUserId, sessionId, EnrollmentStatus.PENDING);
 
-        session.approve(user);
+        session.approve(student);
 
-        enrollmentRepository.updateEnrollmentStatus(sessionId, user.getId(), EnrollmentStatus.APPROVED);
+        enrollmentRepository.updateEnrollmentStatus(sessionId, student);
     }
 
     @Transactional
-    public void reject(NsUser user, long sessionId) {
+    public void reject(long nsUserId, long sessionId) {
         Session session = findSessionById(sessionId);
+        Student student = Student.of(nsUserId, sessionId, EnrollmentStatus.PENDING);
 
-        session.reject(user);
+        session.reject(student);
 
-        enrollmentRepository.updateEnrollmentStatus(sessionId, user.getId(), EnrollmentStatus.REJECTED);
+        enrollmentRepository.updateEnrollmentStatus(sessionId, student);
     }
 
     private Session findSessionById(long sessionId) {

@@ -41,10 +41,10 @@ class SessionRepositoryTest {
 
 
         paidSession = new PaidSession(1L, 1L, SessionBody.of("유료 세션", period, List.of(coverImage)),
-                SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING, EnrolledUsers.of(new HashSet<>())), 10000L, 100);
+                SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING, EnrolledStudents.of(new HashSet<>())), 10000L, 100);
 
         freeSession = new FreeSession(2L, 1L, SessionBody.of("무료 세션", period, List.of(coverImage)),
-                SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING, EnrolledUsers.of(new HashSet<>())));
+                SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING, EnrolledStudents.of(new HashSet<>())));
     }
 
     @DisplayName("유료 강의를 저장하고 조회할 수 있다.")

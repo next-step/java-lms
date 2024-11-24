@@ -27,9 +27,9 @@ class EnrollmentRepositoryTest {
 
     private EnrollmentRepository enrollmentRepository;
     private CoverImageRepository coverImageRepository;
-
     private SessionRepository sessionRepository;
 
+    private Session session;
     private Long sessionId;
 
     @BeforeEach
@@ -40,9 +40,9 @@ class EnrollmentRepositoryTest {
 
         CoverImage coverImage = CoverImage.of("file.jpg", ImageSize.of(1000), ImageExtension.JPG.name(), ImageDimension.of(300, 200));
         SessionPeriod period = SessionPeriod.of(LocalDateTime.now(), LocalDateTime.now().plusDays(7));
-        Session session = new FreeSession(
+        session = new FreeSession(
                 1L, 1L, SessionBody.of("테스트 세션", period, List.of(coverImage)),
-                SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING, EnrolledUsers.of(new HashSet<>()))
+                SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING, EnrolledStudents.of(new HashSet<>()))
         );
         sessionRepository.save(session);
         sessionId = session.getId();
@@ -50,41 +50,44 @@ class EnrollmentRepositoryTest {
 
     @DisplayName("사용자를 수강신청하고 수강신청된 사용자들을 조회할 수 있다.")
     @Test
-    void enrollAndFindEnrolledUsersBySessionId() {
-        enrollmentRepository.save(sessionId, NsUserTest.JAVAJIGI);
-        NsUser enrolledUser = getSingleEnrolledUser();
+    void enrollAndFindEnrolledStudentsBySessionId() {
+        Student student = Student.of(NsUserTest.JAVAJIGI.getId(), sessionId);
+        enrollmentRepository.save(sessionId, student);
+        Student enrolledStudent = getSingleEnrolledStudent();
 
-        assertThat(enrolledUser)
+        assertThat(enrolledStudent)
                 .usingRecursiveComparison()
-                .ignoringFields("createdAt", "updatedAt")
-                .isEqualTo(NsUserTest.JAVAJIGI);
+                .isEqualTo(student);
     }
 
-    @DisplayName("수강신청한 사용자의 수강 상태를 변경할 수 있다.")
+    @DisplayName("수강신청한 수강생의 수강 상태를 변경할 수 있다.")
     @Test
     void updateEnrollmentStatusTest() {
-        NsUser user = new NsUser(1L, "pobijigi", "test", "포비지기", "pobijigi@slipp.net", EnrollmentStatus.PENDING, LocalDateTime.now(), LocalDateTime.now());
-        enrollmentRepository.save(sessionId, user);
+        Student student = Student.of(NsUserTest.JAVAJIGI.getId(), sessionId);
 
-        NsUser enrolledUser = getSingleEnrolledUser();
-        assertThat(enrolledUser.getEnrollmentStatus()).isEqualTo(EnrollmentStatus.PENDING);
+        session.enroll(student, null);
+        enrollmentRepository.save(sessionId, student);
 
-        enrollmentRepository.updateEnrollmentStatus(sessionId, user.getId(), EnrollmentStatus.APPROVED);
+        Student enrolledStudent = getSingleEnrolledStudent();
+        assertThat(enrolledStudent.getEnrollmentStatus()).isEqualTo(EnrollmentStatus.PENDING);
 
-        NsUser approvedUser = getSingleEnrolledUser();
-        assertThat(approvedUser.getEnrollmentStatus()).isEqualTo(EnrollmentStatus.APPROVED);
+        session.approve(student);
+        enrollmentRepository.updateEnrollmentStatus(sessionId, student);
 
-        enrollmentRepository.updateEnrollmentStatus(sessionId, user.getId(), EnrollmentStatus.REJECTED);
+        Student approvedStudent = getSingleEnrolledStudent();
+        assertThat(approvedStudent.getEnrollmentStatus()).isEqualTo(EnrollmentStatus.APPROVED);
 
-        NsUser rejectedUser = getSingleEnrolledUser();
-        assertThat(rejectedUser.getEnrollmentStatus()).isEqualTo(EnrollmentStatus.REJECTED);
+        session.reject(student);
+        enrollmentRepository.updateEnrollmentStatus(sessionId, student);
 
+        Student rejectedStudent = getSingleEnrolledStudent();
+        assertThat(rejectedStudent.getEnrollmentStatus()).isEqualTo(EnrollmentStatus.REJECTED);
     }
 
-    private NsUser getSingleEnrolledUser() {
-        Set<NsUser> enrolledUsers = enrollmentRepository.findEnrolledUsersBySessionId(sessionId);
-        assertThat(enrolledUsers).hasSize(1);
-        return enrolledUsers.iterator().next();
+    private Student getSingleEnrolledStudent() {
+        Set<Student> enrolledStudents = enrollmentRepository.findEnrolledStudentsBySessionId(sessionId);
+        assertThat(enrolledStudents).hasSize(1);
+        return enrolledStudents.iterator().next();
     }
 
 }

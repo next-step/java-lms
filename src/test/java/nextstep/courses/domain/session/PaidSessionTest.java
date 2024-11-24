@@ -55,10 +55,11 @@ class PaidSessionTest {
     void enrollUserSuccessfullyWhenStatusIsOpen() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING);
         PaidSession paidSession = new PaidSession(1L, 1L, sessionBody, sessionEnrollment, 50000L, 2);
+        Student student = Student.of(NsUserTest.SANJIGI.getId(), paidSession.getId());
 
-        paidSession.enroll(NsUserTest.JAVAJIGI, new Payment("1", 1L, 1L, 50000L));
+        paidSession.enroll(student, new Payment("1", 1L, 1L, 50000L));
 
-        assertThat(paidSession.getEnrolledUsers()).contains(NsUserTest.JAVAJIGI);
+        assertThat(paidSession.getEnrolledStudents()).contains(student);
     }
 
     @DisplayName("모집중 또는 진행중이 아닌 유료강의를 수강신청하면 예외가 발생한다.")
@@ -66,8 +67,9 @@ class PaidSessionTest {
     void enrollTestThrowExceptionWhenStatusIsNotInProgress() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.PREPARE, RecruitmentStatus.NOT_RECRUITING);
         PaidSession paidSession = new PaidSession(1L, 1L, sessionBody, sessionEnrollment, 50000L, 2);
+        Student student = Student.of(NsUserTest.SANJIGI.getId(), paidSession.getId());
 
-        assertThatThrownBy(() -> paidSession.enroll(NsUserTest.SANJIGI, new Payment("1", 1L, 1L, 50000L)))
+        assertThatThrownBy(() -> paidSession.enroll(student, new Payment("1", 1L, 1L, 50000L)))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("진행중 또는 모집중인 상태에서만 신청 가능합니다.");
     }
@@ -77,8 +79,9 @@ class PaidSessionTest {
     void failToEnrollUserWhenPaidAmountDoesNotMatchFee() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.RECRUITING);
         PaidSession paidSession = new PaidSession(1L, 1L, sessionBody, sessionEnrollment, 50000L, 2);
+        Student student = Student.of(NsUserTest.SANJIGI.getId(), paidSession.getId());
 
-        assertThatThrownBy(() -> paidSession.enroll(NsUserTest.SANJIGI, new Payment("1", 1L, 1L, 49000L)))
+        assertThatThrownBy(() -> paidSession.enroll(student, new Payment("1", 1L, 1L, 49000L)))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("결제 금액이 일치하지 않습니다.");
     }
@@ -88,11 +91,13 @@ class PaidSessionTest {
     void failToEnrollUserWhenMaxEnrollmentsReached() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.RECRUITING);
         PaidSession paidSession = new PaidSession(1L, 1L, sessionBody, sessionEnrollment, 50000L, 2);
+        Student student1 = Student.of(NsUserTest.JAVAJIGI.getId(), paidSession.getId());
+        Student student2 = Student.of(NsUserTest.SANJIGI.getId(), paidSession.getId());
 
-        paidSession.enroll(NsUserTest.JAVAJIGI, new Payment("1", 1L, 1L, 50000L));
-        paidSession.enroll(NsUserTest.SANJIGI, new Payment("1", 1L, 2L, 50000L));
+        paidSession.enroll(student1, new Payment("1", 1L, 1L, 50000L));
+        paidSession.enroll(student2, new Payment("1", 1L, 2L, 50000L));
 
-        assertThatThrownBy(() -> paidSession.enroll(NsUserTest.POBIJIGI, new Payment("1", 1L, 3L, 50000L)))
+        assertThatThrownBy(() -> paidSession.enroll( Student.of(NsUserTest.POBIJIGI.getId(), paidSession.getId()), new Payment("1", 1L, 3L, 50000L)))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("수강 인원이 초과되었습니다.");
     }
@@ -125,30 +130,33 @@ class PaidSessionTest {
                 .hasMessage("유료 강의는 최대 수강 인원 1명 이상이어야 합니다.");
     }
 
-    @DisplayName("유료 강의에 수강신청된 사용자의 수강을 승인합니다.")
+    @DisplayName("유료 강의에 수강신청된 수강생의 수강을 승인합니다.")
     @Test
     void paidSessionApproveUserTest() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING);
         PaidSession paidSession = new PaidSession(1L, 1L, sessionBody, sessionEnrollment, 50000L, 2);
-        paidSession.enroll(NsUserTest.SANJIGI, new Payment("1", 1L, NsUserTest.SANJIGI.getId(), 50000L));
-        paidSession.approve(NsUserTest.SANJIGI);
+        Student student = Student.of(NsUserTest.SANJIGI.getId(), paidSession.getId());
 
-        NsUser approvedUser = SessionDomainTestHelper.getSingleUser(paidSession);
+        paidSession.enroll(student, new Payment("1", 1L, NsUserTest.SANJIGI.getId(), 50000L));
+        paidSession.approve(student);
 
-        assertThat(approvedUser.isApproved()).isTrue();
+        Student approvedStudent = SessionDomainTestHelper.getSingleStudent(paidSession);
+
+        assertThat(approvedStudent.isApproved()).isTrue();
     }
 
-    @DisplayName("유료 강의에 수강신청된 사용자의 수강을 취소합니다.")
+    @DisplayName("유료 강의에 수강신청된 수강생의 수강을 취소합니다.")
     @Test
     void paidSessionRejectUserTest() {
         SessionEnrollment sessionEnrollment = SessionEnrollment.of(ProgressStatus.IN_PROGRESS, RecruitmentStatus.NOT_RECRUITING);
         PaidSession paidSession = new PaidSession(1L, 1L, sessionBody, sessionEnrollment, 50000L, 2);
-        paidSession.enroll(NsUserTest.SANJIGI, new Payment("1", 1L, NsUserTest.SANJIGI.getId(), 50000L));
-        paidSession.reject(NsUserTest.SANJIGI);
+        Student student = Student.of(NsUserTest.SANJIGI.getId(), paidSession.getId());
+        paidSession.enroll(student, new Payment("1", 1L, NsUserTest.SANJIGI.getId(), 50000L));
+        paidSession.reject(student);
 
-        NsUser approvedUser = SessionDomainTestHelper.getSingleUser(paidSession);
+        Student approvedStudent = SessionDomainTestHelper.getSingleStudent(paidSession);
 
-        assertThat(approvedUser.isRejected()).isTrue();
+        assertThat(approvedStudent.isRejected()).isTrue();
     }
 
 }
