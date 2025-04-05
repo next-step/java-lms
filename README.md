@@ -21,7 +21,6 @@
 
 - [x] 질문에 삭제 가능 여부를 물어본다.
 - [x] 질문에 삭제 요청을 하면, 삭제 히스토리를 반환한다.
-- [x] 질문의 Getter, Setter 를 제거한다.
 - [x] 답변에 삭제 요청을 하면, 삭제 히스토리를 반환한다.
 
 ### 리팩터링 요구사항
@@ -30,6 +29,8 @@
 > - QnaService의 비지니스 로직을 도메인 모델로 이동하는 리팩터링을 진행할 때 TDD로 구현한다.
 > - QnaService의 deleteQuestion() 메서드에 대한 단위 테스트는 src/test/java 폴더 nextstep.qna.service.QnaServiceTest이다. 도메인 모델로 로직을 이동한 후에도 QnaServiceTest의 모든 테스트는 통과해야 한다. 
 
+- [x] 질문의 Getter, Setter 를 제거한다.
+- [x] 답변의 Getter, Setter 를 제거한다.
 
 ### 힌트
 > - 객체의 상태 데이터를 꺼내지(get)말고 메시지를 보낸다.
