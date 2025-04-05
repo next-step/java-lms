@@ -39,39 +39,39 @@ public class QuestionTest {
 
     @Test
     @DisplayName("본인이 쓴 질문이고, 답변이 없으면 삭제 가능하다.")
-    void canDeleteQuestionWithNoAnswerByOwner() {
+    void canDeleteCascadeQuestionWithNoAnswerByOwner() {
         assertThatCode(() -> Q1.canDelete(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
     }
 
     @Test
     @DisplayName("다른 사람이 쓴 질문이면, 삭제 불가능하다.")
-    void canDeleteQuestionByOther() {
+    void canDeleteCascadeQuestionByOther() {
         assertThatThrownBy(() -> question.canDelete(NsUserTest.SANJIGI)).isInstanceOf(CannotDeleteException.class);
     }
 
     @Test
     @DisplayName("본인이 쓴 질문이고, 본인이 쓴 답변만 있으면 삭제 가능하다.")
-    void canDeleteQuestionWithSelfAnswerByOwner() {
+    void canDeleteCascadeQuestionWithSelfAnswerByOwner() {
         assertThatCode(() -> question.canDelete(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
     }
 
     @Test
     @DisplayName("본인이 쓴 질문이고, 타인이 쓴 답변이 있으면 삭제 불가능하다.")
-    void canDeleteQuestionWithOtherAnswerByOwner() {
+    void canDeleteCascadeQuestionWithOtherAnswerByOwner() {
         assertThatThrownBy(() -> question.canDelete(NsUserTest.SANJIGI)).isInstanceOf(CannotDeleteException.class);
     }
 
     @Test
     @DisplayName("질문을 삭제하면, 질문과 답변 삭제 히스토리를 반환한다.")
-    void deleteAndReturnHistory() {
-        assertThat(question.delete()).hasSize(2).isEqualTo(deleteHistories);
+    void deleteCascadeAndReturnHistory() {
+        assertThat(question.deleteCascade()).hasSize(2).isEqualTo(deleteHistories);
     }
 
 
     @Test
     @DisplayName("질문을 삭제하면, 삭제 상태가 변경된다.")
-    void deleteAndUpdateDeleteStatus() {
-        question.delete();
+    void deleteAndUpdateDeleteCascadeStatus() {
+        question.deleteCascade();
         assertThat(question.isDeleted()).isTrue();
         assertThat(answer.isDeleted()).isTrue();
     }
