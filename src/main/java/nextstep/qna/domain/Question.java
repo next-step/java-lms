@@ -24,7 +24,7 @@ public class Question {
 
     private LocalDateTime updatedDate;
 
-    public Question() {
+    protected Question() {
     }
 
     public Question(NsUser writer, String title, String contents) {
@@ -38,44 +38,13 @@ public class Question {
         this.contents = contents;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
-    public NsUser getWriter() {
-        return writer;
-    }
-
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
+    private boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
-    }
-
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
     }
 
     public boolean isDeleted() {
@@ -84,11 +53,6 @@ public class Question {
 
     public List<Answer> getAnswers() {
         return answers;
-    }
-
-    @Override
-    public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
     public void canDelete(NsUser loginUser) throws CannotDeleteException {
@@ -113,5 +77,10 @@ public class Question {
             deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
         }
         return deleteHistories;
+    }
+
+    @Override
+    public String toString() {
+        return "Question [id=" + id + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 }
