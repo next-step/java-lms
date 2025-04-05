@@ -39,39 +39,39 @@ public class QuestionTest {
 
     @Test
     @DisplayName("본인이 쓴 질문이고, 답변이 없으면 삭제 가능하다.")
-    void canDeleteCascadeQuestionWithNoAnswerByOwner() {
-        assertThatCode(() -> Q1.canDelete(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
+    void assertCanDeleteByQuestionWithNoAnswerByOwner() {
+        assertThatCode(() -> Q1.assertCanDelete(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
     }
 
     @Test
     @DisplayName("다른 사람이 쓴 질문이면, 삭제 불가능하다.")
-    void canDeleteCascadeQuestionByOther() {
-        assertThatThrownBy(() -> question.canDelete(NsUserTest.SANJIGI)).isInstanceOf(CannotDeleteException.class);
+    void assertCanDeleteByQuestionByOther() {
+        assertThatThrownBy(() -> question.assertCanDelete(NsUserTest.SANJIGI)).isInstanceOf(CannotDeleteException.class);
     }
 
     @Test
     @DisplayName("본인이 쓴 질문이고, 본인이 쓴 답변만 있으면 삭제 가능하다.")
-    void canDeleteCascadeQuestionWithSelfAnswerByOwner() {
-        assertThatCode(() -> question.canDelete(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
+    void assertCanDeleteByQuestionWithSelfAnswerByOwner() {
+        assertThatCode(() -> question.assertCanDelete(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
     }
 
     @Test
     @DisplayName("본인이 쓴 질문이고, 타인이 쓴 답변이 있으면 삭제 불가능하다.")
-    void canDeleteCascadeQuestionWithOtherAnswerByOwner() {
-        assertThatThrownBy(() -> question.canDelete(NsUserTest.SANJIGI)).isInstanceOf(CannotDeleteException.class);
+    void assertCanDeleteByQuestionWithOtherAnswerByOwner() {
+        assertThatThrownBy(() -> question.assertCanDelete(NsUserTest.SANJIGI)).isInstanceOf(CannotDeleteException.class);
     }
 
     @Test
     @DisplayName("질문을 삭제하면, 질문과 답변 삭제 히스토리를 반환한다.")
-    void deleteCascadeAndReturnHistory() {
-        assertThat(question.deleteCascade()).hasSize(2).isEqualTo(deleteHistories);
+    void deleteByAndReturnHistory() {
+        assertThat(question.deleteBy(NsUserTest.JAVAJIGI)).hasSize(2).containsAll(deleteHistories);
     }
 
 
     @Test
     @DisplayName("질문을 삭제하면, 삭제 상태가 변경된다.")
-    void deleteAndUpdateDeleteCascadeStatus() {
-        question.deleteCascade();
+    void deleteAndUpdateDeleteByStatus() {
+        question.deleteBy(NsUserTest.JAVAJIGI);
         assertThat(question.isDeleted()).isTrue();
         assertThat(answer.isDeleted()).isTrue();
     }

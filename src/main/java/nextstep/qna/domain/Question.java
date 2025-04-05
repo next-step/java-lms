@@ -60,7 +60,7 @@ public class Question {
         return Collections.unmodifiableList(answers);
     }
 
-    public void canDelete(NsUser loginUser) throws CannotDeleteException {
+    public void assertCanDelete(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
@@ -70,12 +70,14 @@ public class Question {
         }
     }
 
-    public List<DeleteHistory> deleteCascade() {
+    public List<DeleteHistory> deleteBy(NsUser loginUser) {
+        assertCanDelete(loginUser);
+
         List<DeleteHistory> deleteHistories = answers.stream()
                 .map(Answer::delete)
                 .collect(Collectors.toList());
 
-        deleteHistories.add(this.delete());
+        deleteHistories.add(delete());
         return deleteHistories;
     }
 
