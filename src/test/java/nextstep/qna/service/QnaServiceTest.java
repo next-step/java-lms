@@ -53,6 +53,15 @@ public class QnaServiceTest {
     }
 
     @Test
+    public void delete_다른_사람이_쓴_글() throws Exception {
+        when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
+
+        assertThatThrownBy(() -> {
+            qnAService.deleteQuestion(NsUserTest.SANJIGI, question.getId());
+        }).isInstanceOf(CannotDeleteException.class);
+    }
+
+    @Test
     public void delete_성공_질문자_답변자_같음() throws Exception {
         when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
 
@@ -61,6 +70,15 @@ public class QnaServiceTest {
         assertThat(question.isDeleted()).isTrue();
         assertThat(answer.isDeleted()).isTrue();
         verifyDeleteHistories();
+    }
+
+    @Test
+    public void delete_답변_중_다른_사람이_쓴_글() throws Exception {
+        when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
+
+        assertThatThrownBy(() -> {
+            qnAService.deleteQuestion(NsUserTest.SANJIGI, question.getId());
+        }).isInstanceOf(CannotDeleteException.class);
     }
 
     private void verifyDeleteHistories() {

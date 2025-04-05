@@ -6,8 +6,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 
 public class QuestionTest {
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
@@ -15,14 +19,17 @@ public class QuestionTest {
 
     private Question question;
     private Answer answer;
-
+    private List<DeleteHistory> deleteHistories;
     @BeforeEach
     public void setUp() throws Exception {
         question = new Question(1L, NsUserTest.JAVAJIGI, "title1", "contents1");
         answer = new Answer(11L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
         question.addAnswer(answer);
-    }
 
+        deleteHistories = Arrays.asList(
+                new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now()),
+                new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
+    }
 
     @Test
     @DisplayName("본인이 쓴 질문이고, 답변이 없으면 삭제 가능하다.")
@@ -32,20 +39,35 @@ public class QuestionTest {
 
     @Test
     @DisplayName("다른 사람이 쓴 질문이면, 삭제 불가능하다.")
-    public void canDeleteQuestionByOther() {
+    void canDeleteQuestionByOther() {
         assertThatThrownBy(() -> question.canDelete(NsUserTest.SANJIGI)).isInstanceOf(CannotDeleteException.class);
     }
 
     @Test
     @DisplayName("본인이 쓴 질문이고, 본인이 쓴 답변만 있으면 삭제 가능하다.")
-    public void canDeleteQuestionWithSelfAnswerByOwner() {
+    void canDeleteQuestionWithSelfAnswerByOwner() {
         assertThatCode(() -> question.canDelete(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
     }
 
     @Test
     @DisplayName("본인이 쓴 질문이고, 타인이 쓴 답변이 있으면 삭제 불가능하다.")
-    public void canDeleteQuestionWithOtherAnswerByOwner() {
+    void canDeleteQuestionWithOtherAnswerByOwner() {
         assertThatThrownBy(() -> question.canDelete(NsUserTest.SANJIGI)).isInstanceOf(CannotDeleteException.class);
+    }
+
+    @Test
+    @DisplayName("질문을 삭제하면, 질문과 답변 삭제 히스토리를 반환한다.")
+    void deleteAndReturnHistory() {
+        assertThat(question.delete()).hasSize(2).isEqualTo(deleteHistories);
+    }
+
+
+    @Test
+    @DisplayName("질문을 삭제하면, 삭제 상태가 변경된다.")
+    void deleteAndUpdateDeleteStatus() {
+        question.delete();
+        assertThat(question.isDeleted()).isTrue();
+        assertThat(answer.isDeleted()).isTrue();
     }
 
 }
