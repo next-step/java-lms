@@ -1,10 +1,12 @@
 package nextstep.qna.domain;
 
+import com.sun.jdi.request.DuplicateRequestException;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Question {
@@ -39,7 +41,9 @@ public class Question {
     }
 
     public void addAnswer(Answer answer) {
-        answer.toQuestion(this);
+        if(answers.contains(answer))
+            throw new DuplicateRequestException("답변이 이미 등록되어있습니다.");
+
         answers.add(answer);
     }
 
@@ -52,7 +56,7 @@ public class Question {
     }
 
     public List<Answer> getAnswers() {
-        return answers;
+        return Collections.unmodifiableList(answers);
     }
 
     public void canDelete(NsUser loginUser) throws CannotDeleteException {

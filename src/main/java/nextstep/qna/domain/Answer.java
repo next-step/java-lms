@@ -39,6 +39,7 @@ public class Answer {
         }
 
         this.writer = writer;
+        question.addAnswer(this);
         this.question = question;
         this.contents = contents;
     }
@@ -49,10 +50,6 @@ public class Answer {
 
     public boolean isOwner(NsUser writer) {
         return this.writer.equals(writer);
-    }
-
-    public void toQuestion(Question question) {
-        this.question = question;
     }
 
     public DeleteHistory delete() {

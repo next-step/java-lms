@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import com.sun.jdi.request.DuplicateRequestException;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,12 +24,17 @@ public class QuestionTest {
     @BeforeEach
     public void setUp() throws Exception {
         question = new Question(1L, NsUserTest.JAVAJIGI, "title1", "contents1");
-        answer = new Answer(11L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
-        question.addAnswer(answer);
+        answer = new Answer(11L, NsUserTest.JAVAJIGI, question, "Answers Contents1");
 
         deleteHistories = Arrays.asList(
                 new DeleteHistory(ContentType.QUESTION, 1L, NsUserTest.JAVAJIGI, LocalDateTime.now()),
                 new DeleteHistory(ContentType.ANSWER, 11L, NsUserTest.JAVAJIGI, LocalDateTime.now()));
+    }
+
+    @Test
+    @DisplayName("답변을 중복 등록하면, 에러가 발생한다.")
+    void addDuplicateAnswer() {
+        assertThatThrownBy(() -> question.addAnswer(answer)).isInstanceOf(DuplicateRequestException.class);
     }
 
     @Test
