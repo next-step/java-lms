@@ -41,7 +41,7 @@ public class Question {
     }
 
     public void addAnswer(Answer answer) {
-        if(answers.contains(answer))
+        if (answers.contains(answer))
             throw new DuplicateRequestException("답변이 이미 등록되어있습니다.");
 
         answers.add(answer);

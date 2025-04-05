@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.verify;
 
 public class QuestionTest {
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
@@ -21,6 +20,7 @@ public class QuestionTest {
     private Question question;
     private Answer answer;
     private List<DeleteHistory> deleteHistories;
+
     @BeforeEach
     public void setUp() throws Exception {
         question = new Question(1L, NsUserTest.JAVAJIGI, "title1", "contents1");
