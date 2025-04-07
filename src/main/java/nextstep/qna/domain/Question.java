@@ -61,8 +61,12 @@ public class Question {
     }
 
     private DeleteHistory deleteQuestion() {
-        deleted = true;
+        softDelete();
         return DeleteHistory.from(this);
+    }
+
+    private void softDelete() {
+        deleted = true;
     }
 
     public Long getId() {

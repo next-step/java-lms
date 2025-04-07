@@ -56,8 +56,12 @@ public class Answer {
     }
 
     private DeleteHistory deleteAnswer() {
-        deleted = true;
+        softDelete();
         return DeleteHistory.from(this);
+    }
+
+    private void softDelete() {
+        deleted = true;
     }
 
     public boolean isDeleted() {
