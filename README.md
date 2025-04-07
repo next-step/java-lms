@@ -11,4 +11,4 @@
 
 ## TODO
 - [X] Answer delete
-- [] Question delete
+- [X] Question delete
