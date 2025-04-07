@@ -39,12 +39,18 @@ public class Question {
     }
 
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
-        if (!isOwner(loginUser)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
+        validateDeletionPermission(loginUser);
 
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
         this.deleted = true;
-        return null;
+        deleteHistories.add(generateDeleteHistory());
+
+        answers.forEach(answer -> {
+            answer.setDeleted(true);
+            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
+        });
+
+        return deleteHistories;
     }
 
     public Long getId() {
@@ -98,5 +104,31 @@ public class Question {
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
+
+    private void validateDeletionPermission(NsUser loginUser) throws CannotDeleteException {
+        validateQuestionDeletionPermission(loginUser);
+        validateAnswerDeletionPermission(loginUser);
+    }
+
+    private DeleteHistory generateDeleteHistory() {
+        return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
+    }
+
+    private void validateQuestionDeletionPermission(NsUser loginUser) throws CannotDeleteException {
+        if (!isOwner(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+    }
+
+    private void validateAnswerDeletionPermission(NsUser loginUser) throws CannotDeleteException {
+        boolean answerOwnerIsNotLoginUser = false;
+        for (Answer answer : answers) {
+            answerOwnerIsNotLoginUser = !answer.isOwner(loginUser);
+        }
+
+        if (answerOwnerIsNotLoginUser) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
     }
 }
