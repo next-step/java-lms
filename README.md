@@ -13,5 +13,5 @@
 - [x] answer에 delete 메서드 구현
 - [x] List<Answer> 일급컬렉션으로 변경
 - [x] Answers에 delete method 구현
-- [] List<DeleteHistory> 일급컬렉션으로 변경
+- [x] List<DeleteHistory> 일급컬렉션으로 변경
 - [] delete method에서 deleteHistory도 추가하도록 변경
