@@ -14,7 +14,7 @@ public class AnswerTest {
 
     @Test
     @DisplayName("작성자는 답변을 삭제할 수 있다")
-    void deleteBy_owner_success() {
+    void deleteBy_owner_success() throws CannotDeleteException {
         DeleteHistory history = A1.deleteBy(NsUserTest.JAVAJIGI);
 
         assertThat(A1.isDeleted()).isTrue();

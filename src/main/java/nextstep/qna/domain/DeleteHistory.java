@@ -47,4 +47,24 @@ public class DeleteHistory {
         return "DeleteHistory [id=" + id + ", contentType=" + contentType + ", contentId=" + contentId + ", deletedBy="
                 + deletedBy + ", createdDate=" + createdDate + "]";
     }
+
+    public static DeleteHistory ofQuestion(Question question) {
+        return new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now());
+    }
+
+    public static DeleteHistory ofAnswer(Answer answer) {
+        return new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now());
+    }
+
+    public boolean isCreatedBy(NsUser user) {
+        return deletedBy.equals(user);
+    }
+
+    public boolean isForAnswer() {
+        return contentType == ContentType.ANSWER;
+    }
+
+    public boolean isForQuestion() {
+        return contentType == ContentType.QUESTION;
+    }
 }

@@ -1,5 +1,7 @@
 package nextstep.qna.domain;
 
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
@@ -89,5 +91,35 @@ public class Question {
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
+
+    public List<DeleteHistory> deleteBy(NsUser user) throws CannotDeleteException {
+        validateOwner(user);
+        validateAllAnswersOwnedBy(user);
+
+        this.deleted = true;
+
+        List<DeleteHistory> histories = new ArrayList<>();
+        histories.add(DeleteHistory.ofQuestion(this));
+
+        for (Answer answer : answers) {
+            histories.add(answer.deleteBy(user));
+        }
+
+        return histories;
+    }
+
+    private void validateOwner(NsUser user) throws CannotDeleteException {
+        if (!isOwner(user)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+    }
+
+    private void validateAllAnswersOwnedBy(NsUser user) throws CannotDeleteException {
+        boolean anyNotOwned = answers.stream()
+            .anyMatch(answer -> !answer.isOwner(user));
+        if (anyNotOwned) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
     }
 }
