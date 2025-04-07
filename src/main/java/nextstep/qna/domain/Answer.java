@@ -44,7 +44,7 @@ public class Answer {
         this.contents = contents;
     }
 
-    public DeleteHistory deleteAnswerBy(NsUser loginUser) throws CannotDeleteException {
+    public DeleteHistory deleteBy(NsUser loginUser) throws CannotDeleteException {
         isDeletableBy(loginUser);
         return deleteAnswer();
     }

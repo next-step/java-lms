@@ -44,7 +44,7 @@ public class Question {
         answers.add(answer);
     }
 
-    public List<DeleteHistory> deleteQuestionBy(NsUser loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> deleteBy(NsUser loginUser) throws CannotDeleteException {
         isDeletableBy(loginUser);
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
