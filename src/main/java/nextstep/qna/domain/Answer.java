@@ -69,6 +69,13 @@ public class Answer {
         return contents;
     }
 
+    public void toQuestion(Question question) {
+        if (question == null) {
+            throw new NotFoundException();
+        }
+        this.question = question;
+    }
+
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
