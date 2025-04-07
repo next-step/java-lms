@@ -45,11 +45,11 @@ public class Answer {
     }
 
     public DeleteHistory deleteBy(NsUser loginUser) throws CannotDeleteException {
-        isDeletableBy(loginUser);
+        validateDeletableBy(loginUser);
         return deleteAnswer();
     }
 
-    private void isDeletableBy(NsUser loginUser) throws CannotDeleteException {
+    private void validateDeletableBy(NsUser loginUser) throws CannotDeleteException {
         if (isNotOwner(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }

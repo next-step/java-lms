@@ -45,7 +45,7 @@ public class Question {
     }
 
     public List<DeleteHistory> deleteBy(NsUser loginUser) throws CannotDeleteException {
-        isDeletableBy(loginUser);
+        validateDeletableBy(loginUser);
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(deleteQuestion());
@@ -54,7 +54,7 @@ public class Question {
         return deleteHistories;
     }
 
-    private void isDeletableBy(NsUser loginUser) throws CannotDeleteException {
+    private void validateDeletableBy(NsUser loginUser) throws CannotDeleteException {
         if (isNotOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
