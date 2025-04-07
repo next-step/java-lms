@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 class AnswersTest {
   @Test
-  @DisplayName("모든 답변이 해당 사용자가 작성한 경우 유효성 검증 성공")
+  @DisplayName("모든 답변이 해당 사용자가 작성한 경우 유효성 검증을 성공한다.")
   void validateAllOwnedBy_success() {
     Answers group = new Answers();
     group.add(new Answer(NsUserTest.JAVAJIGI, new Question(), "답변1"));
@@ -23,7 +23,7 @@ class AnswersTest {
   }
 
   @Test
-  @DisplayName("답변 중 다른 작성자가 있는 경우 CannotDeleteException 발생")
+  @DisplayName("답변 중 다른 작성자가 있는 경우 CannotDeleteException 예외가 발생한다.")
   void validateAllOwnedBy_fail() {
     Answers group = new Answers();
     group.add(new Answer(NsUserTest.JAVAJIGI, new Question(), "답변1"));
@@ -35,7 +35,7 @@ class AnswersTest {
   }
 
   @Test
-  @DisplayName("deleteBy: 모든 답변이 작성자와 일치하면 삭제되고 이력이 반환된다")
+  @DisplayName("deleteBy: 모든 답변이 작성자와 일치하면 삭제되고 이력이 반환된다.")
   void deleteBy_success() throws CannotDeleteException {
     Answers group = new Answers();
     Answer a1 = new Answer(NsUserTest.JAVAJIGI, new Question(), "답변1");
@@ -51,7 +51,7 @@ class AnswersTest {
   }
 
   @Test
-  @DisplayName("deleteBy: 다른 사람이 작성한 답변이 있으면 예외 발생")
+  @DisplayName("deleteBy: 다른 사람이 작성한 답변이 있으면 CannotDeleteException 예외가 발생한다.")
   void deleteBy_fail() {
     Answers group = new Answers();
     group.add(new Answer(NsUserTest.JAVAJIGI, new Question(), "답변1"));
