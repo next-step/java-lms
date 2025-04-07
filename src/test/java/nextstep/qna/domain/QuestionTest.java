@@ -2,7 +2,6 @@ package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -14,13 +13,13 @@ public class QuestionTest {
 
     @Test
     public void 작성자가_답변이없는질문을_삭제한다() throws Exception {
-        Q1.delete(NsUserTest.JAVAJIGI);
+        Q1.deleteQuestionBy(NsUserTest.JAVAJIGI);
         assertThat(Q1.isDeleted()).isTrue();
     }
 
     @Test
     public void 작성자가_아니면_답변이없는질문을_삭제시_예외가_발생한다() throws Exception {
-        assertThatThrownBy(() -> Q2.delete(NsUserTest.JAVAJIGI)).isInstanceOf(CannotDeleteException.class);
+        assertThatThrownBy(() -> Q2.deleteQuestionBy(NsUserTest.JAVAJIGI)).isInstanceOf(CannotDeleteException.class);
     }
 
 }

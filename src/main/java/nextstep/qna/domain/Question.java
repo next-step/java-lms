@@ -44,19 +44,25 @@ public class Question {
         answers.add(answer);
     }
 
-    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> deleteQuestionBy(NsUser loginUser) throws CannotDeleteException {
+        isDeletableBy(loginUser);
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(deleteQuestion());
+        deleteHistories.addAll(answers.deleteAllBy(loginUser));
+
+        return deleteHistories;
+    }
+
+    private void isDeletableBy(NsUser loginUser) throws CannotDeleteException {
         if (isNotOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
+    }
 
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-
+    private DeleteHistory deleteQuestion() {
         deleted = true;
-        deleteHistories.add(DeleteHistory.from(this));
-
-        deleteHistories.addAll(answers.deleteAll(loginUser));
-
-        return deleteHistories;
+        return DeleteHistory.from(this);
     }
 
     public Long getId() {

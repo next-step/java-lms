@@ -44,11 +44,18 @@ public class Answer {
         this.contents = contents;
     }
 
-    public DeleteHistory delete(NsUser loginUser) throws CannotDeleteException {
-        if (isNotOwner(loginUser)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
+    public DeleteHistory deleteAnswerBy(NsUser loginUser) throws CannotDeleteException {
+        isDeletableBy(loginUser);
+        return deleteAnswer();
+    }
 
+    private void isDeletableBy(NsUser loginUser) throws CannotDeleteException {
+        if (isNotOwner(loginUser)) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
+    }
+
+    private DeleteHistory deleteAnswer() {
         deleted = true;
         return DeleteHistory.from(this);
     }
