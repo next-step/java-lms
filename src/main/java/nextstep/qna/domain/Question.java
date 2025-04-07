@@ -43,11 +43,11 @@ public class Question {
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         this.deleted = true;
-        deleteHistories.add(generateDeleteHistory());
+        deleteHistories.add(createDeleteHistory());
 
         answers.forEach(answer -> {
             answer.setDeleted(true);
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
+            deleteHistories.add(answer.createDeleteHistory());
         });
 
         return deleteHistories;
@@ -111,7 +111,7 @@ public class Question {
         validateAnswerDeletionPermission(loginUser);
     }
 
-    private DeleteHistory generateDeleteHistory() {
+    private DeleteHistory createDeleteHistory() {
         return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
     }
 
