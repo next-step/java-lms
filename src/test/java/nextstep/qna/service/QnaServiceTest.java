@@ -22,16 +22,14 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class QnaServiceTest {
-    @Mock
-    private QuestionRepository questionRepository;
-
-    @Mock
-    private DeleteHistoryService deleteHistoryService;
-
-    @InjectMocks
-    private QnAService qnAService;
     private final long questionId = 1L;
     private final long answerId = 11L;
+    @Mock
+    private QuestionRepository questionRepository;
+    @Mock
+    private DeleteHistoryService deleteHistoryService;
+    @InjectMocks
+    private QnAService qnAService;
     private Question question;
     private Answer answer;
 

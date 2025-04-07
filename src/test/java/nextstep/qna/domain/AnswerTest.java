@@ -4,8 +4,6 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AnswerTest {
@@ -24,7 +22,7 @@ public class AnswerTest {
     void deleteAndReturnHistory() {
         assertThat(A1.delete()).isNotNull()
                 .hasFieldOrPropertyWithValue("contentType", ContentType.ANSWER)
-                .hasFieldOrPropertyWithValue("deletedBy",  NsUserTest.JAVAJIGI);
+                .hasFieldOrPropertyWithValue("deletedBy", NsUserTest.JAVAJIGI);
     }
 
     @Test

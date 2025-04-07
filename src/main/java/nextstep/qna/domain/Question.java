@@ -1,14 +1,11 @@
 package nextstep.qna.domain;
 
-import com.sun.jdi.request.DuplicateRequestException;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Question {
     private Long id;
@@ -19,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private final Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -42,9 +39,6 @@ public class Question {
     }
 
     public void addAnswer(Answer answer) {
-        if (answers.contains(answer))
-            throw new DuplicateRequestException("답변이 이미 등록되어있습니다.");
-
         answers.add(answer);
     }
 
@@ -57,7 +51,7 @@ public class Question {
     }
 
     public List<Answer> getAnswers() {
-        return Collections.unmodifiableList(answers);
+        return answers.getAnswers();
     }
 
     public void assertCanDelete(NsUser loginUser) throws CannotDeleteException {
@@ -65,18 +59,14 @@ public class Question {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
-        if (answers.stream().anyMatch(answer -> !answer.isOwner(loginUser))) {
+        if (!answers.isOwner(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
     }
 
     public List<DeleteHistory> deleteBy(NsUser loginUser) {
         assertCanDelete(loginUser);
-
-        List<DeleteHistory> deleteHistories = answers.stream()
-                .map(Answer::delete)
-                .collect(Collectors.toList());
-
+        List<DeleteHistory> deleteHistories = new ArrayList<>(answers.deleteAll());
         deleteHistories.add(delete());
         return deleteHistories;
     }
