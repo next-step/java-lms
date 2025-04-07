@@ -65,6 +65,7 @@ public class Question {
     }
 
     public void addAnswer(Answer answer) {
+        answer.toQuestion(this);
         answers.add(answer);
     }
 
