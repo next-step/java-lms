@@ -12,3 +12,4 @@
 ## TODO
 - [X] Answer delete
 - [X] Question delete
+- [X] refactor QnAService delete
