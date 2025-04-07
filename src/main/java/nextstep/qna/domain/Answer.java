@@ -61,6 +61,10 @@ public class Answer {
         return this.writer.equals(writer);
     }
 
+    public boolean isNotOwner(NsUser loginUser) {
+        return !isOwner(loginUser);
+    }
+
     public NsUser getWriter() {
         return writer;
     }
@@ -79,7 +83,7 @@ public class Answer {
     }
 
     public DeleteHistory delete(NsUser loginUser) throws CannotDeleteException {
-        if (!isOwner(loginUser)) {
+        if (isNotOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
