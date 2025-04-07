@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers;
 
     private boolean deleted = false;
 
@@ -36,6 +36,7 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.answers = new Answers();
     }
 
     public Long getId() {
@@ -87,7 +88,7 @@ public class Question {
     }
 
     public List<Answer> getAnswers() {
-        return answers;
+        return answers.getAnswerList();
     }
 
     @Override
@@ -105,9 +106,7 @@ public class Question {
         deleted = true;
         deleteHistories.add(DeleteHistory.from(this));
 
-        for (Answer answer : answers) {
-            deleteHistories.add(answer.delete(loginUser));
-        }
+        deleteHistories.addAll(answers.deleteAll(loginUser));
 
         return deleteHistories;
     }
