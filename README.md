@@ -7,3 +7,8 @@
 
 ## 온라인 코드 리뷰 과정
 * [텍스트와 이미지로 살펴보는 온라인 코드 리뷰 과정](https://github.com/next-step/nextstep-docs/tree/master/codereview)
+
+## 🚀 1단계 - 레거시 코드 리팩터링
+- [] question에 delete 메서드 구현
+- [] answer에 delete 메서드 구현
+- [] List<Answer> 일급컬렉션으로 변경
