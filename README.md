@@ -12,3 +12,4 @@
 - [x] question에 delete 메서드 구현
 - [x] answer에 delete 메서드 구현
 - [x] List<Answer> 일급컬렉션으로 변경
+- [] Answers에 delete method 구현
