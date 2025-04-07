@@ -11,4 +11,4 @@
 ## 🚀 1단계 - 레거시 코드 리팩터링
 - [x] question에 delete 메서드 구현
 - [] answer에 delete 메서드 구현
-- [] List<Answer> 일급컬렉션으로 변경
+- [x] List<Answer> 일급컬렉션으로 변경
