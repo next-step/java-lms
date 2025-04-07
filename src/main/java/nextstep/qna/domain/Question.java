@@ -39,6 +39,26 @@ public class Question {
         this.answers = new Answers();
     }
 
+    public void addAnswer(Answer answer) {
+        answer.toQuestion(this);
+        answers.add(answer);
+    }
+
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        if (isNotOwner(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
+        deleted = true;
+        deleteHistories.add(DeleteHistory.from(this));
+
+        deleteHistories.addAll(answers.deleteAll(loginUser));
+
+        return deleteHistories;
+    }
+
     public Long getId() {
         return id;
     }
@@ -53,11 +73,6 @@ public class Question {
 
     public NsUser getWriter() {
         return writer;
-    }
-
-    public void addAnswer(Answer answer) {
-        answer.toQuestion(this);
-        answers.add(answer);
     }
 
     public boolean isOwner(NsUser loginUser) {
@@ -79,20 +94,5 @@ public class Question {
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
-    }
-
-    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
-        if (isNotOwner(loginUser)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-
-        deleted = true;
-        deleteHistories.add(DeleteHistory.from(this));
-
-        deleteHistories.addAll(answers.deleteAll(loginUser));
-
-        return deleteHistories;
     }
 }

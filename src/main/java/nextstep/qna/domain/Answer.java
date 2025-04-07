@@ -44,8 +44,13 @@ public class Answer {
         this.contents = contents;
     }
 
-    public Long getId() {
-        return id;
+    public DeleteHistory delete(NsUser loginUser) throws CannotDeleteException {
+        if (isNotOwner(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+
+        deleted = true;
+        return DeleteHistory.from(this);
     }
 
     public boolean isDeleted() {
@@ -58,6 +63,10 @@ public class Answer {
 
     public boolean isNotOwner(NsUser loginUser) {
         return !isOwner(loginUser);
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public NsUser getWriter() {
@@ -75,14 +84,5 @@ public class Answer {
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
-    }
-
-    public DeleteHistory delete(NsUser loginUser) throws CannotDeleteException {
-        if (isNotOwner(loginUser)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-
-        deleted = true;
-        return DeleteHistory.from(this);
     }
 }
