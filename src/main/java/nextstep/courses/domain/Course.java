@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
 
 public class Course {
@@ -12,6 +13,12 @@ public class Course {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private SessionList sessions;
+
+    private BufferedImage coverImage;
+
+    private Long maxAttendees;
 
     public Course() {
     }
