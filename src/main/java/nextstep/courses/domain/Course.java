@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
 
 public class Course {
@@ -13,19 +14,43 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
+    private SessionList sessions;
+
+    private String courseCoverImageFilePath;
+
+    private CourseCoverImage courseCoverImage;
+
+    private Long maxAttendees;
+
+    private CourseStatus courseStatus;
+
+    private AttendeeList attendees = new AttendeeList();
+
     public Course() {
     }
 
-    public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null);
+    public Course(String title, Long creatorId, String courseCoverImageFilePath, Long maxAttendees) {
+        this(0L, title, creatorId, LocalDateTime.now(), null, courseCoverImageFilePath, maxAttendees, CourseStatus.PREPARING);
     }
 
-    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Course(String title, Long creatorId, String courseCoverImageFilePath, Long maxAttendees, CourseStatus courseStatus) {
+        this(0L, title, creatorId, LocalDateTime.now(), null, courseCoverImageFilePath, maxAttendees, courseStatus);
+    }
+
+    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt, String courseCoverImageFilePath, Long maxAttendees, CourseStatus courseStatus) {
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.courseCoverImageFilePath = courseCoverImageFilePath;
+        this.courseCoverImage = new CourseCoverImage(courseCoverImageFilePath);
+        this.maxAttendees = maxAttendees;
+        this.courseStatus = courseStatus;
+    }
+
+    public AttendeeList getAttendees() {
+        return attendees;
     }
 
     public String getTitle() {
@@ -38,6 +63,14 @@ public class Course {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public Long getMaxAttendees() {
+        return maxAttendees;
+    }
+
+    public CourseStatus getCourseStatus() {
+        return courseStatus;
     }
 
     @Override

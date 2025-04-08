@@ -31,7 +31,11 @@ public class JdbcCourseRepository implements CourseRepository {
                 rs.getString(2),
                 rs.getLong(3),
                 toLocalDateTime(rs.getTimestamp(4)),
-                toLocalDateTime(rs.getTimestamp(5)));
+                toLocalDateTime(rs.getTimestamp(5)),
+                null, // courseCoverImageFilePath
+                null, // maxAttendees
+                null // courseStatus
+        );
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 

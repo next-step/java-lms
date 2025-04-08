@@ -25,7 +25,7 @@ public class QuestionTest {
     }
 
     @Test
-    @DisplayName("질문 삭제 실패")
+    @DisplayName("권한이 없는 경우 질문 삭제 실패")
     public void delete_실패() throws CannotDeleteException {
         assertThatThrownBy(() -> Q2.delete(NsUserTest.JAVAJIGI))
             .isInstanceOf(CannotDeleteException.class)
