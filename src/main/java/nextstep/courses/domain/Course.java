@@ -16,23 +16,28 @@ public class Course {
 
     private SessionList sessions;
 
-    private BufferedImage coverImage;
+    private String courseCoverImageFilePath;
+
+    private CourseCoverImage courseCoverImage;
 
     private Long maxAttendees;
 
     public Course() {
     }
 
-    public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null);
+    public Course(String title, Long creatorId, String courseCoverImageFilePath) {
+        this(0L, title, creatorId, LocalDateTime.now(), null, courseCoverImageFilePath, null);
     }
 
-    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt, String courseCoverImageFilePath, Long maxAttendees) {
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.courseCoverImageFilePath = courseCoverImageFilePath;
+        this.courseCoverImage = new CourseCoverImage(courseCoverImageFilePath);
+        this.maxAttendees = maxAttendees;
     }
 
     public String getTitle() {
