@@ -15,13 +15,13 @@ public class QuestionTest {
     @Test
     void shouldNotAllowDelete_WhenUserIsNotOwner(){
         assertThatExceptionOfType(CannotDeleteException.class)
-                .isThrownBy(()->Q1.delete(NsUserTest.SANJIGI))
+                .isThrownBy(()->Q1.delete(NsUserTest.SANJIGI, new DeleteHistories()))
                 .withMessage("질문을 삭제할 권한이 없습니다.");
     }
 
     @Test
     void shouldAllowDelete_WhenUserIsOwner() throws CannotDeleteException {
-        Q1.delete(NsUserTest.JAVAJIGI);
+        Q1.delete(NsUserTest.JAVAJIGI, new DeleteHistories());
         assertThat(Q1.isDeleted()).isTrue();
     }
 }

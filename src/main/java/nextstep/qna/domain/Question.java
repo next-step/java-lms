@@ -65,7 +65,7 @@ public class Question {
     }
 
 
-    public void delete(NsUser loginUser) throws CannotDeleteException {
+    private void delete(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
@@ -74,15 +74,11 @@ public class Question {
     }
 
     public void delete(NsUser loginUser, DeleteHistories deleteHistories) throws CannotDeleteException{
-        if (!isOwner(loginUser)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
+        this.delete(loginUser);
 
         if (deleteHistories != null){
             deleteHistories.add(ContentType.QUESTION, this.id, this.writer);
         }
-
-        this.deleted = true;
     }
 
     public void addAnswer(Answer answer) {
