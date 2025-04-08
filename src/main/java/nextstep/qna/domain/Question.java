@@ -16,7 +16,8 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    // private List<Answer> answers = new ArrayList<>();
+    private AnswerList answers = new AnswerList();
 
     private boolean deleted = false;
 
@@ -96,7 +97,7 @@ public class Question {
     }
 
     public List<Answer> getAnswers() {
-        return answers;
+        return answers.getAnswers();
     }
 
     @Override
