@@ -85,14 +85,24 @@ public class Question {
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         validateOwner(loginUser);
         this.deleted = true;
-        deleteAnswers(loginUser);
-        return getDeleteHistories();
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(getDeleteHistory());
+
+        List<DeleteHistory> answerDeleteHistories = deleteAnswers(loginUser);
+        deleteHistories.addAll(answerDeleteHistories);
+
+        return deleteHistories;
     }
 
-    public void deleteAnswers(NsUser loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> deleteAnswers(NsUser loginUser) throws CannotDeleteException {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
         for (Answer answer : answers) {
-            answer.delete(loginUser);
+            deleteHistories.add(answer.delete(loginUser));
         }
+
+        return deleteHistories;
     }
 
     private void validateOwner(NsUser loginUser) throws CannotDeleteException {
@@ -109,10 +119,8 @@ public class Question {
         return answers;
     }
 
-    private List<DeleteHistory> getDeleteHistories() {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
-        return deleteHistories;
+    private DeleteHistory getDeleteHistory() {
+        return new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now());
     }
 
     @Override

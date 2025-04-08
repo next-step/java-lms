@@ -53,9 +53,10 @@ public class Answer {
         return this;
     }
 
-    public void delete(NsUser loginUser) throws CannotDeleteException {
+    public DeleteHistory delete(NsUser loginUser) throws CannotDeleteException {
         validateOwner(loginUser);
         this.deleted = true;
+        return getDeleteHistory();
     }
 
     private void validateOwner(NsUser loginUser) throws CannotDeleteException {
@@ -86,6 +87,10 @@ public class Answer {
 
     public void toQuestion(Question question) {
         this.question = question;
+    }
+
+    private DeleteHistory getDeleteHistory() {
+        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
     }
 
     @Override
