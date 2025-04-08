@@ -13,13 +13,15 @@ public class Answers {
     answers.add(answer);
   }
 
-  public void validateAllOwnedBy(NsUser user) throws CannotDeleteException {
+  private void validateAllOwnedBy(NsUser user) throws CannotDeleteException {
     if (answers.stream().anyMatch(answer -> !answer.isOwner(user))) {
       throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
   }
 
   public List<DeleteHistory> deleteBy(NsUser user) throws CannotDeleteException {
+    validateAllOwnedBy(user);
+
     List<DeleteHistory> histories = new ArrayList<>();
     for (Answer answer : answers) {
       histories.add(answer.deleteBy(user));

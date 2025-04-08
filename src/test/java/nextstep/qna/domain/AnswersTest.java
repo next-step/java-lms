@@ -18,7 +18,7 @@ class AnswersTest {
     group.add(new Answer(NsUserTest.JAVAJIGI, new Question(), "답변1"));
     group.add(new Answer(NsUserTest.JAVAJIGI, new Question(), "답변2"));
 
-    assertThatCode(() -> group.validateAllOwnedBy(NsUserTest.JAVAJIGI))
+    assertThatCode(() -> group.deleteBy(NsUserTest.JAVAJIGI))
         .doesNotThrowAnyException();
   }
 
@@ -29,7 +29,7 @@ class AnswersTest {
     group.add(new Answer(NsUserTest.JAVAJIGI, new Question(), "답변1"));
     group.add(new Answer(NsUserTest.SANJIGI, new Question(),"답변2"));
 
-    assertThatThrownBy(() -> group.validateAllOwnedBy(NsUserTest.JAVAJIGI))
+    assertThatThrownBy(() -> group.deleteBy(NsUserTest.JAVAJIGI))
         .isInstanceOf(CannotDeleteException.class)
         .hasMessageContaining("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
   }
