@@ -25,8 +25,8 @@ public class Course {
     public Course() {
     }
 
-    public Course(String title, Long creatorId, String courseCoverImageFilePath) {
-        this(0L, title, creatorId, LocalDateTime.now(), null, courseCoverImageFilePath, null);
+    public Course(String title, Long creatorId, String courseCoverImageFilePath, Long maxAttendees) {
+        this(0L, title, creatorId, LocalDateTime.now(), null, courseCoverImageFilePath, maxAttendees);
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt, String courseCoverImageFilePath, Long maxAttendees) {
@@ -50,6 +50,10 @@ public class Course {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public Long getMaxAttendees() {
+        return maxAttendees;
     }
 
     @Override

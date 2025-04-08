@@ -8,8 +8,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,16 +46,6 @@ class CourseCoverImageTest {
 
         // then
         assertNotNull(courseCoverImage);
-    }
-
-    @Test
-    @DisplayName("이미지 경로가 null이면 예외가 발생한다")
-    void throwExceptionWhenImagePathIsNull() {
-        // when & then
-        assertThatThrownBy(() -> {
-            new CourseCoverImage(null);
-        }).isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("강의 커버 이미지는 비어있을 수 없습니다.");
     }
 
     @Test

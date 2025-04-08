@@ -13,6 +13,7 @@ public class CourseCoverImage {
     private static final String[] SUPPORTED_IMAGE_EXTENSIONS = {".gif", ".jpg", ".jpeg", ".png", ".svg"};
     private static final int MIN_WIDTH = 300;
     private static final int MIN_HEIGHT = 200;
+    private static final String DEFAULT_IMAGE_FILE_PATH = "src/test/resources/images/default.jpg";
 
     private String imageFilePath;
     private File imageFile;
@@ -26,7 +27,7 @@ public class CourseCoverImage {
 
     private void validateImage(String imageFilePath) {
         if (imageFilePath == null) {
-            throw new IllegalArgumentException("강의 커버 이미지는 비어있을 수 없습니다.");
+            imageFilePath = DEFAULT_IMAGE_FILE_PATH;
         }
 
         if (Arrays.stream(SUPPORTED_IMAGE_EXTENSIONS).noneMatch(imageFilePath::endsWith)) {
