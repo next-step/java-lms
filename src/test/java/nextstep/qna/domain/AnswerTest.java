@@ -23,7 +23,7 @@ public class AnswerTest {
     }
 
     @Test
-    @DisplayName("답변 삭제 실패")
+    @DisplayName("권한이 없는 경우 답변 삭제 실패")
     public void delete_실패() throws CannotDeleteException {
         assertThatThrownBy(() -> A2.delete(NsUserTest.JAVAJIGI))
             .isInstanceOf(CannotDeleteException.class)
