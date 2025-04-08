@@ -38,42 +38,16 @@ public class Question {
         this.contents = contents;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
-    public NsUser getWriter() {
-        return writer;
-    }
-
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
+    private boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
+    private Question setDeleted(boolean deleted) {
         this.deleted = deleted;
         return this;
     }
@@ -82,16 +56,14 @@ public class Question {
         return deleted;
     }
 
-    public List<DeleteHistory> delete(NsUser loginUser, Long questionId) throws CannotDeleteException {
+    public List<DeleteHistory> delete(NsUser loginUser, LocalDateTime createdDate) throws CannotDeleteException {
         validate(loginUser);
-
-        answers.validate(loginUser);
 
         setDeleted(true);
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, writer, LocalDateTime.now()));
-        deleteHistories.addAll(answers.delete());
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, createdDate));
+        deleteHistories.addAll(answers.delete(loginUser, createdDate));
 
         return deleteHistories;
     }
@@ -104,6 +76,6 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+        return "Question [id=" + id + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 }

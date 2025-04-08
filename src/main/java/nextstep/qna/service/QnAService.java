@@ -1,5 +1,7 @@
 package nextstep.qna.service;
 
+import java.time.LocalDateTime;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -26,6 +28,6 @@ public class QnAService {
     @Transactional
     public void deleteQuestion(NsUser loginUser, long questionId) throws CannotDeleteException {
         Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
-        deleteHistoryService.saveAll(question.delete(loginUser, questionId));
+        deleteHistoryService.saveAll(question.delete(loginUser, LocalDateTime.now()));
     }
 }
