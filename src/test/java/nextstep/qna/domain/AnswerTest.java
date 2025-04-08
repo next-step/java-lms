@@ -8,9 +8,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class AnswerTest {
-    public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
-    public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
-    public static final Answer A3 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
+    public static Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+    public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, Q1, "Answers Contents1");
+    public static final Answer A2 = new Answer(NsUserTest.SANJIGI, Q1, "Answers Contents2");
+    public static final Answer A3 = new Answer(NsUserTest.SANJIGI, Q1, "Answers Contents2");
 
     @Test
     void shouldNotAllowDelete_WhenUserIsNotOwner() {

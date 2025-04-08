@@ -2,26 +2,54 @@ package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static nextstep.qna.domain.AnswerTest.A1;
+import static nextstep.qna.domain.AnswerTest.A2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class QuestionTest {
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
     public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
+    private DeleteHistories DELETE_HISTORIES;
 
+    @BeforeEach
+    void setUp(){
+//        Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+//        Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
+        DELETE_HISTORIES = new DeleteHistories();
+    }
 
     @Test
     void shouldNotAllowDelete_WhenUserIsNotOwner(){
         assertThatExceptionOfType(CannotDeleteException.class)
-                .isThrownBy(()->Q1.delete(NsUserTest.SANJIGI, new DeleteHistories()))
+                .isThrownBy(()->Q1.delete(NsUserTest.SANJIGI, DELETE_HISTORIES))
                 .withMessage("질문을 삭제할 권한이 없습니다.");
     }
 
     @Test
-    void shouldAllowDelete_WhenUserIsOwner() throws CannotDeleteException {
-        Q1.delete(NsUserTest.JAVAJIGI, new DeleteHistories());
+    void shouldAllowDelete_WhenUserIsOwnerWithoutAnswer() throws CannotDeleteException {
+        Q1.delete(NsUserTest.JAVAJIGI, DELETE_HISTORIES);
         assertThat(Q1.isDeleted()).isTrue();
+        assertThat(DELETE_HISTORIES.getDeleteHistories().size()).isEqualTo(1);
+    }
+
+    @Test
+    void shouldNotAllowDelete_WhenAnswerOwnerIsNotMatched() throws CannotDeleteException {
+        Q1.addAnswer(A2);
+        assertThatExceptionOfType(CannotDeleteException.class)
+                .isThrownBy(()->Q1.delete(NsUserTest.JAVAJIGI, DELETE_HISTORIES))
+                .withMessage("질문을 삭제할 권한이 없습니다.");
+    }
+
+    @Test
+    void shouldDelete_WhenAnswerOwnerIsAlsoMatched() throws CannotDeleteException {
+        Q1.addAnswer(A1);
+        Q1.delete(NsUserTest.JAVAJIGI, DELETE_HISTORIES);
+        assertThat(Q1.isDeleted()).isTrue();
+        assertThat(A1.isDeleted()).isTrue();
+        assertThat(DELETE_HISTORIES.getDeleteHistories().size()).isEqualTo(2);
     }
 }
