@@ -82,10 +82,11 @@ public class Question {
         return this;
     }
 
-    public void delete(NsUser loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         validateOwner(loginUser);
         this.deleted = true;
         deleteAnswers(loginUser);
+        return getDeleteHistories();
     }
 
     public void deleteAnswers(NsUser loginUser) throws CannotDeleteException {
@@ -106,6 +107,12 @@ public class Question {
 
     public List<Answer> getAnswers() {
         return answers;
+    }
+
+    private List<DeleteHistory> getDeleteHistories() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
+        return deleteHistories;
     }
 
     @Override
