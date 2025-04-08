@@ -12,3 +12,6 @@
 - [x] Question.delete 추가
 - [x] Answer.createDeleteHistory 추가
 - [x] QnAService.deleteQuestion 리팩토링
+- [x] 피드백
+  - [x] Question.setDelete 삭제
+  - [x] Answer.delete 추가

@@ -39,16 +39,21 @@ public class Question {
     }
 
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
-        validateDeletionPermission(loginUser);
+        validateQuestionDeletionPermission(loginUser);
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         this.deleted = true;
         deleteHistories.add(createDeleteHistory());
 
-        answers.forEach(answer -> {
-            answer.setDeleted(true);
-            deleteHistories.add(answer.createDeleteHistory());
-        });
+        answers.stream()
+                .map(answer -> {
+                    try {
+                        return answer.delete();
+                    } catch (CannotDeleteException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .forEach(deleteHistories::add);
 
         return deleteHistories;
     }
@@ -101,11 +106,6 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    private void validateDeletionPermission(NsUser loginUser) throws CannotDeleteException {
-        validateQuestionDeletionPermission(loginUser);
-        validateAnswerDeletionPermission(loginUser);
-    }
-
     private DeleteHistory createDeleteHistory() {
         return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
     }
@@ -113,17 +113,6 @@ public class Question {
     private void validateQuestionDeletionPermission(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-    }
-
-    private void validateAnswerDeletionPermission(NsUser loginUser) throws CannotDeleteException {
-        boolean answerOwnerIsNotLoginUser = false;
-        for (Answer answer : answers) {
-            answerOwnerIsNotLoginUser = !answer.isOwner(loginUser);
-        }
-
-        if (answerOwnerIsNotLoginUser) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
     }
 }
