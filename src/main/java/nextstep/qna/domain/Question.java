@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -89,21 +89,13 @@ public class Question {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(getDeleteHistory());
 
-        List<DeleteHistory> answerDeleteHistories = deleteAnswers(loginUser);
+        List<DeleteHistory> answerDeleteHistories = this.answers.deleteAnswers(loginUser);
         deleteHistories.addAll(answerDeleteHistories);
 
         return deleteHistories;
     }
 
-    public List<DeleteHistory> deleteAnswers(NsUser loginUser) throws CannotDeleteException {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
 
-        for (Answer answer : answers) {
-            deleteHistories.add(answer.delete(loginUser));
-        }
-
-        return deleteHistories;
-    }
 
     private void validateOwner(NsUser loginUser) throws CannotDeleteException {
         if (isNotOwner(loginUser)) {
@@ -115,7 +107,7 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
+    public Answers getAnswers() {
         return answers;
     }
 
