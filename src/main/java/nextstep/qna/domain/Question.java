@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -7,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
+    public static final String QUESTION_DELETE_UNAUTHORIZED = "질문을 삭제할 권한이 없습니다.";
+    public static final String QUESTION_DELETE_FORBIDDEN_OTHERS_ANSWER = "다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.";
     private Long id;
 
     private String title;
@@ -15,7 +18,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private final Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -68,21 +71,27 @@ public class Question {
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        this.validateDeletableBy(loginUser);
+        this.deleted = true;
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
+        deleteHistories.addAll(answers.deleteAll());
+        return deleteHistories;
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    private void validateDeletableBy(NsUser loginUser) throws CannotDeleteException {
+        if (!writer.equals(loginUser)) {
+            throw new CannotDeleteException(QUESTION_DELETE_UNAUTHORIZED);
+        }
+        if (!answers.areAllOwnedBy(loginUser)) {
+            throw new CannotDeleteException(QUESTION_DELETE_FORBIDDEN_OTHERS_ANSWER);
+        }
     }
 
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
     }
 
     @Override
