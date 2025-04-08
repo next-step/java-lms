@@ -12,6 +12,6 @@
 
 ## # Step1 피드백
 
-- [ ] `gradle.properties` 의 "org.gradle.java.home" 문의
+- [x] `gradle.properties` 의 "org.gradle.java.home" 문의
 - [ ] "answers" 를 관리하는 일급컬렉션 추가
 - [ ] 테스트 이름 구체적으로 명시
