@@ -33,6 +33,10 @@ public class Course {
         this(0L, title, creatorId, LocalDateTime.now(), null, courseCoverImageFilePath, maxAttendees, CourseStatus.PREPARING);
     }
 
+    public Course(String title, Long creatorId, String courseCoverImageFilePath, Long maxAttendees, CourseStatus courseStatus) {
+        this(0L, title, creatorId, LocalDateTime.now(), null, courseCoverImageFilePath, maxAttendees, courseStatus);
+    }
+
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt, String courseCoverImageFilePath, Long maxAttendees, CourseStatus courseStatus) {
         this.id = id;
         this.title = title;

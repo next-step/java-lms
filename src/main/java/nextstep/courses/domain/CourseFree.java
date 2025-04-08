@@ -10,9 +10,11 @@ public class CourseFree extends Course {
         super(title, creatorId, courseCoverImageFilePath, MAX_ATTENDEES);
     }
 
-    public CourseFree(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt, String courseCoverImageFilePath, Long maxAttendees) {
-        super(id, title, creatorId, createdAt, updatedAt, courseCoverImageFilePath, maxAttendees);
+    public CourseFree(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt, String courseCoverImageFilePath) {
+        super(id, title, creatorId, createdAt, updatedAt, courseCoverImageFilePath, MAX_ATTENDEES, CourseStatus.PREPARING);
     }
 
-
+    public CourseFree(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt, String courseCoverImageFilePath, CourseStatus courseStatus) {
+        super(id, title, creatorId, createdAt, updatedAt, courseCoverImageFilePath, MAX_ATTENDEES, courseStatus);
+    }
 }
