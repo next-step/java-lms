@@ -85,6 +85,13 @@ public class Question {
     public void delete(NsUser loginUser) throws CannotDeleteException {
         validateOwner(loginUser);
         this.deleted = true;
+        deleteAnswers();
+    }
+
+    public void deleteAnswers() {
+        for (Answer answer : answers) {
+            answer.delete();
+        }
     }
 
     private void validateOwner(NsUser loginUser) throws CannotDeleteException {
