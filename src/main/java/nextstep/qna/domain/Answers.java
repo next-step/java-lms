@@ -28,23 +28,24 @@ public class Answers {
     }
 
     public void delete(NsUser writer) throws CannotDeleteException {
-        this.delete(writer, null);
-    }
-
-    public void delete(NsUser writer, DeleteHistories deleteHistories) throws CannotDeleteException {
         try {
             for (Answer answer : answers) {
                 answer.delete(writer);
-                if(deleteHistories != null) {
-                    deleteHistories.add(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now());
-                }
             }
         } catch (CannotDeleteException e) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
     }
 
-    public boolean isDeleted(){
-        return answers.stream().allMatch(answer->answer.isDeleted());
+    public void delete(NsUser writer, DeleteHistories deleteHistories) throws CannotDeleteException {
+        this.delete(writer);
+
+        if (deleteHistories != null) {
+            deleteHistories.add(this);
+        }
+    }
+
+    public boolean isDeleted() {
+        return answers.stream().allMatch(Answer::isDeleted);
     }
 }

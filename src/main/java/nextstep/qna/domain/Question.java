@@ -79,7 +79,7 @@ public class Question {
         }
 
         if (deleteHistories != null){
-            deleteHistories.add(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now());
+            deleteHistories.add(ContentType.QUESTION, this.id, this.writer);
         }
 
         this.deleted = true;
