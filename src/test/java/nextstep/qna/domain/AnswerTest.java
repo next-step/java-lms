@@ -36,7 +36,7 @@ public class AnswerTest {
 
     @Test
     public void getDeleteHistory() throws Exception {
-        DeleteHistory deleteHistory = A1.delete(NsUserTest.JAVAJIGI);
+        DeleteHistory deleteHistory = A1.delete(NsUserTest.JAVAJIGI).get(0);
         assertThat(deleteHistory).isEqualTo(new DeleteHistory(ContentType.ANSWER, null, NsUserTest.JAVAJIGI, LocalDateTime.now()));
     }
 }

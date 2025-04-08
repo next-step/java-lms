@@ -1,6 +1,7 @@
 package nextstep.users.domain;
 
 import nextstep.qna.UnAuthorizedException;
+import nextstep.qna.domain.AuditInfo;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -18,9 +19,7 @@ public class NsUser {
 
     private String email;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
+    private AuditInfo auditInfo = new AuditInfo();
 
     public NsUser() {
     }
@@ -35,8 +34,7 @@ public class NsUser {
         this.password = password;
         this.name = name;
         this.email = email;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.auditInfo = new AuditInfo(createdAt, updatedAt);
     }
 
     public Long getId() {
@@ -131,8 +129,7 @@ public class NsUser {
                 ", userId='" + userId + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
+                ", auditInfo=" + auditInfo +
                 '}';
     }
 }
