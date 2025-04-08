@@ -1,9 +1,13 @@
 package nextstep.users.domain;
 
-import nextstep.qna.UnAuthorizedException;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
+
+import nextstep.courses.domain.Course;
+import nextstep.courses.domain.CourseFree;
+import nextstep.courses.domain.CoursePaid;
+import nextstep.courses.domain.CourseStatus;
+import nextstep.qna.UnAuthorizedException;
 
 public class NsUser {
     public static final GuestNsUser GUEST_USER = new GuestNsUser();
@@ -122,6 +126,22 @@ public class NsUser {
         public boolean isGuestUser() {
             return true;
         }
+    }
+
+    public void registerCourse(Course course) {
+        if (course.getCourseStatus() == CourseStatus.PREPARING) {
+            throw new IllegalArgumentException("강의가 준비중입니다.");
+        }
+        if (course.getAttendees().size() >= course.getMaxAttendees()) {
+            throw new IllegalArgumentException("강의 수강 인원이 초과되었습니다.");
+        }
+        if (course instanceof CoursePaid) {
+            // Payment...
+            course.getAttendees().add(this);
+        }
+        if (course instanceof CourseFree) {
+            course.getAttendees().add(this);
+        }            
     }
 
     @Override

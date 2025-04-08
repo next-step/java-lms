@@ -22,14 +22,18 @@ public class Course {
 
     private Long maxAttendees;
 
+    private CourseStatus courseStatus;
+
+    private AttendeeList attendees = new AttendeeList();
+
     public Course() {
     }
 
     public Course(String title, Long creatorId, String courseCoverImageFilePath, Long maxAttendees) {
-        this(0L, title, creatorId, LocalDateTime.now(), null, courseCoverImageFilePath, maxAttendees);
+        this(0L, title, creatorId, LocalDateTime.now(), null, courseCoverImageFilePath, maxAttendees, CourseStatus.PREPARING);
     }
 
-    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt, String courseCoverImageFilePath, Long maxAttendees) {
+    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt, String courseCoverImageFilePath, Long maxAttendees, CourseStatus courseStatus) {
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
@@ -38,6 +42,11 @@ public class Course {
         this.courseCoverImageFilePath = courseCoverImageFilePath;
         this.courseCoverImage = new CourseCoverImage(courseCoverImageFilePath);
         this.maxAttendees = maxAttendees;
+        this.courseStatus = courseStatus;
+    }
+
+    public AttendeeList getAttendees() {
+        return attendees;
     }
 
     public String getTitle() {
@@ -54,6 +63,10 @@ public class Course {
 
     public Long getMaxAttendees() {
         return maxAttendees;
+    }
+
+    public CourseStatus getCourseStatus() {
+        return courseStatus;
     }
 
     @Override
