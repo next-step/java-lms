@@ -27,7 +27,7 @@ public class Answers {
         return Collections.unmodifiableList(answers);
     }
 
-    public void delete(NsUser writer) throws CannotDeleteException {
+    private void delete(NsUser writer) throws CannotDeleteException {
         try {
             for (Answer answer : answers) {
                 answer.delete(writer);

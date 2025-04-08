@@ -16,13 +16,13 @@ public class AnswersTest {
     @Test
     void shouldNotAllowDelete_WhenUserIsNotOwner(){
         assertThatExceptionOfType(CannotDeleteException.class)
-                .isThrownBy(() -> ANSWERS.delete(NsUserTest.JAVAJIGI))
+                .isThrownBy(() -> ANSWERS.delete(NsUserTest.JAVAJIGI, new DeleteHistories()))
                 .withMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
 
     @Test
     void shouldDelete_WhenUserIsOwner() throws CannotDeleteException {
-        ANSWERS.delete(NsUserTest.SANJIGI);
+        ANSWERS.delete(NsUserTest.SANJIGI, new DeleteHistories());
         assertThat(ANSWERS.isDeleted()).isTrue();
     }
 }
