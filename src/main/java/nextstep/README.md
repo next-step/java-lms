@@ -9,3 +9,9 @@
 - [x] QnaService의 비지니스 로직을 도메인 모델로 이동하는 리팩터링을 진행할 때 TDD로 구현한다.
 - [x] QnaService의 deleteQuestion() 메서드에 대한 단위 테스트는 src/test/java 폴더 nextstep.qna.service.QnaServiceTest이다.
 - [x]도메인 모델로 로직을 이동한 후에도 QnaServiceTest의 모든 테스트는 통과해야 한다.
+
+## # Step1 피드백
+
+- [ ] `gradle.properties` 의 "org.gradle.java.home" 문의
+- [ ] "answers" 를 관리하는 일급컬렉션 추가
+- [ ] 테스트 이름 구체적으로 명시
