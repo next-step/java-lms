@@ -50,6 +50,11 @@ public class Answer {
         }
     }
 
+    public DeleteHistory delete() {
+        deleted = true;
+        return DeleteHistory.ofAnswer(this);
+    }
+
     public Long getId() {
         return id;
     }
