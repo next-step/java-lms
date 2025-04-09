@@ -8,14 +8,10 @@ import java.util.List;
 
 public class Question {
     private Long id;
-
     private String title;
-
     private String contents;
-
     private NsUser writer;
-
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -81,7 +77,7 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
+    public Answers getAnswers() {
         return answers;
     }
 
@@ -89,4 +85,19 @@ public class Question {
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
+
+    public boolean hasOthersAnswers() {
+        return answers.hasOthersAnswers(writer);
+    }
+
+    public List<DeleteHistory> delete() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(this));
+        if(!answers.isEmpty()) {
+            deleteHistories.addAll(answers.delete());
+        }
+        this.deleted = true;
+        return deleteHistories;
+    }
+
 }

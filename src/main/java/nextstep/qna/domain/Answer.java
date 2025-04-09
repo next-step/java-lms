@@ -5,6 +5,7 @@ import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Answer {
     private Long id;
@@ -75,5 +76,10 @@ public class Answer {
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+    }
+
+    public DeleteHistory delete(){
+        this.deleted = true;
+        return new DeleteHistory(this);
     }
 }
