@@ -19,6 +19,14 @@ public class DeleteHistory {
     public DeleteHistory() {
     }
 
+    public static DeleteHistory ofQuestion(Question q) {
+        return new DeleteHistory(ContentType.QUESTION, q.getId(), q.getWriter(), LocalDateTime.now());
+    }
+
+    public static DeleteHistory ofAnswer(Answer a) {
+        return new DeleteHistory(ContentType.ANSWER, a.getId(), a.getWriter(), LocalDateTime.now());
+    }
+
     public DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
         this.contentType = contentType;
         this.contentId = contentId;
