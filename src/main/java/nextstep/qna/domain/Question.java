@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers;
 
     private boolean deleted = false;
 
@@ -36,12 +36,30 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.answers = new Answers();
     }
 
-    public void validateOwnership(NsUser loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        validateOwnership(loginUser);
+        validateAnswersOwnership(loginUser);
+
+        this.deleted = true;
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(DeleteHistory.ofQuestion(this));
+        deleteHistories.addAll(answers.deleteAnswers());
+
+        return deleteHistories;
+    }
+
+    private void validateOwnership(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
+    }
+
+    private void validateAnswersOwnership(NsUser loginUser) throws CannotDeleteException {
+        answers.validateOwnerships(loginUser);
     }
 
     public Long getId() {
@@ -80,7 +98,6 @@ public class Question {
     }
 
     public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
         return this;
     }
 
@@ -88,7 +105,7 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
+    public Answers getAnswers() {
         return answers;
     }
 
