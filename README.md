@@ -21,3 +21,7 @@
   - [x] 리팩토링
     - [x] width, height ImageSize 객체로 통합
     - [x] ImageFileName 객체 생성
+- [ ] Session
+  - [ ] 객체 구현
+    - [x] SessionStatus 구현
+    - [ ] SessionType 구현
