@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.payments.domain.Payment;
+
 public class SessionPrice {
     private final SessionType type;
     private final int price;
@@ -24,8 +26,12 @@ public class SessionPrice {
         return price;
     }
 
-    public void validatePayment(Long paymentAmount) {
-        if (isPaid() && paymentAmount != price) {
+    public void validatePayment(Payment payment) {
+        if (isPaid() && payment == null) {
+            throw new IllegalArgumentException("유료 강의는 결제가 필요합니다.");
+        }
+
+        if (isPaid() && payment.getAmount() != price) {
             throw new IllegalArgumentException("결제 금액이 수강료와 일치하지 않습니다.");
         }
     }

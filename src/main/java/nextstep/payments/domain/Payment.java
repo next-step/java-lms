@@ -3,19 +3,21 @@ package nextstep.payments.domain;
 import java.time.LocalDateTime;
 
 public class Payment {
-    private final String id;
+    private String id;
 
     // 결제한 강의 아이디
-    private final Long sessionId;
+    private Long sessionId;
 
     // 결제한 사용자 아이디
-    private final Long nsUserId;
+    private Long nsUserId;
 
     // 결제 금액
-    private final Long amount;
+    private Long amount;
 
-    private final LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
+    public Payment() {
+    }
 
     public Payment(String id, Long sessionId, Long nsUserId, Long amount) {
         this.id = id;

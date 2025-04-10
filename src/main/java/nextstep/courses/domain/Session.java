@@ -30,44 +30,18 @@ public class Session {
         }
 
         if (price.isPaid()) {
-            validatePayment(payment);
+            validatePaymentExists(payment);
+            price.validatePayment(payment);
         }
-
-        if (price.isPaid()) {
-            enrollment.enroll();
-        }
+        enrollment.enroll();
     }
 
-    private void validatePayment(Payment payment) {
-        if (payment == null) {
-            throw new IllegalArgumentException("유료 강의는 결제가 필요합니다.");
-        }
-
-        price.validatePayment(payment.getAmount());
+    public boolean isPaid() {
+        return price.isPaid();
     }
 
     public Long getId() {
         return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public SessionStatus getStatus() {
-        return status;
-    }
-
-    public LocalDateTime getStartDate() {
-        return period.getStartDate();
-    }
-
-    public LocalDateTime getEndDate() {
-        return period.getEndDate();
-    }
-
-    public SessionThumbnail getThumbnail() {
-        return thumbnail;
     }
 
     public SessionType getType() {
@@ -85,4 +59,10 @@ public class Session {
     public int getCurrentEnrollment() {
         return enrollment.getCurrentEnrollment();
     }
-} 
+
+    private void validatePaymentExists(Payment payment) {
+        if (payment == null) {
+            throw new IllegalArgumentException("유료 강의는 결제가 필요합니다.");
+        }
+    }
+}
