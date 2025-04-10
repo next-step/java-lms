@@ -37,8 +37,10 @@ public class Answers {
     public List<DeleteHistory> delete(NsUser user) throws CannotDeleteException {
         validateDeletableBy(user);
 
-        return answers.stream()
-                .map(answer -> answer.delete())
-                .collect(Collectors.toList());
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        for (Answer answer : answers) {
+            deleteHistories.add(answer.delete(user));
+        }
+        return deleteHistories;
     }
 }
