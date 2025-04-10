@@ -24,4 +24,4 @@
 - [ ] Session
   - [ ] 객체 구현
     - [x] SessionStatus 구현
-    - [ ] SessionType 구현
+    - [x] SessionType 구현
