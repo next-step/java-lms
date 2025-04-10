@@ -3,7 +3,11 @@ package nextstep.qna.domain;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DeleteHistory {
     private Long id;
@@ -24,6 +28,22 @@ public class DeleteHistory {
         this.contentId = contentId;
         this.deletedBy = deletedBy;
         this.createdDate = createdDate;
+    }
+
+    public static DeleteHistory createQuestionHistory(Long questionId, NsUser deletedBy) {
+        return new DeleteHistory(ContentType.QUESTION, questionId, deletedBy, LocalDateTime.now());
+    }
+
+    public static DeleteHistory createAnswerHistory(Long answerId, NsUser deletedBy) {
+        return new DeleteHistory(ContentType.ANSWER, answerId, deletedBy, LocalDateTime.now());
+    }
+
+    public static List<DeleteHistory> create(Question question) {
+        return Stream.concat(
+                Stream.of(createQuestionHistory(question.getId(), question.getWriter())),
+                question.getAnswers().stream()
+                        .map(it -> createAnswerHistory(it.getId(), question.getWriter()))
+        ).collect(Collectors.toList());
     }
 
     @Override
