@@ -16,3 +16,6 @@
   - [x] Question.setDelete 삭제
   - [x] Answer.delete 추가
 ## 2단계
+- [ ] SessionThumbnail
+  - [x] 객체 구현
+  - [ ] 리팩토링
