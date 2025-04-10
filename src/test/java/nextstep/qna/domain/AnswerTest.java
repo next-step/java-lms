@@ -1,5 +1,7 @@
 package nextstep.qna.domain;
 
+import org.junit.jupiter.api.Test;
+
 import nextstep.users.domain.NsUserTest;
 
 public class AnswerTest {

@@ -72,9 +72,9 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public void delete() {
+        this.deleted = true;
+        this.answers.forEach(Answer::delete);
     }
 
     public boolean isDeleted() {
