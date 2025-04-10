@@ -15,7 +15,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -74,7 +74,7 @@ public class Question {
 
     public void delete() {
         this.deleted = true;
-        this.answers.forEach(Answer::delete);
+        this.answers.deleteAll();
     }
 
     public boolean isDeleted() {
@@ -82,7 +82,7 @@ public class Question {
     }
 
     public List<Answer> getAnswers() {
-        return answers;
+        return answers.getAnswers();
     }
 
     @Override
