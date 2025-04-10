@@ -56,7 +56,12 @@ public class Answer {
         return deleted;
     }
 
-    public boolean isOwner(NsUser writer) {
+    public DeleteHistory delete() {
+        this.setDeleted(true);
+        return DeleteHistory.ofAnswer(this, writer);
+    }
+
+    public boolean canBeDeletedBy(NsUser writer) {
         return this.writer.equals(writer);
     }
 
