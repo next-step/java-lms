@@ -38,7 +38,7 @@ public class Answer extends Content {
         validateOwner(loginUser);
         this.deleted = true;
         DeleteHistory deleteHistory = getDeleteHistory();
-        return new ArrayList<>(List.of(deleteHistory));
+        return List.of(deleteHistory);
     }
 
     public void toQuestion(Question question) {
