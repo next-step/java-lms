@@ -1,10 +1,14 @@
 package nextstep.qna.domain;
 
+import static nextstep.qna.domain.AnswerTest.A1;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import nextstep.qna.CannotDeleteException;
+import nextstep.users.domain.NsUser;
 
 class AnswersTest {
 
@@ -24,16 +28,16 @@ class AnswersTest {
 
     @Test
     @DisplayName("Answers에 있는 모든 Answer를 삭제한다.")
-    void deleteAll() {
+    void deleteAll() throws CannotDeleteException {
         // given
         Answers answers = new Answers();
-        Answer answer1 = new Answer();
-        Answer answer2 = new Answer();
+        Answer answer1 = AnswerTest.A1;
+        Answer answer2 = AnswerTest.A1;
         answers.add(answer1);
         answers.add(answer2);
 
         // when
-        answers.deleteAll();
+        answers.deleteAll(AnswerTest.A1.getWriter());
 
         // then
         assertTrue(answer1.isDeleted());
