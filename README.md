@@ -19,3 +19,5 @@
 - [ ] SessionThumbnail
   - [x] 객체 구현
   - [ ] 리팩토링
+    - [x] width, height ImageSize 객체로 통합
+    - [ ] FileName 객체 생성

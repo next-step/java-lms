@@ -1,7 +1,5 @@
 package nextstep.courses.domain;
 
-import static java.util.Arrays.*;
-
 public enum ImageExtension {
     GIF("gif"),
     JPG("jpg"),

@@ -10,8 +10,7 @@ public class SessionThumbnail {
     private final String fileName;
     private final long fileSize;
     private final ImageExtension extension;
-    private final int width;
-    private final int height;
+    private final ImageSize size;
 
     public SessionThumbnail(String fullFileName, long fileSize, int width, int height) {
         validateFileSize(fileSize);
@@ -25,9 +24,8 @@ public class SessionThumbnail {
         this.extension = ImageExtension.from(fileNameParts[1].toLowerCase());
         validateDimensions(width, height);
         
+        this.size = new ImageSize(width, height);
         this.fileSize = fileSize;
-        this.width = width;
-        this.height = height;
     }
 
     private void validateFileSize(long fileSize) {
