@@ -5,12 +5,12 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
-public class ImageExtensionTest {
+public class SessionCoverImageExtensionTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"pdf", ".png", "1#2"})
     public void 지원하는_확장자가_아닌_경우_예외가_발생한다(String input) {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> ImageExtension.from(input));
+                .isThrownBy(() -> SessionCoverImageExtension.from(input));
     }
 }
