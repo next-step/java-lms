@@ -1,6 +1,8 @@
 package nextstep.courses.domain;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -31,9 +33,11 @@ public class SessionCoverImageTest {
                 .isThrownBy(() -> SessionCoverImage.validateHeight(height));
     }
 
-    @Test
-    public void 이미지_너비높이_비율이_3대2가_아닌_경우_예외_발생() {
-
+    @ParameterizedTest
+    @CsvSource(value = {"500:200", "300:300", "300:201"},delimiter = ':')
+    public void 이미지_너비높이_비율이_3대2가_아닌_경우_예외_발생(int width, int height) {
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> SessionCoverImage.validateRatio(width, height));
     }
 
 }
