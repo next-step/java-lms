@@ -41,7 +41,7 @@
     ```
 ---
 ## TODO
-- [ ] 커버 이미지 validation check
+- [x] 커버 이미지 validation check
   - [x] 지원하는 확장자가 아닌 경우 예외 발생 
   - [x] 이미지 사이즈가 1MB를 초과하는 경우 예외 발생
   - [x] 이미지 너비가 300pixel 미만인 경우 예외 발생

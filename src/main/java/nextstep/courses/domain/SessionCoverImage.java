@@ -9,6 +9,20 @@ public class SessionCoverImage {
     private static final int WIDTH_RATIO = 3;
     private static final int HEIGHT_RATIO = 2;
 
+    public String filePath;
+    public long imageSize;
+    public int width;
+    public int height;
+    public SessionCoverImageExtension extension;
+
+    public SessionCoverImage(String filePath, long imageSize, int width, int height, String extension) {
+        this.filePath = filePath;
+        this.imageSize = imageSize;
+        this.width = width;
+        this.height = height;
+        this.extension = SessionCoverImageExtension.from(extension);
+    }
+
     public static void validateSize(long size) {
         if (size > MAX_IMAGE_SIZE) {
             throw new IllegalArgumentException("1MB 이하만 업로드 가능합니다.");
