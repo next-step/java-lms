@@ -17,15 +17,6 @@ public enum ImageExtension {
         return extension;
     }
 
-    public static boolean isValidExtension(String extension) {
-        for (ImageExtension imageExtension : values()) {
-            if (imageExtension.extension.equalsIgnoreCase(extension)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static ImageExtension from(String extension) {
         for (ImageExtension imageExtension : values()) {
             if (imageExtension.extension.equalsIgnoreCase(extension)) {
