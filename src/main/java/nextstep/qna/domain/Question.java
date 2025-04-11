@@ -73,12 +73,13 @@ public class Question {
         this.deleted = true;
     }
 
-    public void delete(NsUser loginUser, DeleteHistories deleteHistories) throws CannotDeleteException{
+    public void delete(NsUser loginUser, DeleteHistories deleteHistories) throws CannotDeleteException {
         this.delete(loginUser);
-
-        if (deleteHistories != null){
+        if (deleteHistories != null) {
             deleteHistories.add(ContentType.QUESTION, this.id, this.writer);
         }
+
+        this.getAnswers().delete(loginUser, deleteHistories);
     }
 
     public void addAnswer(Answer answer) {
