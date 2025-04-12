@@ -35,8 +35,8 @@
   - [x] Enrollment
     - [x] 수강생 필드 추가
     - [x] 무료 강의 대응
-  - [ ] SessionTest 실패 테스트 수정
-  - [ ] Session 인스턴스 변수 제거
+  - [x] SessionTest 실패 테스트 수정
+  - [x] Session 인스턴스 변수 개수 감소
   - [ ] SessionPrice
     - [ ] null 비교 로직 제거
     - [ ] 가격 일치 로직에서 getter 제거

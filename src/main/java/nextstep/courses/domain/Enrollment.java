@@ -3,7 +3,6 @@ package nextstep.courses.domain;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Enrollment {
@@ -37,19 +36,28 @@ public class Enrollment {
         enrolledUsers.add(user);
     }
 
-    private boolean isFull() {
-        return enrolledUsers.size() >= maxEnrollment;
+    public boolean isFull() {
+        return maxEnrollment > 0 && enrolledUsers.size() >= maxEnrollment;
     }
 
-    public int getMaxEnrollment() {
-        return maxEnrollment;
+    public boolean hasEnrolledUser(NsUser user) {
+        return enrolledUsers.contains(user);
     }
 
     public int getCurrentEnrollment() {
         return enrolledUsers.size();
     }
 
-    public List<NsUser> getEnrolledUsers() {
-        return Collections.unmodifiableList(enrolledUsers);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Enrollment that = (Enrollment) o;
+        return maxEnrollment == that.maxEnrollment && enrolledUsers.equals(that.enrolledUsers);
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(maxEnrollment, enrolledUsers);
     }
 } 

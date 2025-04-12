@@ -11,109 +11,116 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SessionTest {
-    private static final Long SESSION_ID = 1L;
-    private static final String TITLE = "TDD와 Clean Code";
+    private static final NsUser USER = new NsUser(1L, "user", "password", "name", "email");
     private static final LocalDateTime START_DATE = LocalDateTime.now();
-    private static final LocalDateTime END_DATE = START_DATE.plusDays(30);
-    private static final NsUser USER = new NsUser(1L, "user@email.com", "password", "name", "010-1234-5678");
+    private static final LocalDateTime END_DATE = START_DATE.plusMonths(1);
 
     @Test
-    @DisplayName("무료 강의를 생성한다")
-    void createFreeSession() {
-        // given
-        Session session = new Session(SESSION_ID, TITLE, SessionStatus.RECRUITING, START_DATE, END_DATE,
-                null, SessionType.FREE, 0, 0);
+    @DisplayName("강의를 생성한다")
+    void create() {
+        Session session = new Session(
+            1L,
+            "강의 제목",
+            SessionStatus.RECRUITING,
+            START_DATE,
+            END_DATE,
+            new SessionImage("image.jpg", 300, 200),
+            SessionType.PAID,
+            30,
+            10000
+        );
 
-        // when & then
-        assertThat(session).isNotNull();
-        assertThat(session.getType()).isEqualTo(SessionType.FREE);
-        assertThat(session.getMaxEnrollment()).isEqualTo(0);
-        assertThat(session.getPrice()).isEqualTo(0);
+        assertThat(session.isPaid()).isTrue();
+        assertThat(session.isRecruiting()).isTrue();
+        assertThat(session.isFull()).isFalse();
     }
 
     @Test
-    @DisplayName("유료 강의를 생성한다")
-    void createPaidSession() {
-        // given
-        Session session = new Session(SESSION_ID, TITLE, SessionStatus.RECRUITING, START_DATE, END_DATE,
-                null, SessionType.PAID, 30, 100000);
+    @DisplayName("수강 신청을 한다")
+    void enroll() {
+        Session session = new Session(
+            1L,
+            "강의 제목",
+            SessionStatus.RECRUITING,
+            START_DATE,
+            END_DATE,
+            new SessionImage("image.jpg", 300, 200),
+            SessionType.PAID,
+            30,
+            10000
+        );
+        Payment payment = new Payment("payment1", 1L, 1L, 10000L);
 
-        // when & then
-        assertThat(session).isNotNull();
-        assertThat(session.getType()).isEqualTo(SessionType.PAID);
-        assertThat(session.getMaxEnrollment()).isEqualTo(30);
-        assertThat(session.getPrice()).isEqualTo(100000);
-    }
-
-    @Test
-    @DisplayName("시작일이 종료일보다 늦으면 예외가 발생한다")
-    void validateDates() {
-        // given
-        LocalDateTime invalidStartDate = END_DATE.plusDays(1);
-
-        // when & then
-        assertThatThrownBy(() -> new Session(SESSION_ID, TITLE, SessionStatus.RECRUITING, invalidStartDate, END_DATE,
-                null, SessionType.FREE, 0, 0))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("시작일은 종료일보다 이전이어야 합니다.");
-    }
-
-    @Test
-    @DisplayName("무료 강의에 수강 신청한다")
-    void enrollFreeSession() {
-        // given
-        Session session = new Session(SESSION_ID, TITLE, SessionStatus.RECRUITING, START_DATE, END_DATE,
-                null, SessionType.FREE, 0, 0);
-
-        // when
-        session.enroll(USER, null);
-
-        // then
-        assertThat(session.getCurrentEnrollment()).isEqualTo(1);
-        assertThat(session.getEnrolledUsers()).hasSize(1);
-        assertThat(session.getEnrolledUsers().get(0)).isEqualTo(USER);
-    }
-
-    @Test
-    @DisplayName("유료 강의에 수강 신청한다")
-    void enrollPaidSession() {
-        // given
-        Session session = new Session(SESSION_ID, TITLE, SessionStatus.RECRUITING, START_DATE, END_DATE,
-                null, SessionType.PAID, 30, 100000);
-        Payment payment = new Payment("payment-1", SESSION_ID, USER.getId(), 100000L);
-
-        // when
+        assertThat(session.canEnroll(USER)).isTrue();
         session.enroll(USER, payment);
-
-        // then
-        assertThat(session.getCurrentEnrollment()).isEqualTo(1);
-        assertThat(session.getEnrolledUsers()).hasSize(1);
-        assertThat(session.getEnrolledUsers().get(0)).isEqualTo(USER);
+        assertThat(session.hasEnrolledUser(USER)).isTrue();
+        assertThat(session.canEnroll(USER)).isFalse();
     }
 
     @Test
-    @DisplayName("모집중이 아닌 강의에 수강 신청하면 예외가 발생한다")
-    void enrollNotRecruitingSession() {
-        // given
-        Session session = new Session(SESSION_ID, TITLE, SessionStatus.PREPARING, START_DATE, END_DATE,
-                null, SessionType.FREE, 0, 0);
+    @DisplayName("모집중이 아닌 강의는 수강 신청이 불가능하다")
+    void enrollClosedSession() {
+        Session session = new Session(
+            1L,
+            "강의 제목",
+            SessionStatus.CLOSED,
+            START_DATE,
+            END_DATE,
+            new SessionImage("image.jpg", 300, 200),
+            SessionType.PAID,
+            30,
+            10000
+        );
+        Payment payment = new Payment("payment1", 1L, 1L, 10000L);
 
-        // when & then
-        assertThatThrownBy(() -> session.enroll(USER, null))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("모집중인 강의만 수강 신청이 가능합니다.");
+        assertThat(session.canEnroll(USER)).isFalse();
+        assertThatThrownBy(() -> session.enroll(USER, payment))
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("모집중인 강의만 수강 신청이 가능합니다.");
     }
 
     @Test
-    @DisplayName("유료 강의에 결제 없이 수강 신청하면 예외가 발생한다")
-    void enrollPaidSessionWithoutPayment() {
-        // given
-        Session session = new Session(SESSION_ID, TITLE, SessionStatus.RECRUITING, START_DATE, END_DATE,
-                null, SessionType.PAID, 30, 100000);
+    @DisplayName("유료 강의는 결제가 필요하다")
+    void enrollPaidSession() {
+        Session session = new Session(
+            1L,
+            "강의 제목",
+            SessionStatus.RECRUITING,
+            START_DATE,
+            END_DATE,
+            new SessionImage("image.jpg", 300, 200),
+            SessionType.PAID,
+            30,
+            10000
+        );
 
-        // when & then
         assertThatThrownBy(() -> session.enroll(USER, null))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("유료 강의는 결제가 필요합니다.");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("유료 강의는 결제가 필요합니다.");
+    }
+
+    @Test
+    @DisplayName("수강 인원이 가득 찬 강의는 수강 신청이 불가능하다")
+    void enrollFullSession() {
+        Session session = new Session(
+            1L,
+            "강의 제목",
+            SessionStatus.RECRUITING,
+            START_DATE,
+            END_DATE,
+            new SessionImage("image.jpg", 300, 200),
+            SessionType.PAID,
+            1,
+            10000
+        );
+        Payment payment = new Payment("payment1", 1L, 1L, 10000L);
+        NsUser anotherUser = new NsUser(2L, "user2", "password", "name", "email");
+
+        session.enroll(USER, payment);
+        assertThat(session.isFull()).isTrue();
+        assertThat(session.canEnroll(anotherUser)).isFalse();
+        assertThatThrownBy(() -> session.enroll(anotherUser, payment))
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("최대 수강 인원을 초과했습니다.");
     }
 } 
