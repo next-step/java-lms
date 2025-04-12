@@ -25,7 +25,7 @@ public class SessionTest {
     @Test
     public void 유료강의신청_시_최대수강인원을_초과하는_경우_예외_발생() {
         int maxCapacity = 3;
-        Session paidSession = Session.createPaidSession(maxCapacity);
+        Session paidSession = Session.createPaidSession(10000, maxCapacity);
         paidSession.startRecruiting();
 
         IntStream.range(0, maxCapacity)

@@ -3,7 +3,7 @@ package nextstep.courses.domain;
 public class SessionCoverImage {
     private static final long KB = 1024;
     private static final long MB = KB * KB;
-    private static final long MAX_IMAGE_SIZE = 1 * MB;
+    private static final long MAX_IMAGE_SIZE = MB;
     private static final int MIN_WIDTH = 300;
     private static final int MIN_HEIGHT = 200;
     private static final int WIDTH_RATIO = 3;
