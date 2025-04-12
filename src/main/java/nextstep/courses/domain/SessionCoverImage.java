@@ -15,6 +15,9 @@ public class SessionCoverImage {
     private int height;
     private SessionCoverImageExtension extension;
 
+    public SessionCoverImage() {
+    }
+
     public SessionCoverImage(String filePath, long imageSize, int width, int height, String extension) {
         this.filePath = filePath;
         this.imageSize = imageSize;
