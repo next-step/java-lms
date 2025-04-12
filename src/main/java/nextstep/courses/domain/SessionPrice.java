@@ -31,7 +31,7 @@ public class SessionPrice {
     }
 
     public void validatePayment(Payment payment) {
-        if (type.equals(SessionType.PAID) && payment.getAmount() != price) {
+        if (type.equals(SessionType.PAID) && !payment.isAmountEqual(price)) {
             throw new IllegalArgumentException("결제 금액이 수강료와 일치하지 않습니다.");
         }
     }

@@ -37,9 +37,7 @@
     - [x] 무료 강의 대응
   - [x] SessionTest 실패 테스트 수정
   - [x] Session 인스턴스 변수 개수 감소
-  - [ ] SessionPrice
-    - [ ] null 비교 로직 제거
-    - [ ] 가격 일치 로직에서 getter 제거
+  - [x] Payment.getAmount 제거
   - [ ] SessionStatus 단위 테스트 추가
   - [ ] SessionService 신청 수강생 정보 추가
   - [ ] ImageSizeTest 가로가 작은 경우, 세로가 작은 경우 독립적으로 테스트
