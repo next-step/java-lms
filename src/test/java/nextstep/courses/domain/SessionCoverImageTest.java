@@ -8,12 +8,18 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 
 public class SessionCoverImageTest {
 
+    private final String path = "path";
+    private final String extension = "jpg";
+    private final long size = 1024;
+    private final int width = 300;
+    private final int height = 200;
+
     @Test
     public void 이미지_사이즈가_1MB를_초과하는_경우_예외_발생() {
         long size = 2 * 1024 * 1024;
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> SessionCoverImage.validateSize(size));
+                .isThrownBy(() -> new SessionCoverImage(path, extension, size, width, height));
     }
 
     @Test
@@ -21,7 +27,7 @@ public class SessionCoverImageTest {
         int width = 299;
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> SessionCoverImage.validateWidth(width));
+                .isThrownBy(() -> new SessionCoverImage(path, extension, size, width, height));
     }
 
     @Test
@@ -29,14 +35,14 @@ public class SessionCoverImageTest {
         int height = 199;
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> SessionCoverImage.validateHeight(height));
+                .isThrownBy(() -> new SessionCoverImage(path, extension, size, width, height));
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"500:200", "300:300", "300:201"},delimiter = ':')
+    @CsvSource(value = {"500:200", "300:300", "300:201"}, delimiter = ':')
     public void 이미지_너비높이_비율이_3대2가_아닌_경우_예외_발생(int width, int height) {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> SessionCoverImage.validateRatio(width, height));
+                .isThrownBy(() -> new SessionCoverImage(path, extension, size, width, height));
     }
 
 }

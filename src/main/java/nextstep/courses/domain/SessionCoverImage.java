@@ -9,8 +9,8 @@ public class SessionCoverImage {
     private static final int WIDTH_RATIO = 3;
     private static final int HEIGHT_RATIO = 2;
 
-    private String filePath;
-    private long imageSize;
+    private String path;
+    private long size;
     private int width;
     private int height;
     private SessionCoverImageExtension extension;
@@ -18,33 +18,42 @@ public class SessionCoverImage {
     public SessionCoverImage() {
     }
 
-    public SessionCoverImage(String filePath, long imageSize, int width, int height, String extension) {
-        this.filePath = filePath;
-        this.imageSize = imageSize;
+    public SessionCoverImage(String path, String extension, long size, int width, int height) {
+        this.path = path;
+        this.extension = SessionCoverImageExtension.from(extension);
+        this.size = size;
         this.width = width;
         this.height = height;
-        this.extension = SessionCoverImageExtension.from(extension);
+
+        validateInputs();
     }
 
-    public static void validateSize(long size) {
+    private void validateInputs() {
+        validateSize();
+        validateWidth();
+        validateHeight();
+        validateRatio();
+    }
+
+    private void validateSize() {
         if (size > MAX_IMAGE_SIZE) {
             throw new IllegalArgumentException("1MB 이하만 업로드 가능합니다.");
         }
     }
 
-    public static void validateWidth(int width) {
+    private void validateWidth() {
         if (width < MIN_WIDTH) {
             throw new IllegalArgumentException("너비가 300 pixel 이상인 경우만 업로드 가능합니다.");
         }
     }
 
-    public static void validateHeight(int height) {
+    private void validateHeight() {
         if (height < MIN_HEIGHT) {
             throw new IllegalArgumentException("높이가 200 pixel 이상인 경우만 업로드 가능합니다.");
         }
     }
 
-    public static void validateRatio(int width, int height) {
+    private void validateRatio() {
         if (width * HEIGHT_RATIO != height * WIDTH_RATIO) {
             throw new IllegalArgumentException("이미지 비율이 3:2 인 경우만 업로드 가능합니다.");
         }
