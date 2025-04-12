@@ -7,13 +7,16 @@ public class Course {
 
     private String title;
 
+    private Generation generation;
+
     private Long creatorId;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
-    public Course() {
+    public Course(Integer generation) {
+        this.generation = new Generation(generation);
     }
 
     public Course(String title, Long creatorId) {
@@ -30,6 +33,10 @@ public class Course {
 
     public String getTitle() {
         return title;
+    }
+
+    public Generation getGeneration() {
+        return generation;
     }
 
     public Long getCreatorId() {
