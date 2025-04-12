@@ -9,6 +9,8 @@ public class Course {
 
     private Long creatorId;
 
+    private Sessions sessions;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
