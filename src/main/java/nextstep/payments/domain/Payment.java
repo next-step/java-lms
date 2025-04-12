@@ -3,12 +3,15 @@ package nextstep.payments.domain;
 import java.time.LocalDateTime;
 
 public class Payment {
-    private final String id;
-    private final Long sessionId;
-    private final Long nsUserId;
-    private final Long amount;
+    private String id;
+    private Long sessionId;
+    private Long nsUserId;
+    private Long amount;
 
-    private final LocalDateTime createdAt;
+    private LocalDateTime createdAt;
+
+    public Payment() {
+    }
 
     public Payment(String id, Long sessionId, Long nsUserId, Long amount) {
         this.id = id;

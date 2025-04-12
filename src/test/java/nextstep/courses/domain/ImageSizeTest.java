@@ -2,6 +2,8 @@ package nextstep.courses.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -24,17 +26,17 @@ class ImageSizeTest {
         assertThat(imageSize.getHeight()).isEqualTo(height);
     }
 
-    @Test
+    @ParameterizedTest
+    @CsvSource({
+        "299, 200, '이미지는 최소 300x200 픽셀 이상이어야 합니다.'",
+        "300, 199, '이미지는 최소 300x200 픽셀 이상이어야 합니다.'"
+    })
     @DisplayName("이미지 크기가 최소 크기보다 작으면 예외가 발생한다")
-    void validateDimensions() {
-        // given
-        int width = 299;
-        int height = 199;
-
+    void validateDimensions(int width, int height, String expectedMessage) {
         // when & then
         assertThatThrownBy(() -> new ImageSize(width, height))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("이미지는 최소 300x200 픽셀 이상이어야 합니다.");
+                .hasMessage(expectedMessage);
     }
 
     @Test
