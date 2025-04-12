@@ -53,10 +53,14 @@ public class Session {
     }
 
     public void enroll(NsUser student) {
-        checkRecruiting();
-        checkMaxCapacity();
+        validateRecruiting();
+        validateMaxCapacity();
 
         students.add(student);
+    }
+
+    public void updateCoverImage(SessionCoverImage newCoverImage) {
+        coverImage = newCoverImage;
     }
 
     public void ready() {
@@ -71,13 +75,13 @@ public class Session {
         status = SessionStatus.CLOSED;
     }
 
-    private void checkRecruiting() {
+    private void validateRecruiting() {
         if (status != SessionStatus.RECRUITING) {
             throw new IllegalArgumentException("본 강의는 수강생을 모집하고 있지 않습니다.");
         }
     }
 
-    private void checkMaxCapacity() {
+    private void validateMaxCapacity() {
         if (type == SessionType.PAID && students.count() >= maxCapacity) {
             throw new IllegalArgumentException("최대 수강 인원(" + maxCapacity + "명)에 도달하여 수강 신청이 불가능합니다.");
         }
