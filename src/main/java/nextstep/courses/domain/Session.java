@@ -3,8 +3,6 @@ package nextstep.courses.domain;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Session {
 
@@ -12,12 +10,12 @@ public class Session {
     private SessionType type;
     private int price;
     private int maxCapacity;
-    private List<NsUser> students;
+    private Students students;
     private LocalDate startDate;
     private LocalDate endDate;
     private SessionCoverImage coverImage;
 
-    private Session(SessionStatus status, SessionType type, int price, int maxCapacity, List<NsUser> students, LocalDate startDate, LocalDate endDate, SessionCoverImage coverImage) {
+    private Session(SessionStatus status, SessionType type, int price, int maxCapacity, Students students, LocalDate startDate, LocalDate endDate, SessionCoverImage coverImage) {
         this.status = status;
         this.type = type;
         this.price = price;
@@ -34,7 +32,7 @@ public class Session {
                 SessionType.FREE,
                 0,
                 0,
-                new ArrayList<>(),
+                new Students(),
                 LocalDate.now(),
                 LocalDate.now(),
                 new SessionCoverImage()
@@ -47,7 +45,7 @@ public class Session {
                 SessionType.PAID,
                 price,
                 maxCapacity,
-                new ArrayList<>(),
+                new Students(),
                 LocalDate.now(),
                 LocalDate.now(),
                 new SessionCoverImage()
@@ -80,7 +78,7 @@ public class Session {
     }
 
     private void checkMaxCapacity() {
-        if (type == SessionType.PAID && students.size() >= maxCapacity) {
+        if (type == SessionType.PAID && students.count() >= maxCapacity) {
             throw new IllegalArgumentException("최대 수강 인원(" + maxCapacity + "명)에 도달하여 수강 신청이 불가능합니다.");
         }
     }
