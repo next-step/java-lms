@@ -26,4 +26,8 @@ public class Payment {
         this.amount = amount;
         this.createdAt = LocalDateTime.now();
     }
+
+    public boolean notMatches(long price) {
+        return amount != price;
+    }
 }

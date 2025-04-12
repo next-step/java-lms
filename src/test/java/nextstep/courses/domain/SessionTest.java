@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.Test;
 
@@ -15,24 +16,26 @@ public class SessionTest {
 
         session.ready();
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> session.enroll(new NsUser()));
+                .isThrownBy(() -> session.enroll(new NsUser(), new Payment()));
 
         session.close();
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> session.enroll(new NsUser()));
+                .isThrownBy(() -> session.enroll(new NsUser(), new Payment()));
     }
 
     @Test
     public void 유료강의신청_시_최대수강인원을_초과하는_경우_예외_발생() {
-        int price = 10000;
+        long price = 10000;
         int maxCapacity = 3;
         Session paidSession = Session.createPaidSession(price, maxCapacity);
         paidSession.startRecruiting();
 
+        Payment payment = new Payment("paymentId", 0L, 0L, price);
+
         IntStream.range(0, maxCapacity)
-                .forEach(i -> paidSession.enroll(new NsUser()));
+                .forEach(i -> paidSession.enroll(new NsUser(), payment));
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> paidSession.enroll(new NsUser()));
+                .isThrownBy(() -> paidSession.enroll(new NsUser(), payment));
     }
 }

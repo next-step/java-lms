@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
@@ -8,14 +9,14 @@ public class Session {
 
     private SessionStatus status;
     private SessionType type;
-    private int price;
+    private long price;
     private int maxCapacity;
     private Students students;
     private LocalDate startDate;
     private LocalDate endDate;
     private SessionCoverImage coverImage;
 
-    private Session(SessionStatus status, SessionType type, int price, int maxCapacity, Students students, LocalDate startDate, LocalDate endDate, SessionCoverImage coverImage) {
+    private Session(SessionStatus status, SessionType type, long price, int maxCapacity, Students students, LocalDate startDate, LocalDate endDate, SessionCoverImage coverImage) {
         this.status = status;
         this.type = type;
         this.price = price;
@@ -39,7 +40,7 @@ public class Session {
         );
     }
 
-    public static Session createPaidSession(int price, int maxCapacity) {
+    public static Session createPaidSession(long price, int maxCapacity) {
         return new Session(
                 SessionStatus.READY,
                 SessionType.PAID,
@@ -52,9 +53,10 @@ public class Session {
         );
     }
 
-    public void enroll(NsUser student) {
+    public void enroll(NsUser student, Payment payment) {
         validateRecruiting();
         validateMaxCapacity();
+        validatePayment(payment);
 
         students.add(student);
     }
@@ -84,6 +86,12 @@ public class Session {
     private void validateMaxCapacity() {
         if (type == SessionType.PAID && students.count() >= maxCapacity) {
             throw new IllegalArgumentException("최대 수강 인원(" + maxCapacity + "명)에 도달하여 수강 신청이 불가능합니다.");
+        }
+    }
+
+    private void validatePayment(Payment payment) {
+        if (payment.notMatches(price)) {
+            throw new IllegalArgumentException("결제한 금액과 수강료가 일치하지 않습니다.");
         }
     }
 }
