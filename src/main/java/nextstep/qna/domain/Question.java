@@ -69,7 +69,7 @@ public class Question {
         checkValidDeleteUser(loginUser);
         this.deleted = true;
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
+        deleteHistories.add(DeleteHistory.deleteQuestion(id, writer));
         deleteHistories.addAll(answers.deleteAll());
         return deleteHistories;
     }
