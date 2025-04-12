@@ -23,7 +23,7 @@ public class Session {
         this.period = new SessionPeriod(startDate, endDate);
         this.thumbnail = thumbnail;
         this.price = new SessionPrice(type, price);
-        this.enrollment = new Enrollment(maxEnrollment);
+        this.enrollment = type == SessionType.FREE ? Enrollment.free() : Enrollment.paid(maxEnrollment);
     }
 
     public void enroll(NsUser user, Payment payment) {
