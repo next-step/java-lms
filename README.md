@@ -38,7 +38,7 @@
   - [x] SessionTest 실패 테스트 수정
   - [x] Session 인스턴스 변수 개수 감소
   - [x] Payment.getAmount 제거
-  - [ ] SessionStatus 단위 테스트 추가
+  - [x] SessionStatus 단위 테스트 추가
   - [ ] SessionService 신청 수강생 정보 추가
   - [ ] ImageSizeTest 가로가 작은 경우, 세로가 작은 경우 독립적으로 테스트
   - [ ] SessionThumbnailTest 중복 테스트 제거
