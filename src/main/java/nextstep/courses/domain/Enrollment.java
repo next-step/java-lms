@@ -1,13 +1,19 @@
 package nextstep.courses.domain;
 
+import nextstep.users.domain.NsUser;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class Enrollment {
     private final int maxEnrollment;
-    private int currentEnrollment;
+    private final List<NsUser> enrolledUsers;
 
     public Enrollment(int maxEnrollment) {
         validateMaxEnrollment(maxEnrollment);
         this.maxEnrollment = maxEnrollment;
-        this.currentEnrollment = 0;
+        this.enrolledUsers = new ArrayList<>();
     }
 
     private void validateMaxEnrollment(int maxEnrollment) {
@@ -16,11 +22,11 @@ public class Enrollment {
         }
     }
 
-    public void enroll() {
-        if (currentEnrollment >= maxEnrollment) {
+    public void enroll(NsUser user) {
+        if (maxEnrollment > 0 && enrolledUsers.size() >= maxEnrollment) {
             throw new IllegalStateException("최대 수강 인원을 초과했습니다.");
         }
-        currentEnrollment++;
+        enrolledUsers.add(user);
     }
 
     public int getMaxEnrollment() {
@@ -28,6 +34,10 @@ public class Enrollment {
     }
 
     public int getCurrentEnrollment() {
-        return currentEnrollment;
+        return enrolledUsers.size();
+    }
+
+    public List<NsUser> getEnrolledUsers() {
+        return Collections.unmodifiableList(enrolledUsers);
     }
 } 

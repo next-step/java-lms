@@ -1,8 +1,10 @@
 package nextstep.courses.domain;
 
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Session {
     private final Long id;
@@ -24,7 +26,7 @@ public class Session {
         this.enrollment = new Enrollment(maxEnrollment);
     }
 
-    public void enroll(Payment payment) {
+    public void enroll(NsUser user, Payment payment) {
         if (!status.isRecruiting()) {
             throw new IllegalStateException("모집중인 강의만 수강 신청이 가능합니다.");
         }
@@ -33,7 +35,11 @@ public class Session {
             validatePaymentExists(payment);
             price.validatePayment(payment);
         }
-        enrollment.enroll();
+        enrollment.enroll(user);
+    }
+
+    public List<NsUser> getEnrolledUsers() {
+        return enrollment.getEnrolledUsers();
     }
 
     public boolean isPaid() {
@@ -45,7 +51,7 @@ public class Session {
     }
 
     public SessionType getType() {
-        return price.isPaid() ? SessionType.PAID : SessionType.FREE;
+        return price.getType();
     }
 
     public int getMaxEnrollment() {

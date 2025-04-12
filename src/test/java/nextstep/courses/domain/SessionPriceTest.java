@@ -61,16 +61,4 @@ class SessionPriceTest {
         // when & then
         price.validatePayment(payment);
     }
-
-    @Test
-    @DisplayName("유료 강의에 결제가 없으면 예외가 발생한다")
-    void validatePaymentWithoutPayment() {
-        // given
-        SessionPrice price = new SessionPrice(SessionType.PAID, 100000);
-
-        // when & then
-        assertThatThrownBy(() -> price.validatePayment(null))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("유료 강의는 결제가 필요합니다.");
-    }
 } 

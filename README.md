@@ -33,7 +33,7 @@
 - [ ] 피드백
   - [x] ImageExtension 미사용 코드 제거
   - [ ] Enrollment
-    - [ ] 수강생 필드 추가
+    - [x] 수강생 필드 추가
     - [ ] 무료 강의 대응
   - [ ] SessionTest 실패 테스트 수정
   - [ ] Session 인스턴스 변수 제거

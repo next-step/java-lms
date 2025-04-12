@@ -13,13 +13,17 @@ public class SessionPrice {
     }
 
     private void validatePrice(SessionType type, int price) {
-        if (type.isPaid() && price <= 0) {
+        if (type == SessionType.PAID && price <= 0) {
             throw new IllegalArgumentException("유료 강의는 수강료가 0보다 커야 합니다.");
         }
     }
 
     public boolean isPaid() {
-        return type.isPaid();
+        return type == SessionType.PAID;
+    }
+
+    public SessionType getType() {
+        return type;
     }
 
     public int getPrice() {
@@ -27,11 +31,7 @@ public class SessionPrice {
     }
 
     public void validatePayment(Payment payment) {
-        if (isPaid() && payment == null) {
-            throw new IllegalArgumentException("유료 강의는 결제가 필요합니다.");
-        }
-
-        if (isPaid() && payment.getAmount() != price) {
+        if (type.equals(SessionType.PAID) && payment.getAmount() != price) {
             throw new IllegalArgumentException("결제 금액이 수강료와 일치하지 않습니다.");
         }
     }
