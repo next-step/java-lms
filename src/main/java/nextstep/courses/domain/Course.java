@@ -9,6 +9,8 @@ public class Course {
 
     private Generation generation;
 
+    private Sessions sessions;
+
     private Long creatorId;
 
     private LocalDateTime createdAt;
@@ -17,6 +19,11 @@ public class Course {
 
     public Course(Integer generation) {
         this.generation = new Generation(generation);
+    }
+
+    public Course(Integer generation, Sessions sessions) {
+        this.generation = new Generation(generation);
+        this.sessions = sessions;
     }
 
     public Course(String title, Long creatorId) {
@@ -37,6 +44,10 @@ public class Course {
 
     public Generation getGeneration() {
         return generation;
+    }
+
+    public Sessions getSessions() {
+        return sessions;
     }
 
     public Long getCreatorId() {
