@@ -10,15 +10,17 @@ public class Session {
 
     private SessionStatus status;
     private SessionType type;
+    private int price;
     private int maxCapacity;
     private List<NsUser> students;
     private LocalDate startDate;
     private LocalDate endDate;
     private SessionCoverImage coverImage;
 
-    private Session(SessionStatus status, SessionType type, int maxCapacity, List<NsUser> students, LocalDate startDate, LocalDate endDate, SessionCoverImage coverImage) {
+    private Session(SessionStatus status, SessionType type, int price, int maxCapacity, List<NsUser> students, LocalDate startDate, LocalDate endDate, SessionCoverImage coverImage) {
         this.status = status;
         this.type = type;
+        this.price = price;
         this.maxCapacity = maxCapacity;
         this.students = students;
         this.startDate = startDate;
@@ -31,6 +33,7 @@ public class Session {
                 SessionStatus.READY,
                 SessionType.FREE,
                 0,
+                0,
                 new ArrayList<>(),
                 LocalDate.now(),
                 LocalDate.now(),
@@ -38,10 +41,11 @@ public class Session {
         );
     }
 
-    public static Session createPaidSession(int maxCapacity) {
+    public static Session createPaidSession(int price, int maxCapacity) {
         return new Session(
                 SessionStatus.READY,
                 SessionType.PAID,
+                price,
                 maxCapacity,
                 new ArrayList<>(),
                 LocalDate.now(),
