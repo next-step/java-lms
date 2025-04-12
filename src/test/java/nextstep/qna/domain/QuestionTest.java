@@ -20,7 +20,7 @@ public class QuestionTest {
         Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
         assertThatThrownBy(() -> question.delete(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class)
-                .hasMessageContaining(Question.QUESTION_DELETE_UNAUTHORIZED);
+                .hasMessageContaining("질문을 삭제할 권한이 없습니다.");
     }
 
     @Test
@@ -31,7 +31,7 @@ public class QuestionTest {
         question.addAnswer(new Answer(NsUserTest.SANJIGI, question, "Answers Test1"));
         assertThatThrownBy(() -> question.delete(NsUserTest.JAVAJIGI))
                 .isInstanceOf(CannotDeleteException.class)
-                .hasMessageContaining(Question.QUESTION_DELETE_FORBIDDEN_OTHERS_ANSWER);
+                .hasMessageContaining("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
 
     @Test

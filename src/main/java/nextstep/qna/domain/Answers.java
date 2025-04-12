@@ -21,8 +21,8 @@ public class Answers {
         this.value.add(answer);
     }
 
-    public boolean areAllOwnedBy(NsUser writer) {
-        return value.stream().allMatch(answer -> answer.isOwner(writer));
+    public boolean hasNotMatchedOwner(NsUser writer) {
+        return !value.stream().allMatch(answer -> answer.isOwner(writer));
     }
 
     public List<DeleteHistory> deleteAll() {

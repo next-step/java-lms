@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
-    public static final String QUESTION_DELETE_UNAUTHORIZED = "질문을 삭제할 권한이 없습니다.";
-    public static final String QUESTION_DELETE_FORBIDDEN_OTHERS_ANSWER = "다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.";
+    private static final String QUESTION_DELETE_UNAUTHORIZED = "질문을 삭제할 권한이 없습니다.";
+    private static final String QUESTION_DELETE_FORBIDDEN_OTHERS_ANSWER = "다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.";
     private Long id;
 
     private String title;
@@ -82,10 +82,10 @@ public class Question {
     }
 
     private void validateDeletableBy(NsUser loginUser) throws CannotDeleteException {
-        if (!writer.equals(loginUser)) {
+        if (writer.isNotEqual(loginUser)) {
             throw new CannotDeleteException(QUESTION_DELETE_UNAUTHORIZED);
         }
-        if (!answers.areAllOwnedBy(loginUser)) {
+        if (answers.hasNotMatchedOwner(loginUser)) {
             throw new CannotDeleteException(QUESTION_DELETE_FORBIDDEN_OTHERS_ANSWER);
         }
     }
