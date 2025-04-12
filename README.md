@@ -30,7 +30,7 @@
     - [x] Session 내 필드 캡슐화 및 단위 테스트 작성
     - [x] 객체 메시지 구현
 - [x] 서비스 구현
-- [ ] 피드백
+- [x] 피드백
   - [x] ImageExtension 미사용 코드 제거
   - [x] Enrollment
     - [x] 수강생 필드 추가
@@ -40,4 +40,4 @@
   - [x] Payment.getAmount 제거
   - [x] SessionStatus 단위 테스트 추가
   - [x] ImageSizeTest 가로가 작은 경우, 세로가 작은 경우 독립적으로 테스트
-  - [ ] SessionThumbnailTest 중복 테스트 제거
+  - [x] SessionThumbnailTest 중복 테스트 제거

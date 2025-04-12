@@ -38,19 +38,4 @@ class SessionThumbnailTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("파일 크기는 1MB를 초과할 수 없습니다.");
     }
-
-    @Test
-    @DisplayName("올바르지 않은 파일명 형식이면 예외가 발생한다")
-    void validateFileNameFormat() {
-        // given
-        String fullFileName = "test"; // 확장자 없음
-        long fileSize = 500 * 1024;
-        int width = 300;
-        int height = 200;
-
-        // when & then
-        assertThatThrownBy(() -> new SessionThumbnail(fullFileName, fileSize, width, height))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("올바른 파일명 형식이 아닙니다.");
-    }
 } 
