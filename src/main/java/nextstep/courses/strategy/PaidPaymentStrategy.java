@@ -12,7 +12,7 @@ public class PaidPaymentStrategy implements PaymentStrategy {
     @Override
     public boolean payable(Payment payment) {
         if (payment.isSameAmount(price))
-            return false;
-        return true;
+            return true;
+        return false;
     }
 }
