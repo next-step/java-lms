@@ -15,11 +15,11 @@ public class SessionTest {
 
         session.ready();
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> session.register(new NsUser()));
+                .isThrownBy(() -> session.enroll(new NsUser()));
 
         session.close();
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> session.register(new NsUser()));
+                .isThrownBy(() -> session.enroll(new NsUser()));
     }
 
     @Test
@@ -30,9 +30,9 @@ public class SessionTest {
         paidSession.startRecruiting();
 
         IntStream.range(0, maxCapacity)
-                .forEach(i -> paidSession.register(new NsUser()));
+                .forEach(i -> paidSession.enroll(new NsUser()));
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> paidSession.register(new NsUser()));
+                .isThrownBy(() -> paidSession.enroll(new NsUser()));
     }
 }

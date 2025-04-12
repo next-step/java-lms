@@ -39,12 +39,15 @@
     무료 강의 → 강의 모집중 상태 확인 → 수강 신청 완료
     유료 강의 → 강의 모집중 상태 확인 → 결제 여부 확인 → 수강 신청 완료
     ```
-- 도메인 관계
+- 기타
   ```
    Course → Session → SessionCoverImage → SessionCoverImageExtension
                       SessionStatus
                       SessionType
                       NsUser
+  
+  학생 <-> 강의 (N:N)
+  학생 <-> 수강신청 <-> 강의 
   ```
 ---
 ## TODO
@@ -59,3 +62,4 @@
 - [x] Session 일급 컬렉션 Sessions 생성
 - [x] NsUser 일급 컬렉션 Students 생성
 - [ ] 커버 이미지 등록 처리
+

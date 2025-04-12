@@ -52,7 +52,7 @@ public class Session {
         );
     }
 
-    public void register(NsUser student) {
+    public void enroll(NsUser student) {
         checkRecruiting();
         checkMaxCapacity();
 
