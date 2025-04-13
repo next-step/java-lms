@@ -1,7 +1,7 @@
 package nextstep.courses.service;
 
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionRepository;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.infrastructure.SessionRepository;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.service.PaymentService;
 import nextstep.users.domain.NsUser;
