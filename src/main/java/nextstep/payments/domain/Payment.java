@@ -30,4 +30,8 @@ public class Payment {
     public Long amount() {
         return amount;
     }
+
+    public Long nsUserId() {
+        return nsUserId;
+    }
 }
