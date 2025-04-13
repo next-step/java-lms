@@ -55,9 +55,8 @@
 * 강의 커버 이미지 Image
 * 강의 커버 이미지 사이즈 Dimension
 * 강의 상태 SessionStatus
-* 강의 수강생 Participants
+* 강의 수강생들 NsUsers
 * 강의 정책 Policy
   * FreePolicy 무료
   * PaidPolicy 유료
 * 강의 기간 Period
-* 외부 결제 모듈 객체 Payment
