@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.CannotEnrollException;
 import nextstep.courses.strategy.FreePaymentStrategy;
 import nextstep.courses.strategy.PaidPaymentStrategy;
 import nextstep.payments.domain.Payment;
@@ -48,7 +49,7 @@ class SessionTest {
         FreePaymentStrategy freePaymentStrategy = new FreePaymentStrategy();
         Session session = new Session(image, date, SessionState.PREPARING, enrollment, freePaymentStrategy);
         assertThatThrownBy(() -> session.applySession(NsUserTest.JAVAJIGI, LocalDate.now(), new Payment()))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(CannotEnrollException.class);
     }
 
     @Test
@@ -57,7 +58,7 @@ class SessionTest {
         FreePaymentStrategy freePaymentStrategy = new FreePaymentStrategy();
         Session session = new Session(image, date, state, enrollment, freePaymentStrategy);
         assertThatThrownBy(() -> session.applySession(NsUserTest.JAVAJIGI, LocalDate.now().plusDays(10), new Payment()))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(CannotEnrollException.class);
     }
 
     @Test
@@ -66,6 +67,6 @@ class SessionTest {
         PaidPaymentStrategy paidPaymentStrategy = new PaidPaymentStrategy(1000L);
         Session session = new Session(image, date, state, enrollment, paidPaymentStrategy);
         assertThatThrownBy(() -> session.applySession(NsUserTest.JAVAJIGI, LocalDate.now(), new Payment("1L", 1L, 1L, 2000L)))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(CannotEnrollException.class);
     }
 }

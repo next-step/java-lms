@@ -1,5 +1,7 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.InvalidImageException;
+
 import java.util.Arrays;
 
 public enum SessionImageType {
@@ -15,7 +17,7 @@ public enum SessionImageType {
         return Arrays.stream(values())
                 .filter(type -> type.name.equals(name))
                 .findFirst()
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(InvalidImageException::new);
 
     }
 }

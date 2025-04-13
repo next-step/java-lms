@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.CannotEnrollException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,6 @@ class EnrollmentTest {
         Enrollment enrollment = new Enrollment(1);
         enrollment.enroll(NsUserTest.JAVAJIGI);
         assertThatThrownBy(() -> enrollment.enroll(NsUserTest.SANJIGI))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(CannotEnrollException.class);
     }
 }

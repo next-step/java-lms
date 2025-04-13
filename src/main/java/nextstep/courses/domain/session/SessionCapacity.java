@@ -1,5 +1,7 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.CannotEnrollException;
+
 import java.util.Objects;
 
 public class SessionCapacity {
@@ -49,7 +51,7 @@ public class SessionCapacity {
 
     private void isValidCapacity(){
         if(this.capacity > this.maxCapacity) {
-            throw new IllegalArgumentException("최대 수용 인원을 현재 인원이 초과할 수 없다.");
+            throw new CannotEnrollException("최대 수용 인원을 현재 인원이 초과할 수 없다.");
         }
     }
 }

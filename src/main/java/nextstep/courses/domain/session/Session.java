@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.CannotEnrollException;
 import nextstep.courses.strategy.PaymentStrategy;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -23,7 +24,7 @@ public class Session {
 
     public void applySession(NsUser user, LocalDate enrollDate, Payment payment) {
         if (!canApply(enrollDate, payment)) {
-            throw new IllegalArgumentException("등록 불가능한 상태입니다.");
+            throw new CannotEnrollException("등록 불가능한 상태입니다.");
         }
         this.enrollment.enroll(user);
     }

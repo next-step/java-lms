@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.CannotEnrollException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -21,13 +22,13 @@ class SessionCapacityTest {
     void increase_fail() {
         SessionCapacity capacity = new SessionCapacity(10, 10);
         assertThatThrownBy(capacity::increase)
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(CannotEnrollException.class);
     }
 
     @Test
     @DisplayName("초기화 시 수강인원이 최대 인원보다 크면 에러를 반환한다.")
     void init() {
         assertThatThrownBy(() -> new SessionCapacity(11, 10))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(CannotEnrollException.class);
     }
 }

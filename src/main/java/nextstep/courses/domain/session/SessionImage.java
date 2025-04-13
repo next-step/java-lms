@@ -1,5 +1,7 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.InvalidImageException;
+
 import java.util.Objects;
 
 public class SessionImage {
@@ -27,14 +29,14 @@ public class SessionImage {
 
     private void checkValidSessionImage() {
         if (this.width < MIN_WIDTH || this.height < MIN_HEIGHT) {
-            throw new IllegalArgumentException("이미지의 width는 300픽셀, height는 200픽셀 이상이어야 한다.");
+            throw new InvalidImageException("이미지의 width는 300픽셀, height는 200픽셀 이상이어야 한다.");
         }
         if ((double) this.width / this.height != WIDTH_PER_HEIGHT) {
-            throw new IllegalArgumentException("이미지의 width, height의 비율은 3:2여야 한다.");
+            throw new InvalidImageException("이미지의 width, height의 비율은 3:2여야 한다.");
         }
 
         if (this.size > MAX_IMAGE_SIZE) {
-            throw new IllegalArgumentException("이미지의 크기는 1MB 이하여야 한다.");
+            throw new InvalidImageException("이미지의 크기는 1MB 이하여야 한다.");
         }
     }
 

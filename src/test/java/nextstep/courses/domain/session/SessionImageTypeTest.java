@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.InvalidImageException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +20,6 @@ class SessionImageTypeTest {
     @DisplayName("등록되지 않은 확장자를 넣으면 에러를 반환한다.")
     void of_fail() {
         assertThatThrownBy(() -> SessionImageType.of("xls"))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(InvalidImageException.class);
     }
 }
