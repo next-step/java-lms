@@ -18,15 +18,15 @@ public class Answers {
         values.add(answer);
     }
 
-    public void validateOwnerships(NsUser loginUser) throws CannotDeleteException {
-        for (Answer answer : values) {
-            answer.validateOwnership(loginUser);
-        }
-    }
-
-    public List<DeleteHistory> deleteAnswers() {
+    public List<DeleteHistory> deleteAnswers(NsUser loginUser) {
         return values.stream()
-                .map(Answer::delete)
+                .map(value -> {
+                    try {
+                        return value.delete(loginUser);
+                    } catch (CannotDeleteException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
                 .collect(Collectors.toList());
     }
 }

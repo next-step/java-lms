@@ -19,11 +19,11 @@ public class DeleteHistory {
     public DeleteHistory() {
     }
 
-    public static DeleteHistory ofQuestion(Question q) {
+    public static DeleteHistory deleteOfQuestion(Question q) {
         return new DeleteHistory(ContentType.QUESTION, q.getId(), q.getWriter(), LocalDateTime.now());
     }
 
-    public static DeleteHistory ofAnswer(Answer a) {
+    public static DeleteHistory deleteOfAnswer(Answer a) {
         return new DeleteHistory(ContentType.ANSWER, a.getId(), a.getWriter(), LocalDateTime.now());
     }
 
