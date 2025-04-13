@@ -88,7 +88,31 @@ class EnrollmentTest {
         // then
         assertThat(enrollment.isFull()).isTrue();
         assertThatThrownBy(() -> enrollment.enroll(anotherUser))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("최대 수강 인원을 초과했습니다.");
+                .isInstanceOf(IllegalStateException.class);
+    }
+
+    @Test
+    @DisplayName("이미 수강 신청한 사용자는 다시 수강 신청할 수 없다")
+    void validateDuplicateEnrollment() {
+        // given
+        Enrollment enrollment = new FreeEnrollment();
+
+        // when
+        enrollment.enroll(USER);
+
+        // then
+        assertThatThrownBy(() -> enrollment.enroll(USER))
+                .isInstanceOf(IllegalStateException.class);
+    }
+
+    @Test
+    @DisplayName("수강 신청할 사용자가 없으면 예외가 발생한다")
+    void validateNullUser() {
+        // given
+        Enrollment enrollment = new FreeEnrollment();
+
+        // when & then
+        assertThatThrownBy(() -> enrollment.enroll(null))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 } 

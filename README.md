@@ -44,4 +44,4 @@
 - [ ] 2차 피드백
   - [ ] Enrollment
     - [x] 인터페이스로 분리
-    - [ ] 수강신청 validation 을 Enrollment 내부에서 수행
+    - [x] 수강신청 validation 을 Enrollment 내부에서 수행

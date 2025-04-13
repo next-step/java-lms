@@ -7,15 +7,11 @@ public class SessionInfo {
     private final SessionBasicInfo basicInfo;
     private final SessionDetailInfo detailInfo;
 
-    public SessionInfo(String title, SessionStatus status, SessionImage image, 
+    public SessionInfo(String title, SessionImage image,
                       LocalDateTime startDate, LocalDateTime endDate, 
                       SessionType type, int price) {
-        this.basicInfo = new SessionBasicInfo(title, status, image);
+        this.basicInfo = new SessionBasicInfo(title, image);
         this.detailInfo = new SessionDetailInfo(startDate, endDate, type, price);
-    }
-
-    public boolean isRecruiting() {
-        return basicInfo.isRecruiting();
     }
 
     public boolean isPaid() {

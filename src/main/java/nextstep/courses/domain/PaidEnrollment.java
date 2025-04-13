@@ -8,11 +8,13 @@ import java.util.List;
 public class PaidEnrollment implements Enrollment {
     private final int maxEnrollment;
     private final List<NsUser> enrolledUsers;
+    private final SessionStatus status;
 
     public PaidEnrollment(int maxEnrollment) {
         validateMaxEnrollment(maxEnrollment);
         this.maxEnrollment = maxEnrollment;
         this.enrolledUsers = new ArrayList<>();
+        this.status = SessionStatus.RECRUITING;
     }
 
     private void validateMaxEnrollment(int maxEnrollment) {
@@ -23,8 +25,8 @@ public class PaidEnrollment implements Enrollment {
 
     @Override
     public void enroll(NsUser user) {
-        if (isFull()) {
-            throw new IllegalStateException("최대 수강 인원을 초과했습니다.");
+        if (!canEnroll(user)) {
+            throw new IllegalStateException("수강 신청이 불가능합니다.");
         }
         enrolledUsers.add(user);
     }
@@ -39,16 +41,27 @@ public class PaidEnrollment implements Enrollment {
         return enrolledUsers.contains(user);
     }
 
+    private boolean isRecruiting() {
+        return status.isRecruiting();
+    }
+
+    private boolean canEnroll(NsUser user) {
+        if (user == null) {
+            throw new IllegalArgumentException("수강 신청할 사용자가 없습니다.");
+        }
+        return isRecruiting() && !isFull() && !hasEnrolledUser(user);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PaidEnrollment that = (PaidEnrollment) o;
-        return maxEnrollment == that.maxEnrollment && enrolledUsers.equals(that.enrolledUsers);
+        return maxEnrollment == that.maxEnrollment && enrolledUsers.equals(that.enrolledUsers) && status == that.status;
     }
 
     @Override
     public int hashCode() {
-        return java.util.Objects.hash(maxEnrollment, enrolledUsers);
+        return java.util.Objects.hash(maxEnrollment, enrolledUsers, status);
     }
 } 

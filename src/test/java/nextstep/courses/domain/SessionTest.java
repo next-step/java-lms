@@ -21,7 +21,6 @@ class SessionTest {
         Session session = new Session(
             1L,
             "강의 제목",
-            SessionStatus.RECRUITING,
             START_DATE,
             END_DATE,
             new SessionImage("image.jpg", 300, 200),
@@ -31,7 +30,6 @@ class SessionTest {
         );
 
         assertThat(session.isPaid()).isTrue();
-        assertThat(session.isRecruiting()).isTrue();
         assertThat(session.isFull()).isFalse();
     }
 
@@ -41,7 +39,6 @@ class SessionTest {
         Session session = new Session(
             1L,
             "강의 제목",
-            SessionStatus.RECRUITING,
             START_DATE,
             END_DATE,
             new SessionImage("image.jpg", 300, 200),
@@ -51,7 +48,6 @@ class SessionTest {
         );
 
         assertThat(session.isPaid()).isFalse();
-        assertThat(session.isRecruiting()).isTrue();
         assertThat(session.isFull()).isFalse();
     }
 
@@ -61,7 +57,6 @@ class SessionTest {
         Session session = new Session(
             1L,
             "강의 제목",
-            SessionStatus.RECRUITING,
             START_DATE,
             END_DATE,
             new SessionImage("image.jpg", 300, 200),
@@ -71,10 +66,10 @@ class SessionTest {
         );
         Payment payment = new Payment("payment1", 1L, 1L, 10000L);
 
-        assertThat(session.canEnroll(USER)).isTrue();
         session.enroll(USER, payment);
         assertThat(session.hasEnrolledUser(USER)).isTrue();
-        assertThat(session.canEnroll(USER)).isFalse();
+        assertThatThrownBy(() -> session.enroll(USER, payment))
+            .isInstanceOf(IllegalStateException.class);
     }
 
     @Test
@@ -83,7 +78,6 @@ class SessionTest {
         Session session = new Session(
             1L,
             "강의 제목",
-            SessionStatus.RECRUITING,
             START_DATE,
             END_DATE,
             new SessionImage("image.jpg", 300, 200),
@@ -92,10 +86,10 @@ class SessionTest {
             0
         );
 
-        assertThat(session.canEnroll(USER)).isTrue();
         session.enroll(USER, null);
         assertThat(session.hasEnrolledUser(USER)).isTrue();
-        assertThat(session.canEnroll(USER)).isFalse();
+        assertThatThrownBy(() -> session.enroll(USER, null))
+            .isInstanceOf(IllegalStateException.class);
     }
 
     @Test
@@ -104,7 +98,6 @@ class SessionTest {
         Session session = new Session(
             1L,
             "강의 제목",
-            SessionStatus.RECRUITING,
             START_DATE,
             END_DATE,
             new SessionImage("image.jpg", 300, 200),
@@ -117,9 +110,7 @@ class SessionTest {
 
         session.enroll(USER, payment);
         assertThat(session.isFull()).isTrue();
-        assertThat(session.canEnroll(anotherUser)).isFalse();
         assertThatThrownBy(() -> session.enroll(anotherUser, payment))
-            .isInstanceOf(IllegalStateException.class)
-            .hasMessage("최대 수강 인원을 초과했습니다.");
+            .isInstanceOf(IllegalStateException.class);
     }
 } 
