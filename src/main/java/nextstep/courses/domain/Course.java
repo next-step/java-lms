@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public class Course {
     private Long id;
+    private Long generation;
 
     private String title;
 
@@ -13,17 +14,25 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
+    private Sessions sessions;
+
     public Course() {
     }
 
     public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null);
+        this(0L, 0L, title, creatorId, new Sessions(), LocalDateTime.now(), null);
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(id, 0L, title, creatorId, new Sessions(), createdAt, updatedAt);
+    }
+
+    public Course(Long id, Long generation, String title, Long creatorId, Sessions sessions, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
+        this.generation = generation;
         this.title = title;
         this.creatorId = creatorId;
+        this.sessions = sessions;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -50,4 +59,5 @@ public class Course {
                 ", updatedAt=" + updatedAt +
                 '}';
     }
+
 }

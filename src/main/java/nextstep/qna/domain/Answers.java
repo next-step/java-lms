@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Answers {
     private final List<Answer> answers;
@@ -22,16 +23,15 @@ public class Answers {
     }
 
     public List<DeleteHistory> deleteAll(NsUser loginUser) {
-        for (Answer answer : answers) {
-            if (!answer.isOwner(loginUser)) {
-                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-            }
+        if(!canAllDelete(loginUser)) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
+        return answers.stream().map(Answer::delete).collect(Collectors.toList());
+    }
 
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        for (Answer answer : answers) {
-            deleteHistories.add(answer.delete());
-        }
-        return deleteHistories;
+    private boolean canAllDelete(NsUser loginUser) {
+        return answers.stream().filter(answer -> answer.isOwner(loginUser)).count()
+                == answers.size();
+
     }
 }
