@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import java.nio.file.attribute.AttributeView;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUsers;
 
@@ -26,5 +27,13 @@ public class EnrollmentManager {
 
   public int count() {
     return users.count();
+  }
+
+  public Policy policy() {
+    return policy;
+  }
+
+  public SessionStatus status() {
+    return status;
   }
 }

@@ -20,4 +20,12 @@ public class PaidPolicy implements Policy {
       throw new IllegalArgumentException("결제 금액이 일치하지 않습니다.");
     }
   }
+
+  public int max() {
+    return max;
+  }
+
+  public long fee() {
+    return fee;
+  }
 }

@@ -20,4 +20,12 @@ public class Image {
       throw new IllegalArgumentException("이미지 비율 또는 크기가 유효하지 않습니다.");
     }
   }
+
+  public ImageMeta meta() {
+    return meta;
+  }
+
+  public Dimension dimension() {
+    return dimension;
+  }
 }

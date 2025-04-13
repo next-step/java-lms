@@ -19,4 +19,12 @@ public class Dimension {
         && height >= MIN_HEIGHT
         && width * HEIGHT_RATIO == height * WIDTH_RATIO;
   }
+
+  public int width() {
+    return width;
+  }
+
+  public int height() {
+    return height;
+  }
 }

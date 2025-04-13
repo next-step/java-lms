@@ -20,4 +20,12 @@ public class Session {
   public int currentEnrollment() {
     return enrollment.count();
   }
+
+  public SessionInformation info() {
+    return info;
+  }
+
+  public EnrollmentManager enrollment() {
+    return enrollment;
+  }
 }
