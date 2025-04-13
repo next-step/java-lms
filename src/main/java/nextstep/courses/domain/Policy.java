@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
-public interface Policy {
+import nextstep.payments.domain.Payment;
 
+public interface Policy {
+  void validate(Payment payment, int currentParticipants);
 }
