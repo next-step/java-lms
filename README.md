@@ -52,15 +52,19 @@
   * 기수를 저장하고 Sessions를 가지고 있다. 
 * 여러 개의 강의 Sessions
 * 강의 Session
-* 강의 정보 SessionInformation
+  * 강의 정보 SessionInformation
+  * 강의 관리 (정책, 수강생, 상태) EnrollmentManager 
+    * 강의 정책 Policy
+      * FreePolicy 무료
+      * PaidPolicy 유료
+    * 강의 상태 SessionStatus
+    * 강의 수강생들 NsUsers
+  * 강의 기간 Period
 * 강의 커버 이미지 Image
-* 강의 커버 이미지 사이즈 Dimension
-* 강의 커버 이미지 확장자 ImageType
-* 강의 커버 이미지 메타정보 ImageMeta
-  * fileName, ImageType, size
-* 강의 상태 SessionStatus
-* 강의 수강생들 NsUsers
-* 강의 정책 Policy
-  * FreePolicy 무료
-  * PaidPolicy 유료
-* 강의 기간 Period
+  * 강의 커버 이미지 사이즈 Dimension
+  * 강의 커버 이미지 확장자 ImageType
+  * 강의 커버 이미지 메타정보 ImageMeta
+    * fileName, ImageType, size
+
+
+
