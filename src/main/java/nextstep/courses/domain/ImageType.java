@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 public enum ImageType {
   GIF("image/gif"),
@@ -19,8 +20,9 @@ public enum ImageType {
     return contentType;
   }
 
-  public static boolean isSupported(String type) {
+  public static Optional<ImageType> from(String type) {
     return Arrays.stream(values())
-        .anyMatch(t -> t.contentType.equalsIgnoreCase(type));
+        .filter(t -> t.contentType.equalsIgnoreCase(type))
+        .findFirst();
   }
 }
