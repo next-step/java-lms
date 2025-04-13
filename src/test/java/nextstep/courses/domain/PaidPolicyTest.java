@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 class PaidPolicyTest {
   @Test
-  @DisplayName("정원이 초과되지 않고 결제 금액이 일치하면 수강 신청이 가능하다")
+  @DisplayName("정원이 초과되지 않고 결제 금액이 일치하면 수강 신청이 가능하다.")
   void validate_success() {
     PaidPolicy policy = new PaidPolicy(5, 10000L);
     Payment payment = new Payment("p1", 1L, 10L, 10000L);
@@ -20,7 +20,7 @@ class PaidPolicyTest {
   }
 
   @Test
-  @DisplayName("정원이 초과되면 예외가 발생한다")
+  @DisplayName("정원이 초과되면 예외가 발생한다.")
   void validate_exceed_limit() {
     PaidPolicy policy = new PaidPolicy(3, 10000L);
     Payment payment = new Payment("p2", 1L, 11L, 10000L);
@@ -31,7 +31,7 @@ class PaidPolicyTest {
   }
 
   @Test
-  @DisplayName("결제 금액이 일치하지 않으면 예외가 발생한다")
+  @DisplayName("결제 금액이 일치하지 않으면 예외가 발생한다.")
   void validate_invalid_payment() {
     PaidPolicy policy = new PaidPolicy(5, 10000L);
     Payment payment = new Payment("p3", 1L, 12L, 8000L);
