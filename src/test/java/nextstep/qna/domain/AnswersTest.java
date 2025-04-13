@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -7,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class AnswersTest {
     Answer A1;
@@ -24,16 +25,17 @@ class AnswersTest {
     }
 
     @Test
-    @DisplayName("답변의 작성자가 전부 같지 않으면 false을 반환한다.")
+    @DisplayName("답변의 작성자가 전부 같지 않으면 에러를 반환한다.")
     void isAllAnswerOwner_false() {
         Answers answers = new Answers(List.of(A1, A2, A3));
-        assertThat(answers.isAllAnswerOwner(NsUserTest.JAVAJIGI)).isFalse();
+        assertThatThrownBy(() -> answers.deleteAll(NsUserTest.JAVAJIGI))
+                .isInstanceOf(CannotDeleteException.class);
     }
 
     @Test
     @DisplayName("답변의 작성자가 전부 같으면 true 반환한다.")
-    void isAllAnswerOwner_true() {
+    void isAllAnswerOwner_true() throws CannotDeleteException {
         Answers answers = new Answers(List.of(A1, A3));
-        assertThat(answers.isAllAnswerOwner(NsUserTest.JAVAJIGI)).isTrue();
+        answers.deleteAll(NsUserTest.JAVAJIGI);
     }
 }

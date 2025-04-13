@@ -42,13 +42,6 @@ public class Question {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getContents() {
-        return contents;
-    }
 
     public NsUser getWriter() {
         return writer;
@@ -76,18 +69,14 @@ public class Question {
         checkValidDeleteUser(loginUser);
         this.deleted = true;
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
-        deleteHistories.addAll(answers.deleteAll());
+        deleteHistories.add(DeleteHistory.deleteQuestion(id, writer));
+        deleteHistories.addAll(answers.deleteAll(loginUser));
         return deleteHistories;
     }
 
     private void checkValidDeleteUser(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-
-        if (!answers.isAllAnswerOwner(loginUser)) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
     }
 }
