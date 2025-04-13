@@ -14,7 +14,7 @@ public class Session {
                   SessionImage image, SessionType type, int maxEnrollment, int price) {
         this.id = new SessionId(id);
         this.info = new SessionInfo(title, image, startDate, endDate, type, price);
-        this.enrollment = type == SessionType.FREE ? new FreeEnrollment() : new PaidEnrollment(maxEnrollment);
+        this.enrollment = type.isPaid() ? new PaidEnrollment(maxEnrollment) : new FreeEnrollment();
     }
 
     public void enroll(NsUser user, Payment payment) {
