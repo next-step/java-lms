@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,8 +21,8 @@ public class AnswerTest {
 
     @Test
     @DisplayName("delete를 통해 answer은 삭제 상태가 된다.")
-    public void delete() {
-        A1.delete();
+    public void delete() throws CannotDeleteException {
+        A1.delete(NsUserTest.JAVAJIGI);
         assertThat(A1.isDeleted()).isTrue();
     }
 }
