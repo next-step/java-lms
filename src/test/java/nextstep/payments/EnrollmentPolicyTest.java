@@ -26,7 +26,7 @@ public class EnrollmentPolicyTest {
     @Test
     void 유료_강의_수강료가_같으면_수강할_수_있다() {
         EnrollmentPolicy enrollmentPolicy = new PaidEnrollmentPolicy(10, 5000);
-        assertFalse(enrollmentPolicy.canEnroll(3, 5000));
+        assertTrue(enrollmentPolicy.canEnroll(3, 5000));
     }
 
     @Test
