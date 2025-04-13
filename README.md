@@ -54,6 +54,7 @@
 * 강의 Session
 * 강의 커버 이미지 Image
 * 강의 커버 이미지 사이즈 Dimension
+* 강의 커버 이미지 확장자 ImageType
 * 강의 상태 SessionStatus
 * 강의 수강생들 NsUsers
 * 강의 정책 Policy
