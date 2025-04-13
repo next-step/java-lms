@@ -12,7 +12,7 @@ public class PaidEnrollmentPolicy implements EnrollmentPolicy {
     }
 
     @Override
-    public boolean canEnroll(int currentEnrolledCount, int paidAmount) {
-        return currentEnrolledCount < capacity && paidAmount == price;
+    public boolean canEnroll(int currentEnrolledCount, Payment payment) {
+        return currentEnrolledCount < capacity && payment.isSameAmount((long) price);
     }
 }

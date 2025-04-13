@@ -3,7 +3,7 @@ package nextstep.payments.domain;
 public class FreeEnrollmentPolicy implements EnrollmentPolicy {
 
     @Override
-    public boolean canEnroll(int currentEnrolledCount, int paidAmount) {
-        return paidAmount == 0;
+    public boolean canEnroll(int currentEnrolledCount, Payment payment) {
+        return payment.isSameAmount(0L);
     }
 }

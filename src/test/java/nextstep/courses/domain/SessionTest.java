@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
+import static nextstep.payments.PaymentTest.PAYMENT_1000;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
@@ -28,13 +29,13 @@ public class SessionTest {
     @Test
     void 모집중이_아닐_때_수강신청_불가능() {
         assertThatThrownBy(() ->
-                ReadySession.enroll(1000)
+                ReadySession.enroll(PAYMENT_1000)
         ).isInstanceOf(CannotEnrollSessionException.class);
     }
 
     @Test
     void 모집중일_때_수강신청_가능() {
-        assertThatCode(() -> EnrollingSession.enroll(1000))
+        assertThatCode(() -> EnrollingSession.enroll(PAYMENT_1000))
                 .doesNotThrowAnyException();
 
     }

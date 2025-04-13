@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import nextstep.courses.CannotEnrollSessionException;
 import nextstep.payments.domain.EnrollmentPolicy;
+import nextstep.payments.domain.Payment;
 
 import java.time.LocalDate;
 
@@ -27,12 +28,12 @@ public class Session {
         this.enrollmentPolicy = enrollmentPolicy;
     }
 
-    public void enroll(int paidAmount) {
+    public void enroll(Payment payment) {
         if (!this.status.canEnroll()) {
             throw new CannotEnrollSessionException("모집 중이 아닙니다.");
         }
 
-        if (!enrollmentPolicy.canEnroll(currentEnrolledCount, paidAmount)) {
+        if (!enrollmentPolicy.canEnroll(currentEnrolledCount, payment)) {
             throw new CannotEnrollSessionException("수강 조건이 맞지 않습니다.");
         }
 
