@@ -41,3 +41,7 @@
   - [x] SessionStatus 단위 테스트 추가
   - [x] ImageSizeTest 가로가 작은 경우, 세로가 작은 경우 독립적으로 테스트
   - [x] SessionThumbnailTest 중복 테스트 제거
+- [ ] 2차 피드백
+  - [ ] Enrollment
+    - [x] 인터페이스로 분리
+    - [ ] 수강신청 validation 을 Enrollment 내부에서 수행

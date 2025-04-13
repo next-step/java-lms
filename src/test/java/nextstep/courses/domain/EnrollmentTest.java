@@ -11,36 +11,84 @@ class EnrollmentTest {
     private static final NsUser USER = new NsUser(1L, "user", "password", "name", "email");
 
     @Test
-    @DisplayName("무료 강의는 수강 인원 제한이 없어야 한다")
-    void free_session_has_no_enrollment_limit() {
-        Enrollment enrollment = Enrollment.free();
-        enrollment.enroll(USER);
-        assertThat(enrollment.getCurrentEnrollment()).isEqualTo(1);
+    @DisplayName("무료 강의의 수강 신청을 생성한다")
+    void createFreeEnrollment() {
+        // given
+        Enrollment enrollment = new FreeEnrollment();
+
+        // when & then
+        assertThat(enrollment).isNotNull();
     }
 
     @Test
-    @DisplayName("유료 강의는 수강 인원 제한이 있어야 한다")
-    void paid_session_has_enrollment_limit() {
-        Enrollment enrollment = Enrollment.paid(1);
-        enrollment.enroll(USER);
-        assertThat(enrollment.getCurrentEnrollment()).isEqualTo(1);
+    @DisplayName("유료 강의의 수강 신청을 생성한다")
+    void createPaidEnrollment() {
+        // given
+        int maxEnrollment = 30;
+
+        // when
+        Enrollment enrollment = new PaidEnrollment(maxEnrollment);
+
+        // then
+        assertThat(enrollment).isNotNull();
     }
 
     @Test
-    @DisplayName("유료 강의는 수강 인원 제한을 초과할 수 없다")
-    void paid_session_cannot_exceed_enrollment_limit() {
-        Enrollment enrollment = Enrollment.paid(1);
-        enrollment.enroll(USER);
-        assertThatThrownBy(() -> enrollment.enroll(new NsUser(2L, "user2", "password", "name", "email")))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("최대 수강 인원을 초과했습니다.");
-    }
+    @DisplayName("유료 강의의 최대 수강 인원이 0이면 예외가 발생한다")
+    void validateMaxEnrollment() {
+        // given
+        int maxEnrollment = 0;
 
-    @Test
-    @DisplayName("유료 강의는 수강 인원 제한이 0보다 커야 한다")
-    void paid_session_must_have_positive_enrollment_limit() {
-        assertThatThrownBy(() -> Enrollment.paid(0))
+        // when & then
+        assertThatThrownBy(() -> new PaidEnrollment(maxEnrollment))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("유료 강의는 최대 수강 인원이 0보다 커야 합니다.");
+    }
+
+    @Test
+    @DisplayName("무료 강의에 수강 신청을 한다")
+    void enrollFreeSession() {
+        // given
+        Enrollment enrollment = new FreeEnrollment();
+        NsUser anotherUser = new NsUser(2L, "user2", "password", "name", "email");
+
+        // when
+        enrollment.enroll(USER);
+        enrollment.enroll(anotherUser);
+
+        // then
+        assertThat(enrollment.isFull()).isFalse();
+        assertThat(enrollment.hasEnrolledUser(USER)).isTrue();
+        assertThat(enrollment.hasEnrolledUser(anotherUser)).isTrue();
+    }
+
+    @Test
+    @DisplayName("유료 강의에 수강 신청을 한다")
+    void enrollPaidSession() {
+        // given
+        Enrollment enrollment = new PaidEnrollment(30);
+
+        // when
+        enrollment.enroll(USER);
+
+        // then
+        assertThat(enrollment.hasEnrolledUser(USER)).isTrue();
+    }
+
+    @Test
+    @DisplayName("수강 인원이 가득 찬 유료 강의는 수강 신청이 불가능하다")
+    void enrollFullPaidSession() {
+        // given
+        Enrollment enrollment = new PaidEnrollment(1);
+        NsUser anotherUser = new NsUser(2L, "user2", "password", "name", "email");
+
+        // when
+        enrollment.enroll(USER);
+
+        // then
+        assertThat(enrollment.isFull()).isTrue();
+        assertThatThrownBy(() -> enrollment.enroll(anotherUser))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("최대 수강 인원을 초과했습니다.");
     }
 } 
