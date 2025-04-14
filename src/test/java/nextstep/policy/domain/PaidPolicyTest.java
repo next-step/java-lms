@@ -27,7 +27,7 @@ class PaidPolicyTest {
 
     assertThatIllegalStateException()
         .isThrownBy(() -> policy.validate(payment, 3))
-        .withMessageContaining("정원 초과");
+        .withMessageContaining("정원 초과입니다.");
   }
 
   @Test
@@ -38,7 +38,7 @@ class PaidPolicyTest {
 
     assertThatIllegalArgumentException()
         .isThrownBy(() -> policy.validate(payment, 2))
-        .withMessageContaining("결제 금액");
+        .withMessageContaining("결제 금액이 일치하지 않습니다.");
   }
 
 }
