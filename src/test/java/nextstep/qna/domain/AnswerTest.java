@@ -18,6 +18,6 @@ public class AnswerTest {
     void 답변_작성자가_타인일_경우_예외가_발생한다() {
         Assertions.assertThatThrownBy(() -> A1.validateOwnership(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class)
-                .hasMessageContaining("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+                .hasMessageContaining("답변을 삭제할 권한이 없습니다.");
     }
 }
