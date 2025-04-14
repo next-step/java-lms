@@ -1,4 +1,4 @@
-package nextstep.payments;
+package nextstep.policy.domain;
 
 import nextstep.payments.domain.Payment;
 

@@ -9,7 +9,7 @@ import nextstep.sessions.domain.EnrollmentManager;
 import nextstep.image.domain.Image;
 import nextstep.image.domain.ImageMeta;
 import nextstep.image.domain.ImageType;
-import nextstep.payments.PaidPolicy;
+import nextstep.policy.domain.PaidPolicy;
 import nextstep.sessions.domain.Period;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionInformation;

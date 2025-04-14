@@ -3,8 +3,8 @@ package nextstep.sessions.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
-import nextstep.payments.FreePolicy;
-import nextstep.payments.PaidPolicy;
+import nextstep.policy.domain.FreePolicy;
+import nextstep.policy.domain.PaidPolicy;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

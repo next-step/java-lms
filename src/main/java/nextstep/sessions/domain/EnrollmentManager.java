@@ -1,6 +1,6 @@
 package nextstep.sessions.domain;
 
-import nextstep.payments.Policy;
+import nextstep.policy.domain.Policy;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUsers;
