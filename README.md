@@ -15,3 +15,51 @@
 - [x] Answers에 delete method 구현
 - [x] List<DeleteHistory> 일급컬렉션으로 변경
 - [x] delete method에서 deleteHistory도 추가하도록 변경
+
+## 🚀 2단계 - 수강신청(도메인 모델)
+### 도메인 모델 설계
+- Course (class)
+  - [Field]
+    - int generation(기수)
+    - Sessions sessions(강의 리스트)
+  - [Method]
+    
+- Sessions (class)
+  - [Field]
+  - [Method]
+- Session (class)
+  - [Field]
+    - String startDate
+    - String endDate
+    - int tuition
+    - Image coverImage
+    - SessionStatus status
+    - JoinStrategy joinStrategy
+  - [Method]
+    - boolean joinable()
+- JoinStrategy (interface)
+  - [Method]
+    - boolean joinable(Session session)
+- FreeJoinStrategy (class, implements JoinStrategy)
+  - [Method]
+    - boolean joinable(Session session)
+- PaidJoinStrategy (class, implements JoinStrategy)
+  - [Method]
+      - boolean joinable(Session session)
+
+- SessionStatus (Enum)
+  - PREPARING(준비중)
+  - RECRUITING(모집중)
+  - CLOSED(종료)
+  
+- Image (class)
+  - [Field]
+    - float fileSize
+    - string fileType
+    - int width
+    - int height
+  - [Method]
+    - boolean validateFileSize()
+    - boolean validateFileType()
+    - boolean validateRatio()
+     
