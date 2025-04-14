@@ -1,6 +1,8 @@
 package nextstep.courses.domain;
 
 public class SessionCoverImage {
+    public static final SessionCoverImage EMPTY = new SessionCoverImage();
+
     private static final long KB = 1024;
     private static final long MB = KB * KB;
     private static final long MAX_IMAGE_SIZE = MB;
@@ -9,13 +11,18 @@ public class SessionCoverImage {
     private static final int WIDTH_RATIO = 3;
     private static final int HEIGHT_RATIO = 2;
 
-    private String path;
-    private long size;
-    private int width;
-    private int height;
-    private SessionCoverImageExtension extension;
+    private final String path;
+    private final long size;
+    private final int width;
+    private final int height;
+    private final SessionCoverImageExtension extension;
 
-    public SessionCoverImage() {
+    private SessionCoverImage() {
+        this.path = "";
+        this.size = 0;
+        this.width = 0;
+        this.height = 0;
+        this.extension = SessionCoverImageExtension.JPG;
     }
 
     public SessionCoverImage(String path, String extension, long size, int width, int height) {

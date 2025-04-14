@@ -36,7 +36,7 @@ public class Session {
                 new Students(),
                 startDate,
                 endDate,
-                new SessionCoverImage()
+                SessionCoverImage.EMPTY
         );
     }
 
@@ -49,7 +49,7 @@ public class Session {
                 new Students(),
                 startDate,
                 endDate,
-                new SessionCoverImage()
+                SessionCoverImage.EMPTY
         );
     }
 
