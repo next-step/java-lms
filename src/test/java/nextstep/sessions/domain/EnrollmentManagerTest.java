@@ -19,7 +19,7 @@ class EnrollmentManagerTest {
 
     assertThatIllegalStateException()
         .isThrownBy(() -> manager.register(payment))
-        .withMessageContaining("모집중인 강의만");
+        .withMessageContaining("모집중인 강의만 수강 신청이 가능합니다.");
   }
 
   @Test
