@@ -18,7 +18,7 @@ class AnswersTest {
     group.add(new Answer(NsUserTest.JAVAJIGI, new Question(), "답변1"));
     group.add(new Answer(NsUserTest.JAVAJIGI, new Question(), "답변2"));
 
-    assertThatCode(() -> group.validateAllOwnedBy(NsUserTest.JAVAJIGI))
+    assertThatCode(() -> group.deleteBy(NsUserTest.JAVAJIGI))
         .doesNotThrowAnyException();
   }
 
@@ -29,13 +29,13 @@ class AnswersTest {
     group.add(new Answer(NsUserTest.JAVAJIGI, new Question(), "답변1"));
     group.add(new Answer(NsUserTest.SANJIGI, new Question(),"답변2"));
 
-    assertThatThrownBy(() -> group.validateAllOwnedBy(NsUserTest.JAVAJIGI))
+    assertThatThrownBy(() -> group.deleteBy(NsUserTest.JAVAJIGI))
         .isInstanceOf(CannotDeleteException.class)
         .hasMessageContaining("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
   }
 
   @Test
-  @DisplayName("deleteBy: 모든 답변이 작성자와 일치하면 삭제되고 이력이 반환된다.")
+  @DisplayName("모든 답변이 작성자와 일치하면 삭제되고 이력이 반환된다.")
   void deleteBy_success() throws CannotDeleteException {
     Answers group = new Answers();
     Answer a1 = new Answer(NsUserTest.JAVAJIGI, new Question(), "답변1");
@@ -51,7 +51,7 @@ class AnswersTest {
   }
 
   @Test
-  @DisplayName("deleteBy: 다른 사람이 작성한 답변이 있으면 CannotDeleteException 예외가 발생한다.")
+  @DisplayName("다른 사람이 작성한 답변이 있으면 CannotDeleteException 예외가 발생한다.")
   void deleteBy_fail() {
     Answers group = new Answers();
     group.add(new Answer(NsUserTest.JAVAJIGI, new Question(), "답변1"));

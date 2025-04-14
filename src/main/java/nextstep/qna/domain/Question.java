@@ -93,7 +93,6 @@ public class Question {
 
     public List<DeleteHistory> deleteBy(NsUser user) throws CannotDeleteException {
         validateOwner(user);
-        answers.validateAllOwnedBy(user);
 
         this.deleted = true;
 
