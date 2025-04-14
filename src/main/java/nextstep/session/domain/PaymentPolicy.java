@@ -1,0 +1,43 @@
+package nextstep.session.domain;
+
+public class PaymentPolicy {
+    public enum PaymentType {
+        FREE, PAID
+    }
+
+    private final PaymentType paymentType;
+    private final long fee;
+    private final int enrollmentLimit;
+
+    public PaymentPolicy(PaymentType paymentType, long fee, int enrollmentLimit) {
+        if (paymentType == PaymentType.PAID && enrollmentLimit <= 0) {
+            throw new IllegalArgumentException("유료 강의는 최대 수강 인원이 0보다 커야 합니다.");
+        }
+        if (paymentType == PaymentType.FREE && enrollmentLimit != 0) {
+            throw new IllegalArgumentException("무료 강의는 최대 수강 인원이 없어야 하므로 0이어야 합니다.");
+        }
+        this.paymentType = paymentType;
+        this.fee = fee;
+        this.enrollmentLimit = enrollmentLimit;
+    }
+
+    public boolean isPaidPaymentType() {
+        return paymentType == PaymentType.PAID;
+    }
+
+    public int enrollmentLimit() {
+        return enrollmentLimit;
+    }
+
+    public void validateEnrollment(int currentEnrollment, long amount) {
+        if (!isPaidPaymentType()) return;
+
+        if (currentEnrollment >= enrollmentLimit) {
+            throw new IllegalStateException("수강 최대 인원을 초과했습니다.");
+        }
+
+        if (amount != fee) {
+            throw new IllegalArgumentException("결제 금액이 수강료와 일치하지 않습니다.");
+        }
+    }
+}
