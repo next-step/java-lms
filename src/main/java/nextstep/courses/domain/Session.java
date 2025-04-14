@@ -9,14 +9,14 @@ public class Session {
 
     private SessionStatus status;
     private SessionType type;
-    private long price;
-    private int maxCapacity;
+    private Money price;
+    private Capacity maxCapacity;
     private Students students;
     private LocalDate startDate;
     private LocalDate endDate;
     private SessionCoverImage coverImage;
 
-    private Session(SessionStatus status, SessionType type, long price, int maxCapacity, Students students, LocalDate startDate, LocalDate endDate, SessionCoverImage coverImage) {
+    private Session(SessionStatus status, SessionType type, Money price, Capacity maxCapacity, Students students, LocalDate startDate, LocalDate endDate, SessionCoverImage coverImage) {
         this.status = status;
         this.type = type;
         this.price = price;
@@ -31,8 +31,8 @@ public class Session {
         return new Session(
                 SessionStatus.READY,
                 SessionType.FREE,
-                0,
-                0,
+                Money.FREE,
+                Capacity.ZERO,
                 new Students(),
                 startDate,
                 endDate,
@@ -40,7 +40,7 @@ public class Session {
         );
     }
 
-    public static Session createPaidSession(long price, int maxCapacity, LocalDate startDate, LocalDate endDate) {
+    public static Session createPaidSession(Money price, Capacity maxCapacity, LocalDate startDate, LocalDate endDate) {
         return new Session(
                 SessionStatus.READY,
                 SessionType.PAID,
@@ -84,13 +84,13 @@ public class Session {
     }
 
     private void validateMaxCapacity() {
-        if (type == SessionType.PAID && students.count() >= maxCapacity) {
-            throw new IllegalArgumentException("최대 수강 인원(" + maxCapacity + "명)에 도달하여 수강 신청이 불가능합니다.");
+        if (type == SessionType.PAID && maxCapacity.isFull(students.count())) {
+            throw new IllegalArgumentException("최대 수강 인원(" + maxCapacity.value() + "명)에 도달하여 수강 신청이 불가능합니다.");
         }
     }
 
     private void validatePayment(Payment payment) {
-        if (payment.notMatches(price)) {
+        if (payment.notMatches(price.amount())) {
             throw new IllegalArgumentException("결제한 금액과 수강료가 일치하지 않습니다.");
         }
     }
