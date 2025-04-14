@@ -16,6 +16,7 @@ class SessionTest {
     void freeSession_joinable_whenRecruiting() {
         Session session = new Session(
                 "무료 강의",
+                1,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(7),
                 0,             // tuition
@@ -34,6 +35,7 @@ class SessionTest {
     void freeSession_notJoinable_whenNotRecruiting() {
         Session session = new Session(
                 "무료 강의",
+                1,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(7),
                 0,
@@ -52,6 +54,7 @@ class SessionTest {
     void paidSession_joinable_whenRecruiting_underCapacity_andPaidCorrectly() {
         Session session = new Session(
                 "유료 강의",
+                1,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(7),
                 10000,   // tuition
@@ -70,6 +73,7 @@ class SessionTest {
     void paidSession_notJoinable_whenWrongAmount() {
         Session session = new Session(
                 "유료 강의",
+                1,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(7),
                 10000,
@@ -88,6 +92,7 @@ class SessionTest {
     void paidSession_notJoinable_whenOverCapacity() {
         Session session = new Session(
                 "유료 강의",
+                1,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(7),
                 10000,

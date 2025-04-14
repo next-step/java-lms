@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public class Session {
     private String title;
+    private int id;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private long tuition;
@@ -13,8 +14,10 @@ public class Session {
     private SessionStatus sessionStatus;
     private JoinStrategy joinStrategy;
 
-    public Session(String title, LocalDateTime startDate, LocalDateTime endDate, long tuition, int currentCount, int capacity, Image coverImage, SessionStatus sessionStatus, JoinStrategy joinStrategy) {
+    public Session(String title, int id, LocalDateTime startDate, LocalDateTime endDate, long tuition, int currentCount, int capacity, Image coverImage, SessionStatus sessionStatus, JoinStrategy joinStrategy) {
+
         this.title = title;
+        this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
         this.tuition = tuition;
@@ -33,11 +36,11 @@ public class Session {
         return sessionStatus == SessionStatus.RECRUITING;
     }
 
-    public boolean underCapacity(){
+    public boolean underCapacity() {
         return currentCount < capacity;
     }
 
-    public boolean tuitionMatched(long paidAmount){
+    public boolean tuitionMatched(long paidAmount) {
         return this.tuition == paidAmount;
     }
 }
