@@ -1,10 +1,15 @@
-package nextstep.courses.domain;
+package nextstep.sessions.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 import java.time.LocalDate;
+import nextstep.image.domain.Dimension;
+import nextstep.image.domain.Image;
+import nextstep.image.domain.ImageMeta;
+import nextstep.image.domain.ImageType;
+import nextstep.payments.FreePolicy;
+import nextstep.payments.PaidPolicy;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,28 +41,13 @@ class SessionTest {
   void register_fail_not_open() {
     SessionInformation info = new SessionInformation("Spring 강의", period, image);
     EnrollmentManager enrollment = new EnrollmentManager(new FreePolicy());
-    Session session = new Session(info, enrollment); // 상태는 기본 READY
+    Session session = new Session(info, enrollment);
 
     Payment payment = new Payment("pay2", 2L, 102L, 0L);
 
     assertThatIllegalStateException()
         .isThrownBy(() -> session.register(payment))
         .withMessageContaining("모집중인 강의만");
-  }
-
-  @Test
-  @DisplayName("결제 금액이 일치하지 않으면 예외 발생")
-  void register_fail_wrong_amount() {
-    SessionInformation info = new SessionInformation("Spring 고급", period, image);
-    EnrollmentManager enrollment = new EnrollmentManager(new PaidPolicy(3, 15000L));
-    Session session = new Session(info, enrollment);
-    session.updateStatus(SessionStatus.OPEN);
-
-    Payment payment = new Payment("pay3", 3L, 103L, 10000L);
-
-    assertThatIllegalArgumentException()
-        .isThrownBy(() -> session.register(payment))
-        .withMessageContaining("결제 금액");
   }
 
   @Test

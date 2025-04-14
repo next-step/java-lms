@@ -1,4 +1,6 @@
-package nextstep.courses.domain;
+package nextstep.sessions.domain;
+
+import nextstep.payments.domain.Payment;
 
 public class Session {
   private final SessionInformation info;
@@ -9,7 +11,7 @@ public class Session {
     this.enrollment = enrollment;
   }
 
-  public void register(nextstep.payments.domain.Payment payment) {
+  public void register(Payment payment) {
     enrollment.register(payment);
   }
 

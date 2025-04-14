@@ -1,9 +1,10 @@
-package nextstep.courses.domain;
+package nextstep.policy.domain;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
+import nextstep.payments.PaidPolicy;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

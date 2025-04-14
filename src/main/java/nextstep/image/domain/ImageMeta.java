@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.image.domain;
 
 public class ImageMeta {
   private final String fileName;

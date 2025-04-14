@@ -1,6 +1,8 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import nextstep.sessions.domain.Session;
+import nextstep.sessions.domain.Sessions;
 
 public class Course {
     private Long id;
@@ -9,7 +11,7 @@ public class Course {
 
     private Long creatorId;
 
-    private int batchNumber;
+    private int generation;
 
     private Sessions sessions = new Sessions();
 
@@ -20,14 +22,14 @@ public class Course {
     public Course() {
     }
 
-    public Course(String title, Long creatorId, int batchNumber) {
-        this(0L, title, creatorId, batchNumber, LocalDateTime.now(), null);
+    public Course(String title, Long creatorId, int generation) {
+        this(0L, title, creatorId, generation, LocalDateTime.now(), null);
     }
 
-    public Course(Long id, String title, Long creatorId, int batchNumber, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Course(Long id, String title, Long creatorId, int generation, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
-        this.batchNumber = batchNumber;
+        this.generation = generation;
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -41,8 +43,8 @@ public class Course {
         return creatorId;
     }
 
-    public int getBatchNumber() {
-        return batchNumber;
+    public int getGeneration() {
+        return generation;
     }
 
     public void addSession(Session session) {
@@ -63,7 +65,7 @@ public class Course {
             "id=" + id +
             ", title='" + title + '\'' +
             ", creatorId=" + creatorId +
-            ", batchNumber=" + batchNumber +
+            ", batchNumber=" + generation +
             ", sessions=" + sessions +
             ", createdAt=" + createdAt +
             ", updatedAt=" + updatedAt +

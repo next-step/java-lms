@@ -1,21 +1,21 @@
-package nextstep.courses.infrastructure;
+package nextstep.sessions.infrastructure;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import nextstep.courses.domain.Dimension;
-import nextstep.courses.domain.EnrollmentManager;
-import nextstep.courses.domain.FreePolicy;
-import nextstep.courses.domain.Image;
-import nextstep.courses.domain.ImageMeta;
-import nextstep.courses.domain.ImageType;
-import nextstep.courses.domain.PaidPolicy;
-import nextstep.courses.domain.Period;
-import nextstep.courses.domain.Policy;
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionInformation;
-import nextstep.courses.domain.SessionRepository;
-import nextstep.courses.domain.SessionStatus;
+import nextstep.image.domain.Dimension;
+import nextstep.sessions.domain.EnrollmentManager;
+import nextstep.payments.FreePolicy;
+import nextstep.image.domain.Image;
+import nextstep.image.domain.ImageMeta;
+import nextstep.image.domain.ImageType;
+import nextstep.payments.PaidPolicy;
+import nextstep.sessions.domain.Period;
+import nextstep.payments.Policy;
+import nextstep.sessions.domain.Session;
+import nextstep.sessions.domain.SessionInformation;
+import nextstep.sessions.domain.SessionRepository;
+import nextstep.sessions.domain.SessionStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 

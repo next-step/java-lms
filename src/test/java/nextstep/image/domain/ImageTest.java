@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.image.domain;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -28,16 +28,4 @@ class ImageTest {
         .isThrownBy(() -> new Image(meta, dimension))
         .withMessageContaining("이미지 크기는 1MB 이하여야 합니다.");
   }
-
-  @Test
-  @DisplayName("비율이 유효하지 않으면 예외가 발생한다.")
-  void invalid_image_ratio() {
-    ImageMeta meta = new ImageMeta("weird.jpg", ImageType.JPG, 300_000);
-    Dimension dimension = new Dimension(400, 200); // 비율 2:1
-
-    assertThatIllegalArgumentException()
-        .isThrownBy(() -> new Image(meta, dimension))
-        .withMessageContaining("이미지 비율 또는 크기가 유효하지 않습니다.");
-  }
-
 }

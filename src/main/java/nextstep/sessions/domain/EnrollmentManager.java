@@ -1,6 +1,7 @@
-package nextstep.courses.domain;
+package nextstep.sessions.domain;
 
-import java.nio.file.attribute.AttributeView;
+import nextstep.payments.Policy;
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUsers;
 
@@ -13,7 +14,7 @@ public class EnrollmentManager {
     this.policy = policy;
   }
 
-  public void register(nextstep.payments.domain.Payment payment) {
+  public void register(Payment payment) {
     if (status != SessionStatus.OPEN) {
       throw new IllegalStateException("모집중인 강의만 수강 신청이 가능합니다.");
     }

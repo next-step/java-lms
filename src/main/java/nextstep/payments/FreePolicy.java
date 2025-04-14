@@ -1,8 +1,8 @@
-package nextstep.courses.domain;
+package nextstep.payments;
 
 import nextstep.payments.domain.Payment;
 
-public class FreePolicy implements Policy{
+public class FreePolicy implements Policy {
 
   @Override
   public void validate(Payment payment, int currentParticipants) {
