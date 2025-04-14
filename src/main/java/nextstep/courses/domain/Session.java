@@ -1,0 +1,43 @@
+package nextstep.courses.domain;
+
+import java.time.LocalDateTime;
+
+public class Session {
+    private String title;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+    private long tuition;
+    private int currentCount;
+    private int capacity;
+    private Image coverImage;
+    private SessionStatus sessionStatus;
+    private JoinStrategy joinStrategy;
+
+    public Session(String title, LocalDateTime startDate, LocalDateTime endDate, long tuition, int currentCount, int capacity, Image coverImage, SessionStatus sessionStatus, JoinStrategy joinStrategy) {
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.tuition = tuition;
+        this.currentCount = currentCount;
+        this.capacity = capacity;
+        this.coverImage = coverImage;
+        this.sessionStatus = sessionStatus;
+        this.joinStrategy = joinStrategy;
+    }
+
+    public boolean joinable(long paidAmount) {
+        return joinStrategy.joinable(this, paidAmount);
+    }
+
+    public boolean recruiting() {
+        return sessionStatus == SessionStatus.RECRUITING;
+    }
+
+    public boolean underCapacity(){
+        return currentCount < capacity;
+    }
+
+    public boolean tuitionMatched(long paidAmount){
+        return this.tuition == paidAmount;
+    }
+}
