@@ -3,7 +3,7 @@ package nextstep.courses.domain;
 public class Money {
     public static final Money FREE = new Money(0L);
 
-    private long amount;
+    private final long amount;
 
     public Money(long amount) {
         this.amount = amount;
