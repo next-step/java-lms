@@ -26,12 +26,16 @@
     
 - Sessions (class)
   - [Field]
+    - List<Session> sessions
   - [Method]
 - Session (class)
   - [Field]
-    - String startDate
-    - String endDate
-    - int tuition
+    - String title 
+    - LocalDateTime startDate
+    - LocalDateTime endDate
+    - long tuition
+    - int currentcount
+    - int capacity
     - Image coverImage
     - SessionStatus status
     - JoinStrategy joinStrategy
@@ -39,13 +43,13 @@
     - boolean joinable()
 - JoinStrategy (interface)
   - [Method]
-    - boolean joinable(Session session)
+    - boolean joinable(Session session, long payAmount)
 - FreeJoinStrategy (class, implements JoinStrategy)
   - [Method]
-    - boolean joinable(Session session)
+    - boolean joinable(Session session, long payAmount)
 - PaidJoinStrategy (class, implements JoinStrategy)
   - [Method]
-      - boolean joinable(Session session)
+      - boolean joinable(Session session, long payAmount)
 
 - SessionStatus (Enum)
   - PREPARING(준비중)
