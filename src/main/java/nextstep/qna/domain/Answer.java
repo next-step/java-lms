@@ -53,7 +53,7 @@ public class Answer {
     public DeleteHistory delete(NsUser loginUser) throws CannotDeleteException {
         validateOwnership(loginUser);
         deleted = true;
-        return DeleteHistory.deleteOfAnswer(this);
+        return DeleteHistory.ofAnswer(this);
     }
 
     public Long getId() {
