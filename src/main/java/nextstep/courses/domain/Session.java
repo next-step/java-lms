@@ -27,28 +27,28 @@ public class Session {
         this.coverImage = coverImage;
     }
 
-    public static Session createFreeSession() {
+    public static Session createFreeSession(LocalDate startDate, LocalDate endDate) {
         return new Session(
                 SessionStatus.READY,
                 SessionType.FREE,
                 0,
                 0,
                 new Students(),
-                LocalDate.now(),
-                LocalDate.now(),
+                startDate,
+                endDate,
                 new SessionCoverImage()
         );
     }
 
-    public static Session createPaidSession(long price, int maxCapacity) {
+    public static Session createPaidSession(long price, int maxCapacity, LocalDate startDate, LocalDate endDate) {
         return new Session(
                 SessionStatus.READY,
                 SessionType.PAID,
                 price,
                 maxCapacity,
                 new Students(),
-                LocalDate.now(),
-                LocalDate.now(),
+                startDate,
+                endDate,
                 new SessionCoverImage()
         );
     }
