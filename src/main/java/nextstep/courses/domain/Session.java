@@ -28,7 +28,7 @@ public class Session {
         this.joinStrategy = joinStrategy;
     }
 
-    public boolean joinable(long paidAmount) {
+    boolean joinable(long paidAmount) {
         return joinStrategy.joinable(this, paidAmount);
     }
 
@@ -42,5 +42,17 @@ public class Session {
 
     public boolean tuitionMatched(long paidAmount) {
         return this.tuition == paidAmount;
+    }
+
+    public boolean hasId(long id) {
+        return this.id == id;
+    }
+
+    public void enroll(long payAmount) {
+        if (!joinable(payAmount)) {
+            throw new IllegalStateException("수강 신청 조건을 만족하지 않습니다.");
+        }
+
+        this.currentCount++;
     }
 }

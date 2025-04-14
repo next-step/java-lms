@@ -35,16 +35,20 @@ class SessionsTest {
 
         Sessions sessions = new Sessions(List.of(s1, s2));
 
-        assertThat(sessions.findById(2)).contains(s2);
+        Session found = sessions.findById(2);
+
+        assertThat(found).isEqualTo(s2);
     }
 
     @Test
-    @DisplayName("존재하지 않는 ID로 세션을 찾으면 빈 Optional을 반환한다")
-    void findById_fail() {
+    @DisplayName("존재하지 않는 ID로 세션을 찾으면 예외가 발생한다")
+    void findById_fail_throwsException() {
         Session s1 = createSessionWithId(1);
         Sessions sessions = new Sessions(List.of(s1));
 
-        assertThat(sessions.findById(99)).isEmpty();
+        assertThatThrownBy(() -> sessions.findById(99))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("해당 ID의 세션이 존재하지 않습니다.");
     }
 
     @Test
