@@ -22,7 +22,14 @@ public class Enrollment {
     }
 
     private void validate(Session session, Payment payment) {
+        validateSessionStatus(session);
         validatePaidCorrectly(session, payment);
+    }
+
+    private void validateSessionStatus(Session session) {
+        if (!session.isRecruiting()) {
+            throw new IllegalArgumentException("강의 상태가 모집중일 때만 수강 신청이 가능합니다.");
+        }
     }
 
     private void validatePaidCorrectly(Session session, Payment payment) {
