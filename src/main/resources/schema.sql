@@ -87,7 +87,6 @@ CREATE TABLE image
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
     session_id BIGINT       NOT NULL,
     file_name  VARCHAR(255) NOT NULL,
-    extension  VARCHAR(10)  NOT NULL,
     file_size  BIGINT       NOT NULL,
     width      INT          NOT NULL,
     height     INT          NOT NULL,

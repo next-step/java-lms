@@ -1,6 +1,10 @@
 package nextstep.courses.service;
 
+import lombok.RequiredArgsConstructor;
 import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.info.basic.SessionThumbnail;
+import nextstep.courses.dto.ImageDto;
+import nextstep.courses.infrastructure.ImageRepository;
 import nextstep.courses.infrastructure.SessionRepository;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.service.PaymentService;
@@ -9,17 +13,13 @@ import nextstep.users.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@RequiredArgsConstructor
 @Service
 public class SessionService {
     private final SessionRepository sessionRepository;
+    private final ImageRepository imageRepository;
     private final PaymentService paymentService;
     private final UserService userService;
-
-    public SessionService(SessionRepository sessionRepository, PaymentService paymentService, UserService userService) {
-        this.sessionRepository = sessionRepository;
-        this.paymentService = paymentService;
-        this.userService = userService;
-    }
 
     @Transactional
     public void enroll(Long sessionId, String userId, String paymentId) {
@@ -36,5 +36,15 @@ public class SessionService {
 
         session.enroll(user, payment);
         sessionRepository.update(session);
+    }
+
+    public SessionThumbnail getThumbnail(Long sessionId) {
+        ImageDto imageDto = imageRepository.findBySessionId(sessionId);
+        if (imageDto == null) {
+            throw new IllegalArgumentException("존재하지 않는 이미지입니다.");
+        }
+
+        return new SessionThumbnail(imageDto.getFileName(), imageDto.getFileSize(),
+                imageDto.getWidth(), imageDto.getHeight());
     }
 } 
