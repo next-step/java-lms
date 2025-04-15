@@ -9,18 +9,15 @@ public class Image {
     // KB
     private ImageSizeKb size;
 
-    private Long width;
-
-    private Long height;
+    private ImageDimension dimension;
 
     public Image() {
     }
 
-    public Image(Long id, ImageType type, Double size, Long width, Long height) {
+    public Image(Long id, ImageType type, Double size, Double width, Double height) {
         this.id = id;
         this.type = type;
         this.size = new ImageSizeKb(size);
-        this.width = width;
-        this.height = height;
+        this.dimension = new ImageDimension(width, height);
     }
 }
