@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static nextstep.courses.domain.sessions.SessionStatus.OPEN;
 import static nextstep.courses.domain.sessions.SessionType.PAID;
 
 public class Session {
@@ -51,6 +52,10 @@ public class Session {
     }
 
     public void addAttendee(NsUser attendee) {
+        if (isNotOpen()) {
+            throw new IllegalStateException("Session is not open for registration");
+        }
+
         if (exceedMaxAttendees()) {
             throw new IllegalStateException("Maximum number of attendees reached");
         }
@@ -60,6 +65,14 @@ public class Session {
         }
 
         attendees.add(attendee);
+    }
+
+    private boolean isOpen() {
+        return OPEN.equals(this.status);
+    }
+
+    private boolean isNotOpen() {
+        return !isOpen();
     }
 
     private boolean exceedMaxAttendees() {

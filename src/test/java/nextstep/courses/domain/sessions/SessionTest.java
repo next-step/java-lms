@@ -28,7 +28,7 @@ public class SessionTest {
 
     @Test
     void freeSessionMaxAttendees() {
-        Session freeSession = new Session(1L, 1L, 1L, LocalDateTime.now(), LocalDateTime.now(), 1, SessionType.FREE, SessionStatus.OPEN, 0L);
+        Session freeSession = new Session(2L, 1L, 2L, LocalDateTime.now(), LocalDateTime.now(), 1, SessionType.FREE, SessionStatus.OPEN, 0L);
         freeSession.addAttendee(new NsUser());
         assertDoesNotThrow(() -> freeSession.addAttendee(new NsUser()));
     }
@@ -54,5 +54,11 @@ public class SessionTest {
     void addAttendee() {
         session.addAttendee(user);
         assertThat(session.getAttendeesSize()).isEqualTo(1);
+    }
+
+    @Test
+    void notOpenSession() {
+        Session closedSession = new Session(1L, 1L, 1L, LocalDateTime.now(), LocalDateTime.now(), 1, SessionType.PAID, SessionStatus.CLOSED, 10000L);
+        assertThrows(IllegalStateException.class, () -> closedSession.addAttendee(user));
     }
 }
