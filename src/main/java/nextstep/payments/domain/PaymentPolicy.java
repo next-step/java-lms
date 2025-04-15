@@ -1,9 +1,6 @@
-package nextstep.session.domain;
+package nextstep.payments.domain;
 
 public class PaymentPolicy {
-    public enum PaymentType {
-        FREE, PAID
-    }
 
     private final PaymentType paymentType;
     private final long fee;

@@ -1,6 +1,8 @@
 package nextstep.session.domain;
 
 import nextstep.payments.domain.Payment;
+import nextstep.payments.domain.PaymentPolicy;
+import nextstep.payments.domain.PaymentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,28 +29,24 @@ class SessionTest {
                 LocalDate.of(2025, 5, 30));
 
         paidSession = new Session(
-                1L,
-                101L,
                 "TDD, 클린코드 with Java 20기",
                 coverImage,
                 duration,
 
-                new PaymentPolicy(PaymentPolicy.PaymentType.PAID, 800_000L, 10),
+                new PaymentPolicy(PaymentType.PAID, 800_000L, 10),
                 0,
-                Session.Status.RECRUITING,
+                SessionStatus.RECRUITING,
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );
 
         freeSession = new Session(
-                1L,
-                101L,
                 "무료 강의",
                 coverImage,
                 duration,
-                new PaymentPolicy(PaymentPolicy.PaymentType.FREE, 0L, 0),
+                new PaymentPolicy(PaymentType.FREE, 0L, 0),
                 0,
-                Session.Status.RECRUITING,
+                SessionStatus.RECRUITING,
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );
@@ -67,14 +65,12 @@ class SessionTest {
     void freeLecture_enrollmentMustBeZero() {
         assertThrows(IllegalArgumentException.class, () -> {
             new Session(
-                    1L,
-                    101L,
                     "무료 강의",
                     coverImage,
                     duration,
-                    new PaymentPolicy(PaymentPolicy.PaymentType.FREE, 0L, 1),
+                    new PaymentPolicy(PaymentType.FREE, 0L, 1),
                     0,
-                    Session.Status.RECRUITING,
+                    SessionStatus.RECRUITING,
                     LocalDateTime.now(),
                     LocalDateTime.now()
             );
@@ -86,14 +82,12 @@ class SessionTest {
     void paidLecture_enrollmentMustBePositive() {
         assertThrows(IllegalArgumentException.class, () -> {
             new Session(
-                    1L,
-                    101L,
                     "유료 강의",
                     coverImage,
                     duration,
-                    new PaymentPolicy(PaymentPolicy.PaymentType.PAID, 800_000L, 0),
+                    new PaymentPolicy(PaymentType.PAID, 800_000L, 0),
                     0,
-                    Session.Status.RECRUITING,
+                    SessionStatus.RECRUITING,
                     LocalDateTime.now(),
                     LocalDateTime.now()
             );
@@ -112,15 +106,13 @@ class SessionTest {
     @DisplayName("유료 강의는 최대 수강 인원을 초과할 수 없다")
     void paidLecture_enrollmentLimitExists() {
         Session session = new Session(
-                1L,
-                101L,
                 "TDD, 클린코드 with Java 20기",
                 coverImage,
                 duration,
 
-                new PaymentPolicy(PaymentPolicy.PaymentType.PAID, 800_000L, 10),
+                new PaymentPolicy(PaymentType.PAID, 800_000L, 10),
                 10,
-                Session.Status.RECRUITING,
+                SessionStatus.RECRUITING,
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );
