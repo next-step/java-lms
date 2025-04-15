@@ -10,7 +10,7 @@ public class ImageTest {
     @DisplayName("이미지 최대 크기를 초과할 시 IllegalArgumentException을 던진다.")
     void 이미지_크기_초과() {
         assertThatIllegalArgumentException().isThrownBy(() ->
-                new Image(2_000_000L, "이미지", ImageType.JPEG, 300F, 200F))
+                        new Image(2_000_000L, "이미지", ImageType.JPEG, 300F, 200F))
                 .withMessage("이미지 크기는 최대 1MB 이하여야 합니다.");
     }
 
@@ -24,7 +24,7 @@ public class ImageTest {
     @DisplayName("이미지 가로 길이가 300보다 작을 시 IllegalArgumentException을 던진다.")
     void 이미지_최소_가로_크기_부적절() {
         assertThatIllegalArgumentException().isThrownBy(() ->
-                new Image(1_000_000L, "이미지", ImageType.JPEG, 200F, 200F))
+                        new Image(1_000_000L, "이미지", ImageType.JPEG, 200F, 200F))
                 .withMessage("이미지 가로 길이는 최소 300픽셀 이상이어야 합니다.");
     }
 
@@ -38,5 +38,25 @@ public class ImageTest {
     @DisplayName("이미지 세로 길이가 200이상이면 정상적으로 생성된다.")
     void 이미지_최소_세로_크기_적절() {
         new Image(1_000_000L, "이미지", ImageType.JPEG, 300F, 200F);
+    }
+
+    @Test
+    @DisplayName("이미지 가로 세로 비율이 3:2가 아니면 IllegalArgumentException을 던진다.")
+    void 이미지_가로_세로_비율_부적절() {
+        assertThatIllegalArgumentException().isThrownBy(() ->
+                        new Image(1_000_000L, "이미지", ImageType.JPEG, 400F, 200F))
+                .withMessage("이미지 비율은 3:2이어야 합니다.");
+    }
+
+    @Test
+    @DisplayName("이미지 가로 세로 비율이 3:2면 정상적으로 생성된다.")
+    void 이미지_가로_세로_비율_적절() {
+        new Image(1_000_000L, "이미지", ImageType.JPEG, 300F, 200F);
+    }
+
+    @Test
+    @DisplayName("이미지 가로 세로 비율이 약 3:2면 정상적으로 생성된다.")
+    void 이미지_가로_세로_비율_오차_범위_이내() {
+        new Image(1_000_000L, "이미지", ImageType.JPEG, 301F, 200F);
     }
 }
