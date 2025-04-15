@@ -4,26 +4,38 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Duration {
-    private final LocalDate startDate;
-    private final LocalDate endDate;
+    private final LocalDate startAt;
+    private final LocalDate endAt;
 
-    public Duration(LocalDate startDate, LocalDate endDate) {
-        if (startDate == null || endDate == null) {
+    public Duration(LocalDate startAt, LocalDate endAt) {
+        if (startAt == null || endAt == null) {
             throw new IllegalArgumentException("시작일과 종료일은 필수입니다.");
         }
-        if (endDate.isBefore(startDate)) {
+        if (endAt.isBefore(startAt)) {
             throw new IllegalArgumentException("종료일은 시작일보다 이후여야 합니다.");
         }
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.startAt = startAt;
+        this.endAt = endAt;
     }
 
-    public LocalDate startDate() {
-        return startDate;
+    public LocalDate getStartAt() {
+        return startAt;
     }
 
-    public LocalDate endDate() {
-        return endDate;
+    public LocalDate getEndAt() {
+        return endAt;
+    }
+
+    public boolean contains(LocalDate date) {
+        return !date.isBefore(startAt) && !date.isAfter(endAt);
+    }
+
+    public int days() {
+        return startAt.until(endAt).getDays() + 1;
+    }
+
+    public boolean canBeRefund(LocalDate date) {
+        return date.isBefore(endAt);
     }
 
     @Override
@@ -31,11 +43,11 @@ public class Duration {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Duration duration = (Duration) o;
-        return Objects.equals(startDate, duration.startDate) && Objects.equals(endDate, duration.endDate);
+        return Objects.equals(startAt, duration.startAt) && Objects.equals(endAt, duration.endAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(startDate, endDate);
+        return Objects.hash(startAt, endAt);
     }
 }

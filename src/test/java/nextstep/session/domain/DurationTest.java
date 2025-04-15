@@ -18,8 +18,8 @@ class DurationTest {
 
         Duration duration = new Duration(start, end);
 
-        assertThat(duration.startDate()).isEqualTo(start);
-        assertThat(duration.endDate()).isEqualTo(end);
+        assertThat(duration.getStartAt()).isEqualTo(start);
+        assertThat(duration.getEndAt()).isEqualTo(end);
     }
 
     @Test
@@ -67,5 +67,45 @@ class DurationTest {
         Duration duration2 = new Duration(LocalDate.of(2025, 5, 1), LocalDate.of(2025, 5, 30));
 
         assertThat(duration1).isNotEqualTo(duration2);
+    }
+
+    @Test
+    @DisplayName("기간 내에 포함되는 날짜는 true를 반환한다.")
+    void durationContainsDayReturnTrue() {
+        Duration duration = new Duration(LocalDate.of(2025, 4, 1), LocalDate.of(2025, 4, 30));
+
+        assertThat(duration.contains(LocalDate.of(2025, 4, 2))).isTrue();
+    }
+
+    @Test
+    @DisplayName("기간 내에 포함되지 않는 날짜는 false를 반환한다.")
+    void durationContainsDayReturnFalse() {
+        Duration duration = new Duration(LocalDate.of(2025, 4, 1), LocalDate.of(2025, 4, 30));
+
+        assertThat(duration.contains(LocalDate.of(2025, 5, 1))).isFalse();
+    }
+
+    @Test
+    @DisplayName("기간내의 날짜를 계속해서 반환한다.")
+    void durationCanReturnDays() {
+        Duration duration = new Duration(LocalDate.of(2025, 4, 1), LocalDate.of(2025, 4, 5));
+
+        assertThat(duration.days()).isEqualTo(5);
+    }
+
+    @Test
+    @DisplayName("강의 마지막날 전에는 환불을 신청할 수 있다.")
+    void canBeRefundBeforeEnd() {
+        Duration duration = new Duration(LocalDate.of(2025, 4, 1), LocalDate.of(2025, 4, 5));
+
+        assertThat(duration.canBeRefund(LocalDate.of(2025, 4, 4))).isTrue();
+    }
+
+    @Test
+    @DisplayName("강의가 끝난후에는 환불을 신청할 수 없다.")
+    void canNotBeRefundBeforeEnd() {
+        Duration duration = new Duration(LocalDate.of(2025, 4, 1), LocalDate.of(2025, 4, 5));
+
+        assertThat(duration.canBeRefund(LocalDate.of(2025, 4, 6))).isFalse();
     }
 }

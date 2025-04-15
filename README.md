@@ -31,7 +31,7 @@
 - [ ] 빌더패턴 적용 - Session
 - [ ] 요구사항 분석후 그에 맞는 User-defined Exception 생성
 - [ ] Session에서 count외에 명단 관리등에 대한 책임이 필요한지 검토 후, 검토 내용 적용
-- [ ] Duration - getter naming convention에 맞게 수정
+- [x] Duration - getter naming convention에 맞게 수정, 추가요구사항 작성 
 - [x] Enum 분리 - PaymentType
 - [x] Enum 분리 - Session.Status
 
@@ -41,7 +41,7 @@
     - [x] 이미지에 대한 제약사항은 요구사항 참고
   - [x] 강의 타입
     - [x] 무료: 최대 수강 인원 제한이 없다.
-    - [ ] 유료
+    - [x] 유료
       - [x] 강의 최대 수강 인원을 초과할 수 없다.
       - [x] 유료 강의는 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능하다.
       - [x] 결제 완료한 결제 정보는 payments 모듈을 통해 관리되며, 결제 정보는 Payment 객체에 담겨 반환된다.
