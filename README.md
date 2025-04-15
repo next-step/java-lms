@@ -47,3 +47,5 @@
     - [x] 수강신청 validation 을 Enrollment 내부에서 수행
   - [x] 도메인 패키지 분리
 ## 3단계
+- [x] 테이블 설계
+- [ ] ImageRepository 구현 
