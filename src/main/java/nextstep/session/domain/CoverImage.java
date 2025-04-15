@@ -13,7 +13,52 @@ public class CoverImage {
     private final int width;
     private final int height;
 
-    public CoverImage(String fileName, String imageFormat, long fileSize, int width, int height) {
+    public static class Builder {
+        private String fileName;
+        private String imageFormat;
+        private long fileSize;
+        private int width;
+        private int height;
+
+        public Builder fileName(String fileName) {
+            validateFileName(fileName);
+            this.fileName = fileName;
+            return this;
+        }
+        public Builder imageFormat(String imageFormat) {
+            validateImageFormat(imageFormat);
+            this.imageFormat = imageFormat;
+            return this;
+        }
+        public Builder fileSize(long fileSize) {
+            validateFileSize(fileSize);
+            this.fileSize = fileSize;
+            return this;
+        }
+        public Builder width(int width) {
+            this.width = width;
+            return this;
+        }
+        public Builder height(int height) {
+            this.height = height;
+            return this;
+        }
+        public CoverImage build() {
+            validateImageSize(width, height);
+            return new CoverImage(this);
+        }
+
+    }
+
+    private CoverImage(Builder builder) {
+        this.fileName = builder.fileName;
+        this.imageFormat = builder.imageFormat;
+        this.fileSize = builder.fileSize;
+        this.width = builder.width;
+        this.height = builder.height;
+    }
+
+    protected CoverImage(String fileName, String imageFormat, long fileSize, int width, int height) {
         validateFileName(fileName);
         validateFileSize(fileSize);
         validateImageFormat(imageFormat);
@@ -49,7 +94,7 @@ public class CoverImage {
         }
     }
 
-    private void validateFileSize(long fileSize) {
+    private static void validateFileSize(long fileSize) {
         if (fileSize == 0) {
             throw new IllegalArgumentException("이미지 크기는 0이 될 수 없습니다.");
         }

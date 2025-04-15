@@ -27,14 +27,17 @@
   - 결제를 완료한 결제 정보는 payments 모듈을 통해 관리되며, 결제 정보는 Payment 객체에 담겨 반한된다.
 
 ## TODO
-- [ ] 빌더패턴 적용 - coverImage
 - [ ] 빌더패턴 적용 - Session
 - [ ] 요구사항 분석후 그에 맞는 User-defined Exception 생성
-- [ ] Session에서 count외에 명단 관리등에 대한 책임이 필요한지 검토 후, 검토 내용 적용
+
+2025/04/15
+- [x] 빌더패턴 적용 - coverImage
+- [x] Session에서 count외에 명단 관리등에 대한 책임이 필요한지 검토 후, 검토 내용 적용
 - [x] Duration - getter naming convention에 맞게 수정, 추가요구사항 작성 
 - [x] Enum 분리 - PaymentType
 - [x] Enum 분리 - Session.Status
 
+2025/04/14
 - [x] 강의는 다음의 정보를 가진다.
   - [x] 시작일, 종료일
   - [x] 강의 이미지 커버 정보 

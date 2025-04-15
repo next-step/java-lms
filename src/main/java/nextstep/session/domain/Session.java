@@ -2,8 +2,11 @@ package nextstep.session.domain;
 
 import nextstep.payments.domain.Payment;
 import nextstep.payments.domain.PaymentPolicy;
+import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Session {
 
@@ -12,7 +15,7 @@ public class Session {
     private Duration duration;
 
     private PaymentPolicy paymentPolicy;
-    private Integer enrolledStudentsCount;
+    private EnrolledStudents enrolledStudents;
 
     private SessionStatus status;
 
@@ -27,7 +30,7 @@ public class Session {
             Duration duration,
 
             PaymentPolicy paymentPolicy,
-            int enrolledStudentsCount,
+            EnrolledStudents enrolledStudents,
             SessionStatus status,
 
             LocalDateTime createdAt,
@@ -37,7 +40,7 @@ public class Session {
         this.duration = duration;
         this.coverImage = coverImage;
         this.paymentPolicy = paymentPolicy;
-        this.enrolledStudentsCount = enrolledStudentsCount;
+        this.enrolledStudents = enrolledStudents;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -51,14 +54,20 @@ public class Session {
         return paymentPolicy;
     }
 
-    public Payment enroll(Long nsUserId, Long amount) {
+    public Payment enroll(NsUser nsUser, Long amount) {
+        validateEnrollment();
+        paymentPolicy.validateEnrollment(amount);
+
+        enrolledStudents.add(nsUser);
+
+        return new Payment("P1", 1L, nsUser.getId(), amount);
+    }
+    void validateEnrollment() {
         if (status != SessionStatus.RECRUITING) {
             throw new IllegalStateException("모집중인 강의만 수강 신청이 가능합니다.");
         }
-
-        paymentPolicy.validateEnrollment(enrolledStudentsCount, amount);
-
-        enrolledStudentsCount++;
-        return new Payment("1", 1L, nsUserId, amount);
+        if (enrolledStudents.count() >= paymentPolicy.enrollmentLimit()) {
+            throw new IllegalStateException("수강 최대 인원을 초과했습니다.");
+        }
     }
 }

@@ -26,12 +26,8 @@ public class PaymentPolicy {
         return enrollmentLimit;
     }
 
-    public void validateEnrollment(int currentEnrollment, long amount) {
+    public void validateEnrollment(long amount) {
         if (!isPaidPaymentType()) return;
-
-        if (currentEnrollment >= enrollmentLimit) {
-            throw new IllegalStateException("수강 최대 인원을 초과했습니다.");
-        }
 
         if (amount != fee) {
             throw new IllegalArgumentException("결제 금액이 수강료와 일치하지 않습니다.");

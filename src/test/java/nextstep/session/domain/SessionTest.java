@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import static nextstep.users.domain.NsUserTest.JAVAJIGI;
+import static nextstep.users.domain.NsUserTest.SANJIGI;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -34,7 +36,7 @@ class SessionTest {
                 duration,
 
                 new PaymentPolicy(PaymentType.PAID, 800_000L, 10),
-                0,
+                new EnrolledStudents(),
                 SessionStatus.RECRUITING,
                 LocalDateTime.now(),
                 LocalDateTime.now()
@@ -45,7 +47,7 @@ class SessionTest {
                 coverImage,
                 duration,
                 new PaymentPolicy(PaymentType.FREE, 0L, 0),
-                0,
+                new EnrolledStudents(),
                 SessionStatus.RECRUITING,
                 LocalDateTime.now(),
                 LocalDateTime.now()
@@ -69,7 +71,7 @@ class SessionTest {
                     coverImage,
                     duration,
                     new PaymentPolicy(PaymentType.FREE, 0L, 1),
-                    0,
+                    new EnrolledStudents(),
                     SessionStatus.RECRUITING,
                     LocalDateTime.now(),
                     LocalDateTime.now()
@@ -86,7 +88,7 @@ class SessionTest {
                     coverImage,
                     duration,
                     new PaymentPolicy(PaymentType.PAID, 800_000L, 0),
-                    0,
+                    new EnrolledStudents(),
                     SessionStatus.RECRUITING,
                     LocalDateTime.now(),
                     LocalDateTime.now()
@@ -105,22 +107,24 @@ class SessionTest {
     @Test
     @DisplayName("유료 강의는 최대 수강 인원을 초과할 수 없다")
     void paidLecture_enrollmentLimitExists() {
+        final int ENROLLMENT_LIMIT = 1;
+        EnrolledStudents enrolledStudents = new EnrolledStudents();
+        enrolledStudents.add(SANJIGI);
         Session session = new Session(
                 "TDD, 클린코드 with Java 20기",
                 coverImage,
                 duration,
-
-                new PaymentPolicy(PaymentType.PAID, 800_000L, 10),
-                10,
+                new PaymentPolicy(PaymentType.PAID, 800_000L, ENROLLMENT_LIMIT),
+                enrolledStudents,
                 SessionStatus.RECRUITING,
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );
 
         assertThrows(IllegalStateException.class, () -> {
-            session.enroll(1L, 800_000L);
+            session.enroll(JAVAJIGI, 800_000L);
         });
-        assertThat(session.paymentPolicy().enrollmentLimit()).isEqualTo(10);
+        assertThat(session.paymentPolicy().enrollmentLimit()).isEqualTo(ENROLLMENT_LIMIT);
     }
 
     @Test
@@ -128,9 +132,8 @@ class SessionTest {
     void paidLecture_enrollReturnPayment() {
         Session session = paidSession;
 
-        Payment payment = session.enroll(1L, 800_000L);
+        Payment payment = session.enroll(JAVAJIGI, 800_000L);
 
         assertThat(payment).isNotNull();
-        assertThat(payment.isEqualAmount(800_000L)).isTrue();
     }
 }

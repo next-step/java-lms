@@ -11,6 +11,14 @@ class CoverImageTest {
     @Test
     @DisplayName("정상적인 이미지 정보로 생성에 성공한다")
     void createCoverImage_success() {
+        CoverImage image = new CoverImage.Builder()
+                .fileName("cover.png")
+                .imageFormat("png")
+                .fileSize(100_000L)
+                .width(300)
+                .height(200)
+                .build();
+
         assertDoesNotThrow(() -> new CoverImage("cover.png", "png", 100_000L, 300, 200));
     }
 
