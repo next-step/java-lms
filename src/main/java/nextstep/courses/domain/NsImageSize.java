@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import java.util.Objects;
+
 public class NsImageSize {
     private static final String INVALID_IMAGE_WIDTH_OR_HEIGHT = "유효한 이미지 사이즈가 아닙니다.";
     private static final String WIDTH_HEIGHT_RATIO_ONLY_3_2 = "이미지 width와 height의 비율은 3:2여야 합니다.";
@@ -26,5 +28,17 @@ public class NsImageSize {
         if (ratio != EXPECTED_RATIO) {
             throw new IllegalArgumentException(WIDTH_HEIGHT_RATIO_ONLY_3_2);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        NsImageSize that = (NsImageSize) o;
+        return width == that.width && height == that.height;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(width, height);
     }
 }

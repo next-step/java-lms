@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import java.util.Objects;
 import java.util.Set;
 
 public class NsFile {
@@ -29,4 +30,15 @@ public class NsFile {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        NsFile nsFile = (NsFile) o;
+        return size == nsFile.size && Objects.equals(type, nsFile.type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(size, type);
+    }
 }
