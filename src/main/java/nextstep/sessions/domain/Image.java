@@ -28,11 +28,25 @@ public class Image {
 
     private void validate(Long sizeInBytes, String title, ImageType type, Float width, Float height) {
         validateSize(sizeInBytes);
+        validateWidth(width);
+        validateHeight(height);
     }
 
     private void validateSize(Long sizeInBytes) {
         if (sizeInBytes > MAX_SIZE_BYTES) {
             throw new IllegalArgumentException("이미지 크기는 최대 1MB 이하여야 합니다.");
+        }
+    }
+
+    private void validateWidth(Float width) {
+        if (width < MIN_SIZE_WIDTH) {
+            throw new IllegalArgumentException("이미지 가로 길이는 최소 300픽셀 이상이어야 합니다.");
+        }
+    }
+
+    private void validateHeight(Float height) {
+        if (height < MIN_SIZE_HEIGHT) {
+            throw new IllegalArgumentException("이미지 세로 길이는 최소 200픽셀 이상이어야 합니다.");
         }
     }
 }
