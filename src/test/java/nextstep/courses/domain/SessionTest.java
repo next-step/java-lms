@@ -67,9 +67,9 @@ public class SessionTest {
 
     @Test
     void 유료_모집중_정원마감이면_수강신청_불가능() {
-        SessionMeta meta = new SessionMeta(SessionType.PAID, SessionStatus.PREPARING, image);
+        SessionMeta meta = new SessionMeta(SessionType.PAID, period, price, image);
         Capacity capacity = new LimitedCapacity(1, 1); // currentParticipants 생략
-        Session session = new Session(1L, meta, period, capacity, price);
+        Session session = new Session(1L, meta, SessionStatus.RECRUITING, capacity);
         assertThat(session.canApply()).isFalse();
     }
 
@@ -80,9 +80,9 @@ public class SessionTest {
 
     @Test
     void 유료_결제금액_수강료_일치시_수강성공() {
-        SessionMeta meta = new SessionMeta(SessionType.PAID, SessionStatus.PREPARING, image);
+        SessionMeta meta = new SessionMeta(SessionType.PAID, period, price, image);
         Capacity capacity = new LimitedCapacity(1, 1); // currentParticipants 생략
-        Session session = new Session(2L, meta, period, capacity, price);
+        Session session = new Session(2L, meta, SessionStatus.PREPARING, capacity);
 
         assertThat(paidSession.startRecruiting().apply(payment_1000)).isEqualTo(session.startRecruiting());
     }

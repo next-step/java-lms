@@ -1,20 +1,20 @@
 package nextstep.courses.domain;
 
+import nextstep.payments.domain.Payment;
+
 import java.util.Objects;
 
 public class SessionMeta {
     private final SessionType sessionType;
-    private final SessionStatus sessionStatus;
+    private final SessionPeriod period;
+    private final Price price;
     private final NsImage coverImage;
 
-    public SessionMeta(SessionType sessionType, SessionStatus sessionStatus, NsImage coverImage) {
+    public SessionMeta(SessionType sessionType, SessionPeriod period, Price price, NsImage coverImage) {
         this.sessionType = sessionType;
-        this.sessionStatus = sessionStatus;
+        this.period = period;
+        this.price = price;
         this.coverImage = coverImage;
-    }
-
-    public boolean isRecruiting() {
-        return sessionStatus.isRecruiting();
     }
 
     public boolean isFree() {
@@ -25,23 +25,19 @@ public class SessionMeta {
         return sessionType.isPaid();
     }
 
-    public SessionMeta startRecruiting() {
-        return new SessionMeta(sessionType, SessionStatus.RECRUITING, coverImage);
-    }
-
-    public SessionMeta finishRecruiting() {
-        return new SessionMeta(sessionType, SessionStatus.CLOSED, coverImage);
+    public boolean notValidPayment(Payment payment) {
+        return payment.notMatchWith(price);
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         SessionMeta that = (SessionMeta) o;
-        return sessionType == that.sessionType && sessionStatus == that.sessionStatus && Objects.equals(coverImage, that.coverImage);
+        return sessionType == that.sessionType && Objects.equals(period, that.period) && Objects.equals(price, that.price) && Objects.equals(coverImage, that.coverImage);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sessionType, sessionStatus, coverImage);
+        return Objects.hash(sessionType, period, price, coverImage);
     }
 }
