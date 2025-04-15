@@ -2,15 +2,14 @@ package nextstep.courses.domain.session.info.detail;
 
 import nextstep.courses.domain.session.SessionType;
 import nextstep.payments.domain.Payment;
-import java.time.LocalDateTime;
 
 public class SessionDetailInfo {
     private final SessionPeriod period;
     private final SessionPrice price;
 
-    public SessionDetailInfo(LocalDateTime startDate, LocalDateTime endDate, SessionType type, int price) {
-        this.period = new SessionPeriod(startDate, endDate);
-        this.price = new SessionPrice(type, price);
+    public SessionDetailInfo(SessionPeriod period, SessionPrice price) {
+        this.period = period;
+        this.price = price;
     }
 
     public boolean isPaid() {

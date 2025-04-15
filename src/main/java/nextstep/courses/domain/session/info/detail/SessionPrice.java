@@ -1,8 +1,10 @@
 package nextstep.courses.domain.session.info.detail;
 
+import lombok.Getter;
 import nextstep.courses.domain.session.SessionType;
 import nextstep.payments.domain.Payment;
 
+@Getter
 public class SessionPrice {
     private final SessionType type;
     private final int price;
@@ -21,14 +23,6 @@ public class SessionPrice {
 
     public boolean isPaid() {
         return type.isPaid();
-    }
-
-    public SessionType getType() {
-        return type;
-    }
-
-    public int getPrice() {
-        return price;
     }
 
     public void validatePayment(Payment payment) {

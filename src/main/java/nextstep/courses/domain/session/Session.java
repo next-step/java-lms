@@ -1,25 +1,19 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.enrollment.Enrollment;
-import nextstep.courses.domain.session.enrollment.FreeEnrollment;
-import nextstep.courses.domain.session.enrollment.PaidEnrollment;
 import nextstep.courses.domain.session.info.SessionInfo;
-import nextstep.courses.domain.session.info.basic.SessionThumbnail;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
-
-import java.time.LocalDateTime;
 
 public class Session {
     private final SessionId id;
     private final SessionInfo info;
     private final Enrollment enrollment;
 
-    public Session(Long id, String title, LocalDateTime startDate, LocalDateTime endDate,
-                   SessionThumbnail thumbnail, SessionType type, int maxEnrollment, int price) {
-        this.id = new SessionId(id);
-        this.info = new SessionInfo(title, thumbnail, startDate, endDate, type, price);
-        this.enrollment = type.isPaid() ? new PaidEnrollment(maxEnrollment) : new FreeEnrollment();
+    public Session(SessionId id, SessionInfo info, Enrollment enrollment) {
+        this.id = id;
+        this.info = info;
+        this.enrollment = enrollment;
     }
 
     public void enroll(NsUser user, Payment payment) {

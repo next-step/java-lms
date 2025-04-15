@@ -8,4 +8,7 @@
 - image 테이블
 ### Session 리팩토링
 - 기존 Session 생성자가 과도하게 많은 파라미터를 사용
-- Session 객체는 자식 객체를 생성자로 받고, DTO를 통하여 자식 객체를 생성
+  - 원시값을 파라미터로 받을 경우 자식 객체의 구현을 알아야 함
+  - Session 객체는 자식 객체를 생성자로 받고, DTO를 통하여 자식 객체를 생성
+### SessionPrice - Enrollment 역할 중복
+- 유료 강의/무료 강의를 구분하는 Enrollment와 유료/무료 여부를 갖고 있는 SessionPrice의 역할 중복

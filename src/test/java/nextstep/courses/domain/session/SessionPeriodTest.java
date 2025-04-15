@@ -4,20 +4,20 @@ import nextstep.courses.domain.session.info.detail.SessionPeriod;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SessionPeriodTest {
-    private static final LocalDateTime START_DATE = LocalDateTime.now();
-    private static final LocalDateTime END_DATE = START_DATE.plusDays(30);
+    private static final LocalDate START_DATE = LocalDate.now();
+    private static final LocalDate END_DATE = START_DATE.plusDays(30);
 
     @Test
     @DisplayName("시작일이 종료일보다 늦으면 예외가 발생한다")
     void validateDates() {
         // given
-        LocalDateTime invalidStartDate = END_DATE.plusDays(1);
+        LocalDate invalidStartDate = END_DATE.plusDays(1);
 
         // when & then
         assertThatThrownBy(() -> new SessionPeriod(invalidStartDate, END_DATE))

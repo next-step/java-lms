@@ -1,18 +1,21 @@
 package nextstep.courses.domain.session.info.detail;
 
-import java.time.LocalDateTime;
+import lombok.Getter;
 
+import java.time.LocalDate;
+
+@Getter
 public class SessionPeriod {
-    private final LocalDateTime startDate;
-    private final LocalDateTime endDate;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
 
-    public SessionPeriod(LocalDateTime startDate, LocalDateTime endDate) {
+    public SessionPeriod(LocalDate startDate, LocalDate endDate) {
         validateDates(startDate, endDate);
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
-    private void validateDates(LocalDateTime startDate, LocalDateTime endDate) {
+    private void validateDates(LocalDate startDate, LocalDate endDate) {
         if (startDate == null || endDate == null) {
             throw new IllegalArgumentException("시작일과 종료일은 필수입니다.");
         }
@@ -34,11 +37,4 @@ public class SessionPeriod {
         return java.util.Objects.hash(startDate, endDate);
     }
 
-    public LocalDateTime getStartDate() {
-        return startDate;
-    }
-
-    public LocalDateTime getEndDate() {
-        return endDate;
-    }
-} 
+}
