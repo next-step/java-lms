@@ -17,6 +17,11 @@ public class EnrollmentCapacity {
         return currentEnrollment >= maxEnrollment;
     }
 
+    public void increaseEnrollment() {
+        validate();
+        currentEnrollment++;
+    }
+
     private void validate() {
         if (isFull()) {
             throw new IllegalStateException("정원이 초과되었습니다.");
