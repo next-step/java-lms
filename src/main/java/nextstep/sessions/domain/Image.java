@@ -30,6 +30,7 @@ public class Image {
         validateSize(sizeInBytes);
         validateWidth(width);
         validateHeight(height);
+        validateAspectRatio(width, height);
     }
 
     private void validateSize(Long sizeInBytes) {
@@ -47,6 +48,13 @@ public class Image {
     private void validateHeight(Float height) {
         if (height < MIN_SIZE_HEIGHT) {
             throw new IllegalArgumentException("이미지 세로 길이는 최소 200픽셀 이상이어야 합니다.");
+        }
+    }
+
+    private void validateAspectRatio(float width, float height) {
+        float ratio = width / height;
+        if (Math.abs(ratio - 1.5) > 0.01) {
+            throw new IllegalArgumentException("이미지 비율은 3:2이어야 합니다.");
         }
     }
 }
