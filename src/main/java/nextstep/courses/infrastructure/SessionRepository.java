@@ -1,13 +1,13 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.session.Session;
+import nextstep.courses.dto.SessionDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository("sessionRepository")
 public interface SessionRepository {
-    Optional<Session> findById(Long id);
+    Optional<SessionDto> findById(Long id);
 
-    void update(Session session);
+    void update(SessionDto sessionDto);
 } 

@@ -6,3 +6,6 @@
 - session 테이블
 - session_enrollment 테이블
 - image 테이블
+### Session 리팩토링
+- 기존 Session 생성자가 과도하게 많은 파라미터를 사용
+- Session 객체는 자식 객체를 생성자로 받고, DTO를 통하여 자식 객체를 생성
