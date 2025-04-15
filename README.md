@@ -48,4 +48,5 @@
   - [x] 도메인 패키지 분리
 ## 3단계
 - [x] 테이블 설계
-- [ ] ImageRepository 구현 
+- [x] ImageRepository 구현
+- [ ] SessionRepository 구현

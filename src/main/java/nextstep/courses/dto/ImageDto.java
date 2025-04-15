@@ -11,7 +11,7 @@ public class ImageDto {
     private final Long id;
     private final Long sessionId;
     private final String fileName;
-    private final long fileSize;
+    private final Long fileSize;
     private final int width;
     private final int height;
     private final LocalDateTime createdAt;
