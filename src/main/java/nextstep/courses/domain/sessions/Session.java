@@ -1,6 +1,7 @@
 package nextstep.courses.domain.sessions;
 
 import nextstep.payments.domain.Payment;
+import nextstep.payments.domain.Payments;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -31,7 +32,7 @@ public class Session {
 
     private List<NsUser> attendees = new ArrayList<>();
 
-    private List<Payment> payments = new ArrayList<>();
+    private Payments payments = new Payments();
 
     public Session() {
     }
@@ -53,14 +54,27 @@ public class Session {
         if (exceedMaxAttendees()) {
             throw new IllegalStateException("Maximum number of attendees reached");
         }
+
+        if (payments.paidIncorrectly(attendee.getId(), this.price)) {
+            throw new IllegalStateException("Payment not completed");
+        }
+
         attendees.add(attendee);
     }
 
     private boolean exceedMaxAttendees() {
-        return isPaid() && attendees.size() >= maxAttendees;
+        return isPaid() && getAttendeesSize() >= maxAttendees;
     }
 
     private boolean isPaid() {
         return PAID.equals(this.type);
+    }
+
+    public void addPayment(Payment payment) {
+        payments.add(payment);
+    }
+
+    public int getAttendeesSize() {
+        return attendees.size();
     }
 }
