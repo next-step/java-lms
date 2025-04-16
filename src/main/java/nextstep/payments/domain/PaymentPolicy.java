@@ -23,7 +23,7 @@ public class PaymentPolicy {
     }
 
     public boolean isFreePayment() {
-        return paymentType == PaymentType.PAID;
+        return paymentType == PaymentType.FREE;
     }
 
     public int enrollmentLimit() {

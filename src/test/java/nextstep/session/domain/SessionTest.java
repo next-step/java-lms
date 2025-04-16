@@ -53,7 +53,7 @@ class SessionTest {
                 .build();
 
         assertThat(paidSession.title()).isEqualTo("TDD, 클린코드 with Java 20기");
-        assertThat(paidSession.paymentPolicy().isPaidPayment()).isEqualTo(true);
+        assertThat(paidSession.paymentPolicy().isPaidPayment()).isTrue();
     }
 
     @Test
@@ -71,7 +71,7 @@ class SessionTest {
                 .build();
 
         assertThat(freeSession.title()).isEqualTo("무료 강의");
-        assertThat(freeSession.paymentPolicy().isFreePayment()).isEqualTo(false);
+        assertThat(freeSession.paymentPolicy().isFreePayment()).isTrue();
     }
 
     @Test

@@ -5,7 +5,6 @@ import nextstep.payments.domain.PaymentPolicy;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 public class Session {
 
