@@ -1,7 +1,31 @@
 package nextstep.courses.domain;
 
-public class Session {
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-    public Session() {
+public class Session {
+    private int sequence;
+    private LocalDateTime start;
+    private LocalDateTime end;
+    private String image;
+    private int price;
+    private SessionStatus status;
+    private int maxStudents;
+    private List<Student> students;
+
+    protected Session() {
     }
+
+    public Session(int sequence, LocalDateTime start, LocalDateTime end, String image, int price, int maxStudents) {
+        this.sequence = sequence;
+        this.start = start;
+        this.end = end;
+        this.image = image;
+        this.price = price;
+        this.status = SessionStatus.READY;
+        this.maxStudents = maxStudents;
+        this.students = new ArrayList<>();
+    }
+
 }
