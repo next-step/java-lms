@@ -12,7 +12,7 @@ public class Image {
     public Image() {
     }
 
-    public Image(ImageType type, Double size, Double width, Double height) {
+    public Image(ImageType type, double size, double width, double height) {
         this.type = type;
         this.size = new ImageSizeKb(size);
         this.dimension = new ImageDimension(width, height);

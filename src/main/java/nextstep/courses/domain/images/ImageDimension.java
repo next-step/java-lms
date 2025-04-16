@@ -1,16 +1,16 @@
 package nextstep.courses.domain.images;
 
 public class ImageDimension {
-    private final Double width;
-    private final Double height;
+    private final double width;
+    private final double height;
 
-    public ImageDimension(Double width, Double height) {
+    public ImageDimension(double width, double height) {
         validate(width, height);
         this.width = width;
         this.height = height;
     }
 
-    private void validate(Double width, Double height) {
+    private void validate(double width, double height) {
         if (width <= 300) {
             throw new InvalidImageDimensionException("width must be greater than 300");
         }
