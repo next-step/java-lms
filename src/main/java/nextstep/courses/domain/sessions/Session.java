@@ -1,5 +1,7 @@
 package nextstep.courses.domain.sessions;
 
+import nextstep.courses.domain.Course;
+import nextstep.courses.domain.images.Image;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.domain.Payments;
 import nextstep.users.domain.NsUser;
@@ -15,9 +17,9 @@ public class Session {
 
     private Long id;
 
-    private Long courseId;
+    private Course course;
 
-    private Long imageId;
+    private Image image;
 
     private LocalDateTime startDate;
 
@@ -38,11 +40,11 @@ public class Session {
     public Session() {
     }
 
-    public Session(Long id, Long courseId, Long imageId, LocalDateTime startDate, LocalDateTime endDate,
+    public Session(Long id, Course course, Image image, LocalDateTime startDate, LocalDateTime endDate,
                    int maxAttendees, SessionType type, SessionStatus status, Long price) {
         this.id = id;
-        this.courseId = courseId;
-        this.imageId = imageId;
+        this.course = course;
+        this.image = image;
         this.startDate = startDate;
         this.endDate = endDate;
         this.maxAttendees = maxAttendees;

@@ -1,5 +1,7 @@
 package nextstep.courses.domain.sessions;
 
+import nextstep.courses.domain.Course;
+import nextstep.courses.domain.images.Image;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,30 +15,44 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SessionTest {
 
+    private Course course;
     private Session session;
     private NsUser user;
     private NsUser user2;
+    private NsUser user3;
+    private Payment payment;
+    private Payment payment2;
+    private Payment payment3;
 
     @BeforeEach
     void setUp() {
-        session = new Session(1L, 1L, 1L, LocalDateTime.now(), LocalDateTime.now(), 1, SessionType.PAID, SessionStatus.OPEN, 10000L);
+        course = new Course("test", 1L);
+        session = new Session(1L, course, new Image(), LocalDateTime.now(), LocalDateTime.now(), 1, SessionType.PAID, SessionStatus.OPEN, 10000L);
         user = new NsUser(1L, "tony", "1234", "ahn", "a@google.com");
         user2 = new NsUser(2L, "aaa", "1234", "bbb", "2@google.com");
-        session.addPayment(new Payment("1", 1L, 1L, 10000L));
-        session.addPayment(new Payment("2", 1L, 2L, 10001L));
+        user3 = new NsUser(3L, "bbb", "1234", "ccc", "3@google.com");
+        payment = new Payment("1", 1L, 1L, 10000L);
+        payment2 = new Payment("2", 1L, 2L, 10000L);
+        payment3 = new Payment("3", 1L, 3L, 10001L);
+        session.addPayment(payment);
+        session.addPayment(payment2);
+        session.addPayment(payment3);
     }
 
     @Test
     void freeSessionMaxAttendees() {
-        Session freeSession = new Session(2L, 1L, 2L, LocalDateTime.now(), LocalDateTime.now(), 1, SessionType.FREE, SessionStatus.OPEN, 0L);
-        freeSession.addAttendee(new NsUser());
-        assertDoesNotThrow(() -> freeSession.addAttendee(new NsUser()));
+        Session freeSession = new Session(1L, course, new Image(), LocalDateTime.now(), LocalDateTime.now(), 1, SessionType.FREE, SessionStatus.OPEN, 10000L);
+        freeSession.addPayment(payment);
+        freeSession.addPayment(payment2);
+        freeSession.addPayment(payment3);
+        freeSession.addAttendee(user);
+        assertDoesNotThrow(() -> freeSession.addAttendee(user2));
     }
 
     @Test
     void paidSessionMaxAttendees() {
-        session.addAttendee(new NsUser());
-        assertThrows(IllegalStateException.class, () -> session.addAttendee(new NsUser()));
+        session.addAttendee(user);
+        assertThrows(IllegalStateException.class, () -> session.addAttendee(user2));
     }
 
     @Test
@@ -47,7 +63,7 @@ public class SessionTest {
 
     @Test
     void paymentAmountNotEqual() {
-        assertThrows(IllegalStateException.class, () -> session.addAttendee(user2));
+        assertThrows(IllegalStateException.class, () -> session.addAttendee(user3));
     }
 
     @Test
@@ -58,7 +74,7 @@ public class SessionTest {
 
     @Test
     void notOpenSession() {
-        Session closedSession = new Session(1L, 1L, 1L, LocalDateTime.now(), LocalDateTime.now(), 1, SessionType.PAID, SessionStatus.CLOSED, 10000L);
+        Session closedSession = new Session(1L, course, new Image(), LocalDateTime.now(), LocalDateTime.now(), 1, SessionType.PAID, SessionStatus.CLOSED, 10000L);
         assertThrows(IllegalStateException.class, () -> closedSession.addAttendee(user));
     }
 }
