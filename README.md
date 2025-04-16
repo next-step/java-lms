@@ -30,7 +30,8 @@
   - [Method]
 - Session (class)
   - [Field]
-    - String title 
+    - int id
+    - String title
     - LocalDateTime startDate
     - LocalDateTime endDate
     - long tuition
@@ -59,7 +60,8 @@
 - Image (class)
   - [Field]
     - float fileSize
-    - string fileType
+    - String fileType
+    - String ImageUrl
     - int width
     - int height
   - [Method]
