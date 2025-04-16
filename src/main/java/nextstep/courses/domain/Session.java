@@ -1,6 +1,9 @@
 package nextstep.courses.domain;
 
+import nextstep.payments.domain.Payment;
+
 import java.time.LocalDateTime;
+import java.util.regex.Pattern;
 
 public class Session {
     private CapacityInfo capacityInfo;
@@ -24,8 +27,8 @@ public class Session {
         this.joinStrategy = joinStrategy;
     }
 
-    boolean joinable(long paidAmount) {
-        return joinStrategy.joinable(this, paidAmount);
+    boolean joinable(Payment pay) {
+        return joinStrategy.joinable(this, pay);
     }
 
     public boolean recruiting() {
@@ -44,8 +47,8 @@ public class Session {
         return this.id == id;
     }
 
-    public void enroll(long payAmount) {
-        if (!joinable(payAmount)) {
+    public void enroll(Payment pay) {
+        if (!joinable(pay)) {
             throw new IllegalStateException("수강 신청 조건을 만족하지 않습니다.");
         }
 

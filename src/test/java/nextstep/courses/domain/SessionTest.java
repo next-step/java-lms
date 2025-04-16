@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +28,7 @@ class SessionTest {
                 new FreeJoinStrategy()
         );
 
-        assertThat(session.joinable(0)).isTrue();
+        assertThat(session.joinable(new Payment())).isTrue();
     }
 
     @Test
@@ -46,7 +47,7 @@ class SessionTest {
                 new FreeJoinStrategy()
         );
 
-        assertThat(session.joinable(0)).isFalse();
+        assertThat(session.joinable(new Payment())).isFalse();
     }
 
     @Test
@@ -65,7 +66,7 @@ class SessionTest {
                 new PaidJoinStrategy()
         );
 
-        assertThat(session.joinable(10000)).isTrue();
+        assertThat(session.joinable(new Payment(10000L))).isTrue();
     }
 
     @Test
@@ -84,7 +85,7 @@ class SessionTest {
                 new PaidJoinStrategy()
         );
 
-        assertThat(session.joinable(8000)).isFalse();
+        assertThat(session.joinable(new Payment(8000L))).isFalse();
     }
 
     @Test
@@ -103,6 +104,6 @@ class SessionTest {
                 new PaidJoinStrategy()
         );
 
-        assertThat(session.joinable(10000)).isFalse();
+        assertThat(session.joinable(new Payment(10000L))).isFalse();
     }
 }

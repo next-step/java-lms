@@ -20,6 +20,6 @@ public class EnrollService {
         Course course = courseRepository.findById(courseId);
         Sessions sessions = course.getSessions();
         Session session = sessions.findById(sessionId);
-        session.enroll(payment.getAmount());
+        session.enroll(payment);
     }
 }

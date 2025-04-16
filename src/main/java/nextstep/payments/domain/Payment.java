@@ -17,6 +17,11 @@ public class Payment {
     private LocalDateTime createdAt;
 
     public Payment() {
+        this.amount = 0L;
+    }
+
+    public Payment(Long amount) {
+        this.amount = amount;
     }
 
     public Payment(String id, Long sessionId, Long nsUserId, Long amount) {
@@ -29,5 +34,9 @@ public class Payment {
 
     public Long getAmount() {
         return amount;
+    }
+
+    public boolean isFree() {
+        return amount == 0;
     }
 }
