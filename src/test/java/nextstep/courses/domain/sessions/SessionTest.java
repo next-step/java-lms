@@ -27,7 +27,17 @@ public class SessionTest {
     @BeforeEach
     void setUp() {
         course = new Course("test", 1L);
-        session = new Session(1L, course, new Image(), LocalDateTime.now(), LocalDateTime.now(), 1, SessionType.PAID, SessionStatus.OPEN, 10000L);
+        session = new Session.Builder()
+                .id(1L)
+                .course(course)
+                .image(new Image())
+                .startDate(LocalDateTime.now())
+                .endDate(LocalDateTime.now())
+                .maxAttendees(1)
+                .type(SessionType.PAID)
+                .status(SessionStatus.OPEN)
+                .price(10000L)
+                .build();
         user = new NsUser(1L, "tony", "1234", "ahn", "a@google.com");
         user2 = new NsUser(2L, "aaa", "1234", "bbb", "2@google.com");
         user3 = new NsUser(3L, "bbb", "1234", "ccc", "3@google.com");
@@ -41,7 +51,17 @@ public class SessionTest {
 
     @Test
     void freeSessionMaxAttendees() {
-        Session freeSession = new Session(1L, course, new Image(), LocalDateTime.now(), LocalDateTime.now(), 1, SessionType.FREE, SessionStatus.OPEN, 10000L);
+        Session freeSession = new Session.Builder()
+                .id(1L)
+                .course(course)
+                .image(new Image())
+                .startDate(LocalDateTime.now())
+                .endDate(LocalDateTime.now())
+                .maxAttendees(2)
+                .type(SessionType.FREE)
+                .status(SessionStatus.OPEN)
+                .price(10000L)
+                .build();
         freeSession.addPayment(payment);
         freeSession.addPayment(payment2);
         freeSession.addPayment(payment3);
@@ -74,7 +94,17 @@ public class SessionTest {
 
     @Test
     void notOpenSession() {
-        Session closedSession = new Session(1L, course, new Image(), LocalDateTime.now(), LocalDateTime.now(), 1, SessionType.PAID, SessionStatus.CLOSED, 10000L);
+        Session closedSession = new Session.Builder()
+                .id(1L)
+                .course(course)
+                .image(new Image())
+                .startDate(LocalDateTime.now())
+                .endDate(LocalDateTime.now())
+                .maxAttendees(1)
+                .type(SessionType.PAID)
+                .status(SessionStatus.CLOSED)
+                .price(10000L)
+                .build();
         assertThrows(IllegalStateException.class, () -> closedSession.addAttendee(user));
     }
 }

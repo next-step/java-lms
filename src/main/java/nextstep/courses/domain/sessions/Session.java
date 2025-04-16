@@ -40,6 +40,18 @@ public class Session {
     public Session() {
     }
 
+    public Session(Builder builder) {
+        this.id = builder.id;
+        this.course = builder.course;
+        this.image = builder.image;
+        this.startDate = builder.startDate;
+        this.endDate = builder.endDate;
+        this.maxAttendees = builder.maxAttendees;
+        this.type = builder.type;
+        this.status = builder.status;
+        this.price = builder.price;
+    }
+
     public Session(Long id, Course course, Image image, LocalDateTime startDate, LocalDateTime endDate,
                    int maxAttendees, SessionType type, SessionStatus status, Long price) {
         this.id = id;
@@ -91,5 +103,66 @@ public class Session {
 
     public int getAttendeesSize() {
         return attendees.size();
+    }
+
+    public static class Builder {
+        private Long id;
+        private Course course;
+        private Image image;
+        private LocalDateTime startDate;
+        private LocalDateTime endDate;
+        private int maxAttendees;
+        private SessionType type;
+        private SessionStatus status;
+        private Long price;
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder course(Course course) {
+            this.course = course;
+            return this;
+        }
+
+        public Builder image(Image image) {
+            this.image = image;
+            return this;
+        }
+
+        public Builder startDate(LocalDateTime startDate) {
+            this.startDate = startDate;
+            return this;
+        }
+
+        public Builder endDate(LocalDateTime endDate) {
+            this.endDate = endDate;
+            return this;
+        }
+
+        public Builder maxAttendees(int maxAttendees) {
+            this.maxAttendees = maxAttendees;
+            return this;
+        }
+
+        public Builder type(SessionType type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder status(SessionStatus status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder price(Long price) {
+            this.price = price;
+            return this;
+        }
+
+        public Session build() {
+            return new Session(this);
+        }
     }
 }
