@@ -15,8 +15,7 @@ class CoverImageTest {
                 .fileName("cover.png")
                 .imageFormat("png")
                 .fileSize(100_000L)
-                .width(300)
-                .height(200)
+                .imageSize(300, 200)
                 .build();
 
         assertDoesNotThrow(() -> new CoverImage("cover.png", "png", 100_000L, 300, 200));

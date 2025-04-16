@@ -35,15 +35,16 @@ public class CoverImage {
             this.fileSize = fileSize;
             return this;
         }
-        public Builder width(int width) {
+        public Builder imageSize(int width, int height) {
+            validateImageSize(width, height);
             this.width = width;
-            return this;
-        }
-        public Builder height(int height) {
             this.height = height;
             return this;
         }
         public CoverImage build() {
+            validateFileName(fileName);
+            validateImageFormat(imageFormat);
+            validateFileSize(fileSize);
             validateImageSize(width, height);
             return new CoverImage(this);
         }
