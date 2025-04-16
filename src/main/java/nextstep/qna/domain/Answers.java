@@ -31,4 +31,8 @@ public class Answers {
         return answers.stream()
                 .allMatch(answer -> answer.isOwner(loginUser));
     }
+
+    public boolean isNotOwner(NsUser loginUser) {
+        return !isOwner(loginUser);
+    }
 }
