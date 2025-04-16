@@ -43,5 +43,26 @@ public class Image {
         }
     }
 
+    public float getSize() {
+        return file.getSize();
+    }
+
+    public String getType(){
+        return file.getType();
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+
 
 }

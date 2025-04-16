@@ -58,4 +58,40 @@ public class Session {
 
         this.capacityInfo.increaseCurrentCount();
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public long getTuition() {
+        return tuition;
+    }
+
+    public LocalDateTime getStartDate() {
+        return sessionPeriod.getStartDate();
+    }
+
+    public LocalDateTime getEndDate() {
+        return sessionPeriod.getEndDate();
+    }
+
+    public int getCurrentCount() {
+        return capacityInfo.getCurrentCount();
+    }
+
+    public int getCapacity() {
+        return capacityInfo.getCapacity();
+    }
+
+    public Image getCoverImage() {
+        return coverImage;
+    }
+
+    public SessionStatus getStatus() {
+        return sessionStatus;
+    }
 }
