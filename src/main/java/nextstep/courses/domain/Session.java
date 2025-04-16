@@ -3,13 +3,11 @@ package nextstep.courses.domain;
 import java.time.LocalDateTime;
 
 public class Session {
+    private CapacityInfo capacityInfo;
+    private SessionPeriod sessionPeriod;
     private String title;
     private int id;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
     private long tuition;
-    private int currentCount;
-    private int capacity;
     private Image coverImage;
     private SessionStatus sessionStatus;
     private JoinStrategy joinStrategy;
@@ -18,11 +16,9 @@ public class Session {
 
         this.title = title;
         this.id = id;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.sessionPeriod = new SessionPeriod(startDate, endDate);
         this.tuition = tuition;
-        this.currentCount = currentCount;
-        this.capacity = capacity;
+        this.capacityInfo = new CapacityInfo(currentCount, capacity);
         this.coverImage = coverImage;
         this.sessionStatus = sessionStatus;
         this.joinStrategy = joinStrategy;
@@ -37,7 +33,7 @@ public class Session {
     }
 
     public boolean underCapacity() {
-        return currentCount < capacity;
+        return capacityInfo.getCurrentCount() < capacityInfo.getCapacity();
     }
 
     public boolean tuitionMatched(long paidAmount) {
@@ -53,6 +49,6 @@ public class Session {
             throw new IllegalStateException("수강 신청 조건을 만족하지 않습니다.");
         }
 
-        this.currentCount++;
+        this.capacityInfo.increaseCurrentCount();
     }
 }
