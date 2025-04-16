@@ -28,6 +28,7 @@
 
 ## TODO
 2025/04/16
+- [x] 비용 정책(PaymentPolicy)에 대한 class 리팩토링 
 - [x] 빌더패턴 적용 - Session
 - [x] 요구사항 분석후 그에 맞는 User-defined Exception 생성
 

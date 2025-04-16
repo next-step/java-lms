@@ -100,19 +100,14 @@ public class Session {
     }
 
     public Payment enroll(NsUser nsUser, Long amount) {
-        validateEnrollment();
-        paymentPolicy.validateEnrollment(amount);
-
-        enrolledStudents.add(nsUser);
-
-        return new Payment("P1", 1L, nsUser.getId(), amount);
-    }
-    void validateEnrollment() {
         if (status != SessionStatus.RECRUITING) {
             throw new IllegalStateException("모집중인 강의만 수강 신청이 가능합니다.");
         }
-        if (enrolledStudents.count() >= paymentPolicy.enrollmentLimit()) {
-            throw new IllegalStateException("수강 최대 인원을 초과했습니다.");
-        }
+
+        paymentPolicy.validateEnrollment(amount);
+
+        enrolledStudents.add(paymentPolicy, nsUser);
+
+        return new Payment("P1", 1L, nsUser.getId(), amount);
     }
 }
