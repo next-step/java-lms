@@ -10,13 +10,17 @@ public class Session {
     private SessionPeriod sessionPeriod;
     private String title;
     private int id;
-    private long tuition;
+    private Long tuition;
     private Image coverImage;
     private SessionStatus sessionStatus;
     private JoinStrategy joinStrategy;
 
-    public Session(String title, int id, LocalDateTime startDate, LocalDateTime endDate, long tuition, int currentCount, int capacity, Image coverImage, SessionStatus sessionStatus, JoinStrategy joinStrategy) {
 
+    public Session(String title, int id, LocalDateTime startDate, LocalDateTime endDate, Long tuition, int currentCount, int capacity, Image coverImage, SessionStatus sessionStatus) {
+        this(title, id, startDate, endDate, tuition, currentCount, capacity, coverImage, sessionStatus, tuition == 0 ? new FreeJoinStrategy() : new PaidJoinStrategy());
+    }
+
+    public Session(String title, int id, LocalDateTime startDate, LocalDateTime endDate, Long tuition, int currentCount, int capacity, Image coverImage, SessionStatus sessionStatus, JoinStrategy joinStrategy) {
         this.title = title;
         this.id = id;
         this.sessionPeriod = new SessionPeriod(startDate, endDate);

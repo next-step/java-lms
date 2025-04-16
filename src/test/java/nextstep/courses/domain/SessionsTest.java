@@ -18,7 +18,7 @@ class SessionsTest {
                 id,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(7),
-                0,
+                0L,
                 0,
                 0,
                 image,

@@ -20,7 +20,7 @@ class SessionTest {
                 1,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(7),
-                0,             // tuition
+                0L,             // tuition
                 0,             // currentCount
                 0,             // capacity (무제한이지만 그냥 0으로 둠)
                 validImage,
@@ -39,7 +39,7 @@ class SessionTest {
                 1,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(7),
-                0,
+                0L,
                 0,
                 0,
                 validImage,
@@ -58,7 +58,7 @@ class SessionTest {
                 1,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(7),
-                10000,   // tuition
+                10000L,   // tuition
                 29,      // currentCount
                 30,      // capacity
                 validImage,
@@ -77,7 +77,7 @@ class SessionTest {
                 1,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(7),
-                10000,
+                10000L,
                 10,
                 30,
                 validImage,
@@ -96,7 +96,7 @@ class SessionTest {
                 1,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(7),
-                10000,
+                10000L,
                 30,
                 30,
                 validImage,
