@@ -18,7 +18,11 @@ public class PaymentPolicy {
         this.enrollmentLimit = enrollmentLimit;
     }
 
-    public boolean isPaidPaymentType() {
+    public boolean isPaidPayment() {
+        return paymentType == PaymentType.PAID;
+    }
+
+    public boolean isFreePayment() {
         return paymentType == PaymentType.PAID;
     }
 
@@ -27,7 +31,7 @@ public class PaymentPolicy {
     }
 
     public void validateEnrollment(long amount) {
-        if (!isPaidPaymentType()) return;
+        if (!isPaidPayment()) return;
 
         if (amount != fee) {
             throw new IllegalArgumentException("결제 금액이 수강료와 일치하지 않습니다.");

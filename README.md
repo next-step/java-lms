@@ -27,8 +27,9 @@
   - 결제를 완료한 결제 정보는 payments 모듈을 통해 관리되며, 결제 정보는 Payment 객체에 담겨 반한된다.
 
 ## TODO
-- [ ] 빌더패턴 적용 - Session
-- [ ] 요구사항 분석후 그에 맞는 User-defined Exception 생성
+2025/04/16
+- [x] 빌더패턴 적용 - Session
+- [x] 요구사항 분석후 그에 맞는 User-defined Exception 생성
 
 2025/04/15
 - [x] 빌더패턴 적용 - coverImage

@@ -6,7 +6,6 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Session {
 
@@ -22,28 +21,75 @@ public class Session {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    public static class Builder {
+        private String title;
+        private CoverImage coverImage;
+        private Duration duration;
 
-    public Session(
-            String title,
-            CoverImage coverImage,
+        private PaymentPolicy paymentPolicy;
+        private EnrolledStudents enrolledStudents;
 
-            Duration duration,
+        private SessionStatus status;
 
-            PaymentPolicy paymentPolicy,
-            EnrolledStudents enrolledStudents,
-            SessionStatus status,
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
 
-            LocalDateTime createdAt,
-            LocalDateTime updatedAt
-    ) {
-        this.title = title;
-        this.duration = duration;
-        this.coverImage = coverImage;
-        this.paymentPolicy = paymentPolicy;
-        this.enrolledStudents = enrolledStudents;
-        this.status = status;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        public Builder title(String title) {
+            this.title = title;
+            return this;
+        }
+        public Builder coverImage(CoverImage coverImage) {
+            this.coverImage = coverImage;
+            return this;
+        }
+        public Builder duration(Duration duration) {
+            this.duration = duration;
+            return this;
+        }
+        public Builder paymentPolicy(PaymentPolicy paymentPolicy) {
+            this.paymentPolicy = paymentPolicy;
+            return this;
+        }
+        public Builder enrolledStudents(EnrolledStudents enrolledStudents) {
+            this.enrolledStudents = enrolledStudents;
+            return this;
+        }
+        public Builder status(SessionStatus status) {
+            this.status = status;
+            return this;
+        }
+        public Builder createdAt(LocalDateTime createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+        public Builder updatedAt(LocalDateTime updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+        public Session build() {
+            if (this.enrolledStudents == null) {
+                this.enrolledStudents = new EnrolledStudents();
+            }
+            if (this.createdAt == null) {
+                this.createdAt = LocalDateTime.now();
+            }
+            if (this.updatedAt == null) {
+                this.updatedAt = LocalDateTime.now();
+            }
+
+            return new Session(this);
+        }
+    }
+
+    private Session(Builder builder) {
+        this.title = builder.title;
+        this.duration = builder.duration;
+        this.coverImage = builder.coverImage;
+        this.paymentPolicy = builder.paymentPolicy;
+        this.enrolledStudents = builder.enrolledStudents;
+        this.status = builder.status;
+        this.createdAt = builder.createdAt;
+        this.updatedAt = builder.updatedAt;
     }
 
     public String title() {
