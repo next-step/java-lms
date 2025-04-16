@@ -41,7 +41,7 @@ public class Answers {
         this.delete(writer);
 
         if (deleteHistories != null) {
-            deleteHistories.add(this);
+            answers.forEach(answer -> answer.addHistory(deleteHistories));
         }
     }
 

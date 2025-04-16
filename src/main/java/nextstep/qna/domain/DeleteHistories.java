@@ -22,12 +22,6 @@ public class DeleteHistories {
         this.histories.add(new DeleteHistory(contentType, contentId, deletedBy, LocalDateTime.now()));
     }
 
-    public void add(Answers answers) {
-        for (Answer answer : answers.getAnswers()) {
-            this.add(ContentType.ANSWER, answer.getId(), answer.getWriter());
-        }
-    }
-
     public List<DeleteHistory> getDeleteHistories() {
         return Collections.unmodifiableList(histories);
     }

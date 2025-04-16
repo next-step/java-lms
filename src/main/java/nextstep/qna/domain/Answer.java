@@ -57,6 +57,10 @@ public class Answer {
         this.deleted = true;
     }
 
+    public void addHistory(DeleteHistories histories){
+        histories.add(ContentType.ANSWER, getId(), getWriter());
+    }
+
     public boolean isDeleted() {
         return deleted;
     }
