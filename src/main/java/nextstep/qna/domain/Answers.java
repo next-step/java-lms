@@ -13,10 +13,12 @@ public class Answers {
         answers.add(answer);
     }
 
-    public void deleteAllBy(NsUser user) throws CannotDeleteException {
-        for (Answer answer : answers) {
-            answer.deleteBy(user);
-        }
+    public List<DeleteHistory> deleteAllBy(NsUser user) throws CannotDeleteException {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        answers.stream()
+            .map(answer -> answer.deleteBy(user))
+            .forEach(deleteHistories::add);
+        return deleteHistories;
     }
 
     // TODO 잠시 테스트용

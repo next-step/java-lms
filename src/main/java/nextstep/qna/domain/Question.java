@@ -92,11 +92,13 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public void deleteBy(NsUser writer) throws CannotDeleteException {
+    public List<DeleteHistory> deleteBy(NsUser writer) throws CannotDeleteException {
         if (!isOwner(writer)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
         deleted = true;
-        answers.deleteAllBy(writer);
+        List<DeleteHistory> deleteHistories = answers.deleteAllBy(writer);
+        deleteHistories.add(DeleteHistory.ofQuestion(id, writer));
+        return deleteHistories;
     }
 }

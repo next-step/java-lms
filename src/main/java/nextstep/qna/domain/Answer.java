@@ -83,6 +83,6 @@ public class Answer {
             throw new CannotDeleteException("답변을 삭제할 권한이 없습니다.");
         }
         this.deleted = true;
-        return DeleteHistory.ofAnswer(this);
+        return DeleteHistory.ofAnswer(id, writer);
     }
 }
