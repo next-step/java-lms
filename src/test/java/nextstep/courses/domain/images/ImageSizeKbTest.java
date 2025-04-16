@@ -9,12 +9,12 @@ public class ImageSizeKbTest {
     @Test
     void lessThanOrEqualToZero() {
         double value = 0;
-        assertThrows(IllegalArgumentException.class, () -> new ImageSizeKb(value));
+        assertThrows(InvalidImageSizeException.class, () -> new ImageSizeKb(value));
     }
 
     @Test
     void largeValue() {
         double value = 1001;
-        assertThrows(IllegalArgumentException.class, () -> new ImageSizeKb(value));
+        assertThrows(InvalidImageSizeException.class, () -> new ImageSizeKb(value));
     }
 }

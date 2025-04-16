@@ -8,16 +8,16 @@ public class ImageDimensionTest {
 
     @Test
     void widthOver300() {
-        assertThrows(IllegalArgumentException.class, () -> new ImageDimension(299.9, 200.0));
+        assertThrows(InvalidImageDimensionException.class, () -> new ImageDimension(299.9, 200.0));
     }
 
     @Test
     void heightOver200() {
-        assertThrows(IllegalArgumentException.class, () -> new ImageDimension(300.0, 199.9));
+        assertThrows(InvalidImageDimensionException.class, () -> new ImageDimension(300.0, 199.9));
     }
 
     @Test
     void widthHeightRatio3to2() {
-        assertThrows(IllegalArgumentException.class, () -> new ImageDimension(300.0, 201.1));
+        assertThrows(InvalidImageDimensionException.class, () -> new ImageDimension(300.0, 201.1));
     }
 }

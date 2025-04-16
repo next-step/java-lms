@@ -12,15 +12,15 @@ public class ImageDimension {
 
     private void validate(Double width, Double height) {
         if (width <= 300) {
-            throw new IllegalArgumentException("width must be greater than 300");
+            throw new InvalidImageDimensionException("width must be greater than 300");
         }
 
         if (height <= 200) {
-            throw new IllegalArgumentException("height must be greater than 200");
+            throw new InvalidImageDimensionException("height must be greater than 200");
         }
 
         if (width * 2 != height * 3) {
-            throw new IllegalArgumentException("width : height must be 3 : 2");
+            throw new InvalidImageDimensionException("width : height must be 3 : 2");
         }
     }
 
