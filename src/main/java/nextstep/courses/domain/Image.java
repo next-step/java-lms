@@ -8,12 +8,14 @@ public class Image {
     private static final Set<String> ALLOWED_FILE_TYPES = new HashSet<>(List.of("gif", "jpg", "jpeg", "png", "svg"));
     private float fileSize;
     private String fileType;
+    private String imageUrl;
     private int width;
     private int height;
 
-    public Image(float fileSize, String fileType, int width, int height) {
+    public Image(float fileSize, String fileType, String imageUrl, int width, int height) {
         this.fileSize = fileSize;
         this.fileType = fileType;
+        this.imageUrl = imageUrl;
         this.width = width;
         this.height = height;
         validate();

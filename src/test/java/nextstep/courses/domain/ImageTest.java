@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 public class ImageTest {
     private float fileSize; // bytes
     private String fileType;
+    private String imageUrl;
     private int width;
     private int height;
 
@@ -17,6 +18,7 @@ public class ImageTest {
     void setUp() {
         fileSize = 1024;
         fileType = "jpg";
+        imageUrl = "cdn.com";
         width = 300;
         height = 200;
     }
@@ -25,7 +27,7 @@ public class ImageTest {
     class ValidCases {
         @Test
         void shouldAllow_WhenAllConditionsAreValid() {
-            assertDoesNotThrow(() -> new Image(fileSize, fileType, width, height));
+            assertDoesNotThrow(() -> new Image(fileSize, fileType, imageUrl, width, height));
         }
     }
 
@@ -36,7 +38,7 @@ public class ImageTest {
         void shouldNotAllow_WhenFileSizeIsOver1MB() {
             fileSize = 1025;
             assertThatIllegalArgumentException()
-                    .isThrownBy(() -> new Image(fileSize, fileType, width, height))
+                    .isThrownBy(() -> new Image(fileSize, fileType, imageUrl, width, height))
                     .withMessage("FileSize Should be under or equal to 1MB");
         }
 
@@ -44,7 +46,7 @@ public class ImageTest {
         void shouldNotAllow_WhenGivenInvalidFileType() {
             fileType = "tiff";
             assertThatIllegalArgumentException()
-                    .isThrownBy(() -> new Image(fileSize, fileType, width, height))
+                    .isThrownBy(() -> new Image(fileSize, fileType, imageUrl, width, height))
                     .withMessage("Allowed file types are only gif, jpg/jpeg,png, svg");
         }
 
@@ -52,7 +54,7 @@ public class ImageTest {
         void shouldNotAllow_WhenImageRatioIsNot3to2() {
             width = 2;
             assertThatIllegalArgumentException()
-                    .isThrownBy(() -> new Image(fileSize, fileType, width, height))
+                    .isThrownBy(() -> new Image(fileSize, fileType, imageUrl, width, height))
                     .withMessage("The ratio of width:height must be 3:2");
         }
     }

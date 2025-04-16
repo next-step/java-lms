@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class SessionTest {
 
-    private final Image validImage = new Image(500f, "png", 600, 400);
+    private final Image validImage = new Image(500f, "png", "cdn.com", 600, 400);
 
     @Test
     @DisplayName("모집중 상태의 무료 강의는 수강 신청 가능하다")
