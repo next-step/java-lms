@@ -78,10 +78,11 @@ public class Answer {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 
-    public void deleteBy(NsUser writer) throws CannotDeleteException {
+    public DeleteHistory deleteBy(NsUser writer) throws CannotDeleteException {
         if (!isOwner(writer)) {
             throw new CannotDeleteException("답변을 삭제할 권한이 없습니다.");
         }
         this.deleted = true;
+        return DeleteHistory.ofAnswer(this);
     }
 }

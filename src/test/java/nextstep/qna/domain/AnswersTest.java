@@ -1,6 +1,6 @@
 package nextstep.qna.domain;
 
-import static nextstep.qna.domain.AnswerTest.*;
+import static nextstep.qna.CommonTestFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,8 +13,6 @@ import nextstep.users.domain.NsUserTest;
 public class AnswersTest {
     public Answers differentWriterSet = new Answers();
     public Answers sameWriterSet = new Answers();
-
-    public static final Answer A3 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents3");
 
     @BeforeEach
     void setUp() {

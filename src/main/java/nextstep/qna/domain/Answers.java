@@ -18,4 +18,9 @@ public class Answers {
             answer.deleteBy(user);
         }
     }
+
+    // TODO 잠시 테스트용
+    public List<Answer> getAnswers() {
+        return answers;
+    }
 }

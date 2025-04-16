@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -82,7 +82,8 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
+    //TODO DEPRECATED
+    public Answers getAnswers() {
         return answers;
     }
 
@@ -95,5 +96,7 @@ public class Question {
         if (!isOwner(writer)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
+        deleted = true;
+        answers.deleteAllBy(writer);
     }
 }
