@@ -82,11 +82,6 @@ public class Question {
         return deleted;
     }
 
-    //TODO DEPRECATED
-    public Answers getAnswers() {
-        return answers;
-    }
-
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";

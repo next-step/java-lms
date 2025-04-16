@@ -20,9 +20,4 @@ public class Answers {
             .forEach(deleteHistories::add);
         return deleteHistories;
     }
-
-    // TODO 잠시 테스트용
-    public List<Answer> getAnswers() {
-        return answers;
-    }
 }
