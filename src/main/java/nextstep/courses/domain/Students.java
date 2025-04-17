@@ -1,18 +1,16 @@
 package nextstep.courses.domain;
 
-import nextstep.users.domain.NsUser;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Students {
-    private final List<NsUser> students;
+    private final List<Student> students;
 
     public Students() {
         this.students = new ArrayList<>();
     }
 
-    public Students(List<NsUser> students) {
+    public Students(List<Student> students) {
         this.students = students;
     }
 
@@ -20,7 +18,7 @@ public class Students {
         return students.size();
     }
 
-    public void add(NsUser student) {
+    public void add(Student student) {
         students.add(student);
     }
 }

@@ -2,6 +2,7 @@ package nextstep.courses.service;
 
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
+import nextstep.courses.domain.Student;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class SessionService {
     }
 
     @Transactional
-    public void enroll(Long sessionId, NsUser student, Payment payment) {
+    public void enroll(Long sessionId, Student student, Payment payment) {
         Session session = sessionRepository.findById(sessionId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강의입니다."));
 

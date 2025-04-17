@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -11,17 +12,19 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 
 public class SessionTest {
 
+    private static final Student student = new Student(new NsUser());
+
     @Test
     public void 수강신청_시_강의상태가_모집중_상태가_아닌_경우_예외_발생() {
         Session session = Session.createFreeSession(LocalDate.now(), LocalDate.now());
 
         session.ready();
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> session.enroll(new NsUser(), new Payment()));
+                .isThrownBy(() -> session.enroll(student, new Payment()));
 
         session.close();
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> session.enroll(new NsUser(), new Payment()));
+                .isThrownBy(() -> session.enroll(student, new Payment()));
     }
 
     @Test
@@ -34,9 +37,9 @@ public class SessionTest {
         Payment payment = new Payment("paymentId", 0L, 0L, price);
 
         IntStream.range(0, maxCapacity)
-                .forEach(i -> paidSession.enroll(new NsUser(), payment));
+                .forEach(i -> paidSession.enroll(student, payment));
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> paidSession.enroll(new NsUser(), payment));
+                .isThrownBy(() -> paidSession.enroll(student, payment));
     }
 }

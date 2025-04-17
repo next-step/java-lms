@@ -53,7 +53,7 @@ public class Session {
         );
     }
 
-    public void enroll(NsUser student, Payment payment) {
+    public void enroll(Student student, Payment payment) {
         validateRecruiting();
         validateMaxCapacity();
         validatePayment(payment);
