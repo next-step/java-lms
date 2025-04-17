@@ -62,8 +62,7 @@ public class SessionDto {
         return 0;
     }
 
-    public void setTimeStampForUpdate(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setTimeStampForUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
 }

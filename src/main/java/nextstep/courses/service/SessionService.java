@@ -16,7 +16,6 @@ import nextstep.courses.domain.session.info.detail.SessionPeriod;
 import nextstep.courses.domain.session.info.detail.SessionPrice;
 import nextstep.courses.dto.ImageDto;
 import nextstep.courses.dto.SessionDto;
-import nextstep.courses.dto.SessionEnrollmentDto;
 import nextstep.courses.infrastructure.ImageRepository;
 import nextstep.courses.infrastructure.SessionEnrollmentRepository;
 import nextstep.courses.infrastructure.SessionRepository;
@@ -41,10 +40,7 @@ public class SessionService {
 
     @Transactional
     public void enroll(Long sessionId, String userId, String paymentId) {
-        SessionDto sessionDto = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강의입니다."));
-
-        Session session = getSession(sessionDto);
+        Session session = findSession(sessionId);
 
         NsUser user = userService.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
@@ -57,15 +53,20 @@ public class SessionService {
         session.enroll(user, payment);
         
         SessionDto updatedSessionDto = SessionDto.of(session);
-        updatedSessionDto.setTimeStampForUpdate(sessionDto.getCreatedAt());
-
-        SessionEnrollmentDto updatedSessionEnrollmentDto = SessionEnrollmentDto.of(session);
+        updatedSessionDto.setTimeStampForUpdate();
 
         sessionRepository.update(updatedSessionDto);
         sessionEnrollmentRepository.save(sessionId, user.getId());
     }
 
-    private Session getSession(SessionDto sessionDto) {
+    private Session findSession(Long sessionId) {
+        SessionDto sessionDto = sessionRepository.findById(sessionId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강의입니다."));
+
+        return createSessionFromDto(sessionDto);
+    }
+
+    private Session createSessionFromDto(SessionDto sessionDto) {
         SessionBasicInfo sessionBasicInfo = new SessionBasicInfo(sessionDto.getTitle(), getThumbnail(sessionDto.getId()));
         SessionDetailInfo sessionDetailInfo = getSessionDetailInfo(sessionDto);
         SessionInfo sessionInfo = new SessionInfo(sessionBasicInfo, sessionDetailInfo);
