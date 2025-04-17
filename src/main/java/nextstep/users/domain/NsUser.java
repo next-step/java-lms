@@ -11,6 +11,8 @@ public class NsUser {
 
     private Long id;
 
+    private Long sessionId;
+
     private String userId;
 
     private String password;
@@ -25,11 +27,12 @@ public class NsUser {
     }
 
     public NsUser(Long id, String userId, String password, String name, String email) {
-        this(id, userId, password, name, email, LocalDateTime.now(), null);
+        this(id, null, userId, password, name, email, LocalDateTime.now(), null);
     }
 
-    public NsUser(Long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public NsUser(Long id, Long sessionId, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
+        this.sessionId = sessionId;
         this.userId = userId;
         this.password = password;
         this.name = name;
@@ -115,13 +118,6 @@ public class NsUser {
         return false;
     }
 
-    private static class GuestNsUser extends NsUser {
-        @Override
-        public boolean isGuestUser() {
-            return true;
-        }
-    }
-
     @Override
     public String toString() {
         return "NsUser{" +
@@ -131,5 +127,16 @@ public class NsUser {
                 ", email='" + email + '\'' +
                 ", auditInfo=" + auditInfo +
                 '}';
+    }
+
+    public void enroll(Long id) {
+        this.sessionId = id;
+    }
+
+    private static class GuestNsUser extends NsUser {
+        @Override
+        public boolean isGuestUser() {
+            return true;
+        }
     }
 }

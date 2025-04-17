@@ -1,13 +1,9 @@
 package nextstep.sessions.domain;
 
-import nextstep.payments.domain.Payment;
-import nextstep.payments.domain.Payments;
 import nextstep.sessions.exception.AttendeeException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Session {
 
@@ -23,27 +19,31 @@ public class Session {
 
     private int maxAttendees;
 
+    private int currentAttendees;
+
     private SessionType type;
 
     private SessionStatus status;
 
     private Long price;
 
-    private List<NsUser> attendees = new ArrayList<>();
-
-    private Payments payments = new Payments();
-
     public Session() {
     }
 
     public Session(Long id, Long courseId, Long imageId, LocalDateTime startDate, LocalDateTime endDate,
                    int maxAttendees, SessionType type, SessionStatus status) {
+        this(id, courseId, imageId, startDate, endDate, maxAttendees, 0, type, status);
+    }
+
+    public Session(Long id, Long courseId, Long imageId, LocalDateTime startDate, LocalDateTime endDate,
+                   int maxAttendees, int currentAttendees, SessionType type, SessionStatus status) {
         this.id = id;
         this.courseId = courseId;
         this.imageId = imageId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.maxAttendees = maxAttendees;
+        this.currentAttendees = currentAttendees;
         this.type = type;
         this.status = status;
     }
@@ -69,11 +69,8 @@ public class Session {
             throw new AttendeeException("Maximum number of attendees reached");
         }
 
-        if (payments.paidIncorrectly(attendee.getId(), this.price)) {
-            throw new AttendeeException("Payment not completed");
-        }
-
-        attendees.add(attendee);
+        this.currentAttendees++;
+        attendee.enroll(this.id);
     }
 
     private boolean isOpen() {
@@ -85,19 +82,11 @@ public class Session {
     }
 
     private boolean exceedMaxAttendees() {
-        return isPaid() && getAttendeesSize() >= maxAttendees;
+        return isPaid() && currentAttendees >= maxAttendees;
     }
 
     private boolean isPaid() {
         return SessionType.PAID.equals(this.type);
-    }
-
-    public void addPayment(Payment payment) {
-        payments.add(payment);
-    }
-
-    public int getAttendeesSize() {
-        return attendees.size();
     }
 
     public Long getId() {
@@ -124,12 +113,20 @@ public class Session {
         return maxAttendees;
     }
 
+    public int getCurrentAttendees() {
+        return currentAttendees;
+    }
+
     public SessionType getType() {
         return type;
     }
 
     public SessionStatus getStatus() {
         return status;
+    }
+
+    public Long getPrice() {
+        return price;
     }
 
     public static class Builder {

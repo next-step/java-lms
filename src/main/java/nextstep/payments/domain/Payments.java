@@ -32,7 +32,7 @@ public class Payments {
         return !paidCorrectly(userId, amount);
     }
 
-    private Payment get(Long userId) {
+    public Payment get(Long userId) {
         return payments.stream()
                 .filter(payment -> payment.getNsUserId().equals(userId))
                 .findFirst()
