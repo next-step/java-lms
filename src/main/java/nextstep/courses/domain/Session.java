@@ -7,52 +7,67 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Session {
-    private Long sessionId;
-    private int sequence;
-    private LocalDateTime start;
-    private LocalDateTime end;
+    private final Long id;
+    private final LocalDateTime startDate;
+    private final LocalDateTime endDate;
     private SessionImage image;
+    private final SessionStatus status;
     private Long price;
-    private SessionStatus status;
-    private int maxStudents;
+    private final int capacity;
     private List<Student> students;
 
     protected Session() {
+        this(LocalDateTime.now(), LocalDateTime.now().plusMonths(1));
     }
 
-    public Session(int sequence, LocalDateTime start, LocalDateTime end, String image, Long price, int maxStudents) {
-        this(sequence, start, end, image, price, maxStudents, SessionStatus.READY);
+    public Session(LocalDateTime startDate, LocalDateTime endDate) {
+        this(startDate, endDate, 0L, Integer.MAX_VALUE);
     }
 
-    public Session(int sequence, LocalDateTime start, LocalDateTime end, String image, Long price, int maxStudents, SessionStatus status) {
-        this(null, sequence, start, end, new SessionImage(image), price, status, maxStudents, new ArrayList<>());
+    public Session(Long price, int capacity) {
+        this(LocalDateTime.now(), LocalDateTime.now().plusMonths(1), price, capacity);
     }
 
-    public Session(Long sessionId, int sequence, LocalDateTime start, LocalDateTime end, SessionImage image, Long price, SessionStatus status, int maxStudents, List<Student> students) {
-        this.sessionId = sessionId;
-        this.sequence = sequence;
-        this.start = start;
-        this.end = end;
+    public Session(SessionStatus status) {
+        this(null, LocalDateTime.now(), LocalDateTime.now().plusMonths(1), null, status, 0L, Integer.MAX_VALUE);
+    }
+
+    public Session(LocalDateTime startDate, LocalDateTime endDate, Long price, int capacity) {
+        this(null, startDate, endDate, null, SessionStatus.OPEN, price, capacity);
+    }
+
+    public Session(Long id, LocalDateTime startDate, LocalDateTime endDate, SessionImage image, SessionStatus status, Long price, int capacity) {
+        validateSessionDates(startDate, endDate);
+
+        this.id = id;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.image = image;
         this.price = price;
         this.status = status;
-        this.maxStudents = maxStudents;
-        this.students = students;
+        this.capacity = capacity;
+        this.students = new ArrayList<>();
+    }
+
+    private void validateSessionDates(LocalDateTime start, LocalDateTime end) {
+        if (start.isAfter(end)) {
+            throw new IllegalArgumentException("start date must be before end date");
+        }
     }
 
     public Payment enroll(Student student) {
-        if (status != SessionStatus.OPEN) {
-            throw new IllegalArgumentException("session is not open");
-        }
-        if (price > 0 && students.size() >= maxStudents) {
-            throw new IllegalArgumentException("student limit exceeded");
-        }
         if (students.contains(student)) {
             throw new IllegalArgumentException("already enrolled");
         }
+        if (status != SessionStatus.OPEN) {
+            throw new IllegalArgumentException("session is not open");
+        }
+        if (price > 0 && students.size() >= capacity) {
+            throw new IllegalArgumentException("student limit exceeded");
+        }
         student.pay(price);
         students.add(student);
-        return new Payment("0L", sessionId, student.getNsUserId(), price);
+        return new Payment("0L", id, student.getNsUserId(), price);
     }
 
 }

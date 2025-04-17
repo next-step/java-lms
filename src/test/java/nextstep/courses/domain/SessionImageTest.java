@@ -12,6 +12,10 @@ class SessionImageTest {
         return new SessionImage(path, width, height, file);
     }
 
+    public static SessionImage createImage(int width, int height) {
+        return createImage(width, height, "image.png");
+    }
+
     public static SessionImage createImage(String path) {
         return createImage(300, 200, path);
     }
@@ -19,13 +23,13 @@ class SessionImageTest {
     @Test
     @DisplayName("이미지 크기는 1MB 이하여야 한다.")
     void imageSizeShouldBeOneMB() {
-        assertThatCode(() -> createImage(300, 200, "image.png")).doesNotThrowAnyException();
+        assertThatCode(() -> createImage(300, 200)).doesNotThrowAnyException();
     }
 
     @Test
     @DisplayName("이미지 크기는 1MB 초과하면 에러가 발생한다.")
     void imageSizeExceedOneMB() {
-        assertThatThrownBy(() -> createImage(1500, 1000, "image.png")).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> createImage(1500, 1000)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -47,19 +51,19 @@ class SessionImageTest {
     @Test
     @DisplayName("이미지의 width는 300픽셀 이상이어야 한다.")
     void imageWidthShouldBeCorrect() {
-        assertThatThrownBy(() -> createImage(200, 200, "image.png")).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> createImage(200, 200)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("이미지의 height는 200픽셀 이상이어야 한다.")
     void imageHeightShouldBeCorrect() {
-        assertThatThrownBy(() -> createImage(300, 150, "image.png")).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> createImage(300, 150)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("이미지의 width와 height의 비율은 3:2여야 한다.")
     void imageWidthAndHeightShouldBeCorrect() {
-        assertThatThrownBy(() -> createImage(400, 200, "image.png")).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> createImage(400, 200)).isInstanceOf(IllegalArgumentException.class);
     }
 
 }
