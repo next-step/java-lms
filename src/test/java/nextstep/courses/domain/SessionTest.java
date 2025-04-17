@@ -1,9 +1,11 @@
 package nextstep.courses.domain;
 
+import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -14,7 +16,7 @@ class SessionTest {
     void createSession() {
         LocalDateTime start = LocalDateTime.now().plusMonths(1);
         LocalDateTime end = LocalDateTime.now().plusMonths(3);
-        assertThatCode(() -> new Session(1, start, end, "image.jpg", 800_000, 100)).doesNotThrowAnyException();
+        assertThatCode(() -> new Session(1, start, end, "image.jpg", 800_000L, 100)).doesNotThrowAnyException();
     }
 
     @Test
@@ -22,7 +24,7 @@ class SessionTest {
     void createFreeSession() {
         LocalDateTime start = LocalDateTime.now().plusMonths(1);
         LocalDateTime end = LocalDateTime.now().plusMonths(3);
-        Session session = new Session(1, start, end, "image.jpg", 0, 0,  SessionStatus.OPEN);
+        Session session = new Session(1, start, end, "image.jpg", 0L, 0, SessionStatus.OPEN);
         assertThatCode(() -> session.enroll(new Student())).doesNotThrowAnyException();
     }
 
@@ -31,8 +33,8 @@ class SessionTest {
     void createPaidSession() {
         LocalDateTime start = LocalDateTime.now().plusMonths(1);
         LocalDateTime end = LocalDateTime.now().plusMonths(3);
-        Session session = new Session(1, start, end, "image.jpg", 800_000, 1,  SessionStatus.OPEN);
-        session.enroll(new Student(800_000));
+        Session session = new Session(1, start, end, "image.jpg", 800_000L, 1, SessionStatus.OPEN);
+        session.enroll(new Student(800_000L));
 
         assertThatThrownBy(() -> session.enroll(new Student()))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -44,8 +46,8 @@ class SessionTest {
     void createPaidSessionWithCorrectPrice() {
         LocalDateTime start = LocalDateTime.now().plusMonths(1);
         LocalDateTime end = LocalDateTime.now().plusMonths(3);
-        Session session = new Session(1, start, end, "image.jpg", 800_000, 1,  SessionStatus.OPEN);
-        assertThatCode(() -> session.enroll(new Student(800_000))).doesNotThrowAnyException();
+        Session session = new Session(1, start, end, "image.jpg", 800_000L, 1, SessionStatus.OPEN);
+        assertThatCode(() -> session.enroll(new Student(800_000L))).doesNotThrowAnyException();
     }
 
     @Test
@@ -53,8 +55,8 @@ class SessionTest {
     void createPaidSessionWithNotEnoughPrice() {
         LocalDateTime start = LocalDateTime.now().plusMonths(1);
         LocalDateTime end = LocalDateTime.now().plusMonths(3);
-        Session session = new Session(1, start, end, "image.jpg", 800_000, 1,  SessionStatus.OPEN);
-        assertThatThrownBy(() -> session.enroll(new Student(790_000)))
+        Session session = new Session(1, start, end, "image.jpg", 800_000L, 1, SessionStatus.OPEN);
+        assertThatThrownBy(() -> session.enroll(new Student(790_000L)))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("not enough money");
     }
@@ -65,16 +67,29 @@ class SessionTest {
         LocalDateTime start = LocalDateTime.now().plusMonths(1);
         LocalDateTime end = LocalDateTime.now().plusMonths(3);
         Student student = new Student();
-        Session ready = new Session(1, start, end, "image.jpg", 0, 1, SessionStatus.READY);
+        Session ready = new Session(1, start, end, "image.jpg", 0L, 1, SessionStatus.READY);
         assertThatThrownBy(() -> ready.enroll(student))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("session is not open");
-        Session closed = new Session(1, start, end, "image.jpg", 0, 1, SessionStatus.CLOSED);
+        Session closed = new Session(1, start, end, "image.jpg", 0L, 1, SessionStatus.CLOSED);
         assertThatThrownBy(() -> closed.enroll(student))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("session is not open");
-        Session open = new Session(1, start, end, "image.jpg", 0, 1, SessionStatus.OPEN);
+        Session open = new Session(1, start, end, "image.jpg", 0L, 1, SessionStatus.OPEN);
         assertThatCode(() -> open.enroll(student)).doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("결제 정보는 Payment 객체에 담겨 반한된다.")
+    void enrollAndGetPayment() {
+        LocalDateTime start = LocalDateTime.now().plusMonths(1);
+        LocalDateTime end = LocalDateTime.now().plusMonths(3);
+        Session session = new Session(10L, 1, start, end, null, 800_000L, SessionStatus.OPEN, 1, new ArrayList<>());
+        Student student = new Student(1L, 800_000L);
+        Payment payment = session.enroll(student);
+        assertThat(payment.getSessionId()).isEqualTo(10L);
+        assertThat(payment.getNsUserId()).isEqualTo(1L);
+        assertThat(payment.getAmount()).isEqualTo(800_000L);
     }
 
 }
