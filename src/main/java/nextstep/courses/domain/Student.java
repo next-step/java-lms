@@ -27,4 +27,8 @@ public class Student {
     public Long getNsUserId() {
         return nsUserId;
     }
+
+    public long getAmount() {
+        return money;
+    }
 }

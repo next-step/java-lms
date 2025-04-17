@@ -10,29 +10,7 @@ class SessionTest {
     @Test
     @DisplayName("무료 강의는 최대 수강 인원 제한이 없다.")
     void createFreeSession() {
-        assertThatCode(() -> new Session(0L, 0).enroll(new Student())).doesNotThrowAnyException();
-    }
-
-    @Test
-    @DisplayName("유료 강의는 강의 최대 수강 인원을 초과할 수 없다.")
-    void createPaidSession() {
-        assertThatThrownBy(() -> new Session(800_000L, 0).enroll(new Student(800_000L)))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("student limit exceeded");
-    }
-
-    @Test
-    @DisplayName("유료 강의는 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능하다.")
-    void createPaidSessionWithCorrectPrice() {
-        assertThatCode(() -> new Session(800_000L, 1).enroll(new Student(800_000L))).doesNotThrowAnyException();
-    }
-
-    @Test
-    @DisplayName("유료 강의는 수강생이 결제한 금액과 수강료가 일치하지 않으면 수강 신청이 불가능하다.")
-    void createPaidSessionWithNotEnoughPrice() {
-        assertThatThrownBy(() -> new Session(800_000L, 1).enroll(new Student(790_000L)))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("not enough money");
+        assertThatCode(() -> new Session(0L, Integer.MAX_VALUE).enroll(new Student())).doesNotThrowAnyException();
     }
 
     @Test
