@@ -17,7 +17,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -49,7 +49,7 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        answers.add(answer);
+        answers.addAnswer(answer);
     }
 
     public void validateDeletable(NsUser loginUser) {
@@ -60,9 +60,7 @@ public class Question {
         validateDeletable(user);
         this.deleted = true;
 
-        List<DeleteHistory> deletedHistories = answers.stream()
-                .map(answer -> answer.delete(user))
-                .collect(Collectors.toList());
+        List<DeleteHistory> deletedHistories = answers.deleteAll(user);
         deletedHistories.add(0, DeleteHistory.ofQuestion(this, user));
 
         return deletedHistories;
