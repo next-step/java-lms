@@ -1,4 +1,4 @@
-package nextstep.courses.domain.images;
+package nextstep.images.domain;
 
 import java.util.List;
 

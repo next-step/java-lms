@@ -1,4 +1,6 @@
-package nextstep.courses.domain.images;
+package nextstep.images.domain;
+
+import nextstep.images.exception.InvalidImageDimensionException;
 
 public class ImageDimension {
     private final double width;

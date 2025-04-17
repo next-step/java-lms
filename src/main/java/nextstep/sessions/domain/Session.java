@@ -1,7 +1,7 @@
-package nextstep.courses.domain.sessions;
+package nextstep.sessions.domain;
 
 import nextstep.courses.domain.Course;
-import nextstep.courses.domain.images.Image;
+import nextstep.images.domain.Image;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.domain.Payments;
 import nextstep.users.domain.NsUser;
@@ -9,9 +9,6 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import static nextstep.courses.domain.sessions.SessionStatus.OPEN;
-import static nextstep.courses.domain.sessions.SessionType.PAID;
 
 public class Session {
 
@@ -82,7 +79,7 @@ public class Session {
     }
 
     private boolean isOpen() {
-        return OPEN.equals(this.status);
+        return SessionStatus.OPEN.equals(this.status);
     }
 
     private boolean isNotOpen() {
@@ -94,7 +91,7 @@ public class Session {
     }
 
     private boolean isPaid() {
-        return PAID.equals(this.type);
+        return SessionType.PAID.equals(this.type);
     }
 
     public void addPayment(Payment payment) {

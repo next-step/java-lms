@@ -1,4 +1,4 @@
-package nextstep.courses.domain.images;
+package nextstep.images.exception;
 
 public class InvalidImageDimensionException extends RuntimeException {
 

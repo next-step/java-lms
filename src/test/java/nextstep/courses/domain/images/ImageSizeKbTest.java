@@ -1,5 +1,7 @@
 package nextstep.courses.domain.images;
 
+import nextstep.images.domain.ImageSizeKb;
+import nextstep.images.exception.InvalidImageSizeException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;

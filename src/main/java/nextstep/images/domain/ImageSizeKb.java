@@ -1,4 +1,6 @@
-package nextstep.courses.domain.images;
+package nextstep.images.domain;
+
+import nextstep.images.exception.InvalidImageSizeException;
 
 public class ImageSizeKb {
     private double value;

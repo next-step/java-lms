@@ -1,5 +1,6 @@
 package nextstep.courses.domain.images;
 
+import nextstep.images.domain.ImageType;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
