@@ -12,3 +12,7 @@
   - Session 객체는 자식 객체를 생성자로 받고, DTO를 통하여 자식 객체를 생성
 ### SessionPrice - Enrollment 역할 중복
 - 유료 강의/무료 강의를 구분하는 Enrollment와 유료/무료 여부를 갖고 있는 SessionPrice의 역할 중복
+### Enrollment 리팩토링
+- 인터페이스로 구현했더니 getter를 구현하기 애매해짐
+- 인터페이스는 상태값을 갖고 있지 않기 때문에 getter를 구현할 수 없음
+- EnrollmentImpl을 공통 구현체로 만들고 컴포지션을 사용

@@ -64,4 +64,6 @@
     - [x] SessionDetailInfo
 - [x] SessionService 구현
   - [x] SessionDto 매핑
-- [x] Enrollment 생성자에 List<NsUser> 추가
+- [x] Enrollment 리팩토링 
+  - [x] 생성자에 List<NsUser> 추가
+  - [x] EnrollmentManager 추가

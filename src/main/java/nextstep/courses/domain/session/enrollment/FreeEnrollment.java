@@ -7,57 +7,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FreeEnrollment implements Enrollment {
-    private final List<NsUser> enrolledUsers;
-    private final SessionStatus status;
+    private final EnrollmentManager enrollment;
 
     public FreeEnrollment(List<NsUser> enrolledUsers, SessionStatus status) {
-        this.enrolledUsers = enrolledUsers;
-        this.status = status;
+        this.enrollment = new EnrollmentManager(enrolledUsers, status);
     }
 
     public FreeEnrollment() {
-        this(new ArrayList<>(), SessionStatus.RECRUITING);
+        this.enrollment = new EnrollmentManager(new ArrayList<>(), SessionStatus.RECRUITING);
     }
 
-    @Override
     public void enroll(NsUser user) {
-        if (!canEnroll(user)) {
-            throw new IllegalStateException("수강 신청이 불가능합니다.");
-        }
-        enrolledUsers.add(user);
+        enrollment.enroll(user);
     }
 
-    @Override
-    public boolean isFull() {
-        return false;
-    }
-
-    @Override
     public boolean hasEnrolledUser(NsUser user) {
-        return enrolledUsers.contains(user);
+        return enrollment.hasEnrolledUser(user);
     }
 
-    private boolean isRecruiting() {
-        return status.isRecruiting();
+    public boolean isFull() {
+        return enrollment.isFull();
     }
 
-    private boolean canEnroll(NsUser user) {
-        if (user == null) {
-            throw new IllegalArgumentException("수강 신청할 사용자가 없습니다.");
-        }
-        return isRecruiting() && !hasEnrolledUser(user);
+    public SessionStatus getStatus() {
+        return enrollment.getStatus();
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        FreeEnrollment that = (FreeEnrollment) o;
-        return enrolledUsers.equals(that.enrolledUsers) && status == that.status;
-    }
-
-    @Override
-    public int hashCode() {
-        return java.util.Objects.hash(enrolledUsers, status);
-    }
-} 
+}

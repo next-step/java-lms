@@ -1,25 +1,45 @@
 package nextstep.courses.domain.session.enrollment;
 
+import lombok.Getter;
 import nextstep.courses.domain.session.SessionStatus;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PaidEnrollment implements Enrollment {
+public class PaidEnrollment implements Enrollment{
+    private final EnrollmentManager enrollment;
+
+    @Getter
     private final int maxEnrollment;
-    private final List<NsUser> enrolledUsers;
-    private final SessionStatus status;
 
     public PaidEnrollment(int maxEnrollment, List<NsUser> enrolledUsers, SessionStatus status) {
         validateMaxEnrollment(maxEnrollment);
         this.maxEnrollment = maxEnrollment;
-        this.enrolledUsers = enrolledUsers;
-        this.status = status;
+        this.enrollment = new EnrollmentManager(enrolledUsers, status);
     }
 
     public PaidEnrollment(int maxEnrollment) {
         this(maxEnrollment, new ArrayList<>(), SessionStatus.RECRUITING);
+    }
+
+    public void enroll(NsUser user) {
+        if (isFull()) {
+            throw new IllegalStateException("수강 인원이 가득 찼습니다.");
+        }
+        enrollment.enroll(user);
+    }
+
+    public boolean isFull() {
+        return enrollment.getEnrolledUsers().size() >= maxEnrollment;
+    }
+
+    public boolean hasEnrolledUser(NsUser user) {
+        return enrollment.hasEnrolledUser(user);
+    }
+
+    public SessionStatus getStatus() {
+        return enrollment.getStatus();
     }
 
     private void validateMaxEnrollment(int maxEnrollment) {
@@ -27,46 +47,4 @@ public class PaidEnrollment implements Enrollment {
             throw new IllegalArgumentException("유료 강의는 최대 수강 인원이 0보다 커야 합니다.");
         }
     }
-
-    @Override
-    public void enroll(NsUser user) {
-        if (!canEnroll(user)) {
-            throw new IllegalStateException("수강 신청이 불가능합니다.");
-        }
-        enrolledUsers.add(user);
-    }
-
-    @Override
-    public boolean isFull() {
-        return enrolledUsers.size() >= maxEnrollment;
-    }
-
-    @Override
-    public boolean hasEnrolledUser(NsUser user) {
-        return enrolledUsers.contains(user);
-    }
-
-    private boolean isRecruiting() {
-        return status.isRecruiting();
-    }
-
-    private boolean canEnroll(NsUser user) {
-        if (user == null) {
-            throw new IllegalArgumentException("수강 신청할 사용자가 없습니다.");
-        }
-        return isRecruiting() && !isFull() && !hasEnrolledUser(user);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PaidEnrollment that = (PaidEnrollment) o;
-        return maxEnrollment == that.maxEnrollment && enrolledUsers.equals(that.enrolledUsers) && status == that.status;
-    }
-
-    @Override
-    public int hashCode() {
-        return java.util.Objects.hash(maxEnrollment, enrolledUsers, status);
-    }
-} 
+}
