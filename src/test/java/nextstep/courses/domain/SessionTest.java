@@ -22,7 +22,7 @@ class SessionTest {
     void createFreeSession() {
         LocalDateTime start = LocalDateTime.now().plusMonths(1);
         LocalDateTime end = LocalDateTime.now().plusMonths(3);
-        Session session = new Session(1, start, end, "image.jpg", 0, 0);
+        Session session = new Session(1, start, end, "image.jpg", 0, 0,  SessionStatus.OPEN);
         assertThatCode(() -> session.enroll(new Student())).doesNotThrowAnyException();
     }
 
@@ -31,7 +31,7 @@ class SessionTest {
     void createPaidSession() {
         LocalDateTime start = LocalDateTime.now().plusMonths(1);
         LocalDateTime end = LocalDateTime.now().plusMonths(3);
-        Session session = new Session(1, start, end, "image.jpg", 800_000, 1);
+        Session session = new Session(1, start, end, "image.jpg", 800_000, 1,  SessionStatus.OPEN);
         session.enroll(new Student(800_000));
 
         assertThatThrownBy(() -> session.enroll(new Student()))
@@ -44,7 +44,7 @@ class SessionTest {
     void createPaidSessionWithCorrectPrice() {
         LocalDateTime start = LocalDateTime.now().plusMonths(1);
         LocalDateTime end = LocalDateTime.now().plusMonths(3);
-        Session session = new Session(1, start, end, "image.jpg", 800_000, 1);
+        Session session = new Session(1, start, end, "image.jpg", 800_000, 1,  SessionStatus.OPEN);
         assertThatCode(() -> session.enroll(new Student(800_000))).doesNotThrowAnyException();
     }
 
@@ -53,8 +53,28 @@ class SessionTest {
     void createPaidSessionWithNotEnoughPrice() {
         LocalDateTime start = LocalDateTime.now().plusMonths(1);
         LocalDateTime end = LocalDateTime.now().plusMonths(3);
-        Session session = new Session(1, start, end, "image.jpg", 800_000, 1);
-        assertThatThrownBy(() -> session.enroll(new Student(790_000))).isInstanceOf(IllegalArgumentException.class);
+        Session session = new Session(1, start, end, "image.jpg", 800_000, 1,  SessionStatus.OPEN);
+        assertThatThrownBy(() -> session.enroll(new Student(790_000)))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("not enough money");
+    }
+
+    @Test
+    @DisplayName("강의 수강신청은 강의 상태가 모집중일 때만 가능하다.")
+    void createSessionWithStatus() {
+        LocalDateTime start = LocalDateTime.now().plusMonths(1);
+        LocalDateTime end = LocalDateTime.now().plusMonths(3);
+        Student student = new Student();
+        Session ready = new Session(1, start, end, "image.jpg", 0, 1, SessionStatus.READY);
+        assertThatThrownBy(() -> ready.enroll(student))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("session is not open");
+        Session closed = new Session(1, start, end, "image.jpg", 0, 1, SessionStatus.CLOSED);
+        assertThatThrownBy(() -> closed.enroll(student))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("session is not open");
+        Session open = new Session(1, start, end, "image.jpg", 0, 1, SessionStatus.OPEN);
+        assertThatCode(() -> open.enroll(student)).doesNotThrowAnyException();
     }
 
 }

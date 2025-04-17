@@ -18,17 +18,24 @@ public class Session {
     }
 
     public Session(int sequence, LocalDateTime start, LocalDateTime end, String image, int price, int maxStudents) {
+        this(sequence, start, end, image, price, maxStudents, SessionStatus.READY);
+    }
+
+    public Session(int sequence, LocalDateTime start, LocalDateTime end, String image, int price, int maxStudents, SessionStatus status) {
         this.sequence = sequence;
         this.start = start;
         this.end = end;
         this.image = new SessionImage(image);
         this.price = price;
-        this.status = SessionStatus.READY;
         this.maxStudents = maxStudents;
         this.students = new ArrayList<>();
+        this.status = status;
     }
 
     public void enroll(Student student) {
+        if(status != SessionStatus.OPEN) {
+            throw new IllegalArgumentException("session is not open");
+        }
         if (price > 0 && students.size() >= maxStudents) {
             throw new IllegalArgumentException("student limit exceeded");
         }
