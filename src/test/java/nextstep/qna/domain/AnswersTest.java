@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class AnswersTest {
 
-    NsUser writer = new NsUser(2L, "user1", "1234", "jhm9595","jhm@gmail.com");
+    NsUser writer = new NsUser(2L, "user1", "1234", "jhm9595", "jhm@gmail.com");
 
     Question question = new Question(writer, "Question title", "Question Content");
 
@@ -15,7 +15,7 @@ class AnswersTest {
 
     Answer answer = new Answer(writer, question, "Answer contents");
 
-    NsUser otherWriter = new NsUser(3L, "user2", "1234", "jhm9595","jhm@gmail.com");
+    NsUser otherWriter = new NsUser(3L, "user2", "1234", "jhm9595", "jhm@gmail.com");
     Answer otherAnswer = new Answer(otherWriter, question, "Answer contents");
 
     @Test

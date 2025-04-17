@@ -11,8 +11,8 @@ public class AnswerTest {
     public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
 
     @Test
-    @DisplayName(value="delete 테스트")
-    void delete(){
+    @DisplayName(value = "delete 테스트")
+    void delete() {
         A1.delete();
         assertThat(A1.isDeleted()).isTrue();
     }

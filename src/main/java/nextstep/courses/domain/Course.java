@@ -4,16 +4,25 @@ import java.time.LocalDateTime;
 
 public class Course {
     private Long id;
-
     private String title;
-
     private Long creatorId;
-
     private LocalDateTime createdAt;
-
     private LocalDateTime updatedAt;
 
+    private int classNo;
+    private Sessions sessions;
+
+    public int getClassNo() {
+        return classNo;
+    }
+
+    public Sessions getSessions() {
+        return this.sessions;
+    }
+
     public Course() {
+        classNo = 0;
+        sessions = new Sessions();
     }
 
     public Course(String title, Long creatorId) {
