@@ -50,6 +50,7 @@
 - [x] 테이블 설계
 - [x] ImageRepository 구현
 - [ ] SessionRepository 구현
+  - [x] JdbcSessionRepository 구현
   - [ ] Session 리팩토링
-  - [ ] JdbcSessionRepository 구현
-  
+    - [x] SessionDto 구현
+    - [x] SessionEnrollmentDto 구현
