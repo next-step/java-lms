@@ -3,10 +3,11 @@ package nextstep.courses.domain;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Session {
-
+    private Long id;
     private SessionStatus status;
     private SessionType type;
     private Money price;
@@ -15,6 +16,8 @@ public class Session {
     private LocalDate startDate;
     private LocalDate endDate;
     private SessionCoverImage coverImage;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     private Session(SessionStatus status, SessionType type, Money price, Capacity maxCapacity, Enrollments enrollments, LocalDate startDate, LocalDate endDate, SessionCoverImage coverImage) {
         this.status = status;

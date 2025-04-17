@@ -17,8 +17,9 @@
 - [x] Enrollment 클래스 추가 → 다대다 관계를 풀기 위해
 - [x] NsUser 를 감싸는 Student 클래스 추가 → 강의에 특화된 도메인 객체
 - [ ] 테이블 설계
-  - [ ] session
-  - [ ] session_cover_image
+  - [x] session
+  - [ ] ~~session_cover_image~~ 
+    - 별도 테이블 설계 안하고 session 테이블에서 path 정보를 저장하는 방식
   - [ ] enrollment
 - [ ] CRUD 코드 작성
   - 강의 신설 (session)
