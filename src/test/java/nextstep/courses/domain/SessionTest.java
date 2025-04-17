@@ -3,19 +3,9 @@ package nextstep.courses.domain;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-
 import static org.assertj.core.api.Assertions.*;
 
 class SessionTest {
-
-    @Test
-    @DisplayName("강의 시작일은 종료일보다 이전이어야 한다.")
-    void createSessionWithInvalidStartDate() {
-        LocalDateTime endDate = LocalDateTime.now();
-        LocalDateTime startDate = endDate.plusMonths(1);
-        assertThatThrownBy(() -> new Session(startDate, endDate)).isInstanceOf(IllegalArgumentException.class);
-    }
 
     @Test
     @DisplayName("무료 강의는 최대 수강 인원 제한이 없다.")

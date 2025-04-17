@@ -7,52 +7,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Session {
-    private final Long id;
-    private final LocalDateTime startDate;
-    private final LocalDateTime endDate;
+    private Long id;
+    private SessionPeriod period;
     private SessionImage image;
-    private final SessionStatus status;
+    private SessionStatus status;
     private Long price;
-    private final int capacity;
+    private int capacity;
     private List<Student> students;
 
-    protected Session() {
-        this(LocalDateTime.now(), LocalDateTime.now().plusMonths(1));
-    }
-
-    public Session(LocalDateTime startDate, LocalDateTime endDate) {
-        this(startDate, endDate, 0L, Integer.MAX_VALUE);
-    }
 
     public Session(Long price, int capacity) {
-        this(LocalDateTime.now(), LocalDateTime.now().plusMonths(1), price, capacity);
+        this(null, LocalDateTime.now(), LocalDateTime.now().plusMonths(1),null, SessionStatus.OPEN, price, capacity);
     }
 
     public Session(SessionStatus status) {
         this(null, LocalDateTime.now(), LocalDateTime.now().plusMonths(1), null, status, 0L, Integer.MAX_VALUE);
     }
 
-    public Session(LocalDateTime startDate, LocalDateTime endDate, Long price, int capacity) {
-        this(null, startDate, endDate, null, SessionStatus.OPEN, price, capacity);
-    }
-
     public Session(Long id, LocalDateTime startDate, LocalDateTime endDate, SessionImage image, SessionStatus status, Long price, int capacity) {
-        validateSessionDates(startDate, endDate);
-
         this.id = id;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.period = new SessionPeriod(startDate, endDate);
         this.image = image;
         this.price = price;
         this.status = status;
         this.capacity = capacity;
         this.students = new ArrayList<>();
-    }
-
-    private void validateSessionDates(LocalDateTime start, LocalDateTime end) {
-        if (start.isAfter(end)) {
-            throw new IllegalArgumentException("start date must be before end date");
-        }
     }
 
     public Payment enroll(Student student) {
