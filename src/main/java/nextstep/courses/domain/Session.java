@@ -8,7 +8,7 @@ public class Session {
     private int sequence;
     private LocalDateTime start;
     private LocalDateTime end;
-    private String image;
+    private SessionImage image;
     private int price;
     private SessionStatus status;
     private int maxStudents;
@@ -21,7 +21,7 @@ public class Session {
         this.sequence = sequence;
         this.start = start;
         this.end = end;
-        this.image = image;
+        this.image = new SessionImage(image);
         this.price = price;
         this.status = SessionStatus.READY;
         this.maxStudents = maxStudents;
