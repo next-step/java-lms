@@ -1,9 +1,8 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.*;
+import nextstep.courses.domain.Enrollment;
+import nextstep.courses.domain.EnrollmentRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
 
 @Repository("enrollmentRepository")
 public class JdbcEnrollmentRepository implements EnrollmentRepository {
