@@ -1,9 +1,10 @@
 package nextstep.sessions.domain;
 
 public class Image {
-    private static final Long MAX_SIZE_BYTES = 1_048_576L;
+    private static final Long MAX_SIZE_BYTES = 1024 * 1024L;
     private static final Float MIN_SIZE_WIDTH = 300F;
     private static final Float MIN_SIZE_HEIGHT = 200F;
+    private static final Float ASPECT_RATIO_TOLERANCE = 0.01f;
 
     private Long id;
     private Long sizeInBytes;
@@ -53,7 +54,7 @@ public class Image {
 
     private void validateAspectRatio(float width, float height) {
         float ratio = width / height;
-        if (Math.abs(ratio - 1.5) > 0.01) {
+        if (Math.abs(ratio - (MIN_SIZE_WIDTH / MIN_SIZE_HEIGHT)) > ASPECT_RATIO_TOLERANCE) {
             throw new IllegalArgumentException("이미지 비율은 3:2이어야 합니다.");
         }
     }
