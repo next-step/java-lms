@@ -3,8 +3,10 @@ package nextstep.courses.service;
 import lombok.RequiredArgsConstructor;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionId;
+import nextstep.courses.domain.session.SessionType;
 import nextstep.courses.domain.session.enrollment.Enrollment;
 import nextstep.courses.domain.session.enrollment.FreeEnrollment;
+import nextstep.courses.domain.session.enrollment.PaidEnrollment;
 import nextstep.courses.domain.session.info.SessionInfo;
 import nextstep.courses.domain.session.info.basic.SessionBasicInfo;
 import nextstep.courses.domain.session.info.basic.SessionThumbnail;
@@ -14,6 +16,7 @@ import nextstep.courses.domain.session.info.detail.SessionPrice;
 import nextstep.courses.dto.ImageDto;
 import nextstep.courses.dto.SessionDto;
 import nextstep.courses.infrastructure.ImageRepository;
+import nextstep.courses.infrastructure.SessionEnrollmentRepository;
 import nextstep.courses.infrastructure.SessionRepository;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.service.PaymentService;
@@ -26,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SessionService {
     private final SessionRepository sessionRepository;
+    private final SessionEnrollmentRepository sessionEnrollmentRepository;
     private final ImageRepository imageRepository;
     private final PaymentService paymentService;
     private final UserService userService;
@@ -35,16 +39,7 @@ public class SessionService {
         SessionDto sessionDto = sessionRepository.findById(sessionId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강의입니다."));
 
-        SessionBasicInfo sessionBasicInfo = new SessionBasicInfo(sessionDto.getTitle(), getThumbnail(sessionDto.getId()));
-
-        SessionPeriod sessionPeriod = new SessionPeriod(sessionDto.getStartDate(), sessionDto.getEndDate());
-        SessionPrice sessionPrice = new SessionPrice(sessionDto.getSessionType(), 0);
-        SessionDetailInfo sessionDetailInfo = new SessionDetailInfo(sessionPeriod, sessionPrice);
-        SessionInfo sessionInfo = new SessionInfo(sessionBasicInfo, sessionDetailInfo);
-
-        Enrollment enrollment = new FreeEnrollment();
-        SessionId entityId = new SessionId(sessionId);
-        Session session = new Session(entityId, sessionInfo, enrollment);
+        Session session = getSession(sessionId, sessionDto);
 
         NsUser user = userService.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
@@ -58,7 +53,23 @@ public class SessionService {
         sessionRepository.update(sessionDto);
     }
 
-    public SessionThumbnail getThumbnail(Long sessionId) {
+    private Session getSession(Long sessionId, SessionDto sessionDto) {
+        SessionBasicInfo sessionBasicInfo = new SessionBasicInfo(sessionDto.getTitle(), getThumbnail(sessionDto.getId()));
+        SessionDetailInfo sessionDetailInfo = getSessionDetailInfo(sessionDto);
+        SessionInfo sessionInfo = new SessionInfo(sessionBasicInfo, sessionDetailInfo);
+
+        Enrollment enrollment = getEnrollment(sessionDto);
+        SessionId entityId = new SessionId(sessionId);
+        return new Session(entityId, sessionInfo, enrollment);
+    }
+
+    private SessionDetailInfo getSessionDetailInfo(SessionDto sessionDto) {
+        SessionPeriod sessionPeriod = new SessionPeriod(sessionDto.getStartDate(), sessionDto.getEndDate());
+        SessionPrice sessionPrice = new SessionPrice(sessionDto.getSessionType(), 0);
+        return new SessionDetailInfo(sessionPeriod, sessionPrice);
+    }
+
+    private SessionThumbnail getThumbnail(Long sessionId) {
         ImageDto imageDto = imageRepository.findBySessionId(sessionId);
         if (imageDto == null) {
             throw new IllegalArgumentException("존재하지 않는 이미지입니다.");
@@ -67,4 +78,12 @@ public class SessionService {
         return new SessionThumbnail(imageDto.getFileName(), imageDto.getFileSize(),
                 imageDto.getWidth(), imageDto.getHeight());
     }
-} 
+
+    private Enrollment getEnrollment(SessionDto sessionDto) {
+        SessionType sessionType = sessionDto.getSessionType();
+        if (sessionType.isPaid()) {
+            return new PaidEnrollment(sessionDto.getMaximumEnrollment());
+        }
+        return new FreeEnrollment();
+    }
+}

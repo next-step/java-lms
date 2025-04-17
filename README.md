@@ -51,6 +51,10 @@
 - [x] ImageRepository 구현
 - [ ] SessionRepository 구현
   - [x] JdbcSessionRepository 구현
-  - [ ] Session 리팩토링
+  - [x] Session 리팩토링
     - [x] SessionDto 구현
     - [x] SessionEnrollmentDto 구현
+- [x] SessionService 구현
+  - [x] SessionDto 매핑
+- [ ] Enrollment 리팩토링
+  - [ ] 생성자에 List<NsUser> 추가
