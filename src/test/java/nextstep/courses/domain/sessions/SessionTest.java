@@ -6,6 +6,7 @@ import nextstep.payments.domain.Payment;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionStatus;
 import nextstep.sessions.domain.SessionType;
+import nextstep.sessions.exception.AttendeeException;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -75,18 +76,18 @@ public class SessionTest {
     @Test
     void paidSessionMaxAttendees() {
         session.addAttendee(user);
-        assertThrows(IllegalStateException.class, () -> session.addAttendee(user2));
+        assertThrows(AttendeeException.class, () -> session.addAttendee(user2));
     }
 
     @Test
     void paymentNotExists() {
         NsUser notExistUser = new NsUser(11L, "abc", "123", "na", "test@naver.com");
-        assertThrows(IllegalStateException.class, () -> session.addAttendee(notExistUser));
+        assertThrows(AttendeeException.class, () -> session.addAttendee(notExistUser));
     }
 
     @Test
     void paymentAmountNotEqual() {
-        assertThrows(IllegalStateException.class, () -> session.addAttendee(user3));
+        assertThrows(AttendeeException.class, () -> session.addAttendee(user3));
     }
 
     @Test
@@ -108,6 +109,6 @@ public class SessionTest {
                 .status(SessionStatus.CLOSED)
                 .price(10000L)
                 .build();
-        assertThrows(IllegalStateException.class, () -> closedSession.addAttendee(user));
+        assertThrows(AttendeeException.class, () -> closedSession.addAttendee(user));
     }
 }

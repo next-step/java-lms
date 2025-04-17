@@ -4,6 +4,7 @@ import nextstep.courses.domain.Course;
 import nextstep.images.domain.Image;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.domain.Payments;
+import nextstep.sessions.exception.AttendeeException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -64,15 +65,15 @@ public class Session {
 
     public void addAttendee(NsUser attendee) {
         if (isNotOpen()) {
-            throw new IllegalStateException("Session is not open for registration");
+            throw new AttendeeException("Session is not open for registration");
         }
 
         if (exceedMaxAttendees()) {
-            throw new IllegalStateException("Maximum number of attendees reached");
+            throw new AttendeeException("Maximum number of attendees reached");
         }
 
         if (payments.paidIncorrectly(attendee.getId(), this.price)) {
-            throw new IllegalStateException("Payment not completed");
+            throw new AttendeeException("Payment not completed");
         }
 
         attendees.add(attendee);
