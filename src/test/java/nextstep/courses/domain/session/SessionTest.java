@@ -33,7 +33,7 @@ class SessionTest {
         SessionBasicInfo basicInfo = new SessionBasicInfo("강의 제목", THUMBNAIL);
         SessionInfo sessionInfo = new SessionInfo(basicInfo, detailInfo);
         Session session = new Session(
-                new SessionId(1L),
+                new SessionId(1L, 1L),
                 sessionInfo,
                 new FreeEnrollment()
         );
@@ -51,7 +51,7 @@ class SessionTest {
         SessionBasicInfo basicInfo = new SessionBasicInfo("강의 제목", THUMBNAIL);
         SessionInfo sessionInfo = new SessionInfo(basicInfo, detailInfo);
         Session session = new Session(
-                new SessionId(1L),
+                new SessionId(1L, 1L),
                 sessionInfo,
                 new FreeEnrollment()
         );
@@ -81,7 +81,7 @@ class SessionTest {
         SessionBasicInfo basicInfo = new SessionBasicInfo("강의 제목", THUMBNAIL);
         SessionInfo sessionInfo = new SessionInfo(basicInfo, detailInfo);
         Session session = new Session(
-                new SessionId(1L),
+                new SessionId(1L, 1L),
                 sessionInfo,
                 new FreeEnrollment()
         );
@@ -114,7 +114,7 @@ class SessionTest {
         SessionInfo sessionInfo = new SessionInfo(basicInfo, detailInfo);
 
         return new Session(
-                new SessionId(1L),
+                new SessionId(1L, 1L),
                 sessionInfo,
                 new PaidEnrollment(maxEnrollment)
         );

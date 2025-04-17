@@ -54,6 +54,9 @@
   - [x] Session 리팩토링
     - [x] SessionDto 구현
     - [x] SessionEnrollmentDto 구현
+    - [ ] SessionId 리팩토링
+      - [ ] courseId 필드 추가
+      - [ ] getter 추가
 - [x] SessionService 구현
   - [x] SessionDto 매핑
 - [x] Enrollment 생성자에 List<NsUser> 추가
