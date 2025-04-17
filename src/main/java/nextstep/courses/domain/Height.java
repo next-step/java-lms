@@ -1,10 +1,10 @@
 package nextstep.courses.domain;
 
 public class Height {
-    private final Integer value;
+    private final Double value;
 
-    public Height(Integer height) {
-        if (height < 200) {
+    public Height(Double height) {
+        if (height < 200.0) {
             throw new IllegalArgumentException("높이는 200px 이상이어야 합니다.");
         }
 

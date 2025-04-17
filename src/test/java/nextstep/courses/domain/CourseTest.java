@@ -4,6 +4,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+
 public class CourseTest {
 
     @Test
@@ -16,11 +18,18 @@ public class CourseTest {
     @Test
     @DisplayName("과정은 여러 개의 강의를 가질 수 있다.")
     void courseHasLecturesTest() {
-        var session1 = new Session();
-        var session2 = new Session();
+        var session1 = new TestSession();
+        var session2 = new TestSession();
         var course = new Course(1, new Sessions(session1, session2));
 
         Assertions.assertThat(course.getSessions().hasSession(session1)).isTrue();
         Assertions.assertThat(course.getSessions().hasSession(session2)).isTrue();
+    }
+
+    class TestSession extends Session {
+
+        protected TestSession() {
+            super(LocalDate.MIN, LocalDate.MAX, CoverImage.defaultImage());
+        }
     }
 }
