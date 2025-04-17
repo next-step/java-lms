@@ -7,6 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static nextstep.users.domain.NsUserTest.JAVAJIGI;
+import static nextstep.users.domain.NsUserTest.SANJIGI;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AnswerTest {
@@ -23,5 +25,12 @@ public class AnswerTest {
     void delete_normal_case() {
         answer.delete(NsUserTest.JAVAJIGI);
         assertTrue(answer.isDeleted());
+    }
+
+    @Test
+    @DisplayName("권한 없는 사용자가 답변 삭제를 요청하면 예외를 던진다")
+    void cannot_delete_answer_another_user() {
+        assertThatThrownBy(() -> answer.delete(SANJIGI))
+                .isInstanceOf(CannotDeleteException.class);
     }
 }
