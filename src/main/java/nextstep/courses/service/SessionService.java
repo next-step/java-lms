@@ -16,6 +16,7 @@ import nextstep.courses.domain.session.info.detail.SessionPeriod;
 import nextstep.courses.domain.session.info.detail.SessionPrice;
 import nextstep.courses.dto.ImageDto;
 import nextstep.courses.dto.SessionDto;
+import nextstep.courses.dto.SessionEnrollmentDto;
 import nextstep.courses.infrastructure.ImageRepository;
 import nextstep.courses.infrastructure.SessionEnrollmentRepository;
 import nextstep.courses.infrastructure.SessionRepository;
@@ -43,7 +44,7 @@ public class SessionService {
         SessionDto sessionDto = sessionRepository.findById(sessionId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강의입니다."));
 
-        Session session = getSession(sessionId, sessionDto);
+        Session session = getSession(sessionDto);
 
         NsUser user = userService.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
@@ -54,16 +55,23 @@ public class SessionService {
         }
 
         session.enroll(user, payment);
-        sessionRepository.update(sessionDto);
+        
+        SessionDto updatedSessionDto = SessionDto.of(session);
+        updatedSessionDto.setTimeStampForUpdate(sessionDto.getCreatedAt());
+
+        SessionEnrollmentDto updatedSessionEnrollmentDto = SessionEnrollmentDto.of(session);
+
+        sessionRepository.update(updatedSessionDto);
+        sessionEnrollmentRepository.save(sessionId, user.getId());
     }
 
-    private Session getSession(Long sessionId, SessionDto sessionDto) {
+    private Session getSession(SessionDto sessionDto) {
         SessionBasicInfo sessionBasicInfo = new SessionBasicInfo(sessionDto.getTitle(), getThumbnail(sessionDto.getId()));
         SessionDetailInfo sessionDetailInfo = getSessionDetailInfo(sessionDto);
         SessionInfo sessionInfo = new SessionInfo(sessionBasicInfo, sessionDetailInfo);
 
         Enrollment enrollment = getEnrollment(sessionDto);
-        SessionId entityId = new SessionId(sessionId);
+        SessionId entityId = new SessionId(sessionDto.getId(), sessionDto.getCourseId());
         return new Session(entityId, sessionInfo, enrollment);
     }
 

@@ -1,10 +1,12 @@
 package nextstep.courses.domain.session;
 
+import lombok.Getter;
 import nextstep.courses.domain.session.enrollment.Enrollment;
 import nextstep.courses.domain.session.info.SessionInfo;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
+@Getter
 public class Session {
     private final SessionId id;
     private final SessionInfo info;
