@@ -44,7 +44,7 @@ public class Question {
         this.deleted = true;
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(DeleteHistory.deleteOfQuestion(this));
+        deleteHistories.add(DeleteHistory.ofQuestion(this));
         deleteHistories.addAll(answers.deleteAnswers(loginUser));
 
         return deleteHistories;
