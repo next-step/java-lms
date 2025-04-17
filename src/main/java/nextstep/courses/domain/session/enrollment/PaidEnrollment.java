@@ -11,11 +11,15 @@ public class PaidEnrollment implements Enrollment {
     private final List<NsUser> enrolledUsers;
     private final SessionStatus status;
 
-    public PaidEnrollment(int maxEnrollment) {
+    public PaidEnrollment(int maxEnrollment, List<NsUser> enrolledUsers, SessionStatus status) {
         validateMaxEnrollment(maxEnrollment);
         this.maxEnrollment = maxEnrollment;
-        this.enrolledUsers = new ArrayList<>();
-        this.status = SessionStatus.RECRUITING;
+        this.enrolledUsers = enrolledUsers;
+        this.status = status;
+    }
+
+    public PaidEnrollment(int maxEnrollment) {
+        this(maxEnrollment, new ArrayList<>(), SessionStatus.RECRUITING);
     }
 
     private void validateMaxEnrollment(int maxEnrollment) {

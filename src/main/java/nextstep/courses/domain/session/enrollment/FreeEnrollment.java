@@ -10,9 +10,13 @@ public class FreeEnrollment implements Enrollment {
     private final List<NsUser> enrolledUsers;
     private final SessionStatus status;
 
+    public FreeEnrollment(List<NsUser> enrolledUsers, SessionStatus status) {
+        this.enrolledUsers = enrolledUsers;
+        this.status = status;
+    }
+
     public FreeEnrollment() {
-        this.enrolledUsers = new ArrayList<>();
-        this.status = SessionStatus.RECRUITING;
+        this(new ArrayList<>(), SessionStatus.RECRUITING);
     }
 
     @Override

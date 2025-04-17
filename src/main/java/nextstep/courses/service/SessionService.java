@@ -3,6 +3,7 @@ package nextstep.courses.service;
 import lombok.RequiredArgsConstructor;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionId;
+import nextstep.courses.domain.session.SessionStatus;
 import nextstep.courses.domain.session.SessionType;
 import nextstep.courses.domain.session.enrollment.Enrollment;
 import nextstep.courses.domain.session.enrollment.FreeEnrollment;
@@ -24,6 +25,9 @@ import nextstep.users.domain.NsUser;
 import nextstep.users.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -81,9 +85,22 @@ public class SessionService {
 
     private Enrollment getEnrollment(SessionDto sessionDto) {
         SessionType sessionType = sessionDto.getSessionType();
+        List<Long> enrolledUserIds = sessionEnrollmentRepository.findUserIdsBySessionId(sessionDto.getId());
+        List<NsUser> enrolledUsers = findEnrolledUsersByIds(enrolledUserIds);
+        SessionStatus sessionStatus = sessionDto.getStatus();
+
         if (sessionType.isPaid()) {
-            return new PaidEnrollment(sessionDto.getMaximumEnrollment());
+            int maximumEnrollment = sessionDto.getMaximumEnrollment();
+            return new PaidEnrollment(maximumEnrollment, enrolledUsers, sessionStatus);
         }
-        return new FreeEnrollment();
+
+        return new FreeEnrollment(enrolledUsers, sessionStatus);
+    }
+
+    private List<NsUser> findEnrolledUsersByIds(List<Long> enrolledUserIds) {
+        return enrolledUserIds.stream()
+                .map(userId -> userService.findByUserId(userId.toString())
+                        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다.")))
+                .collect(Collectors.toList());
     }
 }
