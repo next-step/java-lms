@@ -1,17 +1,25 @@
 package nextstep.courses.domain;
 
 public class CoverImage {
-    private final Long size;
+    private final Size size;
+    private final Width width;
+    private final Height height;
 
     public CoverImage() {
-        this(0L);
+        this(0L, 300, 200);
     }
 
-    public CoverImage(Long size) {
-        if (size > 1_048_576) {
-            throw new IllegalArgumentException("커버 이미지의 크기는 1MB 이하여야 합니다.");
-        }
+    CoverImage(Long size) {
+        this(size, 300, 200);
+    }
 
-        this.size = size;
+    CoverImage(Integer width, Integer height) {
+        this(0L, width, height);
+    }
+
+    public CoverImage(Long size, Integer width, Integer height) {
+        this.size = new Size(size);
+        this.width = new Width(width);
+        this.height = new Height(height);
     }
 }
