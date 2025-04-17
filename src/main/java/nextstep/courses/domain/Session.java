@@ -28,4 +28,10 @@ public class Session {
         this.students = new ArrayList<>();
     }
 
+    public void addStudent(Student student) {
+        if (price > 0 && students.size() >= maxStudents) {
+            throw new IllegalArgumentException("student limit exceeded");
+        }
+        students.add(student);
+    }
 }
