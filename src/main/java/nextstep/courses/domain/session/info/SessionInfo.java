@@ -1,9 +1,11 @@
 package nextstep.courses.domain.session.info;
 
+import lombok.Getter;
 import nextstep.courses.domain.session.info.basic.SessionBasicInfo;
 import nextstep.courses.domain.session.info.detail.SessionDetailInfo;
 import nextstep.payments.domain.Payment;
 
+@Getter
 public class SessionInfo {
     private final SessionBasicInfo basicInfo;
     private final SessionDetailInfo detailInfo;

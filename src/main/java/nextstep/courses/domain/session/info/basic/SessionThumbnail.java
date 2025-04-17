@@ -1,8 +1,10 @@
 package nextstep.courses.domain.session.info.basic;
 
+import lombok.Getter;
 import nextstep.courses.domain.image.ImageFileName;
 import nextstep.courses.domain.image.ImageSize;
 
+@Getter
 public class SessionThumbnail {
     private static final int MAX_FILE_SIZE = 1024 * 1024; // 1MB
 

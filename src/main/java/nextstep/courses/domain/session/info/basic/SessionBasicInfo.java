@@ -1,5 +1,8 @@
 package nextstep.courses.domain.session.info.basic;
 
+import lombok.Getter;
+
+@Getter
 public class SessionBasicInfo {
     private final String title;
     private final SessionThumbnail thumbnail;
@@ -7,10 +10,6 @@ public class SessionBasicInfo {
     public SessionBasicInfo(String title, SessionThumbnail thumbnail) {
         this.title = title;
         this.thumbnail = thumbnail;
-    }
-
-    public boolean hasTitle(String title) {
-        return this.title.equals(title);
     }
 
     @Override
