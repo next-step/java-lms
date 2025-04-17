@@ -36,6 +36,18 @@ public class Session {
     public Session() {
     }
 
+    public Session(Long id, Long courseId, Long imageId, LocalDateTime startDate, LocalDateTime endDate,
+                   int maxAttendees, SessionType type, SessionStatus status) {
+        this.id = id;
+        this.courseId = courseId;
+        this.imageId = imageId;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.maxAttendees = maxAttendees;
+        this.type = type;
+        this.status = status;
+    }
+
     public Session(Builder builder) {
         this.id = builder.id;
         this.courseId = builder.courseId;
@@ -86,6 +98,38 @@ public class Session {
 
     public int getAttendeesSize() {
         return attendees.size();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Long getCourseId() {
+        return courseId;
+    }
+
+    public Long getImageId() {
+        return imageId;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public int getMaxAttendees() {
+        return maxAttendees;
+    }
+
+    public SessionType getType() {
+        return type;
+    }
+
+    public SessionStatus getStatus() {
+        return status;
     }
 
     public static class Builder {
