@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 class SessionTest {
 
@@ -24,7 +23,7 @@ class SessionTest {
         LocalDateTime start = LocalDateTime.now().plusMonths(1);
         LocalDateTime end = LocalDateTime.now().plusMonths(3);
         Session session = new Session(1, start, end, "image.jpg", 0, 0);
-        assertThatCode(() -> session.addStudent(new Student())).doesNotThrowAnyException();
+        assertThatCode(() -> session.enroll(new Student())).doesNotThrowAnyException();
     }
 
     @Test
@@ -33,11 +32,29 @@ class SessionTest {
         LocalDateTime start = LocalDateTime.now().plusMonths(1);
         LocalDateTime end = LocalDateTime.now().plusMonths(3);
         Session session = new Session(1, start, end, "image.jpg", 800_000, 1);
-        session.addStudent(new Student());
+        session.enroll(new Student(800_000));
 
-        assertThatThrownBy(() -> session.addStudent(new Student()))
+        assertThatThrownBy(() -> session.enroll(new Student()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("student limit exceeded");
+    }
+
+    @Test
+    @DisplayName("유료 강의는 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능하다.")
+    void createPaidSessionWithCorrectPrice() {
+        LocalDateTime start = LocalDateTime.now().plusMonths(1);
+        LocalDateTime end = LocalDateTime.now().plusMonths(3);
+        Session session = new Session(1, start, end, "image.jpg", 800_000, 1);
+        assertThatCode(() -> session.enroll(new Student(800_000))).doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("유료 강의는 수강생이 결제한 금액과 수강료가 일치하지 않으면 수강 신청이 불가능하다.")
+    void createPaidSessionWithNotEnoughPrice() {
+        LocalDateTime start = LocalDateTime.now().plusMonths(1);
+        LocalDateTime end = LocalDateTime.now().plusMonths(3);
+        Session session = new Session(1, start, end, "image.jpg", 800_000, 1);
+        assertThatThrownBy(() -> session.enroll(new Student(790_000))).isInstanceOf(IllegalArgumentException.class);
     }
 
 }
