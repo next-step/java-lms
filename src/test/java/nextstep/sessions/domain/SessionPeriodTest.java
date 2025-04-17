@@ -5,16 +5,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class SessionPeriodTest {
-    private Date earlier;
-    private Date later;
+    private LocalDate earlier;
+    private LocalDate later;
 
     @BeforeEach
     void setUp() {
-        this.earlier = new Date(2025, 1, 1);
-        this.later = new Date(2025, 3, 1);
+        this.earlier = LocalDate.of(2025, 1, 1);
+        this.later = LocalDate.of(2025, 3, 1);
     }
 
     @Test

@@ -1,19 +1,19 @@
 package nextstep.sessions.domain;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class SessionPeriod {
-    private Date startDate;
-    private Date endDate;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
 
-    public SessionPeriod(Date startDate, Date endDate) {
+    public SessionPeriod(LocalDate startDate, LocalDate endDate) {
         validate(startDate, endDate);
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
-    private void validate(Date startDate, Date endDate) {
-        if (startDate.after(endDate)) {
+    private void validate(LocalDate startDate, LocalDate endDate) {
+        if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException("시작일은 종료일보다 이전이어야 합니다.");
         }
     }
