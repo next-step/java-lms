@@ -1,11 +1,8 @@
-package nextstep.courses.domain.sessions;
+package nextstep.sessions.domain;
 
 import nextstep.courses.domain.Course;
 import nextstep.images.domain.Image;
 import nextstep.payments.domain.Payment;
-import nextstep.sessions.domain.Session;
-import nextstep.sessions.domain.SessionStatus;
-import nextstep.sessions.domain.SessionType;
 import nextstep.sessions.exception.AttendeeException;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.BeforeEach;

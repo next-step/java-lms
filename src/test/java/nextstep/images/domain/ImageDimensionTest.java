@@ -1,6 +1,5 @@
-package nextstep.courses.domain.images;
+package nextstep.images.domain;
 
-import nextstep.images.domain.ImageDimension;
 import nextstep.images.exception.InvalidImageDimensionException;
 import org.junit.jupiter.api.Test;
 
