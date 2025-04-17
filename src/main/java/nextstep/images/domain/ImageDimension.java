@@ -13,11 +13,11 @@ public class ImageDimension {
     }
 
     private void validate(double width, double height) {
-        if (width <= 300) {
+        if (width < 300) {
             throw new InvalidImageDimensionException("width must be greater than 300");
         }
 
-        if (height <= 200) {
+        if (height < 200) {
             throw new InvalidImageDimensionException("height must be greater than 200");
         }
 
@@ -32,5 +32,13 @@ public class ImageDimension {
                 "width=" + width +
                 ", height=" + height +
                 '}';
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
     }
 }

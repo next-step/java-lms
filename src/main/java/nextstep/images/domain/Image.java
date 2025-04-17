@@ -14,10 +14,33 @@ public class Image {
     public Image() {
     }
 
+    public Image(Long id, ImageType type, double size, double width, double height) {
+        this.id = id;
+        this.type = type;
+        this.size = new ImageSizeKb(size);
+        this.dimension = new ImageDimension(width, height);
+    }
+
     public Image(Builder builder) {
         this.type = builder.type;
         this.size = builder.size;
         this.dimension = builder.dimension;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public ImageType getType() {
+        return type;
+    }
+
+    public ImageSizeKb getSize() {
+        return size;
+    }
+
+    public ImageDimension getDimension() {
+        return dimension;
     }
 
     public static class Builder {

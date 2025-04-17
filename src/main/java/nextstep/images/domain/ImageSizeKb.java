@@ -19,4 +19,8 @@ public class ImageSizeKb {
             throw new InvalidImageSizeException("Image size must be less than or equal to 1000");
         }
     }
+
+    public double getValue() {
+        return value;
+    }
 }
