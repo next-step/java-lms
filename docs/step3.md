@@ -14,7 +14,7 @@
 - session (N) → (N) ns_user
 ---
 ## TODO
-- [ ] Enrollment 클래스 추가 → 다대다 관계를 풀기 위해
+- [x] Enrollment 클래스 추가 → 다대다 관계를 풀기 위해
 - [x] NsUser 를 감싸는 Student 클래스 추가 → 강의에 특화된 도메인 객체
 - [ ] 테이블 설계
   - [ ] session

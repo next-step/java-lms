@@ -1,9 +1,9 @@
 package nextstep.courses.domain;
 
 import nextstep.payments.domain.Payment;
-import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Session {
 
@@ -11,17 +11,17 @@ public class Session {
     private SessionType type;
     private Money price;
     private Capacity maxCapacity;
-    private Students students;
+    private Enrollments enrollments;
     private LocalDate startDate;
     private LocalDate endDate;
     private SessionCoverImage coverImage;
 
-    private Session(SessionStatus status, SessionType type, Money price, Capacity maxCapacity, Students students, LocalDate startDate, LocalDate endDate, SessionCoverImage coverImage) {
+    private Session(SessionStatus status, SessionType type, Money price, Capacity maxCapacity, Enrollments enrollments, LocalDate startDate, LocalDate endDate, SessionCoverImage coverImage) {
         this.status = status;
         this.type = type;
         this.price = price;
         this.maxCapacity = maxCapacity;
-        this.students = students;
+        this.enrollments = enrollments;
         this.startDate = startDate;
         this.endDate = endDate;
         this.coverImage = coverImage;
@@ -33,7 +33,7 @@ public class Session {
                 SessionType.FREE,
                 Money.FREE,
                 Capacity.ZERO,
-                new Students(),
+                new Enrollments(new ArrayList<>()),
                 startDate,
                 endDate,
                 SessionCoverImage.EMPTY
@@ -46,19 +46,19 @@ public class Session {
                 SessionType.PAID,
                 price,
                 maxCapacity,
-                new Students(),
+                new Enrollments(new ArrayList<>()),
                 startDate,
                 endDate,
                 SessionCoverImage.EMPTY
         );
     }
 
-    public void enroll(Student student, Payment payment) {
+    public void enroll(Enrollment enrollment) {
         validateRecruiting();
         validateMaxCapacity();
-        validatePayment(payment);
+        validatePayment(enrollment.getPayment());
 
-        students.add(student);
+        enrollments.add(enrollment);
     }
 
     public void updateCoverImage(SessionCoverImage newCoverImage) {
@@ -84,7 +84,7 @@ public class Session {
     }
 
     private void validateMaxCapacity() {
-        if (type == SessionType.PAID && maxCapacity.isFull(students.count())) {
+        if (type == SessionType.PAID && maxCapacity.isFull(enrollments.count())) {
             throw new IllegalArgumentException("최대 수강 인원(" + maxCapacity.value() + "명)에 도달하여 수강 신청이 불가능합니다.");
         }
     }

@@ -2,44 +2,54 @@ package nextstep.courses.domain;
 
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 public class SessionTest {
 
-    private static final Student student = new Student(new NsUser());
+    private static final long PRICE = 10000;
+    private static final int MAX_CAPACITY = 3;
+
+    private static final Student student = new Student(new NsUser(), new ArrayList<>());
+    private Session freeSession;
+    private Session paidSession;
+
+    @BeforeEach
+    public void setUp() {
+        freeSession = Session.createFreeSession(LocalDate.now(), LocalDate.now());
+        paidSession = Session.createPaidSession(new Money(PRICE), new Capacity(MAX_CAPACITY), LocalDate.now(), LocalDate.now());
+    }
+
 
     @Test
     public void 수강신청_시_강의상태가_모집중_상태가_아닌_경우_예외_발생() {
-        Session session = Session.createFreeSession(LocalDate.now(), LocalDate.now());
+        Enrollment enrollment = new Enrollment(freeSession, student, new Payment());
 
-        session.ready();
+        freeSession.ready();
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> session.enroll(student, new Payment()));
+                .isThrownBy(() -> freeSession.enroll(enrollment));
 
-        session.close();
+        freeSession.close();
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> session.enroll(student, new Payment()));
+                .isThrownBy(() -> freeSession.enroll(enrollment));
     }
 
     @Test
     public void 유료강의신청_시_최대수강인원을_초과하는_경우_예외_발생() {
-        long price = 10000;
-        int maxCapacity = 3;
-        Session paidSession = Session.createPaidSession(new Money(price), new Capacity(maxCapacity), LocalDate.now(), LocalDate.now());
+        Payment payment = new Payment("paymentId", 0L, 0L, PRICE);
+        Enrollment enrollment = new Enrollment(paidSession, student, payment);
+
         paidSession.startRecruiting();
-
-        Payment payment = new Payment("paymentId", 0L, 0L, price);
-
-        IntStream.range(0, maxCapacity)
-                .forEach(i -> paidSession.enroll(student, payment));
+        IntStream.range(0, MAX_CAPACITY)
+                .forEach(i -> paidSession.enroll(enrollment));
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> paidSession.enroll(student, payment));
+                .isThrownBy(() -> paidSession.enroll(enrollment));
     }
 }
