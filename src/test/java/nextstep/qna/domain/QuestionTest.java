@@ -23,7 +23,7 @@ public class QuestionTest {
 
     @Test
     @DisplayName("정상적으로 질문이 삭제되는 케이스")
-    void delete_normal_case() throws CannotDeleteException {
+    void delete_normal_case() {
         List<DeleteHistory> histories = question.delete(JAVAJIGI);
 
         assertTrue(question.isDeleted());

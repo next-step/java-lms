@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,7 +21,7 @@ public class AnswerTest {
     @Test
     @DisplayName("정상적으로 답변 삭제에 성공한다")
     void delete_normal_case() {
-        answer.delete();
+        answer.delete(NsUserTest.JAVAJIGI);
         assertTrue(answer.isDeleted());
     }
 }

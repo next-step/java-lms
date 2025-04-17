@@ -43,24 +43,6 @@ public class Question {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
     public NsUser getWriter() {
         return writer;
     }
@@ -70,48 +52,24 @@ public class Question {
         answers.add(answer);
     }
 
-    public boolean canBeDeletedBy(NsUser loginUser) {
-        return writer.equals(loginUser);
+    public void validateDeletable(NsUser loginUser) {
+        if (!writer.equals(loginUser)) throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
     }
 
-    public List<DeleteHistory> delete(NsUser user) throws CannotDeleteException {
-        validateDeletableBy(user);
-        this.setDeleted(true);
+    public List<DeleteHistory> delete(NsUser user) {
+        validateDeletable(user);
+        this.deleted = true;
 
         List<DeleteHistory> deletedHistories = answers.stream()
-                .map(Answer::delete)
+                .map(answer -> answer.delete(user))
                 .collect(Collectors.toList());
         deletedHistories.add(0, DeleteHistory.ofQuestion(this, user));
 
         return deletedHistories;
     }
 
-    private void validateDeletableBy(NsUser user) throws CannotDeleteException {
-        if (!this.canBeDeletedBy(user)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-        if (hasOtherUsersAnswer(user)) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-        }
-    }
-
-    private boolean hasOtherUsersAnswer(NsUser user) {
-        return answers.stream()
-                .anyMatch(answer -> !answer.canBeDeletedBy(user));
-    }
-
-
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
     }
 
     @Override
