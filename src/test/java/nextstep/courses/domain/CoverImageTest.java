@@ -8,6 +8,6 @@ public class CoverImageTest {
     @Test
     @DisplayName("커버 이미지 생성 테스트")
     void coverImageSizeTest() {
-        new CoverImage();
+        new CoverImage(0L, 300, 200, ImageType.JPEG);
     }
 }

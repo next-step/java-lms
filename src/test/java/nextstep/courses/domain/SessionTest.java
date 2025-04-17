@@ -16,7 +16,7 @@ class SessionTest {
     @Test
     @DisplayName("강의는 강의 커버 이미지 정보를 가진다.")
     void sessionHasCoverImageTest() {
-        new Session(LocalDate.now(), LocalDate.now(), new CoverImage());
+        new Session(LocalDate.now(), LocalDate.now());
     }
 
 }

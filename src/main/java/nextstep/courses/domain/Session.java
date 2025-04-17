@@ -15,7 +15,7 @@ public class Session {
     }
 
     public Session(LocalDate startAt, LocalDate endAt) {
-        this(startAt, endAt, new CoverImage());
+        this(startAt, endAt, CoverImage.defaultImage());
     }
 
     public Session() {
