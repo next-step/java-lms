@@ -1,7 +1,5 @@
 package nextstep.sessions.domain;
 
-import nextstep.courses.domain.Course;
-import nextstep.images.domain.Image;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.domain.Payments;
 import nextstep.sessions.exception.AttendeeException;
@@ -15,9 +13,9 @@ public class Session {
 
     private Long id;
 
-    private Course course;
+    private Long courseId;
 
-    private Image image;
+    private Long imageId;
 
     private LocalDateTime startDate;
 
@@ -40,27 +38,14 @@ public class Session {
 
     public Session(Builder builder) {
         this.id = builder.id;
-        this.course = builder.course;
-        this.image = builder.image;
+        this.courseId = builder.courseId;
+        this.imageId = builder.imageId;
         this.startDate = builder.startDate;
         this.endDate = builder.endDate;
         this.maxAttendees = builder.maxAttendees;
         this.type = builder.type;
         this.status = builder.status;
         this.price = builder.price;
-    }
-
-    public Session(Long id, Course course, Image image, LocalDateTime startDate, LocalDateTime endDate,
-                   int maxAttendees, SessionType type, SessionStatus status, Long price) {
-        this.id = id;
-        this.course = course;
-        this.image = image;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.maxAttendees = maxAttendees;
-        this.type = type;
-        this.status = status;
-        this.price = price;
     }
 
     public void addAttendee(NsUser attendee) {
@@ -105,8 +90,8 @@ public class Session {
 
     public static class Builder {
         private Long id;
-        private Course course;
-        private Image image;
+        private Long courseId;
+        private Long imageId;
         private LocalDateTime startDate;
         private LocalDateTime endDate;
         private int maxAttendees;
@@ -119,13 +104,13 @@ public class Session {
             return this;
         }
 
-        public Builder course(Course course) {
-            this.course = course;
+        public Builder courseId(Long courseId) {
+            this.courseId = courseId;
             return this;
         }
 
-        public Builder image(Image image) {
-            this.image = image;
+        public Builder imageId(Long imageId) {
+            this.imageId = imageId;
             return this;
         }
 

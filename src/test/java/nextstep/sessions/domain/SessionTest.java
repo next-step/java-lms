@@ -1,7 +1,6 @@
 package nextstep.sessions.domain;
 
 import nextstep.courses.domain.Course;
-import nextstep.images.domain.Image;
 import nextstep.payments.domain.Payment;
 import nextstep.sessions.exception.AttendeeException;
 import nextstep.users.domain.NsUser;
@@ -30,8 +29,8 @@ public class SessionTest {
         course = new Course("test", 1L);
         session = new Session.Builder()
                 .id(1L)
-                .course(course)
-                .image(new Image())
+                .courseId(1L)
+                .imageId(1L)
                 .startDate(LocalDateTime.now())
                 .endDate(LocalDateTime.now())
                 .maxAttendees(1)
@@ -54,8 +53,8 @@ public class SessionTest {
     void freeSessionMaxAttendees() {
         Session freeSession = new Session.Builder()
                 .id(1L)
-                .course(course)
-                .image(new Image())
+                .courseId(1L)
+                .imageId(1L)
                 .startDate(LocalDateTime.now())
                 .endDate(LocalDateTime.now())
                 .maxAttendees(2)
@@ -97,8 +96,8 @@ public class SessionTest {
     void notOpenSession() {
         Session closedSession = new Session.Builder()
                 .id(1L)
-                .course(course)
-                .image(new Image())
+                .courseId(1L)
+                .imageId(1L)
                 .startDate(LocalDateTime.now())
                 .endDate(LocalDateTime.now())
                 .maxAttendees(1)

@@ -2,6 +2,8 @@ package nextstep.images.domain;
 
 public class Image {
 
+    private Long id;
+
     private ImageType type;
 
     // KB
@@ -16,12 +18,6 @@ public class Image {
         this.type = builder.type;
         this.size = builder.size;
         this.dimension = builder.dimension;
-    }
-
-    public Image(ImageType type, double size, double width, double height) {
-        this.type = type;
-        this.size = new ImageSizeKb(size);
-        this.dimension = new ImageDimension(width, height);
     }
 
     public static class Builder {
