@@ -18,6 +18,10 @@ public class Course {
     public Course() {
     }
 
+    public Course(Long id) {
+        this.id = id;
+    }
+
     public Course(String title, Long creatorId) {
         this(0L, title, creatorId, LocalDateTime.now(), null);
     }
@@ -30,6 +34,7 @@ public class Course {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
+
 
     public void addSessions(Sessions sessions) {
         sessions.addAll(sessions);

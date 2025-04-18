@@ -11,6 +11,11 @@ public class Student {
         this.enrollments = enrollments;
     }
 
+    public Student(Long studentId) {
+        this.user = new NsUser(studentId);
+        this.enrollments = new Enrollments();
+    }
+
     public void addEnrollment(Enrollment enrollment) {
         enrollments.add(enrollment);
     }

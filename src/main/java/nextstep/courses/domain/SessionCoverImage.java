@@ -35,6 +35,10 @@ public class SessionCoverImage {
         validateInputs();
     }
 
+    public static SessionCoverImage from(String coverImagePath) {
+        return new SessionCoverImage("coverImagePath", "", 1L, 1, 1);
+    }
+
     private void validateInputs() {
         validateSize();
         validateWidth();
@@ -64,5 +68,9 @@ public class SessionCoverImage {
         if (width * HEIGHT_RATIO != height * WIDTH_RATIO) {
             throw new IllegalArgumentException("이미지 비율이 3:2 인 경우만 업로드 가능합니다.");
         }
+    }
+
+    public String getPath() {
+        return path;
     }
 }

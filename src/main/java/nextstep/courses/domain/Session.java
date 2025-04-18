@@ -20,6 +20,21 @@ public class Session {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    public Session(Long id, Course course, SessionStatus status, SessionType type, Money price, Capacity maxCapacity, Enrollments enrollments, LocalDate startDate, LocalDate endDate, SessionCoverImage coverImage, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.course = course;
+        this.status = status;
+        this.type = type;
+        this.price = price;
+        this.maxCapacity = maxCapacity;
+        this.enrollments = enrollments;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.coverImage = coverImage;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     public Session(SessionStatus status, SessionType type, Money price, Capacity maxCapacity, Enrollments enrollments, LocalDate startDate, LocalDate endDate, SessionCoverImage coverImage) {
         this.status = status;
         this.type = type;
@@ -29,6 +44,10 @@ public class Session {
         this.startDate = startDate;
         this.endDate = endDate;
         this.coverImage = coverImage;
+    }
+
+    public Session(Long sessionId) {
+        this.id = sessionId;
     }
 
     public static Session createFreeSession(LocalDate startDate, LocalDate endDate) {
@@ -67,6 +86,10 @@ public class Session {
         student.addEnrollment(enrollment);
 
         return enrollment;
+    }
+
+    public void addEnrollments(Enrollments enrollments) {
+        this.enrollments = enrollments;
     }
 
     public void updateCoverImage(SessionCoverImage newCoverImage) {
