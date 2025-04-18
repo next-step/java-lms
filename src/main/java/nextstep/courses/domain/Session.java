@@ -1,16 +1,19 @@
 package nextstep.courses.domain;
 
-
 import java.time.LocalDate;
 
 public abstract class Session {
-    private final Period period;
-    private final CoverImage coverImage;
-    private final SessionState state;
+    private final SessionBaseInfo sessionBaseInfo;
 
     protected Session(LocalDate startAt, LocalDate endAt, CoverImage coverImage) {
-        this.period = new Period(startAt, endAt);
-        this.coverImage = coverImage;
-        this.state = SessionState.PREPARING;
+        this.sessionBaseInfo = new SessionBaseInfo(startAt, endAt, coverImage);
+    }
+
+    void open() {
+        sessionBaseInfo.open();
+    }
+
+    void close() {
+        sessionBaseInfo.close();
     }
 }

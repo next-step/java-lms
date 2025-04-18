@@ -4,12 +4,12 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class PaidSession extends Session {
-    private final Integer maxAttendees;
-    private final BigDecimal amount;
+    private final MaxAttendeeCount maxAttendees;
+    private final Amount amount;
 
-    protected PaidSession(LocalDate startAt, LocalDate endAt, CoverImage coverImage, Integer maxAttendees, BigDecimal amount) {
+    protected PaidSession(LocalDate startAt, LocalDate endAt, CoverImage coverImage, Integer maxAttendeeCount, BigDecimal amount) {
         super(startAt, endAt, coverImage);
-        this.maxAttendees = maxAttendees;
-        this.amount = amount;
+        this.maxAttendees = new MaxAttendeeCount(maxAttendeeCount);
+        this.amount = new Amount(amount);
     }
 }
