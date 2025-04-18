@@ -19,4 +19,12 @@ public class Student {
     public void addEnrollment(Enrollment enrollment) {
         enrollments.add(enrollment);
     }
+
+    public Long getId() {
+        return user.getId();
+    }
+
+    public Enrollments getEnrollments() {
+        return enrollments;
+    }
 }

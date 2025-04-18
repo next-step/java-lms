@@ -19,7 +19,7 @@ public class SessionService {
 
 
     @Transactional
-    public void enroll(Long sessionId, NsUser user, Payment payment) {
+    public void enroll(Long sessionId, Student student, Payment payment) {
         Session session = sessionRepository.findById(sessionId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강의입니다."));
 
@@ -28,10 +28,8 @@ public class SessionService {
 
         session.addEnrollments(sessionEnrollments);
 
-        Enrollments userEnrollments = enrollmentRepository.findByUserId(user.getId())
+        Enrollments userEnrollments = enrollmentRepository.findByUserId(student.getId())
                 .orElse(new Enrollments());
-
-        Student student = new Student(user, userEnrollments);
 
         Enrollment enrollment = session.enroll(student, payment);
         enrollmentRepository.save(enrollment);

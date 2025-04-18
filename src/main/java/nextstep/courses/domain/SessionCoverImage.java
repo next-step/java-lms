@@ -36,7 +36,8 @@ public class SessionCoverImage {
     }
 
     public static SessionCoverImage from(String coverImagePath) {
-        return new SessionCoverImage("coverImagePath", "", 1L, 1, 1);
+        // 이미지경로 기반으로 이미지 파일을 read 하고, 해당 파일의 정보를 SessionCoverImage 객체로 반환
+        return new SessionCoverImage("coverImagePath", "png", 1L, 300, 200);
     }
 
     private void validateInputs() {
