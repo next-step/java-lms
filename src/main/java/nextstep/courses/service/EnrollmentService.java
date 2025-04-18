@@ -1,9 +1,7 @@
 package nextstep.courses.service;
 
-import nextstep.courses.domain.*;
-import nextstep.payments.domain.Payment;
+import nextstep.courses.domain.EnrollmentRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EnrollmentService {
@@ -14,9 +12,4 @@ public class EnrollmentService {
         this.enrollmentRepository = enrollmentRepository;
     }
 
-    @Transactional
-    public void enroll(Session session, Student student, Payment payment) {
-        Enrollment enrollment = session.enroll(student, payment);
-        enrollmentRepository.save(enrollment);
-    }
 }

@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -16,7 +15,7 @@ public class SessionTest {
     private static final long PRICE = 10000;
     private static final int MAX_CAPACITY = 3;
 
-    private static final Student student = new Student(new NsUser(), new ArrayList<>());
+    private static final Student student = new Student(new NsUser(), new Enrollments());
     private Session freeSession;
     private Session paidSession;
 
