@@ -17,18 +17,26 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
-    public Course(Integer generation, Sessions sessions) {
-        this(0L, "", generation, sessions, 0L);
+    public Course(String title, Long creatorId) {
+        this(0L, title, 0, new Sessions(), creatorId, LocalDateTime.now(), LocalDateTime.now());
     }
 
-    private Course(Long id, String title, Integer generation, Sessions sessions, Long creatorId) {
+    public Course(Integer generation, Sessions sessions) {
+        this(0L, "", generation, sessions, 0L, LocalDateTime.now(), LocalDateTime.now());
+    }
+
+    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(id, title, 0, new Sessions(), creatorId, createdAt, updatedAt);
+    }
+
+    public Course(Long id, String title, Integer generation, Sessions sessions, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.generation = new Generation(generation);
         this.sessions = sessions;
         this.creatorId = creatorId;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public String getTitle() {

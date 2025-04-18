@@ -11,7 +11,7 @@ public class CourseTest {
     @Test
     @DisplayName("과정은 기수 값을 가지고 있다.")
     void courseHasGenerationTest() {
-        var course = new Course(1);
+        var course = new Course(1, new Sessions());
         Assertions.assertThat(course.getGeneration().getValue()).isEqualTo(1);
     }
 
