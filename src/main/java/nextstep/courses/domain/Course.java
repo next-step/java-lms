@@ -26,8 +26,13 @@ public class Course {
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
+        this.sessions = new Sessions();
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public void addSessions(Sessions sessions) {
+        sessions.addAll(sessions);
     }
 
     public String getTitle() {
