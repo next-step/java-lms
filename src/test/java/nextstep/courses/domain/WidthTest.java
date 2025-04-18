@@ -9,8 +9,8 @@ class WidthTest {
     @Test
     @DisplayName("너비 생성 테스트")
     void widthTest() {
-        Assertions.assertThat(new Width(300.0)).isInstanceOf(Width.class);
-        Assertions.assertThatThrownBy(() -> new Width(299.0))
+        Assertions.assertThat(new Width(300)).isInstanceOf(Width.class);
+        Assertions.assertThatThrownBy(() -> new Width(299))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("너비는 300px 이상이어야 합니다.");
     }

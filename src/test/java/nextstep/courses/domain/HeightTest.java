@@ -11,10 +11,10 @@ class HeightTest {
     @Test
     @DisplayName("높이 생성 테스트")
     void heightCreateTest() {
-        Assertions.assertThat(new Height(200.0))
+        Assertions.assertThat(new Height(200))
                 .isInstanceOf(Height.class);;
 
-        Assertions.assertThatThrownBy(() -> new Height(199.0))
+        Assertions.assertThatThrownBy(() -> new Height(199))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("높이는 200px 이상이어야 합니다.");
     }
