@@ -11,7 +11,7 @@ class CourseTest {
     @DisplayName("과정(Course)은 여러 개의 강의(Session)를 가질 수 있다.")
     void courseHaveSession() {
         Course course = new Course("title", 1L);
-        Session session = new Session(SessionStatus.OPEN);
+        Session session = SessionTest.createSession(SessionStatus.OPEN);
         course.addSession(session);
         assertThat(course.getSessions()).contains(session);
     }
