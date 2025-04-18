@@ -9,12 +9,12 @@ import static org.assertj.core.api.Assertions.*;
 
 class SessionTest {
 
-    public static Session createSession(Long price, int capacity) {
-        return new Session(null, LocalDateTime.now(), LocalDateTime.now().plusMonths(1), null, SessionStatus.OPEN, price, capacity);
+    public static Session createSession(SessionStatus status) {
+        return Session.createFreeSession(LocalDateTime.now(), LocalDateTime.now().plusMonths(1), null, status);
     }
 
-    public static Session createSession(SessionStatus status) {
-        return new Session(null, LocalDateTime.now(), LocalDateTime.now().plusMonths(1), null, status, 0L, Integer.MAX_VALUE);
+    public static Session createSession(Long price, int capacity) {
+        return Session.createPaidSession(LocalDateTime.now(), LocalDateTime.now().plusMonths(1), null, SessionStatus.OPEN, price, capacity);
     }
 
     @Test

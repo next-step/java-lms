@@ -12,9 +12,7 @@ public class Session {
     private Long price;
     private final Students students;
 
-    public Session(Long id, LocalDateTime startDate, LocalDateTime endDate, SessionImage image, SessionStatus status, Long price, int capacity) {
-        validateCapacity(price, capacity);
-
+    private Session(Long id, LocalDateTime startDate, LocalDateTime endDate, SessionImage image, SessionStatus status, Long price, int capacity) {
         this.id = id;
         this.period = new SessionPeriod(startDate, endDate);
         this.image = image;
@@ -23,13 +21,12 @@ public class Session {
         this.students = new Students(capacity);
     }
 
-    private void validateCapacity(Long price, int capacity) {
-        if (capacity < 0) {
-            throw new IllegalArgumentException("capacity must be greater than 0");
-        }
-        if (price == 0 && capacity != Integer.MAX_VALUE) {
-            throw new IllegalArgumentException("capacity must be Integer.MAX_VALUE when price is 0");
-        }
+    public static Session createFreeSession(LocalDateTime startDate, LocalDateTime endDate, SessionImage image, SessionStatus status) {
+        return new Session(null, startDate, endDate, image, status, 0L, Integer.MAX_VALUE);
+    }
+
+    public static Session createPaidSession(LocalDateTime startDate, LocalDateTime endDate, SessionImage image, SessionStatus status, Long price, int capacity) {
+        return new Session(null, startDate, endDate, image, status, price, capacity);
     }
 
     public Payment enroll(Student student) {

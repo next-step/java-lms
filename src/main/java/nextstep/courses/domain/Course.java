@@ -14,21 +14,14 @@ public class Course {
 
     private Long creatorId;
 
-    private List<Session> sessions;
+    private final List<Session> sessions;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
-    private Course() {
-    }
-
     public Course(String title, Long creatorId) {
         this(0L, title, creatorId, LocalDateTime.now(), LocalDateTime.now());
-    }
-
-    public Course(String title, Long creatorId, List<Session> sessions) {
-        this(0L, title, creatorId, sessions, LocalDateTime.now(), LocalDateTime.now());
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {

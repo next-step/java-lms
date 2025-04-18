@@ -8,8 +8,15 @@ public class Students {
     private final List<Student> students;
 
     public Students(int capacity) {
+        validateCapacity(capacity);
         this.capacity = capacity;
         this.students = new ArrayList<>();
+    }
+
+    private void validateCapacity(int capacity) {
+        if (capacity < 0) {
+            throw new IllegalArgumentException("capacity must be greater than 0");
+        }
     }
 
     public void register(Student student, Long price) {
