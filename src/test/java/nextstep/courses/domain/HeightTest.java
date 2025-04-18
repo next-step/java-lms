@@ -4,15 +4,13 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class HeightTest {
 
     @Test
     @DisplayName("높이 생성 테스트")
     void heightCreateTest() {
         Assertions.assertThat(new Height(200))
-                .isInstanceOf(Height.class);;
+                .isInstanceOf(Height.class);
 
         Assertions.assertThatThrownBy(() -> new Height(199))
                 .isInstanceOf(IllegalArgumentException.class)

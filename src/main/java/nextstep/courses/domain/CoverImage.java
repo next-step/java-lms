@@ -16,8 +16,8 @@ public class CoverImage {
         }
 
         this.size = new Size(size);
-        this.width = new Width(width.intValue());
-        this.height = new Height(height.intValue());
+        this.width = new Width(width);
+        this.height = new Height(height);
         this.type = type;
     }
 }

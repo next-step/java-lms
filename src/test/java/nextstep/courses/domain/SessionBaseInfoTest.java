@@ -6,9 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 class SessionBaseInfoTest {
 
     @Test
@@ -34,7 +31,7 @@ class SessionBaseInfoTest {
 
         sessionBaseInfo.open();
 
-        assertThatThrownBy(sessionBaseInfo::open)
+        Assertions.assertThatThrownBy(sessionBaseInfo::open)
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("준비중 상태가 아닙니다.");
     }
@@ -61,7 +58,7 @@ class SessionBaseInfoTest {
         CoverImage coverImage = CoverImage.defaultImage();
         SessionBaseInfo sessionBaseInfo = new SessionBaseInfo(startAt, endAt, coverImage);
 
-        assertThatThrownBy(sessionBaseInfo::close)
+        Assertions.assertThatThrownBy(sessionBaseInfo::close)
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("모집중 상태가 아닙니다.");
     }

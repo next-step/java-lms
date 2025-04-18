@@ -26,7 +26,7 @@ public class CourseTest {
         Assertions.assertThat(course.getSessions().hasSession(session2)).isTrue();
     }
 
-    class TestSession extends Session {
+    static class TestSession extends Session {
 
         protected TestSession() {
             super(LocalDate.MIN, LocalDate.MAX, CoverImage.defaultImage());
