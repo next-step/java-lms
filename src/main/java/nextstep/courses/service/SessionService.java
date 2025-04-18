@@ -54,8 +54,6 @@ public class SessionService {
         
         SessionDto updatedSessionDto = SessionDto.of(session);
         updatedSessionDto.setTimeStampForUpdate();
-
-        sessionRepository.update(updatedSessionDto);
         sessionEnrollmentRepository.save(sessionId, user.getId());
     }
 

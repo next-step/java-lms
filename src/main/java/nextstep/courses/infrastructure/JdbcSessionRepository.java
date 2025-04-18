@@ -39,21 +39,6 @@ public class JdbcSessionRepository implements SessionRepository {
         return jdbcTemplate.query(sql, rowMapper, id).stream().findFirst();
     }
 
-    @Override
-    public void update(SessionDto sessionDto) {
-        String sql = "UPDATE session SET title = ?, session_type = ?, status = ?, start_date = ?, end_date = ?, maximum_enrollment = ?, updated_at = ? WHERE id = ?";
-        jdbcTemplate.update(sql,
-                sessionDto.getTitle(),
-                sessionDto.getSessionType().name(),
-                sessionDto.getStatus().name(),
-                sessionDto.getStartDate(),
-                sessionDto.getEndDate(),
-                sessionDto.getMaximumEnrollment(),
-                LocalDateTime.now(),
-                sessionDto.getId()
-        );
-    }
-
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
         if (timestamp == null) {
             return null;

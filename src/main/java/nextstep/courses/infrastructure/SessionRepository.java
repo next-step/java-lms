@@ -8,6 +8,4 @@ import java.util.Optional;
 @Repository("sessionRepository")
 public interface SessionRepository {
     Optional<SessionDto> findById(Long id);
-
-    void update(SessionDto sessionDto);
 } 

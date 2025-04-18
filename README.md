@@ -67,3 +67,5 @@
 - [x] Enrollment 리팩토링 
   - [x] 생성자에 List<NsUser> 추가
   - [x] EnrollmentManager 추가
+- [ ] 피드백
+  - [x] SessionRepository.update 제거
