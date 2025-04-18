@@ -29,27 +29,24 @@ public class SessionTest {
 
     @Test
     public void 수강신청_시_강의상태가_모집중_상태가_아닌_경우_예외_발생() {
-        Enrollment enrollment = new Enrollment(freeSession, student, new Payment());
-
         freeSession.ready();
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> freeSession.enroll(enrollment));
+                .isThrownBy(() -> freeSession.enroll(student, new Payment()));
 
         freeSession.close();
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> freeSession.enroll(enrollment));
+                .isThrownBy(() -> freeSession.enroll(student, new Payment()));
     }
 
     @Test
     public void 유료강의신청_시_최대수강인원을_초과하는_경우_예외_발생() {
         Payment payment = new Payment("paymentId", 0L, 0L, PRICE);
-        Enrollment enrollment = new Enrollment(paidSession, student, payment);
 
         paidSession.startRecruiting();
         IntStream.range(0, MAX_CAPACITY)
-                .forEach(i -> paidSession.enroll(enrollment));
+                .forEach(i -> paidSession.enroll(student, payment));
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> paidSession.enroll(enrollment));
+                .isThrownBy(() -> paidSession.enroll(student, payment));
     }
 }

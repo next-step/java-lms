@@ -16,9 +16,7 @@ public class EnrollmentService {
 
     @Transactional
     public void enroll(Session session, Student student, Payment payment) {
-        Enrollment enrollment = new Enrollment(session, student, payment);
-        enrollment.enroll();
-
+        Enrollment enrollment = session.enroll(student, payment);
         enrollmentRepository.save(enrollment);
     }
 }

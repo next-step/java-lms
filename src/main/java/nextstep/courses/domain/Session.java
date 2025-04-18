@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class Session {
     private Long id;
+    private Course course;
     private SessionStatus status;
     private SessionType type;
     private Money price;
@@ -19,7 +20,7 @@ public class Session {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    private Session(SessionStatus status, SessionType type, Money price, Capacity maxCapacity, Enrollments enrollments, LocalDate startDate, LocalDate endDate, SessionCoverImage coverImage) {
+    public Session(SessionStatus status, SessionType type, Money price, Capacity maxCapacity, Enrollments enrollments, LocalDate startDate, LocalDate endDate, SessionCoverImage coverImage) {
         this.status = status;
         this.type = type;
         this.price = price;
@@ -56,12 +57,16 @@ public class Session {
         );
     }
 
-    public void enroll(Enrollment enrollment) {
+    public Enrollment enroll(Student student, Payment payment) {
         validateRecruiting();
         validateMaxCapacity();
-        validatePayment(enrollment.getPayment());
+        validatePayment(payment);
 
+        Enrollment enrollment = new Enrollment(this, student);
         enrollments.add(enrollment);
+        student.addEnrollment(enrollment);
+
+        return enrollment;
     }
 
     public void updateCoverImage(SessionCoverImage newCoverImage) {
@@ -96,5 +101,49 @@ public class Session {
         if (payment.notMatches(price.amount())) {
             throw new IllegalArgumentException("결제한 금액과 수강료가 일치하지 않습니다.");
         }
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public SessionStatus getStatus() {
+        return status;
+    }
+
+    public SessionType getType() {
+        return type;
+    }
+
+    public Money getPrice() {
+        return price;
+    }
+
+    public Capacity getMaxCapacity() {
+        return maxCapacity;
+    }
+
+    public Enrollments getEnrollments() {
+        return enrollments;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public SessionCoverImage getCoverImage() {
+        return coverImage;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }
