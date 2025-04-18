@@ -2,7 +2,6 @@ package nextstep.courses.service;
 
 import nextstep.courses.domain.*;
 import nextstep.payments.domain.Payment;
-import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
