@@ -2,6 +2,9 @@ package nextstep.courses.domain;
 
 import nextstep.payments.domain.Payment;
 
+import java.nio.file.attribute.AttributeView;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class SessionMeta {
@@ -27,6 +30,38 @@ public class SessionMeta {
 
     public boolean notValidPayment(Payment payment) {
         return payment.notMatchWith(price);
+    }
+
+    public SessionType getSessionType() {
+        return sessionType;
+    }
+
+    public LocalDate getStartAt() {
+        return period.getStartAt();
+    }
+
+    public LocalDate getEndAt() {
+        return period.getEndAt();
+    }
+
+    public Long getPrice() {
+        return price.getValue();
+    }
+
+    public Long getImageSize() {
+        return coverImage.getSize();
+    }
+
+    public String getImageType() {
+        return coverImage.getType();
+    }
+
+    public int getImageWidth() {
+        return coverImage.getWidth();
+    }
+
+    public int getImageHeight() {
+        return coverImage.getHeight();
     }
 
     @Override

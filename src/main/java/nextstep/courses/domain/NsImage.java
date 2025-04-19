@@ -12,6 +12,22 @@ public class NsImage {
         this.size = new NsImageSize(width, height);
     }
 
+    public Long getSize() {
+        return nsFile.getSize();
+    }
+
+    public String getType() {
+        return nsFile.getType();
+    }
+
+    public int getWidth() {
+        return size.getWidth();
+    }
+
+    public int getHeight() {
+        return size.getHeight();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

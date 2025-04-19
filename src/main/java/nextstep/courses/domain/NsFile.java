@@ -30,6 +30,14 @@ public class NsFile {
         }
     }
 
+    public Long getSize() {
+        return size;
+    }
+
+    public String getType() {
+        return type;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

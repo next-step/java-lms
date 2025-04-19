@@ -21,6 +21,10 @@ public class Price {
         return Objects.equals(this.value, amount);
     }
 
+    public Long getValue() {
+        return value;
+    }
+
     public static Price of(Long amount) {
         return new Price(amount);
     }

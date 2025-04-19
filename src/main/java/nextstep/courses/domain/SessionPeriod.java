@@ -24,6 +24,14 @@ public class SessionPeriod {
         }
     }
 
+    public LocalDate getStartAt() {
+        return startAt;
+    }
+
+    public LocalDate getEndAt() {
+        return endAt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

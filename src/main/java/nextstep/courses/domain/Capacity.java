@@ -6,4 +6,8 @@ public interface Capacity {
     int remaining();
 
     Capacity increase();
+
+    int getCurrent();
+
+    int getMax();
 }

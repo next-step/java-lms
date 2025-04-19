@@ -47,6 +47,16 @@ public class LimitedCapacity implements Capacity {
     }
 
     @Override
+    public int getCurrent() {
+        return current;
+    }
+
+    @Override
+    public int getMax() {
+        return max;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         LimitedCapacity that = (LimitedCapacity) o;

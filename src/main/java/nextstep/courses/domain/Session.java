@@ -2,6 +2,8 @@ package nextstep.courses.domain;
 
 import nextstep.payments.domain.Payment;
 
+import java.nio.file.attribute.AttributeView;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Session {
@@ -9,32 +11,48 @@ public class Session {
     private static final String NOT_MATCH_PRICE_AND_PAYMENT = "결제 금액과 수강료가 일치하지 않습니다.";
 
     private final Long id;
+    private final Long courseId;
     private final SessionMeta meta;
     private final SessionStatus sessionStatus;
     private final Capacity capacity;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
 
-    public Session(Long id, SessionMeta meta, SessionStatus sessionStatus, Capacity capacity) {
+    public Session(Long courseId, SessionMeta meta, SessionStatus sessionStatus, Capacity capacity) {
+        this(null, courseId, meta, sessionStatus, capacity, LocalDateTime.now(), null);
+    }
+
+    public Session(Long id, Long courseId, SessionMeta meta, SessionStatus sessionStatus, Capacity capacity, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
+        this.courseId = courseId;
         this.meta = meta;
         this.sessionStatus = sessionStatus;
         this.capacity = capacity;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public Session startRecruiting() {
         return new Session(
                 id,
+                courseId,
                 meta,
                 SessionStatus.RECRUITING,
-                capacity
+                capacity,
+                createdAt,
+                updatedAt
         );
     }
 
     public Session finishRecruiting() {
         return new Session(
                 id,
+                courseId,
                 meta,
                 SessionStatus.CLOSED,
-                capacity
+                capacity,
+                createdAt,
+                updatedAt
         );
     }
 
@@ -54,9 +72,12 @@ public class Session {
 
         return new Session(
                 id,
+                courseId,
                 meta,
                 sessionStatus,
-                capacity.increase()
+                capacity.increase(),
+                createdAt,
+                updatedAt
         );
     }
 
@@ -68,16 +89,42 @@ public class Session {
         return capacity.hasRoom();
     }
 
-    public static Session createFree(Long id, SessionPeriod period, NsImage image) {
-        SessionMeta meta = new SessionMeta(SessionType.FREE, period, Price.free(), image);
-        Capacity capacity = CapacityFactory.forFree();
-        return new Session(id, meta, SessionStatus.PREPARING, capacity);
+    public SessionMeta getMeta() {
+        return meta;
     }
 
-    public static Session createPaid(Long id, SessionPeriod period, NsImage image, int maxParticipants, Price price) {
+    public Long getCourseId() {
+        return courseId;
+    }
+
+    public SessionStatus getStatus() {
+        return sessionStatus;
+    }
+
+    public int getMax() {
+        return capacity.getMax();
+    }
+
+    public Object getCurrent() {
+        return capacity.getCurrent();
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public static Session createFree(Long courseId, SessionPeriod period, NsImage image) {
+        SessionMeta meta = new SessionMeta(SessionType.FREE, period, Price.free(), image);
+        Capacity capacity = CapacityFactory.forFree();
+        Session session = new Session(courseId, meta, SessionStatus.PREPARING, capacity);
+
+        return new Session(courseId, meta, SessionStatus.PREPARING, capacity);
+    }
+
+    public static Session createPaid(Long courseId, SessionPeriod period, NsImage image, int maxParticipants, Price price) {
         SessionMeta meta = new SessionMeta(SessionType.PAID, period, price, image);
         Capacity capacity = new LimitedCapacity(maxParticipants); // currentParticipants 생략
-        return new Session(id, meta, SessionStatus.PREPARING, capacity);
+        return new Session(courseId, meta, SessionStatus.PREPARING, capacity);
     }
 
     @Override

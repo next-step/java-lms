@@ -29,6 +29,16 @@ public class UnlimitedCapacity implements Capacity {
     }
 
     @Override
+    public int getCurrent() {
+        return current;
+    }
+
+    @Override
+    public int getMax() {
+        return Integer.MAX_VALUE;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         UnlimitedCapacity that = (UnlimitedCapacity) o;
