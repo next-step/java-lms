@@ -13,7 +13,6 @@ public class UnlimitedCapacityTest {
     }
 
     @Test
-    @DisplayName("")
     void 현재인원을_1_증가시킨_새_Capacity_객체반환() {
         assertThat(CapacityFactory.forFree().increase()).isEqualTo(new UnlimitedCapacity(1));
     }

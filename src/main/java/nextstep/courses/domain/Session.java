@@ -84,7 +84,7 @@ public class Session {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Session session = (Session) o;
-        return Objects.equals(id, session.id) && Objects.equals(meta, session.meta) && sessionStatus == session.sessionStatus && Objects.equals(capacity, session.capacity);
+        return Objects.equals(id, session.id) && Objects.equals(meta, session.meta);
     }
 
     @Override

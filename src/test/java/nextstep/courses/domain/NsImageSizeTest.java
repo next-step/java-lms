@@ -8,14 +8,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class NsImageSizeTest {
     @Test
-    @Order(10)
     void 유효한_이미지_사이즈일_경우_객체생성() {
         assertThat(new NsImageSize(600, 400))
                 .isInstanceOf(NsImageSize.class);
     }
 
     @Test
-    @Order(40)
     void 너비가_300px_미만_생성실패() {
         assertThatThrownBy(() -> new NsImageSize(250, 400))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -23,7 +21,6 @@ public class NsImageSizeTest {
     }
 
     @Test
-    @Order(50)
     void 높이가_200px_미만_생성실패() {
         assertThatThrownBy(() -> new NsImageSize(600, 150))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -31,7 +28,6 @@ public class NsImageSizeTest {
     }
 
     @Test
-    @Order(60)
     void 이미지_비율이_3대2가아님_생성실패() {
         assertThatThrownBy(() -> new NsImageSize(600, 500))
                 .isInstanceOf(IllegalArgumentException.class)
