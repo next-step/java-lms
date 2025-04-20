@@ -85,3 +85,27 @@
 - [x] Course - List<Session>에 final 키워드를 추가해서 불변성도 확보해주면 더욱 좋겠네요.
 - [x] Session - 무료강의, 일반강의를 나누어 팩터리 메서드를 제공하는 것도 방법이겠네요 😄
 - [x] SessionImage - 확장자명은 고정으로 사용될 것 같아 보이는데, 상수로 분리하는 건 어떨까요?
+
+---
+## STEP3. 수강신청(DB 적용)
+### 프로그래밍 요구사항
+> - 앞 단계에서 구현한 도메인 모델을 DB 테이블과 매핑하고, 데이터를 저장한다.
+>   - CRUD 쿼리와 코드를 구현하는데 집중하기 보다 테이블을 설계하고 객체 매핑하는 부분에 집중한다.
+> - 성능보다 도메인 객체에 로직 구현하는 것을 목표로 연습한다. 
+>   - 객체 구조를 유지하기 위해 여러 번의 DB 쿼리를 실행해도 괜찮다.
+> - Payment는 테이블 매핑을 고려하지 않아도 된다.
+
+- [ ] session 테이블 생성 및 매핑
+- [ ] ns_user 매핑
+- [ ] question 매핑
+- [ ] answer 매핑
+- [ ] delete_history 매핑
+
+### 참고할 코드
+- DB 테이블 추가 - src/main/resources/schema.sql
+- 테이블에 샘플 데이터를 추가하고 싶다면 src/main/resources/data.sql 파일에 추가 가능함
+- CRUD 코드
+  - src/main/java 폴더의 nextstep.courses.infrastructure.JdbcCourseRepository
+  - JdbcCourseRepository 샘플 코드는 Spring JDBC 라이브러리를 활용해 구현함
+- CRUD 코드에 대한 테스트 코드
+  - src/test/java 폴더의 nextstep.courses.infrastructure.CourseRepositoryTest
