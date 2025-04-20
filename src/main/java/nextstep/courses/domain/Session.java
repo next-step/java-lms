@@ -32,7 +32,7 @@ public class Session {
     private final List<EnrollmentHistory> enrollments = new ArrayList<>();
 
 
-    private Session(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, CoverImage coverImage, SessionType sessionType, SessionStatus sessionStatus, Long price, Long capacity) {
+    public Session(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, CoverImage coverImage, SessionType sessionType, SessionStatus sessionStatus, Long price, Long capacity) {
         this.id = id;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
