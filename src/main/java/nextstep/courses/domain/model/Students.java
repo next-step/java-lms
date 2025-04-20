@@ -30,4 +30,15 @@ public class Students {
         students.add(student);
     }
 
+    public int getCapacity() {
+        return capacity;
+    }
+
+    @Override
+    public String toString() {
+        return "Students{" +
+                "capacity=" + capacity +
+                ", students=" + students +
+                '}';
+    }
 }

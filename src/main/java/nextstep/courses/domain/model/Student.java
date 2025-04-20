@@ -31,4 +31,12 @@ public class Student {
     public long getAmount() {
         return money;
     }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "nsUserId=" + nsUserId +
+                ", money=" + money +
+                '}';
+    }
 }

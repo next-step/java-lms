@@ -21,4 +21,20 @@ public class SessionPeriod {
             throw new IllegalArgumentException("start date must be before end date");
         }
     }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    @Override
+    public String toString() {
+        return "SessionPeriod{" +
+                "startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
+    }
 }

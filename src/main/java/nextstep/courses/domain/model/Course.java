@@ -21,7 +21,7 @@ public class Course {
     private LocalDateTime updatedAt;
 
     public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), LocalDateTime.now());
+        this(null, title, creatorId, LocalDateTime.now(), LocalDateTime.now());
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -35,6 +35,10 @@ public class Course {
         this.sessions = sessions;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getTitle() {

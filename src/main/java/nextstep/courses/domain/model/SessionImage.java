@@ -24,6 +24,11 @@ public class SessionImage {
         this.file = file;
     }
 
+    public SessionImage(String path, byte[] file) {
+        this.path = path;
+        this.file = file;
+    }
+
     private static void validateSize(byte[] file) {
         if (file.length > MAX_FILE_SIZE_BYTES)
             throw new IllegalArgumentException("File size should not exceed 1mb");
@@ -47,4 +52,18 @@ public class SessionImage {
         return (double) width / height;
     }
 
+    public String getPath() {
+        return path;
+    }
+
+    public byte[] getFile() {
+        return file;
+    }
+
+    @Override
+    public String toString() {
+        return "SessionImage{" +
+                "path='" + path + '\'' +
+                '}';
+    }
 }

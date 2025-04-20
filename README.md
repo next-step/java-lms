@@ -95,7 +95,7 @@
 >   - 객체 구조를 유지하기 위해 여러 번의 DB 쿼리를 실행해도 괜찮다.
 > - Payment는 테이블 매핑을 고려하지 않아도 된다.
 
-- [ ] session 테이블 생성 및 매핑
+- [x] session 테이블 생성 및 매핑
 - [ ] ns_user 매핑
 - [ ] question 매핑
 - [ ] answer 매핑
