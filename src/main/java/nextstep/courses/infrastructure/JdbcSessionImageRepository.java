@@ -1,0 +1,77 @@
+package nextstep.courses.infrastructure;
+
+import nextstep.courses.domain.session.image.SessionImageRepository;
+import nextstep.courses.entity.SessionImageEntity;
+import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
+
+import java.sql.PreparedStatement;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
+
+@Repository("sessionImageRepository")
+public class JdbcSessionImageRepository implements SessionImageRepository {
+    private JdbcOperations jdbcTemplate;
+
+    public JdbcSessionImageRepository(JdbcOperations jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Override
+    public Long save(SessionImageEntity sessionImageEntity) {
+        String sql = "INSERT INTO session_image (" +
+            "created_at, updated_at, deleted, image_url, image_type, session_id" +
+            ") VALUES (?, ?, ?, ?, ?, ?)";
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
+            ps.setTimestamp(1, toTimestamp(sessionImageEntity.getCreatedAt()));
+            ps.setTimestamp(2, toTimestamp(sessionImageEntity.getUpdatedAt()));
+            ps.setBoolean(3, sessionImageEntity.isDeleted());
+            ps.setString(4, sessionImageEntity.getImageUrl());
+            ps.setString(5, sessionImageEntity.getImageType());
+            ps.setLong(6, sessionImageEntity.getSessionId());
+            return ps;
+        }, keyHolder);
+
+        return Objects.requireNonNull(keyHolder.getKey()).longValue();
+    }
+
+    @Override
+    public List<SessionImageEntity> findAllBySessionId(Long sessionId) {
+        String sql = "SELECT id, created_at, updated_at, deleted, image_url, image_type, session_id " +
+            "FROM session_image WHERE session_id = ?";
+
+        return jdbcTemplate.query(sql, new Object[]{sessionId}, (rs, rowNum) ->
+            SessionImageEntity.builder()
+                .id(rs.getLong("id"))
+                .createdAt(toLocalDateTime(rs.getTimestamp("created_at")))
+                .updatedAt(toLocalDateTime(rs.getTimestamp("updated_at")))
+                .deleted(rs.getBoolean("deleted"))
+                .imageUrl(rs.getString("image_url"))
+                .imageType(rs.getString("image_type"))
+                .sessionId(rs.getLong("session_id"))
+                .build()
+        );
+    }
+
+    private Timestamp toTimestamp(LocalDateTime localDateTime) {
+        if (localDateTime == null) {
+            return null;
+        }
+        return Timestamp.valueOf(localDateTime);
+    }
+
+    private LocalDateTime toLocalDateTime(Timestamp timestamp) {
+        if (timestamp == null) {
+            return null;
+        }
+        return timestamp.toLocalDateTime();
+    }
+}

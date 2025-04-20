@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @JdbcTest
-public class CourseRepositoryTest {
+public class JdbcCourseRepositoryTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

@@ -23,7 +23,7 @@ public class JdbcCourseRepository implements CourseRepository {
 
     @Override
     public Long save(CourseEntity courseEntity) {
-        String sql = "INSERT INTO course (title, deleted, creator_id, created_at) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO course (title, deleted, creator_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -32,7 +32,8 @@ public class JdbcCourseRepository implements CourseRepository {
             ps.setString(1, courseEntity.getTitle());
             ps.setBoolean(2, courseEntity.isDeleted());
             ps.setLong(3, courseEntity.getCreatorId());
-            ps.setTimestamp(4, Timestamp.valueOf(courseEntity.getCreatedAt()));
+            ps.setTimestamp(4, toTimestamp(courseEntity.getCreatedAt()));
+            ps.setTimestamp(5, toTimestamp(courseEntity.getUpdatedAt()));
             return ps;
         }, keyHolder);
 
@@ -51,6 +52,13 @@ public class JdbcCourseRepository implements CourseRepository {
             .build();
 
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
+    }
+
+    private Timestamp toTimestamp(LocalDateTime localDateTime) {
+        if (localDateTime == null) {
+            return null;
+        }
+        return Timestamp.valueOf(localDateTime);
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
