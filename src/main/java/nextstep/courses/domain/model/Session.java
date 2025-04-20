@@ -19,16 +19,7 @@ public class Session {
 
 
     private Session(Long id, Long courseId, LocalDateTime startDate, LocalDateTime endDate, SessionImage image, SessionStatus status, Long price, int capacity, Long creatorId) {
-        this.id = id;
-        this.courseId = courseId;
-        this.period = new SessionPeriod(startDate, endDate);
-        this.image = image;
-        this.status = status;
-        this.price = price;
-        this.students = new Students(capacity);
-        this.creatorId = creatorId;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        this(id, courseId, new SessionPeriod(startDate, endDate), image, status, price, capacity, creatorId, LocalDateTime.now(), LocalDateTime.now());
     }
 
     public Session(Long id, Long courseId, SessionPeriod period, SessionImage image, SessionStatus status, Long price, int capacity, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -44,23 +35,15 @@ public class Session {
         this.updatedAt = updatedAt;
     }
 
-    public static Session createFreeSession(LocalDateTime startDate, LocalDateTime endDate, SessionImage image, SessionStatus status) {
-        return new Session(null, null, startDate, endDate, image, status, 0L, Integer.MAX_VALUE, null);
-    }
-
     public static Session createFreeSession(Course course, LocalDateTime startDate, LocalDateTime endDate, SessionImage image, SessionStatus status, NsUser creator) {
         Session session = new Session(null, course.getId(), startDate, endDate, image, status, 0L, Integer.MAX_VALUE, creator.getId());
         course.addSession(session);
         return session;
     }
 
-    public static Session createPaidSession(LocalDateTime startDate, LocalDateTime endDate, SessionImage image, SessionStatus status, Long price, int capacity) {
-        return new Session(null, null, startDate, endDate, image, status, price, capacity, null);
-    }
-
-    public static Session createPaidSession(Course cousrse, LocalDateTime startDate, LocalDateTime endDate, SessionImage image, SessionStatus status, Long price, int capacity, NsUser creator) {
-        Session session = new Session(null, cousrse.getId(), startDate, endDate, image, status, price, capacity, creator.getId());
-        cousrse.addSession(session);
+    public static Session createPaidSession(Course course, LocalDateTime startDate, LocalDateTime endDate, SessionImage image, SessionStatus status, Long price, int capacity, NsUser creator) {
+        Session session = new Session(null, course.getId(), startDate, endDate, image, status, price, capacity, creator.getId());
+        course.addSession(session);
         return session;
     }
 

@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.courses.domain.model.Session;
 import nextstep.courses.domain.model.SessionStatus;
 import nextstep.courses.domain.model.Student;
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,11 +14,11 @@ import static org.assertj.core.api.Assertions.*;
 class SessionTest {
 
     public static Session createSession(SessionStatus status) {
-        return Session.createFreeSession(LocalDateTime.now(), LocalDateTime.now().plusMonths(1), null, status);
+        return Session.createFreeSession(CourseTest.createCourse(), LocalDateTime.now(), LocalDateTime.now().plusMonths(1), null, status, NsUserTest.JAVAJIGI);
     }
 
     public static Session createSession(Long price, int capacity) {
-        return Session.createPaidSession(LocalDateTime.now(), LocalDateTime.now().plusMonths(1), null, SessionStatus.OPEN, price, capacity);
+        return Session.createPaidSession(CourseTest.createCourse(), LocalDateTime.now(), LocalDateTime.now().plusMonths(1), null, SessionStatus.OPEN, price, capacity, NsUserTest.JAVAJIGI);
     }
 
     @Test

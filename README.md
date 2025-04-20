@@ -84,7 +84,9 @@
 ### 코멘트
 - [x] Course - List<Session>에 final 키워드를 추가해서 불변성도 확보해주면 더욱 좋겠네요.
 - [x] Session - 무료강의, 일반강의를 나누어 팩터리 메서드를 제공하는 것도 방법이겠네요 😄
+- [ ] Session - price 가 음수로 주어진 경우에는 따로 예외처리가 필요없을까요?
 - [x] SessionImage - 확장자명은 고정으로 사용될 것 같아 보이는데, 상수로 분리하는 건 어떨까요?
+- [ ] SessionImage - 확장자명을 enum class 로 관리하는 것도 방법이죠
 
 ---
 ## STEP3. 수강신청(DB 적용)
@@ -102,10 +104,13 @@
 - [ ] delete_history 매핑
 
 ### 참고할 코드
-- DB 테이블 추가 - src/main/resources/schema.sql
-- 테이블에 샘플 데이터를 추가하고 싶다면 src/main/resources/data.sql 파일에 추가 가능함
-- CRUD 코드
-  - src/main/java 폴더의 nextstep.courses.infrastructure.JdbcCourseRepository
-  - JdbcCourseRepository 샘플 코드는 Spring JDBC 라이브러리를 활용해 구현함
-- CRUD 코드에 대한 테스트 코드
-  - src/test/java 폴더의 nextstep.courses.infrastructure.CourseRepositoryTest
+
+> - DB 테이블 추가 - src/main/resources/schema.sql
+> - 테이블에 샘플 데이터를 추가하고 싶다면 src/main/resources/data.sql 파일에 추가 가능함
+> - CRUD 코드
+    >
+- src/main/java 폴더의 nextstep.courses.infrastructure.JdbcCourseRepository
+>   - JdbcCourseRepository 샘플 코드는 Spring JDBC 라이브러리를 활용해 구현함
+> - CRUD 코드에 대한 테스트 코드
+    >
+- src/test/java 폴더의 nextstep.courses.infrastructure.CourseRepositoryTest
