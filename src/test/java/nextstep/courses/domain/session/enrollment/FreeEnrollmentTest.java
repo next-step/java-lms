@@ -35,7 +35,6 @@ class FreeEnrollmentTest {
         enrollment.enroll(anotherUser);
 
         // then
-        assertThat(enrollment.isFull()).isFalse();
         assertThat(enrollment.hasEnrolledUser(USER)).isTrue();
         assertThat(enrollment.hasEnrolledUser(anotherUser)).isTrue();
     }

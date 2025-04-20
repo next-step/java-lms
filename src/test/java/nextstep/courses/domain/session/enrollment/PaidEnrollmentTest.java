@@ -62,7 +62,6 @@ class PaidEnrollmentTest {
         enrollment.enroll(USER);
 
         // then
-        assertThat(enrollment.isFull()).isTrue();
         assertThatThrownBy(() -> enrollment.enroll(anotherUser))
                 .isInstanceOf(IllegalStateException.class);
     }

@@ -69,3 +69,4 @@
   - [x] EnrollmentManager 추가
 - [ ] 피드백
   - [x] SessionRepository.update 제거
+  - [x] Enrollment.isFull 리팩토링

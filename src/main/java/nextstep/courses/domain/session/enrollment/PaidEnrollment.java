@@ -30,16 +30,16 @@ public class PaidEnrollment implements Enrollment{
         enrollment.enroll(user);
     }
 
-    public boolean isFull() {
-        return enrollment.getEnrolledUsers().size() >= maxEnrollment;
-    }
-
     public boolean hasEnrolledUser(NsUser user) {
         return enrollment.hasEnrolledUser(user);
     }
 
     public SessionStatus getStatus() {
         return enrollment.getStatus();
+    }
+
+    private boolean isFull() {
+        return enrollment.getEnrolledUsers().size() >= maxEnrollment;
     }
 
     private void validateMaxEnrollment(int maxEnrollment) {

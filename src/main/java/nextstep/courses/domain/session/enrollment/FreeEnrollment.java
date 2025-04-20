@@ -25,10 +25,6 @@ public class FreeEnrollment implements Enrollment {
         return enrollment.hasEnrolledUser(user);
     }
 
-    public boolean isFull() {
-        return enrollment.isFull();
-    }
-
     public SessionStatus getStatus() {
         return enrollment.getStatus();
     }

@@ -36,8 +36,4 @@ public class EnrollmentManager {
     public boolean hasEnrolledUser(NsUser user) {
         return enrolledUsers.contains(user);
     }
-
-    public boolean isFull() {
-        return false;  // 기본적으로는 제한이 없음
-    }
 }

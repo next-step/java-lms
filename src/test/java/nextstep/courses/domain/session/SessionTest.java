@@ -39,7 +39,6 @@ class SessionTest {
         );
 
         assertThat(session.isPaid()).isTrue();
-        assertThat(session.isFull()).isFalse();
     }
 
     @Test
@@ -57,7 +56,6 @@ class SessionTest {
         );
 
         assertThat(session.isPaid()).isFalse();
-        assertThat(session.isFull()).isFalse();
     }
 
     @Test
@@ -101,7 +99,6 @@ class SessionTest {
         NsUser anotherUser = new NsUser(2L, "user2", "password", "name", "email");
 
         session.enroll(USER, payment);
-        assertThat(session.isFull()).isTrue();
         assertThatThrownBy(() -> session.enroll(anotherUser, payment))
                 .isInstanceOf(IllegalStateException.class);
     }

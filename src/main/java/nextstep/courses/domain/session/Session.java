@@ -35,10 +35,6 @@ public class Session {
         return info.isPaid();
     }
 
-    public boolean isFull() {
-        return enrollment.isFull();
-    }
-
     private void validatePaymentExists(Payment payment) {
         if (payment == null) {
             throw new IllegalArgumentException("유료 강의는 결제가 필요합니다.");
