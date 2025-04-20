@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.model;
 
 import org.springframework.lang.NonNull;
 

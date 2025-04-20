@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.model;
 
 import java.util.List;
 
@@ -9,8 +9,6 @@ public class SessionImage {
     private static final int MIN_HEIGHT = 200;
     private static final double WIDTH_HEIGHT_RATIO = 1.5;
     private final String path;
-    private final int width;
-    private final int height;
     private final byte[] file;
 
     protected SessionImage(String path) {
@@ -23,8 +21,6 @@ public class SessionImage {
         validateDimensions(width, height);
 
         this.path = path;
-        this.width = width;
-        this.height = height;
         this.file = file;
     }
 

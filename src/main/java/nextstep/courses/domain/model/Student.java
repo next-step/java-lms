@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.model;
 
 public class Student {
     private final Long nsUserId;

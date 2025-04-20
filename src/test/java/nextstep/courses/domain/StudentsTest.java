@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.model.Student;
+import nextstep.courses.domain.model.Students;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
