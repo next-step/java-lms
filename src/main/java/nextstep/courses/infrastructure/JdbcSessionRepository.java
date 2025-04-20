@@ -55,7 +55,7 @@ public class JdbcSessionRepository implements SessionRepository {
                         ),
                         new SessionImage(
                                 rs.getString(8),
-                                rs.getBlob(9).getBinaryStream().readAllBytes()
+                                rs.getBlob(9) == null ? null : rs.getBlob(9).getBinaryStream().readAllBytes()
                         ),
                         SessionStatus.valueOf(rs.getString(4)),
                         rs.getLong(5),

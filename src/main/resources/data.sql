@@ -1,7 +1,7 @@
 INSERT INTO ns_user (user_id, password, name, email, created_at)
-values ('javajigi', 'test', '자바지기', 'javajigi@slipp.net', CURRENT_TIMESTAMP());
+VALUES ('javajigi', 'test', '자바지기', 'javajigi@slipp.net', CURRENT_TIMESTAMP());
 INSERT INTO ns_user (user_id, password, name, email, created_at)
-values ('sanjigi', 'test', '산지기', 'sanjigi@slipp.net', CURRENT_TIMESTAMP());
+VALUES ('sanjigi', 'test', '산지기', 'sanjigi@slipp.net', CURRENT_TIMESTAMP());
 
 INSERT INTO question (id, writer_id, title, contents, created_at, deleted) VALUES (1, 1, '국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?', 'Ruby on Rails(이하 RoR)는 2006년 즈음에 정말 뜨겁게 달아올랐다가 금방 가라 앉았다. Play 프레임워크는 정말 한 순간 잠시 눈에 뜨이다가 사라져 버렸다. RoR과 Play 기반으로 개발을 해보면 정말 생산성이 높으며, 웹 프로그래밍이 재미있기까지 하다. Spring MVC + JPA(Hibernate) 기반으로 진행하면 설정할 부분도 많고, 기본으로 지원하지 않는 기능도 많아 RoR과 Play에서 기본적으로 지원하는 기능을 서비스하려면 추가적인 개발이 필요하다.', CURRENT_TIMESTAMP(), false);
 
@@ -13,3 +13,6 @@ INSERT INTO question (id, writer_id, title, contents, created_at, deleted) VALUE
 
 INSERT INTO course (title, creator_id, created_at)
 VALUES ('넥스트 스텝', 1, CURRENT_TIMESTAMP());
+
+INSERT INTO session (course_id, capacity, status, price, start_date, end_date, creator_id, created_at)
+VALUES (1, 10, 'OPEN', 100000, '2025-04-21', '2025-05-21', 1, '2025-04-21 00:00:00');

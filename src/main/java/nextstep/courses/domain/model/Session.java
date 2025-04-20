@@ -4,6 +4,7 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Session {
     private Long id;
@@ -16,7 +17,6 @@ public class Session {
     private final Long creatorId;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
-
 
     private Session(Long id, Long courseId, LocalDateTime startDate, LocalDateTime endDate, SessionImage image, SessionStatus status, Long price, int capacity, Long creatorId) {
         this(id, courseId, new SessionPeriod(startDate, endDate), image, status, price, capacity, creatorId, LocalDateTime.now(), LocalDateTime.now());
@@ -47,14 +47,15 @@ public class Session {
         return session;
     }
 
-    public Payment enroll(Student student) {
+    public Payment enroll(NsUser user) {
         if (status != SessionStatus.OPEN) {
             throw new IllegalArgumentException("session is not open");
         }
 
-        students.register(student, price);
-        return new Payment("0L", id, student.getNsUserId(), price);
+        students.register(user, this, price);
+        return new Payment("0L", id, user.getId(), price);
     }
+
 
     public Long getId() {
         return id;
@@ -94,6 +95,18 @@ public class Session {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Session session = (Session) o;
+        return Objects.equals(id, session.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 
     @Override

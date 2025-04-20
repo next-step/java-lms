@@ -1,11 +1,11 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.model.Session;
+import nextstep.courses.domain.model.SessionStatus;
 import nextstep.courses.domain.model.Student;
-import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -13,7 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class StudentTest {
 
     public static Student createStudent(Long balance) {
-        return new Student(new NsUser("아이디", "비밀번호", "이름", new BigDecimal(balance)));
+        Session session = SessionTest.createFreeSession(SessionStatus.OPEN);
+        return new Student(NsUserTest.createNsUser(balance), session);
     }
 
     @Test

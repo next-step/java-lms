@@ -1,8 +1,9 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.model.Session;
+import nextstep.courses.domain.model.SessionImage;
+import nextstep.courses.domain.model.SessionPeriod;
 import nextstep.courses.domain.model.SessionStatus;
-import nextstep.courses.domain.model.Student;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,11 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.*;
 
-class SessionTest {
+public class SessionTest {
+    public static final Session SESSION1 = new Session(1L, 1L,
+            new SessionPeriod(LocalDateTime.parse("2025-04-21T00:00"), LocalDateTime.parse("2025-05-21T00:00")),
+            new SessionImage(null, null), SessionStatus.OPEN, 100_000L, 10, 1L,
+            LocalDateTime.parse("2025-04-21T00:00"), null);
 
     public static Session createFreeSession(SessionStatus status) {
         return Session.createFreeSession(CourseTest.createCourse(), LocalDateTime.now(), LocalDateTime.now().plusMonths(1), null, status, NsUserTest.JAVAJIGI);
@@ -24,13 +29,13 @@ class SessionTest {
     @Test
     @DisplayName("무료 강의는 최대 수강 인원 제한이 없다.")
     void createFreeSession() {
-        assertThatCode(() -> createPaidSession(0L, Integer.MAX_VALUE).enroll(new Student(NsUserTest.JAVAJIGI))).doesNotThrowAnyException();
+        assertThatCode(() -> createPaidSession(0L, Integer.MAX_VALUE).enroll(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
     }
 
     @Test
     @DisplayName("강의 수강신청은 강의 상태가 모집중일 때 가능하다.")
     void registerOpenSession() {
-        assertThatCode(() -> createFreeSession(SessionStatus.OPEN).enroll(new Student(NsUserTest.JAVAJIGI))).doesNotThrowAnyException();
+        assertThatCode(() -> createFreeSession(SessionStatus.OPEN).enroll(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
     }
 
     @Test
@@ -41,7 +46,7 @@ class SessionTest {
 
             if (status == SessionStatus.OPEN) continue;
 
-            assertThatThrownBy(() -> createFreeSession(status).enroll(new Student(NsUserTest.JAVAJIGI)))
+            assertThatThrownBy(() -> createFreeSession(status).enroll(NsUserTest.JAVAJIGI))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("session is not open");
         }
@@ -51,8 +56,7 @@ class SessionTest {
     @DisplayName("결제 정보는 Payment 객체에 담겨 반한된다.")
     void enrollAndGetPayment() {
         Session session = createPaidSession(800_000L, 1);
-        Student student = StudentTest.createStudent(800_000L);
-        assertThat(session.enroll(student).getAmount()).isEqualTo(800_000L);
+        assertThat(session.enroll(NsUserTest.createNsUser(800_000L)).getAmount()).isEqualTo(800_000L);
     }
 
 }

@@ -1,5 +1,7 @@
 package nextstep.courses.domain.model;
 
+import nextstep.users.domain.NsUser;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,13 +21,16 @@ public class Students {
         }
     }
 
-    public void register(Student student, Long price) {
-        if (students.contains(student)) {
-            throw new IllegalArgumentException("already enrolled");
-        }
+    public void register(NsUser user, Session session, Long price) {
         if (students.size() >= capacity) {
             throw new IllegalArgumentException("student limit exceeded");
         }
+
+        Student student = new Student(user, session);
+        if (students.contains(student)) {
+            throw new IllegalArgumentException("already enrolled");
+        }
+
         student.pay(price);
         students.add(student);
     }

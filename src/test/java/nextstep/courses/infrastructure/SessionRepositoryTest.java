@@ -51,7 +51,7 @@ class SessionRepositoryTest {
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
 
-        Session saved = sessionRepository.findById(1L);
+        Session saved = sessionRepository.findById(2L);
         assertThat(saved.getCourseId()).isEqualTo(1L);
         assertThat(saved.getPrice()).isEqualTo(session.getPrice());
         assertThat(saved.getStatus()).isEqualTo(session.getStatus());
