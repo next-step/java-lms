@@ -31,7 +31,10 @@ public class SessionService {
 
     @Transactional
     public void deleteSession(long sessionId) throws IOException {
-        Session session = sessionFactory.create(sessionRepository.findById(sessionId), sessionImageRepository.findAllBySessionId(sessionId));
+        Session session = sessionFactory.create(
+            sessionRepository.findById(sessionId),
+            sessionImageRepository.findAllBySessionId(sessionId)
+        );
         session.delete();
     }
 }

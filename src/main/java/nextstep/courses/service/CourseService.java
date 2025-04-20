@@ -6,7 +6,6 @@ import nextstep.courses.domain.session.SessionEntityImageMap;
 import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.domain.session.image.SessionImageRepository;
 import nextstep.courses.entity.SessionEntity;
-import nextstep.courses.entity.SessionImageEntity;
 import nextstep.courses.factory.CourseFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,9 +37,11 @@ public class CourseService {
     public void deleteCourse(long courseId) throws IOException {
         List<SessionEntity> sessionEntities = sessionRepository.findAllByCourseId(courseId);
         SessionEntityImageMap sessionEntityImageMap = new SessionEntityImageMap();
-        for (SessionEntity sessionEntity: sessionEntities) {
-            List<SessionImageEntity> sessionImageEntities = sessionImageRepository.findAllBySessionId(Long.parseLong(sessionEntity.getId()));
-            sessionEntityImageMap.add(sessionEntity, sessionImageEntities);
+        for (SessionEntity sessionEntity : sessionEntities) {
+            sessionEntityImageMap.add(
+                sessionEntity,
+                sessionImageRepository.findAllBySessionId(Long.parseLong(sessionEntity.getId()))
+            );
         }
         Course course = courseFactory.create(courseRepository.findById(courseId), sessionEntityImageMap);
         course.delete();
