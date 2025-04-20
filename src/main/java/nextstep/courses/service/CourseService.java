@@ -4,7 +4,6 @@ import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
 import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.factory.CourseFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +16,6 @@ public class CourseService {
     private final SessionRepository sessionRepository;
     private final CourseFactory courseFactory;
 
-    @Autowired
     public CourseService(CourseRepository courseRepository, SessionRepository sessionRepository, CourseFactory courseFactory) {
         this.courseRepository = courseRepository;
         this.sessionRepository = sessionRepository;

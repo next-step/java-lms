@@ -10,7 +10,6 @@ import nextstep.payments.domain.Payments;
 import nextstep.payments.factory.PaymentsFactory;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -25,7 +24,6 @@ public class PaymentService {
     private final SessionFactory sessionFactory;
     private final PaymentsFactory paymentsFactory;
 
-    @Autowired
     public PaymentService(
         SessionRepository sessionRepository,
         PaymentRepository paymentRepository,
