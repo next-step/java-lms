@@ -4,10 +4,10 @@ import nextstep.courses.domain.CourseRepository;
 import nextstep.courses.entity.CourseEntity;
 
 public class TestCourseRepository implements CourseRepository {
-    int saveCalled = 0;
-    int findByIdCalled = 0;
-    Long saveResult;
-    CourseEntity findByIdResult;
+    private int saveCalled = 0;
+    private int findByIdCalled = 0;
+    private final Long saveResult;
+    private final CourseEntity findByIdResult;
 
     public TestCourseRepository(Long saveResult, CourseEntity findByIdResult) {
         this.saveResult = saveResult;

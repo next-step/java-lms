@@ -5,6 +5,7 @@ import nextstep.courses.domain.session.SessionDescriptor;
 import nextstep.courses.domain.session.SessionPeriod;
 import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.domain.session.constraint.SessionConstraint;
+import nextstep.courses.domain.session.image.SessionImages;
 import nextstep.courses.domain.session.policy.SessionEnrollPolicy;
 import nextstep.courses.entity.SessionEntity;
 import org.junit.jupiter.api.BeforeEach;
@@ -70,7 +71,8 @@ class JdbcSessionRepositoryTest {
 
         SessionDescriptor descriptor = new SessionDescriptor(
             new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1)),
-            new SessionEnrollPolicy()
+            new SessionEnrollPolicy(),
+            new SessionImages()
         );
 
         return new Session(constraint, descriptor);

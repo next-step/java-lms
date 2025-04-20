@@ -4,10 +4,7 @@ import nextstep.common.domian.BaseDomain;
 import nextstep.courses.domain.session.constraint.SessionConstraint;
 import nextstep.courses.entity.SessionEntity;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 
 public class Session extends BaseDomain {
@@ -44,6 +41,7 @@ public class Session extends BaseDomain {
     public void delete() {
         this.deleted = true;
         this.updatedAt = LocalDateTime.now();
+        this.descriptor.deleteSessionImage();
     }
 
     public boolean canEnroll(int enrollCount, long amount) {

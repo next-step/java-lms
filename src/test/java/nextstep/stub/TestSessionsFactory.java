@@ -1,5 +1,6 @@
 package nextstep.stub;
 
+import nextstep.courses.domain.session.SessionEntityImageMap;
 import nextstep.courses.domain.session.Sessions;
 import nextstep.courses.entity.SessionEntity;
 import nextstep.courses.factory.SessionFactory;
@@ -26,7 +27,7 @@ public class TestSessionsFactory extends SessionsFactory {
     }
 
     @Override
-    public Sessions create(List<SessionEntity> sessionEntities) {
+    public Sessions create(SessionEntityImageMap sessionEntityImageMap) {
         createCalled++;
         return createResult;
     }

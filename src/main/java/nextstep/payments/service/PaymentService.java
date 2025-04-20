@@ -2,6 +2,7 @@ package nextstep.payments.service;
 
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
+import nextstep.courses.domain.session.image.SessionImageRepository;
 import nextstep.courses.factory.SessionFactory;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.domain.PaymentEntityUserMap;
@@ -19,6 +20,7 @@ import java.util.NoSuchElementException;
 public class PaymentService {
 
     private final SessionRepository sessionRepository;
+    private final SessionImageRepository sessionImageRepository;
     private final PaymentRepository paymentRepository;
     private final UserRepository userRepository;
     private final SessionFactory sessionFactory;
@@ -26,12 +28,14 @@ public class PaymentService {
 
     public PaymentService(
         SessionRepository sessionRepository,
+        SessionImageRepository sessionImageRepository,
         PaymentRepository paymentRepository,
         UserRepository userRepository,
         SessionFactory sessionFactory,
         PaymentsFactory paymentsFactory
     ) {
         this.sessionRepository = sessionRepository;
+        this.sessionImageRepository = sessionImageRepository;
         this.paymentRepository = paymentRepository;
         this.userRepository = userRepository;
         this.sessionFactory = sessionFactory;
@@ -51,7 +55,10 @@ public class PaymentService {
             paymentEntityUserMap.add(paymentEntity, user);
         });
 
-        Session session = sessionFactory.create(sessionRepository.findById(sessionId));
+        Session session = sessionFactory.create(
+            sessionRepository.findById(sessionId),
+            sessionImageRepository.findAllBySessionId(sessionId)
+        );
         Payments payments = paymentsFactory.create(session, paymentEntityUserMap);
         Payment newPayment = payment(newPaymentId);
 

@@ -1,6 +1,7 @@
 package nextstep.courses.factory;
 
 import nextstep.courses.domain.Course;
+import nextstep.courses.domain.session.SessionEntityImageMap;
 import nextstep.courses.entity.CourseEntity;
 import nextstep.courses.entity.SessionEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,13 @@ public class CourseFactory {
         this.sessionsFactory = sessionsFactory;
     }
 
-    public Course create(CourseEntity courseEntity, List<SessionEntity> sessionEntities) throws IOException {
+    public Course create(CourseEntity courseEntity, SessionEntityImageMap sessionEntityImageMap) throws IOException {
         return new Course(
             courseEntity.getId(),
             courseEntity.isDeleted(),
             courseEntity.getTitle(),
             courseEntity.getCreatorId(),
-            sessionsFactory.create(sessionEntities),
+            sessionsFactory.create(sessionEntityImageMap),
             courseEntity.getCreatedAt(),
             courseEntity.getUpdatedAt()
         );

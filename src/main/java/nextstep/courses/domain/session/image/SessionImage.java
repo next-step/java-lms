@@ -1,10 +1,11 @@
 package nextstep.courses.domain.session.image;
 
 import nextstep.common.domian.BaseDomain;
-import nextstep.courses.domain.session.Session;
+import nextstep.courses.entity.SessionImageEntity;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class SessionImage extends BaseDomain {
@@ -12,23 +13,21 @@ public class SessionImage extends BaseDomain {
     private static final double HEIGHT_RATIO = 2;
     private static final int MAX_BYTE_SIZE = 1024 * 1024;
 
-    private final Session session;
-
     private final String url;
 
     private final ImageHandler imageHandler;
 
     private final SessionImageType type;
 
-    public SessionImage(Session session, String url, ImageHandler imageHandler, SessionImageType type) throws IOException {
-        this(null, false, session, url, imageHandler, type);
+    public SessionImage(String url, ImageHandler imageHandler, SessionImageType type) throws IOException {
+        this(null, false, url, imageHandler, type);
     }
 
-    public SessionImage(String id, Session session, String url, ImageHandler imageHandler, SessionImageType type) throws IOException {
-        this(id, false, session, url, imageHandler, type);
+    public SessionImage(String id, String url, ImageHandler imageHandler, SessionImageType type) throws IOException {
+        this(id, false, url, imageHandler, type);
     }
 
-    public SessionImage(String id, boolean deleted, Session session, String url, ImageHandler imageHandler, SessionImageType type) throws IOException {
+    public SessionImage(String id, boolean deleted, String url, ImageHandler imageHandler, SessionImageType type) throws IOException {
         super(id);
 
         BufferedImage res = imageHandler.image(url);
@@ -39,7 +38,6 @@ public class SessionImage extends BaseDomain {
             throw new IllegalArgumentException("크기가 1MB를 초과했습니다.");
         }
 
-        this.session = session;
         this.url = url;
         this.imageHandler = imageHandler;
         this.type = type;
@@ -51,11 +49,28 @@ public class SessionImage extends BaseDomain {
     }
 
     public String type() {
-        return type.getImage();
+        return type.getType();
     }
 
     public BufferedImage image() throws IOException {
         return imageHandler.image(url);
+    }
+
+    public void delete() {
+        this.deleted = true;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public SessionImageEntity toSessionImageEntity(Long sessionId) {
+        return SessionImageEntity.builder()
+            .id(id())
+            .createdAt(createdAt)
+            .updatedAt(updatedAt)
+            .deleted(deleted)
+            .imageUrl(url)
+            .imageType(type.getType())
+            .sessionId(sessionId)
+            .build();
     }
 
     @Override

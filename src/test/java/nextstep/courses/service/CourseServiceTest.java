@@ -1,10 +1,7 @@
 package nextstep.courses.service;
 
 import nextstep.courses.domain.Course;
-import nextstep.stub.TestCourseFactory;
-import nextstep.stub.TestCourseRepository;
-import nextstep.stub.TestSessionRepository;
-import nextstep.stub.TestSessionsFactory;
+import nextstep.stub.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -23,9 +20,11 @@ class CourseServiceTest {
         Course course = new Course("1", "test-course", 3L, LocalDateTime.now(), LocalDateTime.now());
 
         TestCourseRepository courseRepository = new TestCourseRepository(1L, null);
+        TestSessionImageRepository sessionImageRepository = new TestSessionImageRepository();
         CourseService courseService = new CourseService(
             courseRepository,
             new TestSessionRepository(1L, null, List.of()),
+            sessionImageRepository,
             new TestCourseFactory(new TestSessionsFactory(), course)
         );
 
@@ -42,10 +41,12 @@ class CourseServiceTest {
 
         TestCourseRepository courseRepository = new TestCourseRepository(1L, null);
         TestCourseFactory courseFactory = new TestCourseFactory(new TestSessionsFactory(), course);
+        TestSessionImageRepository sessionImageRepository = new TestSessionImageRepository(List.of());
 
         CourseService courseService = new CourseService(
             courseRepository,
             new TestSessionRepository(1L, null, List.of()),
+            sessionImageRepository,
             courseFactory
         );
 

@@ -24,6 +24,7 @@ class PaymentServiceTest {
     @Test
     void testSaveSuccess() throws IOException {
         TestSessionRepository sessionRepository = new TestSessionRepository(1L, null, List.of());
+        TestSessionImageRepository sessionImageRepository = new TestSessionImageRepository(List.of());
         TestPaymentRepository paymentRepository = new TestPaymentRepository(1L, List.of());
         TestUserRepository userRepository = new TestUserRepository(Optional.of(JAVAJIGI));
         TestSessionFactory sessionFactory = new TestSessionFactory();
@@ -36,6 +37,7 @@ class PaymentServiceTest {
 
         PaymentService paymentService = new PaymentService(
             sessionRepository,
+            sessionImageRepository,
             paymentRepository,
             userRepository,
             sessionFactory,

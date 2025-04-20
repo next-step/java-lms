@@ -4,6 +4,7 @@ import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionDescriptor;
 import nextstep.courses.domain.session.SessionPeriod;
 import nextstep.courses.domain.session.constraint.SessionConstraint;
+import nextstep.courses.domain.session.image.SessionImages;
 import nextstep.courses.domain.session.policy.SessionEnrollPolicy;
 import nextstep.payments.domain.PaymentEntityUserMap;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +26,8 @@ class PaymentsFactoryTest {
         SessionConstraint constraint = new SessionConstraint(100, 80);
         SessionDescriptor descriptor = new SessionDescriptor(
             new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1)),
-            new SessionEnrollPolicy()
+            new SessionEnrollPolicy(),
+            new SessionImages()
         );
         Session session = new Session("1", constraint, descriptor);
 

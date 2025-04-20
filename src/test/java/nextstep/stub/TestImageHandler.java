@@ -6,9 +6,9 @@ import java.awt.image.BufferedImage;
 import java.util.Objects;
 
 public class TestImageHandler implements ImageHandler {
-    private int width;
-    private int height;
-    private long byteSize;
+    private final int width;
+    private final int height;
+    private final long byteSize;
 
     public TestImageHandler() {
         this(300, 200, 1024L * 866L);

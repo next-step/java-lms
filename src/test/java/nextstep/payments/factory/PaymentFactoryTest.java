@@ -6,6 +6,7 @@ import nextstep.courses.domain.session.SessionPeriod;
 import nextstep.courses.domain.session.constraint.SessionConstraint;
 import nextstep.courses.domain.session.image.SessionImage;
 import nextstep.courses.domain.session.image.SessionImageType;
+import nextstep.courses.domain.session.image.SessionImages;
 import nextstep.courses.domain.session.policy.SessionEnrollPolicy;
 import nextstep.payments.entity.PaymentEntity;
 import nextstep.stub.TestImageHandler;
@@ -38,7 +39,8 @@ class PaymentFactoryTest {
         SessionConstraint constraint = new SessionConstraint(100, 80);
         SessionDescriptor descriptor = new SessionDescriptor(
             new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1)),
-            new SessionEnrollPolicy()
+            new SessionEnrollPolicy(),
+            new SessionImages()
         );
         Session session = new Session("1", constraint, descriptor);
 

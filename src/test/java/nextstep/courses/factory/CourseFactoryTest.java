@@ -1,5 +1,6 @@
 package nextstep.courses.factory;
 
+import nextstep.courses.domain.session.SessionEntityImageMap;
 import nextstep.courses.entity.CourseEntity;
 import nextstep.stub.TestSessionFactory;
 import nextstep.stub.TestSessionsFactory;
@@ -27,6 +28,6 @@ class CourseFactoryTest {
             .deleted(false)
             .build();
 
-        assertDoesNotThrow(() -> courseFactory.create(courseEntity, List.of()));
+        assertDoesNotThrow(() -> courseFactory.create(courseEntity, new SessionEntityImageMap()));
     }
 }

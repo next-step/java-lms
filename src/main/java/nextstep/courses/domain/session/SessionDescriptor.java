@@ -1,9 +1,12 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.constraint.SessionConstraint;
+import nextstep.courses.domain.session.image.SessionImages;
 import nextstep.courses.domain.session.policy.SessionEnrollPolicy;
+import nextstep.courses.entity.SessionImageEntity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 public class SessionDescriptor {
@@ -12,9 +15,12 @@ public class SessionDescriptor {
 
     private final SessionEnrollPolicy policy;
 
-    public SessionDescriptor(SessionPeriod period, SessionEnrollPolicy policy) {
+    private final SessionImages images;
+
+    public SessionDescriptor(SessionPeriod period, SessionEnrollPolicy policy, SessionImages images) {
         this.period = period;
         this.policy = policy;
+        this.images = images;
     }
 
     public LocalDateTime startDate() {
@@ -35,6 +41,14 @@ public class SessionDescriptor {
 
     public boolean canEnroll(SessionConstraint sessionConstraint, int enrollCount, long amount) {
         return policy.canEnroll(sessionConstraint, enrollCount, amount);
+    }
+
+    public void deleteSessionImage() {
+        images.delete();
+    }
+
+    public List<SessionImageEntity> toSessionImageEntities(Long sessionId) {
+        return images.toSessionImagesEntities(sessionId);
     }
 
     @Override

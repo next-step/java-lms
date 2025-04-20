@@ -2,12 +2,14 @@ package nextstep.courses.entity;
 
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Builder
+@EqualsAndHashCode
 public class SessionEntity {
     private Long id;
 

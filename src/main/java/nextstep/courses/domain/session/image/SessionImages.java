@@ -1,7 +1,7 @@
 package nextstep.courses.domain.session.image;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
+import nextstep.courses.entity.SessionImageEntity;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -26,24 +26,15 @@ public class SessionImages {
         return value.size();
     }
 
-    public List<String> urls() {
-        return value.stream()
-            .map(SessionImage::url)
-            .collect(Collectors.toList());
+
+    public void delete() {
+        value.forEach(SessionImage::delete);
     }
 
-    public List<String> types() {
+    public List<SessionImageEntity> toSessionImagesEntities(Long sessionId) {
         return value.stream()
-            .map(SessionImage::type)
+            .map(sessionImage -> sessionImage.toSessionImageEntity(sessionId))
             .collect(Collectors.toList());
-    }
-
-    public List<BufferedImage> images() throws IOException {
-        List<BufferedImage> images = new ArrayList<>();
-        for (SessionImage sessionImage : value) {
-            images.add(sessionImage.image());
-        }
-        return images;
     }
 
     @Override

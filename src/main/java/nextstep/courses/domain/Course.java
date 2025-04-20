@@ -35,8 +35,8 @@ public class Course extends BaseDomain {
     }
 
     public void delete() {
-        this.deleted = true;
         sessions.delete();
+        this.deleted = true;
         this.updatedAt = LocalDateTime.now();
     }
 

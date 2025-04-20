@@ -12,15 +12,15 @@ public enum SessionImageType {
     PNG("png"),
     SVG("svg");
 
-    private final String image;
+    private final String type;
 
-    SessionImageType(String image) {
-        this.image = image;
+    SessionImageType(String type) {
+        this.type = type;
     }
 
     public static SessionImageType fromString(String image) {
         return Stream.of(SessionImageType.values())
-            .filter(type -> type.image.equalsIgnoreCase(image))
+            .filter(type -> type.type.equalsIgnoreCase(image))
             .findFirst()
             .orElse(null);
     }

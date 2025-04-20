@@ -1,12 +1,13 @@
 package nextstep.courses.factory;
 
 import nextstep.courses.entity.SessionEntity;
-import nextstep.stub.TestImageHandler;
+import nextstep.courses.entity.SessionImageEntity;
 import nextstep.stub.TestSessionFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
@@ -16,9 +17,10 @@ class SessionFactoryTest {
     @Test
     public void testCreateSession() {
         SessionEntity sessionEntity = createSessionEntity(1L);
+        SessionImageEntity sessionImageEntity = createSessionImageEntity(1L, "http://test", "JPG", 1L);
 
         SessionFactory sessionFactory = new TestSessionFactory();
-        assertDoesNotThrow(() -> sessionFactory.create(sessionEntity));
+        assertDoesNotThrow(() -> sessionFactory.create(sessionEntity, List.of(sessionImageEntity)));
     }
 
     private SessionEntity createSessionEntity(Long id) {
@@ -36,6 +38,18 @@ class SessionFactoryTest {
             .endDate(LocalDateTime.now())
             .type("PAID")
             .status("ENROLLING")
+            .build();
+    }
+
+    private SessionImageEntity createSessionImageEntity(Long id, String imageUrl, String imageType, Long sessionId) {
+        return SessionImageEntity.builder()
+            .id(id)
+            .createdAt(LocalDateTime.now())
+            .updatedAt(LocalDateTime.now())
+            .deleted(false)
+            .imageUrl(imageUrl)
+            .imageType(imageType)
+            .sessionId(sessionId)
             .build();
     }
 }

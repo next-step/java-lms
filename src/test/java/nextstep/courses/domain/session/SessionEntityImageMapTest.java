@@ -1,11 +1,7 @@
-package nextstep.courses.factory;
+package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.session.SessionEntityImageMap;
-import nextstep.courses.domain.session.Sessions;
 import nextstep.courses.entity.SessionEntity;
 import nextstep.courses.entity.SessionImageEntity;
-import nextstep.stub.TestSessionFactory;
-import nextstep.stub.TestSessionsFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,20 +11,15 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-class SessionsFactoryTest {
+class SessionEntityImageMapTest {
 
-    @DisplayName("Session DB 정보들로 Sessions 인스턴스 생성")
+    @DisplayName("SessionEntityImageMap 인스턴스 생성")
     @Test
-    public void testCreateSessions() {
-        SessionFactory sessionFactory = new TestSessionFactory();
-        SessionsFactory sessionsFactory = new TestSessionsFactory(
-            sessionFactory, new Sessions()
-        );
-
+    public void testConstructor() {
         SessionEntity sessionEntity = createSessionEntity(1L);
         SessionImageEntity sessionImageEntity = createSessionImageEntity(1L, "http://test", "JPG", 1L);
 
-        assertDoesNotThrow(() -> sessionsFactory.create(new SessionEntityImageMap(Map.of(sessionEntity, List.of(sessionImageEntity)))));
+        assertDoesNotThrow(() -> new SessionEntityImageMap(Map.of(sessionEntity, List.of(sessionImageEntity))));
     }
 
     private SessionEntity createSessionEntity(Long id) {
@@ -61,4 +52,3 @@ class SessionsFactoryTest {
             .build();
     }
 }
-
