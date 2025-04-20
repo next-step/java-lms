@@ -33,6 +33,7 @@ create table session (
     end_date timestamp not null,
     type varchar(20) not null,
     status varchar(20) not null,
+    enroll_status varchar(20),
     primary key (id)
 );
 

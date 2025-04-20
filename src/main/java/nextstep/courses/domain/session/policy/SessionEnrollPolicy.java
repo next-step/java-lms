@@ -6,21 +6,24 @@ import java.util.Objects;
 
 public class SessionEnrollPolicy {
 
+    private final EnrollmentStatus enrollmentStatus;
+
     private final SessionStatus status;
 
     private final SessionType type;
 
     public SessionEnrollPolicy() {
-        this(SessionStatus.PREPARING, SessionType.FREE);
+        this(EnrollmentStatus.NOT_ENROLLING, SessionStatus.PREPARING, SessionType.FREE);
     }
 
-    public SessionEnrollPolicy(SessionStatus status, SessionType type) {
+    public SessionEnrollPolicy(EnrollmentStatus enrollmentStatus, SessionStatus status, SessionType type) {
+        this.enrollmentStatus = enrollmentStatus;
         this.status = status;
         this.type = type;
     }
 
     public boolean canEnroll(SessionConstraint sessionConstraint, int enrollCount, long amount) {
-        return type.canEnroll(sessionConstraint, enrollCount, amount) && status.canEnroll();
+        return type.canEnroll(sessionConstraint, enrollCount, amount) && status.canEnroll() && enrollmentStatus.canEnroll();
     }
 
     public String type() {
@@ -29,6 +32,10 @@ public class SessionEnrollPolicy {
 
     public String status() {
         return status.getStatus();
+    }
+
+    public String enrollStatus() {
+        return enrollmentStatus.getStatus();
     }
 
     @Override

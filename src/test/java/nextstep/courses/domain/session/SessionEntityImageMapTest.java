@@ -36,7 +36,8 @@ class SessionEntityImageMapTest {
             .startDate(LocalDateTime.now())
             .endDate(LocalDateTime.now())
             .type("PAID")
-            .status("ENROLLING")
+            .status("ONGOING")
+            .enrollStatus("ENROLLING")
             .build();
     }
 

@@ -35,6 +35,8 @@ public class SessionEntity {
 
     private String type;
 
+    private String enrollStatus;
+
     private String status;
 
     public String getId() {

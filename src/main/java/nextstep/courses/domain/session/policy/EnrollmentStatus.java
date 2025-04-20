@@ -1,5 +1,8 @@
 package nextstep.courses.domain.session.policy;
 
+import lombok.Getter;
+
+@Getter
 public enum EnrollmentStatus {
     NOT_ENROLLING("not_enrolling"),
     ENROLLING("enrolling");
@@ -20,6 +23,6 @@ public enum EnrollmentStatus {
                 return s;
             }
         }
-        throw new IllegalArgumentException(String.format("'%s'은(는) 유효한 모집 상태가 아닙니다.", status));
+        return NOT_ENROLLING;
     }
 }

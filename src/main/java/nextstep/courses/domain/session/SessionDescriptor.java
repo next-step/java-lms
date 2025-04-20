@@ -35,6 +35,10 @@ public class SessionDescriptor {
         return policy.status();
     }
 
+    public String enrollStatus() {
+        return policy.enrollStatus();
+    }
+
     public String type() {
         return policy.type();
     }
@@ -45,10 +49,6 @@ public class SessionDescriptor {
 
     public void deleteSessionImage() {
         images.delete();
-    }
-
-    public List<SessionImageEntity> toSessionImageEntities(Long sessionId) {
-        return images.toSessionImagesEntities(sessionId);
     }
 
     @Override

@@ -63,6 +63,7 @@ public class Session extends BaseDomain {
             .endDate(descriptor.endDate())
             .type(descriptor.type())
             .status(descriptor.status())
+            .enrollStatus(descriptor.enrollStatus())
             .build();
     }
 

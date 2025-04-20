@@ -26,8 +26,8 @@ public class JdbcSessionRepository implements SessionRepository {
     public Long save(SessionEntity sessionEntity) {
         String sql = "INSERT INTO session ("
             + "created_at, updated_at, deleted, course_id, fee, capacity, "
-            + "image_url, image_type, start_date, end_date, type, status"
-            + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            + "image_url, image_type, start_date, end_date, type, status, enroll_status"
+            + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -45,6 +45,7 @@ public class JdbcSessionRepository implements SessionRepository {
             ps.setTimestamp(10, toTimestamp(sessionEntity.getEndDate()));
             ps.setString(11, sessionEntity.getType());
             ps.setString(12, sessionEntity.getStatus());
+            ps.setString(13, sessionEntity.getEnrollStatus());
             return ps;
         }, keyHolder);
 
@@ -54,7 +55,7 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public SessionEntity findById(Long id) {
         String sessionSql = "SELECT id, created_at, updated_at, deleted, course_id, " +
-            "fee, capacity, image_url, image_type, start_date, end_date, type, status " +
+            "fee, capacity, image_url, image_type, start_date, end_date, type, status, enroll_status " +
             "FROM session WHERE id = ?";
 
         RowMapper<SessionEntity> rowMapper = (rs, rowNum) -> SessionEntity.builder()
@@ -71,6 +72,7 @@ public class JdbcSessionRepository implements SessionRepository {
             .endDate(toLocalDateTime(rs.getTimestamp("end_date")))
             .type(rs.getString("type"))
             .status(rs.getString("status"))
+            .enrollStatus(rs.getString("enroll_status"))
             .build();
 
         return jdbcTemplate.queryForObject(sessionSql, rowMapper, id);
@@ -79,7 +81,7 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public List<SessionEntity> findAllByCourseId(Long courseId) {
         String sql = "SELECT id, created_at, updated_at, deleted, course_id, " +
-            "fee, capacity, image_url, image_type, start_date, end_date, type, status " +
+            "fee, capacity, image_url, image_type, start_date, end_date, type, status, enroll_status " +
             "FROM session WHERE course_id = ?";
 
         RowMapper<SessionEntity> rowMapper = (rs, rowNum) -> SessionEntity.builder()
@@ -96,6 +98,7 @@ public class JdbcSessionRepository implements SessionRepository {
             .endDate(toLocalDateTime(rs.getTimestamp("end_date")))
             .type(rs.getString("type"))
             .status(rs.getString("status"))
+            .enrollStatus(rs.getString("enroll_status"))
             .build();
 
         return jdbcTemplate.query(sql, rowMapper, courseId);
