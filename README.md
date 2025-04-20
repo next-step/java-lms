@@ -68,4 +68,10 @@
     - boolean validateFileSize()
     - boolean validateFileType()
     - boolean validateRatio()
-     
+
+
+## 🚀 4단계 - 수강신청(요구사항 변경)
+- [] SessionStatus 진행상태와 모집상태로 분리
+- [] coverImage 여러개 가능하도록 기능 추가
+- [] 선발 여부 확인 기능 추가
+- [] 수강 승인 및 수강 취소 기능 추가
