@@ -23,13 +23,13 @@ class SessionTest {
         LocalDateTime now = LocalDateTime.now();
 
         //when
-        EnrollmentHistory enroll = session.enroll(user, payment.getAmount(), now);
+        EnrolledStudent enroll = session.enroll(user, payment.getAmount(), now);
 
         //then
         Assertions.assertThat(enroll)
                 .isNotNull()
-                .extracting("user", "session", "enrolledAt")
-                .containsExactly(user, session, now);
+                .extracting("userId", "session", "enrolledAt")
+                .containsExactly(user.getUserId(), session, now);
     }
 
     @Test

@@ -29,10 +29,10 @@ public class Session {
 
     private Long capacity;
 
-    private final List<EnrollmentHistory> enrollments = new ArrayList<>();
+    private final List<EnrolledStudent> enrolledStudents = new ArrayList<>();
 
 
-    private Session(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, CoverImage coverImage, SessionType sessionType, SessionStatus sessionStatus, Long price, Long capacity) {
+    public Session(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, CoverImage coverImage, SessionType sessionType, SessionStatus sessionStatus, Long price, Long capacity) {
         this.id = id;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -76,13 +76,13 @@ public class Session {
         this.sessionStatus = SessionStatus.OPEN;
     }
 
-    public EnrollmentHistory enroll(NsUser user, Long amount, LocalDateTime enrolledAt) {
+    public EnrolledStudent enroll(NsUser user, Long amount, LocalDateTime enrolledAt) {
         validateSessionStatus();
         validateSessionPrice(amount);
         validateSessionCapacity();
 
-        EnrollmentHistory history = new EnrollmentHistory(user, this, enrolledAt);
-        enrollments.add(history);
+        EnrolledStudent history = new EnrolledStudent(user.getUserId(), this, enrolledAt);
+        enrolledStudents.add(history);
         return history;
     }
 
@@ -109,6 +109,6 @@ public class Session {
     }
 
     private boolean isFull() {
-        return sessionType.isPaid() && enrollments.size() >= capacity;
+        return sessionType.isPaid() && enrolledStudents.size() >= capacity;
     }
 }
