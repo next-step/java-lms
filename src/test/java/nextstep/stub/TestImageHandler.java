@@ -10,6 +10,10 @@ public class TestImageHandler implements ImageHandler {
     private int height;
     private long byteSize;
 
+    public TestImageHandler() {
+        this(300, 200, 1024L * 866L);
+    }
+
     public TestImageHandler(int width, int height, long byteSize) {
         this.width = width;
         this.height = height;

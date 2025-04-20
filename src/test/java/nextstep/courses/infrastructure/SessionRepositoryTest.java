@@ -5,11 +5,8 @@ import nextstep.courses.domain.session.SessionDescriptor;
 import nextstep.courses.domain.session.SessionPeriod;
 import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.domain.session.constraint.SessionConstraint;
-import nextstep.courses.domain.session.image.SessionImage;
-import nextstep.courses.domain.session.image.SessionImageType;
 import nextstep.courses.domain.session.policy.SessionEnrollPolicy;
 import nextstep.courses.entity.SessionEntity;
-import nextstep.stub.TestImageHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,7 +36,7 @@ class SessionRepositoryTest {
 
     @DisplayName("강의 저장 테스트")
     @Test
-    void testSave() throws IOException {
+    void testSave() {
         Session session = createSampleSession();
 
         assertDoesNotThrow(() -> sessionRepository.save(session.toSessionEntity(1L)));
@@ -47,7 +44,7 @@ class SessionRepositoryTest {
 
     @DisplayName("강의 조회 테스트")
     @Test
-    void testFindById() throws IOException {
+    void testFindById() {
         Session session = createSampleSession();
 
         long generatedId = sessionRepository.save(session.toSessionEntity(1L));
@@ -56,7 +53,7 @@ class SessionRepositoryTest {
 
     @DisplayName("과정 ID로 모든 강의 찾기 테스트")
     @Test
-    void testFindAllByCourseId() throws IOException {
+    void testFindAllByCourseId() {
         Long courseId = 1L;
         Session session1 = createSampleSession();
         Session session2 = createSampleSession();
@@ -69,15 +66,10 @@ class SessionRepositoryTest {
         assertThat(sessions).hasSize(2);
     }
 
-    private Session createSampleSession() throws IOException {
+    private Session createSampleSession() {
         SessionConstraint constraint = new SessionConstraint(1000L, 50);
 
         SessionDescriptor descriptor = new SessionDescriptor(
-            new SessionImage(
-                "http://test",
-                new TestImageHandler(300, 200, 1024L * 866L),
-                SessionImageType.JPEG
-            ),
             new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1)),
             new SessionEnrollPolicy()
         );

@@ -19,21 +19,12 @@ import java.io.IOException;
 @Component
 public class SessionFactory {
 
-    private final ImageHandler imageHandler;
-
-    @Autowired
-    public SessionFactory(ImageHandler urlImageHandler) {
-        this.imageHandler = urlImageHandler;
-    }
-
-    public Session create(SessionEntity sessionEntity) throws IOException {
+    public Session create(SessionEntity sessionEntity) {
         SessionConstraint sessionConstraint = new SessionConstraint(sessionEntity.getFee(), sessionEntity.getCapacity());
         SessionDescriptor sessionDescriptor = new SessionDescriptor(
-            new SessionImage(sessionEntity.getImageUrl(), imageHandler, SessionImageType.fromString(sessionEntity.getImageType())),
             new SessionPeriod(sessionEntity.getStartDate(), sessionEntity.getEndDate()),
             new SessionEnrollPolicy(SessionStatus.fromString(sessionEntity.getStatus()), SessionType.fromString(sessionEntity.getType()))
         );
         return new Session(sessionEntity.getId(), sessionConstraint, sessionDescriptor);
     }
-
 }

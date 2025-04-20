@@ -22,6 +22,6 @@ public enum SessionImageType {
         return Stream.of(SessionImageType.values())
             .filter(type -> type.image.equalsIgnoreCase(image))
             .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException(String.format("알 수 없는 이미지 유형: '%s'", image)));
+            .orElse(null);
     }
 }

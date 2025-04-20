@@ -10,15 +10,9 @@ public class TestSessionFactory extends SessionFactory {
     private Session createResult = null;
 
     public TestSessionFactory() {
-        super(new TestImageHandler(300, 200, 1024L * 866L));
     }
 
-    public TestSessionFactory(ImageHandler imageHandler) {
-        super(imageHandler);
-    }
-
-    public TestSessionFactory(ImageHandler imageHandler, Session createResult) {
-        super(imageHandler);
+    public TestSessionFactory(Session createResult) {
         this.createResult = createResult;
     }
 

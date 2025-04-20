@@ -4,10 +4,7 @@ import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionDescriptor;
 import nextstep.courses.domain.session.SessionPeriod;
 import nextstep.courses.domain.session.constraint.SessionConstraint;
-import nextstep.courses.domain.session.image.SessionImage;
-import nextstep.courses.domain.session.image.SessionImageType;
 import nextstep.courses.domain.session.policy.SessionEnrollPolicy;
-import nextstep.stub.TestImageHandler;
 import nextstep.stub.TestSessionFactory;
 import nextstep.stub.TestSessionRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -32,11 +29,6 @@ class SessionServiceTest {
 
         SessionConstraint constraint = new SessionConstraint(200_000, 1);
         SessionDescriptor descriptor = new SessionDescriptor(
-            new SessionImage(
-                "http://test",
-                new TestImageHandler(300, 200, 1024L * 1024L),
-                SessionImageType.JPEG
-            ),
             new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1)),
             new SessionEnrollPolicy()
         );
@@ -50,15 +42,13 @@ class SessionServiceTest {
     @Test
     void testDeleteSession() throws IOException {
         TestSessionRepository sessionRepository = new TestSessionRepository(1L, null, List.of());
-        TestImageHandler imageHandler = new TestImageHandler(300, 200, 1024L * 1024L);
         SessionConstraint constraint = new SessionConstraint(200_000, 1);
         SessionDescriptor descriptor = new SessionDescriptor(
-            new SessionImage("http://test", imageHandler, SessionImageType.JPEG),
             new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1)),
             new SessionEnrollPolicy()
         );
         Session session = new Session("1", constraint, descriptor);
-        TestSessionFactory sessionFactory = new TestSessionFactory(imageHandler, session);
+        TestSessionFactory sessionFactory = new TestSessionFactory(session);
 
         SessionService sessionService = new SessionService(sessionRepository, sessionFactory);
 

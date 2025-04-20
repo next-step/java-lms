@@ -17,9 +17,7 @@ class SessionFactoryTest {
     public void testCreateSession() {
         SessionEntity sessionEntity = createSessionEntity(1L);
 
-        SessionFactory sessionFactory = new TestSessionFactory(
-            new TestImageHandler(300, 200, 1024L * 866L)
-        );
+        SessionFactory sessionFactory = new TestSessionFactory();
         assertDoesNotThrow(() -> sessionFactory.create(sessionEntity));
     }
 

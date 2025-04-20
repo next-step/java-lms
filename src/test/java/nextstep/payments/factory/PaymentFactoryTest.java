@@ -37,7 +37,6 @@ class PaymentFactoryTest {
 
         SessionConstraint constraint = new SessionConstraint(100, 80);
         SessionDescriptor descriptor = new SessionDescriptor(
-            new SessionImage("http://test", new TestImageHandler(300, 200, 1024L * 866L), SessionImageType.JPEG),
             new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1)),
             new SessionEnrollPolicy()
         );

@@ -7,6 +7,7 @@ import nextstep.courses.entity.SessionEntity;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 public class Session extends BaseDomain {
@@ -40,10 +41,6 @@ public class Session extends BaseDomain {
         this.deleted = deleted;
     }
 
-    public BufferedImage image() throws IOException {
-        return descriptor.image();
-    }
-
     public void delete() {
         this.deleted = true;
         this.updatedAt = LocalDateTime.now();
@@ -62,8 +59,8 @@ public class Session extends BaseDomain {
             .courseId(courseId)
             .fee(constraint.fee())
             .capacity(constraint.capacity())
-            .imageUrl(descriptor.imageUrl())
-            .imageType(descriptor.imageType())
+            .imageUrl(null)
+            .imageType(null)
             .startDate(descriptor.startDate())
             .endDate(descriptor.endDate())
             .type(descriptor.type())
