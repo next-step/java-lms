@@ -6,12 +6,12 @@ import nextstep.courses.entity.SessionImageEntity;
 import java.util.List;
 
 public class TestSessionImageRepository implements SessionImageRepository {
-    private int saveCalled = 0;
-    private int findAllBySessionIdCalled = 0;
-    private int findByIdCalled = 0;
     private final Long saveResult;
     private final SessionImageEntity findByIdResult;
     private final List<SessionImageEntity> findAllBySessionIdResult;
+    private int saveCalled = 0;
+    private int findAllBySessionIdCalled = 0;
+    private int findByIdCalled = 0;
 
     public TestSessionImageRepository() {
         this(null, null, null);

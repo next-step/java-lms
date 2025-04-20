@@ -2,15 +2,12 @@ package nextstep.stub;
 
 import nextstep.courses.domain.session.SessionEntityImageMap;
 import nextstep.courses.domain.session.Sessions;
-import nextstep.courses.entity.SessionEntity;
 import nextstep.courses.factory.SessionFactory;
 import nextstep.courses.factory.SessionsFactory;
 
-import java.util.List;
-
 public class TestSessionsFactory extends SessionsFactory {
-    private int createCalled = 0;
     private final Sessions createResult;
+    private int createCalled = 0;
 
     public TestSessionsFactory() {
         this(new TestSessionFactory(), new Sessions());

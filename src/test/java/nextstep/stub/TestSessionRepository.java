@@ -5,14 +5,13 @@ import nextstep.courses.entity.SessionEntity;
 
 import java.util.List;
 
-public class TestSessionRepository implements SessionRepository  {
-    private int saveCalled = 0;
-    private int findByIdCalled = 0;
-    private int findAllByCourseIdCalled = 0;
-
+public class TestSessionRepository implements SessionRepository {
     private final Long saveResult;
     private final SessionEntity findByIdResult;
     private final List<SessionEntity> findAllByCourseIdResult;
+    private int saveCalled = 0;
+    private int findByIdCalled = 0;
+    private int findAllByCourseIdCalled = 0;
 
     public TestSessionRepository(Long saveResult, SessionEntity findByIdResult, List<SessionEntity> findAllByCourseIdResult) {
         this.saveResult = saveResult;

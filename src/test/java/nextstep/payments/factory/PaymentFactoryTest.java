@@ -4,12 +4,9 @@ import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionDescriptor;
 import nextstep.courses.domain.session.SessionPeriod;
 import nextstep.courses.domain.session.constraint.SessionConstraint;
-import nextstep.courses.domain.session.image.SessionImage;
-import nextstep.courses.domain.session.image.SessionImageType;
 import nextstep.courses.domain.session.image.SessionImages;
 import nextstep.courses.domain.session.policy.SessionEnrollPolicy;
 import nextstep.payments.entity.PaymentEntity;
-import nextstep.stub.TestImageHandler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

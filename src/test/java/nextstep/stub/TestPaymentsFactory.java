@@ -7,8 +7,8 @@ import nextstep.payments.factory.PaymentFactory;
 import nextstep.payments.factory.PaymentsFactory;
 
 public class TestPaymentsFactory extends PaymentsFactory {
-    private int createCalled = 0;
     private final Payments createResult;
+    private int createCalled = 0;
 
     public TestPaymentsFactory(PaymentFactory paymentFactory, Payments createResult) {
         super(paymentFactory);

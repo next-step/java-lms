@@ -6,10 +6,10 @@ import nextstep.payments.entity.PaymentEntity;
 import java.util.List;
 
 public class TestPaymentRepository implements PaymentRepository {
-    private int saveCalled = 0;
-    private int findBySessionCalled = 0;
     private final long saveResult;
     private final List<PaymentEntity> findBySessionResult;
+    private int saveCalled = 0;
+    private int findBySessionCalled = 0;
 
     public TestPaymentRepository(long saveResult, List<PaymentEntity> findBySessionResult) {
         this.saveResult = saveResult;

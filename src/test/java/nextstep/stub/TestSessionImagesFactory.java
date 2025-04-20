@@ -1,6 +1,5 @@
 package nextstep.stub;
 
-import nextstep.courses.domain.session.image.SessionImage;
 import nextstep.courses.domain.session.image.SessionImages;
 import nextstep.courses.entity.SessionImageEntity;
 import nextstep.courses.factory.SessionImageFactory;
@@ -11,8 +10,8 @@ import java.util.List;
 
 public class TestSessionImagesFactory extends SessionImagesFactory {
 
-    private int createCalled = 0;
     private final SessionImages createResult;
+    private int createCalled = 0;
 
     public TestSessionImagesFactory() {
         this(new TestSessionImageFactory(), null);

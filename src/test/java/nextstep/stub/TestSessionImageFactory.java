@@ -8,8 +8,8 @@ import nextstep.courses.factory.SessionImageFactory;
 import java.io.IOException;
 
 public class TestSessionImageFactory extends SessionImageFactory {
-    private int createCalled = 0;
     private final SessionImage createResult;
+    private int createCalled = 0;
 
     public TestSessionImageFactory() {
         this(new TestImageHandler(), null);
