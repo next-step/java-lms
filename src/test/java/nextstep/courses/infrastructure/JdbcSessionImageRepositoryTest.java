@@ -35,6 +35,14 @@ public class JdbcSessionImageRepositoryTest {
         assertDoesNotThrow(() -> sessionImageRepository.save(sessionImageEntity));
     }
 
+    @DisplayName("강의 이미지 조회 테스트")
+    @Test
+    void testFindById() {
+        SessionImageEntity sessionImageEntity = createSessionImageEntity(null, 1L);
+        long generatedId = sessionImageRepository.save(sessionImageEntity);
+        assertThat(sessionImageRepository.findById(generatedId)).isNotNull();
+    }
+
     @DisplayName("강의 ID로 모든 강의 이미지 찾기 테스트")
     @Test
     void testFindAllBySessionId() {

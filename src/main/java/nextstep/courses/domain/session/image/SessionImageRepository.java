@@ -7,5 +7,7 @@ import java.util.List;
 public interface SessionImageRepository {
     Long save(SessionImageEntity sessionImageEntity);
 
+    SessionImageEntity findById(Long sessionImageId);
+
     List<SessionImageEntity> findAllBySessionId(Long sessionId);
 }

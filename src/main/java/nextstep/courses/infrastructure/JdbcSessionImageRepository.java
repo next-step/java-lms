@@ -3,6 +3,7 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.session.image.SessionImageRepository;
 import nextstep.courses.entity.SessionImageEntity;
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -41,6 +42,23 @@ public class JdbcSessionImageRepository implements SessionImageRepository {
         }, keyHolder);
 
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
+    }
+
+    @Override
+    public SessionImageEntity findById(Long sessionImageId) {
+        String sql = "SELECT id, created_at, updated_at, deleted, image_url, image_type, session_id " +
+            "FROM session_image WHERE id = ?";
+        RowMapper<SessionImageEntity> rowMapper = (rs, rowNum) -> SessionImageEntity.builder()
+            .id(rs.getLong("id"))
+            .createdAt(toLocalDateTime(rs.getTimestamp("created_at")))
+            .updatedAt(toLocalDateTime(rs.getTimestamp("updated_at")))
+            .deleted(rs.getBoolean("deleted"))
+            .imageUrl(rs.getString("image_url"))
+            .imageType(rs.getString("image_type"))
+            .sessionId(rs.getLong("session_id"))
+            .build();
+
+        return jdbcTemplate.queryForObject(sql, rowMapper, sessionImageId);
     }
 
     @Override

@@ -8,19 +8,22 @@ import java.util.List;
 public class TestSessionImageRepository implements SessionImageRepository {
     private int saveCalled = 0;
     private int findAllBySessionIdCalled = 0;
+    private int findByIdCalled = 0;
     private final Long saveResult;
+    private final SessionImageEntity findByIdResult;
     private final List<SessionImageEntity> findAllBySessionIdResult;
 
     public TestSessionImageRepository() {
-        this(null, null);
+        this(null, null, null);
     }
 
     public TestSessionImageRepository(List<SessionImageEntity> findAllBySessionIdResult) {
-        this(null, findAllBySessionIdResult);
+        this(null, null, findAllBySessionIdResult);
     }
 
-    public TestSessionImageRepository(Long saveResult, List<SessionImageEntity> findAllBySessionIdResult) {
+    public TestSessionImageRepository(Long saveResult, SessionImageEntity findByIdResult, List<SessionImageEntity> findAllBySessionIdResult) {
         this.saveResult = saveResult;
+        this.findByIdResult = findByIdResult;
         this.findAllBySessionIdResult = findAllBySessionIdResult;
     }
 
@@ -31,6 +34,12 @@ public class TestSessionImageRepository implements SessionImageRepository {
     }
 
     @Override
+    public SessionImageEntity findById(Long sessionImageId) {
+        findByIdCalled++;
+        return findByIdResult;
+    }
+
+    @Override
     public List<SessionImageEntity> findAllBySessionId(Long sessionId) {
         findAllBySessionIdCalled++;
         return findAllBySessionIdResult;
@@ -38,6 +47,10 @@ public class TestSessionImageRepository implements SessionImageRepository {
 
     public int getSaveCalled() {
         return saveCalled;
+    }
+
+    public int getFindByIdCalled() {
+        return findByIdCalled;
     }
 
     public int getFindAllBySessionIdCalled() {
