@@ -22,7 +22,8 @@ class SessionsTest {
                 0,
                 0,
                 image,
-                SessionStatus.RECRUITING,
+                SessionStatus.ONGOING,
+                RecruitmentStatus.RECRUITING,
                 new FreeJoinStrategy()
         );
     }

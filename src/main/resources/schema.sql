@@ -27,6 +27,7 @@ CREATE TABLE session
     image_height    INT,
 
     status          VARCHAR(50)  NOT NULL,
+    recruitment_status          VARCHAR(50)  NOT NULL,
 
     -- FK to course
     course_id       BIGINT       NOT NULL,

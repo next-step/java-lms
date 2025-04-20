@@ -3,7 +3,6 @@ package nextstep.courses.domain;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;
-import java.util.regex.Pattern;
 
 public class Session {
     private CapacityInfo capacityInfo;
@@ -12,15 +11,16 @@ public class Session {
     private int id;
     private Long tuition;
     private Image coverImage;
+    private RecruitmentStatus recruitmentStatus;
     private SessionStatus sessionStatus;
     private JoinStrategy joinStrategy;
 
 
-    public Session(String title, int id, LocalDateTime startDate, LocalDateTime endDate, Long tuition, int currentCount, int capacity, Image coverImage, SessionStatus sessionStatus) {
-        this(title, id, startDate, endDate, tuition, currentCount, capacity, coverImage, sessionStatus, tuition == 0 ? new FreeJoinStrategy() : new PaidJoinStrategy());
+    public Session(String title, int id, LocalDateTime startDate, LocalDateTime endDate, Long tuition, int currentCount, int capacity, Image coverImage, SessionStatus sessionStatus, RecruitmentStatus recruitmentStatus) {
+        this(title, id, startDate, endDate, tuition, currentCount, capacity, coverImage, sessionStatus, recruitmentStatus, tuition == 0 ? new FreeJoinStrategy() : new PaidJoinStrategy());
     }
 
-    public Session(String title, int id, LocalDateTime startDate, LocalDateTime endDate, Long tuition, int currentCount, int capacity, Image coverImage, SessionStatus sessionStatus, JoinStrategy joinStrategy) {
+    public Session(String title, int id, LocalDateTime startDate, LocalDateTime endDate, Long tuition, int currentCount, int capacity, Image coverImage, SessionStatus sessionStatus, RecruitmentStatus recruitmentStatus, JoinStrategy joinStrategy) {
         this.title = title;
         this.id = id;
         this.sessionPeriod = new SessionPeriod(startDate, endDate);
@@ -28,6 +28,7 @@ public class Session {
         this.capacityInfo = new CapacityInfo(currentCount, capacity);
         this.coverImage = coverImage;
         this.sessionStatus = sessionStatus;
+        this.recruitmentStatus = recruitmentStatus;
         this.joinStrategy = joinStrategy;
     }
 
@@ -36,7 +37,7 @@ public class Session {
     }
 
     public boolean recruiting() {
-        return sessionStatus == SessionStatus.RECRUITING;
+        return sessionStatus == SessionStatus.ONGOING && recruitmentStatus == RecruitmentStatus.RECRUITING;
     }
 
     public boolean underCapacity() {
@@ -91,7 +92,11 @@ public class Session {
         return coverImage;
     }
 
-    public SessionStatus getStatus() {
+    public SessionStatus getSessionStatus() {
         return sessionStatus;
+    }
+
+    public RecruitmentStatus getRecruitmentStatus() {
+        return recruitmentStatus;
     }
 }

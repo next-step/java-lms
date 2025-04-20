@@ -1,9 +1,6 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.Image;
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionRepository;
-import nextstep.courses.domain.SessionStatus;
+import nextstep.courses.domain.*;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -22,8 +19,8 @@ public class JdbcSessionRepository implements SessionRepository {
         String sql = "insert into session " +
                 "(title, start_date, end_date, tuition, current_count, capacity, " +
                 "image_file_size, image_file_type, image_url, image_width, image_height, " +
-                "status, course_id) " +
-                "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "status, recruitment_status, course_id) " +
+                "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         return jdbcTemplate.update(sql,
                 session.getTitle(),
@@ -37,7 +34,8 @@ public class JdbcSessionRepository implements SessionRepository {
                 session.getCoverImage().getImageUrl(),
                 session.getCoverImage().getWidth(),
                 session.getCoverImage().getHeight(),
-                session.getStatus().name(),
+                session.getSessionStatus().name(),
+                session.getRecruitmentStatus().name(),
                 courseId
         );
     }
@@ -65,7 +63,8 @@ public class JdbcSessionRepository implements SessionRepository {
                         rs.getInt("image_width"),
                         rs.getInt("image_height")
                 ),
-                SessionStatus.valueOf(rs.getString("status"))
+                SessionStatus.valueOf(rs.getString("status")),
+                RecruitmentStatus.valueOf(rs.getString("recruitment_status"))
         );
     }
 }

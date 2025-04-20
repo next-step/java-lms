@@ -1,9 +1,6 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.Image;
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionRepository;
-import nextstep.courses.domain.SessionStatus;
+import nextstep.courses.domain.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -43,7 +40,8 @@ public class SessionRepositoryTest {
                 0,
                 20,
                 image,
-                SessionStatus.RECRUITING
+                SessionStatus.ONGOING,
+                RecruitmentStatus.RECRUITING
         );
 
         // when
