@@ -2,6 +2,7 @@ package nextstep.users.domain;
 
 import nextstep.qna.UnAuthorizedException;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -18,23 +19,34 @@ public class NsUser {
 
     private String email;
 
+    private BigDecimal balance;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
-    public NsUser() {
+    private NsUser() {
     }
 
     public NsUser(Long id, String userId, String password, String name, String email) {
-        this(id, userId, password, name, email, LocalDateTime.now(), null);
+        this(id, userId, password, name, email, LocalDateTime.now(), LocalDateTime.now());
+    }
+
+    public NsUser(String userId, String password, String name, BigDecimal balance) {
+        this(null, userId, password, name, null, balance, LocalDateTime.now(), LocalDateTime.now());
     }
 
     public NsUser(Long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(id, userId, password, name, email, new BigDecimal(0), createdAt, updatedAt);
+    }
+
+    public NsUser(Long id, String userId, String password, String name, String email, BigDecimal balance, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
+        this.balance = balance;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -47,36 +59,28 @@ public class NsUser {
         return userId;
     }
 
-    public NsUser setUserId(String userId) {
-        this.userId = userId;
-        return this;
-    }
-
     public String getPassword() {
         return password;
-    }
-
-    public NsUser setPassword(String password) {
-        this.password = password;
-        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public NsUser setName(String name) {
-        this.name = name;
-        return this;
-    }
-
     public String getEmail() {
         return email;
     }
 
-    public NsUser setEmail(String email) {
-        this.email = email;
-        return this;
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
     public void update(NsUser loginUser, NsUser target) {
@@ -111,6 +115,13 @@ public class NsUser {
 
         return name.equals(target.name) &&
                 email.equals(target.email);
+    }
+
+    public synchronized void pay(Long price) {
+        if (balance.compareTo(BigDecimal.valueOf(price)) < 0) {
+            throw new IllegalArgumentException("not enough money");
+        }
+        balance = balance.subtract(BigDecimal.valueOf(price));
     }
 
     public boolean isGuestUser() {

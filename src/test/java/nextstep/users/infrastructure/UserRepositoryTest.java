@@ -10,12 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-public class UserRepositoryTest {
+class UserRepositoryTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserRepositoryTest.class);
 
     @Autowired
@@ -26,6 +27,17 @@ public class UserRepositoryTest {
     @BeforeEach
     void setUp() {
         userRepository = new JdbcUserRepository(jdbcTemplate);
+    }
+
+    @Test
+    void save() {
+        NsUser nsUser = new NsUser("userId", "password", "name", new BigDecimal(100_000));
+        int count = userRepository.save(nsUser);
+        assertThat(count).isEqualTo(1);
+
+        Optional<NsUser> user = userRepository.findByUserId(nsUser.getUserId());
+        assertThat(user.isPresent()).isTrue();
+        assertThat(user.get().getBalance().compareTo(nsUser.getBalance())).isZero();
     }
 
     @Test

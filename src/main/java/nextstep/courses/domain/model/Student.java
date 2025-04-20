@@ -1,42 +1,51 @@
 package nextstep.courses.domain.model;
 
+import nextstep.users.domain.NsUser;
+
+import java.time.LocalDateTime;
+
 public class Student {
-    private final Long nsUserId;
-    private Long money;
+    private final NsUser user;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
 
-    public Student() {
-        this(0L);
+    public Student(NsUser user) {
+        this(user, LocalDateTime.now(), LocalDateTime.now());
     }
 
-    public Student(Long money) {
-        this(0L, money);
+    public Student(NsUser user, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.user = user;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
-    public Student(Long nsUserId, Long money) {
-        this.nsUserId = nsUserId;
-        this.money = money;
-    }
-
-    public synchronized void pay(Long price) {
-        if (money < price) {
-            throw new IllegalArgumentException("not enough money");
-        }
-        money -= price;
+    public void pay(Long price) {
+        user.pay(price);
     }
 
     public Long getNsUserId() {
-        return nsUserId;
+        return user.getId();
     }
 
-    public long getAmount() {
-        return money;
+    public NsUser getUser() {
+        return user;
     }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
 
     @Override
     public String toString() {
         return "Student{" +
-                "nsUserId=" + nsUserId +
-                ", money=" + money +
+                "user=" + user +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
                 '}';
     }
 }
