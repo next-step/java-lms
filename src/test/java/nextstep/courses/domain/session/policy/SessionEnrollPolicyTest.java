@@ -10,6 +10,6 @@ class SessionEnrollPolicyTest {
     @DisplayName("SessionProperty 인스턴스 생성")
     @Test
     public void testConstructor() {
-        assertDoesNotThrow(() -> new SessionEnrollPolicy(SessionStatus.ENROLLING, SessionType.FREE));
+        assertDoesNotThrow(() -> new SessionEnrollPolicy(SessionStatus.ONGOING, SessionType.FREE));
     }
 }
