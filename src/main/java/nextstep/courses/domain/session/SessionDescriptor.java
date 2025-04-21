@@ -1,12 +1,13 @@
 package nextstep.courses.domain.session;
 
+import lombok.Getter;
 import nextstep.courses.domain.session.constraint.SessionConstraint;
 import nextstep.courses.domain.session.image.SessionImages;
 import nextstep.courses.domain.session.policy.SessionEnrollPolicy;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Getter
 public class SessionDescriptor {
 
     private final SessionPeriod period;
@@ -19,26 +20,6 @@ public class SessionDescriptor {
         this.period = period;
         this.policy = policy;
         this.images = images;
-    }
-
-    public LocalDateTime startDate() {
-        return period.startDate();
-    }
-
-    public LocalDateTime endDate() {
-        return period.endDate();
-    }
-
-    public String status() {
-        return policy.status();
-    }
-
-    public String enrollStatus() {
-        return policy.enrollStatus();
-    }
-
-    public String type() {
-        return policy.type();
     }
 
     public boolean canEnroll(SessionConstraint sessionConstraint, int enrollCount, long amount) {

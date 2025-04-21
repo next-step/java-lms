@@ -1,7 +1,10 @@
 package nextstep.courses.domain.session.constraint;
 
+import lombok.Getter;
+
 import java.util.Objects;
 
+@Getter
 public class SessionCapacity {
     private final int value;
 
@@ -10,10 +13,6 @@ public class SessionCapacity {
             throw new IllegalArgumentException("수강 인원은 1 이상이여야 합니다.");
         }
         this.value = capacity;
-    }
-
-    public int value() {
-        return value;
     }
 
     public boolean isGreaterThan(int value) {

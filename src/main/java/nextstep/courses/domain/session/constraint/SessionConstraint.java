@@ -1,7 +1,10 @@
 package nextstep.courses.domain.session.constraint;
 
+import lombok.Getter;
+
 import java.util.Objects;
 
+@Getter
 public class SessionConstraint {
 
     private final SessionFee fee;
@@ -15,14 +18,6 @@ public class SessionConstraint {
     public SessionConstraint(SessionFee fee, SessionCapacity capacity) {
         this.fee = fee;
         this.capacity = capacity;
-    }
-
-    public long fee() {
-        return fee.value();
-    }
-
-    public int capacity() {
-        return capacity.value();
     }
 
     public boolean isSameFee(long amount) {

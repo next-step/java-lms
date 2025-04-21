@@ -1,8 +1,11 @@
 package nextstep.courses.domain.session;
 
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Getter
 public class SessionPeriod {
 
     private final LocalDateTime startDate;
@@ -16,14 +19,6 @@ public class SessionPeriod {
     public SessionPeriod(LocalDateTime startDate, LocalDateTime endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
-    }
-
-    public LocalDateTime startDate() {
-        return startDate;
-    }
-
-    public LocalDateTime endDate() {
-        return endDate;
     }
 
     @Override

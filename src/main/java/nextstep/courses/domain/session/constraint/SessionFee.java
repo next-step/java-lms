@@ -1,7 +1,10 @@
 package nextstep.courses.domain.session.constraint;
 
+import lombok.Getter;
+
 import java.util.Objects;
 
+@Getter
 public class SessionFee {
     private final long value;
 
@@ -10,10 +13,6 @@ public class SessionFee {
             throw new IllegalArgumentException("강의 요금은 0원 이상이여야 합니다.");
         }
         this.value = fee;
-    }
-
-    public long value() {
-        return value;
     }
 
     public boolean isSame(long value) {

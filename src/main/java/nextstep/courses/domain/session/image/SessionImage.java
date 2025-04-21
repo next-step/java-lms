@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session.image;
 
+import lombok.Getter;
 import nextstep.common.domian.BaseDomain;
 import nextstep.courses.entity.SessionImageEntity;
 
@@ -8,6 +9,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Getter
 public class SessionImage extends BaseDomain {
     private static final double WIDTH_RATIO = 3;
     private static final double HEIGHT_RATIO = 2;
@@ -21,10 +23,6 @@ public class SessionImage extends BaseDomain {
 
     public SessionImage(String url, ImageHandler imageHandler, SessionImageType type) throws IOException {
         this(null, false, url, imageHandler, type);
-    }
-
-    public SessionImage(String id, String url, ImageHandler imageHandler, SessionImageType type) throws IOException {
-        this(id, false, url, imageHandler, type);
     }
 
     public SessionImage(String id, boolean deleted, String url, ImageHandler imageHandler, SessionImageType type) throws IOException {
@@ -44,10 +42,6 @@ public class SessionImage extends BaseDomain {
         this.deleted = deleted;
     }
 
-    public String type() {
-        return type.getType();
-    }
-
     public BufferedImage image() throws IOException {
         return imageHandler.image(url);
     }
@@ -57,17 +51,17 @@ public class SessionImage extends BaseDomain {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public SessionImageEntity toSessionImageEntity(Long sessionId) {
-        return SessionImageEntity.builder()
-            .id(id())
-            .createdAt(createdAt)
-            .updatedAt(updatedAt)
-            .deleted(deleted)
-            .imageUrl(url)
-            .imageType(type.getType())
-            .sessionId(sessionId)
-            .build();
-    }
+//    public SessionImageEntity toSessionImageEntity(Long sessionId) {
+//        return SessionImageEntity.builder()
+//            .id(id())
+//            .createdAt(createdAt)
+//            .updatedAt(updatedAt)
+//            .deleted(deleted)
+//            .imageUrl(url)
+//            .imageType(type.getType())
+//            .sessionId(sessionId)
+//            .build();
+//    }
 
     @Override
     public boolean equals(Object o) {

@@ -1,9 +1,11 @@
 package nextstep.courses.domain.session.policy;
 
+import lombok.Getter;
 import nextstep.courses.domain.session.constraint.SessionConstraint;
 
 import java.util.Objects;
 
+@Getter
 public class SessionEnrollPolicy {
 
     private final EnrollmentStatus enrollmentStatus;
@@ -24,18 +26,6 @@ public class SessionEnrollPolicy {
 
     public boolean canEnroll(SessionConstraint sessionConstraint, int enrollCount, long amount) {
         return type.canEnroll(sessionConstraint, enrollCount, amount) && status.canEnroll() && enrollmentStatus.canEnroll();
-    }
-
-    public String type() {
-        return type.getType();
-    }
-
-    public String status() {
-        return status.getStatus();
-    }
-
-    public String enrollStatus() {
-        return enrollmentStatus.getStatus();
     }
 
     @Override

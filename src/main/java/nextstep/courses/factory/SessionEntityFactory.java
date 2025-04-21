@@ -13,15 +13,15 @@ public class SessionEntityFactory {
             .updatedAt(session.getUpdatedAt())
             .deleted(session.isDeleted())
             .courseId(courseId)
-            .fee(session.getConstraint().fee())
-            .capacity(session.getConstraint().capacity())
+            .fee(session.getConstraint().getFee().getValue())
+            .capacity(session.getConstraint().getCapacity().getValue())
             .imageUrl(null)
             .imageType(null)
-            .startDate(session.getDescriptor().startDate())
-            .endDate(session.getDescriptor().endDate())
-            .type(session.getDescriptor().type())
-            .status(session.getDescriptor().status())
-            .enrollStatus(session.getDescriptor().enrollStatus())
+            .startDate(session.getDescriptor().getPeriod().getStartDate())
+            .endDate(session.getDescriptor().getPeriod().getEndDate())
+            .type(session.getDescriptor().getPolicy().getType().getType())
+            .status(session.getDescriptor().getPolicy().getStatus().getStatus())
+            .enrollStatus(session.getDescriptor().getPolicy().getEnrollmentStatus().getStatus())
             .build();
     }
 }
