@@ -20,11 +20,7 @@ public class SessionService {
     }
 
     public void addAttendee(Long sessionId, NsUser nsUser) {
-        Session session = sessionRepository.findById(sessionId);
-
-        if (session == null) {
-            throw new SessionNotExists("Session not found");
-        }
+        Session session = sessionRepository.findById(sessionId).orElseThrow(() -> new SessionNotExists("Session not found"));
 
         Payments payments = paymentService.sessionPayments(sessionId);
 

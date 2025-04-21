@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
 
@@ -27,7 +29,7 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public Session findById(Long id) {
+    public Optional<Session> findById(Long id) {
         String sql = "select id, course_id, image_id, start_date, end_date, max_attendees, current_attendees, type, status from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session.Builder()
                 .id(rs.getLong(1))
@@ -40,7 +42,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 .type(SessionType.valueOf(rs.getString(8)))
                 .status(SessionStatus.valueOf(rs.getString(9)))
                 .build();
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
     }
 
 }

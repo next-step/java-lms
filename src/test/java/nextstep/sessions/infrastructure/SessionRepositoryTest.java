@@ -46,7 +46,7 @@ public class SessionRepositoryTest {
                 .build();
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
-        Session savedSession = sessionRepository.findById(1L);
+        Session savedSession = sessionRepository.findById(1L).get();
         assertThat(session.getMaxAttendees()).isEqualTo(savedSession.getMaxAttendees());
         LOGGER.debug("Session: {}", savedSession);
     }
