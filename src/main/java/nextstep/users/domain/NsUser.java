@@ -26,18 +26,13 @@ public class NsUser {
     public NsUser() {
     }
 
-    public NsUser(Long id, String userId, String password, String name, String email) {
-        this(id, null, userId, password, name, email, LocalDateTime.now(), null);
-    }
-
-    public NsUser(Long id, Long sessionId, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.sessionId = sessionId;
-        this.userId = userId;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-        this.auditInfo = new AuditInfo(createdAt, updatedAt);
+    public NsUser(Builder builder) {
+        this.id = builder.id;
+        this.sessionId = builder.sessionId;
+        this.userId = builder.userId;
+        this.password = builder.password;
+        this.name = builder.name;
+        this.email = builder.email;
     }
 
     public Long getId() {
@@ -137,6 +132,55 @@ public class NsUser {
         @Override
         public boolean isGuestUser() {
             return true;
+        }
+    }
+
+    public static class Builder {
+        private Long id;
+        private Long sessionId;
+        private String userId;
+        private String password;
+        private String name;
+        private String email;
+        private AuditInfo auditInfo;
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder sessionId(Long sessionId) {
+            this.sessionId = sessionId;
+            return this;
+        }
+
+        public Builder userId(String userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder auditInfo(LocalDateTime createdAt, LocalDateTime updatedAt) {
+            this.auditInfo = new AuditInfo(createdAt, updatedAt);
+            return this;
+        }
+
+        public NsUser build() {
+            return new NsUser(this);
         }
     }
 }

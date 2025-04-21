@@ -27,27 +27,6 @@ public class Session {
 
     private Long price;
 
-    public Session() {
-    }
-
-    public Session(Long id, Long courseId, Long imageId, LocalDateTime startDate, LocalDateTime endDate,
-                   int maxAttendees, SessionType type, SessionStatus status) {
-        this(id, courseId, imageId, startDate, endDate, maxAttendees, 0, type, status);
-    }
-
-    public Session(Long id, Long courseId, Long imageId, LocalDateTime startDate, LocalDateTime endDate,
-                   int maxAttendees, int currentAttendees, SessionType type, SessionStatus status) {
-        this.id = id;
-        this.courseId = courseId;
-        this.imageId = imageId;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.maxAttendees = maxAttendees;
-        this.currentAttendees = currentAttendees;
-        this.type = type;
-        this.status = status;
-    }
-
     public Session(Builder builder) {
         this.id = builder.id;
         this.courseId = builder.courseId;
@@ -55,6 +34,7 @@ public class Session {
         this.startDate = builder.startDate;
         this.endDate = builder.endDate;
         this.maxAttendees = builder.maxAttendees;
+        this.currentAttendees = builder.currentAttendees;
         this.type = builder.type;
         this.status = builder.status;
         this.price = builder.price;
@@ -136,6 +116,7 @@ public class Session {
         private LocalDateTime startDate;
         private LocalDateTime endDate;
         private int maxAttendees;
+        private int currentAttendees;
         private SessionType type;
         private SessionStatus status;
         private Long price;
@@ -167,6 +148,11 @@ public class Session {
 
         public Builder maxAttendees(int maxAttendees) {
             this.maxAttendees = maxAttendees;
+            return this;
+        }
+
+        public Builder currentAttendees(int currentAttendees) {
+            this.currentAttendees = currentAttendees;
             return this;
         }
 

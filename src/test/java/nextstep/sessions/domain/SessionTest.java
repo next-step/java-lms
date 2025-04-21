@@ -26,13 +26,29 @@ public class SessionTest {
                 .startDate(LocalDateTime.now())
                 .endDate(LocalDateTime.now())
                 .maxAttendees(1)
+                .currentAttendees(0)
                 .type(SessionType.PAID)
                 .status(SessionStatus.OPEN)
                 .price(10000L)
                 .build();
-        user = new NsUser(1L, "tony", "1234", "ahn", "a@google.com");
-        user2 = new NsUser(2L, "aaa", "1234", "bbb", "2@google.com");
+        user = new NsUser.Builder()
+                .id(1L)
+                .sessionId(1L)
+                .userId("tony")
+                .password("1234")
+                .name("ahn")
+                .email("a@google.com")
+                .build();
+        user2 = new NsUser.Builder()
+                .id(2L)
+                .sessionId(1L)
+                .userId("aaa")
+                .password("1234")
+                .name("bbb")
+                .email("2@google.com")
+                .build();
     }
+
 
     @Test
     void freeSessionMaxAttendees() {
@@ -43,6 +59,7 @@ public class SessionTest {
                 .startDate(LocalDateTime.now())
                 .endDate(LocalDateTime.now())
                 .maxAttendees(2)
+                .currentAttendees(0)
                 .type(SessionType.FREE)
                 .status(SessionStatus.OPEN)
                 .price(10000L)
@@ -72,6 +89,7 @@ public class SessionTest {
                 .startDate(LocalDateTime.now())
                 .endDate(LocalDateTime.now())
                 .maxAttendees(1)
+                .currentAttendees(0)
                 .type(SessionType.PAID)
                 .status(SessionStatus.CLOSED)
                 .price(10000L)

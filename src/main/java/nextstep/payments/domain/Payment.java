@@ -19,12 +19,12 @@ public class Payment {
     public Payment() {
     }
 
-    public Payment(String id, Long sessionId, Long nsUserId, Long amount) {
-        this.id = id;
-        this.sessionId = sessionId;
-        this.nsUserId = nsUserId;
-        this.amount = amount;
-        this.createdAt = LocalDateTime.now();
+    public Payment(Builder builder) {
+        this.id = builder.id;
+        this.sessionId = builder.sessionId;
+        this.nsUserId = builder.nsUserId;
+        this.amount = builder.amount;
+        this.createdAt = builder.createdAt;
     }
 
     public Long getNsUserId() {
@@ -33,5 +33,42 @@ public class Payment {
 
     public Long getAmount() {
         return amount;
+    }
+
+    public static class Builder {
+        private String id;
+        private Long sessionId;
+        private Long nsUserId;
+        private Long amount;
+        private LocalDateTime createdAt;
+
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder sessionId(Long sessionId) {
+            this.sessionId = sessionId;
+            return this;
+        }
+
+        public Builder nsUserId(Long nsUserId) {
+            this.nsUserId = nsUserId;
+            return this;
+        }
+
+        public Builder amount(Long amount) {
+            this.amount = amount;
+            return this;
+        }
+
+        public Builder createdAt(LocalDateTime createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public Payment build() {
+            return new Payment(this);
+        }
     }
 }

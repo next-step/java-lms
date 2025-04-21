@@ -11,17 +11,8 @@ public class Image {
 
     private ImageDimension dimension;
 
-    public Image() {
-    }
-
-    public Image(Long id, ImageType type, double size, double width, double height) {
-        this.id = id;
-        this.type = type;
-        this.size = new ImageSizeKb(size);
-        this.dimension = new ImageDimension(width, height);
-    }
-
     public Image(Builder builder) {
+        this.id = builder.id;
         this.type = builder.type;
         this.size = builder.size;
         this.dimension = builder.dimension;
@@ -44,9 +35,15 @@ public class Image {
     }
 
     public static class Builder {
+        private Long id;
         private ImageType type;
         private ImageSizeKb size;
         private ImageDimension dimension;
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
 
         public Builder type(ImageType type) {
             this.type = type;

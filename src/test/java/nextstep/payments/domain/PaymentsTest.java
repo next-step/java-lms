@@ -3,6 +3,7 @@ package nextstep.payments.domain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -13,9 +14,25 @@ public class PaymentsTest {
 
     @BeforeEach
     void setUp() {
+        Payment payment1 = new Payment.Builder()
+                .id("1")
+                .sessionId(1L)
+                .nsUserId(1L)
+                .amount(1000L)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        Payment payment2 = new Payment.Builder()
+                .id("2")
+                .sessionId(1L)
+                .nsUserId(2L)
+                .amount(1000L)
+                .createdAt(LocalDateTime.now())
+                .build();
+
         payments = new Payments(List.of(
-                new Payment("1", 1L, 1L, 1000L),
-                new Payment("2", 1L, 2L, 1000L)
+                payment1,
+                payment2
         ));
     }
 

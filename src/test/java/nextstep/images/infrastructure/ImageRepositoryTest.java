@@ -19,7 +19,7 @@ public class ImageRepositoryTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    
+
     private ImageRepository imageRepository;
 
     @BeforeEach
@@ -29,7 +29,12 @@ public class ImageRepositoryTest {
 
     @Test
     void crud() {
-        Image image = new Image(1L, ImageType.JPEG, 500.0, 300.0, 200.0);
+        Image image = new Image.Builder()
+                .id(1L)
+                .type(ImageType.JPEG)
+                .size(500.0)
+                .dimension(300.0, 200.0)
+                .build();
         int count = imageRepository.save(image);
         assertThat(count).isEqualTo(1);
         Image savedImage = imageRepository.findById(1L);

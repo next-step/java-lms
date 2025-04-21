@@ -26,12 +26,12 @@ public class JdbcImageRepository implements ImageRepository {
     @Override
     public Image findById(Long id) {
         String sql = "select id, type, size, width, height from image where id = ?";
-        RowMapper<Image> rowMapper = (rs, rowNum) -> new Image(
-                rs.getLong(1),
-                ImageType.valueOf(rs.getString(2)),
-                rs.getFloat(3),
-                rs.getFloat(4),
-                rs.getFloat(5));
+        RowMapper<Image> rowMapper = (rs, rowNum) -> new Image.Builder()
+                .id(rs.getLong(1))
+                .type(ImageType.valueOf(rs.getString(2)))
+                .size(rs.getDouble(3))
+                .dimension(rs.getDouble(4), rs.getDouble(5))
+                .build();
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 }

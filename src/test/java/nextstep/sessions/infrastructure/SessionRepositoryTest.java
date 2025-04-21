@@ -39,6 +39,7 @@ public class SessionRepositoryTest {
                 .startDate(LocalDateTime.now())
                 .endDate(LocalDateTime.now())
                 .maxAttendees(1)
+                .currentAttendees(0)
                 .type(SessionType.PAID)
                 .status(SessionStatus.OPEN)
                 .price(10000L)
