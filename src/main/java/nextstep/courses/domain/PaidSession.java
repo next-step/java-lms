@@ -27,7 +27,7 @@ public class PaidSession extends Session {
         if (!studentId.equals(payment.getNsUserId())) {
             throw new IllegalArgumentException("결제한 사용자와 일치하지 않습니다.");
         }
-        if (this.tuitionFee.getAmount() != payment.getAmount()) {
+        if (!this.tuitionFee.isSameAmount(payment.getAmount())) {
             throw new IllegalArgumentException("결제 금액과 일치하지 않습니다.");
         }
     }

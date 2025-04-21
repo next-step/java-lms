@@ -1,16 +1,16 @@
 package nextstep.courses.domain;
 
 public class Image {
+    private static final int MAX_IMAGE_SIZE = 1024 * 1024;
+    private static final int WIDTH_LIMIT = 300;
+    private static final int HEIGHT_LIMIT = 200;
+    private static final double REQUIRED_ASPECT_RATIO = 1.5;
+    private static final double ASPECT_RATIO_TOLERANCE = 0.01;
     private String fileName;
     private String contentType;
     private long sizeInBytes;
     private int width;
     private int height;
-    private static final int IMAGE_SIZE_1MB = 1024 * 1024;
-    private static final int WIDTH_LIMIT = 300;
-    private static final int HEIGHT_LIMIT = 200;
-    private static final double REQUIRED_ASPECT_RATIO = 1.5;
-    private static final double ASPECT_RATIO_TOLERANCE = 0.01;
 
     public Image(String fileName, String contentType, long sizeInBytes, int width, int height) {
         validate(contentType, sizeInBytes, width, height);
@@ -22,7 +22,7 @@ public class Image {
     }
 
     private void validate(String contentType, long sizeInBytes, int width, int height) {
-        if (sizeInBytes > IMAGE_SIZE_1MB) {
+        if (sizeInBytes > MAX_IMAGE_SIZE) {
             throw new IllegalArgumentException("이미지 크기는 1MB 이하여야 합니다.");
         }
 
