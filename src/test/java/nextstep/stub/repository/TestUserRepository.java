@@ -43,7 +43,7 @@ public class TestUserRepository implements UserRepository {
     public List<NsUser> findByUserIds(List<String> userIds) {
         findByUserIdsCalled++;
         List<NsUser> res = new ArrayList<>();
-        for (String userId: userIds) {
+        for (String userId : userIds) {
             res.add(users.get(userId));
         }
         return res;
