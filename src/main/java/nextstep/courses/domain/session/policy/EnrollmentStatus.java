@@ -2,6 +2,8 @@ package nextstep.courses.domain.session.policy;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
 public enum EnrollmentStatus {
     NOT_ENROLLING("not_enrolling"),
@@ -14,12 +16,10 @@ public enum EnrollmentStatus {
     }
 
     public static EnrollmentStatus fromString(String status) {
-        for (EnrollmentStatus s : values()) {
-            if (s.status.equalsIgnoreCase(status)) {
-                return s;
-            }
-        }
-        return NOT_ENROLLING;
+        return Arrays.stream(values())
+            .filter(enrollmentStatus -> enrollmentStatus.status.equalsIgnoreCase(status))
+            .findFirst()
+            .orElse(NOT_ENROLLING);
     }
 
     public boolean canEnroll() {
