@@ -9,6 +9,7 @@ import nextstep.payments.domain.PaymentEntityUserMap;
 import nextstep.payments.domain.PaymentRepository;
 import nextstep.payments.domain.Payments;
 import nextstep.payments.entity.PaymentEntity;
+import nextstep.payments.factory.PaymentEntityFactory;
 import nextstep.payments.factory.PaymentFactory;
 import nextstep.payments.factory.PaymentsFactory;
 import nextstep.users.domain.NsUser;
@@ -28,6 +29,7 @@ public class PaymentService {
     private final SessionFactory sessionFactory;
     private final PaymentFactory paymentFactory;
     private final PaymentsFactory paymentsFactory;
+    private final PaymentEntityFactory paymentEntityFactory;
 
     public PaymentService(
         SessionRepository sessionRepository,
@@ -36,7 +38,8 @@ public class PaymentService {
         UserRepository userRepository,
         SessionFactory sessionFactory,
         PaymentFactory paymentFactory,
-        PaymentsFactory paymentsFactory
+        PaymentsFactory paymentsFactory,
+        PaymentEntityFactory paymentEntityFactory
     ) {
         this.sessionRepository = sessionRepository;
         this.sessionImageRepository = sessionImageRepository;
@@ -45,6 +48,7 @@ public class PaymentService {
         this.sessionFactory = sessionFactory;
         this.paymentFactory = paymentFactory;
         this.paymentsFactory = paymentsFactory;
+        this.paymentEntityFactory = paymentEntityFactory;
     }
 
     public Payment payment(String id) {
@@ -67,7 +71,7 @@ public class PaymentService {
         Payment newPayment = payment(newPaymentId);
 
         if (payments.canEnroll(session, newPayment)) {
-            paymentRepository.save(newPayment.toPaymentEntity());
+            paymentRepository.save(paymentEntityFactory.create(newPayment));
             return true;
         }
 

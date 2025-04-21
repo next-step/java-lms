@@ -6,6 +6,7 @@ import nextstep.courses.domain.session.SessionPeriod;
 import nextstep.courses.domain.session.constraint.SessionConstraint;
 import nextstep.courses.domain.session.image.SessionImages;
 import nextstep.courses.domain.session.policy.SessionEnrollPolicy;
+import nextstep.courses.factory.SessionEntityFactory;
 import nextstep.stub.TestSessionFactory;
 import nextstep.stub.TestSessionImageRepository;
 import nextstep.stub.TestSessionRepository;
@@ -28,7 +29,12 @@ class SessionServiceTest {
         TestSessionImageRepository sessionImageRepository = new TestSessionImageRepository();
         TestSessionFactory sessionFactory = new TestSessionFactory();
 
-        SessionService sessionService = new SessionService(sessionRepository, sessionImageRepository, sessionFactory);
+        SessionService sessionService = new SessionService(
+            sessionRepository,
+            sessionImageRepository,
+            sessionFactory,
+            new SessionEntityFactory()
+        );
 
         SessionConstraint constraint = new SessionConstraint(200_000, 1);
         SessionDescriptor descriptor = new SessionDescriptor(
@@ -56,7 +62,12 @@ class SessionServiceTest {
         Session session = new Session("1", constraint, descriptor);
         TestSessionFactory sessionFactory = new TestSessionFactory(session);
 
-        SessionService sessionService = new SessionService(sessionRepository, sessionImageRepository, sessionFactory);
+        SessionService sessionService = new SessionService(
+            sessionRepository,
+            sessionImageRepository,
+            sessionFactory,
+            new SessionEntityFactory()
+        );
 
         sessionService.deleteSession(1L);
 

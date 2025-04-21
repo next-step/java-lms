@@ -4,6 +4,7 @@ import nextstep.courses.domain.session.Session;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.domain.Payments;
 import nextstep.payments.entity.PaymentEntity;
+import nextstep.payments.factory.PaymentEntityFactory;
 import nextstep.payments.factory.PaymentFactory;
 import nextstep.stub.*;
 import nextstep.users.domain.NsUser;
@@ -47,7 +48,8 @@ class PaymentServiceTest {
             userRepository,
             sessionFactory,
             paymentFactory,
-            paymentsFactory
+            paymentsFactory,
+            new PaymentEntityFactory()
         ) {
             @Override
             public Payment payment(String id) {
@@ -108,7 +110,8 @@ class PaymentServiceTest {
             userRepository,
             sessionFactory,
             paymentFactory,
-            paymentsFactory
+            paymentsFactory,
+            new PaymentEntityFactory()
         ) {
             @Override
             public Payment payment(String id) {
@@ -164,7 +167,8 @@ class PaymentServiceTest {
             userRepository,
             sessionFactory,
             paymentFactory,
-            paymentsFactory
+            paymentsFactory,
+            new PaymentEntityFactory()
         ) {
             @Override
             public Payment payment(String id) {

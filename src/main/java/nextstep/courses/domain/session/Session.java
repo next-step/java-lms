@@ -1,12 +1,13 @@
 package nextstep.courses.domain.session;
 
+import lombok.Getter;
 import nextstep.common.domian.BaseDomain;
 import nextstep.courses.domain.session.constraint.SessionConstraint;
-import nextstep.courses.entity.SessionEntity;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Getter
 public class Session extends BaseDomain {
 
     private final SessionConstraint constraint;
@@ -46,25 +47,6 @@ public class Session extends BaseDomain {
 
     public boolean canEnroll(int enrollCount, long amount) {
         return descriptor.canEnroll(constraint, enrollCount, amount);
-    }
-
-    public SessionEntity toSessionEntity(Long courseId) {
-        return SessionEntity.builder()
-            .id(id())
-            .createdAt(createdAt)
-            .updatedAt(updatedAt)
-            .deleted(deleted)
-            .courseId(courseId)
-            .fee(constraint.fee())
-            .capacity(constraint.capacity())
-            .imageUrl(null)
-            .imageType(null)
-            .startDate(descriptor.startDate())
-            .endDate(descriptor.endDate())
-            .type(descriptor.type())
-            .status(descriptor.status())
-            .enrollStatus(descriptor.enrollStatus())
-            .build();
     }
 
     @Override

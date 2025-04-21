@@ -36,6 +36,6 @@ public class UserRepositoryTest {
     void findByUserId() {
         NsUser nsUser = new NsUser("1", "javajigi", "password", "name", "javajigi@slipp.net");
         userRepository.save(nsUser);
-        assertThat(userRepository.findByUserId("javajigi")).isNotNull();
+        assertThat(userRepository.findByUserId("1")).isNotNull();
     }
 }

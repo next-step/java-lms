@@ -1,8 +1,8 @@
 package nextstep.payments.domain;
 
+import lombok.Getter;
 import nextstep.common.domian.BaseDomain;
 import nextstep.courses.domain.session.Session;
-import nextstep.payments.entity.PaymentEntity;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -10,6 +10,7 @@ import java.util.Objects;
 
 import static nextstep.payments.domain.PaymentStatus.PENDING;
 
+@Getter
 public class Payment extends BaseDomain {
 
     private Session session;
@@ -61,19 +62,6 @@ public class Payment extends BaseDomain {
 
     public boolean canEnroll(Session session, int enrollCount) {
         return session.canEnroll(enrollCount, amount);
-    }
-
-    public PaymentEntity toPaymentEntity() {
-        return PaymentEntity.builder()
-            .id(id())
-            .userId(user.id())
-            .sessionId(session.id())
-            .amount(amount)
-            .createdAt(createdAt)
-            .updatedAt(updatedAt)
-            .deleted(deleted)
-            .status(status.getStatus())
-            .build();
     }
 
     @Override
