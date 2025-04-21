@@ -1,6 +1,6 @@
 package nextstep.courses.domain.session.image;
 
-import nextstep.stub.TestImageHandler;
+import nextstep.stub.factory.TestImageHandler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

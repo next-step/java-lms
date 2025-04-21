@@ -1,4 +1,4 @@
-package nextstep.stub;
+package nextstep.stub.repository;
 
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;

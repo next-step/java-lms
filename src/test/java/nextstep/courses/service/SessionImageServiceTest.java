@@ -1,9 +1,9 @@
 package nextstep.courses.service;
 
 import nextstep.courses.domain.session.image.SessionImage;
-import nextstep.stub.TestImageHandler;
-import nextstep.stub.TestSessionImageFactory;
-import nextstep.stub.TestSessionImageRepository;
+import nextstep.stub.factory.TestImageHandler;
+import nextstep.stub.factory.TestSessionImageFactory;
+import nextstep.stub.repository.TestSessionImageRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

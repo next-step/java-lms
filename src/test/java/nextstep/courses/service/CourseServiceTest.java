@@ -1,7 +1,12 @@
 package nextstep.courses.service;
 
 import nextstep.courses.domain.Course;
-import nextstep.stub.*;
+import nextstep.courses.factory.CourseFactory;
+import nextstep.stub.factory.TestCourseFactory;
+import nextstep.stub.factory.TestSessionsFactory;
+import nextstep.stub.repository.TestCourseRepository;
+import nextstep.stub.repository.TestSessionImageRepository;
+import nextstep.stub.repository.TestSessionRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,15 +22,13 @@ class CourseServiceTest {
     @DisplayName("course 만들기")
     @Test
     void testCreateCourse() {
-        Course course = new Course("1", "test-course", 3L, LocalDateTime.now(), LocalDateTime.now());
-
         TestCourseRepository courseRepository = new TestCourseRepository(1L, null);
         TestSessionImageRepository sessionImageRepository = new TestSessionImageRepository();
         CourseService courseService = new CourseService(
             courseRepository,
             new TestSessionRepository(1L, null, List.of()),
             sessionImageRepository,
-            new TestCourseFactory(new TestSessionsFactory(), course)
+            new CourseFactory(new TestSessionsFactory())
         );
 
         courseService.createCourse("test-title", 1L);

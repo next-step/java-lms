@@ -1,4 +1,4 @@
-package nextstep.stub;
+package nextstep.stub.factory;
 
 import nextstep.courses.domain.session.SessionEntityImageMap;
 import nextstep.courses.domain.session.Sessions;

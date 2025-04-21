@@ -1,4 +1,4 @@
-package nextstep.stub;
+package nextstep.stub.repository;
 
 import nextstep.payments.domain.PaymentRepository;
 import nextstep.payments.entity.PaymentEntity;

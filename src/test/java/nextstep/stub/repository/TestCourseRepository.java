@@ -1,4 +1,4 @@
-package nextstep.stub;
+package nextstep.stub.repository;
 
 import nextstep.courses.domain.CourseRepository;
 import nextstep.courses.entity.CourseEntity;

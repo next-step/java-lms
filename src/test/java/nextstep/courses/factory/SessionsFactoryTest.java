@@ -4,8 +4,8 @@ import nextstep.courses.domain.session.SessionEntityImageMap;
 import nextstep.courses.domain.session.Sessions;
 import nextstep.courses.entity.SessionEntity;
 import nextstep.courses.entity.SessionImageEntity;
-import nextstep.stub.TestSessionFactory;
-import nextstep.stub.TestSessionsFactory;
+import nextstep.stub.factory.TestSessionFactory;
+import nextstep.stub.factory.TestSessionsFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
