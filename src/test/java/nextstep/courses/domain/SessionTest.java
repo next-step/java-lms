@@ -1,7 +1,6 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.model.Session;
-import nextstep.courses.domain.model.SessionImage;
 import nextstep.courses.domain.model.SessionPeriod;
 import nextstep.courses.domain.model.SessionStatus;
 import nextstep.users.domain.NsUserTest;
@@ -15,7 +14,7 @@ import static org.assertj.core.api.Assertions.*;
 public class SessionTest {
     public static final Session SESSION1 = new Session(1L, 1L,
             new SessionPeriod(LocalDateTime.parse("2025-04-21T00:00"), LocalDateTime.parse("2025-05-21T00:00")),
-            new SessionImage(null, null), SessionStatus.OPEN, 100_000L, 10, 1L,
+            null, SessionStatus.OPEN, 100_000L, 10, 1L,
             LocalDateTime.parse("2025-04-21T00:00"), null);
 
     public static Session createFreeSession(SessionStatus status) {

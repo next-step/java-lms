@@ -3,7 +3,6 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.model.Session;
 import nextstep.courses.domain.model.SessionImage;
 import nextstep.courses.domain.model.SessionPeriod;
-import nextstep.courses.domain.model.SessionStatus;
 import nextstep.courses.domain.repository.SessionRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -11,10 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
-@Repository("sessionRepository")
+@Repository
 public class JdbcSessionRepository implements SessionRepository {
     private final JdbcOperations jdbcTemplate;
 
@@ -47,22 +44,22 @@ public class JdbcSessionRepository implements SessionRepository {
         RowMapper<Session> rowMapper = (rs, rowNum) -> {
             try {
                 return new Session(
-                        rs.getLong(1),
-                        rs.getLong(2),
+                        rs.getLong("id"),
+                        rs.getLong("course_id"),
                         new SessionPeriod(
-                                rs.getDate(6).toLocalDate().atStartOfDay(),
-                                rs.getDate(7).toLocalDate().atStartOfDay()
+                                rs.getDate("start_date"),
+                                rs.getDate("end_date")
                         ),
                         new SessionImage(
-                                rs.getString(8),
-                                rs.getBlob(9) == null ? null : rs.getBlob(9).getBinaryStream().readAllBytes()
+                                rs.getString("image_path"),
+                                rs.getBlob("image_file")
                         ),
-                        SessionStatus.valueOf(rs.getString(4)),
-                        rs.getLong(5),
-                        rs.getInt(3),
-                        rs.getLong(10),
-                        toLocalDateTime(rs.getTimestamp(11)),
-                        toLocalDateTime(rs.getTimestamp(12)));
+                        rs.getString("status"),
+                        rs.getLong("price"),
+                        rs.getInt("capacity"),
+                        rs.getLong("creator_id"),
+                        rs.getTimestamp("created_at"),
+                        rs.getTimestamp("updated_at"));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -70,10 +67,4 @@ public class JdbcSessionRepository implements SessionRepository {
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
-    private LocalDateTime toLocalDateTime(Timestamp timestamp) {
-        if (timestamp == null) {
-            return null;
-        }
-        return timestamp.toLocalDateTime();
-    }
 }

@@ -1,6 +1,9 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.model.*;
+import nextstep.courses.domain.model.Session;
+import nextstep.courses.domain.model.SessionImage;
+import nextstep.courses.domain.model.SessionPeriod;
+import nextstep.courses.domain.model.Student;
 import nextstep.courses.domain.repository.StudentRepository;
 import nextstep.users.domain.NsUser;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -8,10 +11,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
-@Repository("studentRepository")
+@Repository
 public class JdbcStudentRepository implements StudentRepository {
     private final JdbcOperations jdbcTemplate;
 
@@ -28,44 +29,45 @@ public class JdbcStudentRepository implements StudentRepository {
     @Override
     public Student findById(Long id) {
         String sql = "select s.id, s.created_at, s.updated_at," +
-                "n.id ,n.course_id ,n.start_date ,n.end_date ,n.image_path ,n.image_file , n.status ,n.price,n.capacity ,n.creator_id ,n.created_at ,n.updated_at, " +
-                "u.id , u.user_id, u.password, u.name, u.email, u.balance, u.created_at, u.updated_at " +
+                "n.id as session_id ,n.course_id ,n.start_date ,n.end_date ,n.image_path ,n.image_file , n.status ,n.price,n.capacity ,n.creator_id ,n.created_at as session_created_at,n.updated_at as session_updated_at," +
+                "u.id as ns_user_id, u.user_id, u.password, u.name, u.email, u.balance, u.created_at as user_created_at, u.updated_at as user_updated_at " +
                 "from student s " +
                 "join session n on s.session_id = n.id " +
                 "join ns_user u on s.ns_user_id = u.id " +
                 "where s.id = ?";
+
         RowMapper<Student> rowMapper = (rs, rowNum) -> {
             try {
                 return new Student(
-                        rs.getLong(1),
+                        rs.getLong("id"),
                         new NsUser(
-                                rs.getLong(16),
-                                rs.getString(17),
-                                rs.getString(18),
-                                rs.getString(19),
-                                rs.getString(20),
-                                rs.getBigDecimal(21),
-                                toLocalDateTime(rs.getTimestamp(22)),
-                                toLocalDateTime(rs.getTimestamp(23))),
+                                rs.getLong("ns_user_id"),
+                                rs.getString("user_id"),
+                                rs.getString("password"),
+                                rs.getString("name"),
+                                rs.getString("email"),
+                                rs.getBigDecimal("balance"),
+                                rs.getTimestamp("user_created_at"),
+                                rs.getTimestamp("user_updated_at")),
                         new Session(
-                                rs.getLong(4),
-                                rs.getLong(5),
+                                rs.getLong("session_id"),
+                                rs.getLong("course_id"),
                                 new SessionPeriod(
-                                        rs.getDate(6).toLocalDate().atStartOfDay(),
-                                        rs.getDate(7).toLocalDate().atStartOfDay()
+                                        rs.getDate("start_date"),
+                                        rs.getDate("end_date")
                                 ),
                                 new SessionImage(
-                                        rs.getString(8),
-                                        rs.getBlob(9) != null ? rs.getBlob(9).getBinaryStream().readAllBytes() : null
+                                        rs.getString("image_path"),
+                                        rs.getBlob("image_file")
                                 ),
-                                SessionStatus.valueOf(rs.getString(10)),
-                                rs.getLong(11),
-                                rs.getInt(12),
-                                rs.getLong(13),
-                                toLocalDateTime(rs.getTimestamp(14)),
-                                toLocalDateTime(rs.getTimestamp(15))),
-                        toLocalDateTime(rs.getTimestamp(2)),
-                        toLocalDateTime(rs.getTimestamp(3)));
+                                rs.getString("status"),
+                                rs.getLong("price"),
+                                rs.getInt("capacity"),
+                                rs.getLong("creator_id"),
+                                rs.getTimestamp("session_created_at"),
+                                rs.getTimestamp("session_updated_at")),
+                        rs.getTimestamp("created_at"),
+                        rs.getTimestamp("updated_at"));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -73,10 +75,4 @@ public class JdbcStudentRepository implements StudentRepository {
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
-    private LocalDateTime toLocalDateTime(Timestamp timestamp) {
-        if (timestamp == null) {
-            return null;
-        }
-        return timestamp.toLocalDateTime();
-    }
 }

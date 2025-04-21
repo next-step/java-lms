@@ -3,8 +3,11 @@ package nextstep.courses.domain.model;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Objects;
+
+import static nextstep.courses.domain.model.Timestamped.toLocalDateTime;
 
 public class Session {
     private Long id;
@@ -20,6 +23,10 @@ public class Session {
 
     private Session(Long id, Long courseId, LocalDateTime startDate, LocalDateTime endDate, SessionImage image, SessionStatus status, Long price, int capacity, Long creatorId) {
         this(id, courseId, new SessionPeriod(startDate, endDate), image, status, price, capacity, creatorId, LocalDateTime.now(), LocalDateTime.now());
+    }
+
+    public Session(Long id, Long courseId, SessionPeriod period, SessionImage image, String status, Long price, int capacity, Long creatorId, Timestamp createdAt, Timestamp updatedAt) {
+        this(id, courseId, period, image, SessionStatus.valueOf(status), price, capacity, creatorId, toLocalDateTime(createdAt), toLocalDateTime(updatedAt));
     }
 
     public Session(Long id, Long courseId, SessionPeriod period, SessionImage image, SessionStatus status, Long price, int capacity, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {

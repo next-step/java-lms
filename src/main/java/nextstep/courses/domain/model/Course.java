@@ -2,10 +2,13 @@ package nextstep.courses.domain.model;
 
 import org.springframework.lang.NonNull;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static nextstep.courses.domain.model.Timestamped.toLocalDateTime;
 
 public class Course {
     private Long id;
@@ -26,6 +29,10 @@ public class Course {
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this(id, title, creatorId, new ArrayList<>(), createdAt, updatedAt);
+    }
+
+    public Course(Long id, String title, Long creatorId, Timestamp createdAt, Timestamp updatedAt) {
+        this(id, title, creatorId, new ArrayList<>(), toLocalDateTime(createdAt), toLocalDateTime(updatedAt));
     }
 
     public Course(Long id, String title, Long creatorId, @NonNull List<Session> sessions, LocalDateTime createdAt, LocalDateTime updatedAt) {

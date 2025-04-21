@@ -108,9 +108,7 @@
 > - DB 테이블 추가 - src/main/resources/schema.sql
 > - 테이블에 샘플 데이터를 추가하고 싶다면 src/main/resources/data.sql 파일에 추가 가능함
 > - CRUD 코드
-    >
-- src/main/java 폴더의 nextstep.courses.infrastructure.JdbcCourseRepository
+>   - src/main/java 폴더의 nextstep.courses.infrastructure.JdbcCourseRepository
 >   - JdbcCourseRepository 샘플 코드는 Spring JDBC 라이브러리를 활용해 구현함
 > - CRUD 코드에 대한 테스트 코드
-    >
-- src/test/java 폴더의 nextstep.courses.infrastructure.CourseRepositoryTest
+>   - src/test/java 폴더의 nextstep.courses.infrastructure.CourseRepositoryTest

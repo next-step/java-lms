@@ -1,5 +1,8 @@
 package nextstep.courses.domain.model;
 
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.List;
 
 public class SessionImage {
@@ -11,10 +14,6 @@ public class SessionImage {
     private final String path;
     private final byte[] file;
 
-    protected SessionImage(String path) {
-        this(path, 300, 200, new byte[300 * 200]);
-    }
-
     public SessionImage(String path, int width, int height, byte[] file) {
         validateSize(file);
         validateExtension(path);
@@ -24,9 +23,21 @@ public class SessionImage {
         this.file = file;
     }
 
+    public SessionImage(String path, Blob blob) throws SQLException, IOException {
+        this(path, toByteArray(blob));
+    }
+
     public SessionImage(String path, byte[] file) {
         this.path = path;
         this.file = file;
+    }
+
+    private static byte[] toByteArray(Blob blob) throws IOException, SQLException {
+        byte[] file = null;
+        if (blob != null) {
+            file = blob.getBinaryStream().readAllBytes();
+        }
+        return file;
     }
 
     private static void validateSize(byte[] file) {

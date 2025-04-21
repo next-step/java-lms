@@ -1,14 +1,16 @@
 package nextstep.courses.domain.model;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 
 public class SessionPeriod {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
-    protected SessionPeriod() {
-        this(LocalDateTime.now(), LocalDateTime.now().plusMonths(1));
+    public SessionPeriod(Date startDate, Date endDate) {
+        this(startDate.toLocalDate().atStartOfDay(), endDate.toLocalDate().atStartOfDay());
     }
+
 
     public SessionPeriod(LocalDateTime startDate, LocalDateTime endDate) {
         validateSessionDates(startDate, endDate);

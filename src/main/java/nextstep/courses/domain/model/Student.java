@@ -2,8 +2,11 @@ package nextstep.courses.domain.model;
 
 import nextstep.users.domain.NsUser;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Objects;
+
+import static nextstep.courses.domain.model.Timestamped.toLocalDateTime;
 
 public class Student {
     private final Long id;
@@ -14,6 +17,10 @@ public class Student {
 
     public Student(NsUser user, Session session) {
         this(null, user, session, LocalDateTime.now(), LocalDateTime.now());
+    }
+
+    public Student(Long id, NsUser user, Session session, Timestamp createdAt, Timestamp updatedAt) {
+        this(id, user, session, toLocalDateTime(createdAt), toLocalDateTime(updatedAt));
     }
 
     public Student(Long id, NsUser user, Session session, LocalDateTime createdAt, LocalDateTime updatedAt) {
