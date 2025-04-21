@@ -13,6 +13,14 @@ public class PaidSession extends Session {
         this.tuitionFee = new TuitionFee(tuitionFee);
     }
 
+    public Capacity getCapacity() {
+        return maxCapacity;
+    }
+
+    public TuitionFee getTuitionFee() {
+        return tuitionFee;
+    }
+
     @Override
     protected void validateRegistration(Long studentId, Payment payment) {
         if (registeredStudents.size() >= maxCapacity.getValue()) {

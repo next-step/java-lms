@@ -21,6 +21,22 @@ public class Image {
         this.height = height;
     }
 
+    public String getFileName() {
+        return fileName;
+    }
+    public String getContentType() {
+        return contentType;
+    }
+    public long getSizeInBytes() {
+        return sizeInBytes;
+    }
+    public int getWidth() {
+        return width;
+    }
+    public int getHeight() {
+        return height;
+    }
+
     private void validate(String contentType, long sizeInBytes, int width, int height) {
         if (sizeInBytes > MAX_IMAGE_SIZE) {
             throw new IllegalArgumentException("이미지 크기는 1MB 이하여야 합니다.");

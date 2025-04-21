@@ -19,6 +19,30 @@ public abstract class Session {
         this.registeredStudents = new Students();
     }
 
+    public Students getRegisteredStudent() {
+        return registeredStudents;
+    }
+
+    public Image getCoverImage() {
+        return coverImage;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Period getPeriod() {
+        return period;
+    }
+
+    public SessionStatus getStatus() {
+        return status;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
     public void register(Long studentId, Payment payment) {
         if (status != SessionStatus.RECRUITING) {
             throw new IllegalStateException("수강 신청은 모집중일 때만 가능합니다.");
@@ -26,11 +50,6 @@ public abstract class Session {
 
         validateRegistration(studentId, payment);
         registeredStudents.addStudent(new Student(studentId));
-    }
-
-    public Students getRegisteredStudent() {
-        return registeredStudents;
-
     }
 
     protected abstract void validateRegistration(Long studentId, Payment payment);
