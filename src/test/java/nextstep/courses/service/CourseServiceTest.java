@@ -3,7 +3,7 @@ package nextstep.courses.service;
 import nextstep.courses.domain.Course;
 import nextstep.courses.factory.CourseFactory;
 import nextstep.stub.factory.TestCourseFactory;
-import nextstep.stub.factory.TestSessionsFactory;
+import nextstep.stub.factory.TestSessionFactory;
 import nextstep.stub.repository.TestCourseRepository;
 import nextstep.stub.repository.TestSessionImageRepository;
 import nextstep.stub.repository.TestSessionRepository;
@@ -28,7 +28,7 @@ class CourseServiceTest {
             courseRepository,
             new TestSessionRepository(1L, null, List.of()),
             sessionImageRepository,
-            new CourseFactory(new TestSessionsFactory())
+            new CourseFactory(new TestSessionFactory())
         );
 
         courseService.createCourse("test-title", 1L);
@@ -43,7 +43,7 @@ class CourseServiceTest {
         Course course = new Course("1", "test-course", 3L, testLocalDateTime, testLocalDateTime);
 
         TestCourseRepository courseRepository = new TestCourseRepository(1L, null);
-        TestCourseFactory courseFactory = new TestCourseFactory(new TestSessionsFactory(), course);
+        TestCourseFactory courseFactory = new TestCourseFactory(new TestSessionFactory(), course);
         TestSessionImageRepository sessionImageRepository = new TestSessionImageRepository(List.of());
 
         CourseService courseService = new CourseService(

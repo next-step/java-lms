@@ -3,10 +3,13 @@ package nextstep.courses.factory;
 import nextstep.courses.domain.session.image.ImageHandler;
 import nextstep.courses.domain.session.image.SessionImage;
 import nextstep.courses.domain.session.image.SessionImageType;
+import nextstep.courses.domain.session.image.SessionImages;
 import nextstep.courses.entity.SessionImageEntity;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class SessionImageFactory {
@@ -17,7 +20,7 @@ public class SessionImageFactory {
         this.imageHandler = urlImageHandler;
     }
 
-    public SessionImage create(SessionImageEntity sessionImageEntity) throws IOException {
+    public SessionImage createSessionImage(SessionImageEntity sessionImageEntity) throws IOException {
         return new SessionImage(
             sessionImageEntity.getId(),
             sessionImageEntity.isDeleted(),
@@ -25,5 +28,13 @@ public class SessionImageFactory {
             imageHandler,
             SessionImageType.fromString(sessionImageEntity.getImageType())
         );
+    }
+
+    public SessionImages createSessionImages(List<SessionImageEntity> sessionImageEntities) throws IOException {
+        List<SessionImage> resultList = new ArrayList<>();
+        for (SessionImageEntity sessionImageEntity : sessionImageEntities) {
+            resultList.add(createSessionImage(sessionImageEntity));
+        }
+        return new SessionImages(resultList);
     }
 }

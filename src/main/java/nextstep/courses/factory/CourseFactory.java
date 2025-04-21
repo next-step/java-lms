@@ -11,11 +11,11 @@ import java.io.IOException;
 @Component
 public class CourseFactory {
 
-    private final SessionsFactory sessionsFactory;
+    private final SessionFactory sessionFactory;
 
     @Autowired
-    public CourseFactory(SessionsFactory sessionsFactory) {
-        this.sessionsFactory = sessionsFactory;
+    public CourseFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     public Course create(CourseEntity courseEntity, SessionEntityImageMap sessionEntityImageMap) throws IOException {
@@ -24,7 +24,7 @@ public class CourseFactory {
             courseEntity.isDeleted(),
             courseEntity.getTitle(),
             courseEntity.getCreatorId(),
-            sessionsFactory.create(sessionEntityImageMap),
+            sessionFactory.createSessions(sessionEntityImageMap),
             courseEntity.getCreatedAt(),
             courseEntity.getUpdatedAt()
         );

@@ -5,9 +5,7 @@ import nextstep.payments.domain.Payment;
 import nextstep.payments.domain.Payments;
 import nextstep.payments.entity.PaymentEntity;
 import nextstep.payments.factory.PaymentEntityFactory;
-import nextstep.payments.factory.PaymentFactory;
 import nextstep.stub.factory.TestPaymentFactory;
-import nextstep.stub.factory.TestPaymentsFactory;
 import nextstep.stub.factory.TestSessionFactory;
 import nextstep.stub.repository.TestPaymentRepository;
 import nextstep.stub.repository.TestSessionImageRepository;
@@ -39,8 +37,7 @@ class PaymentServiceTest {
         TestUserRepository userRepository = new TestUserRepository(1L);
         userRepository.addUser("1", JAVAJIGI);
         TestSessionFactory sessionFactory = new TestSessionFactory();
-        TestPaymentFactory paymentFactory = new TestPaymentFactory();
-        TestPaymentsFactory paymentsFactory = new TestPaymentsFactory(new PaymentFactory(), new Payments() {
+        TestPaymentFactory paymentFactory = new TestPaymentFactory(new Payments() {
             @Override
             public boolean canEnroll(Session session, Payment other) {
                 return true;
@@ -54,7 +51,6 @@ class PaymentServiceTest {
             userRepository,
             sessionFactory,
             paymentFactory,
-            paymentsFactory,
             new PaymentEntityFactory()
         ) {
             @Override
@@ -102,13 +98,6 @@ class PaymentServiceTest {
         Payment payment = new Payment("10", new Session(), applicant, 300_000L);
         TestPaymentFactory paymentFactory = new TestPaymentFactory(payment);
 
-        TestPaymentsFactory paymentsFactory = new TestPaymentsFactory(new PaymentFactory(), new Payments() {
-            @Override
-            public boolean canEnroll(Session session, Payment other) {
-                return true;
-            }
-        });
-
         PaymentService paymentService = new PaymentService(
             sessionRepository,
             sessionImageRepository,
@@ -116,7 +105,6 @@ class PaymentServiceTest {
             userRepository,
             sessionFactory,
             paymentFactory,
-            paymentsFactory,
             new PaymentEntityFactory()
         ) {
             @Override
@@ -159,12 +147,12 @@ class PaymentServiceTest {
         Payment payment = new Payment("10", new Session(), applicant, 300_000L);
         TestPaymentFactory paymentFactory = new TestPaymentFactory(payment);
 
-        TestPaymentsFactory paymentsFactory = new TestPaymentsFactory(new PaymentFactory(), new Payments() {
-            @Override
-            public boolean canEnroll(Session session, Payment other) {
-                return true;
-            }
-        });
+//        TestPaymentsFactory paymentsFactory = new TestPaymentsFactory(new PaymentFactory(), new Payments() {
+//            @Override
+//            public boolean canEnroll(Session session, Payment other) {
+//                return true;
+//            }
+//        });
 
         PaymentService paymentService = new PaymentService(
             sessionRepository,
@@ -173,7 +161,6 @@ class PaymentServiceTest {
             userRepository,
             sessionFactory,
             paymentFactory,
-            paymentsFactory,
             new PaymentEntityFactory()
         ) {
             @Override

@@ -18,7 +18,7 @@ class SessionImageFactoryTest {
 
         SessionImageFactory sessionImageFactory = new SessionImageFactory(new TestImageHandler());
 
-        assertDoesNotThrow(() -> sessionImageFactory.create(sessionImageEntity));
+        assertDoesNotThrow(() -> sessionImageFactory.createSessionImage(sessionImageEntity));
     }
 
     private SessionImageEntity createSessionImageEntity(Long id, String imageUrl, String imageType, Long sessionId) {

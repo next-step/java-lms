@@ -30,7 +30,7 @@ public class SessionImageService {
 
     @Transactional
     public void deleteSessionImage(long sessionImageId) throws IOException {
-        SessionImage sessionImage = sessionImageFactory.create(sessionImageRepository.findById(sessionImageId));
+        SessionImage sessionImage = sessionImageFactory.createSessionImage(sessionImageRepository.findById(sessionImageId));
         sessionImage.delete();
     }
 }

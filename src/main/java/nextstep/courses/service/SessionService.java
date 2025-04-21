@@ -39,7 +39,7 @@ public class SessionService {
 
     @Transactional
     public void deleteSession(long sessionId) throws IOException {
-        Session session = sessionFactory.create(
+        Session session = sessionFactory.createSession(
             sessionRepository.findById(sessionId),
             sessionImageRepository.findAllBySessionId(sessionId)
         );

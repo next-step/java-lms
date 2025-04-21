@@ -11,7 +11,6 @@ import nextstep.payments.domain.Payments;
 import nextstep.payments.entity.PaymentEntity;
 import nextstep.payments.factory.PaymentEntityFactory;
 import nextstep.payments.factory.PaymentFactory;
-import nextstep.payments.factory.PaymentsFactory;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import org.springframework.stereotype.Service;
@@ -28,7 +27,6 @@ public class PaymentService {
     private final UserRepository userRepository;
     private final SessionFactory sessionFactory;
     private final PaymentFactory paymentFactory;
-    private final PaymentsFactory paymentsFactory;
     private final PaymentEntityFactory paymentEntityFactory;
 
     public PaymentService(
@@ -38,7 +36,6 @@ public class PaymentService {
         UserRepository userRepository,
         SessionFactory sessionFactory,
         PaymentFactory paymentFactory,
-        PaymentsFactory paymentsFactory,
         PaymentEntityFactory paymentEntityFactory
     ) {
         this.sessionRepository = sessionRepository;
@@ -47,7 +44,6 @@ public class PaymentService {
         this.userRepository = userRepository;
         this.sessionFactory = sessionFactory;
         this.paymentFactory = paymentFactory;
-        this.paymentsFactory = paymentsFactory;
         this.paymentEntityFactory = paymentEntityFactory;
     }
 
@@ -63,11 +59,11 @@ public class PaymentService {
             paymentEntityUserMap.add(paymentEntity, user);
         });
 
-        Session session = sessionFactory.create(
+        Session session = sessionFactory.createSession(
             sessionRepository.findById(sessionId),
             sessionImageRepository.findAllBySessionId(sessionId)
         );
-        Payments payments = paymentsFactory.create(session, paymentEntityUserMap);
+        Payments payments = paymentFactory.createPayments(session, paymentEntityUserMap);
         Payment newPayment = payment(newPaymentId);
 
         if (payments.canEnroll(session, newPayment)) {
@@ -86,11 +82,11 @@ public class PaymentService {
 
         if (approver.canApprove(applicant)) {
             Long sessionId = paymentEntity.getSessionId();
-            Session session = sessionFactory.create(
+            Session session = sessionFactory.createSession(
                 sessionRepository.findById(sessionId),
                 sessionImageRepository.findAllBySessionId(sessionId)
             );
-            paymentFactory.create(paymentEntity, session, applicant).approve();
+            paymentFactory.createPayment(paymentEntity, session, applicant).approve();
             return true;
         }
 
@@ -105,11 +101,11 @@ public class PaymentService {
 
         if (approver.canCancel(applicant)) {
             Long sessionId = paymentEntity.getSessionId();
-            Session session = sessionFactory.create(
+            Session session = sessionFactory.createSession(
                 sessionRepository.findById(sessionId),
                 sessionImageRepository.findAllBySessionId(sessionId)
             );
-            paymentFactory.create(paymentEntity, session, applicant).cancel();
+            paymentFactory.createPayment(paymentEntity, session, applicant).cancel();
             return true;
         }
 

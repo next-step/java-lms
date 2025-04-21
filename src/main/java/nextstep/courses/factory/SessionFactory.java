@@ -1,8 +1,6 @@
 package nextstep.courses.factory;
 
-import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionDescriptor;
-import nextstep.courses.domain.session.SessionPeriod;
+import nextstep.courses.domain.session.*;
 import nextstep.courses.domain.session.constraint.SessionConstraint;
 import nextstep.courses.domain.session.policy.EnrollmentStatus;
 import nextstep.courses.domain.session.policy.SessionEnrollPolicy;
@@ -13,18 +11,20 @@ import nextstep.courses.entity.SessionImageEntity;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class SessionFactory {
 
-    private final SessionImagesFactory sessionImagesFactory;
+    private final SessionImageFactory sessionImageFactory;
 
-    public SessionFactory(SessionImagesFactory sessionImagesFactory) {
-        this.sessionImagesFactory = sessionImagesFactory;
+    public SessionFactory(SessionImageFactory sessionImageFactory) {
+        this.sessionImageFactory = sessionImageFactory;
     }
 
-    public Session create(SessionEntity sessionEntity, List<SessionImageEntity> sessionImageEntities) throws IOException {
+    public Session createSession(SessionEntity sessionEntity, List<SessionImageEntity> sessionImageEntities) throws IOException {
         SessionConstraint sessionConstraint = new SessionConstraint(sessionEntity.getFee(), sessionEntity.getCapacity());
         SessionDescriptor sessionDescriptor = new SessionDescriptor(
             new SessionPeriod(sessionEntity.getStartDate(), sessionEntity.getEndDate()),
@@ -33,8 +33,18 @@ public class SessionFactory {
                 SessionStatus.fromString(sessionEntity.getStatus()),
                 SessionType.fromString(sessionEntity.getType())
             ),
-            sessionImagesFactory.create(sessionImageEntities)
+            sessionImageFactory.createSessionImages(sessionImageEntities)
         );
         return new Session(sessionEntity.getId(), sessionConstraint, sessionDescriptor);
+    }
+
+    public Sessions createSessions(SessionEntityImageMap sessionEntityImageMap) throws IOException {
+        List<Session> sessions = new ArrayList<>();
+
+        for (Map.Entry<SessionEntity, List<SessionImageEntity>> entry : sessionEntityImageMap.entrySet()) {
+            sessions.add(createSession(entry.getKey(), entry.getValue()));
+        }
+
+        return new Sessions(sessions);
     }
 }

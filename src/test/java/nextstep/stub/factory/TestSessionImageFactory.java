@@ -2,35 +2,53 @@ package nextstep.stub.factory;
 
 import nextstep.courses.domain.session.image.ImageHandler;
 import nextstep.courses.domain.session.image.SessionImage;
+import nextstep.courses.domain.session.image.SessionImages;
 import nextstep.courses.entity.SessionImageEntity;
 import nextstep.courses.factory.SessionImageFactory;
 
-import java.io.IOException;
+import java.util.List;
 
 public class TestSessionImageFactory extends SessionImageFactory {
-    private final SessionImage createResult;
-    private int createCalled = 0;
+    private final SessionImage createSessionImageResult;
+    private final SessionImages createSessionImagesResult;
+    private int createSessionImageCalled = 0;
+    private int createSessionImagesCalled = 0;
 
     public TestSessionImageFactory() {
         this(new TestImageHandler(), null);
     }
 
-    public TestSessionImageFactory(SessionImage createResult) {
-        this(new TestImageHandler(), createResult);
+    public TestSessionImageFactory(SessionImage createSessionImageResult) {
+        this(new TestImageHandler(), createSessionImageResult);
     }
 
-    public TestSessionImageFactory(ImageHandler imageHandler, SessionImage createResult) {
+    public TestSessionImageFactory(ImageHandler imageHandler, SessionImage createSessionImageResult) {
+        this(imageHandler, createSessionImageResult, null);
+    }
+
+    public TestSessionImageFactory(ImageHandler imageHandler, SessionImage createSessionImageResult, SessionImages createSessionImagesResult) {
         super(imageHandler);
-        this.createResult = createResult;
+        this.createSessionImageResult = createSessionImageResult;
+        this.createSessionImagesResult = createSessionImagesResult;
     }
 
     @Override
-    public SessionImage create(SessionImageEntity sessionImageEntity) throws IOException {
-        createCalled++;
-        return createResult;
+    public SessionImage createSessionImage(SessionImageEntity sessionImageEntity) {
+        createSessionImageCalled++;
+        return createSessionImageResult;
     }
 
-    public int getCreateCalled() {
-        return createCalled;
+    @Override
+    public SessionImages createSessionImages(List<SessionImageEntity> sessionImageEntities) {
+        createSessionImagesCalled++;
+        return createSessionImagesResult;
+    }
+
+    public int getCreateSessionImageCalled() {
+        return createSessionImageCalled;
+    }
+
+    public int getCreateSessionImagesCalled() {
+        return createSessionImagesCalled;
     }
 }
