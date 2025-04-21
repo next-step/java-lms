@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import java.util.Objects;
+
 public class TuitionFee {
     private final int amount;
 
@@ -12,5 +14,17 @@ public class TuitionFee {
 
     public int getAmount() {
         return amount;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TuitionFee)) return false;
+        TuitionFee that = (TuitionFee) o;
+        return amount == that.amount;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(amount);
     }
 }

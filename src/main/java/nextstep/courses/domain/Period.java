@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Period {
     private final LocalDate startDate;
@@ -20,5 +21,19 @@ public class Period {
 
     public LocalDate getEndDate() {
         return endDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Period)) return false;
+        Period period = (Period) o;
+        return Objects.equals(startDate, period.startDate) &&
+                Objects.equals(endDate, period.endDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(startDate, endDate);
     }
 }

@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import java.util.Objects;
+
 public class Capacity {
     private final int value;
 
@@ -16,5 +18,18 @@ public class Capacity {
 
     public boolean isFull(int registeredCount) {
         return registeredCount >= value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Capacity)) return false;
+        Capacity capacity = (Capacity) o;
+        return value == capacity.value;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 }
