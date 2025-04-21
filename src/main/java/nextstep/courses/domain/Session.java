@@ -14,7 +14,6 @@ public class Session {
     private SessionType type;
     private Money price;
     private Capacity maxCapacity;
-    private Enrollments enrollments;
     private LocalDate startDate;
     private LocalDate endDate;
     private SessionCoverImage coverImage;
@@ -28,7 +27,6 @@ public class Session {
         this.type = type;
         this.price = price;
         this.maxCapacity = maxCapacity;
-        this.enrollments = enrollments;
         this.startDate = startDate;
         this.endDate = endDate;
         this.coverImage = coverImage;
@@ -41,7 +39,6 @@ public class Session {
         this.type = type;
         this.price = price;
         this.maxCapacity = maxCapacity;
-        this.enrollments = enrollments;
         this.startDate = startDate;
         this.endDate = endDate;
         this.coverImage = coverImage;
@@ -77,20 +74,12 @@ public class Session {
         );
     }
 
-    public Enrollment enroll(Student student, Payment payment) {
+    public Enrollment enroll(int currentCount, Student student, Payment payment) {
         validateRecruiting();
-        validateMaxCapacity();
+        validateMaxCapacity(currentCount);
         validatePayment(payment);
 
-        Enrollment enrollment = new Enrollment(this, student);
-        enrollments.add(enrollment);
-        student.addEnrollment(enrollment);
-
-        return enrollment;
-    }
-
-    public void addEnrollments(Enrollments enrollments) {
-        this.enrollments = enrollments;
+        return new Enrollment(this, student);
     }
 
     public void updateCoverImage(SessionCoverImage newCoverImage) {
@@ -115,8 +104,8 @@ public class Session {
         }
     }
 
-    private void validateMaxCapacity() {
-        if (type == SessionType.PAID && maxCapacity.isFull(enrollments.count())) {
+    private void validateMaxCapacity(int currentCount) {
+        if (type == SessionType.PAID && maxCapacity.isFull(currentCount)) {
             throw new IllegalArgumentException("최대 수강 인원(" + maxCapacity.value() + "명)에 도달하여 수강 신청이 불가능합니다.");
         }
     }
@@ -145,10 +134,6 @@ public class Session {
 
     public Capacity getMaxCapacity() {
         return maxCapacity;
-    }
-
-    public Enrollments getEnrollments() {
-        return enrollments;
     }
 
     public LocalDate getStartDate() {

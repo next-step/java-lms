@@ -30,11 +30,11 @@ public class SessionTest {
     public void 수강신청_시_강의상태가_모집중_상태가_아닌_경우_예외_발생() {
         freeSession.ready();
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> freeSession.enroll(student, new Payment()));
+                .isThrownBy(() -> freeSession.enroll(0, student, new Payment()));
 
         freeSession.close();
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> freeSession.enroll(student, new Payment()));
+                .isThrownBy(() -> freeSession.enroll(0, student, new Payment()));
     }
 
     @Test
@@ -42,10 +42,7 @@ public class SessionTest {
         Payment payment = new Payment("paymentId", 0L, 0L, PRICE);
 
         paidSession.startRecruiting();
-        IntStream.range(0, MAX_CAPACITY)
-                .forEach(i -> paidSession.enroll(student, payment));
-
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> paidSession.enroll(student, payment));
+                .isThrownBy(() -> paidSession.enroll(MAX_CAPACITY, student, payment));
     }
 }

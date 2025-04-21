@@ -23,6 +23,14 @@ public class Enrollment {
         this.student = student;
     }
 
+    public Session getSession() {
+        return session;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;

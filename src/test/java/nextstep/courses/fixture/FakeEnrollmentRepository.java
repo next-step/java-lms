@@ -13,11 +13,11 @@ public class FakeEnrollmentRepository implements EnrollmentRepository {
 
     @Override
     public Optional<Enrollments> findByUserId(Long userId) {
-        return Optional.empty();
+        return Optional.of(new Enrollments());
     }
 
     @Override
     public Optional<Enrollments> findBySessionId(Long sessionId) {
-        return Optional.empty();
+        return Optional.of(new Enrollments());
     }
 }
