@@ -24,17 +24,17 @@ public class EnrollmentPolicyTest {
     void remainingSeatOfFreeSession() {
         EnrollmentPolicy enrollmentPolicy = EnrollmentPolicy.free();
         assertThat(enrollmentPolicy.remainingSeats(0)).isEmpty();
+        assertThat(enrollmentPolicy.remainingSeats(1)).isEmpty();
+        assertThat(enrollmentPolicy.canEnroll(10)).isTrue();
     }
 
     @Test
     @DisplayName("유료 강의는 강의 수강 인원을 초과할 수 없다.")
     void overflowedSeatOfPaidSession() {
-        EnrollmentPolicy enrollmentPolicy = EnrollmentPolicy.paid(10000, 1);
-        assertAll(
-            () -> assertFalse(enrollmentPolicy.canEnroll(2)),
-            () -> assertThatThrownBy(
-                () -> enrollmentPolicy.validateEnrollment(2)
-            ).isInstanceOf(CannotEnrollException.class)
-        );
+        EnrollmentPolicy enrollmentPolicy = EnrollmentPolicy.paid(10_000, 2);
+        long enrolledCount = 2l;
+        assertFalse(enrollmentPolicy.canEnroll(enrolledCount));
+        assertThatThrownBy(() -> enrollmentPolicy.validateEnrollment(enrolledCount))
+            .isInstanceOf(CannotEnrollException.class);
     }
 }

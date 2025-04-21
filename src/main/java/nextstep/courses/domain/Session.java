@@ -1,7 +1,9 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDate;
-import java.util.OptionalLong;
+
+import nextstep.courses.CannotEnrollException;
+import nextstep.payments.domain.Payment;
 
 /**
  * 강의 엔터티 - 가변 객체
@@ -11,6 +13,8 @@ public class Session {
     private final Period period;
     private SessionStatus status;
     private final EnrollmentPolicy enrollmentPolicy;
+    // 현재 수강생 수
+    private long enrolledCount = 0;
 
     public Session(Long id, Period period) {
         this(id, period, SessionStatus.PREPARING);
@@ -27,8 +31,8 @@ public class Session {
         this.enrollmentPolicy = enrollmentPolicy;
     }
 
-    public boolean canRegister() {
-        return status.equals(SessionStatus.OPEN);
+    public boolean canEnroll() {
+        return status.equals(SessionStatus.OPEN) && enrollmentPolicy.canEnroll(enrolledCount);
     }
 
     public LocalDate startAt() {
@@ -43,4 +47,11 @@ public class Session {
         return enrollmentPolicy.isFree();
     }
 
+    public void enroll(Payment payment) {
+        if (!canEnroll()) {
+            throw new CannotEnrollException("강의가 모집중이 아닙니다.");
+        }
+
+
+    }
 }

@@ -9,9 +9,9 @@ import nextstep.courses.CannotEnrollException;
  * 최대 수강 인원 제한은 충분히 큰 Long타입의 MAX value로 한다.
  */
 public class EnrollmentPolicy {
+    private static final long UNLIMITED_CAPACITY = Long.MAX_VALUE;
     private final Amount price;
     private final long maxCapacity;
-    private static final long UNLIMITED_CAPACITY = Long.MAX_VALUE;
 
     private EnrollmentPolicy(Amount price, long maxCapacity) {
         this.price = price;
@@ -29,11 +29,12 @@ public class EnrollmentPolicy {
         return new EnrollmentPolicy(Amount.of(price), maxCapacity);
     }
 
+    // 무료 강의 여부
     public boolean isFree() {
         return price.isZero();
     }
 
-    //TODO 알아보기 힘들거같은데...
+    // 남은 좌석 수 : 무료 강의면 OptionalLong.Empty()
     public OptionalLong remainingSeats(long enrolledCount) {
         if (isFree()) {
             return OptionalLong.empty();
@@ -42,15 +43,12 @@ public class EnrollmentPolicy {
     }
 
     // 추후 한명이 여러명 분의 수강 결제를 할 수도 있으니 parameter에 long타입 받아둠
-    public boolean canEnroll(long enrollCount) {
-        if (isFree()) {
-            return true;
-        }
-        return maxCapacity - enrollCount > 0;
+    public boolean canEnroll(long enrolledCount) {
+        return isFree() || enrolledCount < maxCapacity;
     }
 
-    public void validateEnrollment(long enrollment) {
-        if (!canEnroll(enrollment)) {
+    public void validateEnrollment(long enrolledCount) {
+        if (!canEnroll(enrolledCount)) {
             throw new CannotEnrollException("잔여 좌석이 없습니다");
         }
     }

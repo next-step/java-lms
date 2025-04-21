@@ -34,9 +34,9 @@ public class SessionTest {
         Session openSession = new Session(1L, period, SessionStatus.OPEN);
         Session closedSession = new Session(1L, period, SessionStatus.CLOSED);
         assertAll(
-            () -> assertFalse(preparingSession.canRegister()),
-            () -> assertTrue(openSession.canRegister()),
-            () -> assertFalse(closedSession.canRegister())
+            () -> assertFalse(preparingSession.canEnroll()),
+            () -> assertTrue(openSession.canEnroll()),
+            () -> assertFalse(closedSession.canEnroll())
         );
     }
 
