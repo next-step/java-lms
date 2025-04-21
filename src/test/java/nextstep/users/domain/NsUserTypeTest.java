@@ -15,9 +15,11 @@ class NsUserTypeTest {
         "INSTRUCTOR, WOOAH_TECH_CAMP_PRO, true",
         "INSTRUCTOR, UNSELECTED, false",
         "INSTRUCTOR, INSTRUCTOR, false",
+        "INSTRUCTOR, UNKNOWN, false",
         "WOOAH_TECH_COURSE, WOOAH_TECH_CAMP_PRO, false",
         "WOOAH_TECH_CAMP_PRO, WOOAH_TECH_COURSE, false",
-        "UNSELECTED, WOOAH_TECH_COURSE, false"
+        "UNSELECTED, WOOAH_TECH_COURSE, false",
+        "UNKNOWN, WOOAH_TECH_COURSE, false"
     })
     void testCanApprove(NsUserType approver, NsUserType candidate, boolean expected) {
         assertThat(approver.canApprove(candidate)).isEqualTo(expected);
@@ -30,11 +32,13 @@ class NsUserTypeTest {
         "INSTRUCTOR, WOOAH_TECH_CAMP_PRO, false",
         "INSTRUCTOR, UNSELECTED, true",
         "INSTRUCTOR, INSTRUCTOR, false",
+        "INSTRUCTOR, UNKNOWN, false",
         "WOOAH_TECH_COURSE, UNSELECTED, false",
         "WOOAH_TECH_CAMP_PRO, INSTRUCTOR, false",
-        "UNSELECTED, WOOAH_TECH_CAMP_PRO, false"
+        "UNSELECTED, WOOAH_TECH_CAMP_PRO, false",
+        "UNKNOWN, UNSELECTED, false"
     })
     void testCanCancelApproval(NsUserType approver, NsUserType candidate, boolean expected) {
-        assertThat(approver.canCancelApproval(candidate)).isEqualTo(expected);
+        assertThat(approver.canCancel(candidate)).isEqualTo(expected);
     }
 }

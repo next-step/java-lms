@@ -6,6 +6,7 @@ import nextstep.qna.UnAuthorizedException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+
 public class NsUser extends BaseDomain {
     public static final GuestNsUser GUEST_USER = new GuestNsUser();
 
@@ -17,6 +18,8 @@ public class NsUser extends BaseDomain {
 
     private String email;
 
+    private NsUserType type;
+
     public NsUser() {
     }
 
@@ -25,11 +28,24 @@ public class NsUser extends BaseDomain {
     }
 
     public NsUser(String id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(id, userId, password, name, email, createdAt, updatedAt, "모름");
+    }
+
+    public NsUser(String id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt, String type) {
         super(id, createdAt, updatedAt);
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
+        this.type = NsUserType.fromString(type);
+    }
+
+    public boolean canApprove(NsUser nsUser) {
+        return this.type.canApprove(nsUser.type);
+    }
+
+    public boolean canCancel(NsUser nsUser) {
+        return this.type.canCancel(nsUser.type);
     }
 
     public String getUserId() {
