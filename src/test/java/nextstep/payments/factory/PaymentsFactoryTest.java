@@ -1,19 +1,5 @@
 package nextstep.payments.factory;
 
-import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionDescriptor;
-import nextstep.courses.domain.session.SessionPeriod;
-import nextstep.courses.domain.session.constraint.SessionConstraint;
-import nextstep.courses.domain.session.image.SessionImages;
-import nextstep.courses.domain.session.policy.SessionEnrollPolicy;
-import nextstep.payments.domain.PaymentEntityUserMap;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDateTime;
-
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-
 class PaymentsFactoryTest {
 
 //    @DisplayName("Payment DB 정보 및 User, Session 정보로 Payments 인스턴스 생성")

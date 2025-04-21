@@ -2,7 +2,6 @@ package nextstep.courses.domain.session.image;
 
 import lombok.Getter;
 import nextstep.common.domian.BaseDomain;
-import nextstep.courses.entity.SessionImageEntity;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

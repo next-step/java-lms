@@ -3,7 +3,6 @@ package nextstep.courses.domain;
 import lombok.Getter;
 import nextstep.common.domian.BaseDomain;
 import nextstep.courses.domain.session.Sessions;
-import nextstep.courses.entity.CourseEntity;
 
 import java.time.LocalDateTime;
 import java.util.Objects;

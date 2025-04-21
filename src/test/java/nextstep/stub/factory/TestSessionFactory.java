@@ -10,10 +10,10 @@ import nextstep.courses.factory.SessionFactory;
 import java.util.List;
 
 public class TestSessionFactory extends SessionFactory {
-    private int createSessionCalled = 0;
-    private int createSessionsCalled = 0;
     private final Session createSessionResult;
     private final Sessions createSessionsResult;
+    private int createSessionCalled = 0;
+    private int createSessionsCalled = 0;
 
     public TestSessionFactory() {
         this(null);
