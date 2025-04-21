@@ -43,11 +43,12 @@ public class SessionTest {
     @Test
     @DisplayName("강의는 유료 강의와 무료 강의로 나뉜다")
     void paidSessionTest() {
-        Session paidSession = new Session(1L, period, SessionStatus.OPEN, 10000);
+        Session paidSession = new Session(1L, period, SessionStatus.OPEN, EnrollmentPolicy.paid(10000, 2));
         Session freeSession = new Session(2L, period, SessionStatus.OPEN);
         assertAll(
             () -> assertFalse(paidSession.isFree()),
             () -> assertTrue(freeSession.isFree())
         );
     }
+
 }
