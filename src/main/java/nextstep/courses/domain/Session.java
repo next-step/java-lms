@@ -2,15 +2,13 @@ package nextstep.courses.domain;
 
 import nextstep.payments.domain.Payment;
 
-import java.util.HashSet;
-import java.util.Set;
 public abstract class Session {
     protected Long id;
     protected String name;
     protected Period period;
     protected Image coverImage;
     protected SessionStatus status;
-    protected Set<Long> registeredStudents = new HashSet<>();
+    protected Students registeredStudents;
 
     public Session(Long id, String name, Period period, Image coverImage, SessionStatus status) {
         this.id = id;
@@ -18,6 +16,7 @@ public abstract class Session {
         this.period = period;
         this.coverImage = coverImage;
         this.status = status;
+        this.registeredStudents = new Students();
     }
 
     public void register(Long studentId, Payment payment) {
@@ -26,11 +25,12 @@ public abstract class Session {
         }
 
         validateRegistration(studentId, payment);
-        registeredStudents.add(studentId);
+        registeredStudents.addStudent(new Student(studentId));
     }
 
-    public boolean isRegistered(Long studentId) {
-        return registeredStudents.contains(studentId);
+    public Students getRegisteredStudent() {
+        return registeredStudents;
+
     }
 
     protected abstract void validateRegistration(Long studentId, Payment payment);

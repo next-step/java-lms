@@ -36,7 +36,7 @@ public class SessionTest {
                 SessionStatus.RECRUITING
         );
         session.register(1L, new Payment());
-        assertThat(session.isRegistered(1L)).isTrue();
+        assertThat(session.getRegisteredStudent().contains(new Student(1L))).isTrue();
     }
 
     @Test
