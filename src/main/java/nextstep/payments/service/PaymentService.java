@@ -1,9 +1,6 @@
 package nextstep.payments.service;
 
 import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionRepository;
-import nextstep.courses.domain.session.image.SessionImageRepository;
-import nextstep.courses.factory.SessionFactory;
 import nextstep.courses.service.SessionService;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.domain.PaymentEntityUserMap;
@@ -17,6 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class PaymentService {
@@ -97,12 +98,16 @@ public class PaymentService {
     }
 
     private PaymentEntityUserMap getPaymentEntityUserMapForSession(long sessionId) {
-        PaymentEntityUserMap paymentEntityUserMap = new PaymentEntityUserMap();
-        paymentRepository.findBySession(sessionId)
-            .forEach(paymentEntity -> {
-                NsUser user = userService.getUser(paymentEntity.getUserId().toString());
-                paymentEntityUserMap.add(paymentEntity, user);
-            });
-        return paymentEntityUserMap;
+        List<PaymentEntity> paymentEntities = paymentRepository.findBySession(sessionId);
+        List<String> userIds = paymentEntities.stream()
+            .map(paymentEntity -> paymentEntity.getUserId().toString())
+            .collect(Collectors.toList());
+        List<NsUser> users = userService.getUsers(userIds);
+
+        Map<PaymentEntity, NsUser> map = IntStream.range(0, paymentEntities.size())
+            .boxed()
+            .collect(Collectors.toMap(paymentEntities::get, users::get));
+
+        return new PaymentEntityUserMap(map);
     }
 }

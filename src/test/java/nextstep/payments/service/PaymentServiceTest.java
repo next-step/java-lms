@@ -9,7 +9,6 @@ import nextstep.stub.repository.TestPaymentRepository;
 import nextstep.stub.service.TestSessionService;
 import nextstep.stub.service.TestUserService;
 import nextstep.users.domain.NsUser;
-import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,6 +16,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -40,12 +40,18 @@ class PaymentServiceTest {
                 return new Session();
             }
         };
+        TestUserService userService = new TestUserService() {
+            @Override
+            public List<NsUser> getUsers(List<String> userIds) {
+                return List.of();
+            }
+        };
 
         PaymentService paymentService = new PaymentService(
             paymentRepository,
             paymentFactory,
             sessionService,
-            new TestUserService()
+            userService
         ) {
             @Override
             public Payment payment(String id) {

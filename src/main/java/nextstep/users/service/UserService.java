@@ -4,6 +4,8 @@ import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -15,6 +17,10 @@ public class UserService {
 
     public NsUser getUser(String userId) {
         return userRepository.findByUserId(userId);
+    }
+
+    public List<NsUser> getUsers(List<String> userIds) {
+        return userRepository.findByUserIds(userIds);
     }
 
     public boolean canApprove(String approverId, String applicantId) {
