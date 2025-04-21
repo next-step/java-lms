@@ -28,9 +28,13 @@ public class SessionService {
         this.sessionFactory = sessionFactory;
     }
 
-    public void createSession(Long courseId, SessionConstraint constraint, SessionDescriptor descriptor) {
+    public void saveSession(Long courseId, SessionConstraint constraint, SessionDescriptor descriptor) {
         Session newSession = new Session(constraint, descriptor);
         sessionRepository.save(sessionFactory.createSessionEntity(newSession, courseId));
+    }
+
+    public Session createSession(long sessionId) throws IOException {
+        return sessionFactory.createSession(sessionRepository.findById(sessionId), sessionImageRepository.findAllBySessionId(sessionId));
     }
 
     @Transactional

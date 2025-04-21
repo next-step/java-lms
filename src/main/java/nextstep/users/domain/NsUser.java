@@ -2,7 +2,6 @@ package nextstep.users.domain;
 
 import lombok.Getter;
 import nextstep.common.domian.BaseDomain;
-import nextstep.qna.UnAuthorizedException;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -10,20 +9,16 @@ import java.util.Objects;
 
 @Getter
 public class NsUser extends BaseDomain {
-    public static final GuestNsUser GUEST_USER = new GuestNsUser();
 
-    private String userId;
+    private final String userId;
 
-    private String password;
+    private final String password;
 
-    private String name;
+    private final String name;
 
-    private String email;
+    private final String email;
 
-    private NsUserType type;
-
-    public NsUser() {
-    }
+    private final NsUserType type;
 
     public NsUser(String userId, String password, String name, String email) {
         this(null, userId, password, name, email, LocalDateTime.now(), null);
@@ -58,31 +53,6 @@ public class NsUser extends BaseDomain {
         return type.getType();
     }
 
-    public void update(NsUser loginUser, NsUser target) {
-        if (!matchUserId(loginUser.getUserId())) {
-            throw new UnAuthorizedException();
-        }
-
-        if (!matchPassword(target.getPassword())) {
-            throw new UnAuthorizedException();
-        }
-
-        this.name = target.name;
-        this.email = target.email;
-    }
-
-    private boolean matchUserId(String userId) {
-        return this.userId.equals(userId);
-    }
-
-    public boolean matchPassword(String targetPassword) {
-        return password.equals(targetPassword);
-    }
-
-    public boolean isGuestUser() {
-        return false;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -106,12 +76,5 @@ public class NsUser extends BaseDomain {
             ", createdAt=" + createdAt +
             ", updatedAt=" + updatedAt +
             '}';
-    }
-
-    private static class GuestNsUser extends NsUser {
-        @Override
-        public boolean isGuestUser() {
-            return true;
-        }
     }
 }

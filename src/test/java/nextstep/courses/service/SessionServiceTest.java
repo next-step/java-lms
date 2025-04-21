@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 class SessionServiceTest {
 
-    @DisplayName("Session 생성하기")
+    @DisplayName("Session 저장")
     @Test
     void testCreateSession() {
         TestSessionRepository sessionRepository = new TestSessionRepository(1L, null, List.of());
@@ -37,7 +37,7 @@ class SessionServiceTest {
             new SessionImages()
         );
 
-        sessionService.createSession(1L, constraint, descriptor);
+        sessionService.saveSession(1L, constraint, descriptor);
 
         assertThat(sessionRepository.getSaveCalled()).isEqualTo(1);
     }

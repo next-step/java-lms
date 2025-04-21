@@ -12,6 +12,10 @@ public class TestUserRepository implements UserRepository {
     private int findByUserIdCalled = 0;
     private int saveCalled = 0;
 
+    public TestUserRepository() {
+        this(null);
+    }
+
     public TestUserRepository(Long saveResult) {
         this.saveResult = saveResult;
     }

@@ -4,6 +4,7 @@ import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.domain.session.image.SessionImageRepository;
 import nextstep.courses.factory.SessionFactory;
+import nextstep.courses.service.SessionService;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.domain.PaymentEntityUserMap;
 import nextstep.payments.domain.PaymentRepository;
@@ -11,7 +12,7 @@ import nextstep.payments.domain.Payments;
 import nextstep.payments.entity.PaymentEntity;
 import nextstep.payments.factory.PaymentFactory;
 import nextstep.users.domain.NsUser;
-import nextstep.users.domain.UserRepository;
+import nextstep.users.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,27 +21,21 @@ import java.io.IOException;
 @Service
 public class PaymentService {
 
-    private final SessionRepository sessionRepository;
-    private final SessionImageRepository sessionImageRepository;
     private final PaymentRepository paymentRepository;
-    private final UserRepository userRepository;
-    private final SessionFactory sessionFactory;
     private final PaymentFactory paymentFactory;
+    private final UserService userService;
+    private final SessionService sessionService;
 
     public PaymentService(
-        SessionRepository sessionRepository,
-        SessionImageRepository sessionImageRepository,
         PaymentRepository paymentRepository,
-        UserRepository userRepository,
-        SessionFactory sessionFactory,
-        PaymentFactory paymentFactory
+        PaymentFactory paymentFactory,
+        SessionService sessionService,
+        UserService userService
     ) {
-        this.sessionRepository = sessionRepository;
-        this.sessionImageRepository = sessionImageRepository;
         this.paymentRepository = paymentRepository;
-        this.userRepository = userRepository;
-        this.sessionFactory = sessionFactory;
         this.paymentFactory = paymentFactory;
+        this.sessionService = sessionService;
+        this.userService = userService;
     }
 
     public Payment payment(String id) {
@@ -48,22 +43,14 @@ public class PaymentService {
         return new Payment();
     }
 
-    public boolean save(String newPaymentId, long sessionId) throws IOException {
-        PaymentEntityUserMap paymentEntityUserMap = new PaymentEntityUserMap();
-        paymentRepository.findBySession(sessionId).forEach(paymentEntity -> {
-            NsUser user = userRepository.findByUserId(paymentEntity.getUserId().toString());
-            paymentEntityUserMap.add(paymentEntity, user);
-        });
-
-        Session session = sessionFactory.createSession(
-            sessionRepository.findById(sessionId),
-            sessionImageRepository.findAllBySessionId(sessionId)
-        );
+    public boolean enroll(String newPaymentId, long sessionId) throws IOException {
+        PaymentEntityUserMap paymentEntityUserMap = getPaymentEntityUserMapForSession(sessionId);
+        Session session = sessionService.createSession(sessionId);
         Payments payments = paymentFactory.createPayments(session, paymentEntityUserMap);
         Payment newPayment = payment(newPaymentId);
 
         if (payments.canEnroll(session, newPayment)) {
-            paymentRepository.save(paymentFactory.createPaymentEntity(newPayment));
+            savePayment(newPayment);
             return true;
         }
 
@@ -72,17 +59,14 @@ public class PaymentService {
 
     @Transactional
     public boolean approve(long paymentId, String approverId) throws IOException {
-        NsUser approver = userRepository.findByUserId(approverId);
         PaymentEntity paymentEntity = paymentRepository.findById(paymentId);
-        NsUser applicant = userRepository.findByUserId(paymentEntity.getUserId().toString());
+        String applicantUserId = paymentEntity.getUserId().toString();
 
-        if (approver.canApprove(applicant)) {
+        if (userService.canApprove(approverId, paymentEntity.getUserId().toString())) {
             Long sessionId = paymentEntity.getSessionId();
-            Session session = sessionFactory.createSession(
-                sessionRepository.findById(sessionId),
-                sessionImageRepository.findAllBySessionId(sessionId)
-            );
-            paymentFactory.createPayment(paymentEntity, session, applicant).approve();
+            Session session = sessionService.createSession(sessionId);
+            NsUser user = userService.getUser(applicantUserId);
+            createPayment(paymentEntity, session, user).approve();
             return true;
         }
 
@@ -91,21 +75,34 @@ public class PaymentService {
 
     @Transactional
     public boolean cancel(long paymentId, String approverId) throws IOException {
-        NsUser approver = userRepository.findByUserId(approverId);
         PaymentEntity paymentEntity = paymentRepository.findById(paymentId);
-        NsUser applicant = userRepository.findByUserId(paymentEntity.getUserId().toString());
+        String applicantUserId = paymentEntity.getUserId().toString();
 
-        if (approver.canCancel(applicant)) {
+        if (userService.canCancel(approverId, paymentEntity.getUserId().toString())) {
             Long sessionId = paymentEntity.getSessionId();
-            Session session = sessionFactory.createSession(
-                sessionRepository.findById(sessionId),
-                sessionImageRepository.findAllBySessionId(sessionId)
-            );
-            paymentFactory.createPayment(paymentEntity, session, applicant).cancel();
+            Session session = sessionService.createSession(sessionId);
+            createPayment(paymentEntity, session, userService.getUser(applicantUserId)).cancel();
             return true;
         }
 
         return false;
     }
 
+    public void savePayment(Payment payment) {
+        paymentRepository.save(paymentFactory.createPaymentEntity(payment));
+    }
+
+    public Payment createPayment(PaymentEntity paymentEntity, Session session, NsUser nsUser) {
+        return paymentFactory.createPayment(paymentEntity, session, nsUser);
+    }
+
+    private PaymentEntityUserMap getPaymentEntityUserMapForSession(long sessionId) {
+        PaymentEntityUserMap paymentEntityUserMap = new PaymentEntityUserMap();
+        paymentRepository.findBySession(sessionId)
+            .forEach(paymentEntity -> {
+                NsUser user = userService.getUser(paymentEntity.getUserId().toString());
+                paymentEntityUserMap.add(paymentEntity, user);
+            });
+        return paymentEntityUserMap;
+    }
 }

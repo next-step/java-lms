@@ -14,6 +14,10 @@ public class TestPaymentFactory extends PaymentFactory {
     private int createPaymentCalled = 0;
     private int createPaymentsCalled = 0;
 
+    public TestPaymentFactory() {
+        this(null, null);
+    }
+
     public TestPaymentFactory(Payment createPaymentResult) {
         this(createPaymentResult, null);
     }

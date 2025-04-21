@@ -5,11 +5,9 @@ import nextstep.payments.domain.Payment;
 import nextstep.payments.domain.Payments;
 import nextstep.payments.entity.PaymentEntity;
 import nextstep.stub.factory.TestPaymentFactory;
-import nextstep.stub.factory.TestSessionFactory;
 import nextstep.stub.repository.TestPaymentRepository;
-import nextstep.stub.repository.TestSessionImageRepository;
-import nextstep.stub.repository.TestSessionRepository;
-import nextstep.stub.repository.TestUserRepository;
+import nextstep.stub.service.TestSessionService;
+import nextstep.stub.service.TestUserService;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +17,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -27,37 +24,36 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 class PaymentServiceTest {
 
-    @DisplayName("결재정보 저장 성공")
+    @DisplayName("결재정보 등록 성공")
     @Test
     void testSaveSuccess() throws IOException {
-        TestSessionRepository sessionRepository = new TestSessionRepository(1L, null, List.of());
-        TestSessionImageRepository sessionImageRepository = new TestSessionImageRepository();
         TestPaymentRepository paymentRepository = new TestPaymentRepository(1L);
-        TestUserRepository userRepository = new TestUserRepository(1L);
-        userRepository.addUser("1", JAVAJIGI);
-        TestSessionFactory sessionFactory = new TestSessionFactory();
         TestPaymentFactory paymentFactory = new TestPaymentFactory(new Payments() {
             @Override
             public boolean canEnroll(Session session, Payment other) {
                 return true;
             }
         });
-
-        PaymentService paymentService = new PaymentService(
-            sessionRepository,
-            sessionImageRepository,
-            paymentRepository,
-            userRepository,
-            sessionFactory,
-            paymentFactory
-        ) {
+        TestSessionService sessionService = new TestSessionService() {
             @Override
-            public Payment payment(String id) {
-                return new Payment("1", new Session(), NsUserTest.JAVAJIGI, 300_000L);
+            public Session createSession(long sessionId) {
+                return new Session();
             }
         };
 
-        boolean result = paymentService.save("newPaymentId", 1L);
+        PaymentService paymentService = new PaymentService(
+            paymentRepository,
+            paymentFactory,
+            sessionService,
+            new TestUserService()
+        ) {
+            @Override
+            public Payment payment(String id) {
+                return new Payment("1", new Session(), JAVAJIGI, 300_000L);
+            }
+        };
+
+        boolean result = paymentService.enroll("newPaymentId", 1L);
 
         assertAll(
             () -> assertThat(result).isTrue(),
@@ -66,81 +62,65 @@ class PaymentServiceTest {
     }
 
     @DisplayName("결재정보 승인 테스트")
-    @ParameterizedTest(name = "{index} => approverRole={0}, applicantRole={1}, expectedResult={2}")
-    @CsvSource({
-        "강사, 우아한테크코스, true",
-        "강사, 비 선발 인원, false"
-    })
-    void testApprove(String approverRole, String applicantRole, boolean expectedResult) throws IOException {
-        NsUser approver = new NsUser("1", "password", "강사1", "test@naver.com", approverRole);
-        NsUser applicant = new NsUser("2", "password", "참여자1", "test@naver.com", applicantRole);
-        TestSessionRepository sessionRepository = new TestSessionRepository(1L);
-        TestSessionImageRepository sessionImageRepository = new TestSessionImageRepository();
-
-        PaymentEntity paymentEntity = createPaymentEntity(1L, 2L, 5L);
-        TestPaymentRepository paymentRepository = new TestPaymentRepository(1L, paymentEntity);
-
-        TestUserRepository userRepository = new TestUserRepository(1L);
-        userRepository.addUser("1", approver);
-        userRepository.addUser("2", applicant);
-        TestSessionFactory sessionFactory = new TestSessionFactory();
-
-        Payment payment = new Payment("10", new Session(), applicant, 300_000L);
-        TestPaymentFactory paymentFactory = new TestPaymentFactory(payment);
-
-        PaymentService paymentService = new PaymentService(
-            sessionRepository,
-            sessionImageRepository,
-            paymentRepository,
-            userRepository,
-            sessionFactory,
-            paymentFactory
-        ) {
+    @ParameterizedTest(name = "{index} => expectedResult={0}")
+    @CsvSource({"true", "false"})
+    void testApprove(boolean expectedResult) throws IOException {
+        TestPaymentRepository paymentRepository = new TestPaymentRepository(
+            1L,
+            createPaymentEntity(1L, 2L, 5L)
+        );
+        TestPaymentFactory paymentFactory = new TestPaymentFactory(new Payment());
+        TestSessionService sessionService = new TestSessionService() {
             @Override
-            public Payment payment(String id) {
-                return new Payment("1", new Session(), NsUserTest.JAVAJIGI, 300_000L);
+            public Session createSession(long sessionId) {
+                return new Session();
             }
         };
+        TestUserService userService = new TestUserService() {
+            @Override
+            public boolean canApprove(String approverId, String applicantId) {
+                return expectedResult;
+            }
+        };
+
+        PaymentService paymentService = new PaymentService(
+            paymentRepository,
+            paymentFactory,
+            sessionService,
+            userService
+        );
 
         assertThat(paymentService.approve(10L, "1")).isEqualTo(expectedResult);
     }
 
     @DisplayName("결재정보 취소 테스트")
-    @ParameterizedTest(name = "{index} => approverRole={0}, applicantRole={1}, expectedResult={2}")
-    @CsvSource({
-        "강사, 우아한테크코스, false",
-        "강사, 비 선발 인원, true"
-    })
-    void testCancel(String approverRole, String applicantRole, boolean expectedResult) throws IOException {
-        NsUser approver = new NsUser("1", "password", "강사1", "test@naver.com", approverRole);
-        NsUser applicant = new NsUser("2", "password", "참여자1", "test@naver.com", applicantRole);
-        TestSessionRepository sessionRepository = new TestSessionRepository(1L, null, List.of());
-        TestSessionImageRepository sessionImageRepository = new TestSessionImageRepository(List.of());
-
-        PaymentEntity paymentEntity = createPaymentEntity(1L, 2L, 5L);
-        TestPaymentRepository paymentRepository = new TestPaymentRepository(1L, paymentEntity);
-
-        TestUserRepository userRepository = new TestUserRepository(1L);
-        userRepository.addUser("1", approver);
-        userRepository.addUser("2", applicant);
-        TestSessionFactory sessionFactory = new TestSessionFactory();
-
-        Payment payment = new Payment("10", new Session(), applicant, 300_000L);
-        TestPaymentFactory paymentFactory = new TestPaymentFactory(payment);
-
-        PaymentService paymentService = new PaymentService(
-            sessionRepository,
-            sessionImageRepository,
-            paymentRepository,
-            userRepository,
-            sessionFactory,
-            paymentFactory
-        ) {
+    @ParameterizedTest(name = "{index} => expectedResult={0}")
+    @CsvSource({"true", "false"})
+    void testCancel(boolean expectedResult) throws IOException {
+        TestPaymentRepository paymentRepository = new TestPaymentRepository(
+            1L,
+            createPaymentEntity(1L, 2L, 5L)
+        );
+        TestPaymentFactory paymentFactory = new TestPaymentFactory(new Payment());
+        TestSessionService sessionService = new TestSessionService() {
             @Override
-            public Payment payment(String id) {
-                return new Payment("1", new Session(), NsUserTest.JAVAJIGI, 300_000L);
+            public Session createSession(long sessionId) {
+                return new Session();
             }
         };
+        TestUserService userService = new TestUserService() {
+            @Override
+            public boolean canCancel(String approverId, String applicantId) {
+                return expectedResult;
+            }
+        };
+
+        PaymentService paymentService = new PaymentService(
+            paymentRepository,
+            paymentFactory,
+            sessionService,
+            userService
+        );
 
         assertThat(paymentService.cancel(10L, "1")).isEqualTo(expectedResult);
     }
