@@ -3,8 +3,6 @@ package nextstep.stub;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 
-import java.util.Optional;
-
 public class TestUserRepository implements UserRepository {
     private final Long saveResult;
     private final NsUser findByUserIdResult;

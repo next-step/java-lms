@@ -14,7 +14,6 @@ import nextstep.users.domain.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
 
 @Service
 public class PaymentService {

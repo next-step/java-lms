@@ -12,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Optional;
 
 @Repository("userRepository")
 public class JdbcUserRepository implements UserRepository {
@@ -46,15 +45,15 @@ public class JdbcUserRepository implements UserRepository {
     public NsUser findByUserId(String userId) {
         String sql = "select id, user_id, password, name, email, created_at, updated_at, type from ns_user where user_id = ?";
         RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
-                rs.getString(1),
-                rs.getString(2),
-                rs.getString(3),
-                rs.getString(4),
-                rs.getString(5),
-                toLocalDateTime(rs.getTimestamp(6)),
-                toLocalDateTime(rs.getTimestamp(7)),
-                rs.getString(8)
-            );
+            rs.getString(1),
+            rs.getString(2),
+            rs.getString(3),
+            rs.getString(4),
+            rs.getString(5),
+            toLocalDateTime(rs.getTimestamp(6)),
+            toLocalDateTime(rs.getTimestamp(7)),
+            rs.getString(8)
+        );
         return jdbcTemplate.queryForObject(sql, rowMapper, userId);
     }
 
