@@ -50,18 +50,6 @@ public class SessionImage extends BaseDomain {
         this.updatedAt = LocalDateTime.now();
     }
 
-//    public SessionImageEntity toSessionImageEntity(Long sessionId) {
-//        return SessionImageEntity.builder()
-//            .id(id())
-//            .createdAt(createdAt)
-//            .updatedAt(updatedAt)
-//            .deleted(deleted)
-//            .imageUrl(url)
-//            .imageType(type.getType())
-//            .sessionId(sessionId)
-//            .build();
-//    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
