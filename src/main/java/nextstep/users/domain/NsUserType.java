@@ -17,7 +17,7 @@ public enum NsUserType {
     }
 
     public boolean canApprove(NsUserType nsUserType) {
-        return this.equals(INSTRUCTOR) && !(nsUserType.equals(UNSELECTED) || nsUserType.equals(INSTRUCTOR));
+        return this.equals(INSTRUCTOR) && (nsUserType.equals(WOOAH_TECH_COURSE) || nsUserType.equals(WOOAH_TECH_CAMP_PRO));
     }
 
     public boolean canCancel(NsUserType nsUserType) {
