@@ -27,7 +27,7 @@ public class JdbcSessionImageRepositoryTest {
         sessionImageRepository = new JdbcSessionImageRepository(jdbcTemplate);
     }
 
-    @DisplayName("강의 이미지 저장 테스트")
+    @DisplayName("강의 이미지 저장")
     @Test
     void testSave() {
         SessionImageEntity sessionImageEntity = createSessionImageEntity(1L, 3L);
@@ -35,7 +35,7 @@ public class JdbcSessionImageRepositoryTest {
         assertDoesNotThrow(() -> sessionImageRepository.save(sessionImageEntity));
     }
 
-    @DisplayName("강의 이미지 조회 테스트")
+    @DisplayName("강의 이미지 아이디로 조회")
     @Test
     void testFindById() {
         SessionImageEntity sessionImageEntity = createSessionImageEntity(null, 1L);
@@ -43,7 +43,7 @@ public class JdbcSessionImageRepositoryTest {
         assertThat(sessionImageRepository.findById(generatedId)).isNotNull();
     }
 
-    @DisplayName("강의 ID로 모든 강의 이미지 찾기 테스트")
+    @DisplayName("강의 ID로 모든 강의 이미지 조회")
     @Test
     void testFindAllBySessionId() {
         sessionImageRepository.save(createSessionImageEntity(1L, 2L));

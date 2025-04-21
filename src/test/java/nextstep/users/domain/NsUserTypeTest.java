@@ -9,7 +9,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class NsUserTypeTest {
 
     @DisplayName("다양한 NsUserType의 수강 승인 가능/불가능 테스트")
-    @ParameterizedTest(name = "{index} => approver={0}, candidate={1}, expected={2}")
+    @ParameterizedTest(name = "{index} => approver={0}, applicant={1}, expected={2}")
     @CsvSource({
         "INSTRUCTOR, WOOAH_TECH_COURSE, true",
         "INSTRUCTOR, WOOAH_TECH_CAMP_PRO, true",
@@ -21,12 +21,12 @@ class NsUserTypeTest {
         "UNSELECTED, WOOAH_TECH_COURSE, false",
         "UNKNOWN, WOOAH_TECH_COURSE, false"
     })
-    void testCanApprove(NsUserType approver, NsUserType candidate, boolean expected) {
-        assertThat(approver.canApprove(candidate)).isEqualTo(expected);
+    void testCanApprove(NsUserType approver, NsUserType applicant, boolean expected) {
+        assertThat(approver.canApprove(applicant)).isEqualTo(expected);
     }
 
     @DisplayName("다양한 NsUserType의 수강 승인 취소 가능/불가능 테스트")
-    @ParameterizedTest(name = "{index} => approver={0}, candidate={1}, expected={2}")
+    @ParameterizedTest(name = "{index} => approver={0}, applicant={1}, expected={2}")
     @CsvSource({
         "INSTRUCTOR, WOOAH_TECH_COURSE, false",
         "INSTRUCTOR, WOOAH_TECH_CAMP_PRO, false",
@@ -38,7 +38,7 @@ class NsUserTypeTest {
         "UNSELECTED, WOOAH_TECH_CAMP_PRO, false",
         "UNKNOWN, UNSELECTED, false"
     })
-    void testCanCancelApproval(NsUserType approver, NsUserType candidate, boolean expected) {
-        assertThat(approver.canCancel(candidate)).isEqualTo(expected);
+    void testCanCancelApproval(NsUserType approver, NsUserType applicant, boolean expected) {
+        assertThat(approver.canCancel(applicant)).isEqualTo(expected);
     }
 }

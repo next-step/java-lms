@@ -36,11 +36,27 @@ public class JdbcPaymentRepository implements PaymentRepository {
             ps.setLong(3, paymentEntity.getUserId());
             ps.setLong(4, paymentEntity.getSessionId());
             ps.setLong(5, paymentEntity.getAmount());
-            ps.setString(6, paymentEntity.getStatus().getStatus());
+            ps.setString(6, paymentEntity.getStatus());
             return ps;
         }, keyHolder);
 
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
+    }
+
+    @Override
+    public PaymentEntity findById(Long paymentId) {
+        String sql = "SELECT id, created_at, updated_at, deleted, user_id, session_id, amount, status FROM payment WHERE id = ?";
+
+        return jdbcTemplate.queryForObject(sql, new Object[]{paymentId}, (rs, rowNum) -> PaymentEntity.builder()
+            .id(rs.getLong("id"))
+            .createdAt(toLocalDateTime(rs.getTimestamp("created_at")))
+            .updatedAt(toLocalDateTime(rs.getTimestamp("updated_at")))
+            .deleted(rs.getBoolean("deleted"))
+            .userId(rs.getLong("user_id"))
+            .sessionId(rs.getLong("session_id"))
+            .amount(rs.getLong("amount"))
+            .status(rs.getString("status"))
+            .build());
     }
 
     @Override
@@ -55,7 +71,7 @@ public class JdbcPaymentRepository implements PaymentRepository {
             .userId(rs.getLong("user_id"))
             .sessionId(rs.getLong("session_id"))
             .amount(rs.getLong("amount"))
-            .status(PaymentStatus.fromString(rs.getString("status")))
+            .status(rs.getString("status"))
             .build());
     }
 

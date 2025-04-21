@@ -8,6 +8,7 @@ import nextstep.payments.domain.Payment;
 import nextstep.payments.domain.PaymentEntityUserMap;
 import nextstep.payments.domain.PaymentRepository;
 import nextstep.payments.domain.Payments;
+import nextstep.payments.factory.PaymentFactory;
 import nextstep.payments.factory.PaymentsFactory;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;

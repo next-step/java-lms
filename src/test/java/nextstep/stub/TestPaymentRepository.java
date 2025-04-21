@@ -7,12 +7,19 @@ import java.util.List;
 
 public class TestPaymentRepository implements PaymentRepository {
     private final long saveResult;
+    private final PaymentEntity findByIdResult;
     private final List<PaymentEntity> findBySessionResult;
     private int saveCalled = 0;
+    private int findByIdCalled = 0;
     private int findBySessionCalled = 0;
 
     public TestPaymentRepository(long saveResult, List<PaymentEntity> findBySessionResult) {
+        this(saveResult, null, findBySessionResult);
+    }
+
+    public TestPaymentRepository(long saveResult, PaymentEntity findByIdResult, List<PaymentEntity> findBySessionResult) {
         this.saveResult = saveResult;
+        this.findByIdResult = findByIdResult;
         this.findBySessionResult = findBySessionResult;
     }
 
@@ -23,6 +30,12 @@ public class TestPaymentRepository implements PaymentRepository {
     }
 
     @Override
+    public PaymentEntity findById(Long paymentId) {
+        findByIdCalled++;
+        return findByIdResult;
+    }
+
+    @Override
     public List<PaymentEntity> findBySession(Long sessionId) {
         findBySessionCalled++;
         return findBySessionResult;
@@ -30,6 +43,10 @@ public class TestPaymentRepository implements PaymentRepository {
 
     public int getSaveCalled() {
         return saveCalled;
+    }
+
+    public int getFindByIdCalled() {
+        return findByIdCalled;
     }
 
     public int getFindBySessionCalled() {

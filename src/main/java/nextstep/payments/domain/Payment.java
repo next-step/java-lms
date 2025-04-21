@@ -20,18 +20,6 @@ public class Payment extends BaseDomain {
 
     private PaymentStatus status;
 
-    public static Payment from(PaymentEntity paymentEntity, Session session, NsUser nsUser) {
-        return new Payment(
-            paymentEntity.getId(),
-            paymentEntity.isDeleted(),
-            paymentEntity.getCreatedAt(),
-            paymentEntity.getUpdatedAt(),
-            session,
-            nsUser,
-            paymentEntity.getAmount()
-        );
-    }
-
     public Payment() {
     }
 
@@ -76,7 +64,7 @@ public class Payment extends BaseDomain {
             .createdAt(createdAt)
             .updatedAt(updatedAt)
             .deleted(deleted)
-            .status(status)
+            .status(status.getStatus())
             .build();
     }
 

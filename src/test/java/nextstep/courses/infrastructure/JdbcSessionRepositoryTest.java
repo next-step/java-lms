@@ -34,7 +34,7 @@ class JdbcSessionRepositoryTest {
         sessionRepository = new JdbcSessionRepository(jdbcTemplate);
     }
 
-    @DisplayName("강의 저장 테스트")
+    @DisplayName("강의 저장")
     @Test
     void testSave() {
         Session session = createSampleSession();
@@ -42,7 +42,7 @@ class JdbcSessionRepositoryTest {
         assertDoesNotThrow(() -> sessionRepository.save(session.toSessionEntity(1L)));
     }
 
-    @DisplayName("강의 조회 테스트")
+    @DisplayName("강의 아이디로 조회")
     @Test
     void testFindById() {
         Session session = createSampleSession();
@@ -51,7 +51,7 @@ class JdbcSessionRepositoryTest {
         assertThat(sessionRepository.findById(generatedId)).isNotNull();
     }
 
-    @DisplayName("과정 ID로 모든 강의 찾기 테스트")
+    @DisplayName("과정 ID로 모든 강의 조회")
     @Test
     void testFindAllByCourseId() {
         Long courseId = 1L;

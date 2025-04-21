@@ -24,13 +24,14 @@ public class UserRepositoryTest {
         userRepository = new JdbcUserRepository(jdbcTemplate);
     }
 
-    @DisplayName("유저 저장 테스트")
+    @DisplayName("유저 저장")
     @Test
     void testSave() {
         NsUser nsUser = new NsUser("test-user", "password", "name", "test@naver.com");
         assertDoesNotThrow(() -> userRepository.save(nsUser));
     }
 
+    @DisplayName("유저 아이디로 조회")
     @Test
     void findByUserId() {
         NsUser nsUser = new NsUser("1", "javajigi", "password", "name", "javajigi@slipp.net");

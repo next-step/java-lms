@@ -19,7 +19,7 @@ public class PaymentEntity {
 
     private Long amount;
 
-    private PaymentStatus status;
+    private String status;
 
     private LocalDateTime createdAt;
 

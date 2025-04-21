@@ -27,14 +27,22 @@ class JdbcPaymentRepositoryTest {
         paymentRepository = new JdbcPaymentRepository(jdbcTemplate);
     }
 
-    @DisplayName("결재 저장 테스트")
+    @DisplayName("결재 저장")
     @Test
     void testSave() {
         Payment payment = new Payment(new Session("1"), NsUserTest.JAVAJIGI, 300_000L);
         assertDoesNotThrow(() -> paymentRepository.save(payment.toPaymentEntity()));
     }
 
-    @DisplayName("결재 저장 테스트")
+    @DisplayName("결재 아이디로 조회")
+    @Test
+    void testFindById() {
+        Payment payment = new Payment(new Session("1"), NsUserTest.JAVAJIGI, 300_000L);
+        long savedId = paymentRepository.save(payment.toPaymentEntity());
+        assertThat(paymentRepository.findById(savedId)).isNotNull();
+    }
+
+    @DisplayName("세션 아이디로 결재 정보 조회")
     @Test
     void testFindBySession() {
         Payment javajigiPayment = new Payment(new Session("2"), NsUserTest.JAVAJIGI, 300_000L);
