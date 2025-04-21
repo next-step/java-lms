@@ -1,11 +1,7 @@
 package nextstep.payments.infrastructor;
 
-import nextstep.courses.domain.session.Session;
-import nextstep.courses.entity.SessionEntity;
-import nextstep.payments.domain.Payment;
 import nextstep.payments.domain.PaymentRepository;
 import nextstep.payments.entity.PaymentEntity;
-import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

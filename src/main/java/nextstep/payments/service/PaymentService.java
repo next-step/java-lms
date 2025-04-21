@@ -98,7 +98,7 @@ public class PaymentService {
     }
 
     @Transactional
-    public boolean cancel(long paymentId, String approverId)  throws IOException {
+    public boolean cancel(long paymentId, String approverId) throws IOException {
         NsUser approver = userRepository.findByUserId(approverId);
         PaymentEntity paymentEntity = paymentRepository.findById(paymentId);
         NsUser applicant = userRepository.findByUserId(paymentEntity.getUserId().toString());

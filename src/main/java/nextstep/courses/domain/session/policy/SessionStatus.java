@@ -16,10 +16,6 @@ public enum SessionStatus {
         this.status = status;
     }
 
-    public boolean canEnroll() {
-        return this == ONGOING || this == ENROLLING;
-    }
-
     public static SessionStatus fromString(String status) {
         for (SessionStatus s : values()) {
             if (s.status.equalsIgnoreCase(status)) {
@@ -27,5 +23,9 @@ public enum SessionStatus {
             }
         }
         throw new IllegalArgumentException(String.format("'%s'은(는) 유효한 세션 상태가 아닙니다.", status));
+    }
+
+    public boolean canEnroll() {
+        return this == ONGOING || this == ENROLLING;
     }
 }

@@ -3,10 +3,8 @@ package nextstep.courses.domain.session;
 import nextstep.courses.domain.session.constraint.SessionConstraint;
 import nextstep.courses.domain.session.image.SessionImages;
 import nextstep.courses.domain.session.policy.SessionEnrollPolicy;
-import nextstep.courses.entity.SessionImageEntity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 
 public class SessionDescriptor {

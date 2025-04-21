@@ -1,7 +1,6 @@
 package nextstep.payments.infrastructor;
 
 import nextstep.payments.domain.PaymentRepository;
-import nextstep.payments.domain.PaymentStatus;
 import nextstep.payments.entity.PaymentEntity;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.support.GeneratedKeyHolder;

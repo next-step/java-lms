@@ -32,9 +32,9 @@ public class DeleteHistory {
         if (o == null || getClass() != o.getClass()) return false;
         DeleteHistory that = (DeleteHistory) o;
         return Objects.equals(id, that.id) &&
-                contentType == that.contentType &&
-                Objects.equals(contentId, that.contentId) &&
-                Objects.equals(deletedBy, that.deletedBy);
+            contentType == that.contentType &&
+            Objects.equals(contentId, that.contentId) &&
+            Objects.equals(deletedBy, that.deletedBy);
     }
 
     @Override
@@ -45,6 +45,6 @@ public class DeleteHistory {
     @Override
     public String toString() {
         return "DeleteHistory [id=" + id + ", contentType=" + contentType + ", contentId=" + contentId + ", deletedBy="
-                + deletedBy + ", createdDate=" + createdDate + "]";
+            + deletedBy + ", createdDate=" + createdDate + "]";
     }
 }

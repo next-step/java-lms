@@ -2,6 +2,7 @@ package nextstep.payments.factory;
 
 import nextstep.courses.domain.session.Session;
 import nextstep.payments.domain.Payment;
+import nextstep.payments.domain.PaymentStatus;
 import nextstep.payments.entity.PaymentEntity;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Component;
@@ -17,7 +18,8 @@ public class PaymentFactory {
             paymentEntity.getUpdatedAt(),
             session,
             nsUser,
-            paymentEntity.getAmount()
+            paymentEntity.getAmount(),
+            PaymentStatus.fromString(paymentEntity.getStatus())
         );
     }
 }

@@ -16,14 +16,6 @@ public enum NsUserType {
         this.type = type;
     }
 
-    public boolean canApprove(NsUserType nsUserType) {
-        return this.equals(INSTRUCTOR) && (nsUserType.equals(WOOAH_TECH_COURSE) || nsUserType.equals(WOOAH_TECH_CAMP_PRO));
-    }
-
-    public boolean canCancel(NsUserType nsUserType) {
-        return this.equals(INSTRUCTOR) && nsUserType.equals(UNSELECTED);
-    }
-
     public static NsUserType fromString(String type) {
         for (NsUserType s : values()) {
             if (s.type.equalsIgnoreCase(type)) {
@@ -31,5 +23,13 @@ public enum NsUserType {
             }
         }
         return UNKNOWN;
+    }
+
+    public boolean canApprove(NsUserType nsUserType) {
+        return this.equals(INSTRUCTOR) && (nsUserType.equals(WOOAH_TECH_COURSE) || nsUserType.equals(WOOAH_TECH_CAMP_PRO));
+    }
+
+    public boolean canCancel(NsUserType nsUserType) {
+        return this.equals(INSTRUCTOR) && nsUserType.equals(UNSELECTED);
     }
 }

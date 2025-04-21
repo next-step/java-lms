@@ -13,10 +13,6 @@ public enum EnrollmentStatus {
         this.status = status;
     }
 
-    public boolean canEnroll() {
-        return this == ENROLLING;
-    }
-
     public static EnrollmentStatus fromString(String status) {
         for (EnrollmentStatus s : values()) {
             if (s.status.equalsIgnoreCase(status)) {
@@ -24,5 +20,9 @@ public enum EnrollmentStatus {
             }
         }
         return NOT_ENROLLING;
+    }
+
+    public boolean canEnroll() {
+        return this == ENROLLING;
     }
 }

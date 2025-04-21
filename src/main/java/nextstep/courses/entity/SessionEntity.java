@@ -1,6 +1,5 @@
 package nextstep.courses.entity;
 
-
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

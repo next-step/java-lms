@@ -44,10 +44,6 @@ public class SessionImage extends BaseDomain {
         this.deleted = deleted;
     }
 
-    public String url() {
-        return url;
-    }
-
     public String type() {
         return type.getType();
     }

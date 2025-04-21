@@ -18,7 +18,7 @@ public class TestPaymentRepository implements PaymentRepository {
     }
 
 
-    public TestPaymentRepository(long saveResult,  PaymentEntity findByIdResult) {
+    public TestPaymentRepository(long saveResult, PaymentEntity findByIdResult) {
         this(saveResult, findByIdResult, null);
     }
 

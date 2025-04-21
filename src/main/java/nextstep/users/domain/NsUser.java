@@ -83,13 +83,6 @@ public class NsUser extends BaseDomain {
         return false;
     }
 
-    private static class GuestNsUser extends NsUser {
-        @Override
-        public boolean isGuestUser() {
-            return true;
-        }
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -113,5 +106,12 @@ public class NsUser extends BaseDomain {
             ", createdAt=" + createdAt +
             ", updatedAt=" + updatedAt +
             '}';
+    }
+
+    private static class GuestNsUser extends NsUser {
+        @Override
+        public boolean isGuestUser() {
+            return true;
+        }
     }
 }

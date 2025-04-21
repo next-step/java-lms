@@ -1,11 +1,8 @@
 package nextstep.courses.domain.session.image;
 
-import nextstep.courses.entity.SessionImageEntity;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class SessionImages {
     private final List<SessionImage> value;
@@ -26,15 +23,8 @@ public class SessionImages {
         return value.size();
     }
 
-
     public void delete() {
         value.forEach(SessionImage::delete);
-    }
-
-    public List<SessionImageEntity> toSessionImagesEntities(Long sessionId) {
-        return value.stream()
-            .map(sessionImage -> sessionImage.toSessionImageEntity(sessionId))
-            .collect(Collectors.toList());
     }
 
     @Override

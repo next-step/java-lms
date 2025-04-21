@@ -3,7 +3,6 @@ package nextstep.payments.entity;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import nextstep.payments.domain.PaymentStatus;
 
 import java.time.LocalDateTime;
 

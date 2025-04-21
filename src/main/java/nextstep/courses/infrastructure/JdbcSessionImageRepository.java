@@ -16,7 +16,7 @@ import java.util.Objects;
 
 @Repository("sessionImageRepository")
 public class JdbcSessionImageRepository implements SessionImageRepository {
-    private JdbcOperations jdbcTemplate;
+    private final JdbcOperations jdbcTemplate;
 
     public JdbcSessionImageRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
