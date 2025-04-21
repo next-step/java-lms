@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @JdbcTest
 public class UserRepositoryTest {
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
