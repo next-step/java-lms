@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -26,7 +25,7 @@ class PaymentServiceTest {
         TestSessionRepository sessionRepository = new TestSessionRepository(1L, null, List.of());
         TestSessionImageRepository sessionImageRepository = new TestSessionImageRepository(List.of());
         TestPaymentRepository paymentRepository = new TestPaymentRepository(1L, List.of());
-        TestUserRepository userRepository = new TestUserRepository(Optional.of(JAVAJIGI));
+        TestUserRepository userRepository = new TestUserRepository(JAVAJIGI);
         TestSessionFactory sessionFactory = new TestSessionFactory();
         PaymentsFactory paymentsFactory = new TestPaymentsFactory(new PaymentFactory(), new Payments() {
             @Override

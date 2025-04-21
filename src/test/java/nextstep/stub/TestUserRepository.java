@@ -6,20 +6,41 @@ import nextstep.users.domain.UserRepository;
 import java.util.Optional;
 
 public class TestUserRepository implements UserRepository {
-    private final Optional<NsUser> findByUserIdResult;
+    private final Long saveResult;
+    private final NsUser findByUserIdResult;
     private int findByUserIdCalled = 0;
+    private int saveCalled = 0;
 
-    public TestUserRepository(Optional<NsUser> findByUserIdResult) {
+    public TestUserRepository(Long saveResult) {
+        this(saveResult, null);
+    }
+
+    public TestUserRepository(NsUser findByUserIdResult) {
+        this(null, findByUserIdResult);
+    }
+
+    public TestUserRepository(Long saveResult, NsUser findByUserIdResult) {
+        this.saveResult = saveResult;
         this.findByUserIdResult = findByUserIdResult;
     }
 
     @Override
-    public Optional<NsUser> findByUserId(String userId) {
+    public long save(NsUser nsUser) {
+        saveCalled++;
+        return saveResult;
+    }
+
+    @Override
+    public NsUser findByUserId(String userId) {
         findByUserIdCalled++;
         return findByUserIdResult;
     }
 
-    public int getFindByUserIdCalled() {
-        return findByUserIdCalled;
+    public Long getSaveResult() {
+        return saveResult;
+    }
+
+    public int getSaveCalled() {
+        return saveCalled;
     }
 }

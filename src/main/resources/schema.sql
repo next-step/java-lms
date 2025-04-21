@@ -16,6 +16,7 @@ create table ns_user (
     email varchar(50),
     created_at timestamp not null,
     updated_at timestamp,
+    type varchar(20),
     primary key (id)
 );
 

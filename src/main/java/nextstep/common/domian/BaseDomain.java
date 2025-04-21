@@ -5,6 +5,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Getter
 public class BaseDomain {
     protected String id;
 
@@ -12,7 +13,6 @@ public class BaseDomain {
 
     protected LocalDateTime updatedAt;
 
-    @Getter
     protected boolean deleted = false;
 
     public BaseDomain() {

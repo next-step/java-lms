@@ -50,8 +50,7 @@ public class PaymentService {
     public boolean save(String newPaymentId, long sessionId) throws IOException {
         PaymentEntityUserMap paymentEntityUserMap = new PaymentEntityUserMap();
         paymentRepository.findBySession(sessionId).forEach(paymentEntity -> {
-            NsUser user = userRepository.findByUserId(paymentEntity.getUserId().toString())
-                .orElseThrow(() -> new NoSuchElementException("User not found for ID: " + paymentEntity.getUserId()));
+            NsUser user = userRepository.findByUserId(paymentEntity.getUserId().toString());
             paymentEntityUserMap.add(paymentEntity, user);
         });
 
