@@ -26,6 +26,6 @@ class CourseFactoryTest {
             .deleted(false)
             .build();
 
-        assertDoesNotThrow(() -> courseFactory.create(courseEntity, new SessionEntityImageMap()));
+        assertDoesNotThrow(() -> courseFactory.createCourse(courseEntity, new SessionEntityImageMap()));
     }
 }

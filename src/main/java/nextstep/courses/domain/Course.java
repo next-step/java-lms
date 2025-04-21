@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import lombok.Getter;
 import nextstep.common.domian.BaseDomain;
 import nextstep.courses.domain.session.Sessions;
 import nextstep.courses.entity.CourseEntity;
@@ -7,6 +8,7 @@ import nextstep.courses.entity.CourseEntity;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Getter
 public class Course extends BaseDomain {
 
     private final String title;
@@ -38,17 +40,6 @@ public class Course extends BaseDomain {
         sessions.delete();
         this.deleted = true;
         this.updatedAt = LocalDateTime.now();
-    }
-
-    public CourseEntity toCourseEntity() {
-        return CourseEntity.builder()
-            .id(id())
-            .title(title)
-            .creatorId(creatorId)
-            .createdAt(createdAt)
-            .updatedAt(updatedAt)
-            .deleted(deleted)
-            .build();
     }
 
     @Override

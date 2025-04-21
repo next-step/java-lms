@@ -2,12 +2,15 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
+import nextstep.courses.entity.CourseEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -28,15 +31,24 @@ public class JdbcCourseRepositoryTest {
     @DisplayName("강좌 저장")
     @Test
     void testSave() {
-        Course course = new Course("TDD, 클린 코드 with Java", 1L);
-        assertDoesNotThrow(() -> courseRepository.save(course.toCourseEntity()));
+        assertDoesNotThrow(() -> courseRepository.save(createCourseEntity(1L)));
     }
 
     @DisplayName("강좌 아이디로 조회")
     @Test
     void testFindById() {
-        Course course = new Course("TDD, 클린 코드 with Java 2", 2L);
-        long generatedId = courseRepository.save(course.toCourseEntity());
+        long generatedId = courseRepository.save(createCourseEntity(1L));
         assertThat(courseRepository.findById(generatedId)).isNotNull();
+    }
+
+    private CourseEntity createCourseEntity(long courseId) {
+        return CourseEntity.builder()
+            .id(courseId)
+            .title("test-title")
+            .creatorId(3L)
+            .createdAt(LocalDateTime.now())
+            .updatedAt(LocalDateTime.now())
+            .deleted(false)
+            .build();
     }
 }

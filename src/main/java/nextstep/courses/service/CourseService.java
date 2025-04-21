@@ -30,7 +30,7 @@ public class CourseService {
 
     public void createCourse(String title, Long creatorId) {
         Course course = new Course(title, creatorId);
-        courseRepository.save(course.toCourseEntity());
+        courseRepository.save(courseFactory.createCourseEntity(course));
     }
 
     @Transactional
@@ -43,7 +43,7 @@ public class CourseService {
                 sessionImageRepository.findAllBySessionId(Long.parseLong(sessionEntity.getId()))
             );
         }
-        Course course = courseFactory.create(courseRepository.findById(courseId), sessionEntityImageMap);
+        Course course = courseFactory.createCourse(courseRepository.findById(courseId), sessionEntityImageMap);
         course.delete();
     }
 }

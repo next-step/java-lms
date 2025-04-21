@@ -18,7 +18,7 @@ public class CourseFactory {
         this.sessionFactory = sessionFactory;
     }
 
-    public Course create(CourseEntity courseEntity, SessionEntityImageMap sessionEntityImageMap) throws IOException {
+    public Course createCourse(CourseEntity courseEntity, SessionEntityImageMap sessionEntityImageMap) throws IOException {
         return new Course(
             courseEntity.getId(),
             courseEntity.isDeleted(),
@@ -28,5 +28,16 @@ public class CourseFactory {
             courseEntity.getCreatedAt(),
             courseEntity.getUpdatedAt()
         );
+    }
+
+    public CourseEntity createCourseEntity(Course course) {
+        return CourseEntity.builder()
+            .id(course.id())
+            .title(course.getTitle())
+            .creatorId(course.getCreatorId())
+            .createdAt(course.getCreatedAt())
+            .updatedAt(course.getUpdatedAt())
+            .deleted(course.isDeleted())
+            .build();
     }
 }

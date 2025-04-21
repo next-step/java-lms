@@ -24,7 +24,7 @@ public class TestCourseFactory extends CourseFactory {
     }
 
     @Override
-    public Course create(CourseEntity courseEntity, SessionEntityImageMap sessionEntityImageMap) {
+    public Course createCourse(CourseEntity courseEntity, SessionEntityImageMap sessionEntityImageMap) {
         createCalled++;
         return createResult;
     }
