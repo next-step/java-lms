@@ -1,7 +1,6 @@
 package nextstep.courses.service;
 
 import nextstep.courses.domain.session.image.SessionImage;
-import nextstep.courses.factory.SessionImageEntityFactory;
 import nextstep.stub.factory.TestImageHandler;
 import nextstep.stub.factory.TestSessionImageFactory;
 import nextstep.stub.repository.TestSessionImageRepository;
@@ -22,7 +21,7 @@ class SessionImageServiceTest {
         TestSessionImageFactory sessionImageFactory = new TestSessionImageFactory();
         TestImageHandler imageHandler = new TestImageHandler();
 
-        SessionImageService sessionImageService = new SessionImageService(sessionImageRepository, sessionImageFactory, new SessionImageEntityFactory(), imageHandler);
+        SessionImageService sessionImageService = new SessionImageService(sessionImageRepository, sessionImageFactory, imageHandler);
 
         sessionImageService.createSessionImage(1L, "test-url", "png");
         assertThat(sessionImageRepository.getSaveCalled()).isEqualTo(1);
@@ -36,7 +35,7 @@ class SessionImageServiceTest {
         TestSessionImageFactory sessionImageFactory = new TestSessionImageFactory(result);
         TestImageHandler imageHandler = new TestImageHandler();
 
-        SessionImageService sessionImageService = new SessionImageService(sessionImageRepository, sessionImageFactory, new SessionImageEntityFactory(), imageHandler);
+        SessionImageService sessionImageService = new SessionImageService(sessionImageRepository, sessionImageFactory, imageHandler);
 
         sessionImageService.deleteSessionImage(1L);
 

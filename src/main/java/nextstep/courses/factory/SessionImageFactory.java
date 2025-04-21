@@ -37,4 +37,16 @@ public class SessionImageFactory {
         }
         return new SessionImages(resultList);
     }
+
+    public SessionImageEntity createImageEntity(SessionImage sessionImage, Long sessionId) {
+        return SessionImageEntity.builder()
+            .id(sessionImage.id())
+            .createdAt(sessionImage.getCreatedAt())
+            .updatedAt(sessionImage.getUpdatedAt())
+            .deleted(sessionImage.isDeleted())
+            .imageUrl(sessionImage.getUrl())
+            .imageType(sessionImage.getType().getType())
+            .sessionId(sessionId)
+            .build();
+    }
 }
