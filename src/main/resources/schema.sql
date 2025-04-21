@@ -57,6 +57,7 @@ create table payment (
     user_id bigint not null,
     session_id bigint not null,
     amount bigint not null,
+    status varchar(100),
     primary key (id)
 );
 

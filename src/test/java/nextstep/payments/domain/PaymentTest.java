@@ -5,6 +5,9 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
+import static nextstep.payments.domain.PaymentStatus.PENDING;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
@@ -13,7 +16,16 @@ public class PaymentTest {
     @DisplayName("Payment 인스턴스 생성")
     @Test
     public void testConstructor() {
-        assertDoesNotThrow(() -> new Payment("1", new Session(), NsUserTest.JAVAJIGI, 300_000L));
+        assertDoesNotThrow(() -> new Payment(
+            "1",
+            false,
+            LocalDateTime.now(),
+            LocalDateTime.now(),
+            new Session(),
+            NsUserTest.JAVAJIGI,
+            300_000L,
+            PENDING
+        ));
     }
 
     @DisplayName("강의와 유저 정보가 동일")

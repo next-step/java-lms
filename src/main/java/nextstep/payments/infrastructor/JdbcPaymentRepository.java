@@ -1,6 +1,7 @@
 package nextstep.payments.infrastructor;
 
 import nextstep.payments.domain.PaymentRepository;
+import nextstep.payments.domain.PaymentStatus;
 import nextstep.payments.entity.PaymentEntity;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -24,7 +25,7 @@ public class JdbcPaymentRepository implements PaymentRepository {
 
     @Override
     public long save(PaymentEntity paymentEntity) {
-        String sql = "INSERT INTO payment (deleted, created_at, user_id, session_id, amount) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO payment (deleted, created_at, user_id, session_id, amount, status) VALUES (?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -35,6 +36,7 @@ public class JdbcPaymentRepository implements PaymentRepository {
             ps.setLong(3, paymentEntity.getUserId());
             ps.setLong(4, paymentEntity.getSessionId());
             ps.setLong(5, paymentEntity.getAmount());
+            ps.setString(6, paymentEntity.getStatus().getStatus());
             return ps;
         }, keyHolder);
 
@@ -43,7 +45,7 @@ public class JdbcPaymentRepository implements PaymentRepository {
 
     @Override
     public List<PaymentEntity> findBySession(Long sessionId) {
-        String sql = "SELECT id, created_at, updated_at, deleted, user_id, session_id, amount FROM payment WHERE session_id = ?";
+        String sql = "SELECT id, created_at, updated_at, deleted, user_id, session_id, amount, status FROM payment WHERE session_id = ?";
 
         return jdbcTemplate.query(sql, ps -> ps.setLong(1, sessionId), (rs, rowNum) -> PaymentEntity.builder()
             .id(rs.getLong("id"))
@@ -53,6 +55,7 @@ public class JdbcPaymentRepository implements PaymentRepository {
             .userId(rs.getLong("user_id"))
             .sessionId(rs.getLong("session_id"))
             .amount(rs.getLong("amount"))
+            .status(PaymentStatus.fromString(rs.getString("status")))
             .build());
     }
 

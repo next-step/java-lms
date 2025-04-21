@@ -8,6 +8,8 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import static nextstep.payments.domain.PaymentStatus.PENDING;
+
 public class Payment extends BaseDomain {
 
     private Session session;
@@ -15,6 +17,8 @@ public class Payment extends BaseDomain {
     private NsUser user;
 
     private Long amount;
+
+    private PaymentStatus status;
 
     public static Payment from(PaymentEntity paymentEntity, Session session, NsUser nsUser) {
         return new Payment(
@@ -36,17 +40,19 @@ public class Payment extends BaseDomain {
     }
 
     public Payment(String id, Session session, NsUser user, Long amount) {
-        super(id, LocalDateTime.now(), LocalDateTime.now());
-        this.session = session;
-        this.user = user;
-        this.amount = amount;
+        this(id, false, LocalDateTime.now(), LocalDateTime.now(), session, user, amount, PENDING);
     }
 
     public Payment(String id, boolean deleted, LocalDateTime createdAt, LocalDateTime updatedAt, Session session, NsUser user, Long amount) {
+        this(id, deleted, createdAt, updatedAt, session, user, amount, PENDING);
+    }
+
+    public Payment(String id, boolean deleted, LocalDateTime createdAt, LocalDateTime updatedAt, Session session, NsUser user, Long amount, PaymentStatus status) {
         super(id, deleted, createdAt, updatedAt);
         this.session = session;
         this.user = user;
         this.amount = amount;
+        this.status = status;
     }
 
     public boolean equalsSessionUser(Payment payment) {
@@ -70,6 +76,7 @@ public class Payment extends BaseDomain {
             .createdAt(createdAt)
             .updatedAt(updatedAt)
             .deleted(deleted)
+            .status(status)
             .build();
     }
 
