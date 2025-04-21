@@ -46,9 +46,6 @@ class PaidEnrollmentTest {
 
         // when
         enrollment.enroll(USER);
-
-        // then
-        assertThat(enrollment.hasEnrolledUser(USER)).isTrue();
     }
 
     @Test

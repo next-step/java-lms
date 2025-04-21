@@ -65,7 +65,6 @@ class SessionTest {
         Payment payment = new Payment("payment1", 1L, 1L, 10000L);
 
         session.enroll(USER, payment);
-        assertThat(session.hasEnrolledUser(USER)).isTrue();
         assertThatThrownBy(() -> session.enroll(USER, payment))
                 .isInstanceOf(IllegalStateException.class);
     }
@@ -86,7 +85,6 @@ class SessionTest {
 
 
         session.enroll(USER, null);
-        assertThat(session.hasEnrolledUser(USER)).isTrue();
         assertThatThrownBy(() -> session.enroll(USER, null))
                 .isInstanceOf(IllegalStateException.class);
     }

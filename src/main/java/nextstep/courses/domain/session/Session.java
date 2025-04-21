@@ -27,10 +27,6 @@ public class Session {
         enrollment.enroll(user);
     }
 
-    public boolean hasEnrolledUser(NsUser user) {
-        return enrollment.hasEnrolledUser(user);
-    }
-
     public boolean isPaid() {
         return info.isPaid();
     }

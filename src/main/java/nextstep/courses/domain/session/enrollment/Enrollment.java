@@ -5,6 +5,5 @@ import nextstep.users.domain.NsUser;
 
 public interface Enrollment {
     void enroll(NsUser user);
-    boolean hasEnrolledUser(NsUser user);
     SessionStatus getStatus();
 }

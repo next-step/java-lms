@@ -30,10 +30,6 @@ public class PaidEnrollment implements Enrollment{
         enrollment.enroll(user);
     }
 
-    public boolean hasEnrolledUser(NsUser user) {
-        return enrollment.hasEnrolledUser(user);
-    }
-
     public SessionStatus getStatus() {
         return enrollment.getStatus();
     }

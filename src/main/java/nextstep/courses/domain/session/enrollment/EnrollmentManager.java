@@ -21,7 +21,7 @@ public class EnrollmentManager {
         enrolledUsers.add(user);
     }
 
-    protected void validateEnrollment(NsUser user) {
+    private void validateEnrollment(NsUser user) {
         if (user == null) {
             throw new IllegalArgumentException("수강 신청할 사용자가 없습니다.");
         }
@@ -33,7 +33,7 @@ public class EnrollmentManager {
         }
     }
 
-    public boolean hasEnrolledUser(NsUser user) {
+    private boolean hasEnrolledUser(NsUser user) {
         return enrolledUsers.contains(user);
     }
 }

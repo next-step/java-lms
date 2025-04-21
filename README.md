@@ -70,3 +70,4 @@
 - [ ] 피드백
   - [x] SessionRepository.update 제거
   - [x] Enrollment.isFull 리팩토링
+  - [x] Enrollment.hasEnrolledUser 제거
