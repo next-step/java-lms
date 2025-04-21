@@ -30,17 +30,22 @@ public class Session {
     }
 
     public Session(Long id, Long courseId, SessionPeriod period, SessionImage image, SessionStatus status, Long price, int capacity, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(id, courseId, period, image, status, price, new Students(capacity), creatorId, createdAt, updatedAt);
+    }
+
+    public Session(Long id, Long courseId, SessionPeriod period, SessionImage image, SessionStatus status, Long price, Students students, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.courseId = courseId;
         this.period = period;
         this.image = image;
         this.status = status;
         this.price = price;
-        this.students = new Students(capacity);
+        this.students = students;
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
+
 
     public static Session createFreeSession(Course course, LocalDateTime startDate, LocalDateTime endDate, SessionImage image, SessionStatus status, NsUser creator) {
         Session session = new Session(null, course.getId(), startDate, endDate, image, status, 0L, Integer.MAX_VALUE, creator.getId());
@@ -54,15 +59,20 @@ public class Session {
         return session;
     }
 
-    public Payment enroll(NsUser user) {
+    public Student enroll(NsUser user) {
         if (status != SessionStatus.OPEN) {
             throw new IllegalArgumentException("session is not open");
         }
 
-        students.register(user, this, price);
-        return new Payment("0L", id, user.getId(), price);
+        return students.register(user, this, price);
     }
 
+    public Payment getPayment(NsUser user) {
+        if (!students.include(user)) {
+            throw new IllegalArgumentException("student not found");
+        }
+        return new Payment("0L", id, user.getId(), price);
+    }
 
     public Long getId() {
         return id;

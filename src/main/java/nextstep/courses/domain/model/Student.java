@@ -13,7 +13,7 @@ public class Student {
     private final NsUser user;
     private final Session session;
     private final LocalDateTime createdAt;
-    private final LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;
 
     public Student(NsUser user, Session session) {
         this(null, user, session, LocalDateTime.now(), LocalDateTime.now());
@@ -70,5 +70,9 @@ public class Student {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    public boolean isEqualTo(NsUser user) {
+        return this.user.equals(user);
     }
 }

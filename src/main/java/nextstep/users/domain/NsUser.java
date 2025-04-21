@@ -35,8 +35,8 @@ public class NsUser {
         this(id, userId, password, name, email, LocalDateTime.now(), LocalDateTime.now());
     }
 
-    public NsUser(String userId, String password, String name, BigDecimal balance) {
-        this(null, userId, password, name, null, balance, LocalDateTime.now(), LocalDateTime.now());
+    public NsUser(Long id, String userId, String password, String name, BigDecimal balance) {
+        this(id, userId, password, name, null, balance, LocalDateTime.now(), LocalDateTime.now());
     }
 
     public NsUser(Long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {

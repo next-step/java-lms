@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.courses.domain.model.Session;
 import nextstep.courses.domain.model.SessionPeriod;
 import nextstep.courses.domain.model.SessionStatus;
+import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -55,7 +56,9 @@ public class SessionTest {
     @DisplayName("결제 정보는 Payment 객체에 담겨 반한된다.")
     void enrollAndGetPayment() {
         Session session = createPaidSession(800_000L, 1);
-        assertThat(session.enroll(NsUserTest.createNsUser(800_000L)).getAmount()).isEqualTo(800_000L);
+        NsUser user = NsUserTest.createNsUser(3L, 800_000L);
+        session.enroll(user);
+        assertThat(session.getPayment(user).getAmount()).isEqualTo(800_000L);
     }
 
 }

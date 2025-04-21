@@ -33,7 +33,7 @@ class StudentsTest {
     void createPaidSessionWithCorrectPrice() {
         Students students = new Students(1);
         Session session = SessionTest.createPaidSession(800_000L, 1);
-        assertThatCode(() -> students.register(NsUserTest.createNsUser(800_000L), session, 800_000L)).doesNotThrowAnyException();
+        assertThatCode(() -> students.register(NsUserTest.createNsUser(3L, 800_000L), session, 800_000L)).doesNotThrowAnyException();
     }
 
     @Test
@@ -41,7 +41,7 @@ class StudentsTest {
     void createPaidSessionWithNotEnoughPrice() {
         Students students = new Students(1);
         Session session = SessionTest.createPaidSession(800_000L, 1);
-        assertThrows(IllegalArgumentException.class, () -> students.register(NsUserTest.createNsUser(790_000L), session, 800_000L));
+        assertThrows(IllegalArgumentException.class, () -> students.register(NsUserTest.createNsUser(3L, 790_000L), session, 800_000L));
     }
 
 }

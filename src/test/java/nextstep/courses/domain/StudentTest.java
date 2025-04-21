@@ -14,7 +14,7 @@ class StudentTest {
 
     public static Student createStudent(Long balance) {
         Session session = SessionTest.createFreeSession(SessionStatus.OPEN);
-        return new Student(NsUserTest.createNsUser(balance), session);
+        return new Student(NsUserTest.createNsUser(3L, balance), session);
     }
 
     @Test

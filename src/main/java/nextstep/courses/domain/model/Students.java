@@ -21,7 +21,7 @@ public class Students {
         }
     }
 
-    public void register(NsUser user, Session session, Long price) {
+    public Student register(NsUser user, Session session, Long price) {
         if (students.size() >= capacity) {
             throw new IllegalArgumentException("student limit exceeded");
         }
@@ -33,6 +33,7 @@ public class Students {
 
         student.pay(price);
         students.add(student);
+        return student;
     }
 
     public int getCapacity() {
@@ -45,5 +46,9 @@ public class Students {
                 "capacity=" + capacity +
                 ", students=" + students +
                 '}';
+    }
+
+    public boolean include(NsUser user) {
+        return students.stream().anyMatch(student -> student.isEqualTo(user));
     }
 }
