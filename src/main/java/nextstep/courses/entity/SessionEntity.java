@@ -25,8 +25,10 @@ public class SessionEntity {
 
     private int capacity;
 
+    @Deprecated
     private String imageUrl;
 
+    @Deprecated
     private String imageType;
 
     private LocalDateTime startDate;

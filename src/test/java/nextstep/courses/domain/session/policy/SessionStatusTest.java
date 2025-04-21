@@ -10,21 +10,25 @@ class SessionStatusTest {
     @DisplayName("준비중 일때 수강신청이 불가능하다")
     @Test
     public void testCanEnroll_Preparing() {
-
         assertThat(SessionStatus.PREPARING.canEnroll()).isFalse();
     }
 
-    @DisplayName("진행중 일때 수강신청이 가능하다")
+    @DisplayName("모집중 일때 수강신청이 가능하다")
     @Test
     public void testCanEnroll_Enrolling() {
+        assertThat(SessionStatus.ENROLLING.canEnroll()).isTrue();
+    }
 
+
+    @DisplayName("진행중 일때 수강신청이 가능하다")
+    @Test
+    public void testCanEnroll_OnGoing() {
         assertThat(SessionStatus.ONGOING.canEnroll()).isTrue();
     }
 
     @DisplayName("종료 일때 수강신청이 불가능하다")
     @Test
     public void testCanEnroll_Closed() {
-
         assertThat(SessionStatus.CLOSED.canEnroll()).isFalse();
     }
 }

@@ -6,6 +6,8 @@ import lombok.Getter;
 public enum SessionStatus {
     PREPARING("preparing"),
     ONGOING("ongoing"),
+    @Deprecated
+    ENROLLING("enrolling"),
     CLOSED("closed");
 
     private final String status;
@@ -15,7 +17,7 @@ public enum SessionStatus {
     }
 
     public boolean canEnroll() {
-        return this == ONGOING;
+        return this == ONGOING || this == ENROLLING;
     }
 
     public static SessionStatus fromString(String status) {
