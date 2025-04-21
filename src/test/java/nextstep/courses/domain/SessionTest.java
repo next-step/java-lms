@@ -5,12 +5,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class SessionTest {
-
     private final Image validImage = new Image(500f, "png", "cdn.com", 600, 400);
+    private final Images validImages = new Images(List.of(validImage));
 
     @Test
     @DisplayName("모집중 상태의 무료 강의는 수강 신청 가능하다")
@@ -23,7 +24,7 @@ class SessionTest {
                 0L,             // tuition
                 0,             // currentCount
                 0,             // capacity (무제한이지만 그냥 0으로 둠)
-                validImage,
+                validImages,
                 SessionStatus.ONGOING,
                 RecruitmentStatus.RECRUITING,
                 new FreeJoinStrategy()
@@ -43,7 +44,7 @@ class SessionTest {
                 0L,
                 0,
                 0,
-                validImage,
+                validImages,
                 SessionStatus.PREPARING,
                 RecruitmentStatus.RECRUITING,
                 new FreeJoinStrategy()
@@ -63,7 +64,7 @@ class SessionTest {
                 10000L,   // tuition
                 29,      // currentCount
                 30,      // capacity
-                validImage,
+                validImages,
                 SessionStatus.ONGOING,
                 RecruitmentStatus.RECRUITING,
                 new PaidJoinStrategy()
@@ -83,7 +84,7 @@ class SessionTest {
                 10000L,
                 10,
                 30,
-                validImage,
+                validImages,
                 SessionStatus.ONGOING,
                 RecruitmentStatus.RECRUITING,
                 new PaidJoinStrategy()
@@ -103,7 +104,7 @@ class SessionTest {
                 10000L,
                 30,
                 30,
-                validImage,
+                validImages,
                 SessionStatus.ONGOING,
                 RecruitmentStatus.RECRUITING,
                 new PaidJoinStrategy()
@@ -123,7 +124,7 @@ class SessionTest {
                 0L,
                 0,
                 0,
-                validImage,
+                validImages,
                 SessionStatus.PREPARING,
                 RecruitmentStatus.RECRUITING,
                 new FreeJoinStrategy()
@@ -143,7 +144,7 @@ class SessionTest {
                 0L,
                 0,
                 0,
-                validImage,
+                validImages,
                 SessionStatus.CLOSED,
                 RecruitmentStatus.RECRUITING,
                 new FreeJoinStrategy()
@@ -163,7 +164,7 @@ class SessionTest {
                 0L,
                 0,
                 0,
-                validImage,
+                validImages,
                 SessionStatus.ONGOING,
                 RecruitmentStatus.NOT_RECRUITING,
                 new FreeJoinStrategy()

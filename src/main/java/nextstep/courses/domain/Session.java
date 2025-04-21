@@ -10,23 +10,23 @@ public class Session {
     private String title;
     private int id;
     private Long tuition;
-    private Image coverImage;
+    private Images coverImages;
     private RecruitmentStatus recruitmentStatus;
     private SessionStatus sessionStatus;
     private JoinStrategy joinStrategy;
 
 
-    public Session(String title, int id, LocalDateTime startDate, LocalDateTime endDate, Long tuition, int currentCount, int capacity, Image coverImage, SessionStatus sessionStatus, RecruitmentStatus recruitmentStatus) {
-        this(title, id, startDate, endDate, tuition, currentCount, capacity, coverImage, sessionStatus, recruitmentStatus, tuition == 0 ? new FreeJoinStrategy() : new PaidJoinStrategy());
+    public Session(String title, int id, LocalDateTime startDate, LocalDateTime endDate, Long tuition, int currentCount, int capacity, Images coverImages, SessionStatus sessionStatus, RecruitmentStatus recruitmentStatus) {
+        this(title, id, startDate, endDate, tuition, currentCount, capacity, coverImages, sessionStatus, recruitmentStatus, tuition == 0 ? new FreeJoinStrategy() : new PaidJoinStrategy());
     }
 
-    public Session(String title, int id, LocalDateTime startDate, LocalDateTime endDate, Long tuition, int currentCount, int capacity, Image coverImage, SessionStatus sessionStatus, RecruitmentStatus recruitmentStatus, JoinStrategy joinStrategy) {
+    public Session(String title, int id, LocalDateTime startDate, LocalDateTime endDate, Long tuition, int currentCount, int capacity, Images coverImages, SessionStatus sessionStatus, RecruitmentStatus recruitmentStatus, JoinStrategy joinStrategy) {
         this.title = title;
         this.id = id;
         this.sessionPeriod = new SessionPeriod(startDate, endDate);
         this.tuition = tuition;
         this.capacityInfo = new CapacityInfo(currentCount, capacity);
-        this.coverImage = coverImage;
+        this.coverImages = coverImages;
         this.sessionStatus = sessionStatus;
         this.recruitmentStatus = recruitmentStatus;
         this.joinStrategy = joinStrategy;
@@ -88,8 +88,12 @@ public class Session {
         return capacityInfo.getCapacity();
     }
 
-    public Image getCoverImage() {
-        return coverImage;
+    public Images getCoverImages() {
+        return coverImages;
+    }
+
+    public Image getMainCoverImage() {
+        return coverImages.getImages().get(0);
     }
 
     public SessionStatus getSessionStatus() {

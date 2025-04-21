@@ -11,28 +11,34 @@ create table course
 
 CREATE TABLE session
 (
-    id              BIGINT AUTO_INCREMENT PRIMARY KEY,
-    title           VARCHAR(255) NOT NULL,
-    start_date      DATETIME     NOT NULL,
-    end_date        DATETIME     NOT NULL,
-    tuition         BIGINT       NOT NULL,
-    current_count   INT          NOT NULL,
-    capacity        INT          NOT NULL,
+    id                 BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title              VARCHAR(255) NOT NULL,
+    start_date         DATETIME     NOT NULL,
+    end_date           DATETIME     NOT NULL,
+    tuition            BIGINT       NOT NULL,
+    current_count      INT          NOT NULL,
+    capacity           INT          NOT NULL,
 
-    -- Embedded Image
-    image_file_size FLOAT,
-    image_file_type VARCHAR(50),
-    image_url       VARCHAR(500),
-    image_width     INT,
-    image_height    INT,
-
-    status          VARCHAR(50)  NOT NULL,
-    recruitment_status          VARCHAR(50)  NOT NULL,
+    status             VARCHAR(50)  NOT NULL,
+    recruitment_status VARCHAR(50)  NOT NULL,
 
     -- FK to course
-    course_id       BIGINT       NOT NULL,
+    course_id          BIGINT       NOT NULL,
     FOREIGN KEY (course_id) REFERENCES course (id)
 );
+
+CREATE TABLE image
+(
+    id         BIGINT AUTO_INCREMENT PRIMARY KEY,
+    session_id BIGINT       NOT NULL,
+    url        VARCHAR(500) NOT NULL,
+    file_type  VARCHAR(50),
+    file_size  FLOAT,
+    width      INT,
+    height     INT,
+    FOREIGN KEY (session_id) REFERENCES session (id)
+);
+
 
 create table ns_user
 (
