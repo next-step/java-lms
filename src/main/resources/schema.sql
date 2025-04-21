@@ -75,3 +75,13 @@ create table session
     foreign key (image_id) references image (id),
     foreign key (course_id) references course (id)
 );
+
+create table session_student
+(
+    session_id    bigint    not null,
+    student_id    bigint    not null,
+
+    primary key (session_id, student_id),
+    foreign key (session_id) references session (id),
+    foreign key (student_id) references ns_user (id)
+);
