@@ -38,4 +38,17 @@ public class PaymentFactory {
 
         return new Payments(paymentList);
     }
+
+    public PaymentEntity createPaymentEntity(Payment payment) {
+        return PaymentEntity.builder()
+            .id(payment.id())
+            .userId(payment.getUser().id())
+            .sessionId(payment.getSession().id())
+            .amount(payment.getAmount())
+            .createdAt(payment.getCreatedAt())
+            .updatedAt(payment.getUpdatedAt())
+            .deleted(payment.isDeleted())
+            .status(payment.getStatus().getStatus())
+            .build();
+    }
 }

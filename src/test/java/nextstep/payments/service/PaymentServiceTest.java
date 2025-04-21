@@ -4,7 +4,6 @@ import nextstep.courses.domain.session.Session;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.domain.Payments;
 import nextstep.payments.entity.PaymentEntity;
-import nextstep.payments.factory.PaymentEntityFactory;
 import nextstep.stub.factory.TestPaymentFactory;
 import nextstep.stub.factory.TestSessionFactory;
 import nextstep.stub.repository.TestPaymentRepository;
@@ -50,8 +49,7 @@ class PaymentServiceTest {
             paymentRepository,
             userRepository,
             sessionFactory,
-            paymentFactory,
-            new PaymentEntityFactory()
+            paymentFactory
         ) {
             @Override
             public Payment payment(String id) {
@@ -79,7 +77,7 @@ class PaymentServiceTest {
         TestSessionRepository sessionRepository = new TestSessionRepository(1L);
         TestSessionImageRepository sessionImageRepository = new TestSessionImageRepository();
 
-         PaymentEntity paymentEntity = createPaymentEntity(1L, 2L, 5L);
+        PaymentEntity paymentEntity = createPaymentEntity(1L, 2L, 5L);
         TestPaymentRepository paymentRepository = new TestPaymentRepository(1L, paymentEntity);
 
         TestUserRepository userRepository = new TestUserRepository(1L);
@@ -96,8 +94,7 @@ class PaymentServiceTest {
             paymentRepository,
             userRepository,
             sessionFactory,
-            paymentFactory,
-            new PaymentEntityFactory()
+            paymentFactory
         ) {
             @Override
             public Payment payment(String id) {
@@ -137,8 +134,7 @@ class PaymentServiceTest {
             paymentRepository,
             userRepository,
             sessionFactory,
-            paymentFactory,
-            new PaymentEntityFactory()
+            paymentFactory
         ) {
             @Override
             public Payment payment(String id) {

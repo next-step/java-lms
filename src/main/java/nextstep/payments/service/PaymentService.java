@@ -27,7 +27,6 @@ public class PaymentService {
     private final UserRepository userRepository;
     private final SessionFactory sessionFactory;
     private final PaymentFactory paymentFactory;
-    private final PaymentEntityFactory paymentEntityFactory;
 
     public PaymentService(
         SessionRepository sessionRepository,
@@ -35,8 +34,7 @@ public class PaymentService {
         PaymentRepository paymentRepository,
         UserRepository userRepository,
         SessionFactory sessionFactory,
-        PaymentFactory paymentFactory,
-        PaymentEntityFactory paymentEntityFactory
+        PaymentFactory paymentFactory
     ) {
         this.sessionRepository = sessionRepository;
         this.sessionImageRepository = sessionImageRepository;
@@ -44,7 +42,6 @@ public class PaymentService {
         this.userRepository = userRepository;
         this.sessionFactory = sessionFactory;
         this.paymentFactory = paymentFactory;
-        this.paymentEntityFactory = paymentEntityFactory;
     }
 
     public Payment payment(String id) {
@@ -67,7 +64,7 @@ public class PaymentService {
         Payment newPayment = payment(newPaymentId);
 
         if (payments.canEnroll(session, newPayment)) {
-            paymentRepository.save(paymentEntityFactory.create(newPayment));
+            paymentRepository.save(paymentFactory.createPaymentEntity(newPayment));
             return true;
         }
 
