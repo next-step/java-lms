@@ -6,7 +6,7 @@ import lombok.Getter;
 public enum PaymentStatus {
     PENDING("대기중"),
     APPROVED("승인 완료"),
-    CANCELLED("승인 취소");
+    CANCELED("승인 취소");
 
     private final String status;
 

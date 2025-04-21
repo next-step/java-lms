@@ -51,6 +51,14 @@ public class Payment extends BaseDomain {
         return payment.session.equals(this.session);
     }
 
+    public void approve() {
+        this.status = PaymentStatus.APPROVED;
+    }
+
+    public void cancel() {
+        this.status = PaymentStatus.CANCELED;
+    }
+
     public boolean canEnroll(Session session, int enrollCount) {
         return session.canEnroll(enrollCount, amount);
     }

@@ -3,23 +3,21 @@ package nextstep.stub;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class TestUserRepository implements UserRepository {
     private final Long saveResult;
-    private final NsUser findByUserIdResult;
+    private final Map<String, NsUser> users = new HashMap<>();
     private int findByUserIdCalled = 0;
     private int saveCalled = 0;
 
     public TestUserRepository(Long saveResult) {
-        this(saveResult, null);
-    }
-
-    public TestUserRepository(NsUser findByUserIdResult) {
-        this(null, findByUserIdResult);
-    }
-
-    public TestUserRepository(Long saveResult, NsUser findByUserIdResult) {
         this.saveResult = saveResult;
-        this.findByUserIdResult = findByUserIdResult;
+    }
+
+    public void addUser(String userId, NsUser user) {
+        users.put(userId, user);
     }
 
     @Override
@@ -31,7 +29,7 @@ public class TestUserRepository implements UserRepository {
     @Override
     public NsUser findByUserId(String userId) {
         findByUserIdCalled++;
-        return findByUserIdResult;
+        return users.get(userId);
     }
 
     public Long getSaveResult() {

@@ -29,8 +29,8 @@ public class NsUser extends BaseDomain {
         this(null, userId, password, name, email, LocalDateTime.now(), null);
     }
 
-    public NsUser(String id, String userId, String password, String name, String email) {
-        this(id, userId, password, name, email, LocalDateTime.now(), null);
+    public NsUser(String userId, String password, String name, String email, String type) {
+        this(null, userId, password, name, email, LocalDateTime.now(), null, type);
     }
 
     public NsUser(String id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {

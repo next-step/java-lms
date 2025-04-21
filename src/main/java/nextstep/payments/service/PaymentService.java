@@ -8,11 +8,13 @@ import nextstep.payments.domain.Payment;
 import nextstep.payments.domain.PaymentEntityUserMap;
 import nextstep.payments.domain.PaymentRepository;
 import nextstep.payments.domain.Payments;
+import nextstep.payments.entity.PaymentEntity;
 import nextstep.payments.factory.PaymentFactory;
 import nextstep.payments.factory.PaymentsFactory;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 
@@ -24,6 +26,7 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final UserRepository userRepository;
     private final SessionFactory sessionFactory;
+    private final PaymentFactory paymentFactory;
     private final PaymentsFactory paymentsFactory;
 
     public PaymentService(
@@ -32,6 +35,7 @@ public class PaymentService {
         PaymentRepository paymentRepository,
         UserRepository userRepository,
         SessionFactory sessionFactory,
+        PaymentFactory paymentFactory,
         PaymentsFactory paymentsFactory
     ) {
         this.sessionRepository = sessionRepository;
@@ -39,6 +43,7 @@ public class PaymentService {
         this.paymentRepository = paymentRepository;
         this.userRepository = userRepository;
         this.sessionFactory = sessionFactory;
+        this.paymentFactory = paymentFactory;
         this.paymentsFactory = paymentsFactory;
     }
 
@@ -68,4 +73,43 @@ public class PaymentService {
 
         return false;
     }
+
+    @Transactional
+    public boolean approve(long paymentId, String approverId) throws IOException {
+        NsUser approver = userRepository.findByUserId(approverId);
+        PaymentEntity paymentEntity = paymentRepository.findById(paymentId);
+        NsUser applicant = userRepository.findByUserId(paymentEntity.getUserId().toString());
+
+        if (approver.canApprove(applicant)) {
+            Long sessionId = paymentEntity.getSessionId();
+            Session session = sessionFactory.create(
+                sessionRepository.findById(sessionId),
+                sessionImageRepository.findAllBySessionId(sessionId)
+            );
+            paymentFactory.create(paymentEntity, session, applicant).approve();
+            return true;
+        }
+
+        return false;
+    }
+
+    @Transactional
+    public boolean cancel(long paymentId, String approverId)  throws IOException {
+        NsUser approver = userRepository.findByUserId(approverId);
+        PaymentEntity paymentEntity = paymentRepository.findById(paymentId);
+        NsUser applicant = userRepository.findByUserId(paymentEntity.getUserId().toString());
+
+        if (approver.canCancel(applicant)) {
+            Long sessionId = paymentEntity.getSessionId();
+            Session session = sessionFactory.create(
+                sessionRepository.findById(sessionId),
+                sessionImageRepository.findAllBySessionId(sessionId)
+            );
+            paymentFactory.create(paymentEntity, session, applicant).cancel();
+            return true;
+        }
+
+        return false;
+    }
+
 }
