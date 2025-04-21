@@ -32,8 +32,8 @@ class PaymentServiceTest {
     @Test
     void testSaveSuccess() throws IOException {
         TestSessionRepository sessionRepository = new TestSessionRepository(1L, null, List.of());
-        TestSessionImageRepository sessionImageRepository = new TestSessionImageRepository(List.of());
-        TestPaymentRepository paymentRepository = new TestPaymentRepository(1L, List.of());
+        TestSessionImageRepository sessionImageRepository = new TestSessionImageRepository();
+        TestPaymentRepository paymentRepository = new TestPaymentRepository(1L);
         TestUserRepository userRepository = new TestUserRepository(1L);
         userRepository.addUser("1", JAVAJIGI);
         TestSessionFactory sessionFactory = new TestSessionFactory();
@@ -76,18 +76,10 @@ class PaymentServiceTest {
     void testApprove(String approverRole, String applicantRole, boolean expectedResult) throws IOException {
         NsUser approver = new NsUser("1", "password", "강사1", "test@naver.com", approverRole);
         NsUser applicant = new NsUser("2", "password", "참여자1", "test@naver.com", applicantRole);
-        TestSessionRepository sessionRepository = new TestSessionRepository(1L, null, List.of());
-        TestSessionImageRepository sessionImageRepository = new TestSessionImageRepository(List.of());
+        TestSessionRepository sessionRepository = new TestSessionRepository(1L);
+        TestSessionImageRepository sessionImageRepository = new TestSessionImageRepository();
 
-        PaymentEntity paymentEntity = PaymentEntity.builder()
-            .id(1L)
-            .userId(2L)
-            .sessionId(5L)
-            .amount(500_000L)
-            .createdAt(LocalDateTime.now())
-            .updatedAt(LocalDateTime.now())
-            .deleted(false)
-            .build();
+         PaymentEntity paymentEntity = createPaymentEntity(1L, 2L, 5L);
         TestPaymentRepository paymentRepository = new TestPaymentRepository(1L, paymentEntity);
 
         TestUserRepository userRepository = new TestUserRepository(1L);
@@ -128,15 +120,7 @@ class PaymentServiceTest {
         TestSessionRepository sessionRepository = new TestSessionRepository(1L, null, List.of());
         TestSessionImageRepository sessionImageRepository = new TestSessionImageRepository(List.of());
 
-        PaymentEntity paymentEntity = PaymentEntity.builder()
-            .id(1L)
-            .userId(2L)
-            .sessionId(5L)
-            .amount(500_000L)
-            .createdAt(LocalDateTime.now())
-            .updatedAt(LocalDateTime.now())
-            .deleted(false)
-            .build();
+        PaymentEntity paymentEntity = createPaymentEntity(1L, 2L, 5L);
         TestPaymentRepository paymentRepository = new TestPaymentRepository(1L, paymentEntity);
 
         TestUserRepository userRepository = new TestUserRepository(1L);
@@ -146,13 +130,6 @@ class PaymentServiceTest {
 
         Payment payment = new Payment("10", new Session(), applicant, 300_000L);
         TestPaymentFactory paymentFactory = new TestPaymentFactory(payment);
-
-//        TestPaymentsFactory paymentsFactory = new TestPaymentsFactory(new PaymentFactory(), new Payments() {
-//            @Override
-//            public boolean canEnroll(Session session, Payment other) {
-//                return true;
-//            }
-//        });
 
         PaymentService paymentService = new PaymentService(
             sessionRepository,
@@ -170,5 +147,18 @@ class PaymentServiceTest {
         };
 
         assertThat(paymentService.cancel(10L, "1")).isEqualTo(expectedResult);
+    }
+
+    private PaymentEntity createPaymentEntity(Long id, Long userId, Long sessionId) {
+        return PaymentEntity.builder()
+            .id(id)
+            .userId(userId)
+            .sessionId(sessionId)
+            .amount(300_000L)
+            .status("대기중")
+            .createdAt(LocalDateTime.now())
+            .updatedAt(LocalDateTime.now())
+            .deleted(false)
+            .build();
     }
 }

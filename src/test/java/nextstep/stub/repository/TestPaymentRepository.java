@@ -13,10 +13,9 @@ public class TestPaymentRepository implements PaymentRepository {
     private int findByIdCalled = 0;
     private int findBySessionCalled = 0;
 
-    public TestPaymentRepository(long saveResult, List<PaymentEntity> findBySessionResult) {
-        this(saveResult, null, findBySessionResult);
+    public TestPaymentRepository(long saveResult) {
+        this(saveResult, null, List.of());
     }
-
 
     public TestPaymentRepository(long saveResult, PaymentEntity findByIdResult) {
         this(saveResult, findByIdResult, null);

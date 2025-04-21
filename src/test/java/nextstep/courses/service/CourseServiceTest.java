@@ -43,7 +43,7 @@ class CourseServiceTest {
         Course course = new Course("1", "test-course", 3L, testLocalDateTime, testLocalDateTime);
 
         TestCourseRepository courseRepository = new TestCourseRepository(1L, null);
-        TestCourseFactory courseFactory = new TestCourseFactory(new TestSessionFactory(), course);
+        TestCourseFactory courseFactory = new TestCourseFactory(course);
         TestSessionImageRepository sessionImageRepository = new TestSessionImageRepository(List.of());
 
         CourseService courseService = new CourseService(

@@ -14,7 +14,7 @@ public class TestSessionImageRepository implements SessionImageRepository {
     private int findByIdCalled = 0;
 
     public TestSessionImageRepository() {
-        this(null, null, null);
+        this(null, null, List.of());
     }
 
     public TestSessionImageRepository(List<SessionImageEntity> findAllBySessionIdResult) {

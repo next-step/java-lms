@@ -13,6 +13,10 @@ public class TestSessionRepository implements SessionRepository {
     private int findByIdCalled = 0;
     private int findAllByCourseIdCalled = 0;
 
+    public TestSessionRepository(Long saveResult) {
+        this(saveResult, null, null);
+    }
+
     public TestSessionRepository(Long saveResult, SessionEntity findByIdResult, List<SessionEntity> findAllByCourseIdResult) {
         this.saveResult = saveResult;
         this.findByIdResult = findByIdResult;
