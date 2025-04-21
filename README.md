@@ -86,7 +86,7 @@
 - [x] Session - 무료강의, 일반강의를 나누어 팩터리 메서드를 제공하는 것도 방법이겠네요 😄
 - [ ] Session - price 가 음수로 주어진 경우에는 따로 예외처리가 필요없을까요?
 - [x] SessionImage - 확장자명은 고정으로 사용될 것 같아 보이는데, 상수로 분리하는 건 어떨까요?
-- [ ] SessionImage - 확장자명을 enum class 로 관리하는 것도 방법이죠
+- [x] SessionImage - 확장자명을 enum class 로 관리하는 것도 방법이죠
 
 ---
 ## STEP3. 수강신청(DB 적용)

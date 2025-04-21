@@ -3,10 +3,8 @@ package nextstep.courses.domain.model;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
-import java.util.List;
 
 public class SessionImage {
-    private static final List<String> ALLOWED_EXTENSIONS = List.of("gif", "jpg", "jpeg", "png", "svg");
     private static final int MAX_FILE_SIZE_BYTES = 1024 * 1024;
     private static final int MIN_WIDTH = 300;
     private static final int MIN_HEIGHT = 200;
@@ -46,7 +44,7 @@ public class SessionImage {
     }
 
     private static void validateExtension(String path) {
-        if (!ALLOWED_EXTENSIONS.contains(extractExtension(path)))
+        if (ImageExtension.notExist(extractExtension(path)))
             throw new IllegalArgumentException("File extension does not match");
     }
 
