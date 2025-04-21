@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 @Repository("userRepository")
@@ -55,6 +57,33 @@ public class JdbcUserRepository implements UserRepository {
             rs.getString(8)
         );
         return jdbcTemplate.queryForObject(sql, rowMapper, userId);
+    }
+
+    @Override
+    public List<NsUser> findByUserIds(List<String> userIds) {
+        if (userIds == null || userIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        String inSql = String.join(",", Collections.nCopies(userIds.size(), "?"));
+
+        String sql = String.format(
+            "SELECT id, user_id, password, name, email, created_at, updated_at, type FROM ns_user WHERE user_id IN (%s)",
+            inSql
+        );
+
+        RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
+            rs.getString("id"),
+            rs.getString("user_id"),
+            rs.getString("password"),
+            rs.getString("name"),
+            rs.getString("email"),
+            toLocalDateTime(rs.getTimestamp("created_at")),
+            toLocalDateTime(rs.getTimestamp("updated_at")),
+            rs.getString("type")
+        );
+
+        return jdbcTemplate.query(sql, rowMapper, userIds.toArray());
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

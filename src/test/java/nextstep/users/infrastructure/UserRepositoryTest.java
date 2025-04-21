@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
@@ -38,5 +41,23 @@ public class UserRepositoryTest {
         NsUser nsUser = new NsUser("1", "javajigi", "password", "name", "javajigi@slipp.net");
         userRepository.save(nsUser);
         assertThat(userRepository.findByUserId("1")).isNotNull();
+    }
+
+    @DisplayName("여러 유저 아이디로 조회")
+    @Test
+    void findUsersByIds() {
+        NsUser nsUser1 = new NsUser("1", "user1", "password", "name1", "user1@example.com");
+        NsUser nsUser2 = new NsUser("2", "user2", "password", "name2", "user2@example.com");
+        NsUser nsUser3 = new NsUser("3", "user3", "password", "name3", "user3@example.com");
+
+        userRepository.save(nsUser1);
+        userRepository.save(nsUser2);
+        userRepository.save(nsUser3);
+
+        List<String> userIds = Arrays.asList("1", "2", "3");
+
+        List<NsUser> users = userRepository.findByUserIds(userIds);
+
+        assertThat(users).hasSize(3);
     }
 }
