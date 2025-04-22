@@ -1,9 +1,13 @@
 package nextstep.courses.domain;
 
-import org.assertj.core.api.Assertions;
+import static org.assertj.core.api.Assertions.*;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
+import nextstep.courses.domain.coverImage.ImageType;
 import nextstep.courses.domain.coverImage.Size;
 import nextstep.courses.domain.coverImage.VolumeExceedException;
 
@@ -11,8 +15,29 @@ public class CoverImageTest {
     @Test
     @DisplayName("이미지 크기는 1MB 이하여야 한다.")
     public void coverImageSizeTest() {
-        Assertions.assertThatThrownBy(
+        assertThatThrownBy(
             () -> Size.ofKilobytes(1025)
         ).isInstanceOf(VolumeExceedException.class);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "gif,  GIF",
+        "jpg,  JPG",
+        "jpeg, JPG",
+        "png,  PNG",
+        "svg,  SVG"
+    })
+    @DisplayName("이미지 타입은 gif, jpg(jpeg 포함),, png, svg만 허용한다.")
+    public void coverImageTypeTest(String ext, ImageType expectedType) {
+        assertThat(ImageType.fromExtension(ext)).isEqualTo(expectedType);
+    }
+
+    @Test
+    @DisplayName("이미지 타입 호환 안되어야 함")
+    public void coverImageUnsupportedTypeTest() {
+        assertThatThrownBy(
+            () ->ImageType.fromExtension("webp")
+        ).isInstanceOf(IllegalArgumentException.class);
     }
 }
