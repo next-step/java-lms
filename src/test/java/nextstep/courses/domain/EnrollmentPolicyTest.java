@@ -10,6 +10,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import nextstep.courses.CannotEnrollException;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionStatus;
+import nextstep.courses.domain.session.EnrollmentPolicy;
+import nextstep.courses.domain.session.metadata.Period;
 import nextstep.payments.domain.Payment;
 
 public class EnrollmentPolicyTest {

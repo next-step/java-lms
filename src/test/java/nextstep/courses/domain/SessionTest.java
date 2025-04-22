@@ -8,6 +8,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionStatus;
+import nextstep.courses.domain.session.EnrollmentPolicy;
+import nextstep.courses.domain.session.metadata.Period;
+
 public class SessionTest {
 
     Period period;

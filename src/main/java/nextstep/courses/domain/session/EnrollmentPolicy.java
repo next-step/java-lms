@@ -1,9 +1,10 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import java.util.Objects;
 import java.util.OptionalLong;
 
 import nextstep.courses.CannotEnrollException;
+import nextstep.courses.domain.Amount;
 
 /**
  * 최대 수강 인원 제한은 충분히 큰 Long타입의 MAX value로 한다.

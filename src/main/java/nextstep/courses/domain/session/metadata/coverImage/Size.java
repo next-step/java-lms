@@ -1,4 +1,4 @@
-package nextstep.courses.domain.coverImage;
+package nextstep.courses.domain.session.metadata.coverImage;
 
 import java.util.Objects;
 

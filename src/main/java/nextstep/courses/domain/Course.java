@@ -3,6 +3,8 @@ package nextstep.courses.domain;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import nextstep.courses.domain.session.Session;
+
 public class Course {
     private Long id;
 

@@ -1,46 +1,22 @@
-package nextstep.courses.domain;
-
-import java.time.LocalDate;
+package nextstep.courses.domain.session;
 
 import nextstep.courses.CannotEnrollException;
-import nextstep.courses.domain.coverImage.CoverImage;
+import nextstep.courses.domain.Amount;
 import nextstep.payments.domain.Payment;
 
-/**
- * 강의 엔터티 - 가변 객체 : Aggregate Root
- */
-public class Session {
-    private final Long id;
-    private final Period period;
+public class Enrollment {
     private SessionStatus status;
     private final EnrollmentPolicy enrollmentPolicy;
-    private final CoverImage coverImage;
-    // 현재 수강생 수
-    private long enrolledCount = 0;
+    private int enrolledCount = 0;
 
-    public Session(Long id, Period period) {
-        this(id, period, SessionStatus.PREPARING);
-    }
-
-    public Session(Long id, Period period, SessionStatus status) {
-        this(id, period, status, EnrollmentPolicy.free());
-    }
-
-    public Session(Long id, Period period, SessionStatus status, EnrollmentPolicy enrollmentPolicy) {
-        this(id, period, status, enrollmentPolicy, null);
-    }
-
-    public Session(Long id, Period period, SessionStatus status, EnrollmentPolicy enrollmentPolicy, CoverImage coverImage) {
-        this.id = id;
-        this.period = period;
+    public Enrollment(SessionStatus status, EnrollmentPolicy enrollmentPolicy) {
         this.status = status;
         this.enrollmentPolicy = enrollmentPolicy;
-        this.coverImage = coverImage;
     }
 
     /* ------------ 정책 검증 ------------ */
     // 모집중 상태인지
-    private boolean isOpen() {
+    public boolean isOpen() {
         return status.equals(SessionStatus.OPEN);
     }
 
@@ -65,14 +41,6 @@ public class Session {
     /* ------------ 정보성 메서드 ------------ */
     public Amount price() {
         return enrollmentPolicy.price();
-    }
-
-    public LocalDate startAt() {
-        return period.startAt();
-    }
-
-    public LocalDate endAt() {
-        return period.endAt();
     }
 
     public boolean isFree() {
