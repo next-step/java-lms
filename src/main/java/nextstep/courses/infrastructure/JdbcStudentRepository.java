@@ -6,24 +6,35 @@ import nextstep.courses.domain.model.SessionPeriod;
 import nextstep.courses.domain.model.Student;
 import nextstep.courses.domain.repository.StudentRepository;
 import nextstep.users.domain.NsUser;
-import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Repository
 public class JdbcStudentRepository implements StudentRepository {
-    private final JdbcOperations jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
-    public JdbcStudentRepository(JdbcOperations jdbcTemplate) {
+    public JdbcStudentRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public int save(Student student) {
-        String sql = "insert into student (session_id, ns_user_id, created_at) values(?, ?, ?)";
-        return jdbcTemplate.update(sql, student.getSession().getId(), student.getNsUser().getId(), student.getCreatedAt());
+        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+                .withTableName("student")
+                .usingGeneratedKeyColumns("id");
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("session_id", student.getSession().getId());
+        parameters.put("ns_user_id", student.getNsUser().getId());
+        parameters.put("created_at", student.getCreatedAt());
+
+        return simpleJdbcInsert.execute(parameters);
     }
 
     @Override

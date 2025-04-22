@@ -2,22 +2,34 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.model.Course;
 import nextstep.courses.domain.repository.CourseRepository;
-import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Repository
 public class JdbcCourseRepository implements CourseRepository {
-    private JdbcOperations jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
-    public JdbcCourseRepository(JdbcOperations jdbcTemplate) {
+    public JdbcCourseRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public int save(Course course) {
-        String sql = "insert into course (title, creator_id, created_at) values(?, ?, ?)";
-        return jdbcTemplate.update(sql, course.getTitle(), course.getCreatorId(), course.getCreatedAt());
+        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+                .withTableName("course")
+                .usingGeneratedKeyColumns("id");
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("title", course.getTitle());
+        parameters.put("creator_id", course.getCreatorId());
+        parameters.put("created_at", course.getCreatedAt());
+
+        return simpleJdbcInsert.execute(parameters);
     }
 
     @Override

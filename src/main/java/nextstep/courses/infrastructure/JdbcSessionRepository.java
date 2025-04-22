@@ -4,38 +4,44 @@ import nextstep.courses.domain.model.Session;
 import nextstep.courses.domain.model.SessionImage;
 import nextstep.courses.domain.model.SessionPeriod;
 import nextstep.courses.domain.repository.SessionRepository;
-import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 @Repository
 public class JdbcSessionRepository implements SessionRepository {
-    private final JdbcOperations jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
-    public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
+    public JdbcSessionRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public int save(Session session) {
-        String sql = "insert into session (course_id, capacity, status, price, start_date, end_date, image_path, image_file, creator_id, created_at, updated_at) "
-                + "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+                .withTableName("session")
+                .usingGeneratedKeyColumns("id");
 
-        return jdbcTemplate.update(sql,
-                session.getCourseId(),
-                session.getStudents().getCapacity(),
-                session.getStatus().name(),
-                new BigDecimal(session.getPrice()),
-                session.getPeriod().getStartDate().toLocalDate(),
-                session.getPeriod().getEndDate().toLocalDate(),
-                session.getImage().getPath(),
-                session.getImage().getFile(),
-                session.getCreatorId(),
-                session.getCreatedAt(),
-                session.getUpdatedAt());
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("course_id", session.getCourseId());
+        parameters.put("capacity", session.getStudents().getCapacity());
+        parameters.put("status", session.getStatus().name());
+        parameters.put("price", new BigDecimal(session.getPrice()));
+        parameters.put("start_date", session.getPeriod().getStartDate().toLocalDate());
+        parameters.put("end_date", session.getPeriod().getEndDate().toLocalDate());
+        parameters.put("image_path", session.getImage().getPath());
+        parameters.put("image_file", session.getImage().getFile());
+        parameters.put("creator_id", session.getCreatorId());
+        parameters.put("created_at", session.getCreatedAt());
+        parameters.put("updated_at", session.getUpdatedAt());
+
+        return simpleJdbcInsert.execute(parameters);
     }
 
     @Override

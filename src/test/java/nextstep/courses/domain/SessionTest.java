@@ -23,7 +23,7 @@ public class SessionTest {
     }
 
     public static Session createPaidSession(Long price, int capacity) {
-        return Session.createPaidSession(CourseTest.createCourse(), LocalDateTime.now(), LocalDateTime.now().plusMonths(1), null, SessionStatus.OPEN, price, capacity, NsUserTest.JAVAJIGI);
+        return Session.createPaidSession(CourseTest.createCourse(), new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)), null, SessionStatus.OPEN, price, capacity, NsUserTest.JAVAJIGI);
     }
 
     @Test

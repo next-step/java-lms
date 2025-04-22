@@ -21,8 +21,8 @@ public class Session {
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
 
-    private Session(Long id, Long courseId, LocalDateTime startDate, LocalDateTime endDate, SessionImage image, SessionStatus status, Long price, int capacity, Long creatorId) {
-        this(id, courseId, new SessionPeriod(startDate, endDate), image, status, price, capacity, creatorId, LocalDateTime.now(), LocalDateTime.now());
+    private Session(Long id, Long courseId, SessionPeriod period, SessionImage image, SessionStatus status, Long price, int capacity, Long creatorId) {
+        this(id, courseId, period, image, status, price, capacity, creatorId, LocalDateTime.now(), LocalDateTime.now());
     }
 
     public Session(Long id, Long courseId, SessionPeriod period, SessionImage image, String status, Long price, int capacity, Long creatorId, Timestamp createdAt, Timestamp updatedAt) {
@@ -48,13 +48,13 @@ public class Session {
 
 
     public static Session createFreeSession(Course course, LocalDateTime startDate, LocalDateTime endDate, SessionImage image, SessionStatus status, NsUser creator) {
-        Session session = new Session(null, course.getId(), startDate, endDate, image, status, 0L, Integer.MAX_VALUE, creator.getId());
+        Session session = new Session(null, course.getId(), new SessionPeriod(startDate, endDate), image, status, 0L, Integer.MAX_VALUE, creator.getId());
         course.addSession(session);
         return session;
     }
 
-    public static Session createPaidSession(Course course, LocalDateTime startDate, LocalDateTime endDate, SessionImage image, SessionStatus status, Long price, int capacity, NsUser creator) {
-        Session session = new Session(null, course.getId(), startDate, endDate, image, status, price, capacity, creator.getId());
+    public static Session createPaidSession(Course course, SessionPeriod period, SessionImage image, SessionStatus status, Long price, int capacity, NsUser creator) {
+        Session session = new Session(null, course.getId(), period, image, status, price, capacity, creator.getId());
         course.addSession(session);
         return session;
     }
