@@ -28,7 +28,8 @@ public class JdbcSessionRepository implements SessionRepository {
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong("id"),
                 new Course(rs.getLong("course_id")),
-                SessionStatus.valueOf(rs.getString("status")),
+                SessionProgressStatus.valueOf(rs.getString("progress_status")),
+                SessionRecruitmentStatus.valueOf(rs.getString("recruitment_status")),
                 SessionType.valueOf(rs.getString("type")),
                 new Money(rs.getInt("price")),
                 new Capacity(rs.getInt("capacity")),

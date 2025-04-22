@@ -27,7 +27,8 @@ public class SessionServiceTest {
         sessionService.save(new Session(
                 1L,
                 new Course(),
-                SessionStatus.RECRUITING,
+                SessionProgressStatus.READY,
+                SessionRecruitmentStatus.RECRUITING,
                 SessionType.PAID,
                 new Money(10000L),
                 new Capacity(30),

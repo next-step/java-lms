@@ -29,7 +29,7 @@
 
 ---
 ## TODO
-- [ ] SessionStatus(강의 상태) → SessionProgressStatus(강의 진행 상태)/SessionRecruitmentStatus(강의 모집 상태) 로 분리
+- [x] SessionStatus(강의 상태) → SessionProgressStatus(강의 진행 상태)/SessionRecruitmentStatus(강의 모집 상태) 로 분리
 - [ ] SessionCoverImages 클래스 추가
 - [ ] Enrollment (수강신청) 에 대해서 요구사항 추가
   - [ ] 수강 신청 상태 클래스 추가 (EnrollmentStatus)

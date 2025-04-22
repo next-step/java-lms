@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 public class SessionTest {
 
@@ -27,12 +28,12 @@ public class SessionTest {
 
     @Test
     public void 수강신청_시_강의상태가_모집중_상태가_아닌_경우_예외_발생() {
-        freeSession.ready();
-        assertThatIllegalArgumentException()
+        freeSession.readySession();
+        assertThatIllegalStateException()
                 .isThrownBy(() -> freeSession.enroll(0, student, new Payment()));
 
-        freeSession.close();
-        assertThatIllegalArgumentException()
+        freeSession.endSession();
+        assertThatIllegalStateException()
                 .isThrownBy(() -> freeSession.enroll(0, student, new Payment()));
     }
 
@@ -40,8 +41,15 @@ public class SessionTest {
     public void 유료강의신청_시_최대수강인원을_초과하는_경우_예외_발생() {
         Payment payment = new Payment("paymentId", 0L, 0L, PRICE);
 
-        paidSession.startRecruiting();
+        paidSession.startRecruitment();
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> paidSession.enroll(MAX_CAPACITY, student, payment));
+    }
+
+    @Test
+    public void 종료된_강의에_대해서_모집중_상태로_변경시_예외_발생() {
+        freeSession.endSession();
+        assertThatIllegalStateException()
+                .isThrownBy(() -> freeSession.startRecruitment());
     }
 }
