@@ -42,4 +42,9 @@ public class FileImage implements Image {
         }
         return fileName.substring(lastIndexOfDot + 1);
     }
+
+    @Override
+    public String getPath() {
+        return file.getAbsolutePath();
+    }
 }

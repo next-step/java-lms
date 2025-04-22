@@ -5,4 +5,5 @@ public interface Image {
     int height();
     int size();
     String extension();
+    String getPath();
 }

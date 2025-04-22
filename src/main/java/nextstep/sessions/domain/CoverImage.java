@@ -23,6 +23,10 @@ public class CoverImage {
         validateShape(image);
     }
 
+    public String getPath() {
+        return image.getPath();
+    }
+
     private void validateSize(Image image) {
         if (image.size() / 1024.0 / 1024.0 > 1) {
             throw new IllegalArgumentException("파일 용량이 1MB를 초과합니다.");

@@ -19,7 +19,7 @@ public class SessionTest {
         CoverImage coverImage = new CoverImage(new TestImage(300, 200, 1024*1024, "jpeg"));
         PriceType priceType = PriceType.FREE;
 
-        Session session = new Session(title, startAt, endAt, coverImage, priceType);
+        Session session = new Session(0L, title, startAt, endAt, coverImage, priceType, 0, null);
 
         assertThat(session.getTitle()).isEqualTo(title);
     }
@@ -32,12 +32,58 @@ public class SessionTest {
         LocalDateTime endAt = startAt.plusHours(1);
         CoverImage coverImage = new CoverImage(new TestImage(300, 200, 1024*1024, "jpeg"));
         PriceType priceType = PriceType.PAID;
-        Price price = new Price(10000);
+        Integer price = 10000;
         Integer maxAttendees = 10;
 
-        Session session = new Session(title, startAt, endAt, coverImage, priceType, price, maxAttendees);
+        Session session = new Session(0L, title, startAt, endAt, coverImage, priceType, price, maxAttendees);
 
         assertThat(session.getTitle()).isEqualTo(title);
+    }
+
+    @DisplayName("무료강의에서 가격이 설정된 경우 예외 발생")
+    @Test
+    void createSessionWithPriceInFreeSession() {
+        String title = "테스트 타이틀";
+        LocalDateTime startAt = LocalDateTime.now();
+        LocalDateTime endAt = startAt.plusHours(1);
+        CoverImage coverImage = new CoverImage(new TestImage(300, 200, 1024*1024, "jpeg"));
+        PriceType priceType = PriceType.FREE;
+        Integer price = 10000;
+
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> new Session(0L, title, startAt, endAt, coverImage, priceType, price, null))
+                .withMessage("무료 강의는 가격과 최대 인원이 필요하지 않습니다.");
+    }
+
+    @DisplayName("유료강의에서 가격이 설정되지 않은 경우 예외 발생")
+    @Test
+    void createSessionWithoutPriceInPaidSession() {
+        String title = "테스트 타이틀";
+        LocalDateTime startAt = LocalDateTime.now();
+        LocalDateTime endAt = startAt.plusHours(1);
+        CoverImage coverImage = new CoverImage(new TestImage(300, 200, 1024*1024, "jpeg"));
+        PriceType priceType = PriceType.PAID;
+        Integer price = 0;
+        Integer maxAttendees = 10;
+
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> new Session(0L, title, startAt, endAt, coverImage, priceType, price, maxAttendees))
+                .withMessage("유료 강의는 가격이 0원보다 커야 합니다.");
+    }
+
+    @DisplayName("유료강의에서 최대 수강인원이 설정되지 않은 경우 예외 발생")
+    @Test
+    void createSessionWithoutMaxAttendeesInPaidSession() {
+        String title = "테스트 타이틀";
+        LocalDateTime startAt = LocalDateTime.now();
+        LocalDateTime endAt = startAt.plusHours(1);
+        CoverImage coverImage = new CoverImage(new TestImage(300, 200, 1024*1024, "jpeg"));
+        PriceType priceType = PriceType.PAID;
+        Integer price = 10000;
+
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> new Session(0L, title, startAt, endAt, coverImage, priceType, price, null))
+                .withMessage("유료 강의는 최대 인원이 필요합니다.");
     }
 
     @DisplayName("강의 상태가 모집중이 아닌데 수강신청한 경우")
@@ -48,10 +94,10 @@ public class SessionTest {
         LocalDateTime endAt = startAt.plusHours(1);
         CoverImage coverImage = new CoverImage(new TestImage(300, 200, 1024*1024, "jpeg"));
         PriceType priceType = PriceType.PAID;
-        Price price = new Price(10000);
+        Integer price = 10000;
         Integer maxAttendees = 10;
 
-        Session session = new Session(title, startAt, endAt, coverImage, priceType, price, maxAttendees);
+        Session session = new Session(0L, title, startAt, endAt, coverImage, priceType, price, maxAttendees);
         session.close();
 
         NsUser testUser = new NsUser(1L, "testUser", "password", "name", "email");
@@ -68,10 +114,10 @@ public class SessionTest {
         LocalDateTime endAt = startAt.plusHours(1);
         CoverImage coverImage = new CoverImage(new TestImage(300, 200, 1024*1024, "jpeg"));
         PriceType priceType = PriceType.PAID;
-        Price price = new Price(10000);
+        Integer price = 10000;
         Integer maxAttendees = 10;
 
-        Session session = new Session(title, startAt, endAt, coverImage, priceType, price, maxAttendees);
+        Session session = new Session(0L, title, startAt, endAt, coverImage, priceType, price, maxAttendees);
 
         NsUser testUser = new NsUser(1L, "testUser", "password", "name", "email");
         session.apply(testUser);
@@ -87,10 +133,10 @@ public class SessionTest {
         LocalDateTime endAt = startAt.plusHours(1);
         CoverImage coverImage = new CoverImage(new TestImage(300, 200, 1024*1024, "jpeg"));
         PriceType priceType = PriceType.PAID;
-        Price price = new Price(10000);
+        Integer price = 10000;
         Integer maxAttendees = 1;
 
-        Session session = new Session(title, startAt, endAt, coverImage, priceType, price, maxAttendees);
+        Session session = new Session(0L, title, startAt, endAt, coverImage, priceType, price, maxAttendees);
 
         NsUser testUser1 = new NsUser(1L, "testUser1", "password", "name", "email");
         NsUser testUser2 = new NsUser(2L, "testUser2", "password", "name", "email");

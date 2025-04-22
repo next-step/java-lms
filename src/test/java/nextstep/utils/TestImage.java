@@ -32,4 +32,9 @@ public class TestImage implements Image {
     public String extension() {
         return extension;
     }
+
+    @Override
+    public String getPath() {
+        return "test/path/to/image." + extension;
+    }
 }
