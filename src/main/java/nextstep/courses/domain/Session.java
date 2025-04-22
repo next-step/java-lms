@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import java.time.LocalDate;
 
 import nextstep.courses.CannotEnrollException;
+import nextstep.courses.domain.coverImage.CoverImage;
 import nextstep.payments.domain.Payment;
 
 /**
@@ -13,6 +14,7 @@ public class Session {
     private final Period period;
     private SessionStatus status;
     private final EnrollmentPolicy enrollmentPolicy;
+    private final CoverImage coverImage;
     // 현재 수강생 수
     private long enrolledCount = 0;
 
@@ -25,10 +27,15 @@ public class Session {
     }
 
     public Session(Long id, Period period, SessionStatus status, EnrollmentPolicy enrollmentPolicy) {
+        this(id, period, status, enrollmentPolicy, null);
+    }
+
+    public Session(Long id, Period period, SessionStatus status, EnrollmentPolicy enrollmentPolicy, CoverImage coverImage) {
         this.id = id;
         this.period = period;
         this.status = status;
         this.enrollmentPolicy = enrollmentPolicy;
+        this.coverImage = coverImage;
     }
 
     /* ------------ 정책 검증 ------------ */
