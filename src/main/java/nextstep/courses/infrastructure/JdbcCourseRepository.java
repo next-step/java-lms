@@ -12,7 +12,7 @@ import java.util.Map;
 
 @Repository
 public class JdbcCourseRepository implements CourseRepository {
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public JdbcCourseRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

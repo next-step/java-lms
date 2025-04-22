@@ -1,8 +1,6 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.model.Session;
-import nextstep.courses.domain.model.SessionImage;
-import nextstep.courses.domain.model.SessionPeriod;
 import nextstep.courses.domain.repository.SessionRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -52,14 +50,10 @@ public class JdbcSessionRepository implements SessionRepository {
                 return new Session(
                         rs.getLong("id"),
                         rs.getLong("course_id"),
-                        new SessionPeriod(
-                                rs.getDate("start_date"),
-                                rs.getDate("end_date")
-                        ),
-                        new SessionImage(
-                                rs.getString("image_path"),
-                                rs.getBlob("image_file")
-                        ),
+                        rs.getDate("start_date"),
+                        rs.getDate("end_date"),
+                        rs.getString("image_path"),
+                        rs.getBlob("image_file"),
                         rs.getString("status"),
                         rs.getLong("price"),
                         rs.getInt("capacity"),

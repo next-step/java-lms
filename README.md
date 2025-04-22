@@ -125,7 +125,7 @@
   - Spring Data JPA 에서 기본적으로 채택하는 형태를 이용해보는 건 어떨까요? id, createdAt, updatedAt 같이 모든 테이블에서 활용하는, 공통되는 필드를 모은 abstract class 를 하나 만들어 getter 까지도 제공해주는거죠.
   - 가장 좋은 선택 방법은 함께 일하는 동료 개발자와 장단점을 의논하고 "이 프로젝트에는 이 테스트 방법이 어울리는 것 같아요. 이걸로 결정하죠." 라고 정하는 것 같아요 😄
 - [x] JdbcSessionRepository > simple jdbc insert 를 활용해봐도 좋을거 같습니다 😄
-- [ ] JdbcStudentRepository > findById()로 객체를 조회하고 매핑하는 과정이 너무 복잡해졌습니다.
+- [x] JdbcStudentRepository > findById()로 객체를 조회하고 매핑하는 과정이 너무 복잡해졌습니다.
   - 조금의 복잡도를 희생하지만 쿼리를 1번만 발생시키는 방법과 쿼리는 2번 발생하지만, 복잡도를 크게 낮추는 방법
   - 결국 선택과 타협을 잘 하려면 우리 서버의 성능과, 우리 비즈니스의 특성을 잘 아는 것이 중요하겠네요 😄
 - [ ] JdbcStudentRepository > DB 데이터를 도메인 객체로 매핑할 때 Getter를 사용하고 있는데, 혹시 Getter를 사용하지 않고 매핑하는 더 좋은 방법이 있을까요?
