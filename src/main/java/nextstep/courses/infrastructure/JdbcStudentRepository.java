@@ -3,8 +3,8 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.model.Session;
 import nextstep.courses.domain.model.Student;
 import nextstep.courses.domain.repository.StudentRepository;
-import nextstep.courses.infrastructure.entity.SessionEntity;
-import nextstep.courses.infrastructure.entity.StudentEntity;
+import nextstep.courses.infrastructure.entity.JdbcSession;
+import nextstep.courses.infrastructure.entity.JdbcStudent;
 import nextstep.users.domain.NsUser;
 import nextstep.users.infrastructure.entity.NsUserEntity;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -40,7 +40,7 @@ public class JdbcStudentRepository implements StudentRepository {
     @Override
     public Student findById(Long id) {
         String studentSql = "SELECT id, session_id, ns_user_id, created_at, updated_at FROM student WHERE id = ?";
-        StudentEntity entity = jdbcTemplate.queryForObject(studentSql, new BeanPropertyRowMapper<>(StudentEntity.class), id);
+        JdbcStudent entity = jdbcTemplate.queryForObject(studentSql, new BeanPropertyRowMapper<>(JdbcStudent.class), id);
 
         NsUser nsUser = findNsUserById(entity.getNsUserId());
         Session session = findSessionById(entity.getSessionId());
@@ -56,7 +56,7 @@ public class JdbcStudentRepository implements StudentRepository {
 
     private Session findSessionById(Long sessionId) {
         String sessionSql = "SELECT * FROM session WHERE id = ?";
-        SessionEntity entity = jdbcTemplate.queryForObject(sessionSql, new BeanPropertyRowMapper<>(SessionEntity.class), sessionId);
+        JdbcSession entity = jdbcTemplate.queryForObject(sessionSql, new BeanPropertyRowMapper<>(JdbcSession.class), sessionId);
         return entity.toDomain();
     }
 

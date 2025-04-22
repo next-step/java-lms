@@ -114,7 +114,8 @@
 >   - src/test/java 폴더의 nextstep.courses.infrastructure.CourseRepositoryTest
 
 ### 코멘트
-- [ ] Session > Entity 에서 id 외의 필드들은 시간에 따른 변화를 나타낼 뿐, 서로 다름을 의미하진 않죠.
+
+- [x] Session > Entity 에서 id 외의 필드들은 시간에 따른 변화를 나타낼 뿐, 서로 다름을 의미하진 않죠.
   - Java instance: 인스턴스 생성시 주어진 해시값으로 동등성을 비교한다.
   - Value Object(VO): 모든 필드가 동등한지 비교한다.
   - Entity: Identifier + VO. Identifier 만으로 동등성을 비교한다.

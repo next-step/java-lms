@@ -4,15 +4,15 @@ import nextstep.courses.domain.model.Course;
 
 import java.sql.Timestamp;
 
-public class CourseEntity extends BaseEntity {
+public class JdbcCourse extends BaseEntity {
     private String title;
     private Long creatorId;
 
-    public CourseEntity() {
+    public JdbcCourse() {
         super();
     }
 
-    public CourseEntity(Long id, String title, Long creatorId, Timestamp createdAt, Timestamp updatedAt) {
+    public JdbcCourse(Long id, String title, Long creatorId, Timestamp createdAt, Timestamp updatedAt) {
         super(id, createdAt, updatedAt);
         this.creatorId = creatorId;
         this.title = title;

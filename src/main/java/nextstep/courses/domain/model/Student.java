@@ -8,7 +8,7 @@ import java.util.Objects;
 
 import static nextstep.courses.domain.model.Timestamped.toLocalDateTime;
 
-public class Student extends BaseDomain {
+public class Student extends BaseEntity {
     private final NsUser user;
     private final Session session;
 

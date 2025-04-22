@@ -13,7 +13,7 @@ import java.util.Objects;
 
 import static nextstep.courses.domain.model.Timestamped.toLocalDateTime;
 
-public class Session extends BaseDomain {
+public class Session extends BaseEntity {
     private final Long courseId;
     private SessionPeriod period;
     private SessionImage image;

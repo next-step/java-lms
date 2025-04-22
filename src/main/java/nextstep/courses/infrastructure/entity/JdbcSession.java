@@ -9,7 +9,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-public class SessionEntity extends BaseEntity {
+public class JdbcSession extends BaseEntity {
     private Long courseId;
     private Integer capacity;
     private String status;
@@ -20,14 +20,14 @@ public class SessionEntity extends BaseEntity {
     private Blob imageFile;
     private Long creatorId;
 
-    public SessionEntity() {
+    public JdbcSession() {
         super();
     }
 
-    public SessionEntity(Long id, Long courseId, Integer capacity, String status,
-                         BigDecimal price, Date startDate, Date endDate,
-                         String imagePath, Blob imageFile, Long creatorId,
-                         Timestamp createdAt, Timestamp updatedAt) {
+    public JdbcSession(Long id, Long courseId, Integer capacity, String status,
+                       BigDecimal price, Date startDate, Date endDate,
+                       String imagePath, Blob imageFile, Long creatorId,
+                       Timestamp createdAt, Timestamp updatedAt) {
         super(id, createdAt, updatedAt);
         this.courseId = courseId;
         this.capacity = capacity;

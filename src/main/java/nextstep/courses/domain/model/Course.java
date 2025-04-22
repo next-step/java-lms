@@ -10,7 +10,7 @@ import java.util.List;
 
 import static nextstep.courses.domain.model.Timestamped.toLocalDateTime;
 
-public class Course extends BaseDomain {
+public class Course extends BaseEntity {
     private String title;
 
     private Long creatorId;

@@ -2,7 +2,7 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.model.Session;
 import nextstep.courses.domain.repository.SessionRepository;
-import nextstep.courses.infrastructure.entity.SessionEntity;
+import nextstep.courses.infrastructure.entity.JdbcSession;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -45,7 +45,7 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public Session findById(Long id) {
         String sql = "select * from session where id = ?";
-        SessionEntity entity = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(SessionEntity.class), id);
+        JdbcSession entity = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(JdbcSession.class), id);
         return entity == null? null : entity.toDomain();
     }
 

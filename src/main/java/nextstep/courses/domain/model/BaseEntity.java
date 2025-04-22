@@ -2,16 +2,16 @@ package nextstep.courses.domain.model;
 
 import java.time.LocalDateTime;
 
-public abstract class BaseDomain {
+public abstract class BaseEntity {
     protected Long id;
     protected LocalDateTime createdAt;
     protected LocalDateTime updatedAt;
 
-    protected BaseDomain() {
+    protected BaseEntity() {
 
     }
 
-    protected BaseDomain(Long id, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    protected BaseEntity(Long id, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
