@@ -10,17 +10,16 @@ public class Enrollment {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    public Enrollment(Session session, Student student) {
+        this(null, session, student, LocalDateTime.now(), LocalDateTime.now());
+    }
+
     public Enrollment(Long id, Session session, Student student, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.session = session;
         this.student = student;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-    }
-
-    public Enrollment(Session session, Student student) {
-        this.session = session;
-        this.student = student;
     }
 
     public Session getSession() {
