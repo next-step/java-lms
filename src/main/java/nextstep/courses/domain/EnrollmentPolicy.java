@@ -29,11 +29,6 @@ public class EnrollmentPolicy {
         return new EnrollmentPolicy(Amount.of(price), maxCapacity);
     }
 
-    // 무료 강의 여부
-    public boolean isFree() {
-        return price.isZero();
-    }
-
     // 남은 좌석 수 : 무료 강의면 OptionalLong.Empty()
     public OptionalLong remainingSeats(long enrolledCount) {
         if (isFree()) {
@@ -42,15 +37,30 @@ public class EnrollmentPolicy {
         return OptionalLong.of(Math.max(maxCapacity - enrolledCount, 0));
     }
 
-    // 추후 한명이 여러명 분의 수강 결제를 할 수도 있으니 parameter에 long타입 받아둠
-    public boolean canEnroll(long enrolledCount) {
+    /* ------------ 정책 검증 ------------ */
+    // 유료 강의의 경우 최대 수강인원보다 현재 수강인원이 적어야 함.
+    public boolean hasCapacity(long enrolledCount) {
         return isFree() || enrolledCount < maxCapacity;
     }
 
+    // 유료 강의의 경우 수강료와 결제금액이 같아야 함.
+    public boolean matchesPayment(Amount paidAmount) {
+        return isFree() || price.equals(paidAmount);
+    }
+
     public void validateEnrollment(long enrolledCount) {
-        if (!canEnroll(enrolledCount)) {
+        if (!hasCapacity(enrolledCount)) {
             throw new CannotEnrollException("잔여 좌석이 없습니다");
         }
+    }
+
+    /* ------------ 정보성 메서드 ------------ */
+    public boolean isFree() {
+        return price.isZero();
+    }
+
+    public Amount price() {
+        return price;
     }
 
     @Override
