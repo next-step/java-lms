@@ -9,8 +9,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 class SessionsTest {
-
     private final Image image = new Image(500f, "png", "cdn.com", 600, 400);
+    private final Images images = new Images(List.of(image));
 
     private Session createSessionWithId(int id) {
         return new Session(
@@ -21,8 +21,9 @@ class SessionsTest {
                 0L,
                 0,
                 0,
-                image,
-                SessionStatus.RECRUITING,
+                images,
+                SessionStatus.ONGOING,
+                RecruitmentStatus.RECRUITING,
                 new FreeJoinStrategy()
         );
     }

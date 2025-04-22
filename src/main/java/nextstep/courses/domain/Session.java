@@ -3,7 +3,6 @@ package nextstep.courses.domain;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;
-import java.util.regex.Pattern;
 
 public class Session {
     private CapacityInfo capacityInfo;
@@ -11,23 +10,26 @@ public class Session {
     private String title;
     private int id;
     private Long tuition;
-    private Image coverImage;
+    private Images coverImages;
+    private RecruitmentStatus recruitmentStatus;
     private SessionStatus sessionStatus;
     private JoinStrategy joinStrategy;
+    private final Enrollments enrollments = new Enrollments();
 
 
-    public Session(String title, int id, LocalDateTime startDate, LocalDateTime endDate, Long tuition, int currentCount, int capacity, Image coverImage, SessionStatus sessionStatus) {
-        this(title, id, startDate, endDate, tuition, currentCount, capacity, coverImage, sessionStatus, tuition == 0 ? new FreeJoinStrategy() : new PaidJoinStrategy());
+    public Session(String title, int id, LocalDateTime startDate, LocalDateTime endDate, Long tuition, int currentCount, int capacity, Images coverImages, SessionStatus sessionStatus, RecruitmentStatus recruitmentStatus) {
+        this(title, id, startDate, endDate, tuition, currentCount, capacity, coverImages, sessionStatus, recruitmentStatus, tuition == 0 ? new FreeJoinStrategy() : new PaidJoinStrategy());
     }
 
-    public Session(String title, int id, LocalDateTime startDate, LocalDateTime endDate, Long tuition, int currentCount, int capacity, Image coverImage, SessionStatus sessionStatus, JoinStrategy joinStrategy) {
+    public Session(String title, int id, LocalDateTime startDate, LocalDateTime endDate, Long tuition, int currentCount, int capacity, Images coverImages, SessionStatus sessionStatus, RecruitmentStatus recruitmentStatus, JoinStrategy joinStrategy) {
         this.title = title;
         this.id = id;
         this.sessionPeriod = new SessionPeriod(startDate, endDate);
         this.tuition = tuition;
         this.capacityInfo = new CapacityInfo(currentCount, capacity);
-        this.coverImage = coverImage;
+        this.coverImages = coverImages;
         this.sessionStatus = sessionStatus;
+        this.recruitmentStatus = recruitmentStatus;
         this.joinStrategy = joinStrategy;
     }
 
@@ -36,7 +38,7 @@ public class Session {
     }
 
     public boolean recruiting() {
-        return sessionStatus == SessionStatus.RECRUITING;
+        return sessionStatus == SessionStatus.ONGOING && recruitmentStatus == RecruitmentStatus.RECRUITING;
     }
 
     public boolean underCapacity() {
@@ -51,12 +53,30 @@ public class Session {
         return this.id == id;
     }
 
-    public void enroll(Payment pay) {
+    public void enroll(Payment pay, Member member) {
         if (!joinable(pay)) {
             throw new IllegalStateException("수강 신청 조건을 만족하지 않습니다.");
         }
 
+        if (enrollments.isEnrolledBy(member)) {
+            throw new IllegalStateException("이미 수강 신청한 회원입니다.");
+        }
+
+        enrollments.addEnrollment(new Enrollment(member, this));
+    }
+
+    public void approveEnrollment(Member member) {
+        Enrollment enrollment = enrollments.findByMember(member);
+        enrollment.approve();
+    }
+
+    public void accept(){
         this.capacityInfo.increaseCurrentCount();
+    }
+
+    public void rejectEnrollment(Member member) {
+        Enrollment enrollment = enrollments.findByMember(member);
+        enrollment.reject();
     }
 
     public String getTitle() {
@@ -87,11 +107,23 @@ public class Session {
         return capacityInfo.getCapacity();
     }
 
-    public Image getCoverImage() {
-        return coverImage;
+    public Images getCoverImages() {
+        return coverImages;
     }
 
-    public SessionStatus getStatus() {
+    public Image getMainCoverImage() {
+        return coverImages.getImages().get(0);
+    }
+
+    public SessionStatus getSessionStatus() {
         return sessionStatus;
+    }
+
+    public RecruitmentStatus getRecruitmentStatus() {
+        return recruitmentStatus;
+    }
+
+    public Enrollments getEnrollments() {
+        return enrollments;
     }
 }
