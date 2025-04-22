@@ -17,6 +17,11 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
+    public void save(Session session) {
+
+    }
+
+    @Override
     public Optional<Session> findById(Long id) {
         String sql = "SELECT * FROM session WHERE ID = ?";
 
@@ -27,7 +32,6 @@ public class JdbcSessionRepository implements SessionRepository {
                 SessionType.valueOf(rs.getString("type")),
                 new Money(rs.getInt("price")),
                 new Capacity(rs.getInt("capacity")),
-                new Enrollments(),
                 rs.getDate("start_date").toLocalDate(),
                 rs.getDate("end_date").toLocalDate(),
                 SessionCoverImage.from(rs.getString("cover_image_path")),

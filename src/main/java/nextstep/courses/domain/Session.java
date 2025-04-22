@@ -20,7 +20,7 @@ public class Session {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Session(Long id, Course course, SessionStatus status, SessionType type, Money price, Capacity maxCapacity, Enrollments enrollments, LocalDate startDate, LocalDate endDate, SessionCoverImage coverImage, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Session(Long id, Course course, SessionStatus status, SessionType type, Money price, Capacity maxCapacity, LocalDate startDate, LocalDate endDate, SessionCoverImage coverImage, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.course = course;
         this.status = status;
@@ -34,14 +34,8 @@ public class Session {
         this.updatedAt = updatedAt;
     }
 
-    public Session(SessionStatus status, SessionType type, Money price, Capacity maxCapacity, Enrollments enrollments, LocalDate startDate, LocalDate endDate, SessionCoverImage coverImage) {
-        this.status = status;
-        this.type = type;
-        this.price = price;
-        this.maxCapacity = maxCapacity;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.coverImage = coverImage;
+    public Session(SessionStatus status, SessionType type, Money price, Capacity maxCapacity, LocalDate startDate, LocalDate endDate, SessionCoverImage coverImage) {
+        this(null, null, status, type, price, maxCapacity, startDate, endDate, coverImage, LocalDateTime.now(), LocalDateTime.now());
     }
 
     public Session(Long sessionId) {
@@ -54,7 +48,6 @@ public class Session {
                 SessionType.FREE,
                 Money.FREE,
                 Capacity.ZERO,
-                new Enrollments(new ArrayList<>()),
                 startDate,
                 endDate,
                 SessionCoverImage.EMPTY
@@ -67,7 +60,6 @@ public class Session {
                 SessionType.PAID,
                 price,
                 maxCapacity,
-                new Enrollments(new ArrayList<>()),
                 startDate,
                 endDate,
                 SessionCoverImage.EMPTY
