@@ -35,5 +35,9 @@ public class Enrollment {
     public EnrollmentStatus getStatus() {
         return status;
     }
+
+    public Session getSession() {
+        return session;
+    }
 }
 
