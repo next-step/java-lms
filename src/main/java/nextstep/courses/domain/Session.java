@@ -14,6 +14,7 @@ public class Session {
     private RecruitmentStatus recruitmentStatus;
     private SessionStatus sessionStatus;
     private JoinStrategy joinStrategy;
+    private final Enrollments enrollments = new Enrollments();
 
 
     public Session(String title, int id, LocalDateTime startDate, LocalDateTime endDate, Long tuition, int currentCount, int capacity, Images coverImages, SessionStatus sessionStatus, RecruitmentStatus recruitmentStatus) {
@@ -52,12 +53,30 @@ public class Session {
         return this.id == id;
     }
 
-    public void enroll(Payment pay) {
+    public void enroll(Payment pay, Member member) {
         if (!joinable(pay)) {
             throw new IllegalStateException("수강 신청 조건을 만족하지 않습니다.");
         }
 
+        if (enrollments.isEnrolledBy(member)) {
+            throw new IllegalStateException("이미 수강 신청한 회원입니다.");
+        }
+
+        enrollments.addEnrollment(new Enrollment(member, this));
+    }
+
+    public void approveEnrollment(Member member) {
+        Enrollment enrollment = enrollments.findByMember(member);
+        enrollment.approve();
+    }
+
+    public void accept(){
         this.capacityInfo.increaseCurrentCount();
+    }
+
+    public void rejectEnrollment(Member member) {
+        Enrollment enrollment = enrollments.findByMember(member);
+        enrollment.reject();
     }
 
     public String getTitle() {
@@ -102,5 +121,9 @@ public class Session {
 
     public RecruitmentStatus getRecruitmentStatus() {
         return recruitmentStatus;
+    }
+
+    public Enrollments getEnrollments() {
+        return enrollments;
     }
 }

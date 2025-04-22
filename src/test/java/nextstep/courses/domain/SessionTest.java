@@ -8,10 +8,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 class SessionTest {
     private final Image validImage = new Image(500f, "png", "cdn.com", 600, 400);
     private final Images validImages = new Images(List.of(validImage));
+    private final Member member = new Member(1L, "홍길동", "hong@example.com");
 
     @Test
     @DisplayName("모집중 상태의 무료 강의는 수강 신청 가능하다")
@@ -171,6 +173,100 @@ class SessionTest {
         );
 
         assertThat(session.joinable(new Payment())).isFalse();
+    }
+
+    @Test
+    @DisplayName("수강 조건을 만족하면 수강 신청이 PENDING 상태로 등록된다")
+    void enroll_success_creates_pending_enrollment() {
+        Session session = new Session("강의", 1,
+                LocalDateTime.now(), LocalDateTime.now().plusDays(7),
+                0L, 0, 10,
+                validImages,
+                SessionStatus.ONGOING,
+                RecruitmentStatus.RECRUITING,
+                new FreeJoinStrategy()
+        );
+
+        session.enroll(new Payment(), member);
+
+        Enrollment enrollment = session.getEnrollments().findByMember(member);
+        assertThat(enrollment.getStatus()).isEqualTo(EnrollmentStatus.PENDING);
+    }
+
+    @Test
+    @DisplayName("동일한 사용자가 중복 신청 시 예외 발생")
+    void duplicate_enrollment_should_throw() {
+        Session session = new Session("강의", 1,
+                LocalDateTime.now(), LocalDateTime.now().plusDays(7),
+                0L, 0, 10,
+                validImages,
+                SessionStatus.ONGOING,
+                RecruitmentStatus.RECRUITING,
+                new FreeJoinStrategy()
+        );
+
+        session.enroll(new Payment(), member);
+
+        assertThatThrownBy(() -> session.enroll(new Payment(), member))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("이미 수강 신청한 회원입니다.");
+    }
+
+    @Test
+    @DisplayName("강사가 수강 신청을 승인하면 APPROVED 상태가 되고 정원이 증가한다")
+    void approve_enrollment_increases_capacity() {
+        Session session = new Session("강의", 1,
+                LocalDateTime.now(), LocalDateTime.now().plusDays(7),
+                0L, 0, 10,
+                validImages,
+                SessionStatus.ONGOING,
+                RecruitmentStatus.RECRUITING,
+                new FreeJoinStrategy()
+        );
+
+        session.enroll(new Payment(), member);
+        session.approveEnrollment(member);
+
+        Enrollment enrollment = session.getEnrollments().findByMember(member);
+        assertThat(enrollment.getStatus()).isEqualTo(EnrollmentStatus.APPROVED);
+        assertThat(session.getCurrentCount()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("강사가 수강 신청을 거절하면 REJECTED 상태가 된다")
+    void reject_enrollment_sets_rejected_status() {
+        Session session = new Session("강의", 1,
+                LocalDateTime.now(), LocalDateTime.now().plusDays(7),
+                0L, 0, 10,
+                validImages,
+                SessionStatus.ONGOING,
+                RecruitmentStatus.RECRUITING,
+                new FreeJoinStrategy()
+        );
+
+        session.enroll(new Payment(), member);
+        session.rejectEnrollment(member);
+
+        Enrollment enrollment = session.getEnrollments().findByMember(member);
+        assertThat(enrollment.getStatus()).isEqualTo(EnrollmentStatus.REJECTED);
+    }
+
+    @Test
+    @DisplayName("승인하지 않으면 수강 신청은 APPROVED 상태가 아니다")
+    void pending_enrollment_not_approved_by_default() {
+        Session session = new Session("강의", 1,
+                LocalDateTime.now(), LocalDateTime.now().plusDays(7),
+                0L, 0, 10,
+                validImages,
+                SessionStatus.ONGOING,
+                RecruitmentStatus.RECRUITING,
+                new FreeJoinStrategy()
+        );
+
+        session.enroll(new Payment(), member);
+
+        Enrollment enrollment = session.getEnrollments().findByMember(member);
+        assertThat(enrollment.isApproved()).isFalse();
     }
 
 }
