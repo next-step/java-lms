@@ -8,12 +8,9 @@ import java.util.Objects;
 
 import static nextstep.courses.domain.model.Timestamped.toLocalDateTime;
 
-public class Student {
-    private final Long id;
+public class Student extends BaseDomain {
     private final NsUser user;
     private final Session session;
-    private final LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
     public Student(NsUser user, Session session) {
         this(null, user, session, LocalDateTime.now(), LocalDateTime.now());
@@ -24,11 +21,9 @@ public class Student {
     }
 
     public Student(Long id, NsUser user, Session session, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
+        super(id, createdAt, updatedAt);
         this.user = user;
         this.session = session;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public void pay(Long price) {
@@ -43,12 +38,8 @@ public class Student {
         return session;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
+    public boolean isEqualTo(NsUser user) {
+        return this.user.equals(user);
     }
 
     @Override
@@ -67,12 +58,7 @@ public class Student {
     public String toString() {
         return "Student{" +
                 "user=" + user +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
+                ", session=" + session +
                 '}';
-    }
-
-    public boolean isEqualTo(NsUser user) {
-        return this.user.equals(user);
     }
 }

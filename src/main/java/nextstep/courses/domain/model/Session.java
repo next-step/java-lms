@@ -9,8 +9,7 @@ import java.util.Objects;
 
 import static nextstep.courses.domain.model.Timestamped.toLocalDateTime;
 
-public class Session {
-    private Long id;
+public class Session extends BaseDomain {
     private final Long courseId;
     private SessionPeriod period;
     private SessionImage image;
@@ -18,8 +17,6 @@ public class Session {
     private Long price;
     private final Students students;
     private final Long creatorId;
-    private final LocalDateTime createdAt;
-    private final LocalDateTime updatedAt;
 
     private Session(Long id, Long courseId, SessionPeriod period, SessionImage image, SessionStatus status, Long price, int capacity, Long creatorId) {
         this(id, courseId, period, image, status, price, capacity, creatorId, LocalDateTime.now(), LocalDateTime.now());
@@ -34,7 +31,7 @@ public class Session {
     }
 
     public Session(Long id, Long courseId, SessionPeriod period, SessionImage image, SessionStatus status, Long price, Students students, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
+        super(id, createdAt, updatedAt);
         this.courseId = courseId;
         this.period = period;
         this.image = image;
@@ -42,8 +39,6 @@ public class Session {
         this.price = price;
         this.students = students;
         this.creatorId = creatorId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
 
@@ -74,10 +69,6 @@ public class Session {
         return new Payment("0L", id, user.getId(), price);
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public Long getCourseId() {
         return courseId;
     }
@@ -106,14 +97,6 @@ public class Session {
         return creatorId;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -129,7 +112,6 @@ public class Session {
     @Override
     public String toString() {
         return "Session{" +
-                "id=" + id +
                 ", courseId=" + courseId +
                 ", period=" + period +
                 ", image=" + image +
@@ -137,8 +119,6 @@ public class Session {
                 ", price=" + price +
                 ", students=" + students +
                 ", creatorId=" + creatorId +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
                 '}';
     }
 }
