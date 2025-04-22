@@ -2,8 +2,9 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.model.Course;
 import nextstep.courses.domain.repository.CourseRepository;
+import nextstep.courses.infrastructure.entity.CourseEntity;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
@@ -34,14 +35,9 @@ public class JdbcCourseRepository implements CourseRepository {
 
     @Override
     public Course findById(Long id) {
-        String sql = "select id, title, creator_id, created_at, updated_at from course where id = ?";
-        RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(
-                rs.getLong("id"),
-                rs.getString("title"),
-                rs.getLong("creator_id"),
-                rs.getTimestamp("created_at"),
-                rs.getTimestamp("updated_at"));
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+        String sql = "select * from course where id = ?";
+        CourseEntity entity = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(CourseEntity.class), id);
+        return entity == null? null : entity.toDomain();
     }
 
 }

@@ -2,12 +2,12 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.model.Session;
 import nextstep.courses.domain.repository.SessionRepository;
+import nextstep.courses.infrastructure.entity.SessionEntity;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,27 +44,9 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(Long id) {
-        String sql = "select id, course_id, capacity, status, price, start_date, end_date, image_path, image_file, creator_id, created_at, updated_at from session where id = ?";
-        RowMapper<Session> rowMapper = (rs, rowNum) -> {
-            try {
-                return new Session(
-                        rs.getLong("id"),
-                        rs.getLong("course_id"),
-                        rs.getDate("start_date"),
-                        rs.getDate("end_date"),
-                        rs.getString("image_path"),
-                        rs.getBlob("image_file"),
-                        rs.getString("status"),
-                        rs.getLong("price"),
-                        rs.getInt("capacity"),
-                        rs.getLong("creator_id"),
-                        rs.getTimestamp("created_at"),
-                        rs.getTimestamp("updated_at"));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        };
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+        String sql = "select * from session where id = ?";
+        SessionEntity entity = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(SessionEntity.class), id);
+        return entity == null? null : entity.toDomain();
     }
 
 }

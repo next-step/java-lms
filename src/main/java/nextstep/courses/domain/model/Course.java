@@ -44,16 +44,16 @@ public class Course extends BaseDomain {
         return creatorId;
     }
 
-    @Override
-    public String toString() {
-        return "Course{" + ", title='" + title + '\'' + ", creatorId=" + creatorId + '}';
-    }
-
     public void addSession(Session session) {
         sessions.add(session);
     }
 
     public List<Session> getSessions() {
         return Collections.unmodifiableList(sessions);
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" + ", title='" + title + '\'' + ", creatorId=" + creatorId + '}';
     }
 }

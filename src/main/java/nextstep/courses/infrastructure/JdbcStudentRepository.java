@@ -3,13 +3,15 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.model.Session;
 import nextstep.courses.domain.model.Student;
 import nextstep.courses.domain.repository.StudentRepository;
+import nextstep.courses.infrastructure.entity.SessionEntity;
+import nextstep.courses.infrastructure.entity.StudentEntity;
 import nextstep.users.domain.NsUser;
+import nextstep.users.infrastructure.entity.NsUserEntity;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,62 +40,24 @@ public class JdbcStudentRepository implements StudentRepository {
     @Override
     public Student findById(Long id) {
         String studentSql = "SELECT id, session_id, ns_user_id, created_at, updated_at FROM student WHERE id = ?";
-        Map<String, Object> studentMap = jdbcTemplate.queryForMap(studentSql, id);
-        Long sessionId = ((Number) studentMap.get("session_id")).longValue();
-        Long nsUserId = ((Number) studentMap.get("ns_user_id")).longValue();
-        Timestamp stCreated = (Timestamp) studentMap.get("created_at");
-        Timestamp stUpdated = (Timestamp) studentMap.get("updated_at");
+        StudentEntity entity = jdbcTemplate.queryForObject(studentSql, new BeanPropertyRowMapper<>(StudentEntity.class), id);
 
-        NsUser nsUser = findNsUserById(nsUserId);
-        Session session = findSessionById(sessionId);
+        NsUser nsUser = findNsUserById(entity.getNsUserId());
+        Session session = findSessionById(entity.getSessionId());
 
-        return new Student(id, nsUser, session, stCreated, stUpdated);
+        return entity.toDomain(nsUser, session);
     }
 
     private NsUser findNsUserById(Long nsUserId) {
-        String userSql = "SELECT id, user_id, password, name, email, balance, created_at, updated_at FROM ns_user WHERE id = ?";
-        NsUser nsUser = jdbcTemplate.queryForObject(userSql,
-                (rs, rowNum) -> new NsUser(
-                        rs.getLong("id"),
-                        rs.getString("user_id"),
-                        rs.getString("password"),
-                        rs.getString("name"),
-                        rs.getString("email"),
-                        rs.getBigDecimal("balance"),
-                        rs.getTimestamp("created_at"),
-                        rs.getTimestamp("updated_at")
-                ),
-                nsUserId
-        );
-        return nsUser;
+        String userSql = "SELECT * FROM ns_user WHERE id = ?";
+        NsUserEntity nsUser = jdbcTemplate.queryForObject(userSql, new BeanPropertyRowMapper<>(NsUserEntity.class), nsUserId);
+        return nsUser.toDomain();
     }
 
     private Session findSessionById(Long sessionId) {
-        String sessionSql = "SELECT id, course_id, start_date, end_date, image_path, image_file, status, price, capacity, creator_id, created_at, updated_at FROM session WHERE id = ?";
-        Session session = jdbcTemplate.queryForObject(sessionSql,
-                (rs, rowNum) -> {
-                    try {
-                        return new Session(
-                                rs.getLong("id"),
-                                rs.getLong("course_id"),
-                                rs.getDate("start_date"),
-                                rs.getDate("end_date"),
-                                rs.getString("image_path"),
-                                rs.getBlob("image_file"),
-                                rs.getString("status"),
-                                rs.getLong("price"),
-                                rs.getInt("capacity"),
-                                rs.getLong("creator_id"),
-                                rs.getTimestamp("created_at"),
-                                rs.getTimestamp("updated_at")
-                        );
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                },
-                sessionId
-        );
-        return session;
+        String sessionSql = "SELECT * FROM session WHERE id = ?";
+        SessionEntity entity = jdbcTemplate.queryForObject(sessionSql, new BeanPropertyRowMapper<>(SessionEntity.class), sessionId);
+        return entity.toDomain();
     }
 
 }
