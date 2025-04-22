@@ -1,12 +1,15 @@
 package nextstep.courses.domain;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import nextstep.courses.domain.coverImage.Dimensions;
 import nextstep.courses.domain.coverImage.ImageType;
 import nextstep.courses.domain.coverImage.Size;
 import nextstep.courses.domain.coverImage.VolumeExceedException;
@@ -38,6 +41,18 @@ public class CoverImageTest {
     public void coverImageUnsupportedTypeTest() {
         assertThatThrownBy(
             () ->ImageType.fromExtension("webp")
+        ).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "200, 200",
+        "300, 400",
+    })
+    @DisplayName("이미지 가로세로 실패 테스트")
+    public void coverImageDimensionTest(int width, int height) {
+        assertThatThrownBy(
+            () -> new Dimensions(width, height)
         ).isInstanceOf(IllegalArgumentException.class);
     }
 }

@@ -5,7 +5,6 @@ import java.util.Objects;
 public class Size {
     public static final long BYTES_PER_KB = 1024;
     public static final long BYTES_PER_MB = BYTES_PER_KB * 1024;
-    public static final Size ONE_MB = Size.ofBytes(BYTES_PER_MB);
 
     private final long bytes;
 
