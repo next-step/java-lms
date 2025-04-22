@@ -67,7 +67,11 @@
 - [x] Enrollment 리팩토링 
   - [x] 생성자에 List<NsUser> 추가
   - [x] EnrollmentManager 추가
-- [ ] 피드백
+- [x] 피드백
   - [x] SessionRepository.update 제거
   - [x] Enrollment.isFull 리팩토링
   - [x] Enrollment.hasEnrolledUser 제거
+# 4단계
+- [ ] 3단계 피드백
+  - [ ] Entity 도입
+  - [ ] Enrollment 검증 테스트 도입
