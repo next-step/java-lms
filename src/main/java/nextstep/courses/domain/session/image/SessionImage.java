@@ -3,8 +3,10 @@ package nextstep.courses.domain.session.image;
 import lombok.Getter;
 import nextstep.common.domian.BaseDomain;
 
-import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -16,33 +18,42 @@ public class SessionImage extends BaseDomain {
 
     private final String url;
 
-    private final ImageHandler imageHandler;
-
     private final SessionImageType type;
 
-    public SessionImage(String url, ImageHandler imageHandler, SessionImageType type) throws IOException {
-        this(null, false, url, imageHandler, type);
+    public SessionImage(String url, SessionImageType type) throws IOException {
+        this(null, false, url, type);
     }
 
-    public SessionImage(String id, boolean deleted, String url, ImageHandler imageHandler, SessionImageType type) throws IOException {
+    public SessionImage(String id, boolean deleted, String url, SessionImageType type) throws IOException {
         super(id);
-
-        BufferedImage res = imageHandler.image(url);
-        if ((WIDTH_RATIO * res.getHeight()) != (HEIGHT_RATIO * res.getWidth())) {
-            throw new IllegalArgumentException("width와 height의 비율은 3:2 이여야 합니다.");
-        }
-        if (imageHandler.byteSize(url) > MAX_BYTE_SIZE) {
-            throw new IllegalArgumentException("크기가 1MB를 초과했습니다.");
-        }
-
         this.url = url;
-        this.imageHandler = imageHandler;
         this.type = type;
         this.deleted = deleted;
+
+        if ((WIDTH_RATIO * height()) != (HEIGHT_RATIO * width())) {
+            throw new IllegalArgumentException("width와 height의 비율은 3:2 이여야 합니다.");
+        }
+
+        if (byteSize() > MAX_BYTE_SIZE) {
+            throw new IllegalArgumentException("크기가 1MB를 초과했습니다.");
+        }
     }
 
-    public BufferedImage image() throws IOException {
-        return imageHandler.image(url);
+    public int height() throws IOException {
+        return ImageIO.read(new URL(url)).getHeight();
+    }
+
+    public int width() throws IOException {
+        return ImageIO.read(new URL(url)).getWidth();
+    }
+
+    public long byteSize() {
+        try {
+            URLConnection connection = new URL(url).openConnection();
+            return connection.getContentLengthLong();
+        } catch (IOException e) {
+            throw new IllegalArgumentException("이미지 URL을 확인할 수 없습니다.");
+        }
     }
 
     public void delete() {
@@ -54,12 +65,13 @@ public class SessionImage extends BaseDomain {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         SessionImage that = (SessionImage) o;
-        return Objects.equals(url, that.url) && Objects.equals(imageHandler, that.imageHandler) && type == that.type;
+        return Objects.equals(url, that.url) && type == that.type;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(url, imageHandler, type);
+        return Objects.hash(super.hashCode(), url, type);
     }
 }

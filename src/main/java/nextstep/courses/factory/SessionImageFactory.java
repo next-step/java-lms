@@ -1,6 +1,6 @@
 package nextstep.courses.factory;
 
-import nextstep.courses.domain.session.image.ImageHandler;
+import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.image.SessionImage;
 import nextstep.courses.domain.session.image.SessionImageType;
 import nextstep.courses.domain.session.image.SessionImages;
@@ -14,20 +14,17 @@ import java.util.List;
 @Component
 public class SessionImageFactory {
 
-    private final ImageHandler imageHandler;
-
-    public SessionImageFactory(ImageHandler urlImageHandler) {
-        this.imageHandler = urlImageHandler;
-    }
-
     public SessionImage createSessionImage(SessionImageEntity sessionImageEntity) throws IOException {
         return new SessionImage(
             sessionImageEntity.getId(),
             sessionImageEntity.isDeleted(),
             sessionImageEntity.getImageUrl(),
-            imageHandler,
             SessionImageType.fromString(sessionImageEntity.getImageType())
         );
+    }
+
+    public SessionImage createSessionImage(String imageUrl, String imageType) throws IOException {
+        return new SessionImage(imageUrl, SessionImageType.fromString(imageType));
     }
 
     public SessionImages createSessionImages(List<SessionImageEntity> sessionImageEntities) throws IOException {

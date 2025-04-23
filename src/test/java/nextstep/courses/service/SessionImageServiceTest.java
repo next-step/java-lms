@@ -1,7 +1,7 @@
 package nextstep.courses.service;
 
 import nextstep.courses.domain.session.image.SessionImage;
-import nextstep.stub.factory.TestImageHandler;
+import nextstep.stub.domain.TestSessionImage;
 import nextstep.stub.factory.TestSessionImageFactory;
 import nextstep.stub.repository.TestSessionImageRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -18,12 +18,12 @@ class SessionImageServiceTest {
     @Test
     void testCreateSessionImage() throws IOException {
         TestSessionImageRepository sessionImageRepository = new TestSessionImageRepository();
-        TestSessionImageFactory sessionImageFactory = new TestSessionImageFactory();
-        TestImageHandler imageHandler = new TestImageHandler();
-
-        SessionImageService sessionImageService = new SessionImageService(sessionImageRepository, sessionImageFactory, imageHandler);
+        SessionImage sessionImage = new TestSessionImage("test", JPEG, 200, 300, 1024L * 825L);
+        TestSessionImageFactory sessionImageFactory = new TestSessionImageFactory(null, sessionImage);
+        SessionImageService sessionImageService = new SessionImageService(sessionImageRepository, sessionImageFactory);
 
         sessionImageService.createSessionImage(1L, "test-url", "png");
+
         assertThat(sessionImageRepository.getSaveCalled()).isEqualTo(1);
     }
 
@@ -31,11 +31,9 @@ class SessionImageServiceTest {
     @Test
     void testDeleteSessionImage() throws IOException {
         TestSessionImageRepository sessionImageRepository = new TestSessionImageRepository();
-        SessionImage result = new SessionImage("test", new TestImageHandler(), JPEG);
+        SessionImage result = new TestSessionImage("test", JPEG, 200, 300, 1024L * 825L);
         TestSessionImageFactory sessionImageFactory = new TestSessionImageFactory(result);
-        TestImageHandler imageHandler = new TestImageHandler();
-
-        SessionImageService sessionImageService = new SessionImageService(sessionImageRepository, sessionImageFactory, imageHandler);
+        SessionImageService sessionImageService = new SessionImageService(sessionImageRepository, sessionImageFactory);
 
         sessionImageService.deleteSessionImage(1L);
 

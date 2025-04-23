@@ -2,6 +2,8 @@ package nextstep.courses.factory;
 
 import nextstep.courses.domain.session.*;
 import nextstep.courses.domain.session.constraint.SessionConstraint;
+import nextstep.courses.domain.session.image.SessionImage;
+import nextstep.courses.domain.session.image.SessionImageType;
 import nextstep.courses.domain.session.policy.EnrollmentStatus;
 import nextstep.courses.domain.session.policy.SessionEnrollPolicy;
 import nextstep.courses.domain.session.policy.SessionStatus;

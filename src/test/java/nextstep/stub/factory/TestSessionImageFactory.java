@@ -1,6 +1,5 @@
 package nextstep.stub.factory;
 
-import nextstep.courses.domain.session.image.ImageHandler;
 import nextstep.courses.domain.session.image.SessionImage;
 import nextstep.courses.domain.session.image.SessionImages;
 import nextstep.courses.entity.SessionImageEntity;
@@ -9,30 +8,40 @@ import nextstep.courses.factory.SessionImageFactory;
 import java.util.List;
 
 public class TestSessionImageFactory extends SessionImageFactory {
-    private final SessionImage createSessionImageResult;
+    private final SessionImage createSessionImageResult1;
+    private final SessionImage createSessionImageResult2;
     private final SessionImages createSessionImagesResult;
 
     public TestSessionImageFactory() {
-        this(new TestImageHandler(), null);
+        this(null, null, null);
     }
 
     public TestSessionImageFactory(SessionImage createSessionImageResult) {
-        this(new TestImageHandler(), createSessionImageResult);
+        this(createSessionImageResult, null, null);
     }
 
-    public TestSessionImageFactory(ImageHandler imageHandler, SessionImage createSessionImageResult) {
-        this(imageHandler, createSessionImageResult, null);
+    public TestSessionImageFactory(SessionImage createSessionImageResult, SessionImage createSessionImageResult2) {
+        this(createSessionImageResult, createSessionImageResult2, null);
     }
 
-    public TestSessionImageFactory(ImageHandler imageHandler, SessionImage createSessionImageResult, SessionImages createSessionImagesResult) {
-        super(imageHandler);
-        this.createSessionImageResult = createSessionImageResult;
+    public TestSessionImageFactory(SessionImage createSessionImageResult1, SessionImages createSessionImagesResult) {
+        this(createSessionImageResult1, null, createSessionImagesResult);
+    }
+
+    public TestSessionImageFactory(SessionImage createSessionImageResult1, SessionImage createSessionImageResult2, SessionImages createSessionImagesResult) {
+        this.createSessionImageResult1 = createSessionImageResult1;
+        this.createSessionImageResult2 = createSessionImageResult2;
         this.createSessionImagesResult = createSessionImagesResult;
     }
 
     @Override
+    public SessionImage createSessionImage(String imageUrl, String imageType) {
+        return createSessionImageResult2;
+    }
+
+    @Override
     public SessionImage createSessionImage(SessionImageEntity sessionImageEntity) {
-        return createSessionImageResult;
+        return createSessionImageResult1;
     }
 
     @Override
