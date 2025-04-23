@@ -39,4 +39,12 @@ public class NsImage {
     public int hashCode() {
         return Objects.hash(nsFile, size);
     }
+
+    @Override
+    public String toString() {
+        return "NsImage{" +
+                "nsFile=" + nsFile +
+                ", size=" + size +
+                '}';
+    }
 }

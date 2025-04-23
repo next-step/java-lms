@@ -5,19 +5,20 @@ import nextstep.payments.domain.Payment;
 import java.nio.file.attribute.AttributeView;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 public class SessionMeta {
     private final SessionType sessionType;
     private final SessionPeriod period;
     private final Price price;
-    private final NsImage coverImage;
+    private final List<NsImage> images;
 
-    public SessionMeta(SessionType sessionType, SessionPeriod period, Price price, NsImage coverImage) {
+    public SessionMeta(SessionType sessionType, SessionPeriod period, Price price, List<NsImage> images) {
         this.sessionType = sessionType;
         this.period = period;
         this.price = price;
-        this.coverImage = coverImage;
+        this.images = images;
     }
 
     public boolean isFree() {
@@ -48,31 +49,19 @@ public class SessionMeta {
         return price.getValue();
     }
 
-    public Long getImageSize() {
-        return coverImage.getSize();
-    }
-
-    public String getImageType() {
-        return coverImage.getType();
-    }
-
-    public int getImageWidth() {
-        return coverImage.getWidth();
-    }
-
-    public int getImageHeight() {
-        return coverImage.getHeight();
+    public List<NsImage> getImages() {
+        return images;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         SessionMeta that = (SessionMeta) o;
-        return sessionType == that.sessionType && Objects.equals(period, that.period) && Objects.equals(price, that.price) && Objects.equals(coverImage, that.coverImage);
+        return sessionType == that.sessionType && Objects.equals(period, that.period) && Objects.equals(price, that.price) && Objects.equals(images, that.images);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sessionType, period, price, coverImage);
+        return Objects.hash(sessionType, period, price, images);
     }
 }

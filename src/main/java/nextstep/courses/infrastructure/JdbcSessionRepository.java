@@ -11,17 +11,22 @@ import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
     private final JdbcOperations jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
+    private final SimpleJdbcInsert imageInsert;
 
     public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         this.jdbcInsert = new SimpleJdbcInsert((JdbcTemplate) jdbcTemplate)
                 .withTableName("sessions")
+                .usingGeneratedKeyColumns("id");
+        this.imageInsert = new SimpleJdbcInsert((JdbcTemplate) jdbcTemplate)
+                .withTableName("session_images")
                 .usingGeneratedKeyColumns("id");
     }
 
@@ -36,54 +41,70 @@ public class JdbcSessionRepository implements SessionRepository {
         params.put("start_date", meta.getStartAt());
         params.put("end_date", meta.getEndAt());
         params.put("price", meta.getPrice());
-        params.put("cover_image_file_size", meta.getImageSize());
-        params.put("cover_image_file_type", meta.getImageType());
-        params.put("cover_image_width", meta.getImageWidth());
-        params.put("cover_image_height", meta.getImageHeight());
-        params.put("session_status", session.getStatus().name());
+        params.put("lecture_status", session.getLectureStatus().name());
+        params.put("recruitment_status", session.getRecruitmentStatus().name());
         params.put("capacity_max", session.isFree() ? null : session.getMax());
         params.put("capacity_current", session.getCurrent());
         params.put("created_at", session.getCreatedAt());
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(params));
-        return key.intValue();
+        Long sessionId = key.longValue();
+
+        for (NsImage image : meta.getImages()) {
+            Map<String, Object> imageParams = new HashMap<>();
+            imageParams.put("session_id", sessionId);
+            imageParams.put("file_size", image.getSize());
+            imageParams.put("file_type", image.getType());
+            imageParams.put("width", image.getWidth());
+            imageParams.put("height", image.getHeight());
+            imageInsert.execute(imageParams);
+        }
+
+        return sessionId.intValue();
     }
 
     @Override
     public Session findById(Long id) {
         String sql = "SELECT " +
                 "id, course_id, session_type, start_date, end_date, price, " +
-                "cover_image_file_size, cover_image_file_type, cover_image_width, cover_image_height, " +
-                "session_status, capacity_max, capacity_current, " +
+                "lecture_status, recruitment_status, capacity_max, capacity_current, " +
                 "created_at, updated_at " +
                 "FROM sessions WHERE id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> {
-            SessionType sessionType = SessionType.valueOf(rs.getString(3));
-            SessionStatus sessionStatus = SessionStatus.valueOf(rs.getString(11));
+            SessionType sessionType = SessionType.valueOf(rs.getString("session_type"));
             SessionPeriod period = new SessionPeriod(
-                    rs.getDate(4).toLocalDate(), rs.getDate(5).toLocalDate()
+                    rs.getDate("start_date").toLocalDate(), rs.getDate("end_date").toLocalDate()
             );
-            Price price = sessionType.isFree() ? Price.free() : Price.of(rs.getLong(6));
-            NsImage image = new NsImage(
-                    rs.getLong(7), rs.getString(8),
-                    rs.getInt(9), rs.getInt(10)
+            Price price = sessionType.isFree() ? Price.free() : Price.of(rs.getLong("price"));
+            LectureStatus lectureStatus = LectureStatus.valueOf(rs.getString("lecture_status"));
+            RecruitmentStatus recruitmentStatus = RecruitmentStatus.valueOf(rs.getString("recruitment_status"));
+
+            List<NsImage> images = jdbcTemplate.query(
+                    "SELECT file_size, file_type, width, height FROM session_images WHERE session_id = ?",
+                    (rs2, rn) -> new NsImage(
+                            rs2.getLong("file_size"),
+                            rs2.getString("file_type"),
+                            rs2.getInt("width"),
+                            rs2.getInt("height")
+                    ),
+                    rs.getLong("id")
             );
 
-            SessionMeta meta = new SessionMeta(sessionType, period, price, image);
+            SessionMeta meta = new SessionMeta(sessionType, period, price, images);
 
             Capacity capacity = sessionType.isFree() ?
-                    new UnlimitedCapacity(rs.getInt(13))
-                    :
-                    new LimitedCapacity(rs.getInt(12), rs.getInt(13));
+                    new UnlimitedCapacity(rs.getInt("capacity_current")) :
+                    new LimitedCapacity(rs.getInt("capacity_max"), rs.getInt("capacity_current"));
 
             return new Session(
-                    rs.getLong(1),
-                    rs.getLong(2),
+                    rs.getLong("id"),
+                    rs.getLong("course_id"),
                     meta,
-                    sessionStatus,
+                    lectureStatus,
+                    recruitmentStatus,
                     capacity,
-                    toLocalDateTime(rs.getTimestamp(14)),
-                    toLocalDateTime(rs.getTimestamp(15))
+                    toLocalDateTime(rs.getTimestamp("created_at")),
+                    toLocalDateTime(rs.getTimestamp("updated_at"))
             );
         };
 

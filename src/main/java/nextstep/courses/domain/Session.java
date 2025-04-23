@@ -2,8 +2,8 @@ package nextstep.courses.domain;
 
 import nextstep.payments.domain.Payment;
 
-import java.nio.file.attribute.AttributeView;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 public class Session {
@@ -13,23 +13,51 @@ public class Session {
     private final Long id;
     private final Long courseId;
     private final SessionMeta meta;
-    private final SessionStatus sessionStatus;
+    private final LectureStatus lectureStatus;
+    private final RecruitmentStatus recruitmentStatus;
     private final Capacity capacity;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
 
-    public Session(Long courseId, SessionMeta meta, SessionStatus sessionStatus, Capacity capacity) {
-        this(null, courseId, meta, sessionStatus, capacity, LocalDateTime.now(), null);
+    public Session(Long courseId, SessionMeta meta, LectureStatus lectureStatus, RecruitmentStatus recruitmentStatus, Capacity capacity) {
+        this(null, courseId, meta, lectureStatus, recruitmentStatus, capacity, LocalDateTime.now(), null);
     }
 
-    public Session(Long id, Long courseId, SessionMeta meta, SessionStatus sessionStatus, Capacity capacity, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Session(Long id, Long courseId, SessionMeta meta, LectureStatus lectureStatus, RecruitmentStatus recruitmentStatus, Capacity capacity, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.courseId = courseId;
         this.meta = meta;
-        this.sessionStatus = sessionStatus;
+        this.lectureStatus = lectureStatus;
+        this.recruitmentStatus = recruitmentStatus;
         this.capacity = capacity;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public Session startLecture() {
+        return new Session(
+                id,
+                courseId,
+                meta,
+                LectureStatus.ONGOING,
+                recruitmentStatus,
+                capacity,
+                createdAt,
+                updatedAt
+        );
+    }
+
+    public Session endLecture() {
+        return new Session(
+                id,
+                courseId,
+                meta,
+                LectureStatus.ENDED,
+                recruitmentStatus,
+                capacity,
+                createdAt,
+                updatedAt
+        );
     }
 
     public Session startRecruiting() {
@@ -37,7 +65,8 @@ public class Session {
                 id,
                 courseId,
                 meta,
-                SessionStatus.RECRUITING,
+                lectureStatus,
+                RecruitmentStatus.RECRUITING,
                 capacity,
                 createdAt,
                 updatedAt
@@ -49,7 +78,8 @@ public class Session {
                 id,
                 courseId,
                 meta,
-                SessionStatus.CLOSED,
+                lectureStatus,
+                RecruitmentStatus.NOT_RECRUITING,
                 capacity,
                 createdAt,
                 updatedAt
@@ -57,11 +87,11 @@ public class Session {
     }
 
     public boolean canApply() {
-        return sessionStatus.isRecruiting()
+        return recruitmentStatus.isRecruiting() && !lectureStatus.isEnded()
                 && (meta.isFree() || capacity.hasRoom());
     }
 
-    public Session apply(Payment payment) {
+    public Application apply(Payment payment) {
         if (!canApply()) {
             throw new IllegalStateException(CAN_NOT_APPLY_STATUS);
         }
@@ -70,11 +100,16 @@ public class Session {
             throw new IllegalArgumentException(NOT_MATCH_PRICE_AND_PAYMENT);
         }
 
+        return new Application(id, payment.getUserId());
+    }
+
+    public Session increaseCapacity() {
         return new Session(
                 id,
                 courseId,
                 meta,
-                sessionStatus,
+                lectureStatus,
+                recruitmentStatus,
                 capacity.increase(),
                 createdAt,
                 updatedAt
@@ -97,8 +132,12 @@ public class Session {
         return courseId;
     }
 
-    public SessionStatus getStatus() {
-        return sessionStatus;
+    public LectureStatus getLectureStatus() {
+        return lectureStatus;
+    }
+
+    public RecruitmentStatus getRecruitmentStatus() {
+        return recruitmentStatus;
     }
 
     public int getMax() {
@@ -113,29 +152,41 @@ public class Session {
         return createdAt;
     }
 
-    public static Session createFree(Long courseId, SessionPeriod period, NsImage image) {
-        SessionMeta meta = new SessionMeta(SessionType.FREE, period, Price.free(), image);
+    public static Session createFree(Long courseId, SessionPeriod period, List<NsImage> images) {
+        SessionMeta meta = new SessionMeta(SessionType.FREE, period, Price.free(), images);
         Capacity capacity = CapacityFactory.forFree();
-        Session session = new Session(courseId, meta, SessionStatus.PREPARING, capacity);
-
-        return new Session(courseId, meta, SessionStatus.PREPARING, capacity);
+        return new Session(courseId, meta, LectureStatus.PREPARING, RecruitmentStatus.NOT_RECRUITING, capacity);
     }
 
-    public static Session createPaid(Long courseId, SessionPeriod period, NsImage image, int maxParticipants, Price price) {
-        SessionMeta meta = new SessionMeta(SessionType.PAID, period, price, image);
+    public static Session createPaid(Long courseId, SessionPeriod period, List<NsImage> images, int maxParticipants, Price price) {
+        SessionMeta meta = new SessionMeta(SessionType.PAID, period, price, images);
         Capacity capacity = new LimitedCapacity(maxParticipants); // currentParticipants 생략
-        return new Session(courseId, meta, SessionStatus.PREPARING, capacity);
+        return new Session(courseId, meta, LectureStatus.PREPARING, RecruitmentStatus.NOT_RECRUITING, capacity);
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Session session = (Session) o;
-        return Objects.equals(id, session.id) && Objects.equals(meta, session.meta);
+        return Objects.equals(id, session.id) && Objects.equals(courseId, session.courseId) && Objects.equals(meta, session.meta) && lectureStatus == session.lectureStatus && recruitmentStatus == session.recruitmentStatus && Objects.equals(capacity, session.capacity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, meta, sessionStatus, capacity);
+        return Objects.hash(id, courseId, meta, lectureStatus, recruitmentStatus, capacity);
+    }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "id=" + id +
+                ", courseId=" + courseId +
+                ", meta=" + meta +
+                ", lectureStatus=" + lectureStatus +
+                ", recruitmentStatus=" + recruitmentStatus +
+                ", capacity=" + capacity +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }

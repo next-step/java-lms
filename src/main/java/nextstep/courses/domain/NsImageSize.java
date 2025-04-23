@@ -49,4 +49,12 @@ public class NsImageSize {
     public int hashCode() {
         return Objects.hash(width, height);
     }
+
+    @Override
+    public String toString() {
+        return "NsImageSize{" +
+                "width=" + width +
+                ", height=" + height +
+                '}';
+    }
 }

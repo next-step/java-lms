@@ -29,6 +29,10 @@ public class Payment {
         this.createdAt = LocalDateTime.now();
     }
 
+    public Long getUserId() {
+        return nsUserId;
+    }
+
     public boolean notMatchWith(Price price) {
         return !price.match(amount);
     }

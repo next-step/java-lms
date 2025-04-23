@@ -49,4 +49,12 @@ public class NsFile {
     public int hashCode() {
         return Objects.hash(size, type);
     }
+
+    @Override
+    public String toString() {
+        return "NsFile{" +
+                "size=" + size +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }
