@@ -13,7 +13,6 @@ public class TestSessionFactory extends SessionFactory {
     private final Session createSessionResult;
     private final Sessions createSessionsResult;
     private int createSessionCalled = 0;
-    private int createSessionsCalled = 0;
 
     public TestSessionFactory() {
         this(null);
@@ -37,15 +36,10 @@ public class TestSessionFactory extends SessionFactory {
 
     @Override
     public Sessions createSessions(SessionEntityImageMap sessionEntityImageMap) {
-        createSessionsCalled++;
         return createSessionsResult;
     }
 
     public int getCreateSessionCalled() {
         return createSessionCalled;
-    }
-
-    public int getCreateSessionsCalled() {
-        return createSessionsCalled;
     }
 }

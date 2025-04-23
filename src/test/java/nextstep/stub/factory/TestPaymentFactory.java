@@ -11,12 +11,6 @@ import nextstep.users.domain.NsUser;
 public class TestPaymentFactory extends PaymentFactory {
     private final Payment createPaymentResult;
     private final Payments createPaymentsResult;
-    private int createPaymentCalled = 0;
-    private int createPaymentsCalled = 0;
-
-    public TestPaymentFactory() {
-        this(null, null);
-    }
 
     public TestPaymentFactory(Payment createPaymentResult) {
         this(createPaymentResult, null);
@@ -33,21 +27,11 @@ public class TestPaymentFactory extends PaymentFactory {
 
     @Override
     public Payment createPayment(PaymentEntity paymentEntity, Session session, NsUser nsUser) {
-        createPaymentCalled++;
         return createPaymentResult;
     }
 
     @Override
     public Payments createPayments(Session session, PaymentEntityUserMap paymentEntityNsUserMap) {
-        createPaymentsCalled++;
         return createPaymentsResult;
-    }
-
-    public int getCreatePaymentsCalled() {
-        return createPaymentsCalled;
-    }
-
-    public int getCreatePaymentCalled() {
-        return createPaymentCalled;
     }
 }

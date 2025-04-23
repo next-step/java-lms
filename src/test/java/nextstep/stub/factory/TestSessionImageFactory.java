@@ -11,8 +11,6 @@ import java.util.List;
 public class TestSessionImageFactory extends SessionImageFactory {
     private final SessionImage createSessionImageResult;
     private final SessionImages createSessionImagesResult;
-    private int createSessionImageCalled = 0;
-    private int createSessionImagesCalled = 0;
 
     public TestSessionImageFactory() {
         this(new TestImageHandler(), null);
@@ -34,21 +32,11 @@ public class TestSessionImageFactory extends SessionImageFactory {
 
     @Override
     public SessionImage createSessionImage(SessionImageEntity sessionImageEntity) {
-        createSessionImageCalled++;
         return createSessionImageResult;
     }
 
     @Override
     public SessionImages createSessionImages(List<SessionImageEntity> sessionImageEntities) {
-        createSessionImagesCalled++;
         return createSessionImagesResult;
-    }
-
-    public int getCreateSessionImageCalled() {
-        return createSessionImageCalled;
-    }
-
-    public int getCreateSessionImagesCalled() {
-        return createSessionImagesCalled;
     }
 }

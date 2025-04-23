@@ -7,7 +7,6 @@ public class TestCourseRepository implements CourseRepository {
     private final Long saveResult;
     private final CourseEntity findByIdResult;
     private int saveCalled = 0;
-    private int findByIdCalled = 0;
 
     public TestCourseRepository(Long saveResult, CourseEntity findByIdResult) {
         this.saveResult = saveResult;
@@ -22,15 +21,10 @@ public class TestCourseRepository implements CourseRepository {
 
     @Override
     public CourseEntity findById(Long id) {
-        findByIdCalled++;
         return findByIdResult;
     }
 
     public int getSaveCalled() {
         return saveCalled;
-    }
-
-    public int getFindByIdCalled() {
-        return findByIdCalled;
     }
 }

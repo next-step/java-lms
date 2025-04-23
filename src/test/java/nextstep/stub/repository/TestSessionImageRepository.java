@@ -10,8 +10,6 @@ public class TestSessionImageRepository implements SessionImageRepository {
     private final SessionImageEntity findByIdResult;
     private final List<SessionImageEntity> findAllBySessionIdResult;
     private int saveCalled = 0;
-    private int findAllBySessionIdCalled = 0;
-    private int findByIdCalled = 0;
 
     public TestSessionImageRepository() {
         this(null, null, List.of());
@@ -35,25 +33,15 @@ public class TestSessionImageRepository implements SessionImageRepository {
 
     @Override
     public SessionImageEntity findById(Long sessionImageId) {
-        findByIdCalled++;
         return findByIdResult;
     }
 
     @Override
     public List<SessionImageEntity> findAllBySessionId(Long sessionId) {
-        findAllBySessionIdCalled++;
         return findAllBySessionIdResult;
     }
 
     public int getSaveCalled() {
         return saveCalled;
-    }
-
-    public int getFindByIdCalled() {
-        return findByIdCalled;
-    }
-
-    public int getFindAllBySessionIdCalled() {
-        return findAllBySessionIdCalled;
     }
 }

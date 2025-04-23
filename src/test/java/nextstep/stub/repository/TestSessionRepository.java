@@ -10,15 +10,9 @@ public class TestSessionRepository implements SessionRepository {
     private final SessionEntity findByIdResult;
     private final List<SessionEntity> findAllByCourseIdResult;
     private int saveCalled = 0;
-    private int findByIdCalled = 0;
-    private int findAllByCourseIdCalled = 0;
 
     public TestSessionRepository() {
         this(null, null, null);
-    }
-
-    public TestSessionRepository(Long saveResult) {
-        this(saveResult, null, null);
     }
 
     public TestSessionRepository(Long saveResult, SessionEntity findByIdResult, List<SessionEntity> findAllByCourseIdResult) {
@@ -35,25 +29,15 @@ public class TestSessionRepository implements SessionRepository {
 
     @Override
     public SessionEntity findById(Long id) {
-        findByIdCalled++;
         return findByIdResult;
     }
 
     @Override
     public List<SessionEntity> findAllByCourseId(Long courseId) {
-        findAllByCourseIdCalled++;
         return findAllByCourseIdResult;
     }
 
     public int getSaveCalled() {
         return saveCalled;
-    }
-
-    public int getFindByIdCalled() {
-        return findByIdCalled;
-    }
-
-    public int getFindAllByCourseIdCalled() {
-        return findAllByCourseIdCalled;
     }
 }
