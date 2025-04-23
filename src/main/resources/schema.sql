@@ -56,17 +56,18 @@ create table delete_history
 
 create table session
 (
-    id               BIGINT AUTO_INCREMENT PRIMARY KEY,
-    course_id        BIGINT      NOT NULL,
-    session_status   VARCHAR(20) NOT NULL,
-    session_type     VARCHAR(20) NOT NULL,
-    price            BIGINT      NOT NULL,
-    capacity         INT         NOT NULL,
-    start_date       DATE        NOT NULL,
-    end_date         DATE        NOT NULL,
-    cover_image_path VARCHAR(500),
-    created_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    id                 BIGINT AUTO_INCREMENT PRIMARY KEY,
+    course_id          BIGINT      NOT NULL,
+    progress_status    VARCHAR(20) NOT NULL,
+    recruitment_status VARCHAR(20) NOT NULL,
+    type               VARCHAR(20) NOT NULL,
+    price              BIGINT      NOT NULL,
+    capacity           INT         NOT NULL,
+    start_date         DATE        NOT NULL,
+    end_date           DATE        NOT NULL,
+    cover_image_path   VARCHAR(500),
+    created_at         TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at         TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )
 
 create table enrollment
