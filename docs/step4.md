@@ -32,7 +32,7 @@
 - [x] SessionStatus(강의 상태) → SessionProgressStatus(강의 진행 상태)/SessionRecruitmentStatus(강의 모집 상태) 로 분리
 - [x] SessionCoverImages 클래스 추가
 - [ ] Enrollment (수강신청) 에 대해서 요구사항 추가
-  - [ ] 수강 신청 상태 클래스 추가 (EnrollmentStatus)
+  - [x] 수강 신청 상태 클래스 추가 (EnrollmentStatus)
   - [ ] 수강 신청 승인 로직 추가
   - [ ] 수강 신청 반려 로직 추가
 - [ ] Session 테이블 스키마 변경 (상태)

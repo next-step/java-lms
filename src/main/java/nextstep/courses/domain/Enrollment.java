@@ -7,19 +7,21 @@ public class Enrollment {
     private Long id;
     private final Session session;
     private final Student student;
+    private final EnrollmentStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Enrollment(Session session, Student student) {
-        this(null, session, student, LocalDateTime.now(), LocalDateTime.now());
-    }
-
-    public Enrollment(Long id, Session session, Student student, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Enrollment(Long id, Session session, Student student, EnrollmentStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.session = session;
         this.student = student;
+        this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public static Enrollment request(Session session, Student student) {
+        return new Enrollment(null, session, student, EnrollmentStatus.REQUESTED, LocalDateTime.now(), LocalDateTime.now());
     }
 
     public Session getSession() {
