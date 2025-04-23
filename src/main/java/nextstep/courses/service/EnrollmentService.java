@@ -39,4 +39,7 @@ public class EnrollmentService {
         return enrollmentRepository.findBySessionIdAndStatus(sessionId, EnrollmentStatus.REQUESTED);
     }
 
+    public void save(Enrollment enrollment) {
+        enrollmentRepository.save(enrollment);
+    }
 }

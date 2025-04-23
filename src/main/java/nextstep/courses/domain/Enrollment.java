@@ -29,7 +29,7 @@ public class Enrollment {
             throw new IllegalStateException("이미 반려된 신청 건 입니다.");
         }
 
-        status = EnrollmentStatus.APPROVED;
+        updateStatus(EnrollmentStatus.APPROVED);
     }
 
     public void reject() {
@@ -37,7 +37,7 @@ public class Enrollment {
             throw new IllegalStateException("이미 승인된 신청 건 입니다.");
         }
 
-        status = EnrollmentStatus.REJECTED;
+        updateStatus(EnrollmentStatus.REJECTED);
     }
 
     public Long getId() {
@@ -54,6 +54,10 @@ public class Enrollment {
 
     public EnrollmentStatus getStatus() {
         return status;
+    }
+
+    public void updateStatus(EnrollmentStatus status) {
+        this.status = status;
     }
 
     @Override

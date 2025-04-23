@@ -1,9 +1,8 @@
 package nextstep.courses.fixture;
 
-import nextstep.courses.domain.*;
+import nextstep.courses.domain.Session;
+import nextstep.courses.domain.SessionRepository;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -13,7 +12,7 @@ public class FakeSessionRepository implements SessionRepository {
     private final Map<Long, Session> sessions;
 
     public FakeSessionRepository() {
-        this.sessions = new HashMap<>();
+        sessions = new HashMap<>();
     }
 
     @Override

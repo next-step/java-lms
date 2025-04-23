@@ -5,40 +5,69 @@ import nextstep.courses.domain.EnrollmentRepository;
 import nextstep.courses.domain.EnrollmentStatus;
 import nextstep.courses.domain.Enrollments;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class FakeEnrollmentRepository implements EnrollmentRepository {
+
+    private final Map<Long, Enrollment> enrollments;
+
+    public FakeEnrollmentRepository() {
+        enrollments = new HashMap<>();
+    }
+
     @Override
     public void save(Enrollment enrollment) {
+        enrollments.put(enrollment.getId(), enrollment);
     }
 
     @Override
     public Enrollments findByUserId(Long userId) {
-        return new Enrollments();
+        return new Enrollments(
+                enrollments.values().stream()
+                        .filter(enrollment -> enrollment.getStudent().getId().equals(userId))
+                        .collect(Collectors.toList())
+        );
     }
 
     @Override
     public Enrollments findBySessionId(Long sessionId) {
-        return new Enrollments();
+        return new Enrollments(
+                enrollments.values().stream()
+                        .filter(enrollment -> enrollment.getSession().getId().equals(sessionId))
+                        .collect(Collectors.toList())
+        );
     }
 
     @Override
     public Enrollments findByStatus(EnrollmentStatus enrollmentStatus) {
-        return null;
+        return new Enrollments(
+                enrollments.values().stream()
+                        .filter(enrollment -> enrollment.getStatus().equals(enrollmentStatus))
+                        .collect(Collectors.toList())
+        );
     }
 
     @Override
     public Enrollments findBySessionIdAndStatus(Long sessionId, EnrollmentStatus enrollmentStatus) {
-        return null;
+        return new Enrollments(
+                enrollments.values().stream()
+                        .filter(enrollment -> enrollment.getSession().getId().equals(sessionId))
+                        .filter(enrollment -> enrollment.getStatus().equals(enrollmentStatus))
+                        .collect(Collectors.toList())
+        );
     }
 
     @Override
     public Optional<Enrollment> findById(Long enrollmentId) {
-        return Optional.empty();
+        return Optional.ofNullable(enrollments.get(enrollmentId));
     }
 
     @Override
     public void updateStatus(Enrollment enrollment) {
-
+        findById(enrollment.getId())
+                .ifPresent(value -> value.updateStatus(enrollment.getStatus()));
     }
 }
