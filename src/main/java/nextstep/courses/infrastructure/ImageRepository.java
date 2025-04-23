@@ -1,9 +1,9 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.dto.ImageDto;
+import nextstep.courses.domain.session.info.basic.SessionThumbnail;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ImageRepository {
-    ImageDto findBySessionId(Long sessionId);
+    SessionThumbnail findThumbnailBySessionId(Long sessionId);
 }

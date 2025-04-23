@@ -1,5 +1,6 @@
 package nextstep.courses.infrastructure;
 
+import nextstep.courses.domain.session.info.basic.SessionThumbnail;
 import nextstep.courses.dto.ImageDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,8 +35,8 @@ class JdbcImageRepositoryTest {
                 .sessionId(sessionId)
                 .fileName("test.jpg")
                 .fileSize(1024L)
-                .width(800)
-                .height(600)
+                .width(600)
+                .height(400)
                 .createdAt(now)
                 .updatedAt(now)
                 .build();
@@ -44,17 +45,13 @@ class JdbcImageRepositoryTest {
                 .thenReturn(expectedImage);
 
         // when
-        ImageDto actualImage = imageRepository.findBySessionId(sessionId);
+        SessionThumbnail actualImage = imageRepository.findThumbnailBySessionId(sessionId);
 
         // then
         assertThat(actualImage).isNotNull();
-        assertThat(actualImage.getId()).isEqualTo(expectedImage.getId());
-        assertThat(actualImage.getSessionId()).isEqualTo(expectedImage.getSessionId());
-        assertThat(actualImage.getFileName()).isEqualTo(expectedImage.getFileName());
+        assertThat(actualImage.getFileName().getFullFileName()).isEqualTo(expectedImage.getFileName());
         assertThat(actualImage.getFileSize()).isEqualTo(expectedImage.getFileSize());
-        assertThat(actualImage.getWidth()).isEqualTo(expectedImage.getWidth());
-        assertThat(actualImage.getHeight()).isEqualTo(expectedImage.getHeight());
-        assertThat(actualImage.getCreatedAt()).isEqualTo(expectedImage.getCreatedAt());
-        assertThat(actualImage.getUpdatedAt()).isEqualTo(expectedImage.getUpdatedAt());
+        assertThat(actualImage.getSize().getWidth()).isEqualTo(expectedImage.getWidth());
+        assertThat(actualImage.getSize().getHeight()).isEqualTo(expectedImage.getHeight());
     }
 } 

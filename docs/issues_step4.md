@@ -6,7 +6,7 @@
 - SessionDto를 Session으로 변환하는 과정에서 다른 Repository에 의존하는 것에는 문제가 있음
   - UserService에서 List<NsUser> 반환
   - imageRepository 의존성 제거 → imageRepository에서 SessionThumbnail 반환
-  - sessionEnrollmentRepository 의존성 제거 -> SessionEnrollmentRepository에서 SessionEnrollment 반환
+  - sessionEnrollmentRepository 의존성 제거 -> 단순 CRUD 기능의 계층을 늘릴 필요는 없음
 - Service 간 의존성을 반드시 제거할 필요는 없음 (단, 순환 참조는 발생하면 안됨)
 ### Repository 
 - 도메인 객체에 ID는 필요 없는 값
