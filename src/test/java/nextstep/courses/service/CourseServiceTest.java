@@ -1,13 +1,10 @@
 package nextstep.courses.service;
 
-import nextstep.courses.domain.Course;
 import nextstep.courses.factory.CourseFactory;
 import nextstep.stub.repository.TestCourseRepository;
 import nextstep.stub.service.TestSessionService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDateTime;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;

@@ -3,7 +3,6 @@ package nextstep.courses.factory;
 import nextstep.courses.domain.session.image.SessionImage;
 import nextstep.courses.domain.session.image.SessionImages;
 import nextstep.courses.entity.SessionEntity;
-import nextstep.courses.entity.SessionImageEntity;
 import nextstep.stub.domain.TestSessionImage;
 import nextstep.stub.factory.TestSessionFactory;
 import org.junit.jupiter.api.DisplayName;
