@@ -76,12 +76,13 @@ public class JdbcPaymentRepository implements PaymentRepository {
 
     @Override
     public void updateStatus(Long paymentId, String status) {
-        String sql = "UPDATE payment SET status = ? WHERE id = ?";
+        String sql = "UPDATE payment SET status = ?, updated_at = ? WHERE id = ?";
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, status);
-            ps.setLong(2, paymentId);
+            ps.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setLong(3, paymentId);
             return ps;
         });
     }
