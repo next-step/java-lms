@@ -24,10 +24,6 @@ public class TestSessionImageFactory extends SessionImageFactory {
         this(createSessionImageResult, createSessionImageResult2, null);
     }
 
-    public TestSessionImageFactory(SessionImage createSessionImageResult1, SessionImages createSessionImagesResult) {
-        this(createSessionImageResult1, null, createSessionImagesResult);
-    }
-
     public TestSessionImageFactory(SessionImage createSessionImageResult1, SessionImage createSessionImageResult2, SessionImages createSessionImagesResult) {
         this.createSessionImageResult1 = createSessionImageResult1;
         this.createSessionImageResult2 = createSessionImageResult2;

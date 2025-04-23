@@ -94,7 +94,7 @@ class PaymentServiceTest {
     @DisplayName("결재정보 취소 테스트")
     @ParameterizedTest(name = "{index} => expectedResult={0}")
     @CsvSource({"true", "false"})
-    void testCancel(boolean expectedResult) throws IOException {
+    void testCancel(boolean expectedResult) {
         TestPaymentRepository paymentRepository = new TestPaymentRepository(
             1L,
             createPaymentEntity(1L, 2L, 5L)

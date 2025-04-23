@@ -32,8 +32,6 @@ class CourseServiceTest {
     @DisplayName("course 삭제")
     @Test
     void testDeleteCourse() {
-        LocalDateTime testLocalDateTime = LocalDateTime.now();
-        Course course = new Course("1", "test-course", 3L, testLocalDateTime, testLocalDateTime);
         TestCourseRepository courseRepository = new TestCourseRepository(1L, null);
         TestSessionService sessionService = new TestSessionService();
         CourseService courseService = new CourseService(courseRepository, new CourseFactory(), sessionService);
