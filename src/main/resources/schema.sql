@@ -73,9 +73,10 @@ create table session
 create table enrollment
 (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
-    session_id BIGINT NOT NULL,
-    student_id BIGINT NOT NULL,
-    payment_id BIGINT NOT NULL,
+    session_id BIGINT      NOT NULL,
+    student_id BIGINT      NOT NULL,
+    payment_id BIGINT      NOT NULL,
+    status     VARCHAR(20) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )
