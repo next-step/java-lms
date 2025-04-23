@@ -12,4 +12,8 @@ public interface EnrollmentRepository {
     Enrollments findByStatus(EnrollmentStatus enrollmentStatus);
 
     Enrollments findBySessionIdAndStatus(Long sessionId, EnrollmentStatus enrollmentStatus);
+
+    Optional<Enrollment> findById(Long enrollmentId);
+
+    void updateStatus(Enrollment enrollment);
 }

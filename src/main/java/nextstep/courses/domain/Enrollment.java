@@ -25,11 +25,23 @@ public class Enrollment {
     }
 
     public void approve() {
+        if (status == EnrollmentStatus.REJECTED) {
+            throw new IllegalStateException("이미 반려된 신청 건 입니다.");
+        }
+
         status = EnrollmentStatus.APPROVED;
     }
 
     public void reject() {
+        if (status == EnrollmentStatus.APPROVED) {
+            throw new IllegalStateException("이미 승인된 신청 건 입니다.");
+        }
+
         status = EnrollmentStatus.REJECTED;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Session getSession() {
@@ -38,6 +50,10 @@ public class Enrollment {
 
     public Student getStudent() {
         return student;
+    }
+
+    public EnrollmentStatus getStatus() {
+        return status;
     }
 
     @Override

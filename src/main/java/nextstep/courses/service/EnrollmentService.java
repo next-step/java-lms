@@ -1,5 +1,6 @@
 package nextstep.courses.service;
 
+import nextstep.courses.domain.Enrollment;
 import nextstep.courses.domain.EnrollmentRepository;
 import nextstep.courses.domain.EnrollmentStatus;
 import nextstep.courses.domain.Enrollments;
@@ -12,6 +13,22 @@ public class EnrollmentService {
 
     public EnrollmentService(EnrollmentRepository enrollmentRepository) {
         this.enrollmentRepository = enrollmentRepository;
+    }
+
+    public void approve(Long enrollmentId) {
+        Enrollment enrollment = enrollmentRepository.findById(enrollmentId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 수강신청 건 입니다."));
+
+        enrollment.approve();
+        enrollmentRepository.updateStatus(enrollment);
+    }
+
+    public void reject(Long enrollmentId) {
+        Enrollment enrollment = enrollmentRepository.findById(enrollmentId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 수강신청 건 입니다."));
+
+        enrollment.reject();
+        enrollmentRepository.updateStatus(enrollment);
     }
 
     public Enrollments findRequested() {

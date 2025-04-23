@@ -5,6 +5,8 @@ import nextstep.courses.domain.EnrollmentRepository;
 import nextstep.courses.domain.EnrollmentStatus;
 import nextstep.courses.domain.Enrollments;
 
+import java.util.Optional;
+
 public class FakeEnrollmentRepository implements EnrollmentRepository {
     @Override
     public void save(Enrollment enrollment) {
@@ -28,5 +30,15 @@ public class FakeEnrollmentRepository implements EnrollmentRepository {
     @Override
     public Enrollments findBySessionIdAndStatus(Long sessionId, EnrollmentStatus enrollmentStatus) {
         return null;
+    }
+
+    @Override
+    public Optional<Enrollment> findById(Long enrollmentId) {
+        return Optional.empty();
+    }
+
+    @Override
+    public void updateStatus(Enrollment enrollment) {
+
     }
 }

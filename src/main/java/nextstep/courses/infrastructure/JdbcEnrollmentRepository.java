@@ -45,6 +45,18 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
         return new Enrollments(jdbcTemplate.query(sql, getEnrollmentRowMapper(), sessionId, enrollmentStatus));
     }
 
+    @Override
+    public Optional<Enrollment> findById(Long enrollmentId) {
+        String sql = "SELECT * FROM enrollment WHERE id = ?";
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, getEnrollmentRowMapper(), enrollmentId));
+    }
+
+    @Override
+    public void updateStatus(Enrollment enrollment) {
+        String sql = "UPDATE enrollment SET status = ? WHERE id = ?";
+        jdbcTemplate.update(sql, enrollment.getStatus().name(), enrollment.getId());
+    }
+
     private static RowMapper<Enrollment> getEnrollmentRowMapper() {
         return (rs, rowNumber) -> new Enrollment(
                 rs.getLong("id"),
