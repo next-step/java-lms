@@ -30,6 +30,7 @@ public class JdbcSessionRepository implements SessionRepository {
         parameters.put("course_id", session.getCourseId());
         parameters.put("capacity", session.getStudents().getCapacity());
         parameters.put("status", session.getStatus().name());
+        parameters.put("recruitment", session.getRecruitmentStatus().name());
         parameters.put("price", new BigDecimal(session.getPrice()));
         parameters.put("start_date", session.getPeriod().getStartDate().toLocalDate());
         parameters.put("end_date", session.getPeriod().getEndDate().toLocalDate());

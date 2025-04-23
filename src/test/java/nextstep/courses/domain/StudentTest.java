@@ -1,7 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.model.RecruitmentStatus;
 import nextstep.courses.domain.model.Session;
-import nextstep.courses.domain.model.SessionStatus;
 import nextstep.courses.domain.model.Student;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class StudentTest {
 
     public static Student createStudent(Long balance) {
-        Session session = SessionTest.createFreeSession(SessionStatus.OPEN);
+        Session session = SessionTest.createFreeSession(RecruitmentStatus.ON);
         return new Student(NsUserTest.createNsUser(3L, balance), session);
     }
 

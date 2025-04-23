@@ -14,5 +14,5 @@ INSERT INTO question (id, writer_id, title, contents, created_at, deleted) VALUE
 INSERT INTO course (title, creator_id, created_at)
 VALUES ('넥스트 스텝', 1, CURRENT_TIMESTAMP());
 
-INSERT INTO session (course_id, capacity, status, price, start_date, end_date, creator_id, created_at)
-VALUES (1, 10, 'OPEN', 100000, '2025-04-21', '2025-05-21', 1, '2025-04-21 00:00:00');
+INSERT INTO session (course_id, capacity, status, recruitment, price, start_date, end_date, creator_id, created_at)
+VALUES (1, 10, 'OPEN', 'ON', 100000, '2025-04-21', '2025-05-21', 1, '2025-04-21 00:00:00');
