@@ -93,7 +93,7 @@ public class SessionService {
     private Enrollment getEnrollment(SessionDto sessionDto) {
         SessionType sessionType = sessionDto.getSessionType();
         List<Long> enrolledUserIds = sessionEnrollmentRepository.findUserIdsBySessionId(sessionDto.getId());
-        List<NsUser> enrolledUsers = findEnrolledUsersByIds(enrolledUserIds);
+        List<NsUser> enrolledUsers = userService.findEnrolledUsersByIds(enrolledUserIds);
         SessionStatus sessionStatus = sessionDto.getStatus();
 
         if (sessionType.isPaid()) {
@@ -102,12 +102,5 @@ public class SessionService {
         }
 
         return new FreeEnrollment(enrolledUsers, sessionStatus);
-    }
-
-    private List<NsUser> findEnrolledUsersByIds(List<Long> enrolledUserIds) {
-        return enrolledUserIds.stream()
-                .map(userId -> userService.findByUserId(userId.toString())
-                        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다.")))
-                .collect(Collectors.toList());
     }
 }

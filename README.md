@@ -73,5 +73,8 @@
   - [x] Enrollment.hasEnrolledUser 제거
 # 4단계
 - [ ] 3단계 피드백
-  - [ ] Entity 도입
+  - [ ] SessionService 리팩토링
+    - [x] UserService.findByUserIds 추가
+    - [ ] imageRepository 의존성 제거
+    - [ ] sessionEnrollmentRepository 의존성 제거
   - [ ] Enrollment 검증 테스트 도입
