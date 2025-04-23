@@ -70,18 +70,10 @@ class PaymentServiceTest {
     @DisplayName("결재정보 승인 테스트")
     @ParameterizedTest(name = "{index} => expectedResult={0}")
     @CsvSource({"true", "false"})
-    void testApprove(boolean expectedResult) throws IOException {
-        TestPaymentRepository paymentRepository = new TestPaymentRepository(
-            1L,
-            createPaymentEntity(1L, 2L, 5L)
-        );
-        TestPaymentFactory paymentFactory = new TestPaymentFactory(new Payment());
-        TestSessionService sessionService = new TestSessionService() {
-            @Override
-            public Session createSession(long sessionId) {
-                return new Session();
-            }
-        };
+    void testApprove(boolean expectedResult) {
+        TestPaymentRepository paymentRepository = new TestPaymentRepository(1L, createPaymentEntity(1L, 2L, 5L));
+        TestPaymentFactory paymentFactory = new TestPaymentFactory();
+        TestSessionService sessionService = new TestSessionService();
         TestUserService userService = new TestUserService() {
             @Override
             public boolean canApprove(String approverId, String applicantId) {
@@ -108,12 +100,7 @@ class PaymentServiceTest {
             createPaymentEntity(1L, 2L, 5L)
         );
         TestPaymentFactory paymentFactory = new TestPaymentFactory(new Payment());
-        TestSessionService sessionService = new TestSessionService() {
-            @Override
-            public Session createSession(long sessionId) {
-                return new Session();
-            }
-        };
+        TestSessionService sessionService = new TestSessionService();
         TestUserService userService = new TestUserService() {
             @Override
             public boolean canCancel(String approverId, String applicantId) {

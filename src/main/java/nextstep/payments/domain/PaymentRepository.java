@@ -10,4 +10,6 @@ public interface PaymentRepository {
     PaymentEntity findById(Long paymentId);
 
     List<PaymentEntity> findBySession(Long sessionId);
+
+    void updateStatus(Long paymentId, String status);
 }

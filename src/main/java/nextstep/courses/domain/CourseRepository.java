@@ -6,4 +6,6 @@ public interface CourseRepository {
     Long save(CourseEntity courseEntity);
 
     CourseEntity findById(Long id);
+
+    void delete(Long id);
 }

@@ -10,6 +10,7 @@ public class TestSessionImageRepository implements SessionImageRepository {
     private final SessionImageEntity findByIdResult;
     private final List<SessionImageEntity> findAllBySessionIdResult;
     private int saveCalled = 0;
+    private int deleteCalled = 0;
 
     public TestSessionImageRepository() {
         this(null, null, List.of());
@@ -41,7 +42,16 @@ public class TestSessionImageRepository implements SessionImageRepository {
         return findAllBySessionIdResult;
     }
 
+    @Override
+    public void delete(Long sessionImageId) {
+        deleteCalled++;
+    }
+
     public int getSaveCalled() {
         return saveCalled;
+    }
+
+    public int getDeleteCalled() {
+        return deleteCalled;
     }
 }

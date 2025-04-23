@@ -53,6 +53,19 @@ class JdbcPaymentRepositoryTest {
         assertThat(paymentRepository.findBySession(2L).size()).isEqualTo(2);
     }
 
+    @DisplayName("결재 상태 업데이트")
+    @Test
+    void testUpdateStatus() {
+        PaymentEntity paymentEntity = createPaymentEntity(null, 1L, 1L);
+        long savedId = paymentRepository.save(paymentEntity);
+
+        String newStatus = "APPROVED";
+        paymentRepository.updateStatus(savedId, newStatus);
+
+        PaymentEntity updatedPaymentEntity = paymentRepository.findById(savedId);
+        assertThat(updatedPaymentEntity.getStatus()).isEqualTo(newStatus);
+    }
+
     private PaymentEntity createPaymentEntity(Long id, Long userId, Long sessionId) {
         return PaymentEntity.builder()
             .id(id)

@@ -104,6 +104,19 @@ public class JdbcSessionRepository implements SessionRepository {
         return jdbcTemplate.query(sql, rowMapper, courseId);
     }
 
+    @Override
+    public void delete(Long sessionId) {
+        String sql = "UPDATE session SET deleted = ?, updated_at = ? WHERE id = ?";
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setBoolean(1, true); // Set the deleted flag to true
+            ps.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now())); // Update the updated_at field
+            ps.setLong(3, sessionId);
+            return ps;
+        });
+    }
+
     private Timestamp toTimestamp(LocalDateTime localDateTime) {
         if (localDateTime == null) {
             return null;

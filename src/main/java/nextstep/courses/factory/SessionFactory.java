@@ -40,16 +40,6 @@ public class SessionFactory {
         return new Session(sessionEntity.getId(), sessionConstraint, sessionDescriptor);
     }
 
-    public Sessions createSessions(SessionEntityImageMap sessionEntityImageMap) throws IOException {
-        List<Session> sessions = new ArrayList<>();
-
-        for (Map.Entry<SessionEntity, List<SessionImageEntity>> entry : sessionEntityImageMap.entrySet()) {
-            sessions.add(createSession(entry.getKey(), entry.getValue()));
-        }
-
-        return new Sessions(sessions);
-    }
-
     public SessionEntity createSessionEntity(Session session, Long courseId) {
         return SessionEntity.builder()
             .id(session.id())

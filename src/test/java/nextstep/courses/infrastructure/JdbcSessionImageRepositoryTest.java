@@ -52,6 +52,18 @@ public class JdbcSessionImageRepositoryTest {
         assertThat(sessionImageRepository.findAllBySessionId(2L)).hasSize(2);
     }
 
+    @DisplayName("강의 이미지 삭제")
+    @Test
+    void testDelete() {
+        SessionImageEntity sessionImageEntity = createSessionImageEntity(null, 1L);
+        long generatedId = sessionImageRepository.save(sessionImageEntity);
+
+        sessionImageRepository.delete(generatedId);
+
+        SessionImageEntity deletedImageEntity = sessionImageRepository.findById(generatedId);
+        assertThat(deletedImageEntity.isDeleted()).isTrue();
+    }
+
     private SessionImageEntity createSessionImageEntity(Long id, Long sessionId) {
         return SessionImageEntity.builder()
             .id(id)

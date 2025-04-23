@@ -25,16 +25,6 @@ class SessionFactoryTest {
         assertDoesNotThrow(() -> sessionFactory.createSession(sessionEntity, List.of(sessionImageEntity)));
     }
 
-    @DisplayName("Session DB 정보들로 Sessions 인스턴스 생성")
-    @Test
-    public void testCreateSessions() {
-        SessionFactory sessionFactory = new TestSessionFactory();
-
-        SessionEntity sessionEntity = createSessionEntity(1L);
-        SessionImageEntity sessionImageEntity = createSessionImageEntity(1L, "http://test", "JPG", 1L);
-
-        assertDoesNotThrow(() -> sessionFactory.createSessions(new SessionEntityImageMap(Map.of(sessionEntity, List.of(sessionImageEntity)))));
-    }
 
     private SessionEntity createSessionEntity(Long id) {
         return SessionEntity.builder()

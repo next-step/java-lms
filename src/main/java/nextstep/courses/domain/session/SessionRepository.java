@@ -10,4 +10,6 @@ public interface SessionRepository {
     SessionEntity findById(Long id);
 
     List<SessionEntity> findAllByCourseId(Long courseId);
+
+    void delete(Long sessionId);
 }

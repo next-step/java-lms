@@ -74,6 +74,18 @@ public class JdbcPaymentRepository implements PaymentRepository {
             .build());
     }
 
+    @Override
+    public void updateStatus(Long paymentId, String status) {
+        String sql = "UPDATE payment SET status = ? WHERE id = ?";
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, status);
+            ps.setLong(2, paymentId);
+            return ps;
+        });
+    }
+
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
         if (timestamp == null) {
             return null;

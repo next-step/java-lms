@@ -10,6 +10,7 @@ public class TestSessionRepository implements SessionRepository {
     private final SessionEntity findByIdResult;
     private final List<SessionEntity> findAllByCourseIdResult;
     private int saveCalled = 0;
+    private int deleteCalled = 0;
 
     public TestSessionRepository() {
         this(null, null, null);
@@ -37,7 +38,16 @@ public class TestSessionRepository implements SessionRepository {
         return findAllByCourseIdResult;
     }
 
+    @Override
+    public void delete(Long sessionId) {
+        deleteCalled++;
+    }
+
     public int getSaveCalled() {
         return saveCalled;
+    }
+
+    public int getDeleteCalled() {
+        return deleteCalled;
     }
 }

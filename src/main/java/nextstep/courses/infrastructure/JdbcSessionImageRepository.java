@@ -79,6 +79,19 @@ public class JdbcSessionImageRepository implements SessionImageRepository {
         );
     }
 
+    @Override
+    public void delete(Long sessionImageId) {
+        String sql = "UPDATE session_image SET deleted = ?, updated_at = ? WHERE id = ?";
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setBoolean(1, true);
+            ps.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setLong(3, sessionImageId);
+            return ps;
+        });
+    }
+
     private Timestamp toTimestamp(LocalDateTime localDateTime) {
         if (localDateTime == null) {
             return null;

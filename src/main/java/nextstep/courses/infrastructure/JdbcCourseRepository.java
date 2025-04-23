@@ -42,16 +42,30 @@ public class JdbcCourseRepository implements CourseRepository {
 
     @Override
     public CourseEntity findById(Long id) {
-        String sql = "select id, title, creator_id, created_at, updated_at from course where id = ?";
+        String sql = "select id, title, deleted, creator_id, created_at, updated_at from course where id = ?";
         RowMapper<CourseEntity> rowMapper = (rs, rowNum) -> CourseEntity.builder()
             .id(rs.getLong(1))
             .title(rs.getString(2))
-            .creatorId(rs.getLong(3))
-            .createdAt(toLocalDateTime(rs.getTimestamp(4)))
-            .updatedAt(toLocalDateTime(rs.getTimestamp(5)))
+            .deleted(rs.getBoolean(3))
+            .creatorId(rs.getLong(4))
+            .createdAt(toLocalDateTime(rs.getTimestamp(5)))
+            .updatedAt(toLocalDateTime(rs.getTimestamp(6)))
             .build();
 
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
+    }
+
+    @Override
+    public void delete(Long id) {
+        String sql = "UPDATE course SET deleted = ?, updated_at = ? WHERE id = ?";
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setBoolean(1, true);
+            ps.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setLong(3, id);
+            return ps;
+        });
     }
 
     private Timestamp toTimestamp(LocalDateTime localDateTime) {

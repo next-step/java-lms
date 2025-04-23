@@ -9,6 +9,7 @@ import nextstep.courses.domain.session.policy.SessionEnrollPolicy;
 import nextstep.stub.factory.TestSessionFactory;
 import nextstep.stub.repository.TestSessionImageRepository;
 import nextstep.stub.repository.TestSessionRepository;
+import nextstep.stub.service.TestSessionImageService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -25,11 +26,8 @@ class SessionServiceTest {
     @Test
     void testCreateSession() {
         TestSessionRepository sessionRepository = new TestSessionRepository(1L, null, List.of());
-        TestSessionImageRepository sessionImageRepository = new TestSessionImageRepository();
         TestSessionFactory sessionFactory = new TestSessionFactory();
-
-        SessionService sessionService = new SessionService(sessionRepository, sessionImageRepository, sessionFactory);
-
+        SessionService sessionService = new SessionService(sessionRepository, sessionFactory, new TestSessionImageService());
         SessionConstraint constraint = new SessionConstraint(200_000, 1);
         SessionDescriptor descriptor = new SessionDescriptor(
             new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1)),
@@ -44,10 +42,9 @@ class SessionServiceTest {
 
     @DisplayName("Session 삭제")
     @Test
-    void testDeleteSession() throws IOException {
+    void testDeleteSession() {
         TestSessionRepository sessionRepository = new TestSessionRepository(1L, null, List.of());
         SessionConstraint constraint = new SessionConstraint(200_000, 1);
-        TestSessionImageRepository sessionImageRepository = new TestSessionImageRepository();
         SessionDescriptor descriptor = new SessionDescriptor(
             new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1)),
             new SessionEnrollPolicy(),
@@ -55,14 +52,15 @@ class SessionServiceTest {
         );
         Session session = new Session("1", constraint, descriptor);
         TestSessionFactory sessionFactory = new TestSessionFactory(session);
+        TestSessionImageService sessionImageService = new TestSessionImageService();
 
-        SessionService sessionService = new SessionService(sessionRepository, sessionImageRepository, sessionFactory);
+        SessionService sessionService = new SessionService(sessionRepository, sessionFactory, sessionImageService);
 
         sessionService.deleteSession(1L);
 
         assertAll(
-            () -> assertThat(sessionFactory.getCreateSessionCalled()).isEqualTo(1),
-            () -> assertThat(session.isDeleted()).isTrue()
+            () -> assertThat(sessionRepository.getDeleteCalled()).isEqualTo(1),
+            () -> assertThat(sessionImageService.getDeleteSessionImagesCalled()).isEqualTo(1)
         );
     }
 }

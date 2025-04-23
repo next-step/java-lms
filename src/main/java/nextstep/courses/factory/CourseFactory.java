@@ -1,12 +1,9 @@
 package nextstep.courses.factory;
 
 import nextstep.courses.domain.Course;
-import nextstep.courses.domain.session.SessionEntityImageMap;
 import nextstep.courses.entity.CourseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
 
 @Component
 public class CourseFactory {
@@ -18,17 +15,6 @@ public class CourseFactory {
         this.sessionFactory = sessionFactory;
     }
 
-    public Course createCourse(CourseEntity courseEntity, SessionEntityImageMap sessionEntityImageMap) throws IOException {
-        return new Course(
-            courseEntity.getId(),
-            courseEntity.isDeleted(),
-            courseEntity.getTitle(),
-            courseEntity.getCreatorId(),
-            sessionFactory.createSessions(sessionEntityImageMap),
-            courseEntity.getCreatedAt(),
-            courseEntity.getUpdatedAt()
-        );
-    }
 
     public CourseEntity createCourseEntity(Course course) {
         return CourseEntity.builder()

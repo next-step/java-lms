@@ -59,6 +59,19 @@ class JdbcSessionRepositoryTest {
 
         assertThat(sessions).hasSize(2);
     }
+    
+    @DisplayName("강의 삭제")
+    @Test
+    void testDelete() {
+        SessionEntity sessionEntity = createSessionEntity(null, 1L);
+        long generatedId = sessionRepository.save(sessionEntity);
+
+        sessionRepository.delete(generatedId);
+
+        SessionEntity deletedSession = sessionRepository.findById(generatedId);
+        assertThat(deletedSession.isDeleted()).isTrue();
+    }
+
 
     private SessionEntity createSessionEntity(Long id, Long courseId) {
         return SessionEntity.builder()

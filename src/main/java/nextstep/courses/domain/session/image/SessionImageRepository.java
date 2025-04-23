@@ -10,4 +10,6 @@ public interface SessionImageRepository {
     SessionImageEntity findById(Long sessionImageId);
 
     List<SessionImageEntity> findAllBySessionId(Long sessionId);
+
+    void delete(Long sessionImageId);
 }

@@ -28,10 +28,6 @@ public class Payment extends BaseDomain {
         this(id, false, LocalDateTime.now(), LocalDateTime.now(), session, user, amount, PENDING);
     }
 
-    public Payment(String id, boolean deleted, LocalDateTime createdAt, LocalDateTime updatedAt, Session session, NsUser user, Long amount) {
-        this(id, deleted, createdAt, updatedAt, session, user, amount, PENDING);
-    }
-
     public Payment(String id, boolean deleted, LocalDateTime createdAt, LocalDateTime updatedAt, Session session, NsUser user, Long amount, PaymentStatus status) {
         super(id, deleted, createdAt, updatedAt);
         this.session = session;
@@ -46,14 +42,6 @@ public class Payment extends BaseDomain {
 
     public boolean isSameSession(Payment payment) {
         return payment.session.equals(this.session);
-    }
-
-    public void approve() {
-        this.status = PaymentStatus.APPROVED;
-    }
-
-    public void cancel() {
-        this.status = PaymentStatus.CANCELED;
     }
 
     public boolean canEnroll(Session session, int enrollCount) {

@@ -37,7 +37,7 @@ class SessionImageServiceTest {
 
         sessionImageService.deleteSessionImage(1L);
 
-        assertThat(result.isDeleted()).isTrue();
+        assertThat(sessionImageRepository.getDeleteCalled()).isEqualTo(1);
     }
 
 }

@@ -2,10 +2,7 @@ package nextstep.payments.service;
 
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.service.SessionService;
-import nextstep.payments.domain.Payment;
-import nextstep.payments.domain.PaymentEntityUserMap;
-import nextstep.payments.domain.PaymentRepository;
-import nextstep.payments.domain.Payments;
+import nextstep.payments.domain.*;
 import nextstep.payments.entity.PaymentEntity;
 import nextstep.payments.factory.PaymentFactory;
 import nextstep.users.domain.NsUser;
@@ -59,15 +56,11 @@ public class PaymentService {
     }
 
     @Transactional
-    public boolean approve(long paymentId, String approverId) throws IOException {
+    public boolean approve(long paymentId, String approverId) {
         PaymentEntity paymentEntity = paymentRepository.findById(paymentId);
-        String applicantUserId = paymentEntity.getUserId().toString();
 
         if (userService.canApprove(approverId, paymentEntity.getUserId().toString())) {
-            Long sessionId = paymentEntity.getSessionId();
-            Session session = sessionService.createSession(sessionId);
-            NsUser user = userService.getUser(applicantUserId);
-            createPayment(paymentEntity, session, user).approve();
+            updatePaymentStatus(paymentId, PaymentStatus.APPROVED);
             return true;
         }
 
@@ -75,14 +68,11 @@ public class PaymentService {
     }
 
     @Transactional
-    public boolean cancel(long paymentId, String approverId) throws IOException {
+    public boolean cancel(long paymentId, String approverId) {
         PaymentEntity paymentEntity = paymentRepository.findById(paymentId);
-        String applicantUserId = paymentEntity.getUserId().toString();
 
         if (userService.canCancel(approverId, paymentEntity.getUserId().toString())) {
-            Long sessionId = paymentEntity.getSessionId();
-            Session session = sessionService.createSession(sessionId);
-            createPayment(paymentEntity, session, userService.getUser(applicantUserId)).cancel();
+            updatePaymentStatus(paymentId, PaymentStatus.CANCELED);
             return true;
         }
 
@@ -93,8 +83,8 @@ public class PaymentService {
         paymentRepository.save(paymentFactory.createPaymentEntity(payment));
     }
 
-    public Payment createPayment(PaymentEntity paymentEntity, Session session, NsUser nsUser) {
-        return paymentFactory.createPayment(paymentEntity, session, nsUser);
+    public void updatePaymentStatus(long paymentId, PaymentStatus status) {
+        paymentRepository.updateStatus(paymentId, status.getStatus());
     }
 
     private PaymentEntityUserMap getPaymentEntityUserMapForSession(long sessionId) {

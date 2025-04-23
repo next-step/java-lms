@@ -41,6 +41,10 @@ public class TestPaymentRepository implements PaymentRepository {
         return findBySessionResult;
     }
 
+    @Override
+    public void updateStatus(Long paymentId, String status) {
+    }
+
     public int getSaveCalled() {
         return saveCalled;
     }

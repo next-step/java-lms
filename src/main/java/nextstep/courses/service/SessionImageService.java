@@ -2,11 +2,13 @@ package nextstep.courses.service;
 
 import nextstep.courses.domain.session.image.SessionImage;
 import nextstep.courses.domain.session.image.SessionImageRepository;
+import nextstep.courses.entity.SessionImageEntity;
 import nextstep.courses.factory.SessionImageFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class SessionImageService {
@@ -24,9 +26,22 @@ public class SessionImageService {
         sessionImageRepository.save(sessionImageFactory.createImageEntity(sessionImage, sessionId));
     }
 
+    public List<SessionImageEntity> findAllBySessionId(long sessionId) {
+        return sessionImageRepository.findAllBySessionId(sessionId);
+    }
+
     @Transactional
-    public void deleteSessionImage(long sessionImageId) throws IOException {
-        SessionImage sessionImage = sessionImageFactory.createSessionImage(sessionImageRepository.findById(sessionImageId));
-        sessionImage.delete();
+    public void deleteSessionImage(long sessionImageId) {
+        sessionImageRepository.delete(sessionImageId);
+    }
+
+    @Transactional
+    public void deleteSessionImages(long sessionId) {
+        List<SessionImageEntity> sessionImageEntities = findAllBySessionId(sessionId);
+
+        sessionImageEntities.stream()
+            .map(SessionImageEntity::getId)
+            .map(Long::parseLong)
+            .forEach(this::deleteSessionImage);
     }
 }
