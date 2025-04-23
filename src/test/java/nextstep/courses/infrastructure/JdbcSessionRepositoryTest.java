@@ -59,7 +59,7 @@ class JdbcSessionRepositoryTest {
 
         assertThat(sessions).hasSize(2);
     }
-    
+
     @DisplayName("강의 삭제")
     @Test
     void testDelete() {

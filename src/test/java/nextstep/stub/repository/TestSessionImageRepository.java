@@ -16,10 +16,6 @@ public class TestSessionImageRepository implements SessionImageRepository {
         this(null, null, List.of());
     }
 
-    public TestSessionImageRepository(List<SessionImageEntity> findAllBySessionIdResult) {
-        this(null, null, findAllBySessionIdResult);
-    }
-
     public TestSessionImageRepository(Long saveResult, SessionImageEntity findByIdResult, List<SessionImageEntity> findAllBySessionIdResult) {
         this.saveResult = saveResult;
         this.findByIdResult = findByIdResult;

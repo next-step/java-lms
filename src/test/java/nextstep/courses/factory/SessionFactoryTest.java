@@ -1,6 +1,5 @@
 package nextstep.courses.factory;
 
-import nextstep.courses.domain.session.SessionEntityImageMap;
 import nextstep.courses.entity.SessionEntity;
 import nextstep.courses.entity.SessionImageEntity;
 import nextstep.stub.factory.TestSessionFactory;
@@ -9,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
@@ -24,7 +22,6 @@ class SessionFactoryTest {
         SessionFactory sessionFactory = new TestSessionFactory();
         assertDoesNotThrow(() -> sessionFactory.createSession(sessionEntity, List.of(sessionImageEntity)));
     }
-
 
     private SessionEntity createSessionEntity(Long id) {
         return SessionEntity.builder()

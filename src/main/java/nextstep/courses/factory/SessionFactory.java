@@ -1,9 +1,9 @@
 package nextstep.courses.factory;
 
-import nextstep.courses.domain.session.*;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionDescriptor;
+import nextstep.courses.domain.session.SessionPeriod;
 import nextstep.courses.domain.session.constraint.SessionConstraint;
-import nextstep.courses.domain.session.image.SessionImage;
-import nextstep.courses.domain.session.image.SessionImageType;
 import nextstep.courses.domain.session.policy.EnrollmentStatus;
 import nextstep.courses.domain.session.policy.SessionEnrollPolicy;
 import nextstep.courses.domain.session.policy.SessionStatus;
@@ -13,9 +13,7 @@ import nextstep.courses.entity.SessionImageEntity;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class SessionFactory {

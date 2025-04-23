@@ -7,13 +7,11 @@ import nextstep.courses.domain.session.constraint.SessionConstraint;
 import nextstep.courses.domain.session.image.SessionImages;
 import nextstep.courses.domain.session.policy.SessionEnrollPolicy;
 import nextstep.stub.factory.TestSessionFactory;
-import nextstep.stub.repository.TestSessionImageRepository;
 import nextstep.stub.repository.TestSessionRepository;
 import nextstep.stub.service.TestSessionImageService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 

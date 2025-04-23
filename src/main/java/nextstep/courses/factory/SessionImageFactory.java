@@ -1,6 +1,5 @@
 package nextstep.courses.factory;
 
-import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.image.SessionImage;
 import nextstep.courses.domain.session.image.SessionImageType;
 import nextstep.courses.domain.session.image.SessionImages;
