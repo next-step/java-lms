@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 class PaidEnrollmentTest {
     private static final NsUser USER = new NsUser(1L, "user", "password", "name", "email");
@@ -44,8 +43,8 @@ class PaidEnrollmentTest {
         // given
         Enrollment enrollment = new PaidEnrollment(30, new ArrayList<>(), SessionStatus.RECRUITING);
 
-        // when
-        enrollment.enroll(USER);
+        // when & then
+        assertThatCode(() -> enrollment.enroll(USER)).doesNotThrowAnyException();
     }
 
     @Test

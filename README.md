@@ -76,4 +76,4 @@
   - [x] SessionService 리팩토링
     - [x] UserService.findByUserIds 추가
     - [x] ImageRepository 의존성 제거
-  - [ ] Enrollment 검증 테스트 도입
+  - [x] Enrollment 검증 테스트 도입

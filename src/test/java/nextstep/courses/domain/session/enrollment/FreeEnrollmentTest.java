@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 class FreeEnrollmentTest {
     private static final NsUser USER = new NsUser(1L, "user", "password", "name", "email");
@@ -30,9 +31,11 @@ class FreeEnrollmentTest {
         Enrollment enrollment = new FreeEnrollment(new ArrayList<>(), SessionStatus.RECRUITING);
         NsUser anotherUser = new NsUser(2L, "user2", "password", "name", "email");
 
-        // when
-        enrollment.enroll(USER);
-        enrollment.enroll(anotherUser);
+        // when & then
+        assertThatCode(() -> {
+            enrollment.enroll(USER);
+            enrollment.enroll(anotherUser);
+        }).doesNotThrowAnyException();
     }
 
     @Test
