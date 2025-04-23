@@ -15,7 +15,7 @@ public class SessionTest {
     private static final long PRICE = 10000;
     private static final int MAX_CAPACITY = 3;
 
-    private static final Student student = new Student(new NsUser(), new Enrollments());
+    private static final Student student = new Student(new NsUser());
     private Session freeSession;
     private Session paidSession;
 

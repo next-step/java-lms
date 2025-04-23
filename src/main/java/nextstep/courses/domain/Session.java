@@ -78,7 +78,7 @@ public class Session {
         validateMaxCapacity(currentCount);
         validatePayment(payment);
 
-        return new Enrollment(this, student);
+        return Enrollment.request(this, student);
     }
 
     public void updateCoverImage(SessionCoverImage newCoverImage) {

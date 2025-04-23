@@ -2,9 +2,8 @@ package nextstep.courses.fixture;
 
 import nextstep.courses.domain.Enrollment;
 import nextstep.courses.domain.EnrollmentRepository;
+import nextstep.courses.domain.EnrollmentStatus;
 import nextstep.courses.domain.Enrollments;
-
-import java.util.Optional;
 
 public class FakeEnrollmentRepository implements EnrollmentRepository {
     @Override
@@ -12,12 +11,22 @@ public class FakeEnrollmentRepository implements EnrollmentRepository {
     }
 
     @Override
-    public Optional<Enrollments> findByUserId(Long userId) {
-        return Optional.of(new Enrollments());
+    public Enrollments findByUserId(Long userId) {
+        return new Enrollments();
     }
 
     @Override
-    public Optional<Enrollments> findBySessionId(Long sessionId) {
-        return Optional.of(new Enrollments());
+    public Enrollments findBySessionId(Long sessionId) {
+        return new Enrollments();
+    }
+
+    @Override
+    public Enrollments findByStatus(EnrollmentStatus enrollmentStatus) {
+        return null;
+    }
+
+    @Override
+    public Enrollments findBySessionIdAndStatus(Long sessionId, EnrollmentStatus enrollmentStatus) {
+        return null;
     }
 }

@@ -40,7 +40,7 @@ public class SessionServiceTest {
         ));
 
         session = sessionService.findById(1L);
-        student = new Student(NsUserTest.JAVAJIGI, new Enrollments());
+        student = new Student(NsUserTest.JAVAJIGI);
         payment = new Payment("paymentId", 1L, NsUserTest.JAVAJIGI.getId(), 10000L);
     }
 

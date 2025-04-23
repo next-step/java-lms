@@ -21,8 +21,7 @@ public class SessionService {
     public Enrollment enroll(Long sessionId, Student student, Payment payment) {
         Session session = findById(sessionId);
 
-        Enrollments sessionEnrollments = enrollmentRepository.findBySessionId(sessionId)
-                .orElse(new Enrollments());
+        Enrollments sessionEnrollments = enrollmentRepository.findBySessionId(sessionId);
 
         Enrollment enrollment = session.enroll(sessionEnrollments.count(), student, payment);
         enrollmentRepository.save(enrollment);
@@ -35,7 +34,7 @@ public class SessionService {
         sessionRepository.save(session);
     }
 
-    public Session findById(long sessionId) {
+    public Session findById(Long sessionId) {
         return sessionRepository.findById(sessionId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강의입니다."));
     }

@@ -5,7 +5,11 @@ import java.util.Optional;
 public interface EnrollmentRepository {
     void save(Enrollment enrollment);
 
-    Optional<Enrollments> findByUserId(Long userId);
+    Enrollments findByUserId(Long userId);
 
-    Optional<Enrollments> findBySessionId(Long sessionId);
+    Enrollments findBySessionId(Long sessionId);
+
+    Enrollments findByStatus(EnrollmentStatus enrollmentStatus);
+
+    Enrollments findBySessionIdAndStatus(Long sessionId, EnrollmentStatus enrollmentStatus);
 }
