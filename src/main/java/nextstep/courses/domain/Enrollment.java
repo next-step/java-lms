@@ -7,7 +7,7 @@ public class Enrollment {
     private Long id;
     private final Session session;
     private final Student student;
-    private final EnrollmentStatus status;
+    private EnrollmentStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -22,6 +22,14 @@ public class Enrollment {
 
     public static Enrollment request(Session session, Student student) {
         return new Enrollment(null, session, student, EnrollmentStatus.REQUESTED, LocalDateTime.now(), LocalDateTime.now());
+    }
+
+    public void approve() {
+        status = EnrollmentStatus.APPROVED;
+    }
+
+    public void reject() {
+        status = EnrollmentStatus.REJECTED;
     }
 
     public Session getSession() {
