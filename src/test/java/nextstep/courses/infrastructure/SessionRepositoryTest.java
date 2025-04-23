@@ -39,8 +39,8 @@ public class SessionRepositoryTest {
 
     @Test
     void crud() {
-        int count = sessionRepository.save(paidSession);
-        assertThat(count).isEqualTo(1);
+        int savedId = sessionRepository.save(paidSession);
+        assertThat(savedId).isEqualTo(1);
         Session savedSession = sessionRepository.findById(1L);
         assertThat(paidSession.getMeta()).isEqualTo(savedSession.getMeta());
         assertThat(paidSession.isFree()).isEqualTo(savedSession.isFree());

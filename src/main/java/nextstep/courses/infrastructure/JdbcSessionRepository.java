@@ -2,46 +2,51 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
     private final JdbcOperations jdbcTemplate;
+    private final SimpleJdbcInsert jdbcInsert;
 
     public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+        this.jdbcInsert = new SimpleJdbcInsert((JdbcTemplate) jdbcTemplate)
+                .withTableName("sessions")
+                .usingGeneratedKeyColumns("id");
     }
+
 
     @Override
     public int save(Session session) {
-        String sql = "INSERT INTO sessions (" +
-                "course_id, session_type, start_date, end_date, price, " +
-                "cover_image_file_size, cover_image_file_type, cover_image_width, cover_image_height, " +
-                "session_status, " +
-                "capacity_max, capacity_current, " +
-                "created_at" +
-                ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         SessionMeta meta = session.getMeta();
 
-        return jdbcTemplate.update(sql,
-                session.getCourseId(),
-                meta.getSessionType().name(),
-                meta.getStartAt(),
-                meta.getEndAt(),
-                meta.getPrice(),
-                meta.getImageSize(),
-                meta.getImageType(),
-                meta.getImageWidth(),
-                meta.getImageHeight(),
-                session.getStatus().name(),
-                session.isFree() ? null : session.getMax(),
-                session.getCurrent(),
-                session.getCreatedAt()
-        );
+        Map<String, Object> params = new HashMap<>();
+        params.put("course_id", session.getCourseId());
+        params.put("session_type", meta.getSessionType().name());
+        params.put("start_date", meta.getStartAt());
+        params.put("end_date", meta.getEndAt());
+        params.put("price", meta.getPrice());
+        params.put("cover_image_file_size", meta.getImageSize());
+        params.put("cover_image_file_type", meta.getImageType());
+        params.put("cover_image_width", meta.getImageWidth());
+        params.put("cover_image_height", meta.getImageHeight());
+        params.put("session_status", session.getStatus().name());
+        params.put("capacity_max", session.isFree() ? null : session.getMax());
+        params.put("capacity_current", session.getCurrent());
+        params.put("created_at", session.getCreatedAt());
+
+        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(params));
+        return key.intValue();
     }
 
     @Override
