@@ -1,11 +1,9 @@
 package nextstep.stub.factory;
 
 import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.image.SessionImages;
 import nextstep.courses.entity.SessionEntity;
-import nextstep.courses.entity.SessionImageEntity;
 import nextstep.courses.factory.SessionFactory;
-
-import java.util.List;
 
 public class TestSessionFactory extends SessionFactory {
     private final Session createSessionResult;
@@ -15,12 +13,11 @@ public class TestSessionFactory extends SessionFactory {
     }
 
     public TestSessionFactory(Session createSessionResult) {
-        super(new TestSessionImageFactory());
         this.createSessionResult = createSessionResult;
     }
 
     @Override
-    public Session createSession(SessionEntity sessionEntity, List<SessionImageEntity> sessionImageEntities) {
+    public Session createSession(SessionEntity sessionEntity, SessionImages sessionImages) {
         return createSessionResult;
     }
 }

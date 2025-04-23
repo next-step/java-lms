@@ -2,12 +2,14 @@ package nextstep.courses.service;
 
 import nextstep.courses.domain.session.image.SessionImage;
 import nextstep.courses.domain.session.image.SessionImageRepository;
+import nextstep.courses.domain.session.image.SessionImages;
 import nextstep.courses.entity.SessionImageEntity;
 import nextstep.courses.factory.SessionImageFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,8 +28,13 @@ public class SessionImageService {
         sessionImageRepository.save(sessionImageFactory.createImageEntity(sessionImage, sessionId));
     }
 
-    public List<SessionImageEntity> findAllBySessionId(long sessionId) {
-        return sessionImageRepository.findAllBySessionId(sessionId);
+    public SessionImages getSessionImages(long sessionId) throws IOException {
+        List<SessionImage> sessionImages = new ArrayList<>();
+        List<SessionImageEntity> sessionImageEntities = getSessionImageEntities(sessionId);
+        for (SessionImageEntity sessionImageEntity : sessionImageEntities) {
+            sessionImages.add(sessionImageFactory.createSessionImage(sessionImageEntity));
+        }
+        return new SessionImages(sessionImages);
     }
 
     @Transactional
@@ -37,11 +44,15 @@ public class SessionImageService {
 
     @Transactional
     public void deleteSessionImages(long sessionId) {
-        List<SessionImageEntity> sessionImageEntities = findAllBySessionId(sessionId);
+        List<SessionImageEntity> sessionImageEntities = getSessionImageEntities(sessionId);
 
         sessionImageEntities.stream()
             .map(SessionImageEntity::getId)
             .map(Long::parseLong)
             .forEach(this::deleteSessionImage);
+    }
+
+    private List<SessionImageEntity> getSessionImageEntities(long sessionId) {
+        return sessionImageRepository.findAllBySessionId(sessionId);
     }
 }

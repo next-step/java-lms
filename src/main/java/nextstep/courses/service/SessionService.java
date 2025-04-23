@@ -37,7 +37,7 @@ public class SessionService {
     public Session createSession(long sessionId) throws IOException {
         return sessionFactory.createSession(
             sessionRepository.findById(sessionId),
-            sessionImageService.findAllBySessionId(sessionId)
+            sessionImageService.getSessionImages(sessionId)
         );
     }
 
