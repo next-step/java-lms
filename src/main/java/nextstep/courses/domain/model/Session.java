@@ -57,7 +57,7 @@ public class Session extends BaseEntity {
     }
 
     private Student enroll(NsUser user) {
-        applicants.remove(user);
+        selected.remove(user);
 
         return students.register(user, this, price);
     }
@@ -114,6 +114,7 @@ public class Session extends BaseEntity {
         applicants.add(user);
 
         if (!course.hasSelection()) {
+            select(user);
             enroll(user);
         }
     }
@@ -132,5 +133,25 @@ public class Session extends BaseEntity {
         }
         applicants.remove(user);
         selected.add(user);
+    }
+
+    public Student approve(NsUser user) {
+        if (!selected.contains(user)) {
+            throw new IllegalArgumentException("not selected");
+        }
+
+        return enroll(user);
+    }
+
+    public void cancel(NsUser user) {
+        if (selected.contains(user)) {
+            throw new IllegalArgumentException("not an applicant");
+        }
+
+        if (!applicants.contains(user)) {
+            throw new IllegalArgumentException("not an applicant");
+        }
+
+        applicants.remove(user);
     }
 }
