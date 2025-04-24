@@ -54,7 +54,7 @@ public class SessionService {
         sessionEntities.stream()
             .map(SessionEntity::getId)
             .map(Long::parseLong)
-            .forEach(this::deleteSessions);
+            .forEach(this::deleteSession);
     }
 
     private List<SessionEntity> getSessionEntities(long courseId) {
