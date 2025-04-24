@@ -40,14 +40,6 @@ public class Students {
         return capacity;
     }
 
-    @Override
-    public String toString() {
-        return "Students{" +
-                "capacity=" + capacity +
-                ", students=" + students +
-                '}';
-    }
-
     public boolean include(NsUser user) {
         return students.stream().anyMatch(student -> student.isEqualTo(user));
     }

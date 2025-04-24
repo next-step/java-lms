@@ -3,6 +3,7 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.model.Session;
 import nextstep.courses.domain.model.SessionImage;
 import nextstep.courses.domain.repository.SessionRepository;
+import nextstep.courses.infrastructure.entity.JdbcCourse;
 import nextstep.courses.infrastructure.entity.JdbcSession;
 import nextstep.courses.infrastructure.entity.JdbcSessionImage;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -25,13 +26,13 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public int save(Session session) {
+    public long save(Session session) {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("session")
                 .usingGeneratedKeyColumns("id");
 
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("course_id", session.getCourseId());
+        parameters.put("course_id", session.getCourse().getId());
         parameters.put("capacity", session.getStudents().getCapacity());
         parameters.put("status", session.getStatus().name());
         parameters.put("recruitment", session.getRecruitmentStatus().name());
@@ -43,6 +44,7 @@ public class JdbcSessionRepository implements SessionRepository {
         parameters.put("updated_at", session.getUpdatedAt());
 
         Number sessionId = simpleJdbcInsert.executeAndReturnKey(parameters);
+        session.setId(sessionId.longValue());
 
         simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("session_image")
@@ -73,7 +75,10 @@ public class JdbcSessionRepository implements SessionRepository {
                 .map(JdbcSessionImage::toDomain)
                 .collect(Collectors.toList());
 
-        return entity.toDomain(sessionImages);
+        sql = "select * from course where id = ?";
+        JdbcCourse course = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(JdbcCourse.class), entity.getCourseId());
+
+        return entity.toDomain(course.toDomain(), sessionImages);
     }
 
 }

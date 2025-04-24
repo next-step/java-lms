@@ -20,7 +20,7 @@ public class JdbcCourseRepository implements CourseRepository {
     }
 
     @Override
-    public int save(Course course) {
+    public long save(Course course) {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("course")
                 .usingGeneratedKeyColumns("id");
@@ -30,7 +30,9 @@ public class JdbcCourseRepository implements CourseRepository {
         parameters.put("creator_id", course.getCreatorId());
         parameters.put("created_at", course.getCreatedAt());
 
-        return simpleJdbcInsert.execute(parameters);
+        Number number = simpleJdbcInsert.executeAndReturnKey(parameters);
+        course.setId(number.longValue());
+        return number.longValue();
     }
 
     @Override

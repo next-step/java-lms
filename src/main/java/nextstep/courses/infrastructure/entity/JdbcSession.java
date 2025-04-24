@@ -122,8 +122,8 @@ public class JdbcSession extends BaseEntity {
         this.creatorId = creatorId;
     }
 
-    public Session toDomain(List<SessionImage> images) {
-        return new Session(getId(), courseId, new SessionPeriod(startDate, endDate), images,
+    public Session toDomain(Course course, List<SessionImage> images) {
+        return new Session(getId(), course, new SessionPeriod(startDate, endDate), images,
                 SessionStatus.valueOf(status), RecruitmentStatus.valueOf(recruitment), price.longValue(), new Students(capacity),
                 creatorId, getCreatedAt().toLocalDateTime(),
                 getUpdatedAt() == null ? null : getUpdatedAt().toLocalDateTime());

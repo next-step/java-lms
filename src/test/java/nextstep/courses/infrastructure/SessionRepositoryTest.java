@@ -45,10 +45,11 @@ class SessionRepositoryTest {
                 SessionStatus.OPEN,
                 RecruitmentStatus.ON, NsUserTest.JAVAJIGI
         );
-        int id = sessionRepository.save(session);
+        long id = sessionRepository.save(session);
+        assertThat(id).isEqualTo(session.getId());
 
         Session saved = sessionRepository.findById(2L);
-        assertThat(saved.getCourseId()).isEqualTo(1L);
+        assertThat(saved.getCourse()).isEqualTo(course);
         assertThat(saved.getPrice()).isEqualTo(session.getPrice());
         assertThat(saved.getStatus()).isEqualTo(session.getStatus());
         assertThat(saved.getRecruitmentStatus()).isEqualTo(session.getRecruitmentStatus());

@@ -12,7 +12,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 public class SessionTest {
-    public static final Session SESSION1 = new Session(1L, 1L,
+    public static final Session SESSION1 = new Session(1L, CourseTest.COURSE1,
             new SessionPeriod(LocalDateTime.parse("2025-04-21T00:00"), LocalDateTime.parse("2025-05-21T00:00")),
             null, SessionStatus.OPEN, RecruitmentStatus.ON, 100_000L, 10, 1L,
             LocalDateTime.parse("2025-04-21T00:00"), null);
@@ -26,15 +26,32 @@ public class SessionTest {
     }
 
     @Test
+    @DisplayName("선발절차가 있는 강의는 바로 수강 등록을 할 수 없다.")
+    void createSessionWithSelectionProcess() {
+        Course course = CourseTest.createCourseWithSelection();
+        Session session = SessionTest.createFreeSession(RecruitmentStatus.ON);
+        course.addSession(session);
+        System.out.println(session.enroll(NsUserTest.JAVAJIGI));
+        assertThatThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
     @DisplayName("무료 강의는 최대 수강 인원 제한이 없다.")
     void createFreeSession() {
         assertThatCode(() -> createPaidSession(0L, Integer.MAX_VALUE).enroll(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
     }
 
     @Test
+    @DisplayName("유료 강의는 최대 수강 인원 제한이 있다.")
+    void createPaidSession() {
+        assertThatThrownBy(() -> createPaidSession(0L, 0).enroll(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
     @DisplayName("강의는 하나 이상의 커버 이미지를 가질 수 있다.")
     void haveOneOrMoreSessionImages() {
-        Session session = new Session(null, 1L, new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)),
+        Course course = CourseTest.createCourse();
+        Session session = new Session(null, course, new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)),
                 List.of(new SessionImage("path0", new byte[0]), new SessionImage("path1", new byte[1])),
                 SessionStatus.OPEN, RecruitmentStatus.ON, 100_000L, new Students(3), 1L, LocalDateTime.now(), LocalDateTime.now());
         assertThat(session.getImages()).hasSize(2);

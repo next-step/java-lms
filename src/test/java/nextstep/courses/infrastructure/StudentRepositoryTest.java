@@ -33,8 +33,8 @@ class StudentRepositoryTest {
     void save() {
         Session session = SessionTest.SESSION1;
         Student student = new Student(NsUserTest.JAVAJIGI, session);
-        int count = studentRepository.save(student);
-        assertThat(count).isEqualTo(1);
+        long id = studentRepository.save(student);
+        assertThat(id).isEqualTo(student.getId());
 
         Student saved = studentRepository.findById(1L);
         assertThat(saved.getSession()).isEqualTo(session);

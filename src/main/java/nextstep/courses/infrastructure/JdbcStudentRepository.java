@@ -4,6 +4,7 @@ import nextstep.courses.domain.model.Session;
 import nextstep.courses.domain.model.SessionImage;
 import nextstep.courses.domain.model.Student;
 import nextstep.courses.domain.repository.StudentRepository;
+import nextstep.courses.infrastructure.entity.JdbcCourse;
 import nextstep.courses.infrastructure.entity.JdbcSession;
 import nextstep.courses.infrastructure.entity.JdbcSessionImage;
 import nextstep.courses.infrastructure.entity.JdbcStudent;
@@ -28,7 +29,7 @@ public class JdbcStudentRepository implements StudentRepository {
     }
 
     @Override
-    public int save(Student student) {
+    public long save(Student student) {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("student")
                 .usingGeneratedKeyColumns("id");
@@ -38,7 +39,9 @@ public class JdbcStudentRepository implements StudentRepository {
         parameters.put("ns_user_id", student.getNsUser().getId());
         parameters.put("created_at", student.getCreatedAt());
 
-        return simpleJdbcInsert.execute(parameters);
+        Number number = simpleJdbcInsert.executeAndReturnKey(parameters);
+        student.setId(number.longValue());
+        return number.intValue();
     }
 
     @Override
@@ -68,7 +71,11 @@ public class JdbcStudentRepository implements StudentRepository {
         List<SessionImage> sessionImages = images.stream()
                 .map(JdbcSessionImage::toDomain)
                 .collect(Collectors.toList());
-        return entity.toDomain(sessionImages);
+
+        sql = "select * from course where id = ?";
+        JdbcCourse course = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(JdbcCourse.class), entity.getCourseId());
+
+        return entity.toDomain(course.toDomain(), sessionImages);
     }
 
 }
