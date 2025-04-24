@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Session extends BaseEntity {
     private final Course course;
@@ -127,12 +128,28 @@ public class Session extends BaseEntity {
         return Collections.unmodifiableList(selected);
     }
 
-    public void select(NsUser user) {
-        if (!applicants.contains(user)) {
+    public int select(NsUser user) {
+        return select(List.of(user));
+    }
+
+    public int select(List<NsUser> users) {
+        if (!applicants.containsAll(users)) {
             throw new IllegalArgumentException("not an applicant");
         }
-        applicants.remove(user);
-        selected.add(user);
+        applicants.removeAll(users);
+        selected.addAll(users);
+        return users.size();
+    }
+
+    public int select(SelectStrategy strategy) {
+        List<NsUser> users = applicants.stream()
+                .filter(user -> strategy.isSelected())
+                .limit(students.getRemain() - selected.size())
+                .collect(Collectors.toList());
+
+        applicants.removeAll(users);
+        selected.addAll(users);
+        return users.size();
     }
 
     public Student approve(NsUser user) {
@@ -154,4 +171,5 @@ public class Session extends BaseEntity {
 
         applicants.remove(user);
     }
+
 }

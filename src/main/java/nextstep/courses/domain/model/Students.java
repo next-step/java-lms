@@ -43,4 +43,8 @@ public class Students {
     public boolean include(NsUser user) {
         return students.stream().anyMatch(student -> student.isEqualTo(user));
     }
+
+    public int getRemain() {
+        return capacity - students.size();
+    }
 }

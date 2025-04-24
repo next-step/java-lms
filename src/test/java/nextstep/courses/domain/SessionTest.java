@@ -63,10 +63,26 @@ public class SessionTest {
         course.addSession(session);
 
         session.apply(NsUserTest.JAVAJIGI);
-        assertThatCode(() -> session.select(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
+        assertThat(session.select(NsUserTest.JAVAJIGI)).isEqualTo(1);
         assertThat(session.getSelected()).contains(NsUserTest.JAVAJIGI);
         assertThat(session.getApplicants()).isEmpty();
     }
+
+    @Test
+    @DisplayName("강의는 선발 절차에 따라 최대 수강 인원을 선발한다.")
+    void selectStudentsWithCapacity() {
+        Course course = CourseTest.createCourseWithSelection();
+        Session session = new Session(null, course, new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)),
+                Collections.emptyList(),
+                SessionStatus.OPEN, RecruitmentStatus.ON, 0L, new Students(2), 1L, LocalDateTime.now(), LocalDateTime.now());
+        course.addSession(session);
+
+        session.apply(NsUserTest.JAVAJIGI);
+        session.apply(NsUserTest.SANJIGI);
+        SelectStrategy strategy = () -> true;
+        assertThat(session.select(strategy)).isEqualTo(2);
+    }
+
 
     @Test
     @DisplayName("강사는 선발된 인원에 대해서만 수강 승인이 가능해야 한다.")
