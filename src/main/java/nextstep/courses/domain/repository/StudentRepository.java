@@ -1,9 +1,9 @@
 package nextstep.courses.domain.repository;
 
-import nextstep.courses.domain.model.Student;
+import nextstep.courses.domain.model.Applicant;
 
 public interface StudentRepository {
-    long save(Student course);
+    long save(Applicant course);
 
-    Student findById(Long id);
+    Applicant findById(Long id);
 }

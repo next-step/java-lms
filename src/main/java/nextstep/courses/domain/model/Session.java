@@ -1,10 +1,8 @@
 package nextstep.courses.domain.model;
 
-import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,8 +13,6 @@ public class Session extends BaseEntity {
     private final SessionStatus status;
     private Long price;
     private final Recruitment recruitment;
-    private final List<NsUser> applicants;
-    private final List<NsUser> selected;
     private final Long creatorId;
 
     private Session(Long id, Course course, SessionPeriod period, SessionImage image, SessionStatus status, RecruitmentStatus recruitmentStatus, Long price, int capacity, Long creatorId) {
@@ -24,11 +20,11 @@ public class Session extends BaseEntity {
     }
 
     public Session(Long id, Course course, SessionPeriod period, SessionImage image, SessionStatus status, RecruitmentStatus recruitmentStatus, Long price, int capacity, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this(id, course, period, Collections.singletonList(image), status, recruitmentStatus, price, new Students(capacity), creatorId, createdAt, updatedAt);
+        this(id, course, period, Collections.singletonList(image), status, recruitmentStatus, price, new Applicants(capacity), creatorId, createdAt, updatedAt);
     }
 
-    public Session(Long id, Course course, SessionPeriod period, List<SessionImage> images, SessionStatus status, RecruitmentStatus recruitmentStatus, Long price, Students students, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this(id, course, period, images, status, new Recruitment(recruitmentStatus, students), price, creatorId, createdAt, updatedAt);
+    public Session(Long id, Course course, SessionPeriod period, List<SessionImage> images, SessionStatus status, RecruitmentStatus recruitmentStatus, Long price, Applicants applicants, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(id, course, period, images, status, new Recruitment(recruitmentStatus, applicants), price, creatorId, createdAt, updatedAt);
     }
 
     public Session(Long id, Course course, SessionPeriod period, List<SessionImage> images, SessionStatus status, Recruitment recruitment, Long price, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -38,8 +34,6 @@ public class Session extends BaseEntity {
         this.images = images;
         this.status = status;
         this.recruitment = recruitment;
-        this.applicants = new ArrayList<>();
-        this.selected = new ArrayList<>();
         this.price = price;
         this.creatorId = creatorId;
     }
@@ -57,35 +51,31 @@ public class Session extends BaseEntity {
     }
 
     public void apply(NsUser user) {
-        recruitment.apply(user);
+        recruitment.apply(user, this, price);
 
         if (!course.hasSelection()) {
-            recruitment.select(List.of(user));
-            recruitment.enroll(user, this, price);
+            recruitment.select(user);
+            recruitment.approve(user);
         }
     }
 
-    public int select(NsUser user) {
-        return recruitment.select(List.of(user));
+    public void select(NsUser user) {
+        recruitment.select(user);
     }
 
     public int select(SelectStrategy strategy) {
         return recruitment.select(strategy);
     }
 
-    public Student approve(NsUser user) {
-        return recruitment.approve(user, this, price);
+    public void approve(NsUser user) {
+        recruitment.approve(user);
     }
 
     public void cancel(NsUser user) {
         recruitment.cancel(user);
     }
 
-    public Payment getPayment(NsUser user) {
-        return recruitment.getPayment(user, this, price);
-    }
-
-    public StudentStatus getStudentStatus(NsUser user) {
+    public ApplicantStatus getStudentStatus(NsUser user) {
         return recruitment.getStudentStatus(user);
     }
 
@@ -113,7 +103,7 @@ public class Session extends BaseEntity {
         return creatorId;
     }
 
-    public Students getStudents() {
+    public Applicants getStudents() {
         return recruitment.getStudents();
     }
 

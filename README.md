@@ -98,7 +98,7 @@
 > - Payment는 테이블 매핑을 고려하지 않아도 된다.
 
 - [x] session 테이블 생성 및 매핑
-- [x] student 테이블 생성 및 매핑
+- [x] applicant 테이블 생성 및 매핑
 - [x] ns_user 매핑
 - [ ] question 매핑
 - [ ] answer 매핑

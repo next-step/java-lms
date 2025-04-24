@@ -2,7 +2,7 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.SessionTest;
 import nextstep.courses.domain.model.Session;
-import nextstep.courses.domain.model.Student;
+import nextstep.courses.domain.model.Applicant;
 import nextstep.courses.domain.repository.StudentRepository;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,8 +16,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-class StudentRepositoryTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(StudentRepositoryTest.class);
+class ApplicantRepositoryTest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicantRepositoryTest.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -32,11 +32,11 @@ class StudentRepositoryTest {
     @Test
     void save() {
         Session session = SessionTest.SESSION1;
-        Student student = new Student(NsUserTest.JAVAJIGI, session);
-        long id = studentRepository.save(student);
-        assertThat(id).isEqualTo(student.getId());
+        Applicant applicant = new Applicant(NsUserTest.JAVAJIGI, session, null);
+        long id = studentRepository.save(applicant);
+        assertThat(id).isEqualTo(applicant.getId());
 
-        Student saved = studentRepository.findById(1L);
+        Applicant saved = studentRepository.findById(1L);
         assertThat(saved.getSession()).isEqualTo(session);
         assertThat(saved.getNsUser()).isEqualTo(NsUserTest.JAVAJIGI);
         LOGGER.debug("Student: {}", saved);
