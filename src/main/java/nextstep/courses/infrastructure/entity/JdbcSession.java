@@ -1,13 +1,12 @@
 package nextstep.courses.infrastructure.entity;
 
-import nextstep.courses.domain.model.Session;
+import nextstep.courses.domain.model.*;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.List;
 
 public class JdbcSession extends BaseEntity {
     private Long courseId;
@@ -123,11 +122,11 @@ public class JdbcSession extends BaseEntity {
         this.creatorId = creatorId;
     }
 
-    public Session toDomain() {
-        try {
-            return new Session(getId(), courseId, startDate, endDate, imagePath, imageFile, status, recruitment, price.longValue(), capacity, creatorId, getCreatedAt(), getUpdatedAt());
-        } catch (SQLException | IOException e) {
-            throw new RuntimeException("Failed to convert SessionEntity to Session", e);
-        }
+    public Session toDomain(List<SessionImage> images) {
+        return new Session(getId(), courseId, new SessionPeriod(startDate, endDate), images,
+                SessionStatus.valueOf(status), RecruitmentStatus.valueOf(recruitment), price.longValue(), new Students(capacity),
+                creatorId, getCreatedAt().toLocalDateTime(),
+                getUpdatedAt() == null ? null : getUpdatedAt().toLocalDateTime());
     }
+
 }

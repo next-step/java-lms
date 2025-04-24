@@ -1,9 +1,11 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.model.Session;
+import nextstep.courses.domain.model.SessionImage;
 import nextstep.courses.domain.model.Student;
 import nextstep.courses.domain.repository.StudentRepository;
 import nextstep.courses.infrastructure.entity.JdbcSession;
+import nextstep.courses.infrastructure.entity.JdbcSessionImage;
 import nextstep.courses.infrastructure.entity.JdbcStudent;
 import nextstep.users.domain.NsUser;
 import nextstep.users.infrastructure.entity.NsUserEntity;
@@ -13,7 +15,9 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Repository
 public class JdbcStudentRepository implements StudentRepository {
@@ -39,7 +43,7 @@ public class JdbcStudentRepository implements StudentRepository {
 
     @Override
     public Student findById(Long id) {
-        String studentSql = "SELECT id, session_id, ns_user_id, created_at, updated_at FROM student WHERE id = ?";
+        String studentSql = "SELECT * FROM student WHERE id = ?";
         JdbcStudent entity = jdbcTemplate.queryForObject(studentSql, new BeanPropertyRowMapper<>(JdbcStudent.class), id);
 
         NsUser nsUser = findNsUserById(entity.getNsUserId());
@@ -55,9 +59,16 @@ public class JdbcStudentRepository implements StudentRepository {
     }
 
     private Session findSessionById(Long sessionId) {
-        String sessionSql = "SELECT * FROM session WHERE id = ?";
-        JdbcSession entity = jdbcTemplate.queryForObject(sessionSql, new BeanPropertyRowMapper<>(JdbcSession.class), sessionId);
-        return entity.toDomain();
+        String sql = "SELECT * FROM session WHERE id = ?";
+        JdbcSession entity = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(JdbcSession.class), sessionId);
+
+
+        sql = "select * from session_image where session_id = ?";
+        List<JdbcSessionImage> images = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(JdbcSessionImage.class), sessionId);
+        List<SessionImage> sessionImages = images.stream()
+                .map(JdbcSessionImage::toDomain)
+                .collect(Collectors.toList());
+        return entity.toDomain(sessionImages);
     }
 
 }

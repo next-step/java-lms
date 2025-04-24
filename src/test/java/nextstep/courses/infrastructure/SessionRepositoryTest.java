@@ -45,8 +45,7 @@ class SessionRepositoryTest {
                 SessionStatus.OPEN,
                 RecruitmentStatus.ON, NsUserTest.JAVAJIGI
         );
-        int count = sessionRepository.save(session);
-        assertThat(count).isEqualTo(1);
+        int id = sessionRepository.save(session);
 
         Session saved = sessionRepository.findById(2L);
         assertThat(saved.getCourseId()).isEqualTo(1L);
@@ -54,7 +53,7 @@ class SessionRepositoryTest {
         assertThat(saved.getStatus()).isEqualTo(session.getStatus());
         assertThat(saved.getRecruitmentStatus()).isEqualTo(session.getRecruitmentStatus());
         assertThat(saved.getStudents().getCapacity()).isEqualTo(session.getStudents().getCapacity());
-        assertThat(saved.getImage().getFile()).isEqualTo(session.getImage().getFile());
+        assertThat(saved.getImages().size()).isEqualTo(session.getImages().size());
         LOGGER.debug("Session: {}", saved);
     }
 

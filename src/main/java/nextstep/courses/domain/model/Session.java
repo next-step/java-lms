@@ -9,6 +9,8 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import static nextstep.courses.domain.model.Timestamped.toLocalDateTime;
@@ -16,7 +18,7 @@ import static nextstep.courses.domain.model.Timestamped.toLocalDateTime;
 public class Session extends BaseEntity {
     private final Long courseId;
     private SessionPeriod period;
-    private SessionImage image;
+    private final List<SessionImage> images;
     private final SessionStatus status;//    강의 진행 상태(준비중, 진행중, 종료)와 모집 상태(비모집중, 모집중)로 상태 값을 분리해야 한다.
     private final RecruitmentStatus recruitmentStatus;
     private Long price;
@@ -37,10 +39,14 @@ public class Session extends BaseEntity {
     }
 
     public Session(Long id, Long courseId, SessionPeriod period, SessionImage image, SessionStatus status, RecruitmentStatus recruitmentStatus, Long price, Students students, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(id, courseId, period, Collections.singletonList(image), status, recruitmentStatus, price, students, creatorId, createdAt, updatedAt);
+    }
+
+    public Session(Long id, Long courseId, SessionPeriod period, List<SessionImage> images, SessionStatus status, RecruitmentStatus recruitmentStatus, Long price, Students students, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(id, createdAt, updatedAt);
         this.courseId = courseId;
         this.period = period;
-        this.image = image;
+        this.images = images;
         this.status = status;
         this.recruitmentStatus = recruitmentStatus;
         this.price = price;
@@ -84,10 +90,6 @@ public class Session extends BaseEntity {
         return period;
     }
 
-    public SessionImage getImage() {
-        return image;
-    }
-
     public SessionStatus getStatus() {
         return status;
     }
@@ -125,11 +127,15 @@ public class Session extends BaseEntity {
         return "Session{" +
                 ", courseId=" + courseId +
                 ", period=" + period +
-                ", image=" + image +
+                ", images=" + images +
                 ", status=" + status +
                 ", price=" + price +
                 ", students=" + students +
                 ", creatorId=" + creatorId +
                 '}';
+    }
+
+    public List<SessionImage> getImages() {
+        return images;
     }
 }

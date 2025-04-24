@@ -1,15 +1,13 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.model.RecruitmentStatus;
-import nextstep.courses.domain.model.Session;
-import nextstep.courses.domain.model.SessionPeriod;
-import nextstep.courses.domain.model.SessionStatus;
+import nextstep.courses.domain.model.*;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -31,6 +29,15 @@ public class SessionTest {
     @DisplayName("무료 강의는 최대 수강 인원 제한이 없다.")
     void createFreeSession() {
         assertThatCode(() -> createPaidSession(0L, Integer.MAX_VALUE).enroll(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("강의는 하나 이상의 커버 이미지를 가질 수 있다.")
+    void haveOneOrMoreSessionImages() {
+        Session session = new Session(null, 1L, new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)),
+                List.of(new SessionImage("path0", new byte[0]), new SessionImage("path1", new byte[1])),
+                SessionStatus.OPEN, RecruitmentStatus.ON, 100_000L, new Students(3), 1L, LocalDateTime.now(), LocalDateTime.now());
+        assertThat(session.getImages()).hasSize(2);
     }
 
     @Test
