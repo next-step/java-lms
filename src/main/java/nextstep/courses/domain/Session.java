@@ -2,6 +2,9 @@ package nextstep.courses.domain;
 
 import nextstep.payments.domain.Payment;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public abstract class Session {
     protected Long id;
     protected String name;
@@ -17,6 +20,11 @@ public abstract class Session {
         this.coverImage = coverImage;
         this.status = status;
         this.registeredStudents = new Students();
+    }
+    public List<Long> getStudentIds() {
+        return registeredStudents.getStudents().stream()
+                .map(Student::getId)
+                .collect(Collectors.toList());
     }
 
     public Students getRegisteredStudent() {

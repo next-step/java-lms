@@ -16,6 +16,10 @@ public class TuitionFee {
         return this.amount == amount;
     }
 
+    public int getValue() {
+        return amount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

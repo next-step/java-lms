@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Collections;
 
 public class Students {
     private Set<Student> students = new HashSet<>();
@@ -24,5 +25,9 @@ public class Students {
 
     public int size() {
         return students.size();
+    }
+
+    public Set<Student> getStudents() {
+        return Collections.unmodifiableSet(students);
     }
 }
