@@ -14,19 +14,19 @@ import static org.assertj.core.api.Assertions.*;
 public class SessionTest {
     public static final Session SESSION1 = new Session(1L, CourseTest.COURSE1,
             new SessionPeriod(LocalDateTime.parse("2025-04-21T00:00"), LocalDateTime.parse("2025-05-21T00:00")),
-            null, SessionStatus.OPEN, RecruitmentStatus.ON, 100_000L, 10, 1L,
+            null, ProgressStatus.ACTIVE, RegistrationStatus.OPEN, 100_000L, 10, 1L,
             LocalDateTime.parse("2025-04-21T00:00"), null);
 
-    public static Session createFreeSession(RecruitmentStatus status) {
-        return Session.createFreeSession(CourseTest.createCourse(), LocalDateTime.now(), LocalDateTime.now().plusMonths(1), null, SessionStatus.READY, status, NsUserTest.JAVAJIGI);
+    public static Session createFreeSession(RegistrationStatus status) {
+        return Session.createFreeSession(CourseTest.createCourse(), LocalDateTime.now(), LocalDateTime.now().plusMonths(1), null, ProgressStatus.SCHEDULED, status, NsUserTest.JAVAJIGI);
     }
 
     public static Session createPaidSession(Long price, int capacity) {
-        return Session.createPaidSession(CourseTest.createCourse(), new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)), null, SessionStatus.OPEN, RecruitmentStatus.ON, price, capacity, NsUserTest.JAVAJIGI);
+        return Session.createPaidSession(CourseTest.createCourse(), new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)), null, ProgressStatus.ACTIVE, RegistrationStatus.OPEN, price, capacity, NsUserTest.JAVAJIGI);
     }
 
     public static Session createPaidSession(Course course, Long price, int capacity) {
-        return Session.createPaidSession(course, new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)), null, SessionStatus.OPEN, RecruitmentStatus.ON, price, capacity, NsUserTest.JAVAJIGI);
+        return Session.createPaidSession(course, new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)), null, ProgressStatus.ACTIVE, RegistrationStatus.OPEN, price, capacity, NsUserTest.JAVAJIGI);
     }
 
     @Test
@@ -35,7 +35,7 @@ public class SessionTest {
         Course course = CourseTest.createCourseWithSelection();
         Session session = new Session(null, course, new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)),
                 Collections.emptyList(),
-                SessionStatus.OPEN, RecruitmentStatus.ON, 0L, new Applicants(1), 1L, LocalDateTime.now(), LocalDateTime.now());
+                ProgressStatus.ACTIVE, RegistrationStatus.OPEN, 0L, new Registration(1), 1L, LocalDateTime.now(), LocalDateTime.now());
         course.addSession(session);
 
         assertThatCode(() -> session.apply(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
@@ -48,7 +48,7 @@ public class SessionTest {
         Course course = CourseTest.createCourseWithSelection();
         Session session = new Session(null, course, new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)),
                 Collections.emptyList(),
-                SessionStatus.OPEN, RecruitmentStatus.ON, 0L, new Applicants(1), 1L, LocalDateTime.now(), LocalDateTime.now());
+                ProgressStatus.ACTIVE, RegistrationStatus.OPEN, 0L, new Registration(1), 1L, LocalDateTime.now(), LocalDateTime.now());
         course.addSession(session);
         System.out.println("course = " + course.hasSelection());
 
@@ -59,7 +59,7 @@ public class SessionTest {
     @Test
     @DisplayName("선발절차가 없는 강의에 수강 신청하면 바로 등록된다.")
     void createSessionAndEnrollWithEnrollmentProcess() {
-        Session session = SessionTest.createFreeSession(RecruitmentStatus.ON);
+        Session session = SessionTest.createFreeSession(RegistrationStatus.OPEN);
         session.apply(NsUserTest.JAVAJIGI);
         assertThat(session.getStudentStatus(NsUserTest.JAVAJIGI)).isEqualTo(ApplicantStatus.APPROVED);
     }
@@ -70,7 +70,7 @@ public class SessionTest {
         Course course = CourseTest.createCourseWithSelection();
         Session session = new Session(null, course, new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)),
                 Collections.emptyList(),
-                SessionStatus.OPEN, RecruitmentStatus.ON, 0L, new Applicants(1), 1L, LocalDateTime.now(), LocalDateTime.now());
+                ProgressStatus.ACTIVE, RegistrationStatus.OPEN, 0L, new Registration(1), 1L, LocalDateTime.now(), LocalDateTime.now());
         course.addSession(session);
 
         session.apply(NsUserTest.JAVAJIGI);
@@ -100,15 +100,15 @@ public class SessionTest {
         Course course = CourseTest.createCourse();
         Session session = new Session(null, course, new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)),
                 List.of(new SessionImage("path0", new byte[0]), new SessionImage("path1", new byte[1])),
-                SessionStatus.OPEN, RecruitmentStatus.ON, 100_000L, new Applicants(3), 1L, LocalDateTime.now(), LocalDateTime.now());
+                ProgressStatus.ACTIVE, RegistrationStatus.OPEN, 100_000L, new Registration(3), 1L, LocalDateTime.now(), LocalDateTime.now());
         assertThat(session.getImages()).hasSize(2);
     }
 
     @Test
     @DisplayName("강의 수강신청은 모집 상태가 모집중일 때 가능하다.")
     void registerOpenSession() {
-        assertThatCode(() -> createFreeSession(RecruitmentStatus.ON).apply(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
-        assertThatThrownBy(() -> createFreeSession(RecruitmentStatus.OFF).apply(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
+        assertThatCode(() -> createFreeSession(RegistrationStatus.OPEN).apply(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
+        assertThatThrownBy(() -> createFreeSession(RegistrationStatus.CLOSE).apply(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
     }
 
 }

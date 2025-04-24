@@ -32,7 +32,7 @@ class CourseRepositoryTest {
         long id = courseRepository.save(course);
         assertThat(id).isEqualTo(course.getId());
 
-        Course savedCourse = courseRepository.findById(2L);
+        Course savedCourse = courseRepository.findById(id);
         assertThat(course.getTitle()).isEqualTo(savedCourse.getTitle());
         LOGGER.debug("Course: {}", savedCourse);
     }

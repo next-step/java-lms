@@ -38,6 +38,10 @@ public class JdbcStudent extends BaseEntity {
     }
 
     public Applicant toDomain(NsUser nsUser, Session session) {
-        return new Applicant(getId(), session, nsUser, null, ApplicantStatus.APPROVED, getCreatedAt().toLocalDateTime(), getUpdatedAt().toLocalDateTime());
+        System.out.println(nsUser);
+        System.out.println(session);
+        return new Applicant(getId(), session, nsUser, null, ApplicantStatus.APPROVED,
+                getCreatedAt().toLocalDateTime(),
+                getUpdatedAt() == null ? null : getUpdatedAt().toLocalDateTime());
     }
 }

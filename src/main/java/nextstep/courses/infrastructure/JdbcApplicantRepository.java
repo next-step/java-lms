@@ -3,7 +3,7 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.model.Applicant;
 import nextstep.courses.domain.model.Session;
 import nextstep.courses.domain.model.SessionImage;
-import nextstep.courses.domain.repository.StudentRepository;
+import nextstep.courses.domain.repository.ApplicantRepository;
 import nextstep.courses.infrastructure.entity.JdbcCourse;
 import nextstep.courses.infrastructure.entity.JdbcSession;
 import nextstep.courses.infrastructure.entity.JdbcSessionImage;
@@ -21,17 +21,17 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Repository
-public class JdbcStudentRepository implements StudentRepository {
+public class JdbcApplicantRepository implements ApplicantRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    public JdbcStudentRepository(JdbcTemplate jdbcTemplate) {
+    public JdbcApplicantRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public long save(Applicant applicant) {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
-                .withTableName("student")
+                .withTableName("applicant")
                 .usingGeneratedKeyColumns("id");
 
         Map<String, Object> parameters = new HashMap<>();
@@ -46,7 +46,7 @@ public class JdbcStudentRepository implements StudentRepository {
 
     @Override
     public Applicant findById(Long id) {
-        String studentSql = "SELECT * FROM student WHERE id = ?";
+        String studentSql = "SELECT * FROM applicant WHERE id = ?";
         JdbcStudent entity = jdbcTemplate.queryForObject(studentSql, new BeanPropertyRowMapper<>(JdbcStudent.class), id);
 
         NsUser nsUser = findNsUserById(entity.getNsUserId());

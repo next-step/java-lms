@@ -42,8 +42,8 @@ class SessionRepositoryTest {
                 now.plusMonths(1),
                 now.plusMonths(2),
                 new SessionImage("/image/clean_code.jpg", 300, 200, new byte[300 * 200]),
-                SessionStatus.OPEN,
-                RecruitmentStatus.ON, NsUserTest.JAVAJIGI
+                ProgressStatus.ACTIVE,
+                RegistrationStatus.OPEN, NsUserTest.JAVAJIGI
         );
         long id = sessionRepository.save(session);
         assertThat(id).isEqualTo(session.getId());
@@ -53,7 +53,7 @@ class SessionRepositoryTest {
         assertThat(saved.getPrice()).isEqualTo(session.getPrice());
         assertThat(saved.getStatus()).isEqualTo(session.getStatus());
         assertThat(saved.getRecruitmentStatus()).isEqualTo(session.getRecruitmentStatus());
-        assertThat(saved.getStudents().getCapacity()).isEqualTo(session.getStudents().getCapacity());
+        assertThat(saved.getCapacity()).isEqualTo(session.getCapacity());
         assertThat(saved.getImages().size()).isEqualTo(session.getImages().size());
         LOGGER.debug("Session: {}", saved);
     }

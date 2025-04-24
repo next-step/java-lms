@@ -4,79 +4,80 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 public class Session extends BaseEntity {
     private final Course course;
     private final List<SessionImage> images;
-    private final SessionStatus status;
-    private final Recruitment recruitment;
+    private final ProgressStatus status;
+    private final Registration registration;
     private final Long creatorId;
     private final SessionPeriod period;
     private final Long price;
 
-    private Session(Long id, Course course, SessionPeriod period, SessionImage image, SessionStatus status, RecruitmentStatus recruitmentStatus, Long price, int capacity, Long creatorId) {
-        this(id, course, period, image, status, recruitmentStatus, price, capacity, creatorId, LocalDateTime.now(), LocalDateTime.now());
+    private Session(Long id, Course course, SessionPeriod period, SessionImage image, ProgressStatus status, RegistrationStatus registrationStatus, Long price, int capacity, Long creatorId) {
+        this(id, course, period, image, status, registrationStatus, price, capacity, creatorId, LocalDateTime.now(), LocalDateTime.now());
     }
 
-    public Session(Long id, Course course, SessionPeriod period, SessionImage image, SessionStatus status, RecruitmentStatus recruitmentStatus, Long price, int capacity, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this(id, course, period, Collections.singletonList(image), status, recruitmentStatus, price, new Applicants(capacity), creatorId, createdAt, updatedAt);
+    public Session(Long id, Course course, SessionPeriod period, SessionImage image, ProgressStatus status, RegistrationStatus registrationStatus, Long price, int capacity, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(id, course, period, Collections.singletonList(image), status, registrationStatus, price, new Registration(capacity), creatorId, createdAt, updatedAt);
     }
 
-    public Session(Long id, Course course, SessionPeriod period, List<SessionImage> images, SessionStatus status, RecruitmentStatus recruitmentStatus, Long price, Applicants applicants, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this(id, course, period, images, status, new Recruitment(recruitmentStatus, applicants), price, creatorId, createdAt, updatedAt);
+    public Session(Long id, Course course, SessionPeriod period, List<SessionImage> images, ProgressStatus status, RegistrationStatus registrationStatus, Long price, Registration registration, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(id, course, period, images, status, new Registration(registrationStatus, new HashSet<>(), registration.getCapacity()), price, creatorId, createdAt, updatedAt);
     }
 
-    public Session(Long id, Course course, SessionPeriod period, List<SessionImage> images, SessionStatus status, Recruitment recruitment, Long price, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Session(Long id, Course course, SessionPeriod period, List<SessionImage> images, ProgressStatus status, Registration registration, Long price, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(id, createdAt, updatedAt);
         this.course = course;
         this.period = period;
         this.images = images;
         this.status = status;
-        this.recruitment = recruitment;
+        this.registration = registration;
         this.price = price;
         this.creatorId = creatorId;
     }
 
-    public static Session createFreeSession(Course course, LocalDateTime startDate, LocalDateTime endDate, SessionImage image, SessionStatus status, RecruitmentStatus recruitmentStatus, NsUser creator) {
-        Session session = new Session(null, course, new SessionPeriod(startDate, endDate), image, status, recruitmentStatus, 0L, Integer.MAX_VALUE, creator.getId());
+    public static Session createFreeSession(Course course, LocalDateTime startDate, LocalDateTime endDate, SessionImage image, ProgressStatus status, RegistrationStatus registrationStatus, NsUser creator) {
+        Session session = new Session(null, course, new SessionPeriod(startDate, endDate), image, status, registrationStatus, 0L, Integer.MAX_VALUE, creator.getId());
         course.addSession(session);
         return session;
     }
 
-    public static Session createPaidSession(Course course, SessionPeriod period, SessionImage image, SessionStatus status, RecruitmentStatus recruitmentStatus, Long price, int capacity, NsUser creator) {
-        Session session = new Session(null, course, period, image, status, recruitmentStatus, price, capacity, creator.getId());
+    public static Session createPaidSession(Course course, SessionPeriod period, SessionImage image, ProgressStatus status, RegistrationStatus registrationStatus, Long price, int capacity, NsUser creator) {
+        Session session = new Session(null, course, period, image, status, registrationStatus, price, capacity, creator.getId());
         course.addSession(session);
         return session;
     }
 
     public void apply(NsUser user) {
-        recruitment.apply(user, this, price);
+        registration.apply(user, this, price);
 
         if (!course.hasSelection()) {
-            recruitment.select(user);
-            recruitment.approve(user);
+            registration.select(user);
+            registration.approve(user);
         }
     }
 
     public void select(NsUser user) {
-        recruitment.select(user);
+        registration.select(user);
     }
 
     public int select(SelectStrategy strategy) {
-        return recruitment.select(strategy);
+        return registration.select(strategy);
     }
 
     public void approve(NsUser user) {
-        recruitment.approve(user);
+        registration.approve(user);
     }
 
     public void cancel(NsUser user) {
-        recruitment.cancel(user);
+        registration.cancel(user);
     }
 
     public ApplicantStatus getStudentStatus(NsUser user) {
-        return recruitment.getStudentStatus(user);
+        return registration.getApplicantStatus(user);
     }
 
     public Course getCourse() {
@@ -87,12 +88,12 @@ public class Session extends BaseEntity {
         return period;
     }
 
-    public SessionStatus getStatus() {
+    public ProgressStatus getStatus() {
         return status;
     }
 
-    public RecruitmentStatus getRecruitmentStatus() {
-        return recruitment.getStatus();
+    public RegistrationStatus getRecruitmentStatus() {
+        return registration.getStatus();
     }
 
     public Long getPrice() {
@@ -103,8 +104,8 @@ public class Session extends BaseEntity {
         return creatorId;
     }
 
-    public Applicants getStudents() {
-        return recruitment.getStudents();
+    public int getCapacity() {
+        return registration.getCapacity();
     }
 
     public List<SessionImage> getImages() {

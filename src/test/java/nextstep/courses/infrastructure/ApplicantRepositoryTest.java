@@ -3,7 +3,7 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.SessionTest;
 import nextstep.courses.domain.model.Applicant;
 import nextstep.courses.domain.model.Session;
-import nextstep.courses.domain.repository.StudentRepository;
+import nextstep.courses.domain.repository.ApplicantRepository;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,21 +22,21 @@ class ApplicantRepositoryTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private StudentRepository studentRepository;
+    private ApplicantRepository applicantRepository;
 
     @BeforeEach
     void setUp() {
-        studentRepository = new JdbcStudentRepository(jdbcTemplate);
+        applicantRepository = new JdbcApplicantRepository(jdbcTemplate);
     }
 
     @Test
     void save() {
         Session session = SessionTest.SESSION1;
         Applicant applicant = new Applicant(NsUserTest.JAVAJIGI, session, null);
-        long id = studentRepository.save(applicant);
+        long id = applicantRepository.save(applicant);
         assertThat(id).isEqualTo(applicant.getId());
 
-        Applicant saved = studentRepository.findById(1L);
+        Applicant saved = applicantRepository.findById(id);
         assertThat(saved.getSession()).isEqualTo(session);
         assertThat(saved.getNsUser()).isEqualTo(NsUserTest.JAVAJIGI);
         LOGGER.debug("Student: {}", saved);

@@ -33,7 +33,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("course_id", session.getCourse().getId());
-        parameters.put("capacity", session.getStudents().getCapacity());
+        parameters.put("capacity", session.getCapacity());
         parameters.put("status", session.getStatus().name());
         parameters.put("recruitment", session.getRecruitmentStatus().name());
         parameters.put("price", new BigDecimal(session.getPrice()));

@@ -2,7 +2,7 @@ package nextstep.courses.domain;
 
 import nextstep.courses.domain.model.Applicant;
 import nextstep.courses.domain.model.ApplicantStatus;
-import nextstep.courses.domain.model.RecruitmentStatus;
+import nextstep.courses.domain.model.RegistrationStatus;
 import nextstep.courses.domain.model.Session;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -15,16 +15,16 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 class ApplicantTest {
 
     public static Applicant createStudent(Long balance) {
-        Session session = SessionTest.createFreeSession(RecruitmentStatus.ON);
+        Session session = SessionTest.createFreeSession(RegistrationStatus.OPEN);
         return new Applicant(NsUserTest.createNsUser(3L, balance), session, null);
     }
 
     public static Applicant createStudent(Long id, ApplicantStatus status) {
-        return new Applicant(id, SessionTest.createFreeSession(RecruitmentStatus.ON), NsUserTest.createNsUser(0L), null, status, null, null);
+        return new Applicant(id, SessionTest.createFreeSession(RegistrationStatus.OPEN), NsUserTest.createNsUser(0L), null, status, null, null);
     }
 
     public static Applicant createStudent(Long id, NsUser user, ApplicantStatus status) {
-        return new Applicant(id, SessionTest.createFreeSession(RecruitmentStatus.ON), user, null, status, null, null);
+        return new Applicant(id, SessionTest.createFreeSession(RegistrationStatus.OPEN), user, null, status, null, null);
     }
 
 

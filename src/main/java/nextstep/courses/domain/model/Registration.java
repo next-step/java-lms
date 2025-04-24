@@ -9,18 +9,24 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class Applicants {
-    private final int capacity;
+public class Registration {
+    private final RegistrationStatus status;
     private final Set<Applicant> applicants;
+    private final int capacity;
 
-    public Applicants(int capacity) {
-        this(capacity, new HashSet<>());
+    public Registration(int capacity) {
+        this(RegistrationStatus.OPEN, new HashSet<>(), capacity);
     }
 
-    public Applicants(int capacity, Set<Applicant> applicants) {
+    public Registration(int capacity, Set<Applicant> applicants) {
+        this(RegistrationStatus.OPEN, applicants, capacity);
+    }
+
+    public Registration(RegistrationStatus status, Set<Applicant> applicants, int capacity) {
         validateCapacity(capacity);
-        this.capacity = capacity;
+        this.status = status;
         this.applicants = applicants;
+        this.capacity = capacity;
     }
 
     private void validateCapacity(int capacity) {
@@ -38,6 +44,10 @@ public class Applicants {
     }
 
     public void apply(NsUser user, Session session, Long price) {
+        if (status.isNotSupport()) {
+            throw new IllegalArgumentException("session is not open");
+        }
+
         Optional<Applicant> applicant = findApplicantsByUser(user);
         if (applicant.isPresent()) {
             throw new IllegalArgumentException("applicant already exists");
@@ -112,6 +122,10 @@ public class Applicants {
                 .collect(Collectors.toList());
     }
 
+    public RegistrationStatus getStatus() {
+        return status;
+    }
+
     @Override
     public String toString() {
         return "Applicants{" +
@@ -119,4 +133,5 @@ public class Applicants {
                 ", applicants=" + applicants +
                 '}';
     }
+
 }
