@@ -9,19 +9,21 @@ import static nextstep.courses.domain.model.Timestamped.toLocalDateTime;
 
 public class Student extends BaseEntity {
     private final NsUser user;
+    private final StudentStatus status;
     private final Session session;
 
     public Student(NsUser user, Session session) {
-        this(null, user, session, LocalDateTime.now(), LocalDateTime.now());
+        this(null, user, session, StudentStatus.APPROVED, LocalDateTime.now(), LocalDateTime.now());
     }
 
     public Student(Long id, NsUser user, Session session, Timestamp createdAt, Timestamp updatedAt) {
-        this(id, user, session, toLocalDateTime(createdAt), toLocalDateTime(updatedAt));
+        this(id, user, session, StudentStatus.APPROVED, toLocalDateTime(createdAt), toLocalDateTime(updatedAt));
     }
 
-    public Student(Long id, NsUser user, Session session, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Student(Long id, NsUser user, Session session, StudentStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(id, createdAt, updatedAt);
         this.user = user;
+        this.status = status;
         this.session = session;
     }
 
@@ -40,5 +42,5 @@ public class Student extends BaseEntity {
     public boolean isEqualTo(NsUser user) {
         return this.user.equals(user);
     }
-    
+
 }

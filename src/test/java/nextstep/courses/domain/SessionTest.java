@@ -36,7 +36,7 @@ public class SessionTest {
         course.addSession(session);
 
         assertThatCode(() -> session.apply(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
-        assertThat(session.getApplicants()).contains(NsUserTest.JAVAJIGI);
+        assertThat(session.getStudentStatus(NsUserTest.JAVAJIGI)).isEqualTo(StudentStatus.APPLIED);
     }
 
     @Test
@@ -50,7 +50,7 @@ public class SessionTest {
         System.out.println("course = " + course.hasSelection());
 
         assertThatCode(() -> session.apply(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
-        assertThat(session.getApplicants()).hasSize(1);
+        assertThat(session.getStudentStatus(NsUserTest.JAVAJIGI)).isEqualTo(StudentStatus.APPLIED);
     }
 
     @Test
@@ -64,8 +64,7 @@ public class SessionTest {
 
         session.apply(NsUserTest.JAVAJIGI);
         assertThat(session.select(NsUserTest.JAVAJIGI)).isEqualTo(1);
-        assertThat(session.getSelected()).contains(NsUserTest.JAVAJIGI);
-        assertThat(session.getApplicants()).isEmpty();
+        assertThat(session.getStudentStatus(NsUserTest.JAVAJIGI)).isEqualTo(StudentStatus.SELECTED);
     }
 
     @Test
@@ -98,8 +97,7 @@ public class SessionTest {
         session.select(NsUserTest.JAVAJIGI);
 
         assertThatCode(() -> session.approve(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
-        assertThat(session.getStudents().include(NsUserTest.JAVAJIGI)).isTrue();
-        assertThat(session.getApplicants()).doesNotContain(NsUserTest.JAVAJIGI);
+        assertThat(session.getStudentStatus(NsUserTest.JAVAJIGI)).isEqualTo(StudentStatus.APPROVED);
         assertThatThrownBy(() -> session.approve(NsUserTest.SANJIGI)).isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -118,7 +116,7 @@ public class SessionTest {
 
         assertThatThrownBy(() -> session.cancel(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
         assertThatCode(() -> session.cancel(NsUserTest.SANJIGI)).doesNotThrowAnyException();
-        assertThat(session.getApplicants()).isEmpty();
+        assertThat(session.getStudentStatus(NsUserTest.SANJIGI)).isEqualTo(StudentStatus.CANCELLED);
     }
 
     @Test
@@ -126,7 +124,7 @@ public class SessionTest {
     void createFreeSession() {
         Session session = createPaidSession(0L, Integer.MAX_VALUE);
         assertThatCode(() -> session.apply(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
-        assertThat(session.getStudents().include(NsUserTest.JAVAJIGI)).isTrue();
+        assertThat(session.getStudentStatus(NsUserTest.JAVAJIGI)).isEqualTo(StudentStatus.APPROVED);
     }
 
     @Test

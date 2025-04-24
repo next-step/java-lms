@@ -15,22 +15,22 @@ public class Course extends BaseEntity {
 
     private Long creatorId;
 
-    private boolean selection;
+    private final boolean hasSelection;
 
     private final List<Session> sessions;
 
-    public Course(String title, Boolean selection, Long creatorId) {
-        this(null, title, selection, creatorId, new ArrayList<>(),  LocalDateTime.now(), LocalDateTime.now());
+    public Course(String title, Boolean hasSelection, Long creatorId) {
+        this(null, title, hasSelection, creatorId, new ArrayList<>(), LocalDateTime.now(), LocalDateTime.now());
     }
 
-    public Course(Long id, String title, Boolean selection, Long creatorId, Timestamp createdAt, Timestamp updatedAt) {
-        this(id, title, selection, creatorId, new ArrayList<>(), toLocalDateTime(createdAt), toLocalDateTime(updatedAt));
+    public Course(Long id, String title, Boolean hasSelection, Long creatorId, Timestamp createdAt, Timestamp updatedAt) {
+        this(id, title, hasSelection, creatorId, new ArrayList<>(), toLocalDateTime(createdAt), toLocalDateTime(updatedAt));
     }
 
-    public Course(Long id, String title, Boolean selection, Long creatorId, @NonNull List<Session> sessions, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Course(Long id, String title, Boolean hasSelection, Long creatorId, @NonNull List<Session> sessions, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(id, createdAt, updatedAt);
         this.title = title;
-        this.selection = selection;
+        this.hasSelection = hasSelection;
         this.creatorId = creatorId;
         this.sessions = sessions;
     }
@@ -52,7 +52,7 @@ public class Course extends BaseEntity {
     }
 
     public boolean hasSelection() {
-        return selection;
+        return hasSelection;
     }
 
 }
