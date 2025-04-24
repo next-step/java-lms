@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -26,25 +27,60 @@ public class SessionTest {
     }
 
     @Test
-    @DisplayName("선발절차가 있는 강의는 바로 수강 등록을 할 수 없다.")
+    @DisplayName("선발절차가 있는 강의는 바로 수강할 수 없다.")
     void createSessionWithSelectionProcess() {
         Course course = CourseTest.createCourseWithSelection();
-        Session session = SessionTest.createFreeSession(RecruitmentStatus.ON);
+        Session session = new Session(null, course, new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)),
+                Collections.emptyList(),
+                SessionStatus.OPEN, RecruitmentStatus.ON, 0L, new Students(1), 1L, LocalDateTime.now(), LocalDateTime.now());
         course.addSession(session);
-        System.out.println(session.enroll(NsUserTest.JAVAJIGI));
-        assertThatThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
+
+        assertThatCode(() -> session.apply(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
+        assertThat(session.getApplicants()).contains(NsUserTest.JAVAJIGI);
+    }
+
+    @Test
+    @DisplayName("선발절차가 있는 강의에 수강 신청을 할 수 있다.")
+    void createSessionAndEnrollWithSelectionProcess() {
+        Course course = CourseTest.createCourseWithSelection();
+        Session session = new Session(null, course, new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)),
+                Collections.emptyList(),
+                SessionStatus.OPEN, RecruitmentStatus.ON, 0L, new Students(1), 1L, LocalDateTime.now(), LocalDateTime.now());
+        course.addSession(session);
+        System.out.println("course = " + course.hasSelection());
+
+        assertThatCode(() -> session.apply(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
+        assertThat(session.getApplicants()).hasSize(1);
+    }
+
+    @Test
+    @DisplayName("강의는 수강 인원을 선발한다.")
+    void selectStudents() {
+        Course course = CourseTest.createCourseWithSelection();
+        Session session = new Session(null, course, new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)),
+                Collections.emptyList(),
+                SessionStatus.OPEN, RecruitmentStatus.ON, 0L, new Students(1), 1L, LocalDateTime.now(), LocalDateTime.now());
+        course.addSession(session);
+
+        session.apply(NsUserTest.JAVAJIGI);
+        assertThatCode(() -> session.select(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
+        assertThat(session.getSelected()).contains(NsUserTest.JAVAJIGI);
+        assertThat(session.getApplicants()).isEmpty();
     }
 
     @Test
     @DisplayName("무료 강의는 최대 수강 인원 제한이 없다.")
     void createFreeSession() {
-        assertThatCode(() -> createPaidSession(0L, Integer.MAX_VALUE).enroll(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
+        Session session = createPaidSession(0L, Integer.MAX_VALUE);
+        assertThatCode(() -> session.apply(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
+        assertThat(session.getStudents().include(NsUserTest.JAVAJIGI)).isTrue();
     }
 
     @Test
     @DisplayName("유료 강의는 최대 수강 인원 제한이 있다.")
     void createPaidSession() {
-        assertThatThrownBy(() -> createPaidSession(0L, 0).enroll(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
+        Session session = createPaidSession(0L, 0);
+        assertThatThrownBy(() -> session.apply(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -60,8 +96,8 @@ public class SessionTest {
     @Test
     @DisplayName("강의 수강신청은 모집 상태가 모집중일 때 가능하다.")
     void registerOpenSession() {
-        assertThatCode(() -> createFreeSession(RecruitmentStatus.ON).enroll(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
-        assertThatThrownBy(() -> createFreeSession(RecruitmentStatus.OFF).enroll(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
+        assertThatCode(() -> createFreeSession(RecruitmentStatus.ON).apply(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
+        assertThatThrownBy(() -> createFreeSession(RecruitmentStatus.OFF).apply(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -69,7 +105,7 @@ public class SessionTest {
     void enrollAndGetPayment() {
         Session session = createPaidSession(800_000L, 1);
         NsUser user = NsUserTest.createNsUser(3L, 800_000L);
-        session.enroll(user);
+        session.apply(user);
         assertThat(session.getPayment(user).getAmount()).isEqualTo(800_000L);
     }
 

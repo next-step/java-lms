@@ -4,6 +4,7 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,9 +14,10 @@ public class Session extends BaseEntity {
     private final List<SessionImage> images;
     private final SessionStatus status;//    강의 진행 상태(준비중, 진행중, 종료)와 모집 상태(비모집중, 모집중)로 상태 값을 분리해야 한다.
     private final RecruitmentStatus recruitmentStatus;
-
     private Long price;
     private final Students students;
+    private final List<NsUser> applicants;
+    private final List<NsUser> selected;
     private final Long creatorId;
 
     private Session(Long id, Course course, SessionPeriod period, SessionImage image, SessionStatus status, RecruitmentStatus recruitmentStatus, Long price, int capacity, Long creatorId) {
@@ -34,6 +36,8 @@ public class Session extends BaseEntity {
         this.images = images;
         this.status = status;
         this.recruitmentStatus = recruitmentStatus;
+        this.applicants = new ArrayList<>();
+        this.selected = new ArrayList<>();
         this.price = price;
         this.students = students;
         this.creatorId = creatorId;
@@ -52,14 +56,8 @@ public class Session extends BaseEntity {
         return session;
     }
 
-    public Student enroll(NsUser user) {
-        if (course.hasSelection()) {
-            throw new IllegalArgumentException("session has selection process");
-        }
-
-        if (recruitmentStatus != RecruitmentStatus.ON) {
-            throw new IllegalArgumentException("session is not open");
-        }
+    private Student enroll(NsUser user) {
+        applicants.remove(user);
 
         return students.register(user, this, price);
     }
@@ -104,4 +102,35 @@ public class Session extends BaseEntity {
         return images;
     }
 
+    public void apply(NsUser user) {
+        if (recruitmentStatus != RecruitmentStatus.ON) {
+            throw new IllegalArgumentException("session is not open");
+        }
+
+        if (applicants.contains(user) || students.include(user)) {
+            throw new IllegalArgumentException("already applied");
+        }
+
+        applicants.add(user);
+
+        if (!course.hasSelection()) {
+            enroll(user);
+        }
+    }
+
+    public List<NsUser> getApplicants() {
+        return Collections.unmodifiableList(applicants);
+    }
+
+    public List<NsUser> getSelected() {
+        return Collections.unmodifiableList(selected);
+    }
+
+    public void select(NsUser user) {
+        if (!applicants.contains(user)) {
+            throw new IllegalArgumentException("not an applicant");
+        }
+        applicants.remove(user);
+        selected.add(user);
+    }
 }
