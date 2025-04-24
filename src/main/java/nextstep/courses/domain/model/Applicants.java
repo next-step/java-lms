@@ -3,7 +3,10 @@ package nextstep.courses.domain.model;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Applicants {
@@ -36,7 +39,7 @@ public class Applicants {
 
     public void apply(NsUser user, Session session, Long price) {
         Optional<Applicant> applicant = findApplicantsByUser(user);
-        if(applicant.isPresent()) {
+        if (applicant.isPresent()) {
             throw new IllegalArgumentException("applicant already exists");
         }
         user.pay(price);
@@ -46,11 +49,11 @@ public class Applicants {
 
     public void select(NsUser user) {
         Optional<Applicant> applicant = findApplicantsByUser(user);
-        if(applicant.isEmpty() || !applicant.get().isSameStatus(ApplicantStatus.APPLIED)) {
+        if (applicant.isEmpty() || !applicant.get().isSameStatus(ApplicantStatus.APPLIED)) {
             throw new IllegalArgumentException("not applicant");
         }
 
-        if(getRemain() <= 0) {
+        if (getRemain() <= 0) {
             throw new IllegalArgumentException("remain must be greater than 0");
         }
 
@@ -70,7 +73,7 @@ public class Applicants {
 
     public void approve(NsUser user) {
         Optional<Applicant> st = findApplicantsByUser(user);
-        if(st.isEmpty() || !st.get().isSameStatus(ApplicantStatus.SELECTED)) {
+        if (st.isEmpty() || !st.get().isSameStatus(ApplicantStatus.SELECTED)) {
             throw new IllegalArgumentException("not selected");
         }
 
@@ -79,12 +82,12 @@ public class Applicants {
 
     public void cancel(NsUser user) {
         Optional<Applicant> st = findApplicantsByUser(user);
-        if(st.isEmpty()) {
+        if (st.isEmpty()) {
             throw new IllegalArgumentException("user not applicant");
         }
 
         Applicant applicant = st.get();
-        if(!applicant.isSameStatus(ApplicantStatus.APPLIED)) {
+        if (!applicant.isSameStatus(ApplicantStatus.APPLIED)) {
             throw new IllegalArgumentException("not an appropriate applicant");
         }
 

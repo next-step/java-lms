@@ -135,7 +135,7 @@
 - [ ] JdbcSessionRepository > https://hyeon9mak.github.io/easy-insert-with-simplejdbcinsert/ 요런식으로 변형 활용도 가능합니다 😄
 
 ---
-## STEP3. 수강신청(DB 적용)
+## STEP4. 수강신청(요구사항 변경)
 ### 변경된 기능 요구사항
 > - 강의 수강신청은 강의 상태가 모집중일 때만 가능하다.
 >   - 강의가 진행 중인 상태에서도 수강신청이 가능해야 한다.

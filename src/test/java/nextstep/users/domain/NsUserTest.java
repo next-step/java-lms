@@ -9,6 +9,7 @@ public class NsUserTest {
     public static NsUser createNsUser(Long id, Long balance) {
         return new NsUser(id, "아이디", "비밀번호", "이름", new BigDecimal(balance));
     }
+
     public static NsUser createNsUser(Long balance) {
         return new NsUser(null, "아이디", "비밀번호", "이름", new BigDecimal(balance));
     }

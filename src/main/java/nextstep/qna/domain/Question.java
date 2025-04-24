@@ -8,19 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
-    private Long id;
-
-    private String title;
-
-    private String contents;
-
-    private NsUser writer;
-
     private final Answers answers = new Answers();
-
+    private Long id;
+    private String title;
+    private String contents;
+    private NsUser writer;
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private final LocalDateTime createdDate = LocalDateTime.now();
 
     private LocalDateTime updatedDate;
 

@@ -11,13 +11,10 @@ import java.util.List;
 import static nextstep.courses.domain.model.Timestamped.toLocalDateTime;
 
 public class Course extends BaseEntity {
-    private String title;
-
-    private Long creatorId;
-
     private final boolean hasSelection;
-
     private final List<Session> sessions;
+    private final String title;
+    private final Long creatorId;
 
     public Course(String title, Boolean hasSelection, Long creatorId) {
         this(null, title, hasSelection, creatorId, new ArrayList<>(), LocalDateTime.now(), LocalDateTime.now());

@@ -39,7 +39,7 @@ public class JdbcCourseRepository implements CourseRepository {
     public Course findById(Long id) {
         String sql = "select * from course where id = ?";
         JdbcCourse entity = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(JdbcCourse.class), id);
-        return entity == null? null : entity.toDomain();
+        return entity == null ? null : entity.toDomain();
     }
 
 }

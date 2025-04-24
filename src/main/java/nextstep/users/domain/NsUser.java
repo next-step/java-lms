@@ -135,13 +135,6 @@ public class NsUser {
         return false;
     }
 
-    private static class GuestNsUser extends NsUser {
-        @Override
-        public boolean isGuestUser() {
-            return true;
-        }
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -164,5 +157,12 @@ public class NsUser {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    private static class GuestNsUser extends NsUser {
+        @Override
+        public boolean isGuestUser() {
+            return true;
+        }
     }
 }

@@ -1,8 +1,8 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.SessionTest;
-import nextstep.courses.domain.model.Session;
 import nextstep.courses.domain.model.Applicant;
+import nextstep.courses.domain.model.Session;
 import nextstep.courses.domain.repository.StudentRepository;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;

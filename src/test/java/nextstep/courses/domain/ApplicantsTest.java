@@ -1,15 +1,14 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.model.*;
-import nextstep.payments.domain.Payment;
+import nextstep.courses.domain.model.Applicant;
+import nextstep.courses.domain.model.ApplicantStatus;
+import nextstep.courses.domain.model.Applicants;
+import nextstep.courses.domain.model.Session;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;

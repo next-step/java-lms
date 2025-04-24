@@ -8,12 +8,12 @@ import java.util.List;
 
 public class Session extends BaseEntity {
     private final Course course;
-    private SessionPeriod period;
     private final List<SessionImage> images;
     private final SessionStatus status;
-    private Long price;
     private final Recruitment recruitment;
     private final Long creatorId;
+    private final SessionPeriod period;
+    private final Long price;
 
     private Session(Long id, Course course, SessionPeriod period, SessionImage image, SessionStatus status, RecruitmentStatus recruitmentStatus, Long price, int capacity, Long creatorId) {
         this(id, course, period, image, status, recruitmentStatus, price, capacity, creatorId, LocalDateTime.now(), LocalDateTime.now());
