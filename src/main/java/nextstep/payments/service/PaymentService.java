@@ -55,7 +55,6 @@ public class PaymentService {
         return false;
     }
 
-    @Transactional
     public boolean approve(long paymentId, String approverId) {
         PaymentEntity paymentEntity = paymentRepository.findById(paymentId);
 
@@ -67,7 +66,6 @@ public class PaymentService {
         return false;
     }
 
-    @Transactional
     public boolean cancel(long paymentId, String approverId) {
         PaymentEntity paymentEntity = paymentRepository.findById(paymentId);
 

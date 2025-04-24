@@ -37,7 +37,6 @@ public class SessionImageService {
         return new SessionImages(sessionImages);
     }
 
-    @Transactional
     public void deleteSessionImage(long sessionImageId) {
         sessionImageRepository.delete(sessionImageId);
     }
