@@ -24,29 +24,18 @@ public class SessionServiceTest {
     public void setUp() {
         sessionService = new SessionService(new FakeSessionRepository(), new FakeEnrollmentRepository());
 
-        sessionService.save(new Session(
-                1L,
-                new Course(),
-                SessionProgressStatus.READY,
-                SessionRecruitmentStatus.RECRUITING,
-                SessionType.PAID,
-                new Money(10000L),
-                new Capacity(30),
-                LocalDate.now(),
-                LocalDate.now().plusDays(7),
-                SessionCoverImage.from("imagePath"),
-                LocalDateTime.now(),
-                LocalDateTime.now()
-        ));
+        session = Session.createPaidSession(new Money(10000L), new Capacity(30), LocalDate.now(), LocalDate.now().plusDays(1));
+        sessionService.save(session);
 
-        session = sessionService.findById(1L);
         student = new Student(NsUserTest.JAVAJIGI);
         payment = new Payment("paymentId", 1L, NsUserTest.JAVAJIGI.getId(), 10000L);
     }
 
     @Test
     public void 특정_강의에_대한_수강신청() {
-        Enrollment enrollment = sessionService.enroll(1L, student, payment);
+        session.startRecruitment();
+
+        Enrollment enrollment = sessionService.enroll(session.getId(), student, payment);
         assertThat(enrollment.getSession()).isEqualTo(session);
         assertThat(enrollment.getStudent()).isEqualTo(student);
     }

@@ -32,10 +32,14 @@ public class EnrollmentServiceTest {
         student1 = new Student(1L);
         student2 = new Student(2L);
 
-        requestedEnrollment1 = new Enrollment(1L, session1, student1, EnrollmentStatus.REQUESTED, LocalDateTime.now(), LocalDateTime.now());
-        requestedEnrollment2 = new Enrollment(3L, session1, student2, EnrollmentStatus.REQUESTED, LocalDateTime.now(), LocalDateTime.now());
-        approvedEnrollment = new Enrollment(2L, session2, student2, EnrollmentStatus.APPROVED, LocalDateTime.now(), LocalDateTime.now());
-        rejectedEnrollment = new Enrollment(4L, session2, student1, EnrollmentStatus.REJECTED, LocalDateTime.now(), LocalDateTime.now());
+        requestedEnrollment1 = Enrollment.request(session1, student1);
+        requestedEnrollment2 = Enrollment.request(session1, student2);
+
+        approvedEnrollment = Enrollment.request(session2, student2);
+        approvedEnrollment.updateStatus(EnrollmentStatus.APPROVED);
+
+        rejectedEnrollment = Enrollment.request(session2, student1);
+        rejectedEnrollment.updateStatus(EnrollmentStatus.REJECTED);
 
         enrollmentService.save(requestedEnrollment1);
         enrollmentService.save(requestedEnrollment2);

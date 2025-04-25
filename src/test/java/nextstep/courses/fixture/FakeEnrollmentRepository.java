@@ -5,21 +5,29 @@ import nextstep.courses.domain.EnrollmentRepository;
 import nextstep.courses.domain.EnrollmentStatus;
 import nextstep.courses.domain.Enrollments;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 public class FakeEnrollmentRepository implements EnrollmentRepository {
 
+    private final AtomicLong idGenerator;
     private final Map<Long, Enrollment> enrollments;
 
     public FakeEnrollmentRepository() {
-        enrollments = new HashMap<>();
+        idGenerator = new AtomicLong();
+        enrollments = new ConcurrentHashMap<>();
     }
 
     @Override
     public void save(Enrollment enrollment) {
+        if (enrollment.getId() == null) {
+            long newId = idGenerator.getAndIncrement();
+            enrollment.assignId(newId);
+        }
+
         enrollments.put(enrollment.getId(), enrollment);
     }
 

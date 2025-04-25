@@ -52,6 +52,10 @@ public class Enrollment {
         this.status = status;
     }
 
+    public void assignId(long id) {
+        this.id = id;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;
