@@ -25,19 +25,11 @@ public class Enrollment {
     }
 
     public void approve() {
-        if (status == EnrollmentStatus.REJECTED) {
-            throw new IllegalStateException("이미 반려된 신청 건 입니다.");
-        }
-
-        updateStatus(EnrollmentStatus.APPROVED);
+        updateStatus(status.approve());
     }
 
     public void reject() {
-        if (status == EnrollmentStatus.APPROVED) {
-            throw new IllegalStateException("이미 승인된 신청 건 입니다.");
-        }
-
-        updateStatus(EnrollmentStatus.REJECTED);
+        updateStatus(status.reject());
     }
 
     public Long getId() {
