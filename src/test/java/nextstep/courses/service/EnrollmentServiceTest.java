@@ -8,13 +8,15 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 public class EnrollmentServiceTest {
     private EnrollmentService enrollmentService;
 
-    private Enrollment enrollment1;
-    private Enrollment enrollment2;
-    private Enrollment enrollment3;
+    private Enrollment requestedEnrollment1;
+    private Enrollment requestedEnrollment2;
+    private Enrollment approvedEnrollment;
+    private Enrollment rejectedEnrollment;
     private Session session1;
     private Session session2;
     private Student student1;
@@ -30,31 +32,45 @@ public class EnrollmentServiceTest {
         student1 = new Student(1L);
         student2 = new Student(2L);
 
-        enrollment1 = new Enrollment(1L, session1, student1, EnrollmentStatus.REQUESTED, LocalDateTime.now(), LocalDateTime.now());
-        enrollment2 = new Enrollment(2L, session2, student2, EnrollmentStatus.APPROVED, LocalDateTime.now(), LocalDateTime.now());
-        enrollment3 = new Enrollment(3L, session1, student2, EnrollmentStatus.REQUESTED, LocalDateTime.now(), LocalDateTime.now());
+        requestedEnrollment1 = new Enrollment(1L, session1, student1, EnrollmentStatus.REQUESTED, LocalDateTime.now(), LocalDateTime.now());
+        requestedEnrollment2 = new Enrollment(3L, session1, student2, EnrollmentStatus.REQUESTED, LocalDateTime.now(), LocalDateTime.now());
+        approvedEnrollment = new Enrollment(2L, session2, student2, EnrollmentStatus.APPROVED, LocalDateTime.now(), LocalDateTime.now());
+        rejectedEnrollment = new Enrollment(4L, session2, student1, EnrollmentStatus.REJECTED, LocalDateTime.now(), LocalDateTime.now());
 
-        enrollmentService.save(enrollment1);
-        enrollmentService.save(enrollment2);
-        enrollmentService.save(enrollment3);
+        enrollmentService.save(requestedEnrollment1);
+        enrollmentService.save(requestedEnrollment2);
+        enrollmentService.save(approvedEnrollment);
+        enrollmentService.save(rejectedEnrollment);
     }
 
     @Test
     public void 수강신청_건에_대한_승인() {
-        enrollmentService.approve(enrollment1.getId());
-        assertThat(enrollment1.getStatus()).isEqualTo(EnrollmentStatus.APPROVED);
+        enrollmentService.approve(requestedEnrollment1.getId());
+        assertThat(requestedEnrollment1.getStatus()).isEqualTo(EnrollmentStatus.APPROVED);
     }
 
     @Test
     public void 수강신청_건에_대한_반려() {
-        enrollmentService.reject(enrollment1.getId());
-        assertThat(enrollment1.getStatus()).isEqualTo(EnrollmentStatus.REJECTED);
+        enrollmentService.reject(requestedEnrollment1.getId());
+        assertThat(requestedEnrollment1.getStatus()).isEqualTo(EnrollmentStatus.REJECTED);
+    }
+
+    @Test
+    public void 반려된_신청_건에_대한_승인시도시_예외_발생() {
+        assertThatIllegalStateException()
+                .isThrownBy(() -> enrollmentService.approve(rejectedEnrollment.getId()));
+    }
+
+    @Test
+    public void 승인된_신청_건에_대한_반려시도시_예외_발생() {
+        assertThatIllegalStateException()
+                .isThrownBy(() -> enrollmentService.reject(approvedEnrollment.getId()));
     }
 
     @Test
     public void 수강신청_요청_상태인_건들_조회() {
         Enrollments enrollments = enrollmentService.findRequested();
-        assertThat(enrollments.count()).isEqualTo(1);
+        assertThat(enrollments.count()).isEqualTo(2);
     }
 
     @Test
