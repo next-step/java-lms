@@ -2,8 +2,8 @@ package nextstep.payments.domain;
 
 public class PaidPaymentPolicy implements PaymentPolicy {
 
-    private final long fee;
-    private final int enrollmentLimit;
+    private final Long fee;
+    private final Integer enrollmentLimit;
 
     public PaidPaymentPolicy(long fee, int enrollmentLimit) {
         if (fee <= 0) {
@@ -15,6 +15,11 @@ public class PaidPaymentPolicy implements PaymentPolicy {
         }
         this.fee = fee;
         this.enrollmentLimit = enrollmentLimit;
+    }
+
+    @Override
+    public long fee() {
+        return this.fee;
     }
 
     @Override

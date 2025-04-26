@@ -8,6 +8,9 @@ import java.util.List;
 
 public class EnrolledStudents {
 
+    private Long id;
+    private Long sessionId;
+
     List<NsUser> students = new ArrayList<>();
 
     public void add(PaymentPolicy policy, NsUser user) {
@@ -20,5 +23,13 @@ public class EnrolledStudents {
 
     public int count() {
         return students.size();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Long getSessionId() {
+        return sessionId;
     }
 }

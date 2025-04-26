@@ -6,6 +6,11 @@ public class FreePaymentPolicy implements PaymentPolicy {
     }
 
     @Override
+    public long fee() {
+        return 0;
+    }
+
+    @Override
     public int enrollmentLimit() {
         return 0;
     }

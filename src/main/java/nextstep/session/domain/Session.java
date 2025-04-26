@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 
 public class Session {
 
+    private Long id;
+
     private String title;
     private CoverImage coverImage;
     private Duration duration;
@@ -21,6 +23,7 @@ public class Session {
     private LocalDateTime updatedAt;
 
     public static class Builder {
+        private Long id;
         private String title;
         private CoverImage coverImage;
         private Duration duration;
@@ -33,6 +36,10 @@ public class Session {
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
 
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
         public Builder title(String title) {
             this.title = title;
             return this;
@@ -81,6 +88,7 @@ public class Session {
     }
 
     private Session(Builder builder) {
+        this.id = builder.id;
         this.title = builder.title;
         this.duration = builder.duration;
         this.coverImage = builder.coverImage;
@@ -109,5 +117,41 @@ public class Session {
         enrolledStudents.add(paymentPolicy, nsUser);
 
         return new Payment("P1", 1L, nsUser.getId(), amount);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public CoverImage getCoverImage() {
+        return coverImage;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public PaymentPolicy getPaymentPolicy() {
+        return paymentPolicy;
+    }
+
+    public EnrolledStudents getEnrolledStudents() {
+        return enrolledStudents;
+    }
+
+    public SessionStatus getStatus() {
+        return status;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }

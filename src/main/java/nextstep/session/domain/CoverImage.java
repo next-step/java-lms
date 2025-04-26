@@ -12,6 +12,7 @@ public class CoverImage {
     private static final int MAX_FILE_SIZE = 1024 * 1024; // 1MB
     private static final List<String> SUPPORTED_FORMATS_LIST = Arrays.asList(new String[]{"gif", "jpg", "jpeg", "png", "svg"});
 
+    private final Long id;
     private final String fileName;
     private final String imageFormat;
     private final long fileSize;
@@ -19,12 +20,17 @@ public class CoverImage {
     private final int height;
 
     public static class Builder {
+        private Long id;
         private String fileName;
         private String imageFormat;
         private long fileSize;
         private int width;
         private int height;
 
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
         public Builder fileName(String fileName) {
             validateFileName(fileName);
             this.fileName = fileName;
@@ -57,6 +63,7 @@ public class CoverImage {
     }
 
     private CoverImage(Builder builder) {
+        this.id = builder.id;
         this.fileName = builder.fileName;
         this.imageFormat = builder.imageFormat;
         this.fileSize = builder.fileSize;
@@ -95,5 +102,29 @@ public class CoverImage {
         if (fileSize > MAX_FILE_SIZE) { // 1MB
             throw new InvalidImageFileSizeException(fileSize);
         }
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public String getImageFormat() {
+        return imageFormat;
+    }
+
+    public long getFileSize() {
+        return fileSize;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 }

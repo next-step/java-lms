@@ -1,9 +1,8 @@
 package nextstep.payments.domain;
 
 public interface PaymentPolicy {
-    void validateEnrollment(long amount);
-
+    long fee();
     int enrollmentLimit();
-
+    void validateEnrollment(long amount);
     boolean canEnroll(int studentCount);
 }
