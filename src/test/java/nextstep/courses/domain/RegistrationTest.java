@@ -21,15 +21,15 @@ class RegistrationTest {
     void createStudentsWithAlreadyEnrolled() {
         Registration registration = new Registration(2);
         Session session = SessionTest.createPaidSession(10_000L, 2);
-        registration.apply(NsUserTest.JAVAJIGI, session, 0L);
-        assertThrows(IllegalArgumentException.class, () -> registration.apply(NsUserTest.JAVAJIGI, session, 0L));
+        registration.apply(NsUserTest.JAVAJIGI, session.getId(), 0L);
+        assertThrows(IllegalArgumentException.class, () -> registration.apply(NsUserTest.JAVAJIGI, session.getId(), 0L));
     }
 
     @Test
     @DisplayName("학생 수를 초과하면 예외가 발생한다.")
     void createStudentsWithExceedLimit() {
         Session session = SessionTest.createPaidSession(10_000L, 0);
-        Registration registration = new Registration(0, Set.of(new Applicant(NsUserTest.JAVAJIGI, session, null)));
+        Registration registration = new Registration(0, Set.of(new Applicant(NsUserTest.JAVAJIGI, session.getId(), null)));
         assertThrows(IllegalArgumentException.class, () -> registration.select(NsUserTest.JAVAJIGI));
     }
 
@@ -38,7 +38,7 @@ class RegistrationTest {
     void createPaidSessionWithCorrectPrice() {
         Registration registration = new Registration(1);
         Session session = SessionTest.createPaidSession(800_000L, 1);
-        assertThatCode(() -> registration.apply(NsUserTest.createNsUser(3L, 800_000L), session, 800_000L)).doesNotThrowAnyException();
+        assertThatCode(() -> registration.apply(NsUserTest.createNsUser(3L, 800_000L), session.getId(), 800_000L)).doesNotThrowAnyException();
     }
 
     @Test
@@ -46,7 +46,7 @@ class RegistrationTest {
     void createPaidSessionWithNotEnoughPrice() {
         Registration registration = new Registration(1);
         Session session = SessionTest.createPaidSession(800_000L, 1);
-        assertThrows(IllegalArgumentException.class, () -> registration.apply(NsUserTest.createNsUser(3L, 790_000L), session, 800_000L));
+        assertThrows(IllegalArgumentException.class, () -> registration.apply(NsUserTest.createNsUser(3L, 790_000L), session.getId(), 800_000L));
     }
 
     @Test
@@ -70,7 +70,7 @@ class RegistrationTest {
         Registration registration = new Registration(1);
         Session session = SessionTest.createPaidSession(CourseTest.createCourse(), 10_000L, 1);
         NsUser user = NsUserTest.JAVAJIGI;
-        assertThrows(IllegalArgumentException.class, () -> registration.apply(user, session, 10_000L));
+        assertThrows(IllegalArgumentException.class, () -> registration.apply(user, session.getId(), 10_000L));
     }
 
     @Test

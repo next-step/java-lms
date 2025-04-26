@@ -43,7 +43,7 @@ public class Registration {
         return capacity - findApplicantsByStatus(ApplicantStatus.APPROVED).size() - findApplicantsByStatus(ApplicantStatus.SELECTED).size();
     }
 
-    public void apply(NsUser user, Session session, Long price) {
+    public void apply(NsUser user, Long sessionId, Long price) {
         if (status.isNotSupport()) {
             throw new IllegalArgumentException("session is not open");
         }
@@ -53,8 +53,8 @@ public class Registration {
             throw new IllegalArgumentException("applicant already exists");
         }
         user.pay(price);
-        Payment payment = new Payment(session.getId(), user.getId(), price);
-        applicants.add(new Applicant(user, session, payment));
+        Payment payment = new Payment(sessionId, user.getId(), price);
+        applicants.add(new Applicant(user, sessionId, payment));
     }
 
     public void select(NsUser user) {

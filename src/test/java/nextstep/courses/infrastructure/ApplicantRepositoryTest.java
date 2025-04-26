@@ -32,12 +32,12 @@ class ApplicantRepositoryTest {
     @Test
     void save() {
         Session session = SessionTest.SESSION1;
-        Applicant applicant = new Applicant(NsUserTest.JAVAJIGI, session, null);
+        Applicant applicant = new Applicant(NsUserTest.JAVAJIGI, session.getId(), null);
         long id = applicantRepository.save(applicant);
         assertThat(id).isEqualTo(applicant.getId());
 
         Applicant saved = applicantRepository.findById(id);
-        assertThat(saved.getSession()).isEqualTo(session);
+        assertThat(saved.getSessionId()).isEqualTo(session.getId());
         assertThat(saved.getNsUser()).isEqualTo(NsUserTest.JAVAJIGI);
         LOGGER.debug("Student: {}", saved);
     }

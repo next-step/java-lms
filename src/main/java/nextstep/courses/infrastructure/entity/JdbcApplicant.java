@@ -2,7 +2,6 @@ package nextstep.courses.infrastructure.entity;
 
 import nextstep.courses.domain.model.Applicant;
 import nextstep.courses.domain.model.ApplicantStatus;
-import nextstep.courses.domain.model.Session;
 import nextstep.users.domain.NsUser;
 
 import java.sql.Timestamp;
@@ -37,10 +36,8 @@ public class JdbcApplicant extends BaseEntity {
         this.nsUserId = nsUserId;
     }
 
-    public Applicant toDomain(NsUser nsUser, Session session) {
-        System.out.println(nsUser);
-        System.out.println(session);
-        return new Applicant(getId(), session, nsUser, null, ApplicantStatus.APPROVED,
+    public Applicant toDomain(NsUser nsUser) {
+        return new Applicant(getId(), sessionId, nsUser, null, ApplicantStatus.APPROVED,
                 getCreatedAt().toLocalDateTime(),
                 getUpdatedAt() == null ? null : getUpdatedAt().toLocalDateTime());
     }

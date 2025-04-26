@@ -47,7 +47,7 @@ public class Session extends BaseEntity {
     }
 
     public void apply(NsUser user) {
-        registration.apply(user, this, price);
+        registration.apply(user, getId(), price);
 
         if (!course.hasSelection()) {
             registration.select(user);
