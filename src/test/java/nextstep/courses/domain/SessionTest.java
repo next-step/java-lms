@@ -36,7 +36,6 @@ public class SessionTest {
         Session session = new Session(null, course, new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)),
                 Collections.emptyList(),
                 ProgressStatus.ACTIVE, RegistrationStatus.OPEN, 0L, new Registration(1), 1L, LocalDateTime.now(), LocalDateTime.now());
-        course.addSession(session);
 
         assertThatCode(() -> session.apply(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
         assertThat(session.getStudentStatus(NsUserTest.JAVAJIGI)).isEqualTo(ApplicantStatus.APPLIED);
@@ -49,7 +48,6 @@ public class SessionTest {
         Session session = new Session(null, course, new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)),
                 Collections.emptyList(),
                 ProgressStatus.ACTIVE, RegistrationStatus.OPEN, 0L, new Registration(1), 1L, LocalDateTime.now(), LocalDateTime.now());
-        course.addSession(session);
 
         assertThatCode(() -> session.apply(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
         assertThat(session.getStudentStatus(NsUserTest.JAVAJIGI)).isEqualTo(ApplicantStatus.APPLIED);
@@ -70,7 +68,6 @@ public class SessionTest {
         Session session = new Session(null, course, new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)),
                 Collections.emptyList(),
                 ProgressStatus.ACTIVE, RegistrationStatus.OPEN, 0L, new Registration(1), 1L, LocalDateTime.now(), LocalDateTime.now());
-        course.addSession(session);
 
         session.apply(NsUserTest.JAVAJIGI);
         session.select(NsUserTest.JAVAJIGI);

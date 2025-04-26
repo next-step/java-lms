@@ -11,9 +11,9 @@ public class Session extends BaseEntity {
     private final List<SessionImage> images;
     private final ProgressStatus status;
     private final Registration registration;
-    private final Long creatorId;
     private final SessionPeriod period;
     private final Long price;
+    private final Long creatorId;
 
     private Session(Long id, Course course, SessionPeriod period, SessionImage image, ProgressStatus status, RegistrationStatus registrationStatus, Long price, int capacity, Long creatorId) {
         this(id, course, period, image, status, registrationStatus, price, capacity, creatorId, LocalDateTime.now(), LocalDateTime.now());
@@ -39,15 +39,11 @@ public class Session extends BaseEntity {
     }
 
     public static Session createFreeSession(Course course, LocalDateTime startDate, LocalDateTime endDate, SessionImage image, ProgressStatus status, RegistrationStatus registrationStatus, NsUser creator) {
-        Session session = new Session(null, course, new SessionPeriod(startDate, endDate), image, status, registrationStatus, 0L, Integer.MAX_VALUE, creator.getId());
-        course.addSession(session);
-        return session;
+        return new Session(null, course, new SessionPeriod(startDate, endDate), image, status, registrationStatus, 0L, Integer.MAX_VALUE, creator.getId());
     }
 
     public static Session createPaidSession(Course course, SessionPeriod period, SessionImage image, ProgressStatus status, RegistrationStatus registrationStatus, Long price, int capacity, NsUser creator) {
-        Session session = new Session(null, course, period, image, status, registrationStatus, price, capacity, creator.getId());
-        course.addSession(session);
-        return session;
+        return new Session(null, course, period, image, status, registrationStatus, price, capacity, creator.getId());
     }
 
     public void apply(NsUser user) {
