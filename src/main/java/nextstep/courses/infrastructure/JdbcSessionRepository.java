@@ -11,10 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Repository
@@ -31,19 +28,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 .withTableName("session")
                 .usingGeneratedKeyColumns("id");
 
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("course_id", session.getCourse().getId());
-        parameters.put("capacity", session.getCapacity());
-        parameters.put("status", session.getStatus().name());
-        parameters.put("recruitment", session.getRecruitmentStatus().name());
-        parameters.put("price", new BigDecimal(session.getPrice()));
-        parameters.put("start_date", session.getPeriod().getStartDate().toLocalDate());
-        parameters.put("end_date", session.getPeriod().getEndDate().toLocalDate());
-        parameters.put("creator_id", session.getCreatorId());
-        parameters.put("created_at", session.getCreatedAt());
-        parameters.put("updated_at", session.getUpdatedAt());
-
-        Number sessionId = simpleJdbcInsert.executeAndReturnKey(parameters);
+        Number sessionId = simpleJdbcInsert.executeAndReturnKey(session.getParameters());
         session.setId(sessionId.longValue());
 
         simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
@@ -51,18 +36,12 @@ public class JdbcSessionRepository implements SessionRepository {
                 .usingGeneratedKeyColumns("id");
 
         for (SessionImage image : session.getImages()) {
-            parameters = new HashMap<>();
-            parameters.put("session_id", sessionId);
-            parameters.put("image_path", image.getPath());
-            parameters.put("image_file", image.getFile());
-            parameters.put("created_at", image.getCreatedAt());
-            parameters.put("updated_at", image.getUpdatedAt());
-
-            simpleJdbcInsert.execute(parameters);
+            simpleJdbcInsert.execute(image.getParameters(sessionId.longValue()));
         }
 
         return sessionId.intValue();
     }
+
 
     @Override
     public Session findById(Long id) {

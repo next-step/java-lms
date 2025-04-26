@@ -4,6 +4,8 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Applicant extends BaseEntity {
     private final Session session;
@@ -47,12 +49,14 @@ public class Applicant extends BaseEntity {
         return status;
     }
 
-    @Override
-    public String toString() {
-        return "Applicant{" +
-                ", user=" + user +
-                ", payment=" + payment +
-                ", status=" + status +
-                '}';
+
+    public Map<String, Object> getParameters() {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("session_id", session.getId());
+        parameters.put("ns_user_id", user.getId());
+        parameters.put("created_at", getCreatedAt());
+        parameters.put("updated_at", getUpdatedAt());
+        return parameters;
     }
+
 }

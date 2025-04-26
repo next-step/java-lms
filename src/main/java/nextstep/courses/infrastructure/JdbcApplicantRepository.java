@@ -4,10 +4,10 @@ import nextstep.courses.domain.model.Applicant;
 import nextstep.courses.domain.model.Session;
 import nextstep.courses.domain.model.SessionImage;
 import nextstep.courses.domain.repository.ApplicantRepository;
+import nextstep.courses.infrastructure.entity.JdbcApplicant;
 import nextstep.courses.infrastructure.entity.JdbcCourse;
 import nextstep.courses.infrastructure.entity.JdbcSession;
 import nextstep.courses.infrastructure.entity.JdbcSessionImage;
-import nextstep.courses.infrastructure.entity.JdbcStudent;
 import nextstep.users.domain.NsUser;
 import nextstep.users.infrastructure.entity.NsUserEntity;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -15,9 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Repository
@@ -34,20 +32,16 @@ public class JdbcApplicantRepository implements ApplicantRepository {
                 .withTableName("applicant")
                 .usingGeneratedKeyColumns("id");
 
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("session_id", applicant.getSession().getId());
-        parameters.put("ns_user_id", applicant.getNsUser().getId());
-        parameters.put("created_at", applicant.getCreatedAt());
-
-        Number number = simpleJdbcInsert.executeAndReturnKey(parameters);
+        Number number = simpleJdbcInsert.executeAndReturnKey(applicant.getParameters());
         applicant.setId(number.longValue());
         return number.intValue();
     }
 
+
     @Override
     public Applicant findById(Long id) {
         String studentSql = "SELECT * FROM applicant WHERE id = ?";
-        JdbcStudent entity = jdbcTemplate.queryForObject(studentSql, new BeanPropertyRowMapper<>(JdbcStudent.class), id);
+        JdbcApplicant entity = jdbcTemplate.queryForObject(studentSql, new BeanPropertyRowMapper<>(JdbcApplicant.class), id);
 
         NsUser nsUser = findNsUserById(entity.getNsUserId());
         Session session = findSessionById(entity.getSessionId());

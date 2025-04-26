@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public abstract class BaseEntity {
-    protected Long id;
-    protected LocalDateTime createdAt;
-    protected LocalDateTime updatedAt;
+    private Long id;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
 
     protected BaseEntity() {
         createdAt = LocalDateTime.now();

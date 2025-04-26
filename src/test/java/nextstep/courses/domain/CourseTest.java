@@ -28,14 +28,14 @@ class CourseTest {
         Course course = createCourse();
         Session session = SessionTest.createFreeSession(RegistrationStatus.OPEN);
         course.addSession(session);
-        assertThat(course.getSessions()).contains(session);
+        assertThat(course.include(session)).isTrue();
     }
 
     @Test
     @DisplayName("과정(Course)은 선발 절차를 포함할 수 있다.")
     void courseHaveSelectionProcess() {
         Course course = new Course("과정명", true, 1L);
-        assertThat(course.hasSelection()).isTrue();
+        assertThat(course.hasSameSelection(new Course("테스트", true, 1L))).isTrue();
     }
 
 }

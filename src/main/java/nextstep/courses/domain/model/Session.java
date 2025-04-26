@@ -2,10 +2,9 @@ package nextstep.courses.domain.model;
 
 import nextstep.users.domain.NsUser;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class Session extends BaseEntity {
     private final Course course;
@@ -110,6 +109,22 @@ public class Session extends BaseEntity {
 
     public List<SessionImage> getImages() {
         return images;
+    }
+
+
+    public Map<String, Object> getParameters() {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("course_id", course.getId());
+        parameters.put("capacity", getCapacity());
+        parameters.put("status", getStatus().name());
+        parameters.put("recruitment", getRecruitmentStatus().name());
+        parameters.put("price", new BigDecimal(price));
+        parameters.put("start_date", period.getStartDate().toLocalDate());
+        parameters.put("end_date", period.getEndDate().toLocalDate());
+        parameters.put("creator_id", creatorId);
+        parameters.put("created_at", getCreatedAt());
+        parameters.put("updated_at", getUpdatedAt());
+        return parameters;
     }
 
 }

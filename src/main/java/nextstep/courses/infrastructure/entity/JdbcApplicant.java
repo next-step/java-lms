@@ -7,15 +7,15 @@ import nextstep.users.domain.NsUser;
 
 import java.sql.Timestamp;
 
-public class JdbcStudent extends BaseEntity {
+public class JdbcApplicant extends BaseEntity {
     private Long sessionId;
     private Long nsUserId;
 
-    public JdbcStudent() {
+    public JdbcApplicant() {
         super();
     }
 
-    public JdbcStudent(Long id, Long sessionId, Long nsUserId, Timestamp createdAt, Timestamp updatedAt) {
+    public JdbcApplicant(Long id, Long sessionId, Long nsUserId, Timestamp createdAt, Timestamp updatedAt) {
         super(id, createdAt, updatedAt);
         this.sessionId = sessionId;
         this.nsUserId = nsUserId;

@@ -33,7 +33,8 @@ class CourseRepositoryTest {
         assertThat(id).isEqualTo(course.getId());
 
         Course savedCourse = courseRepository.findById(id);
-        assertThat(course.getTitle()).isEqualTo(savedCourse.getTitle());
+        assertThat(course.hasSameTitle(savedCourse)).isTrue();
+        assertThat(course.hasSameSelection(savedCourse)).isTrue();
         LOGGER.debug("Course: {}", savedCourse);
     }
 }

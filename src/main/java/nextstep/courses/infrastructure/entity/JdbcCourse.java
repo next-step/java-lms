@@ -2,21 +2,13 @@ package nextstep.courses.infrastructure.entity;
 
 import nextstep.courses.domain.model.Course;
 
-import java.sql.Timestamp;
-
 public class JdbcCourse extends BaseEntity {
     private String title;
-    private boolean selection;
+    private boolean hasSelection;
     private Long creatorId;
 
-    public JdbcCourse() {
+    protected JdbcCourse() {
         super();
-    }
-
-    public JdbcCourse(Long id, String title, Long creatorId, Timestamp createdAt, Timestamp updatedAt) {
-        super(id, createdAt, updatedAt);
-        this.creatorId = creatorId;
-        this.title = title;
     }
 
     public String getTitle() {
@@ -27,13 +19,12 @@ public class JdbcCourse extends BaseEntity {
         this.title = title;
     }
 
-
-    public boolean isSelection() {
-        return selection;
+    public boolean isHasSelection() {
+        return hasSelection;
     }
 
-    public void setSelection(boolean selection) {
-        this.selection = selection;
+    public void setHasSelection(boolean hasSelection) {
+        this.hasSelection = hasSelection;
     }
 
     public Long getCreatorId() {
@@ -45,7 +36,6 @@ public class JdbcCourse extends BaseEntity {
     }
 
     public Course toDomain() {
-        return new Course(getId(), title, selection, creatorId, getCreatedAt(), getUpdatedAt());
+        return new Course(getId(), title, hasSelection, creatorId, getCreatedAt().toLocalDateTime(), getUpdatedAt().toLocalDateTime());
     }
-
 }

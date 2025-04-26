@@ -2,13 +2,11 @@ package nextstep.courses.domain.model;
 
 import org.springframework.lang.NonNull;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-
-import static nextstep.courses.domain.model.Timestamped.toLocalDateTime;
+import java.util.Map;
 
 public class Course extends BaseEntity {
     private final boolean hasSelection;
@@ -20,8 +18,8 @@ public class Course extends BaseEntity {
         this(null, title, hasSelection, creatorId, new ArrayList<>(), LocalDateTime.now(), LocalDateTime.now());
     }
 
-    public Course(Long id, String title, Boolean hasSelection, Long creatorId, Timestamp createdAt, Timestamp updatedAt) {
-        this(id, title, hasSelection, creatorId, new ArrayList<>(), toLocalDateTime(createdAt), toLocalDateTime(updatedAt));
+    public Course(Long id, String title, Boolean hasSelection, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(id, title, hasSelection, creatorId, new ArrayList<>(), createdAt, updatedAt);
     }
 
     public Course(Long id, String title, Boolean hasSelection, Long creatorId, @NonNull List<Session> sessions, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -32,24 +30,34 @@ public class Course extends BaseEntity {
         this.sessions = sessions;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public Long getCreatorId() {
-        return creatorId;
-    }
-
     public void addSession(Session session) {
         sessions.add(session);
-    }
-
-    public List<Session> getSessions() {
-        return Collections.unmodifiableList(sessions);
     }
 
     public boolean hasSelection() {
         return hasSelection;
     }
 
+    public boolean hasSameTitle(Course savedCourse) {
+        return title.equals(savedCourse.title);
+    }
+
+    public boolean hasSameSelection(Course savedCourse) {
+        return hasSelection == savedCourse.hasSelection;
+    }
+
+    public boolean include(Session session) {
+        return sessions.contains(session);
+    }
+
+    public Map<String, Object> getParameters() {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("id", getId());
+        map.put("created_at", getCreatedAt());
+        map.put("updated_at", getUpdatedAt());
+        map.put("title", title);
+        map.put("has_selection", hasSelection);
+        map.put("creator_id", creatorId);
+        return map;
+    }
 }

@@ -32,11 +32,4 @@ public class SessionPeriod {
         return endDate;
     }
 
-    @Override
-    public String toString() {
-        return "SessionPeriod{" +
-                "startDate=" + startDate +
-                ", endDate=" + endDate +
-                '}';
-    }
 }

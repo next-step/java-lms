@@ -73,6 +73,6 @@ public class NsUserEntity extends BaseEntity {
     }
 
     public NsUser toDomain() {
-        return new NsUser(getId(), userId, password, name, email, balance, getCreatedAt(), getUpdatedAt());
+        return new NsUser(getId(), userId, password, name, email, balance, getCreatedAt().toLocalDateTime(), getUpdatedAt().toLocalDateTime());
     }
 }

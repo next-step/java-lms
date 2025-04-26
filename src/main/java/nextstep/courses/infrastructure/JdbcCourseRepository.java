@@ -8,9 +8,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Repository
 public class JdbcCourseRepository implements CourseRepository {
     private final JdbcTemplate jdbcTemplate;
@@ -25,12 +22,7 @@ public class JdbcCourseRepository implements CourseRepository {
                 .withTableName("course")
                 .usingGeneratedKeyColumns("id");
 
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("title", course.getTitle());
-        parameters.put("creator_id", course.getCreatorId());
-        parameters.put("created_at", course.getCreatedAt());
-
-        Number number = simpleJdbcInsert.executeAndReturnKey(parameters);
+        Number number = simpleJdbcInsert.executeAndReturnKey(course.getParameters());
         course.setId(number.longValue());
         return number.longValue();
     }

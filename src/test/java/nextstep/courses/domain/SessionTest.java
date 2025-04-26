@@ -50,7 +50,6 @@ public class SessionTest {
                 Collections.emptyList(),
                 ProgressStatus.ACTIVE, RegistrationStatus.OPEN, 0L, new Registration(1), 1L, LocalDateTime.now(), LocalDateTime.now());
         course.addSession(session);
-        System.out.println("course = " + course.hasSelection());
 
         assertThatCode(() -> session.apply(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
         assertThat(session.getStudentStatus(NsUserTest.JAVAJIGI)).isEqualTo(ApplicantStatus.APPLIED);
