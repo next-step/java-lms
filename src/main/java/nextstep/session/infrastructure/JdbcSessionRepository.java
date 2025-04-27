@@ -24,8 +24,9 @@ public class JdbcSessionRepository implements SessionRepository {
     public int save(Session session) {
         String sql = "insert into session (id, title, cover_image_id, start_at, end_at, fee, enrollment_limit, status, created_at, updated_at) " +
                 "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        Long coverImageId = session.getCoverImage() == null ? null : session.getCoverImage().getId();
         return jdbcTemplate.update(sql,
-                session.getId(), session.getTitle(), session.getCoverImage().getId(),
+                session.getId(), session.getTitle(), coverImageId,
                 session.getDuration().getStartAt(), session.getDuration().getEndAt(),
                 session.getPaymentPolicy().fee(), session.getPaymentPolicy().enrollmentLimit(),
                 session.getStatus().toString(),
@@ -38,26 +39,15 @@ public class JdbcSessionRepository implements SessionRepository {
                 "from session " +
                 "where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> {
-            // TODO: select coverImage and set
-            CoverImage coverImage = new CoverImage.Builder()
-                    .id(rs.getLong(3))
-                    .fileName("test cover image")
-                    .fileSize(100)
-                    .imageFormat("jpg")
-                    .imageSize(300, 200)
-                    .build();
+            Long coverImageId = rs.getLong(3);
+            CoverImage coverImage = getCoverImage(coverImageId);
+            EnrolledStudents enrolledStudents = getEnrolledStudents(id);
 
             Duration duration = new Duration(toLocalDate(rs.getTimestamp(4)), toLocalDate(rs.getTimestamp(5)));
 
-            PaymentPolicy policy;
             long fee = rs.getLong(6);
             int enrollment_limit = rs.getInt(7);
-            // TODO : policy factory
-            if ( enrollment_limit == 0 ) {
-                policy = new FreePaymentPolicy();
-            } else {
-                policy = new PaidPaymentPolicy(fee, enrollment_limit);
-            }
+            PaymentPolicy policy = getPaymentPolicy(fee, enrollment_limit);
 
             return new Session.Builder()
                     .id(rs.getLong(1))
@@ -65,7 +55,7 @@ public class JdbcSessionRepository implements SessionRepository {
                     .duration(duration)
                     .coverImage(coverImage)
                     .paymentPolicy(policy)
-                    .enrolledStudents(null) // TODO : selecdt and add enrolledStudent
+                    .enrolledStudents(enrolledStudents)
                     .status(SessionStatus.valueOf(rs.getString(8)))
                     .createdAt(toLocalDateTime(rs.getTimestamp(9)))
                     .updatedAt(toLocalDateTime(rs.getTimestamp(10)))
@@ -73,6 +63,37 @@ public class JdbcSessionRepository implements SessionRepository {
         };
 
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
+    }
+
+    private CoverImage getCoverImage(Long coverImageId) {
+        if ( coverImageId == null || coverImageId <= 0) {
+            return null;
+        }
+
+        CoverImageRepository coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
+        return coverImageRepository.findById(coverImageId);
+    }
+
+    private EnrolledStudents getEnrolledStudents(Long sessionId) {
+        if ( sessionId == null || sessionId <= 0) {
+            return null;
+        }
+
+        EnrolledStudentsRepository enrolledStudentsRepository = new JdbcEnrolledStudentsRepository(jdbcTemplate);
+        return enrolledStudentsRepository.findById(sessionId);
+
+
+    }
+
+    private static PaymentPolicy getPaymentPolicy(long fee, int enrollment_limit) {
+        PaymentPolicy policy;
+        // TODO : policy factory
+        if ( enrollment_limit == 0 ) {
+            policy = new FreePaymentPolicy();
+        } else {
+            policy = new PaidPaymentPolicy(fee, enrollment_limit);
+        }
+        return policy;
     }
 
     private LocalDate toLocalDate(Timestamp timestamp) {

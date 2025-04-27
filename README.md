@@ -19,12 +19,10 @@
 
 
 ## TODO
-- [ ] DB 테이블 매핑
-  - [ ] Session
-  - [ ] EnrolledStudents
-  - [ ] Duration
-  - [ ] CoverImage
-  - [ ] PaymentPolicy
+- [x] DB 테이블 매핑
+  - [x] Session
+  - [x] EnrolledStudents
+  - [x] CoverImage
   
 ---
 

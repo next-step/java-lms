@@ -31,20 +31,13 @@ public class SessionRepositoryTest {
 
     @Test
     void crud() {
-        CoverImage coverImage = new CoverImage.Builder()
-                .id(1L)
-                .fileName("test cover image")
-                .fileSize(100)
-                .imageFormat("jpg")
-                .imageSize(300, 200)
-                .build();
         Duration duration = new Duration(LocalDate.of(2025, 4, 1), LocalDate.of(2025, 4, 5));
 
         PaymentPolicy policy = new PaidPaymentPolicy(800_000, 10);
         Session session = new Session.Builder()
                 .id(1L)
                 .title("TestSession")
-                .coverImage(coverImage)
+                .coverImage(null)
                 .duration(duration)
                 .paymentPolicy(policy)
                 .enrolledStudents(null)
@@ -53,9 +46,47 @@ public class SessionRepositoryTest {
 
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
+
         Session savedSession = sessionRepository.findById(1L);
         assertThat(session.getTitle()).isEqualTo(savedSession.getTitle());
-        LOGGER.debug("Session: {}", savedSession);
+
+        LOGGER.debug("Session: title={}", savedSession.getTitle());
     }
 
+    @Test
+    void crudWithCoverImage() {
+        CoverImage coverImage = new CoverImage.Builder()
+                .id(1L)
+                .fileName("test cover image")
+                .fileSize(100)
+                .imageFormat("jpg")
+                .imageSize(300, 200)
+                .build();
+        CoverImageRepository coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
+        coverImageRepository.save(coverImage);
+        CoverImage savedCoverImage = coverImageRepository.findById(1L);
+
+        Duration duration = new Duration(LocalDate.of(2025, 4, 1), LocalDate.of(2025, 4, 5));
+
+        PaymentPolicy policy = new PaidPaymentPolicy(800_000, 10);
+        Session session = new Session.Builder()
+                .id(1L)
+                .title("TestSession")
+                .coverImage(savedCoverImage)
+                .duration(duration)
+                .paymentPolicy(policy)
+                .enrolledStudents(null)
+                .status(SessionStatus.PREPARING)
+                .build();
+
+        int count = sessionRepository.save(session);
+        assertThat(count).isEqualTo(1);
+
+        Session savedSession = sessionRepository.findById(1L);
+        assertThat(session.getTitle()).isEqualTo(savedSession.getTitle());
+        assertThat(coverImage.getFileName()).isEqualTo(savedCoverImage.getFileName());
+
+        LOGGER.debug("Session: title={}", savedSession.getTitle());
+        LOGGER.debug("CoverImage: fileName={}", savedSession.getCoverImage().getFileName());
+    }
 }

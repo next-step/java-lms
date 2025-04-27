@@ -74,9 +74,8 @@ create table cover_image (
 );
 
 create table enrolled_students (
-    id bigint not null,
     session_id bigint,
     student_id bigint,
-    primary key(id)
+    primary key(session_id, student_id)
 );
 
