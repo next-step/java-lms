@@ -4,7 +4,8 @@ import lombok.Builder;
 import lombok.Getter;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionId;
-import nextstep.courses.domain.session.SessionStatus;
+import nextstep.courses.domain.session.SessionProgressStatus;
+import nextstep.courses.domain.session.SessionRecruitmentStatus;
 import nextstep.courses.domain.session.SessionType;
 import nextstep.courses.domain.session.enrollment.Enrollment;
 import nextstep.courses.domain.session.enrollment.PaidEnrollment;
@@ -23,7 +24,8 @@ public class SessionDto {
     private final Long courseId;
     private final String title;
     private final SessionType sessionType;
-    private final SessionStatus status;
+    private final SessionProgressStatus progressStatus;
+    private final SessionRecruitmentStatus recruitmentStatus;
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final int maximumEnrollment;
@@ -48,7 +50,8 @@ public class SessionDto {
                 .courseId(sessionId.getCourseId())
                 .title(sessionBasicInfo.getTitle())
                 .sessionType(sessionDetailInfo.getType())
-                .status(enrollment.getStatus())
+                .progressStatus(enrollment.getProgressStatus())
+                .recruitmentStatus(enrollment.getRecruitmentStatus())
                 .startDate(sessionPeriod.getStartDate())
                 .endDate(sessionPeriod.getEndDate())
                 .maximumEnrollment(maxEnrollment)

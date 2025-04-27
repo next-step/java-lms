@@ -72,8 +72,13 @@
   - [x] Enrollment.isFull 리팩토링
   - [x] Enrollment.hasEnrolledUser 제거
 # 4단계
-- [ ] 3단계 피드백
+- [x] 3단계 피드백
   - [x] SessionService 리팩토링
     - [x] UserService.findByUserIds 추가
     - [x] ImageRepository 의존성 제거
   - [x] Enrollment 검증 테스트 도입
+- [x] 강의 진행 상태 / 모집 상태 분리
+- [ ] 강의 커버 이미지 다수 등록
+- [ ] 수강 신청 변경
+  - [ ] 수강 신청 승인
+  - [ ] 수강 신청 취소

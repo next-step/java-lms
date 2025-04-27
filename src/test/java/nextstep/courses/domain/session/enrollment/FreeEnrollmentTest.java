@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session.enrollment;
 
-import nextstep.courses.domain.session.SessionStatus;
+import nextstep.courses.domain.session.SessionProgressStatus;
+import nextstep.courses.domain.session.SessionRecruitmentStatus;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,8 @@ class FreeEnrollmentTest {
     @DisplayName("무료 강의의 수강 신청을 생성한다")
     void createFreeEnrollment() {
         // given
-        Enrollment enrollment = new FreeEnrollment(new ArrayList<>(), SessionStatus.RECRUITING);
+        Enrollment enrollment = new FreeEnrollment(new ArrayList<>(), 
+            SessionProgressStatus.PREPARING, SessionRecruitmentStatus.RECRUITING);
 
         // when & then
         assertThat(enrollment).isNotNull();
@@ -28,7 +30,8 @@ class FreeEnrollmentTest {
     @DisplayName("무료 강의에 수강 신청을 한다")
     void enrollFreeSession() {
         // given
-        Enrollment enrollment = new FreeEnrollment(new ArrayList<>(), SessionStatus.RECRUITING);
+        Enrollment enrollment = new FreeEnrollment(new ArrayList<>(), 
+            SessionProgressStatus.PREPARING, SessionRecruitmentStatus.RECRUITING);
         NsUser anotherUser = new NsUser(2L, "user2", "password", "name", "email");
 
         // when & then
@@ -42,7 +45,8 @@ class FreeEnrollmentTest {
     @DisplayName("이미 수강 신청한 사용자는 다시 수강 신청할 수 없다")
     void validateDuplicateEnrollment() {
         // given
-        Enrollment enrollment = new FreeEnrollment(new ArrayList<>(), SessionStatus.RECRUITING);
+        Enrollment enrollment = new FreeEnrollment(new ArrayList<>(), 
+            SessionProgressStatus.PREPARING, SessionRecruitmentStatus.RECRUITING);
 
         // when
         enrollment.enroll(USER);
@@ -56,7 +60,8 @@ class FreeEnrollmentTest {
     @DisplayName("수강 신청할 사용자가 없으면 예외가 발생한다")
     void validateNullUser() {
         // given
-        Enrollment enrollment = new FreeEnrollment(new ArrayList<>(), SessionStatus.RECRUITING);
+        Enrollment enrollment = new FreeEnrollment(new ArrayList<>(), 
+            SessionProgressStatus.PREPARING, SessionRecruitmentStatus.RECRUITING);
 
         // when & then
         assertThatThrownBy(() -> enrollment.enroll(null))

@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session.enrollment;
 
-import nextstep.courses.domain.session.SessionStatus;
+import nextstep.courses.domain.session.SessionProgressStatus;
+import nextstep.courses.domain.session.SessionRecruitmentStatus;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
@@ -9,19 +10,23 @@ import java.util.List;
 public class FreeEnrollment implements Enrollment {
     private final EnrollmentManager enrollment;
 
-    public FreeEnrollment(List<NsUser> enrolledUsers, SessionStatus status) {
-        this.enrollment = new EnrollmentManager(enrolledUsers, status);
+    public FreeEnrollment(List<NsUser> enrolledUsers, SessionProgressStatus progressStatus, SessionRecruitmentStatus recruitmentStatus) {
+        this.enrollment = new EnrollmentManager(enrolledUsers, progressStatus, recruitmentStatus);
     }
 
     public FreeEnrollment() {
-        this.enrollment = new EnrollmentManager(new ArrayList<>(), SessionStatus.RECRUITING);
+        this.enrollment = new EnrollmentManager(new ArrayList<>(), SessionProgressStatus.PREPARING, SessionRecruitmentStatus.RECRUITING);
     }
 
     public void enroll(NsUser user) {
         enrollment.enroll(user);
     }
 
-    public SessionStatus getStatus() {
-        return enrollment.getStatus();
+    public SessionProgressStatus getProgressStatus() {
+        return enrollment.getProgressStatus();
+    }
+
+    public SessionRecruitmentStatus getRecruitmentStatus() {
+        return enrollment.getRecruitmentStatus();
     }
 }

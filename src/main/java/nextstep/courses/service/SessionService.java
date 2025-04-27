@@ -1,10 +1,7 @@
 package nextstep.courses.service;
 
 import lombok.RequiredArgsConstructor;
-import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionId;
-import nextstep.courses.domain.session.SessionStatus;
-import nextstep.courses.domain.session.SessionType;
+import nextstep.courses.domain.session.*;
 import nextstep.courses.domain.session.enrollment.Enrollment;
 import nextstep.courses.domain.session.enrollment.FreeEnrollment;
 import nextstep.courses.domain.session.enrollment.PaidEnrollment;
@@ -81,13 +78,14 @@ public class SessionService {
         SessionType sessionType = sessionDto.getSessionType();
         List<Long> enrolledUserIds = sessionEnrollmentRepository.findUserIdsBySessionId(sessionDto.getId());
         List<NsUser> enrolledUsers = userService.findEnrolledUsersByIds(enrolledUserIds);
-        SessionStatus sessionStatus = sessionDto.getStatus();
+        SessionProgressStatus progressStatus = sessionDto.getProgressStatus();
+        SessionRecruitmentStatus recruitmentStatus = sessionDto.getRecruitmentStatus();
 
         if (sessionType.isPaid()) {
             int maximumEnrollment = sessionDto.getMaximumEnrollment();
-            return new PaidEnrollment(maximumEnrollment, enrolledUsers, sessionStatus);
+            return new PaidEnrollment(maximumEnrollment, enrolledUsers, progressStatus, recruitmentStatus);
         }
 
-        return new FreeEnrollment(enrolledUsers, sessionStatus);
+        return new FreeEnrollment(enrolledUsers, progressStatus, recruitmentStatus);
     }
 }

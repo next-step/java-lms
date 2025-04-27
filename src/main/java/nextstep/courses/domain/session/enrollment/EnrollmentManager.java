@@ -1,7 +1,8 @@
 package nextstep.courses.domain.session.enrollment;
 
 import lombok.Getter;
-import nextstep.courses.domain.session.SessionStatus;
+import nextstep.courses.domain.session.SessionProgressStatus;
+import nextstep.courses.domain.session.SessionRecruitmentStatus;
 import nextstep.users.domain.NsUser;
 
 import java.util.List;
@@ -9,11 +10,13 @@ import java.util.List;
 @Getter
 public class EnrollmentManager {
     private final List<NsUser> enrolledUsers;
-    private final SessionStatus status;
+    private final SessionProgressStatus progressStatus;
+    private final SessionRecruitmentStatus recruitmentStatus;
 
-    public EnrollmentManager(List<NsUser> enrolledUsers, SessionStatus status) {
+    public EnrollmentManager(List<NsUser> enrolledUsers, SessionProgressStatus progressStatus, SessionRecruitmentStatus recruitmentStatus) {
         this.enrolledUsers = enrolledUsers;
-        this.status = status;
+        this.progressStatus = progressStatus;
+        this.recruitmentStatus = recruitmentStatus;
     }
 
     public void enroll(NsUser user) {
@@ -25,7 +28,7 @@ public class EnrollmentManager {
         if (user == null) {
             throw new IllegalArgumentException("수강 신청할 사용자가 없습니다.");
         }
-        if (!status.isRecruiting()) {
+        if (!recruitmentStatus.isRecruiting()) {
             throw new IllegalStateException("수강 신청이 불가능합니다.");
         }
         if (hasEnrolledUser(user)) {

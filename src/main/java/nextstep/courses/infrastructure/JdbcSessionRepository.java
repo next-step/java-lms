@@ -1,6 +1,7 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.session.SessionStatus;
+import nextstep.courses.domain.session.SessionProgressStatus;
+import nextstep.courses.domain.session.SessionRecruitmentStatus;
 import nextstep.courses.domain.session.SessionType;
 import nextstep.courses.dto.SessionDto;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -21,7 +22,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Optional<SessionDto> findById(Long id) {
-        String sql = "SELECT id, course_id, title, session_type, status, " +
+        String sql = "SELECT id, course_id, title, session_type, progress_status, recruitment_status, " +
                 "start_date, end_date, maximum_enrollment, created_at, updated_at " +
                 "FROM session WHERE id = ?";
         RowMapper<SessionDto> rowMapper = (rs, rowNum) -> SessionDto.builder()
@@ -29,7 +30,8 @@ public class JdbcSessionRepository implements SessionRepository {
                 .courseId(rs.getLong("course_id"))
                 .title(rs.getString("title"))
                 .sessionType(SessionType.valueOf(rs.getString("session_type")))
-                .status(SessionStatus.valueOf(rs.getString("status")))
+                .progressStatus(SessionProgressStatus.valueOf(rs.getString("progress_status")))
+                .recruitmentStatus(SessionRecruitmentStatus.valueOf(rs.getString("recruitment_status")))
                 .startDate(rs.getDate("start_date").toLocalDate())
                 .endDate(rs.getDate("end_date").toLocalDate())
                 .maximumEnrollment(rs.getInt("maximum_enrollment"))
