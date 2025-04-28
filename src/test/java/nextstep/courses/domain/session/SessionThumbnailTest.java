@@ -10,33 +10,34 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class SessionThumbnailTest {
 
     @Test
-    @DisplayName("정상적인 썸네일을 생성한다")
+    @DisplayName("썸네일을 생성한다")
     void create() {
-        // given
-        String fullFileName = "test.jpg";
-        long fileSize = 500 * 1024; // 500KB
-        int width = 300;
-        int height = 200;
-
-        // when
-        SessionThumbnail thumbnail = new SessionThumbnail(fullFileName, fileSize, width, height);
-
-        // then
-        assertThat(thumbnail).isNotNull();
+        SessionThumbnail thumbnail = new SessionThumbnail();
+        thumbnail.addThumbnail("test.jpg", 1024L, 300, 200);
+        
+        assertThat(thumbnail.getThumbnails()).hasSize(1);
     }
 
     @Test
-    @DisplayName("파일 크기가 1MB를 초과하면 예외가 발생한다")
-    void validateFileSize() {
-        // given
-        String fullFileName = "test.jpg";
-        long fileSize = 1024 * 1024 + 1; // 1MB + 1byte
-        int width = 300;
-        int height = 200;
+    @DisplayName("썸네일은 최대 5개까지 등록할 수 있다")
+    void maxThumbnailCount() {
+        SessionThumbnail thumbnail = new SessionThumbnail();
+        for (int i = 0; i < 5; i++) {
+            thumbnail.addThumbnail("test" + i + ".jpg", 1024L, 300, 200);
+        }
 
-        // when & then
-        assertThatThrownBy(() -> new SessionThumbnail(fullFileName, fileSize, width, height))
+        assertThatThrownBy(() -> thumbnail.addThumbnail("test6.jpg", 1024L, 300, 200))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("파일 크기는 1MB를 초과할 수 없습니다.");
+                .hasMessage("썸네일은 최대 5개까지만 등록할 수 있습니다.");
+    }
+
+    @Test
+    @DisplayName("썸네일 파일 크기는 1MB를 초과할 수 없다")
+    void maxFileSize() {
+        SessionThumbnail thumbnail = new SessionThumbnail();
+        
+        assertThatThrownBy(() -> thumbnail.addThumbnail("test.jpg", 1024 * 1024 + 1, 300, 200))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("썸네일 파일 크기는 1MB를 초과할 수 없습니다.");
     }
 } 

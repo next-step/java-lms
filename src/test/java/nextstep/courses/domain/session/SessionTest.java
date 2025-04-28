@@ -10,6 +10,7 @@ import nextstep.courses.domain.session.info.detail.SessionPeriod;
 import nextstep.courses.domain.session.info.detail.SessionPrice;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +23,13 @@ class SessionTest {
     private static final NsUser USER = new NsUser(1L, "user", "password", "name", "email");
     private static final LocalDate START_DATE = LocalDate.now();
     private static final LocalDate END_DATE = START_DATE.plusMonths(1);
-    public static final SessionThumbnail THUMBNAIL = new SessionThumbnail("image.jpg", 1024, 300, 200);
+    public static final SessionThumbnail THUMBNAIL = new SessionThumbnail();
+
+    @BeforeAll
+    static void setUp() {
+        // Any setup code can go here if needed
+        THUMBNAIL.addThumbnail("image.jpg", 1024, 300, 200);
+    }
 
     @Test
     @DisplayName("강의를 생성한다")
@@ -83,7 +90,6 @@ class SessionTest {
                 new FreeEnrollment()
         );
 
-
         session.enroll(USER, null);
         assertThatThrownBy(() -> session.enroll(USER, null))
                 .isInstanceOf(IllegalStateException.class);
@@ -99,6 +105,27 @@ class SessionTest {
         session.enroll(USER, payment);
         assertThatThrownBy(() -> session.enroll(anotherUser, payment))
                 .isInstanceOf(IllegalStateException.class);
+    }
+
+    @Test
+    @DisplayName("세션에 여러 썸네일을 추가할 수 있다")
+    void addThumbnails() {
+        SessionThumbnail thumbnail = new SessionThumbnail();
+        thumbnail.addThumbnail("test1.jpg", 1024L, 300, 200);
+        thumbnail.addThumbnail("test2.jpg", 1024L, 300, 200);
+        
+        SessionPeriod period = new SessionPeriod(START_DATE, END_DATE);
+        SessionPrice price = new SessionPrice(SessionType.PAID, 10000);
+        SessionDetailInfo detailInfo = new SessionDetailInfo(period, price);
+        SessionBasicInfo basicInfo = new SessionBasicInfo("강의 제목", thumbnail);
+        SessionInfo sessionInfo = new SessionInfo(basicInfo, detailInfo);
+        Session session = new Session(
+                new SessionId(1L, 1L),
+                sessionInfo,
+                new FreeEnrollment()
+        );
+        
+        assertThat(session.getInfo().getBasicInfo().getThumbnail().getThumbnails()).hasSize(2);
     }
 
     private static Session getPaidSession(int maxEnrollment) {
