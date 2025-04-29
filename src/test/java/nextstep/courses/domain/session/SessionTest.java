@@ -1,7 +1,7 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.session.enrollment.FreeEnrollment;
-import nextstep.courses.domain.session.enrollment.PaidEnrollment;
+import nextstep.courses.domain.session.enrollment.FreeEnrollments;
+import nextstep.courses.domain.session.enrollment.PaidEnrollments;
 import nextstep.courses.domain.session.info.SessionInfo;
 import nextstep.courses.domain.session.info.basic.SessionBasicInfo;
 import nextstep.courses.domain.session.info.basic.SessionThumbnail;
@@ -42,7 +42,7 @@ class SessionTest {
         Session session = new Session(
                 new SessionId(1L, 1L),
                 sessionInfo,
-                new FreeEnrollment()
+                new FreeEnrollments()
         );
 
         assertThat(session.isPaid()).isTrue();
@@ -59,7 +59,7 @@ class SessionTest {
         Session session = new Session(
                 new SessionId(1L, 1L),
                 sessionInfo,
-                new FreeEnrollment()
+                new FreeEnrollments()
         );
 
         assertThat(session.isPaid()).isFalse();
@@ -87,7 +87,7 @@ class SessionTest {
         Session session = new Session(
                 new SessionId(1L, 1L),
                 sessionInfo,
-                new FreeEnrollment()
+                new FreeEnrollments()
         );
 
         session.enroll(USER, null);
@@ -122,7 +122,7 @@ class SessionTest {
         Session session = new Session(
                 new SessionId(1L, 1L),
                 sessionInfo,
-                new FreeEnrollment()
+                new FreeEnrollments()
         );
         
         assertThat(session.getInfo().getBasicInfo().getThumbnail().getThumbnails()).hasSize(2);
@@ -138,7 +138,7 @@ class SessionTest {
         return new Session(
                 new SessionId(1L, 1L),
                 sessionInfo,
-                new PaidEnrollment(maxEnrollment)
+                new PaidEnrollments(maxEnrollment)
         );
     }
 } 

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.*;
 
-class PaidEnrollmentTest {
+class PaidEnrollmentsTest {
     private static final NsUser USER = new NsUser(1L, "user", "password", "name", "email");
 
     @Test
@@ -20,11 +20,11 @@ class PaidEnrollmentTest {
         int maxEnrollment = 30;
 
         // when
-        Enrollment enrollment = new PaidEnrollment(maxEnrollment, new ArrayList<>(), 
+        Enrollments enrollments = new PaidEnrollments(maxEnrollment, new ArrayList<>(),
             SessionProgressStatus.PREPARING, SessionRecruitmentStatus.RECRUITING);
 
         // then
-        assertThat(enrollment).isNotNull();
+        assertThat(enrollments).isNotNull();
     }
 
     @Test
@@ -34,7 +34,7 @@ class PaidEnrollmentTest {
         int maxEnrollment = 0;
 
         // when & then
-        assertThatThrownBy(() -> new PaidEnrollment(maxEnrollment, new ArrayList<>(), 
+        assertThatThrownBy(() -> new PaidEnrollments(maxEnrollment, new ArrayList<>(),
             SessionProgressStatus.PREPARING, SessionRecruitmentStatus.RECRUITING))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("유료 강의는 최대 수강 인원이 0보다 커야 합니다.");
@@ -44,26 +44,26 @@ class PaidEnrollmentTest {
     @DisplayName("유료 강의에 수강 신청을 한다")
     void enrollPaidSession() {
         // given
-        Enrollment enrollment = new PaidEnrollment(30, new ArrayList<>(), 
+        Enrollments enrollments = new PaidEnrollments(30, new ArrayList<>(),
             SessionProgressStatus.PREPARING, SessionRecruitmentStatus.RECRUITING);
 
         // when & then
-        assertThatCode(() -> enrollment.enroll(USER)).doesNotThrowAnyException();
+        assertThatCode(() -> enrollments.enroll(USER)).doesNotThrowAnyException();
     }
 
     @Test
     @DisplayName("수강 인원이 가득 찬 유료 강의는 수강 신청이 불가능하다")
     void enrollFullPaidSession() {
         // given
-        Enrollment enrollment = new PaidEnrollment(1, new ArrayList<>(), 
+        Enrollments enrollments = new PaidEnrollments(1, new ArrayList<>(),
             SessionProgressStatus.PREPARING, SessionRecruitmentStatus.RECRUITING);
         NsUser anotherUser = new NsUser(2L, "user2", "password", "name", "email");
 
         // when
-        enrollment.enroll(USER);
+        enrollments.enroll(USER);
 
         // then
-        assertThatThrownBy(() -> enrollment.enroll(anotherUser))
+        assertThatThrownBy(() -> enrollments.enroll(anotherUser))
                 .isInstanceOf(IllegalStateException.class);
     }
 
@@ -71,14 +71,14 @@ class PaidEnrollmentTest {
     @DisplayName("이미 수강 신청한 사용자는 다시 수강 신청할 수 없다")
     void validateDuplicateEnrollment() {
         // given
-        Enrollment enrollment = new PaidEnrollment(30, new ArrayList<>(), 
+        Enrollments enrollments = new PaidEnrollments(30, new ArrayList<>(),
             SessionProgressStatus.PREPARING, SessionRecruitmentStatus.RECRUITING);
 
         // when
-        enrollment.enroll(USER);
+        enrollments.enroll(USER);
 
         // then
-        assertThatThrownBy(() -> enrollment.enroll(USER))
+        assertThatThrownBy(() -> enrollments.enroll(USER))
                 .isInstanceOf(IllegalStateException.class);
     }
 
@@ -86,11 +86,11 @@ class PaidEnrollmentTest {
     @DisplayName("수강 신청할 사용자가 없으면 예외가 발생한다")
     void validateNullUser() {
         // given
-        Enrollment enrollment = new PaidEnrollment(30, new ArrayList<>(), 
+        Enrollments enrollments = new PaidEnrollments(30, new ArrayList<>(),
             SessionProgressStatus.PREPARING, SessionRecruitmentStatus.RECRUITING);
 
         // when & then
-        assertThatThrownBy(() -> enrollment.enroll(null))
+        assertThatThrownBy(() -> enrollments.enroll(null))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 } 

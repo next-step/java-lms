@@ -12,3 +12,7 @@
 - 도메인 객체에 ID는 필요 없는 값
 - 하지만 이것을 분리하여 얻는 장점은 크지 않음
   - 참고: [https://mincanit.tistory.com/74](https://mincanit.tistory.com/74)
+## 수강 신청 변경
+### 수강 신청 상태 추가
+- 기존 EnrollmentManager에서는 List<NsUser>를 사용하여 수강신청을 관리
+  - 수강 신청 상태 - 사용자를 묶는 객체 추가

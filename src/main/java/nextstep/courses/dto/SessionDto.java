@@ -7,8 +7,8 @@ import nextstep.courses.domain.session.SessionId;
 import nextstep.courses.domain.session.SessionProgressStatus;
 import nextstep.courses.domain.session.SessionRecruitmentStatus;
 import nextstep.courses.domain.session.SessionType;
-import nextstep.courses.domain.session.enrollment.Enrollment;
-import nextstep.courses.domain.session.enrollment.PaidEnrollment;
+import nextstep.courses.domain.session.enrollment.Enrollments;
+import nextstep.courses.domain.session.enrollment.PaidEnrollments;
 import nextstep.courses.domain.session.info.SessionInfo;
 import nextstep.courses.domain.session.info.basic.SessionBasicInfo;
 import nextstep.courses.domain.session.info.detail.SessionDetailInfo;
@@ -35,7 +35,7 @@ public class SessionDto {
     public static SessionDto of(Session session) {
         SessionId sessionId = session.getId();
         SessionInfo sessionInfo = session.getInfo();
-        Enrollment enrollment = session.getEnrollment();
+        Enrollments enrollments = session.getEnrollments();
 
         SessionBasicInfo sessionBasicInfo = sessionInfo.getBasicInfo();
         SessionDetailInfo sessionDetailInfo = sessionInfo.getDetailInfo();
@@ -43,24 +43,24 @@ public class SessionDto {
         SessionPeriod sessionPeriod = sessionDetailInfo.getPeriod();
         SessionType type = sessionDetailInfo.getType();
 
-        int maxEnrollment = getMaxEnrollment(type, enrollment);
+        int maxEnrollment = getMaxEnrollment(type, enrollments);
 
         return SessionDto.builder()
                 .id(sessionId.getId())
                 .courseId(sessionId.getCourseId())
                 .title(sessionBasicInfo.getTitle())
                 .sessionType(sessionDetailInfo.getType())
-                .progressStatus(enrollment.getProgressStatus())
-                .recruitmentStatus(enrollment.getRecruitmentStatus())
+                .progressStatus(enrollments.getProgressStatus())
+                .recruitmentStatus(enrollments.getRecruitmentStatus())
                 .startDate(sessionPeriod.getStartDate())
                 .endDate(sessionPeriod.getEndDate())
                 .maximumEnrollment(maxEnrollment)
                 .build();
     }
 
-    private static int getMaxEnrollment(SessionType type, Enrollment enrollment) {
+    private static int getMaxEnrollment(SessionType type, Enrollments enrollments) {
         if (type.isPaid()) {
-            return ((PaidEnrollment) enrollment).getMaxEnrollment();
+            return ((PaidEnrollments) enrollments).getMaxEnrollment();
         }
         return 0;
     }

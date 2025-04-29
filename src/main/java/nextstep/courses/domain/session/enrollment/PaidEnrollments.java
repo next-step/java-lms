@@ -8,19 +8,19 @@ import nextstep.users.domain.NsUser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PaidEnrollment implements Enrollment {
+public class PaidEnrollments implements Enrollments {
     private final EnrollmentManager enrollment;
 
     @Getter
     private final int maxEnrollment;
 
-    public PaidEnrollment(int maxEnrollment, List<NsUser> enrolledUsers, SessionProgressStatus progressStatus, SessionRecruitmentStatus recruitmentStatus) {
+    public PaidEnrollments(int maxEnrollment, List<NsUser> enrolledUsers, SessionProgressStatus progressStatus, SessionRecruitmentStatus recruitmentStatus) {
         validateMaxEnrollment(maxEnrollment);
         this.maxEnrollment = maxEnrollment;
         this.enrollment = new EnrollmentManager(enrolledUsers, progressStatus, recruitmentStatus);
     }
 
-    public PaidEnrollment(int maxEnrollment) {
+    public PaidEnrollments(int maxEnrollment) {
         this(maxEnrollment, new ArrayList<>(), SessionProgressStatus.PREPARING, SessionRecruitmentStatus.RECRUITING);
     }
 

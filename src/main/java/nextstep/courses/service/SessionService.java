@@ -2,9 +2,9 @@ package nextstep.courses.service;
 
 import lombok.RequiredArgsConstructor;
 import nextstep.courses.domain.session.*;
-import nextstep.courses.domain.session.enrollment.Enrollment;
-import nextstep.courses.domain.session.enrollment.FreeEnrollment;
-import nextstep.courses.domain.session.enrollment.PaidEnrollment;
+import nextstep.courses.domain.session.enrollment.Enrollments;
+import nextstep.courses.domain.session.enrollment.FreeEnrollments;
+import nextstep.courses.domain.session.enrollment.PaidEnrollments;
 import nextstep.courses.domain.session.info.SessionInfo;
 import nextstep.courses.domain.session.info.basic.SessionBasicInfo;
 import nextstep.courses.domain.session.info.detail.SessionDetailInfo;
@@ -63,9 +63,9 @@ public class SessionService {
         SessionDetailInfo sessionDetailInfo = getSessionDetailInfo(sessionDto);
         SessionInfo sessionInfo = new SessionInfo(sessionBasicInfo, sessionDetailInfo);
 
-        Enrollment enrollment = getEnrollment(sessionDto);
+        Enrollments enrollments = getEnrollment(sessionDto);
         SessionId entityId = new SessionId(sessionDto.getId(), sessionDto.getCourseId());
-        return new Session(entityId, sessionInfo, enrollment);
+        return new Session(entityId, sessionInfo, enrollments);
     }
 
     private SessionDetailInfo getSessionDetailInfo(SessionDto sessionDto) {
@@ -74,7 +74,7 @@ public class SessionService {
         return new SessionDetailInfo(sessionPeriod, sessionPrice);
     }
 
-    private Enrollment getEnrollment(SessionDto sessionDto) {
+    private Enrollments getEnrollment(SessionDto sessionDto) {
         SessionType sessionType = sessionDto.getSessionType();
         List<Long> enrolledUserIds = sessionEnrollmentRepository.findUserIdsBySessionId(sessionDto.getId());
         List<NsUser> enrolledUsers = userService.findEnrolledUsersByIds(enrolledUserIds);
@@ -83,9 +83,9 @@ public class SessionService {
 
         if (sessionType.isPaid()) {
             int maximumEnrollment = sessionDto.getMaximumEnrollment();
-            return new PaidEnrollment(maximumEnrollment, enrolledUsers, progressStatus, recruitmentStatus);
+            return new PaidEnrollments(maximumEnrollment, enrolledUsers, progressStatus, recruitmentStatus);
         }
 
-        return new FreeEnrollment(enrolledUsers, progressStatus, recruitmentStatus);
+        return new FreeEnrollments(enrolledUsers, progressStatus, recruitmentStatus);
     }
 }

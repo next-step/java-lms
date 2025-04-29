@@ -12,32 +12,32 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
-class FreeEnrollmentTest {
+class FreeEnrollmentsTest {
     private static final NsUser USER = new NsUser(1L, "user", "password", "name", "email");
 
     @Test
     @DisplayName("무료 강의의 수강 신청을 생성한다")
     void createFreeEnrollment() {
         // given
-        Enrollment enrollment = new FreeEnrollment(new ArrayList<>(), 
+        Enrollments enrollments = new FreeEnrollments(new ArrayList<>(),
             SessionProgressStatus.PREPARING, SessionRecruitmentStatus.RECRUITING);
 
         // when & then
-        assertThat(enrollment).isNotNull();
+        assertThat(enrollments).isNotNull();
     }
 
     @Test
     @DisplayName("무료 강의에 수강 신청을 한다")
     void enrollFreeSession() {
         // given
-        Enrollment enrollment = new FreeEnrollment(new ArrayList<>(), 
+        Enrollments enrollments = new FreeEnrollments(new ArrayList<>(),
             SessionProgressStatus.PREPARING, SessionRecruitmentStatus.RECRUITING);
         NsUser anotherUser = new NsUser(2L, "user2", "password", "name", "email");
 
         // when & then
         assertThatCode(() -> {
-            enrollment.enroll(USER);
-            enrollment.enroll(anotherUser);
+            enrollments.enroll(USER);
+            enrollments.enroll(anotherUser);
         }).doesNotThrowAnyException();
     }
 
@@ -45,14 +45,14 @@ class FreeEnrollmentTest {
     @DisplayName("이미 수강 신청한 사용자는 다시 수강 신청할 수 없다")
     void validateDuplicateEnrollment() {
         // given
-        Enrollment enrollment = new FreeEnrollment(new ArrayList<>(), 
+        Enrollments enrollments = new FreeEnrollments(new ArrayList<>(),
             SessionProgressStatus.PREPARING, SessionRecruitmentStatus.RECRUITING);
 
         // when
-        enrollment.enroll(USER);
+        enrollments.enroll(USER);
 
         // then
-        assertThatThrownBy(() -> enrollment.enroll(USER))
+        assertThatThrownBy(() -> enrollments.enroll(USER))
                 .isInstanceOf(IllegalStateException.class);
     }
 
@@ -60,11 +60,11 @@ class FreeEnrollmentTest {
     @DisplayName("수강 신청할 사용자가 없으면 예외가 발생한다")
     void validateNullUser() {
         // given
-        Enrollment enrollment = new FreeEnrollment(new ArrayList<>(), 
+        Enrollments enrollments = new FreeEnrollments(new ArrayList<>(),
             SessionProgressStatus.PREPARING, SessionRecruitmentStatus.RECRUITING);
 
         // when & then
-        assertThatThrownBy(() -> enrollment.enroll(null))
+        assertThatThrownBy(() -> enrollments.enroll(null))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 } 

@@ -1,7 +1,7 @@
 package nextstep.courses.domain.session;
 
 import lombok.Getter;
-import nextstep.courses.domain.session.enrollment.Enrollment;
+import nextstep.courses.domain.session.enrollment.Enrollments;
 import nextstep.courses.domain.session.info.SessionInfo;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -10,12 +10,12 @@ import nextstep.users.domain.NsUser;
 public class Session {
     private final SessionId id;
     private final SessionInfo info;
-    private final Enrollment enrollment;
+    private final Enrollments enrollments;
 
-    public Session(SessionId id, SessionInfo info, Enrollment enrollment) {
+    public Session(SessionId id, SessionInfo info, Enrollments enrollments) {
         this.id = id;
         this.info = info;
-        this.enrollment = enrollment;
+        this.enrollments = enrollments;
     }
 
     public void enroll(NsUser user, Payment payment) {
@@ -24,7 +24,7 @@ public class Session {
             info.validatePayment(payment);
         }
         
-        enrollment.enroll(user);
+        enrollments.enroll(user);
     }
 
     public boolean isPaid() {

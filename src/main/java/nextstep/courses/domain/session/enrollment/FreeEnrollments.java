@@ -7,14 +7,14 @@ import nextstep.users.domain.NsUser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FreeEnrollment implements Enrollment {
+public class FreeEnrollments implements Enrollments {
     private final EnrollmentManager enrollment;
 
-    public FreeEnrollment(List<NsUser> enrolledUsers, SessionProgressStatus progressStatus, SessionRecruitmentStatus recruitmentStatus) {
+    public FreeEnrollments(List<NsUser> enrolledUsers, SessionProgressStatus progressStatus, SessionRecruitmentStatus recruitmentStatus) {
         this.enrollment = new EnrollmentManager(enrolledUsers, progressStatus, recruitmentStatus);
     }
 
-    public FreeEnrollment() {
+    public FreeEnrollments() {
         this.enrollment = new EnrollmentManager(new ArrayList<>(), SessionProgressStatus.PREPARING, SessionRecruitmentStatus.RECRUITING);
     }
 

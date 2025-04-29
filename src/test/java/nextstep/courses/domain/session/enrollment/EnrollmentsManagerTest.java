@@ -13,7 +13,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class EnrollmentManagerTest {
+class EnrollmentsManagerTest {
     private List<NsUser> enrolledUsers;
     private NsUser user;
 
