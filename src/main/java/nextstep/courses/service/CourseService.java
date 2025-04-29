@@ -19,9 +19,9 @@ public class CourseService {
         this.sessionService = sessionService;
     }
 
-    public void createCourse(String title, Long creatorId) {
+    public Long createCourse(String title, Long creatorId) {
         Course course = new Course(title, creatorId);
-        courseRepository.save(courseFactory.createCourseEntity(course));
+        return courseRepository.save(courseFactory.createCourseEntity(course));
     }
 
     @Transactional

@@ -56,7 +56,7 @@ public class JdbcSessionRepository implements SessionRepository {
     public SessionEntity findById(Long id) {
         String sessionSql = "SELECT id, created_at, updated_at, deleted, course_id, " +
             "fee, capacity, image_url, image_type, start_date, end_date, type, status, enroll_status " +
-            "FROM session WHERE id = ?";
+            "FROM session WHERE id = ? AND deleted = false";
 
         RowMapper<SessionEntity> rowMapper = (rs, rowNum) -> SessionEntity.builder()
             .id(rs.getLong("id"))
@@ -75,14 +75,15 @@ public class JdbcSessionRepository implements SessionRepository {
             .enrollStatus(rs.getString("enroll_status"))
             .build();
 
-        return jdbcTemplate.queryForObject(sessionSql, rowMapper, id);
+        List<SessionEntity> results = jdbcTemplate.query(sessionSql, rowMapper, id);
+        return results.isEmpty() ? null : results.get(0);
     }
 
     @Override
     public List<SessionEntity> findAllByCourseId(Long courseId) {
         String sql = "SELECT id, created_at, updated_at, deleted, course_id, " +
             "fee, capacity, image_url, image_type, start_date, end_date, type, status, enroll_status " +
-            "FROM session WHERE course_id = ?";
+            "FROM session WHERE course_id = ? AND deleted = false";
 
         RowMapper<SessionEntity> rowMapper = (rs, rowNum) -> SessionEntity.builder()
             .id(rs.getLong("id"))

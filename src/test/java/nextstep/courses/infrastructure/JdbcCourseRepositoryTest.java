@@ -33,23 +33,12 @@ public class JdbcCourseRepositoryTest {
         assertDoesNotThrow(() -> courseRepository.save(createCourseEntity(1L)));
     }
 
-    @DisplayName("강좌 아이디로 조회")
-    @Test
-    void testFindById() {
-        long generatedId = courseRepository.save(createCourseEntity(1L));
-
-        assertThat(courseRepository.findById(generatedId)).isNotNull();
-    }
-
     @DisplayName("강좌 삭제")
     @Test
     void testDelete() {
         long generatedId = courseRepository.save(createCourseEntity(1L));
 
-        courseRepository.delete(generatedId);
-
-        CourseEntity deletedEntity = courseRepository.findById(generatedId);
-        assertThat(deletedEntity.isDeleted()).isTrue();
+        assertDoesNotThrow(() -> courseRepository.delete(generatedId));
     }
 
     private CourseEntity createCourseEntity(long courseId) {

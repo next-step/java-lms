@@ -3,7 +3,6 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.CourseRepository;
 import nextstep.courses.entity.CourseEntity;
 import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -41,21 +40,6 @@ public class JdbcCourseRepository implements CourseRepository {
     }
 
     @Override
-    public CourseEntity findById(Long id) {
-        String sql = "select id, title, deleted, creator_id, created_at, updated_at from course where id = ?";
-        RowMapper<CourseEntity> rowMapper = (rs, rowNum) -> CourseEntity.builder()
-            .id(rs.getLong(1))
-            .title(rs.getString(2))
-            .deleted(rs.getBoolean(3))
-            .creatorId(rs.getLong(4))
-            .createdAt(toLocalDateTime(rs.getTimestamp(5)))
-            .updatedAt(toLocalDateTime(rs.getTimestamp(6)))
-            .build();
-
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
-    }
-
-    @Override
     public void delete(Long id) {
         String sql = "UPDATE course SET deleted = ?, updated_at = ? WHERE id = ?";
 
@@ -73,12 +57,5 @@ public class JdbcCourseRepository implements CourseRepository {
             return null;
         }
         return Timestamp.valueOf(localDateTime);
-    }
-
-    private LocalDateTime toLocalDateTime(Timestamp timestamp) {
-        if (timestamp == null) {
-            return null;
-        }
-        return timestamp.toLocalDateTime();
     }
 }

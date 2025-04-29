@@ -47,7 +47,7 @@ public class JdbcSessionImageRepository implements SessionImageRepository {
     @Override
     public SessionImageEntity findById(Long sessionImageId) {
         String sql = "SELECT id, created_at, updated_at, deleted, image_url, image_type, session_id " +
-            "FROM session_image WHERE id = ?";
+            "FROM session_image WHERE id = ? AND deleted = false";
         RowMapper<SessionImageEntity> rowMapper = (rs, rowNum) -> SessionImageEntity.builder()
             .id(rs.getLong("id"))
             .createdAt(toLocalDateTime(rs.getTimestamp("created_at")))
@@ -64,7 +64,7 @@ public class JdbcSessionImageRepository implements SessionImageRepository {
     @Override
     public List<SessionImageEntity> findAllBySessionId(Long sessionId) {
         String sql = "SELECT id, created_at, updated_at, deleted, image_url, image_type, session_id " +
-            "FROM session_image WHERE session_id = ?";
+            "FROM session_image WHERE session_id = ? AND deleted = false";
 
         return jdbcTemplate.query(sql, new Object[]{sessionId}, (rs, rowNum) ->
             SessionImageEntity.builder()

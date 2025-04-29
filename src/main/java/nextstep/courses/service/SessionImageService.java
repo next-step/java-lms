@@ -23,9 +23,9 @@ public class SessionImageService {
         this.sessionImageFactory = sessionImageFactory;
     }
 
-    public void createSessionImage(long sessionId, String imageUrl, String imageType) throws IOException {
+    public Long createSessionImage(long sessionId, String imageUrl, String imageType) throws IOException {
         SessionImage sessionImage = sessionImageFactory.createSessionImage(imageUrl, imageType);
-        sessionImageRepository.save(sessionImageFactory.createImageEntity(sessionImage, sessionId));
+        return sessionImageRepository.save(sessionImageFactory.createImageEntity(sessionImage, sessionId));
     }
 
     public SessionImages getSessionImages(long sessionId) throws IOException {

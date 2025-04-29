@@ -29,9 +29,9 @@ public class SessionService {
         this.sessionImageService = sessionImageService;
     }
 
-    public void saveSession(Long courseId, SessionConstraint constraint, SessionDescriptor descriptor) {
+    public Long saveSession(Long courseId, SessionConstraint constraint, SessionDescriptor descriptor) {
         Session newSession = new Session(constraint, descriptor);
-        sessionRepository.save(sessionFactory.createSessionEntity(newSession, courseId));
+        return sessionRepository.save(sessionFactory.createSessionEntity(newSession, courseId));
     }
 
     public Session createSession(long sessionId) throws IOException {

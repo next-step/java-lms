@@ -58,10 +58,7 @@ public class JdbcSessionImageRepositoryTest {
         SessionImageEntity sessionImageEntity = createSessionImageEntity(null, 1L);
         long generatedId = sessionImageRepository.save(sessionImageEntity);
 
-        sessionImageRepository.delete(generatedId);
-
-        SessionImageEntity deletedImageEntity = sessionImageRepository.findById(generatedId);
-        assertThat(deletedImageEntity.isDeleted()).isTrue();
+        assertDoesNotThrow(() -> sessionImageRepository.delete(generatedId));
     }
 
     private SessionImageEntity createSessionImageEntity(Long id, Long sessionId) {

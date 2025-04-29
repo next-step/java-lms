@@ -14,7 +14,7 @@ class CourseServiceTest {
     @DisplayName("course 만들기")
     @Test
     void testCreateCourse() {
-        TestCourseRepository courseRepository = new TestCourseRepository(1L, null);
+        TestCourseRepository courseRepository = new TestCourseRepository(1L);
         CourseService courseService = new CourseService(
             courseRepository,
             new CourseFactory(),
@@ -29,7 +29,7 @@ class CourseServiceTest {
     @DisplayName("course 삭제")
     @Test
     void testDeleteCourse() {
-        TestCourseRepository courseRepository = new TestCourseRepository(1L, null);
+        TestCourseRepository courseRepository = new TestCourseRepository(1L);
         TestSessionService sessionService = new TestSessionService();
         CourseService courseService = new CourseService(courseRepository, new CourseFactory(), sessionService);
 

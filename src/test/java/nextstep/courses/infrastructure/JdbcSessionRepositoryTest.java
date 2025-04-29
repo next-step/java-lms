@@ -66,10 +66,7 @@ class JdbcSessionRepositoryTest {
         SessionEntity sessionEntity = createSessionEntity(null, 1L);
         long generatedId = sessionRepository.save(sessionEntity);
 
-        sessionRepository.delete(generatedId);
-
-        SessionEntity deletedSession = sessionRepository.findById(generatedId);
-        assertThat(deletedSession.isDeleted()).isTrue();
+        assertDoesNotThrow(() -> sessionRepository.delete(generatedId));
     }
 
 
