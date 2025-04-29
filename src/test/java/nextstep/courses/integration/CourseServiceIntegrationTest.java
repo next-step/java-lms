@@ -1,6 +1,5 @@
 package nextstep.courses.integration;
 
-import nextstep.courses.domain.CourseRepository;
 import nextstep.courses.service.CourseService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +13,6 @@ public class CourseServiceIntegrationTest {
 
     @Autowired
     private CourseService courseService;
-
-    @Autowired
-    private CourseRepository courseRepository;
 
     @Transactional
     @Test

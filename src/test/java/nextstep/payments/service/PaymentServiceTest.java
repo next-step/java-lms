@@ -36,7 +36,7 @@ class PaymentServiceTest {
         });
         TestSessionService sessionService = new TestSessionService() {
             @Override
-            public Session createSession(long sessionId) {
+            public Session getSession(long sessionId) {
                 return new Session();
             }
         };

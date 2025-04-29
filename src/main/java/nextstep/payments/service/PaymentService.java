@@ -43,7 +43,7 @@ public class PaymentService {
 
     public boolean enroll(String newPaymentId, long sessionId) throws IOException {
         PaymentEntityUserMap paymentEntityUserMap = getPaymentEntityUserMapForSession(sessionId);
-        Session session = sessionService.createSession(sessionId);
+        Session session = sessionService.getSession(sessionId);
         Payments payments = paymentFactory.createPayments(session, paymentEntityUserMap);
         Payment newPayment = payment(newPaymentId);
 

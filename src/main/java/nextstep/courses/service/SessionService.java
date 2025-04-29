@@ -29,16 +29,16 @@ public class SessionService {
         this.sessionImageService = sessionImageService;
     }
 
-    public Long saveSession(Long courseId, SessionConstraint constraint, SessionDescriptor descriptor) {
-        Session newSession = new Session(constraint, descriptor);
-        return sessionRepository.save(sessionFactory.createSessionEntity(newSession, courseId));
-    }
-
-    public Session createSession(long sessionId) throws IOException {
+    public Session getSession(long sessionId) throws IOException {
         return sessionFactory.createSession(
             sessionRepository.findById(sessionId),
             sessionImageService.getSessionImages(sessionId)
         );
+    }
+
+    public Long saveSession(Long courseId, SessionConstraint constraint, SessionDescriptor descriptor) {
+        Session newSession = new Session(constraint, descriptor);
+        return sessionRepository.save(sessionFactory.createSessionEntity(newSession, courseId));
     }
 
     @Transactional

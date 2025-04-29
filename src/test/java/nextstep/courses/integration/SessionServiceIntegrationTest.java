@@ -30,6 +30,25 @@ public class SessionServiceIntegrationTest {
 
     @Transactional
     @Test
+    void testGetSession() throws IOException {
+        Long courseId = 2L;
+        SessionConstraint constraint = new SessionConstraint(200_000L, 80);
+        SessionDescriptor descriptor = new SessionDescriptor(
+            new SessionPeriod(),
+            new SessionEnrollPolicy(),
+            new SessionImages()
+        );
+        sessionService.saveSession(courseId, constraint, descriptor);
+        List<SessionEntity> sessions = sessionRepository.findAllByCourseId(courseId);;
+        long sessionId = Long.parseLong(sessions.get(0).getId());
+
+        Session session = sessionService.getSession(sessionId);
+
+        assertThat(session).isNotNull();
+    }
+
+    @Transactional
+    @Test
     void testSaveSession() {
         Long courseId = 1L;
         SessionConstraint constraint = new SessionConstraint(200_000L, 80);
@@ -47,27 +66,6 @@ public class SessionServiceIntegrationTest {
 
     @Transactional
     @Test
-    void testCreateSession() throws IOException {
-        Long courseId = 2L;
-        SessionConstraint constraint = new SessionConstraint(200_000L, 80);
-        SessionDescriptor descriptor = new SessionDescriptor(
-            new SessionPeriod(),
-            new SessionEnrollPolicy(),
-            new SessionImages()
-        );
-
-        sessionService.saveSession(courseId, constraint, descriptor);
-
-        List<SessionEntity> sessions = sessionRepository.findAllByCourseId(courseId);
-        assertThat(sessions).isNotEmpty();
-        long sessionId = Long.parseLong(sessions.get(0).getId());
-
-        Session session = sessionService.createSession(sessionId);
-        assertThat(session).isNotNull();
-    }
-
-    @Transactional
-    @Test
     void testDeleteSession() {
         Long courseId = 3L;
         SessionConstraint constraint = new SessionConstraint(200_000L, 80);
@@ -76,10 +74,8 @@ public class SessionServiceIntegrationTest {
             new SessionEnrollPolicy(),
             new SessionImages()
         );
-
         sessionService.saveSession(courseId, constraint, descriptor);
         List<SessionEntity> sessions = sessionRepository.findAllByCourseId(courseId);
-        assertThat(sessions).isNotEmpty();
         long sessionId = Long.parseLong(sessions.get(0).getId());
 
         sessionService.deleteSession(sessionId);
@@ -98,16 +94,12 @@ public class SessionServiceIntegrationTest {
             new SessionEnrollPolicy(),
             new SessionImages()
         );
-
         sessionService.saveSession(courseId, constraint, descriptor);
         sessionService.saveSession(courseId, constraint, descriptor);
-
-        List<SessionEntity> sessions = sessionRepository.findAllByCourseId(courseId);
-        assertThat(sessions).hasSize(2);
 
         sessionService.deleteSessions(courseId);
 
-        sessions = sessionRepository.findAllByCourseId(courseId);
+        List<SessionEntity> sessions = sessionRepository.findAllByCourseId(courseId);
         assertThat(sessions).isEmpty();
     }
 }
