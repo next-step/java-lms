@@ -22,83 +22,19 @@ public class Session {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public static class Builder {
-        private Long id;
-        private String title;
-        private CoverImage coverImage;
-        private Duration duration;
-
-        private PaymentPolicy paymentPolicy;
-        private EnrolledStudents enrolledStudents;
-
-        private SessionStatus status;
-
-        private LocalDateTime createdAt;
-        private LocalDateTime updatedAt;
-
-        public Builder id(Long id) {
-            this.id = id;
-            return this;
-        }
-        public Builder title(String title) {
-            this.title = title;
-            return this;
-        }
-        public Builder coverImage(CoverImage coverImage) {
-            this.coverImage = coverImage;
-            return this;
-        }
-        public Builder duration(Duration duration) {
-            this.duration = duration;
-            return this;
-        }
-        public Builder paymentPolicy(PaymentPolicy paymentPolicy) {
-            this.paymentPolicy = paymentPolicy;
-            return this;
-        }
-        public Builder enrolledStudents(EnrolledStudents enrolledStudents) {
-            this.enrolledStudents = enrolledStudents;
-            return this;
-        }
-        public Builder status(SessionStatus status) {
-            this.status = status;
-            return this;
-        }
-        public Builder createdAt(LocalDateTime createdAt) {
-            this.createdAt = createdAt;
-            return this;
-        }
-        public Builder updatedAt(LocalDateTime updatedAt) {
-            this.updatedAt = updatedAt;
-            return this;
-        }
-        public Session build() {
-            if (this.enrolledStudents == null) {
-                this.enrolledStudents = new EnrolledStudents();
-            }
-            if (this.createdAt == null) {
-                this.createdAt = LocalDateTime.now();
-            }
-            if (this.updatedAt == null) {
-                this.updatedAt = LocalDateTime.now();
-            }
-
-            return new Session(this);
-        }
+    Session(Long id, String title, CoverImage coverImage, Duration duration,
+            PaymentPolicy paymentPolicy, EnrolledStudents enrolledStudents,
+            SessionStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.title = title;
+        this.coverImage = coverImage;
+        this.duration = duration;
+        this.paymentPolicy = paymentPolicy;
+        this.enrolledStudents = enrolledStudents;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
-
-    private Session(Builder builder) {
-        this.id = builder.id;
-        this.title = builder.title;
-        this.duration = builder.duration;
-        this.coverImage = builder.coverImage;
-        this.paymentPolicy = builder.paymentPolicy;
-        this.enrolledStudents = builder.enrolledStudents;
-        this.status = builder.status;
-        this.createdAt = builder.createdAt;
-        this.updatedAt = builder.updatedAt;
-    }
-
     public String title() {
         return title;
     }

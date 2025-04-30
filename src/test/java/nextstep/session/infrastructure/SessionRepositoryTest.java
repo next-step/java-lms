@@ -34,7 +34,7 @@ public class SessionRepositoryTest {
         Duration duration = new Duration(LocalDate.of(2025, 4, 1), LocalDate.of(2025, 4, 5));
 
         PaymentPolicy policy = new PaidPaymentPolicy(800_000, 10);
-        Session session = new Session.Builder()
+        Session session = new SessionBuilder()
                 .id(1L)
                 .title("TestSession")
                 .coverImage(null)
@@ -69,7 +69,7 @@ public class SessionRepositoryTest {
         Duration duration = new Duration(LocalDate.of(2025, 4, 1), LocalDate.of(2025, 4, 5));
 
         PaymentPolicy policy = new PaidPaymentPolicy(800_000, 10);
-        Session session = new Session.Builder()
+        Session session = new SessionBuilder()
                 .id(1L)
                 .title("TestSession")
                 .coverImage(savedCoverImage)

@@ -36,7 +36,7 @@ class SessionTest {
     @DisplayName("정상적인 유료 강의 생성")
     void createPaidSession_success() {
         PaymentPolicy paidPaymentPolicy = new PaidPaymentPolicy( 800_000L, 1);
-        Session paidSession = new Session.Builder()
+        Session paidSession = new SessionBuilder()
                 .title("TDD, 클린코드 with Java 20기")
                 .coverImage(coverImage)
                 .duration(duration)
@@ -54,7 +54,7 @@ class SessionTest {
     @DisplayName("정상적인 무료 강의 생성")
     void createFreeSession_success() {
         PaymentPolicy freePaymentPolicy = new FreePaymentPolicy();
-        Session freeSession = new Session.Builder()
+        Session freeSession = new SessionBuilder()
                 .title("무료 강의")
                 .coverImage(coverImage)
                 .duration(duration)
@@ -72,7 +72,7 @@ class SessionTest {
     @DisplayName("유료 강의를 수강하면 Payment 객체를 반환한다.")
     void paidSession_enrollReturnPayment() {
         PaymentPolicy paidPaymentPolicy = new PaidPaymentPolicy( 800_000L, 1);
-        Session paidSession = new Session.Builder()
+        Session paidSession = new SessionBuilder()
                 .title("TDD, 클린코드 with Java 20기")
                 .coverImage(coverImage)
                 .duration(duration)

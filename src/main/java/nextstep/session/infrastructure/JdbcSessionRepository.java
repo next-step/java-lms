@@ -49,7 +49,7 @@ public class JdbcSessionRepository implements SessionRepository {
             int enrollment_limit = rs.getInt(7);
             PaymentPolicy policy = getPaymentPolicy(fee, enrollment_limit);
 
-            return new Session.Builder()
+            return new SessionBuilder()
                     .id(rs.getLong(1))
                     .title(rs.getString(2))
                     .duration(duration)
