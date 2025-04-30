@@ -13,15 +13,9 @@ class PaidPaymentPolicyTest {
     @Test
     @DisplayName("유효한 수강료와 최대 수강 인원으로 PaidPaymentPolicy를 생성할 수 있다")
     void createPaidPaymentPolicy() {
-        // given
-        long fee = 10000L;
-        int enrollmentLimit = 30;
+        PaidPaymentPolicy policy = new PaidPaymentPolicy(10000L, 30);
 
-        // when
-        PaidPaymentPolicy policy = new PaidPaymentPolicy(fee, enrollmentLimit);
-
-        // then
-        assertThat(policy.enrollmentLimit()).isEqualTo(enrollmentLimit);
+        assertThat(policy.enrollmentLimit()).isEqualTo(30);
     }
 
     @ParameterizedTest
@@ -51,51 +45,41 @@ class PaidPaymentPolicyTest {
     @Test
     @DisplayName("현재 수강생 수가 최대 수강 인원보다 작으면 수강 신청이 가능하다")
     void canEnrollWhenStudentCountIsLessThanLimit() {
-        // given
         PaidPaymentPolicy policy = new PaidPaymentPolicy(10000L, 30);
         int currentStudentCount = 25;
 
-        // when
         boolean result = policy.canEnroll(currentStudentCount);
 
-        // then
         assertThat(result).isTrue();
     }
 
     @Test
     @DisplayName("현재 수강생 수가 최대 수강 인원과 같으면 수강 신청이 불가능하다")
     void cannotEnrollWhenStudentCountEqualsLimit() {
-        // given
         PaidPaymentPolicy policy = new PaidPaymentPolicy(10000L, 30);
         int currentStudentCount = 30;
 
-        // when
         boolean result = policy.canEnroll(currentStudentCount);
 
-        // then
         assertThat(result).isFalse();
     }
 
     @Test
     @DisplayName("결제 금액이 수강료와 일치하면 검증을 통과한다")
     void validateEnrollmentWhenAmountMatchesFee() {
-        // given
         long fee = 10000L;
         PaidPaymentPolicy policy = new PaidPaymentPolicy(fee, 30);
 
-        // when & then
         policy.validateEnrollment(fee);
     }
 
     @Test
     @DisplayName("결제 금액이 수강료와 일치하지 않으면 예외가 발생한다")
     void throwExceptionWhenAmountDoesNotMatchFee() {
-        // given
         long fee = 10000L;
         long differentAmount = 15000L;
         PaidPaymentPolicy policy = new PaidPaymentPolicy(fee, 30);
 
-        // when & then
         assertThatThrownBy(() -> policy.validateEnrollment(differentAmount))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("결제 금액이 수강료와 일치하지 않습니다");

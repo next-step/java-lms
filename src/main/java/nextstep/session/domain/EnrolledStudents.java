@@ -3,14 +3,17 @@ package nextstep.session.domain;
 import nextstep.payments.domain.PaymentPolicy;
 import nextstep.users.domain.NsUser;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EnrolledStudents {
 
     private Long sessionId;
+    List<Long> students;
 
     public EnrolledStudents() {
+        this(0L, new ArrayList<>());
     }
 
     public EnrolledStudents(Long sessionId, List<Long> students) {
@@ -18,7 +21,6 @@ public class EnrolledStudents {
         this.students = students;
     }
 
-    List<Long> students = new ArrayList<>();
 
     public void add(PaymentPolicy policy, NsUser user) {
         if ( ! policy.canEnroll(count()) ) {
