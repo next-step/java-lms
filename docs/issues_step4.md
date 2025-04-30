@@ -16,3 +16,6 @@
 ### 수강 신청 상태 추가
 - 기존 EnrollmentManager에서는 List<NsUser>를 사용하여 수강신청을 관리
   - 수강 신청 상태 - 사용자를 묶는 객체 추가
+    - EnrollmentManager는 수강 신청 상태와 관계 없이 List<NsUser> 도 필요
+    - List<NsUser> 대신 Map<NsUser, EnrollmentStatus>를 갖도록 변경하자
+    - 이러면 별도의 Enrollment 객체는 필요하지 않음

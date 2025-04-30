@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session.enrollment;
 
 public enum EnrollmentStatus {
+    PENDING_APPROVAL("승인대기"),
     ENROLLED("수강신청"),
     WAITING("대기"),
     CANCELLED("취소");
@@ -9,5 +10,9 @@ public enum EnrollmentStatus {
 
     EnrollmentStatus(String description) {
         this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

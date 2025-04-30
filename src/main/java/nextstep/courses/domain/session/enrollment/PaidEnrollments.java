@@ -10,6 +10,7 @@ import java.util.List;
 
 public class PaidEnrollments implements Enrollments {
     private final EnrollmentManager enrollment;
+    private final EnrollmentStatusManager statusManager;
 
     @Getter
     private final int maxEnrollment;
@@ -18,6 +19,13 @@ public class PaidEnrollments implements Enrollments {
         validateMaxEnrollment(maxEnrollment);
         this.maxEnrollment = maxEnrollment;
         this.enrollment = new EnrollmentManager(enrolledUsers, progressStatus, recruitmentStatus);
+        this.statusManager = new EnrollmentStatusManager();
+
+        // Initialize status manager with existing enrolled users
+        for (NsUser user : enrolledUsers) {
+            statusManager.addEnrollment(user);
+            statusManager.approveEnrollment(user);
+        }
     }
 
     public PaidEnrollments(int maxEnrollment) {
@@ -29,6 +37,17 @@ public class PaidEnrollments implements Enrollments {
             throw new IllegalStateException("수강 인원이 가득 찼습니다.");
         }
         enrollment.enroll(user);
+        statusManager.addEnrollment(user);
+    }
+
+    @Override
+    public void approve(NsUser user) {
+        statusManager.approveEnrollment(user);
+    }
+
+    @Override
+    public void cancel(NsUser user) {
+        statusManager.cancelEnrollment(user);
     }
 
     public SessionProgressStatus getProgressStatus() {
@@ -39,8 +58,23 @@ public class PaidEnrollments implements Enrollments {
         return enrollment.getRecruitmentStatus();
     }
 
+    @Override
+    public List<NsUser> getEnrolledUsers() {
+        return statusManager.getEnrolledUsers();
+    }
+
+    @Override
+    public List<NsUser> getPendingApprovalUsers() {
+        return statusManager.getPendingApprovalUsers();
+    }
+
+    @Override
+    public EnrollmentStatus getEnrollmentStatus(NsUser user) {
+        return statusManager.getEnrollmentStatus(user);
+    }
+
     private boolean isFull() {
-        return enrollment.getEnrolledUsers().size() >= maxEnrollment;
+        return statusManager.getEnrolledUsers().size() >= maxEnrollment;
     }
 
     private void validateMaxEnrollment(int maxEnrollment) {
