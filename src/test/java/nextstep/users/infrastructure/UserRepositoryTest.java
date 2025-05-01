@@ -38,7 +38,7 @@ public class UserRepositoryTest {
     @DisplayName("유저 아이디로 조회")
     @Test
     void findByUserId() {
-        NsUser nsUser = new NsUser("1", "javajigi", "password", "name", "javajigi@slipp.net");
+        NsUser nsUser = new NsUser("1", "password", "javajigi", "javajigi@slipp.net", "강사");
         userRepository.save(nsUser);
         assertThat(userRepository.findByUserId("1")).isNotNull();
     }
@@ -46,9 +46,9 @@ public class UserRepositoryTest {
     @DisplayName("여러 유저 아이디로 조회")
     @Test
     void findUsersByIds() {
-        NsUser nsUser1 = new NsUser("1", "user1", "password", "name1", "user1@example.com");
-        NsUser nsUser2 = new NsUser("2", "user2", "password", "name2", "user2@example.com");
-        NsUser nsUser3 = new NsUser("3", "user3", "password", "name3", "user3@example.com");
+        NsUser nsUser1 = new NsUser("1", "password", "user1", "user1@example.com", "강사");
+        NsUser nsUser2 = new NsUser("2", "password", "user2", "user2@example.com", "강사");
+        NsUser nsUser3 = new NsUser("3", "password", "user3", "user3@example.com", "강사");
 
         userRepository.save(nsUser1);
         userRepository.save(nsUser2);
