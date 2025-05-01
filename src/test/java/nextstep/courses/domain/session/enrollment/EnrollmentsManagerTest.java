@@ -7,19 +7,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class EnrollmentsManagerTest {
-    private List<NsUser> enrolledUsers;
     private NsUser user;
 
     @BeforeEach
     void setUp() {
-        enrolledUsers = new ArrayList<>();
         user = new NsUser(1L, "user", "password", "name", "user@email.com");
     }
 
@@ -28,7 +23,6 @@ class EnrollmentsManagerTest {
     void enroll_success_when_recruiting() {
         // given
         EnrollmentManager enrollmentManager = new EnrollmentManager(
-            enrolledUsers,
             SessionProgressStatus.PREPARING,
             SessionRecruitmentStatus.RECRUITING
         );
@@ -37,8 +31,10 @@ class EnrollmentsManagerTest {
         enrollmentManager.enroll(user);
 
         // then
-        assertThat(enrolledUsers).hasSize(1);
-        assertThat(enrolledUsers.get(0)).isEqualTo(user);
+        assertThat(enrollmentManager.getEnrolledUsers()).isEmpty();
+        assertThat(enrollmentManager.getPendingApprovalUsers()).hasSize(1);
+        assertThat(enrollmentManager.getPendingApprovalUsers().get(0)).isEqualTo(user);
+        assertThat(enrollmentManager.getEnrollmentStatus(user)).isEqualTo(EnrollmentStatus.PENDING_APPROVAL);
     }
 
     @Test
@@ -46,7 +42,6 @@ class EnrollmentsManagerTest {
     void enroll_fail_when_not_recruiting() {
         // given
         EnrollmentManager enrollmentManager = new EnrollmentManager(
-            enrolledUsers,
             SessionProgressStatus.PREPARING,
             SessionRecruitmentStatus.NOT_RECRUITING
         );
@@ -56,4 +51,4 @@ class EnrollmentsManagerTest {
             .isInstanceOf(IllegalStateException.class)
             .hasMessage("수강 신청이 불가능합니다.");
     }
-} 
+}

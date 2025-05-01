@@ -9,8 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PaidEnrollments implements Enrollments {
-    private final EnrollmentManager enrollment;
-    private final EnrollmentStatusManager statusManager;
+    private final EnrollmentManager statusManager;
 
     @Getter
     private final int maxEnrollment;
@@ -18,8 +17,7 @@ public class PaidEnrollments implements Enrollments {
     public PaidEnrollments(int maxEnrollment, List<NsUser> enrolledUsers, SessionProgressStatus progressStatus, SessionRecruitmentStatus recruitmentStatus) {
         validateMaxEnrollment(maxEnrollment);
         this.maxEnrollment = maxEnrollment;
-        this.enrollment = new EnrollmentManager(enrolledUsers, progressStatus, recruitmentStatus);
-        this.statusManager = new EnrollmentStatusManager();
+        this.statusManager = new EnrollmentManager(progressStatus, recruitmentStatus);
 
         // Initialize status manager with existing enrolled users
         for (NsUser user : enrolledUsers) {
@@ -36,8 +34,7 @@ public class PaidEnrollments implements Enrollments {
         if (isFull()) {
             throw new IllegalStateException("수강 인원이 가득 찼습니다.");
         }
-        enrollment.enroll(user);
-        statusManager.addEnrollment(user);
+        statusManager.enroll(user);
     }
 
     @Override
@@ -51,11 +48,11 @@ public class PaidEnrollments implements Enrollments {
     }
 
     public SessionProgressStatus getProgressStatus() {
-        return enrollment.getProgressStatus();
+        return statusManager.getProgressStatus();
     }
 
     public SessionRecruitmentStatus getRecruitmentStatus() {
-        return enrollment.getRecruitmentStatus();
+        return statusManager.getRecruitmentStatus();
     }
 
     @Override

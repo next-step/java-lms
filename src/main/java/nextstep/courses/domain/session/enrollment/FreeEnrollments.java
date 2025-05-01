@@ -4,16 +4,13 @@ import nextstep.courses.domain.session.SessionProgressStatus;
 import nextstep.courses.domain.session.SessionRecruitmentStatus;
 import nextstep.users.domain.NsUser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FreeEnrollments implements Enrollments {
-    private final EnrollmentManager enrollment;
-    private final EnrollmentStatusManager statusManager;
+    private final EnrollmentManager statusManager;
 
     public FreeEnrollments(List<NsUser> enrolledUsers, SessionProgressStatus progressStatus, SessionRecruitmentStatus recruitmentStatus) {
-        this.enrollment = new EnrollmentManager(enrolledUsers, progressStatus, recruitmentStatus);
-        this.statusManager = new EnrollmentStatusManager();
+        this.statusManager = new EnrollmentManager(progressStatus, recruitmentStatus);
 
         // Initialize status manager with existing enrolled users
         for (NsUser user : enrolledUsers) {
@@ -23,13 +20,11 @@ public class FreeEnrollments implements Enrollments {
     }
 
     public FreeEnrollments() {
-        this.enrollment = new EnrollmentManager(new ArrayList<>(), SessionProgressStatus.PREPARING, SessionRecruitmentStatus.RECRUITING);
-        this.statusManager = new EnrollmentStatusManager();
+        this.statusManager = new EnrollmentManager();
     }
 
     public void enroll(NsUser user) {
-        enrollment.enroll(user);
-        statusManager.addEnrollment(user);
+        statusManager.enroll(user);
     }
 
     @Override
@@ -43,11 +38,11 @@ public class FreeEnrollments implements Enrollments {
     }
 
     public SessionProgressStatus getProgressStatus() {
-        return enrollment.getProgressStatus();
+        return statusManager.getProgressStatus();
     }
 
     public SessionRecruitmentStatus getRecruitmentStatus() {
-        return enrollment.getRecruitmentStatus();
+        return statusManager.getRecruitmentStatus();
     }
 
     @Override

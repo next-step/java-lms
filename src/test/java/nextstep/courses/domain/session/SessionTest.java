@@ -103,6 +103,8 @@ class SessionTest {
         NsUser anotherUser = new NsUser(2L, "user2", "password", "name", "email");
 
         session.enroll(USER, payment);
+        session.approve(USER);
+
         assertThatThrownBy(() -> session.enroll(anotherUser, payment))
                 .isInstanceOf(IllegalStateException.class);
     }
@@ -128,7 +130,7 @@ class SessionTest {
         assertThat(session.getInfo().getBasicInfo().getThumbnail().getThumbnails()).hasSize(2);
     }
 
-    private static Session getPaidSession(int maxEnrollment) {
+    private Session getPaidSession(int maxEnrollment) {
         SessionPeriod period = new SessionPeriod(START_DATE, END_DATE);
         SessionPrice price = new SessionPrice(SessionType.PAID, 10000);
         SessionDetailInfo detailInfo = new SessionDetailInfo(period, price);

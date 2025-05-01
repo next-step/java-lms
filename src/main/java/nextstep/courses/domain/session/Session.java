@@ -27,6 +27,10 @@ public class Session {
         enrollments.enroll(user);
     }
 
+    public void approve(NsUser user) {
+        enrollments.approve(user);
+    }
+
     public boolean isPaid() {
         return info.isPaid();
     }
