@@ -34,6 +34,9 @@ public class Applicant extends BaseEntity {
     }
 
     public void makeStatus(ApplicantStatus applicantStatus) {
+        if (!status.canChangeTo(applicantStatus)) {
+            throw new IllegalArgumentException("Applicant status not changeable from " + status.name() + " to " + applicantStatus.name());
+        }
         this.status = applicantStatus;
     }
 
