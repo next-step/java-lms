@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
@@ -26,13 +27,12 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public int save(Session session) {
-        String sql = "insert into session (id, title, cover_image_id, start_at, end_at, fee, enrollment_limit, " +
+        String sql = "insert into session (id, title, start_at, end_at, fee, enrollment_limit, " +
                 "session_status, recruitment_status, " +
                 "created_at, updated_at) " +
-                "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        Long coverImageId = session.getCoverImage() == null ? null : session.getCoverImage().getId();
+                "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
-                session.getId(), session.getTitle(), coverImageId,
+                session.getId(), session.getTitle(),
                 session.getDuration().getStartAt(), session.getDuration().getEndAt(),
                 session.getPaymentPolicy().fee(), session.getPaymentPolicy().enrollmentLimit(),
                 session.getSessionStatus().toString(), session.getRecruitmentStatus().toString(),
@@ -41,46 +41,45 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(Long id) {
-        String sql = "select id, title, cover_image_id, start_at, end_at, fee, enrollment_limit, " +
+        String sql = "select id, title, start_at, end_at, fee, enrollment_limit, " +
                 "session_status, recruitment_status, " +
                 "created_at, updated_at " +
                 "from session " +
                 "where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> {
-            Long coverImageId = rs.getLong(3);
-            CoverImage coverImage = getCoverImage(coverImageId);
+            List<CoverImage> coverImages = getCoverImages(id);
             EnrolledStudents enrolledStudents = getEnrolledStudents(id);
 
-            Duration duration = new Duration(toLocalDate(rs.getTimestamp(4)), toLocalDate(rs.getTimestamp(5)));
+            Duration duration = new Duration(toLocalDate(rs.getTimestamp(3)), toLocalDate(rs.getTimestamp(4)));
 
-            long fee = rs.getLong(6);
-            int enrollment_limit = rs.getInt(7);
+            long fee = rs.getLong(5);
+            int enrollment_limit = rs.getInt(6);
             PaymentPolicy policy = getPaymentPolicy(fee, enrollment_limit);
 
             return new SessionBuilder()
                     .id(rs.getLong(1))
                     .title(rs.getString(2))
+                    .coverImages(coverImages)
                     .duration(duration)
-                    .coverImage(coverImage)
                     .paymentPolicy(policy)
                     .enrolledStudents(enrolledStudents)
-                    .sessionStatus(SessionStatus.valueOf(rs.getString(8)))
-                    .recruitmentStatus(RecruitmentStatus.valueOf(rs.getString(9)))
-                    .createdAt(toLocalDateTime(rs.getTimestamp(10)))
-                    .updatedAt(toLocalDateTime(rs.getTimestamp(11)))
+                    .sessionStatus(SessionStatus.valueOf(rs.getString(7)))
+                    .recruitmentStatus(RecruitmentStatus.valueOf(rs.getString(8)))
+                    .createdAt(toLocalDateTime(rs.getTimestamp(9)))
+                    .updatedAt(toLocalDateTime(rs.getTimestamp(10)))
                     .build();
         };
 
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
-    private CoverImage getCoverImage(Long coverImageId) {
-        if ( coverImageId == null || coverImageId <= 0) {
+    private List<CoverImage> getCoverImages(Long sessionId) {
+        if ( sessionId == null || sessionId <= 0) {
             return null;
         }
 
         CoverImageRepository coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
-        return coverImageRepository.findById(coverImageId);
+        return coverImageRepository.findBySessionId(sessionId);
     }
 
     private EnrolledStudents getEnrolledStudents(Long sessionId) {

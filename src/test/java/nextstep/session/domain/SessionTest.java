@@ -15,6 +15,8 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,17 +24,20 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 class SessionTest {
 
-    private CoverImage coverImage;
+    private List<CoverImage> coverImages = new ArrayList<>();
     private Duration duration;
 
     @BeforeEach
     public void setUp() {
-        coverImage = new CoverImage.Builder()
-                .fileName("cover.png")
-                .imageFormat("png")
-                .fileSize(100_000L)
-                .imageSize(300, 200)
-                .build();
+        coverImages.add(
+                new CoverImage.Builder()
+                        .fileName("cover.png")
+                        .imageFormat("png")
+                        .fileSize(100_000L)
+                        .imageSize(300, 200)
+                        .sessionId(1L)
+                        .build()
+        );
         duration = new Duration(
                 LocalDate.of(2025, 5, 1),
                 LocalDate.of(2025, 5, 30));
@@ -44,7 +49,7 @@ class SessionTest {
         PaymentPolicy paidPaymentPolicy = new PaidPaymentPolicy( 800_000L, 1);
         Session paidSession = new SessionBuilder()
                 .title("TDD, 클린코드 with Java 20기")
-                .coverImage(coverImage)
+                .coverImages(coverImages)
                 .duration(duration)
                 .paymentPolicy(paidPaymentPolicy)
                 .enrolledStudents(new EnrolledStudents())
@@ -63,7 +68,7 @@ class SessionTest {
         PaymentPolicy freePaymentPolicy = new FreePaymentPolicy();
         Session freeSession = new SessionBuilder()
                 .title("무료 강의")
-                .coverImage(coverImage)
+                .coverImages(coverImages)
                 .duration(duration)
                 .paymentPolicy(freePaymentPolicy)
                 .enrolledStudents(new EnrolledStudents())
@@ -82,7 +87,7 @@ class SessionTest {
         PaymentPolicy paidPaymentPolicy = new PaidPaymentPolicy( 800_000L, 1);
         Session paidSession = new SessionBuilder()
                 .title("TDD, 클린코드 with Java 20기")
-                .coverImage(coverImage)
+                .coverImages(coverImages)
                 .duration(duration)
                 .paymentPolicy(paidPaymentPolicy)
                 .sessionStatus(SessionStatus.PREPARING)
@@ -101,7 +106,7 @@ class SessionTest {
         PaymentPolicy paidPaymentPolicy = new PaidPaymentPolicy(800_000L, 1);
         Session paidSession = new SessionBuilder()
                 .title("TDD, 클린코드 with Java 20기")
-                .coverImage(coverImage)
+                .coverImages(coverImages)
                 .duration(duration)
                 .paymentPolicy(paidPaymentPolicy)
                 .sessionStatus(sessionStatus)
@@ -120,7 +125,7 @@ class SessionTest {
         PaymentPolicy paidPaymentPolicy = new PaidPaymentPolicy(800_000L, 1);
         Session paidSession = new SessionBuilder()
                 .title("TDD, 클린코드 with Java 20기")
-                .coverImage(coverImage)
+                .coverImages(coverImages)
                 .duration(duration)
                 .paymentPolicy(paidPaymentPolicy)
                 .sessionStatus(sessionStatus)

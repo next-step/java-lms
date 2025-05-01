@@ -9,7 +9,7 @@ import java.util.List;
 public class EnrolledStudents {
 
     private Long sessionId;
-    List<Long> students;
+    private List<Long> students;
 
     public EnrolledStudents() {
         this(0L, new ArrayList<>());

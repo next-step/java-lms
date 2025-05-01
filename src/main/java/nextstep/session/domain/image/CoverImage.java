@@ -18,6 +18,7 @@ public class CoverImage {
     private final long fileSize;
     private final int width;
     private final int height;
+    private final Long sessionId;
 
     public static class Builder {
         private Long id;
@@ -26,6 +27,7 @@ public class CoverImage {
         private long fileSize;
         private int width;
         private int height;
+        private Long sessionId;
 
         public Builder id(Long id) {
             this.id = id;
@@ -52,6 +54,10 @@ public class CoverImage {
             this.height = height;
             return this;
         }
+        public Builder sessionId(Long sessionId) {
+            this.sessionId = sessionId;
+            return this;
+        }
         public CoverImage build() {
             validateFileName(fileName);
             validateImageFormat(imageFormat);
@@ -69,6 +75,7 @@ public class CoverImage {
         this.fileSize = builder.fileSize;
         this.width = builder.width;
         this.height = builder.height;
+        this.sessionId = builder.sessionId;
     }
 
     private static void validateFileName(String fileName) {
@@ -126,5 +133,9 @@ public class CoverImage {
 
     public int getHeight() {
         return height;
+    }
+
+    public Long getSessionId() {
+        return sessionId;
     }
 }

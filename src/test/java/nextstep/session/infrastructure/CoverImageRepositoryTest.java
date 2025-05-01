@@ -34,6 +34,7 @@ public class CoverImageRepositoryTest {
                 .fileSize(100)
                 .imageFormat("jpg")
                 .imageSize(300, 200)
+                .sessionId(1L)
                 .build();
 
         int count = coverImageRepository.save(coverImage);
@@ -41,6 +42,7 @@ public class CoverImageRepositoryTest {
 
         CoverImage savedCoverImage = coverImageRepository.findById(1L);
         assertThat(coverImage.getFileName()).isEqualTo(savedCoverImage.getFileName());
+        assertThat(coverImage.getSessionId()).isEqualTo(1L);
 
         LOGGER.debug("CoverImage: {}", savedCoverImage);
     }

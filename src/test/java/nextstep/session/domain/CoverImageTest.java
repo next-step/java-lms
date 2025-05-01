@@ -11,7 +11,19 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CoverImageTest {
-
+    @Test
+    @DisplayName("커버 이미지는 강의와 연결할 수 있다.")
+    void createCoverImageWithSessionId_success() {
+        assertDoesNotThrow(() ->
+                new CoverImage.Builder()
+                        .fileName("cover.png")
+                        .imageFormat("png")
+                        .fileSize(100_000L)
+                        .imageSize(300, 200)
+                        .sessionId(1L)
+                        .build()
+        );
+    }
     @Test
     @DisplayName("정상적인 이미지 정보로 생성에 성공한다")
     void createCoverImage_success() {

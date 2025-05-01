@@ -14,6 +14,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,12 +36,10 @@ public class SessionRepositoryTest {
     @Test
     void crud() {
         Duration duration = new Duration(LocalDate.of(2025, 4, 1), LocalDate.of(2025, 4, 5));
-
         PaymentPolicy policy = new PaidPaymentPolicy(800_000, 10);
         Session session = new SessionBuilder()
                 .id(1L)
                 .title("TestSession")
-                .coverImage(null)
                 .duration(duration)
                 .paymentPolicy(policy)
                 .enrolledStudents(null)
@@ -60,24 +60,15 @@ public class SessionRepositoryTest {
 
     @Test
     void crudWithCoverImage() {
-        CoverImage coverImage = new CoverImage.Builder()
-                .id(1L)
-                .fileName("test cover image")
-                .fileSize(100)
-                .imageFormat("jpg")
-                .imageSize(300, 200)
-                .build();
-        CoverImageRepository coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
-        coverImageRepository.save(coverImage);
-        CoverImage savedCoverImage = coverImageRepository.findById(1L);
+        Long sessionId = 1L;
 
         Duration duration = new Duration(LocalDate.of(2025, 4, 1), LocalDate.of(2025, 4, 5));
-
         PaymentPolicy policy = new PaidPaymentPolicy(800_000, 10);
+        List<CoverImage> savedCoverImages = getSavedCoverImages(sessionId);
         Session session = new SessionBuilder()
-                .id(1L)
+                .id(sessionId)
                 .title("TestSession")
-                .coverImage(savedCoverImage)
+                .coverImages(savedCoverImages)
                 .duration(duration)
                 .paymentPolicy(policy)
                 .enrolledStudents(null)
@@ -88,13 +79,30 @@ public class SessionRepositoryTest {
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
 
-        Session savedSession = sessionRepository.findById(1L);
+        Session savedSession = sessionRepository.findById(sessionId);
         assertThat(session.getTitle()).isEqualTo(savedSession.getTitle());
-        assertThat(coverImage.getFileName()).isEqualTo(savedCoverImage.getFileName());
         assertThat(session.getSessionStatus()).isEqualTo(SessionStatus.PREPARING);
         assertThat(session.getRecruitmentStatus()).isEqualTo(RecruitmentStatus.OPEN);
+        assertThat(savedSession.getCoverImages()).hasSize(1);
 
         LOGGER.debug("Session: title={}", savedSession.getTitle());
-        LOGGER.debug("CoverImage: fileName={}", savedSession.getCoverImage().getFileName());
+        LOGGER.debug("CoverImage: fileName={}", savedSession.getCoverImages().get(0).getFileName());
+    }
+    private List<CoverImage> getSavedCoverImages(Long sessionId) {
+        CoverImage coverImage = new CoverImage.Builder()
+                .id(1L)
+                .fileName("test cover image")
+                .fileSize(100)
+                .imageFormat("jpg")
+                .imageSize(300, 200)
+                .sessionId(sessionId)
+                .build();
+        CoverImageRepository coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
+        coverImageRepository.save(coverImage);
+        CoverImage savedCoverImage = coverImageRepository.findById(1L);
+        List<CoverImage> savedCoverImages = new ArrayList<>();
+        savedCoverImages.add(savedCoverImage);
+
+        return savedCoverImages;
     }
 }

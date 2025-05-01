@@ -7,13 +7,15 @@ import nextstep.session.domain.student.EnrolledStudents;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Session {
 
     private Long id;
 
     private String title;
-    private CoverImage coverImage;
+    private List<CoverImage> coverImages;
     private Duration duration;
 
     private PaymentPolicy paymentPolicy;
@@ -25,13 +27,14 @@ public class Session {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    Session(Long id, String title, CoverImage coverImage, Duration duration,
+    Session(Long id, String title, List<CoverImage> coverImages,
+            Duration duration,
             PaymentPolicy paymentPolicy, EnrolledStudents enrolledStudents,
             SessionStatus sessionStatus, RecruitmentStatus recruitmentStatus,
             LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
-        this.coverImage = coverImage;
+        this.coverImages = coverImages;
         this.duration = duration;
         this.paymentPolicy = paymentPolicy;
         this.enrolledStudents = enrolledStudents;
@@ -71,8 +74,8 @@ public class Session {
         return title;
     }
 
-    public CoverImage getCoverImage() {
-        return coverImage;
+    public List<CoverImage> getCoverImages() {
+        return coverImages;
     }
 
     public Duration getDuration() {

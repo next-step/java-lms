@@ -6,6 +6,8 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository("coverImageRepository")
 public class JdbcCoverImageRepository implements CoverImageRepository {
     private JdbcOperations jdbcTemplate;
@@ -16,19 +18,36 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
 
     @Override
     public int save(CoverImage coverImage) {
-        String sql = "insert into cover_image (id, file_name, image_format, file_size, width, height) " +
-                "values(?, ?, ?, ?, ?, ?)";
+        String sql = "insert into cover_image (id, file_name, image_format, file_size, width, height, session_id) " +
+                "values(?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
                 coverImage.getId(), coverImage.getFileName(), coverImage.getImageFormat(), coverImage.getFileSize(),
-                coverImage.getWidth(), coverImage.getHeight()
+                coverImage.getWidth(), coverImage.getHeight(), coverImage.getSessionId()
         );
     }
 
     @Override
     public CoverImage findById(Long id) {
-        String sql = "select id, file_name, image_format, file_size, width, height " +
+        String sql = "select id, file_name, image_format, file_size, width, height, session_id " +
                 "from cover_image " +
                 "where id = ?";
+        RowMapper<CoverImage> rowMapper = getCoverImageRowMapper();
+
+        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+    }
+
+    @Override
+    public List<CoverImage> findBySessionId(Long sessionId) {
+        String sql = "select id, file_name, image_format, file_size, width, height, session_id " +
+                "from cover_image " +
+                "where session_id = ?";
+        RowMapper<CoverImage> rowMapper = getCoverImageRowMapper();
+
+        List<CoverImage> list = jdbcTemplate.query(sql, rowMapper, sessionId);
+        return list;
+    }
+
+    private static RowMapper<CoverImage> getCoverImageRowMapper() {
         RowMapper<CoverImage> rowMapper = (rs, rowNum) -> {
             CoverImage coverImage = new CoverImage.Builder()
                     .id(rs.getLong(1))
@@ -36,10 +55,10 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
                     .imageFormat(rs.getString(3))
                     .fileSize(rs.getLong(4))
                     .imageSize(rs.getInt(5), rs.getInt(6))
+                    .sessionId(rs.getLong(7))
                     .build();
             return coverImage;
         };
-
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+        return rowMapper;
     }
 }

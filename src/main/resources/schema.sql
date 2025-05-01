@@ -52,7 +52,6 @@ create table delete_history (
 create table session (
     id bigint not null,
     title varchar(100) not null,
-    cover_image_id bigint,
     start_at timestamp,
     end_at timestamp,
     fee bigint,
@@ -71,6 +70,7 @@ create table cover_image (
     file_size int,
     width int,
     height int,
+    session_id bigint,
     primary key (id)
 );
 
