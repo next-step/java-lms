@@ -39,7 +39,7 @@ public class SessionServiceIntegrationTest {
             new SessionImages()
         );
         sessionService.saveSession(courseId, new Session(constraint, descriptor));
-        List<SessionEntity> sessions = sessionRepository.findAllByCourseId(courseId);;
+        List<SessionEntity> sessions = sessionRepository.findAllByCourseId(courseId);
         long sessionId = Long.parseLong(sessions.get(0).getId());
 
         Session session = sessionService.getSession(sessionId);
@@ -58,7 +58,7 @@ public class SessionServiceIntegrationTest {
             new SessionImages()
         );
 
-        Long generatedId = sessionService.saveSession(courseId,  new Session(constraint, descriptor));
+        Long generatedId = sessionService.saveSession(courseId, new Session(constraint, descriptor));
 
         SessionEntity sessions = sessionRepository.findById(generatedId);
         assertThat(sessions).isNotNull();

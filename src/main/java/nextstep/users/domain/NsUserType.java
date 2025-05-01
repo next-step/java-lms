@@ -9,7 +9,7 @@ public enum NsUserType {
     INSTRUCTOR("강사"),
     UNSELECTED("비 선발 인원"),
     UNKNOWN("모름");
-/**/
+    /**/
     private final String type;
 
     NsUserType(String type) {

@@ -57,7 +57,7 @@ public class PaymentService {
     public boolean approve(long paymentId, String approverId) {
         PaymentEntity paymentEntity = paymentRepository.findById(paymentId);
 
-        if (userService.canApprove(approverId, paymentEntity.getUserId().toString())) {
+        if (userService.canApprove(approverId, paymentEntity.getUserId())) {
             updatePaymentStatus(paymentId, PaymentStatus.APPROVED);
             return true;
         }
@@ -68,7 +68,7 @@ public class PaymentService {
     public boolean cancel(long paymentId, String approverId) {
         PaymentEntity paymentEntity = paymentRepository.findById(paymentId);
 
-        if (userService.canCancel(approverId, paymentEntity.getUserId().toString())) {
+        if (userService.canCancel(approverId, paymentEntity.getUserId())) {
             updatePaymentStatus(paymentId, PaymentStatus.CANCELED);
             return true;
         }
@@ -87,7 +87,7 @@ public class PaymentService {
     private PaymentEntityUserMap getPaymentEntityUserMapForSession(long sessionId) {
         List<PaymentEntity> paymentEntities = paymentRepository.findBySession(sessionId);
         List<String> userIds = paymentEntities.stream()
-            .map(paymentEntity -> paymentEntity.getUserId().toString())
+            .map(paymentEntity -> paymentEntity.getUserId())
             .collect(Collectors.toList());
         List<NsUser> users = userService.getUsers(userIds);
 
