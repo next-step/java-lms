@@ -20,4 +20,8 @@ public class CoverImages {
     public void add(CoverImage coverImage) {
         coverImages.add(coverImage);
     }
+
+    public List<CoverImage> images() {
+        return coverImages;
+    }
 }

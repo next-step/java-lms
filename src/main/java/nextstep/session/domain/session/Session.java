@@ -2,13 +2,11 @@ package nextstep.session.domain.session;
 
 import nextstep.payments.domain.Payment;
 import nextstep.payments.domain.PaymentPolicy;
-import nextstep.session.domain.image.CoverImage;
 import nextstep.session.domain.image.CoverImages;
 import nextstep.session.domain.student.EnrolledStudents;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class Session {
 

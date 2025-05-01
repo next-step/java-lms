@@ -16,7 +16,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
@@ -32,12 +31,19 @@ public class JdbcSessionRepository implements SessionRepository {
                 "session_status, recruitment_status, " +
                 "created_at, updated_at) " +
                 "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql,
+        int result = jdbcTemplate.update(sql,
                 session.getId(), session.getTitle(),
                 session.getDuration().getStartAt(), session.getDuration().getEndAt(),
                 session.getPaymentPolicy().fee(), session.getPaymentPolicy().enrollmentLimit(),
                 session.getSessionStatus().toString(), session.getRecruitmentStatus().toString(),
                 session.getCreatedAt(), session.getUpdatedAt());
+
+        EnrolledStudentsRepository enrolledStudentsRepository = new JdbcEnrolledStudentsRepository(jdbcTemplate);
+        enrolledStudentsRepository.save(session.getEnrolledStudents());
+
+        CoverImageRepository coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
+        coverImageRepository.save(session.getCoverImages());
+        return result;
     }
 
     @Override

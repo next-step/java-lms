@@ -3,9 +3,12 @@ package nextstep.session.infrastructure;
 import nextstep.payments.domain.PaidPaymentPolicy;
 import nextstep.payments.domain.PaymentPolicy;
 import nextstep.session.domain.image.CoverImage;
-import nextstep.session.domain.image.CoverImageRepository;
 import nextstep.session.domain.image.CoverImages;
 import nextstep.session.domain.session.*;
+import nextstep.session.domain.student.EnrolledStudent;
+import nextstep.session.domain.student.EnrolledStudents;
+import nextstep.session.domain.student.EnrollmentStatus;
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -60,19 +63,22 @@ public class SessionRepositoryTest {
     }
 
     @Test
-    void crudWithCoverImage() {
+    void crudWithRelatedEntity() {
         Long sessionId = 1L;
 
         Duration duration = new Duration(LocalDate.of(2025, 4, 1), LocalDate.of(2025, 4, 5));
         PaymentPolicy policy = new PaidPaymentPolicy(800_000, 10);
-        CoverImages savedCoverImages = new CoverImages(getSavedCoverImages(sessionId));
+
+        CoverImages coverImages =getCoverImages(sessionId);
+        EnrolledStudents enrolledStudents = getEnrolledStudents(sessionId);
+
         Session session = new SessionBuilder()
                 .id(sessionId)
                 .title("TestSession")
-                .coverImages(savedCoverImages)
+                .coverImages(coverImages)
                 .duration(duration)
                 .paymentPolicy(policy)
-                .enrolledStudents(null)
+                .enrolledStudents(enrolledStudents)
                 .sessionStatus(SessionStatus.PREPARING)
                 .recruitmentStatus(RecruitmentStatus.OPEN)
                 .build();
@@ -85,11 +91,23 @@ public class SessionRepositoryTest {
         assertThat(session.getSessionStatus()).isEqualTo(SessionStatus.PREPARING);
         assertThat(session.getRecruitmentStatus()).isEqualTo(RecruitmentStatus.OPEN);
         assertThat(savedSession.getCoverImages().size()).isEqualTo(1);
+        assertThat(savedSession.getEnrolledStudents().getStudents().get(0).getStudentId()).isEqualTo(NsUserTest.JAVAJIGI.getId());
+        assertThat(savedSession.getEnrolledStudents().getStudents().get(1).getStudentId()).isEqualTo(NsUserTest.SANJIGI.getId());
 
         LOGGER.debug("Session: title={}", savedSession.getTitle());
         LOGGER.debug("CoverImage: fileName={}", savedSession.getCoverImages().get(0).getFileName());
     }
-    private List<CoverImage> getSavedCoverImages(Long sessionId) {
+
+    private EnrolledStudents getEnrolledStudents(Long sessionId) {
+        List<EnrolledStudent> students = new ArrayList<>();
+        students.add(new EnrolledStudent(NsUserTest.JAVAJIGI.getId(), EnrollmentStatus.APPROVED));
+        students.add(new EnrolledStudent(NsUserTest.SANJIGI.getId(), EnrollmentStatus.APPROVED));
+
+        EnrolledStudents enrolledStudents = new EnrolledStudents(sessionId, students);
+        return enrolledStudents;
+    }
+
+    private CoverImages getCoverImages(Long sessionId) {
         CoverImage coverImage = new CoverImage.Builder()
                 .id(1L)
                 .fileName("test cover image")
@@ -98,12 +116,10 @@ public class SessionRepositoryTest {
                 .imageSize(300, 200)
                 .sessionId(sessionId)
                 .build();
-        CoverImageRepository coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
-        coverImageRepository.save(coverImage);
-        CoverImage savedCoverImage = coverImageRepository.findById(1L);
-        List<CoverImage> savedCoverImages = new ArrayList<>();
-        savedCoverImages.add(savedCoverImage);
 
-        return savedCoverImages;
+        List<CoverImage> coverImages = new ArrayList<>();
+        coverImages.add(coverImage);
+
+        return new CoverImages(coverImages);
     }
 }

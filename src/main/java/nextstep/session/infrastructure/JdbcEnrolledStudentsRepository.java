@@ -20,6 +20,10 @@ public class JdbcEnrolledStudentsRepository implements EnrolledStudentsRepositor
 
     @Override
     public int save(EnrolledStudents enrolledStudents) {
+        if (enrolledStudents == null || enrolledStudents.getStudents().size() == 0) {
+            return 0;
+        }
+
         String sql = "insert into enrolled_students (session_id, student_id, enrollment_status) values(?, ?, ?)";
         for(EnrolledStudent student : enrolledStudents.getStudents()) {
             jdbcTemplate.update(sql,

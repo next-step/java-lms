@@ -2,6 +2,7 @@ package nextstep.session.infrastructure;
 
 import nextstep.session.domain.image.CoverImage;
 import nextstep.session.domain.image.CoverImageRepository;
+import nextstep.session.domain.image.CoverImages;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -24,6 +25,18 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
                 coverImage.getId(), coverImage.getFileName(), coverImage.getImageFormat(), coverImage.getFileSize(),
                 coverImage.getWidth(), coverImage.getHeight(), coverImage.getSessionId()
         );
+    }
+
+    @Override
+    public int save(CoverImages coverImages) {
+        if (coverImages == null || coverImages.size() == 0 ) {
+            return 0;
+        }
+
+        for(CoverImage coverImage : coverImages.images()) {
+            save(coverImage);
+        }
+        return coverImages.size();
     }
 
     @Override
