@@ -1,7 +1,6 @@
 package nextstep.session.infrastructure;
 
-import nextstep.session.domain.EnrolledStudents;
-import nextstep.users.domain.NsUser;
+import nextstep.session.domain.student.EnrolledStudents;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

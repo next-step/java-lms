@@ -1,9 +1,7 @@
 package nextstep.session.infrastructure;
 
-import nextstep.session.domain.EnrolledStudents;
-import nextstep.session.domain.EnrolledStudentsRepository;
-import nextstep.session.domain.Session;
-import nextstep.users.domain.NsUser;
+import nextstep.session.domain.student.EnrolledStudents;
+import nextstep.session.domain.student.EnrolledStudentsRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;

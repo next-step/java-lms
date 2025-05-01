@@ -1,6 +1,8 @@
-package nextstep.session.domain;
+package nextstep.session.domain.session;
 
 import nextstep.payments.domain.PaymentPolicy;
+import nextstep.session.domain.image.CoverImage;
+import nextstep.session.domain.student.EnrolledStudents;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +13,8 @@ public class SessionBuilder {
     private Duration duration;
     private PaymentPolicy paymentPolicy;
     private EnrolledStudents enrolledStudents;
-    private SessionStatus status;
+    private SessionStatus sessionStatus;
+    private RecruitmentStatus recruitmentStatus;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -45,8 +48,12 @@ public class SessionBuilder {
         return this;
     }
 
-    public SessionBuilder status(SessionStatus status) {
-        this.status = status;
+    public SessionBuilder sessionStatus(SessionStatus sessionStatus) {
+        this.sessionStatus = sessionStatus;
+        return this;
+    }
+    public SessionBuilder recruitmentStatus(RecruitmentStatus recruitmentStatus) {
+        this.recruitmentStatus = recruitmentStatus;
         return this;
     }
 
@@ -73,7 +80,8 @@ public class SessionBuilder {
 
         return new Session(
                 id, title, coverImage, duration, paymentPolicy,
-                enrolledStudents, status, createdAt, updatedAt
+                enrolledStudents, sessionStatus, recruitmentStatus,
+                createdAt, updatedAt
         );
     }
 }

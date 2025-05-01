@@ -1,6 +1,7 @@
 package nextstep.session.domain;
 
 import nextstep.payments.domain.PaidPaymentPolicy;
+import nextstep.session.domain.student.EnrolledStudents;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,10 +16,10 @@ class EnrolledStudentsTest {
         PaidPaymentPolicy paidPaymentPolicy = new PaidPaymentPolicy( 800_000L, 1);
 
         EnrolledStudents enrolledStudents = new EnrolledStudents();
-        enrolledStudents.add(paidPaymentPolicy, SANJIGI);
+        enrolledStudents.checkPolicyAndAdd(paidPaymentPolicy, SANJIGI);
 
         assertThrows(IllegalStateException.class, () -> {
-            enrolledStudents.add(paidPaymentPolicy, JAVAJIGI);
+            enrolledStudents.checkPolicyAndAdd(paidPaymentPolicy, JAVAJIGI);
         });
     }
 }

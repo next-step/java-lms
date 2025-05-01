@@ -1,4 +1,4 @@
-package nextstep.session.domain;
+package nextstep.session.domain.image;
 
 import nextstep.session.domain.exception.BlankFileNameException;
 import nextstep.session.domain.exception.InvalidImageFileSizeException;

@@ -3,6 +3,7 @@ package nextstep.session.domain;
 import nextstep.session.domain.exception.InvalidImageFileSizeException;
 import nextstep.session.domain.exception.InvalidImageSizeException;
 import nextstep.session.domain.exception.UnsupportedImageFormatException;
+import nextstep.session.domain.image.CoverImage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

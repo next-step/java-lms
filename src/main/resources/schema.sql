@@ -57,7 +57,8 @@ create table session (
     end_at timestamp,
     fee bigint,
     enrollment_limit int,
-    status varchar(100) not null,
+    session_status varchar(100) not null,
+    recruitment_status varchar(100) not null,
     created_at timestamp not null,
     updated_at timestamp,
     primary key (id)

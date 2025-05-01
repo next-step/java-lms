@@ -1,4 +1,4 @@
-package nextstep.session.domain;
+package nextstep.session.domain.student;
 
 public interface EnrolledStudentsRepository {
     int save(EnrolledStudents enrolledStudents);

@@ -1,4 +1,4 @@
-package nextstep.session.domain;
+package nextstep.session.domain.image;
 
 public interface CoverImageRepository {
     int save(CoverImage coverImage);

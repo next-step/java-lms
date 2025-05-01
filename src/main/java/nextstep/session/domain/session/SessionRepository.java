@@ -1,4 +1,4 @@
-package nextstep.session.domain;
+package nextstep.session.domain.session;
 
 public interface SessionRepository {
     int save(Session session);

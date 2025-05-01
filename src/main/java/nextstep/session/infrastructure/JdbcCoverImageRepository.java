@@ -1,7 +1,7 @@
 package nextstep.session.infrastructure;
 
-import nextstep.session.domain.CoverImage;
-import nextstep.session.domain.CoverImageRepository;
+import nextstep.session.domain.image.CoverImage;
+import nextstep.session.domain.image.CoverImageRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;

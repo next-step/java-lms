@@ -2,7 +2,9 @@ package nextstep.session.infrastructure;
 
 import nextstep.payments.domain.PaidPaymentPolicy;
 import nextstep.payments.domain.PaymentPolicy;
-import nextstep.session.domain.*;
+import nextstep.session.domain.image.CoverImage;
+import nextstep.session.domain.image.CoverImageRepository;
+import nextstep.session.domain.session.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -41,7 +43,8 @@ public class SessionRepositoryTest {
                 .duration(duration)
                 .paymentPolicy(policy)
                 .enrolledStudents(null)
-                .status(SessionStatus.PREPARING)
+                .sessionStatus(SessionStatus.PREPARING)
+                .recruitmentStatus(RecruitmentStatus.OPEN)
                 .build();
 
         int count = sessionRepository.save(session);
@@ -49,6 +52,8 @@ public class SessionRepositoryTest {
 
         Session savedSession = sessionRepository.findById(1L);
         assertThat(session.getTitle()).isEqualTo(savedSession.getTitle());
+        assertThat(session.getSessionStatus()).isEqualTo(SessionStatus.PREPARING);
+        assertThat(session.getRecruitmentStatus()).isEqualTo(RecruitmentStatus.OPEN);
 
         LOGGER.debug("Session: title={}", savedSession.getTitle());
     }
@@ -76,7 +81,8 @@ public class SessionRepositoryTest {
                 .duration(duration)
                 .paymentPolicy(policy)
                 .enrolledStudents(null)
-                .status(SessionStatus.PREPARING)
+                .sessionStatus(SessionStatus.PREPARING)
+                .recruitmentStatus(RecruitmentStatus.OPEN)
                 .build();
 
         int count = sessionRepository.save(session);
@@ -85,6 +91,8 @@ public class SessionRepositoryTest {
         Session savedSession = sessionRepository.findById(1L);
         assertThat(session.getTitle()).isEqualTo(savedSession.getTitle());
         assertThat(coverImage.getFileName()).isEqualTo(savedCoverImage.getFileName());
+        assertThat(session.getSessionStatus()).isEqualTo(SessionStatus.PREPARING);
+        assertThat(session.getRecruitmentStatus()).isEqualTo(RecruitmentStatus.OPEN);
 
         LOGGER.debug("Session: title={}", savedSession.getTitle());
         LOGGER.debug("CoverImage: fileName={}", savedSession.getCoverImage().getFileName());
