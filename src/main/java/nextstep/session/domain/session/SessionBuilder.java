@@ -1,22 +1,21 @@
 package nextstep.session.domain.session;
 
 import nextstep.payments.domain.PaymentPolicy;
-import nextstep.session.domain.image.CoverImage;
+import nextstep.session.domain.image.CoverImages;
 import nextstep.session.domain.student.EnrolledStudents;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SessionBuilder {
     private Long id;
     private String title;
-    private List<CoverImage> coverImages = new ArrayList<>();
+    private CoverImages coverImages;
     private Duration duration;
     private PaymentPolicy paymentPolicy;
     private EnrolledStudents enrolledStudents;
     private SessionStatus sessionStatus;
     private RecruitmentStatus recruitmentStatus;
+    private SessionType sessionType;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -30,7 +29,7 @@ public class SessionBuilder {
         return this;
     }
 
-    public SessionBuilder coverImages(List<CoverImage> coverImages) {
+    public SessionBuilder coverImages(CoverImages coverImages) {
         this.coverImages = coverImages;
         return this;
     }
@@ -58,6 +57,10 @@ public class SessionBuilder {
         this.recruitmentStatus = recruitmentStatus;
         return this;
     }
+    public SessionBuilder sessionType(SessionType sessionType) {
+        this.sessionType = sessionType;
+        return this;
+    }
 
     public SessionBuilder createdAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
@@ -83,7 +86,7 @@ public class SessionBuilder {
         return new Session(
                 id, title, coverImages,
                 duration, paymentPolicy,
-                enrolledStudents, sessionStatus, recruitmentStatus,
+                enrolledStudents, sessionStatus, recruitmentStatus, sessionType,
                 createdAt, updatedAt
         );
     }

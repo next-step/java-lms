@@ -5,6 +5,7 @@ import nextstep.payments.domain.PaidPaymentPolicy;
 import nextstep.payments.domain.PaymentPolicy;
 import nextstep.session.domain.image.CoverImage;
 import nextstep.session.domain.image.CoverImageRepository;
+import nextstep.session.domain.image.CoverImages;
 import nextstep.session.domain.session.*;
 import nextstep.session.domain.student.EnrolledStudents;
 import nextstep.session.domain.student.EnrolledStudentsRepository;
@@ -47,7 +48,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 "from session " +
                 "where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> {
-            List<CoverImage> coverImages = getCoverImages(id);
+            CoverImages coverImages = getCoverImages(id);
             EnrolledStudents enrolledStudents = getEnrolledStudents(id);
 
             Duration duration = new Duration(toLocalDate(rs.getTimestamp(3)), toLocalDate(rs.getTimestamp(4)));
@@ -73,13 +74,14 @@ public class JdbcSessionRepository implements SessionRepository {
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
-    private List<CoverImage> getCoverImages(Long sessionId) {
+    private CoverImages getCoverImages(Long sessionId) {
         if ( sessionId == null || sessionId <= 0) {
             return null;
         }
 
         CoverImageRepository coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
-        return coverImageRepository.findBySessionId(sessionId);
+
+        return new CoverImages(coverImageRepository.findBySessionId(sessionId));
     }
 
     private EnrolledStudents getEnrolledStudents(Long sessionId) {
@@ -88,7 +90,7 @@ public class JdbcSessionRepository implements SessionRepository {
         }
 
         EnrolledStudentsRepository enrolledStudentsRepository = new JdbcEnrolledStudentsRepository(jdbcTemplate);
-        return enrolledStudentsRepository.findById(sessionId);
+        return enrolledStudentsRepository.findBySessionId(sessionId);
 
 
     }

@@ -1,6 +1,8 @@
 package nextstep.session.infrastructure;
 
+import nextstep.session.domain.student.EnrolledStudent;
 import nextstep.session.domain.student.EnrolledStudents;
+import nextstep.session.domain.student.EnrollmentStatus;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,18 +34,20 @@ public class EnrolledStudentsRepositoryTest {
     @Test
     void crud() {
         Long sessionId = 1L;
-        List<Long> students = new ArrayList<>();
-        students.add(NsUserTest.JAVAJIGI.getId());
-        students.add(NsUserTest.SANJIGI.getId());
+        List<EnrolledStudent> students = new ArrayList<>();
+        students.add(new EnrolledStudent(NsUserTest.JAVAJIGI.getId(), EnrollmentStatus.APPROVED));
+        students.add(new EnrolledStudent(NsUserTest.SANJIGI.getId(), EnrollmentStatus.APPROVED));
 
         EnrolledStudents enrolledStudents = new EnrolledStudents(sessionId, students);
 
         int count = enrolledStudentsRepository.save(enrolledStudents);
         assertThat(count).isEqualTo(2);
 
-        EnrolledStudents savedEnrolledStudents = enrolledStudentsRepository.findById(sessionId);
+        EnrolledStudents savedEnrolledStudents = enrolledStudentsRepository.findBySessionId(sessionId);
         assertThat(savedEnrolledStudents.getSessionId()).isEqualTo(enrolledStudents.getSessionId());
         assertThat(savedEnrolledStudents.getStudents().size()).isEqualTo(enrolledStudents.getStudents().size());
+        assertThat(savedEnrolledStudents.getStudents().get(0).getEnrollmentStatus()).isEqualTo(EnrollmentStatus.APPROVED);
+        assertThat(savedEnrolledStudents.getStudents().get(1).getEnrollmentStatus()).isEqualTo(EnrollmentStatus.APPROVED);
 
         LOGGER.debug("enrolledStudents: {}", savedEnrolledStudents);
     }

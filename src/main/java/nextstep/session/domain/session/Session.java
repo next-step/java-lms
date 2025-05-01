@@ -3,11 +3,11 @@ package nextstep.session.domain.session;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.domain.PaymentPolicy;
 import nextstep.session.domain.image.CoverImage;
+import nextstep.session.domain.image.CoverImages;
 import nextstep.session.domain.student.EnrolledStudents;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Session {
@@ -15,7 +15,7 @@ public class Session {
     private Long id;
 
     private String title;
-    private List<CoverImage> coverImages;
+    private CoverImages coverImages;
     private Duration duration;
 
     private PaymentPolicy paymentPolicy;
@@ -23,14 +23,15 @@ public class Session {
 
     private SessionStatus sessionStatus;
     private RecruitmentStatus recruitmentStatus;
+    private SessionType sessionType;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    Session(Long id, String title, List<CoverImage> coverImages,
+    Session(Long id, String title, CoverImages coverImages,
             Duration duration,
             PaymentPolicy paymentPolicy, EnrolledStudents enrolledStudents,
-            SessionStatus sessionStatus, RecruitmentStatus recruitmentStatus,
+            SessionStatus sessionStatus, RecruitmentStatus recruitmentStatus, SessionType sessionType,
             LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
@@ -40,6 +41,7 @@ public class Session {
         this.enrolledStudents = enrolledStudents;
         this.sessionStatus = sessionStatus;
         this.recruitmentStatus = recruitmentStatus;
+        this.sessionType = sessionType;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -48,13 +50,13 @@ public class Session {
     }
 
     // TODO : 정책관련해서 session과 paymentPolicy 양쪽에서 관리하는게 맞는지 고민해봐야함
-    public Payment enroll2(NsUser nsUser, Long amount) {
+    public Payment enroll(NsUser nsUser, Long amount) {
         validateSessionEnrollmentPolicy();
         paymentPolicy.validateEnrollment(amount);
 
-        enrolledStudents.checkPolicyAndAdd(paymentPolicy, nsUser);
+        enrolledStudents.enrollWithPolicyCheck(paymentPolicy, nsUser, sessionType);
 
-        return new Payment("P1", 1L, nsUser.getId(), amount);
+        return new Payment("P1", id, nsUser.getId(), amount);
     }
 
     private void validateSessionEnrollmentPolicy() {
@@ -74,7 +76,7 @@ public class Session {
         return title;
     }
 
-    public List<CoverImage> getCoverImages() {
+    public CoverImages getCoverImages() {
         return coverImages;
     }
 
@@ -104,5 +106,13 @@ public class Session {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public boolean isAutoApproval() {
+        return sessionType == SessionType.AUTO_APPROVAL;
+    }
+
+    public boolean isSelectiveApproval() {
+        return sessionType == SessionType.SELECTIVE_APPROVAL;
     }
 }

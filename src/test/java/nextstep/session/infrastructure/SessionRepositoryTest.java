@@ -4,6 +4,7 @@ import nextstep.payments.domain.PaidPaymentPolicy;
 import nextstep.payments.domain.PaymentPolicy;
 import nextstep.session.domain.image.CoverImage;
 import nextstep.session.domain.image.CoverImageRepository;
+import nextstep.session.domain.image.CoverImages;
 import nextstep.session.domain.session.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -64,7 +65,7 @@ public class SessionRepositoryTest {
 
         Duration duration = new Duration(LocalDate.of(2025, 4, 1), LocalDate.of(2025, 4, 5));
         PaymentPolicy policy = new PaidPaymentPolicy(800_000, 10);
-        List<CoverImage> savedCoverImages = getSavedCoverImages(sessionId);
+        CoverImages savedCoverImages = new CoverImages(getSavedCoverImages(sessionId));
         Session session = new SessionBuilder()
                 .id(sessionId)
                 .title("TestSession")
@@ -83,7 +84,7 @@ public class SessionRepositoryTest {
         assertThat(session.getTitle()).isEqualTo(savedSession.getTitle());
         assertThat(session.getSessionStatus()).isEqualTo(SessionStatus.PREPARING);
         assertThat(session.getRecruitmentStatus()).isEqualTo(RecruitmentStatus.OPEN);
-        assertThat(savedSession.getCoverImages()).hasSize(1);
+        assertThat(savedSession.getCoverImages().size()).isEqualTo(1);
 
         LOGGER.debug("Session: title={}", savedSession.getTitle());
         LOGGER.debug("CoverImage: fileName={}", savedSession.getCoverImages().get(0).getFileName());

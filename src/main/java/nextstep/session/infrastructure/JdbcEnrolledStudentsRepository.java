@@ -1,7 +1,9 @@
 package nextstep.session.infrastructure;
 
+import nextstep.session.domain.student.EnrolledStudent;
 import nextstep.session.domain.student.EnrolledStudents;
 import nextstep.session.domain.student.EnrolledStudentsRepository;
+import nextstep.session.domain.student.EnrollmentStatus;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -18,24 +20,30 @@ public class JdbcEnrolledStudentsRepository implements EnrolledStudentsRepositor
 
     @Override
     public int save(EnrolledStudents enrolledStudents) {
-        String sql = "insert into enrolled_students (session_id, student_id) values(?, ?)";
-        int count = 0;
-        for(Long studentId : enrolledStudents.getStudents()) {
-            jdbcTemplate.update(sql, enrolledStudents.getSessionId(), studentId);
-            count++;
+        String sql = "insert into enrolled_students (session_id, student_id, enrollment_status) values(?, ?, ?)";
+        for(EnrolledStudent student : enrolledStudents.getStudents()) {
+            jdbcTemplate.update(sql,
+                    enrolledStudents.getSessionId(),
+                    student.getStudentId(),
+                    student.getEnrollmentStatus().toString());
         }
 
-        return count;
+        return enrolledStudents.getStudents().size();
     }
 
     @Override
-    public EnrolledStudents findById(Long id) {
-        String sql = "select student_id " +
+    public EnrolledStudents findBySessionId(Long sessionId) {
+        String sql = "select student_id, enrollment_status " +
                 "from enrolled_students " +
                 "where session_id = ?";
-        RowMapper<Long> rowMapper = (rs, rowNum) -> rs.getLong(1);
-        List<Long> students = jdbcTemplate.query(sql, rowMapper, id);
+        RowMapper<EnrolledStudent> rowMapper = (rs, rowNum) -> {
+            return new EnrolledStudent(
+                    rs.getLong(1),
+                    EnrollmentStatus.valueOf(rs.getString(2)));
+        };
 
-        return new EnrolledStudents(id, students);
+        List<EnrolledStudent> students = jdbcTemplate.query(sql, rowMapper, sessionId);
+
+        return new EnrolledStudents(sessionId, students);
     }
 }

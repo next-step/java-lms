@@ -77,6 +77,7 @@ create table cover_image (
 create table enrolled_students (
     session_id bigint,
     student_id bigint,
+    enrollment_status varchar(100) not null,
     primary key(session_id, student_id)
 );
 
