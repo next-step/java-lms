@@ -8,7 +8,6 @@ import nextstep.payments.factory.PaymentFactory;
 import nextstep.users.domain.NsUser;
 import nextstep.users.service.UserService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
@@ -77,8 +76,8 @@ public class PaymentService {
         return false;
     }
 
-    public void savePayment(Payment payment) {
-        paymentRepository.save(paymentFactory.createPaymentEntity(payment));
+    public long savePayment(Payment payment) {
+        return paymentRepository.save(paymentFactory.createPaymentEntity(payment));
     }
 
     public void updatePaymentStatus(long paymentId, PaymentStatus status) {

@@ -71,7 +71,7 @@ class PaymentServiceTest {
     @ParameterizedTest(name = "{index} => expectedResult={0}")
     @CsvSource({"true", "false"})
     void testApprove(boolean expectedResult) {
-        TestPaymentRepository paymentRepository = new TestPaymentRepository(1L, createPaymentEntity(1L, 2L, 5L));
+        TestPaymentRepository paymentRepository = new TestPaymentRepository(1L, createPaymentEntity(1L, "2", 5L));
         TestPaymentFactory paymentFactory = new TestPaymentFactory();
         TestSessionService sessionService = new TestSessionService();
         TestUserService userService = new TestUserService() {
@@ -97,7 +97,7 @@ class PaymentServiceTest {
     void testCancel(boolean expectedResult) {
         TestPaymentRepository paymentRepository = new TestPaymentRepository(
             1L,
-            createPaymentEntity(1L, 2L, 5L)
+            createPaymentEntity(1L, "2", 5L)
         );
         TestPaymentFactory paymentFactory = new TestPaymentFactory(new Payment());
         TestSessionService sessionService = new TestSessionService();
@@ -118,7 +118,7 @@ class PaymentServiceTest {
         assertThat(paymentService.cancel(10L, "1")).isEqualTo(expectedResult);
     }
 
-    private PaymentEntity createPaymentEntity(Long id, Long userId, Long sessionId) {
+    private PaymentEntity createPaymentEntity(Long id, String userId, Long sessionId) {
         return PaymentEntity.builder()
             .id(id)
             .userId(userId)

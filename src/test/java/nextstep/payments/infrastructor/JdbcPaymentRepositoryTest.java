@@ -30,14 +30,14 @@ class JdbcPaymentRepositoryTest {
     @DisplayName("결재 저장")
     @Test
     void testSave() {
-        PaymentEntity paymentEntity = createPaymentEntity(null, 1L, 1L);
+        PaymentEntity paymentEntity = createPaymentEntity(null, "1", 1L);
         assertDoesNotThrow(() -> paymentRepository.save(paymentEntity));
     }
 
     @DisplayName("결재 아이디로 조회")
     @Test
     void testFindById() {
-        PaymentEntity paymentEntity = createPaymentEntity(null, 1L, 1L);
+        PaymentEntity paymentEntity = createPaymentEntity(null, "1", 1L);
         long savedId = paymentRepository.save(paymentEntity);
         assertThat(paymentRepository.findById(savedId)).isNotNull();
     }
@@ -45,8 +45,8 @@ class JdbcPaymentRepositoryTest {
     @DisplayName("세션 아이디로 결재 정보 조회")
     @Test
     void testFindBySession() {
-        PaymentEntity paymentEntity1 = createPaymentEntity(null, 1L, 2L);
-        PaymentEntity paymentEntity2 = createPaymentEntity(null, 1L, 2L);
+        PaymentEntity paymentEntity1 = createPaymentEntity(null, "1", 2L);
+        PaymentEntity paymentEntity2 = createPaymentEntity(null, "1", 2L);
         paymentRepository.save(paymentEntity1);
         paymentRepository.save(paymentEntity2);
 
@@ -56,7 +56,7 @@ class JdbcPaymentRepositoryTest {
     @DisplayName("결재 상태 업데이트")
     @Test
     void testUpdateStatus() {
-        PaymentEntity paymentEntity = createPaymentEntity(null, 1L, 1L);
+        PaymentEntity paymentEntity = createPaymentEntity(null, "1", 1L);
         long savedId = paymentRepository.save(paymentEntity);
 
         String newStatus = "APPROVED";
@@ -66,7 +66,7 @@ class JdbcPaymentRepositoryTest {
         assertThat(updatedPaymentEntity.getStatus()).isEqualTo(newStatus);
     }
 
-    private PaymentEntity createPaymentEntity(Long id, Long userId, Long sessionId) {
+    private PaymentEntity createPaymentEntity(Long id, String userId, Long sessionId) {
         return PaymentEntity.builder()
             .id(id)
             .userId(userId)

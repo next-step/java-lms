@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class PaymentEntity {
     private Long id;
 
-    private Long userId;
+    private String userId;
 
     private Long sessionId;
 

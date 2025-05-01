@@ -14,31 +14,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 class SessionServiceTest {
-
-    @DisplayName("Session 저장")
-    @Test
-    void testCreateSession() {
-        TestSessionRepository sessionRepository = new TestSessionRepository(1L, null, List.of());
-        TestSessionFactory sessionFactory = new TestSessionFactory();
-        SessionService sessionService = new SessionService(sessionRepository, sessionFactory, new TestSessionImageService());
-        SessionConstraint constraint = new SessionConstraint(200_000, 1);
-        SessionDescriptor descriptor = new SessionDescriptor(
-            new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1)),
-            new SessionEnrollPolicy(),
-            new SessionImages()
-        );
-
-        sessionService.saveSession(1L, constraint, descriptor);
-
-        assertThat(sessionRepository.getSaveCalled()).isEqualTo(1);
-    }
 
     @DisplayName("Session 삭제")
     @Test

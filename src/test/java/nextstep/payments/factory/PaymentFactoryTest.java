@@ -25,7 +25,7 @@ class PaymentFactoryTest {
 
         PaymentEntity paymentEntity = PaymentEntity.builder()
             .id(1L)
-            .userId(3L)
+            .userId("3")
             .sessionId(5L)
             .amount(500_000L)
             .createdAt(LocalDateTime.now())

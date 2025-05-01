@@ -32,7 +32,7 @@ public class JdbcPaymentRepository implements PaymentRepository {
             PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
             ps.setBoolean(1, paymentEntity.isDeleted());
             ps.setTimestamp(2, Timestamp.valueOf(paymentEntity.getCreatedAt()));
-            ps.setLong(3, paymentEntity.getUserId());
+            ps.setString(3, paymentEntity.getUserId());
             ps.setLong(4, paymentEntity.getSessionId());
             ps.setLong(5, paymentEntity.getAmount());
             ps.setString(6, paymentEntity.getStatus());
@@ -51,7 +51,7 @@ public class JdbcPaymentRepository implements PaymentRepository {
             .createdAt(toLocalDateTime(rs.getTimestamp("created_at")))
             .updatedAt(toLocalDateTime(rs.getTimestamp("updated_at")))
             .deleted(rs.getBoolean("deleted"))
-            .userId(rs.getLong("user_id"))
+            .userId(rs.getString("user_id"))
             .sessionId(rs.getLong("session_id"))
             .amount(rs.getLong("amount"))
             .status(rs.getString("status"))
@@ -67,7 +67,7 @@ public class JdbcPaymentRepository implements PaymentRepository {
             .createdAt(toLocalDateTime(rs.getTimestamp("created_at")))
             .updatedAt(toLocalDateTime((rs.getTimestamp("updated_at"))))
             .deleted(rs.getBoolean("deleted"))
-            .userId(rs.getLong("user_id"))
+            .userId(rs.getString("user_id"))
             .sessionId(rs.getLong("session_id"))
             .amount(rs.getLong("amount"))
             .status(rs.getString("status"))

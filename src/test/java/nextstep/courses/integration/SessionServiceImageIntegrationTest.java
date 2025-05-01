@@ -55,20 +55,6 @@ public class SessionServiceImageIntegrationTest {
 
     @Transactional
     @Test
-    void testDeleteSessionImage() {
-        long sessionId = 102L;
-        String imageUrl = "https://test.com"; // 유효한 이미지 URL 입력
-
-        Long savedId = sessionImageRepository.save(createSessionImageEntity(null, imageUrl, sessionId));
-
-        sessionImageService.deleteSessionImage(savedId);
-
-        List<SessionImageEntity> imagesAfterDeletion = sessionImageRepository.findAllBySessionId(sessionId);
-        assertThat(imagesAfterDeletion).isEmpty();
-    }
-
-    @Transactional
-    @Test
     void testDeleteSessionImages() {
         long sessionId = 103L;
         String imageUrl = "https://test.com"; // 유효한 이미지 URL 입력

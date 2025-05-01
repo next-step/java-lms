@@ -23,6 +23,10 @@ public class UserService {
         return userRepository.findByUserIds(userIds);
     }
 
+    public Long saveUser(NsUser nsUser) {
+        return userRepository.save(nsUser);
+    }
+
     public boolean canApprove(String approverId, String applicantId) {
         NsUser approver = userRepository.findByUserId(approverId);
         NsUser applicant = userRepository.findByUserId(applicantId);

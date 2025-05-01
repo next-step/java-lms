@@ -24,6 +24,10 @@ public class Payment extends BaseDomain {
     public Payment() {
     }
 
+    public Payment(Session session, NsUser user, Long amount) {
+        this(null, false, LocalDateTime.now(), LocalDateTime.now(), session, user, amount, PENDING);
+    }
+
     public Payment(String id, Session session, NsUser user, Long amount) {
         this(id, false, LocalDateTime.now(), LocalDateTime.now(), session, user, amount, PENDING);
     }

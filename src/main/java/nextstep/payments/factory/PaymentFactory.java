@@ -42,7 +42,7 @@ public class PaymentFactory {
     public PaymentEntity createPaymentEntity(Payment payment) {
         return PaymentEntity.builder()
             .id(payment.id())
-            .userId(payment.getUser().id())
+            .userId(payment.getUser().getUserId())
             .sessionId(payment.getSession().id())
             .amount(payment.getAmount())
             .createdAt(payment.getCreatedAt())

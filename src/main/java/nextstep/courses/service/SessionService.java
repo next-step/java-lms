@@ -1,9 +1,7 @@
 package nextstep.courses.service;
 
 import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionDescriptor;
 import nextstep.courses.domain.session.SessionRepository;
-import nextstep.courses.domain.session.constraint.SessionConstraint;
 import nextstep.courses.entity.SessionEntity;
 import nextstep.courses.factory.SessionFactory;
 import org.springframework.stereotype.Service;
@@ -36,9 +34,8 @@ public class SessionService {
         );
     }
 
-    public Long saveSession(Long courseId, SessionConstraint constraint, SessionDescriptor descriptor) {
-        Session newSession = new Session(constraint, descriptor);
-        return sessionRepository.save(sessionFactory.createSessionEntity(newSession, courseId));
+    public Long saveSession(Long courseId, Session session) {
+        return sessionRepository.save(sessionFactory.createSessionEntity(session, courseId));
     }
 
     @Transactional

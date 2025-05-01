@@ -54,7 +54,7 @@ create table payment (
     created_at timestamp not null,
     updated_at timestamp,
     deleted boolean not null,
-    user_id bigint not null,
+    user_id varchar(20) not null,
     session_id bigint not null,
     amount bigint not null,
     status varchar(100),
