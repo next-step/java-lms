@@ -34,7 +34,7 @@ public class SessionService {
         );
     }
 
-    public Long saveSession(Long courseId, Session session) {
+    public Long createSession(Long courseId, Session session) {
         return sessionRepository.save(sessionFactory.createSessionEntity(session, courseId));
     }
 

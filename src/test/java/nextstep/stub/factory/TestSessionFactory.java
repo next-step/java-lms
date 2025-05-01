@@ -6,6 +6,7 @@ import nextstep.courses.entity.SessionEntity;
 import nextstep.courses.factory.SessionFactory;
 
 public class TestSessionFactory extends SessionFactory {
+    private int createSessionCalled = 0;
     private final Session createSessionResult;
 
     public TestSessionFactory() {
@@ -18,6 +19,11 @@ public class TestSessionFactory extends SessionFactory {
 
     @Override
     public Session createSession(SessionEntity sessionEntity, SessionImages sessionImages) {
+        createSessionCalled++;
         return createSessionResult;
+    }
+
+    public int getCreateSessionCalled() {
+        return createSessionCalled;
     }
 }

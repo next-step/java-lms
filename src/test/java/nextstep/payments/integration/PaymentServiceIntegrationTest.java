@@ -54,7 +54,7 @@ public class PaymentServiceIntegrationTest {
             new SessionEnrollPolicy(),
             new SessionImages()
         );
-        Long savedSessionId = sessionService.saveSession(savedCourseId, new Session(constraint, descriptor));
+        Long savedSessionId = sessionService.createSession(savedCourseId, new Session(constraint, descriptor));
         Session session = sessionService.getSession(savedSessionId);
 
         userService.saveUser(new NsUser("100", "password", "test", "javajigi@slipp.net", "우아한테크코스"));
@@ -80,7 +80,7 @@ public class PaymentServiceIntegrationTest {
             new SessionEnrollPolicy(),
             new SessionImages()
         );
-        Long savedSessionId = sessionService.saveSession(savedCourseId, new Session(constraint, descriptor));
+        Long savedSessionId = sessionService.createSession(savedCourseId, new Session(constraint, descriptor));
         Session session = sessionService.getSession(savedSessionId);
 
         userService.saveUser(new NsUser("200", "password", "test", "javajigi@slipp.net", "비 선발 인원"));
@@ -106,7 +106,7 @@ public class PaymentServiceIntegrationTest {
             new SessionEnrollPolicy(),
             new SessionImages()
         );
-        Long savedSessionId = sessionService.saveSession(savedCourseId, new Session(constraint, descriptor));
+        Long savedSessionId = sessionService.createSession(savedCourseId, new Session(constraint, descriptor));
         Session session = sessionService.getSession(savedSessionId);
 
         userService.saveUser(new NsUser("300", "password", "test", "javajigi@slipp.net", "비 선발 인원"));

@@ -13,6 +13,7 @@ import nextstep.stub.service.TestSessionImageService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,6 +21,46 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 class SessionServiceTest {
+
+    @DisplayName("Session 조회")
+    @Test
+    void testGetSession() throws IOException {
+        TestSessionRepository sessionRepository = new TestSessionRepository(1L, null, List.of());
+        SessionConstraint constraint = new SessionConstraint(200_000, 1);
+        SessionDescriptor descriptor = new SessionDescriptor(
+            new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1)),
+            new SessionEnrollPolicy(),
+            new SessionImages()
+        );
+        Session session = new Session("1", constraint, descriptor);
+        TestSessionFactory sessionFactory = new TestSessionFactory(session);
+        TestSessionImageService sessionImageService = new TestSessionImageService();
+        SessionService sessionService = new SessionService(sessionRepository, sessionFactory, sessionImageService);
+
+        sessionService.getSession(1L);
+
+        assertThat(sessionFactory.getCreateSessionCalled()).isEqualTo(1);
+    }
+
+    @DisplayName("Session 저장")
+    @Test
+    void testSaveSession() {
+        TestSessionRepository sessionRepository = new TestSessionRepository(1L, null, List.of());
+        SessionConstraint constraint = new SessionConstraint(200_000, 1);
+        SessionDescriptor descriptor = new SessionDescriptor(
+            new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1)),
+            new SessionEnrollPolicy(),
+            new SessionImages()
+        );
+        Session session = new Session("1", constraint, descriptor);
+        TestSessionFactory sessionFactory = new TestSessionFactory(session);
+        TestSessionImageService sessionImageService = new TestSessionImageService();
+        SessionService sessionService = new SessionService(sessionRepository, sessionFactory, sessionImageService);
+
+        sessionService.createSession(1L, session);
+
+        assertThat(sessionRepository.getSaveCalled()).isEqualTo(1);
+    }
 
     @DisplayName("Session 삭제")
     @Test
@@ -34,7 +75,6 @@ class SessionServiceTest {
         Session session = new Session("1", constraint, descriptor);
         TestSessionFactory sessionFactory = new TestSessionFactory(session);
         TestSessionImageService sessionImageService = new TestSessionImageService();
-
         SessionService sessionService = new SessionService(sessionRepository, sessionFactory, sessionImageService);
 
         sessionService.deleteSession(1L);
