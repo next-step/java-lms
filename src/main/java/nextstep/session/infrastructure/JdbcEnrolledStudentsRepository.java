@@ -20,7 +20,7 @@ public class JdbcEnrolledStudentsRepository implements EnrolledStudentsRepositor
 
     @Override
     public int save(EnrolledStudents enrolledStudents) {
-        if (enrolledStudents == null || enrolledStudents.getStudents().size() == 0) {
+        if (enrolledStudents == null || enrolledStudents.isEmpty()) {
             return 0;
         }
 

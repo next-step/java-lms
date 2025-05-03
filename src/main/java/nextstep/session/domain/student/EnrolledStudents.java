@@ -18,7 +18,7 @@ public class EnrolledStudents {
 
     public EnrolledStudents(Long sessionId, List<EnrolledStudent> students) {
         this.sessionId = sessionId;
-        this.students = students;
+        this.students = (students == null) ? new ArrayList<>() : students;
     }
 
 
@@ -62,5 +62,13 @@ public class EnrolledStudents {
             }
         }
         throw new IllegalStateException("수강신청한 학생이 아닙니다.");
+    }
+
+    public boolean isEmpty() {
+        return students.isEmpty();
+    }
+
+    public int size() {
+        return students.size();
     }
 }

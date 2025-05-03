@@ -3,7 +3,6 @@ package nextstep.session.infrastructure;
 import nextstep.payments.domain.FreePaymentPolicy;
 import nextstep.payments.domain.PaidPaymentPolicy;
 import nextstep.payments.domain.PaymentPolicy;
-import nextstep.session.domain.image.CoverImage;
 import nextstep.session.domain.image.CoverImageRepository;
 import nextstep.session.domain.image.CoverImages;
 import nextstep.session.domain.session.*;

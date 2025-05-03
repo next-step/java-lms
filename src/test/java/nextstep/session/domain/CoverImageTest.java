@@ -4,6 +4,7 @@ import nextstep.session.domain.exception.InvalidImageFileSizeException;
 import nextstep.session.domain.exception.InvalidImageSizeException;
 import nextstep.session.domain.exception.UnsupportedImageFormatException;
 import nextstep.session.domain.image.CoverImage;
+import nextstep.session.support.CoverImageTestBuilder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -40,14 +41,11 @@ class CoverImageTest {
     @Test
     @DisplayName("파일 크기가 0이면 예외가 발생한다")
     void fileSizeIsZero_throwsException() {
-        assertThrows(InvalidImageFileSizeException.class, () -> {
-            new CoverImage.Builder()
-                    .fileName("zero.png")
-                    .imageFormat("png")
-                    .fileSize(0L)
-                    .imageSize(300, 200)
-                    .build();
-        });
+        assertThrows(InvalidImageFileSizeException.class, () ->
+                new CoverImageTestBuilder()
+                        .withFileSize(0L)
+                        .build()
+        );
     }
 
     @Test
@@ -56,11 +54,8 @@ class CoverImageTest {
         long fileSize2MB = 2 * 1024 * 1024;
 
         assertThrows(InvalidImageFileSizeException.class, () ->
-                new CoverImage.Builder()
-                        .fileName("large.png")
-                        .imageFormat("png")
-                        .fileSize(fileSize2MB)
-                        .imageSize(300, 200)
+                new CoverImageTestBuilder()
+                        .withFileSize(fileSize2MB)
                         .build()
         );
     }
@@ -69,11 +64,8 @@ class CoverImageTest {
     @DisplayName("지원되지 않는 포맷일 경우 예외가 발생한다")
     void unsupportedFormat_throwsException() {
         assertThrows(UnsupportedImageFormatException.class, () ->
-                new CoverImage.Builder()
-                        .fileName("doc.pdf")
-                        .imageFormat("pdf")
-                        .fileSize(100_000L)
-                        .imageSize(300, 200)
+                new CoverImageTestBuilder()
+                        .withImageFormat("pdf")
                         .build()
         );
     }
@@ -82,11 +74,8 @@ class CoverImageTest {
     @DisplayName("이미지 포맷은 대소문자를 구분하지 않는다")
     void formatCaseInsensitive() {
         assertDoesNotThrow(() ->
-                new CoverImage.Builder()
-                        .fileName("image.jpg")
-                        .imageFormat("JPG")
-                        .fileSize(100_000L)
-                        .imageSize(300, 200)
+                new CoverImageTestBuilder()
+                        .withImageFormat("JpG")
                         .build()
         );
     }
@@ -94,33 +83,23 @@ class CoverImageTest {
     @Test
     @DisplayName("너비 또는 높이가 기준보다 작으면 예외가 발생한다")
     void widthOrHeightTooSmall_throwsException() {
-        assertThrows(InvalidImageSizeException.class, () ->
-                new CoverImage.Builder()
-                        .fileName("small.jpg")
-                        .imageFormat("jpg")
-                        .fileSize(100_000L)
-                        .imageSize(299, 200)
-                        .build()
-        );
-        assertThrows(InvalidImageSizeException.class, () ->
-                new CoverImage.Builder()
-                        .fileName("small.jpg")
-                        .imageFormat("jpg")
-                        .fileSize(100_000L)
-                        .imageSize(300, 199)
-                        .build()
-        );
+        assertThrows(InvalidImageSizeException.class, () -> {
+            new CoverImageTestBuilder()
+                    .withImageSize(299, 200)
+                    .build();
+
+            new CoverImageTestBuilder()
+                    .withImageSize(300, 199)
+                    .build();
+        });
     }
 
     @Test
     @DisplayName("비율이 3:2가 아니면 예외가 발생한다")
     void invalidAspectRatio_throwsException() {
         assertThrows(InvalidImageSizeException.class, () ->
-                new CoverImage.Builder()
-                        .fileName("cover.png")
-                        .imageFormat("png")
-                        .fileSize(100_000L)
-                        .imageSize(500, 400) // 5:4
+                new CoverImageTestBuilder()
+                        .withImageSize(500, 400)
                         .build()
         );
     }
@@ -129,11 +108,8 @@ class CoverImageTest {
     @DisplayName("정확한 비율이 3:2일 때는 생성이 가능하다")
     void exactRatio3to2_success() {
         assertDoesNotThrow(() ->
-                new CoverImage.Builder()
-                        .fileName("cover.png")
-                        .imageFormat("png")
-                        .fileSize(100_000L)
-                        .imageSize(450, 300) // 3:2
+                new CoverImageTestBuilder()
+                        .withImageSize(450, 300)
                         .build()
         );
     }

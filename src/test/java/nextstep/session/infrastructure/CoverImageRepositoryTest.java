@@ -2,6 +2,7 @@ package nextstep.session.infrastructure;
 
 import nextstep.session.domain.image.CoverImage;
 import nextstep.session.domain.image.CoverImageRepository;
+import nextstep.session.support.CoverImageTestBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -28,13 +29,8 @@ public class CoverImageRepositoryTest {
 
     @Test
     void crud() {
-        CoverImage coverImage = new CoverImage.Builder()
-                .id(1L)
-                .fileName("test cover image")
-                .fileSize(100)
-                .imageFormat("jpg")
-                .imageSize(300, 200)
-                .sessionId(1L)
+        CoverImage coverImage = new CoverImageTestBuilder()
+                .withId(1L)
                 .build();
 
         int count = coverImageRepository.save(coverImage);
@@ -42,7 +38,7 @@ public class CoverImageRepositoryTest {
 
         CoverImage savedCoverImage = coverImageRepository.findById(1L);
         assertThat(coverImage.getFileName()).isEqualTo(savedCoverImage.getFileName());
-        assertThat(coverImage.getSessionId()).isEqualTo(1L);
+        assertThat(coverImage.getSessionId()).isEqualTo(savedCoverImage.getSessionId());
 
         LOGGER.debug("CoverImage: {}", savedCoverImage);
     }

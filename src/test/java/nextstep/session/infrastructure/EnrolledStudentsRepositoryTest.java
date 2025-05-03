@@ -45,7 +45,7 @@ public class EnrolledStudentsRepositoryTest {
 
         EnrolledStudents savedEnrolledStudents = enrolledStudentsRepository.findBySessionId(sessionId);
         assertThat(savedEnrolledStudents.getSessionId()).isEqualTo(enrolledStudents.getSessionId());
-        assertThat(savedEnrolledStudents.getStudents().size()).isEqualTo(enrolledStudents.getStudents().size());
+        assertThat(savedEnrolledStudents.size()).isEqualTo(enrolledStudents.getStudents().size());
         assertThat(savedEnrolledStudents.getStudents().get(0).getEnrollmentStatus()).isEqualTo(EnrollmentStatus.APPROVED);
         assertThat(savedEnrolledStudents.getStudents().get(1).getEnrollmentStatus()).isEqualTo(EnrollmentStatus.APPROVED);
 

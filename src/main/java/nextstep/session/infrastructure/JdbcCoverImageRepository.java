@@ -29,7 +29,7 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
 
     @Override
     public int save(CoverImages coverImages) {
-        if (coverImages == null || coverImages.size() == 0 ) {
+        if (coverImages == null || coverImages.isEmpty() ) {
             return 0;
         }
 

@@ -4,10 +4,14 @@ import nextstep.payments.domain.PaidPaymentPolicy;
 import nextstep.payments.domain.PaymentPolicy;
 import nextstep.session.domain.image.CoverImage;
 import nextstep.session.domain.image.CoverImages;
-import nextstep.session.domain.session.*;
+import nextstep.session.domain.session.RecruitmentStatus;
+import nextstep.session.domain.session.Session;
+import nextstep.session.domain.session.SessionRepository;
+import nextstep.session.domain.session.SessionStatus;
 import nextstep.session.domain.student.EnrolledStudent;
 import nextstep.session.domain.student.EnrolledStudents;
 import nextstep.session.domain.student.EnrollmentStatus;
+import nextstep.session.support.SessionTestBuilder;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,16 +42,9 @@ public class SessionRepositoryTest {
 
     @Test
     void crud() {
-        Duration duration = new Duration(LocalDate.of(2025, 4, 1), LocalDate.of(2025, 4, 5));
-        PaymentPolicy policy = new PaidPaymentPolicy(800_000, 10);
-        Session session = new SessionBuilder()
-                .id(1L)
-                .title("TestSession")
-                .duration(duration)
-                .paymentPolicy(policy)
-                .enrolledStudents(null)
-                .sessionStatus(SessionStatus.PREPARING)
-                .recruitmentStatus(RecruitmentStatus.OPEN)
+        Session session = new SessionTestBuilder()
+                .withSessionStatus(SessionStatus.PREPARING)
+                .withRecruitmentStatus(RecruitmentStatus.OPEN)
                 .build();
 
         int count = sessionRepository.save(session);
@@ -66,21 +62,14 @@ public class SessionRepositoryTest {
     void crudWithRelatedEntity() {
         Long sessionId = 1L;
 
-        Duration duration = new Duration(LocalDate.of(2025, 4, 1), LocalDate.of(2025, 4, 5));
         PaymentPolicy policy = new PaidPaymentPolicy(800_000, 10);
-
-        CoverImages coverImages =getCoverImages(sessionId);
+        CoverImages coverImages = getCoverImages(sessionId);
         EnrolledStudents enrolledStudents = getEnrolledStudents(sessionId);
 
-        Session session = new SessionBuilder()
-                .id(sessionId)
-                .title("TestSession")
-                .coverImages(coverImages)
-                .duration(duration)
-                .paymentPolicy(policy)
-                .enrolledStudents(enrolledStudents)
-                .sessionStatus(SessionStatus.PREPARING)
-                .recruitmentStatus(RecruitmentStatus.OPEN)
+        Session session = new SessionTestBuilder()
+                .withCoverImages(coverImages)
+                .withPaymentPolicy(policy)
+                .withEnrolledStudents(enrolledStudents)
                 .build();
 
         int count = sessionRepository.save(session);
@@ -88,8 +77,8 @@ public class SessionRepositoryTest {
 
         Session savedSession = sessionRepository.findById(sessionId);
         assertThat(session.getTitle()).isEqualTo(savedSession.getTitle());
-        assertThat(session.getSessionStatus()).isEqualTo(SessionStatus.PREPARING);
-        assertThat(session.getRecruitmentStatus()).isEqualTo(RecruitmentStatus.OPEN);
+        assertThat(session.getSessionStatus()).isEqualTo(savedSession.getSessionStatus());
+        assertThat(session.getRecruitmentStatus()).isEqualTo(savedSession.getRecruitmentStatus());
         assertThat(savedSession.getCoverImages().size()).isEqualTo(1);
         assertThat(savedSession.getEnrolledStudents().getStudents().get(0).getStudentId()).isEqualTo(NsUserTest.JAVAJIGI.getId());
         assertThat(savedSession.getEnrolledStudents().getStudents().get(1).getStudentId()).isEqualTo(NsUserTest.SANJIGI.getId());
