@@ -23,11 +23,6 @@ public class SessionImageService {
         this.sessionImageFactory = sessionImageFactory;
     }
 
-    public Long createSessionImage(long sessionId, String imageUrl, String imageType) throws IOException {
-        SessionImage sessionImage = sessionImageFactory.createSessionImage(imageUrl, imageType);
-        return sessionImageRepository.save(sessionImageFactory.createImageEntity(sessionImage, sessionId));
-    }
-
     public SessionImages getSessionImages(long sessionId) throws IOException {
         List<SessionImage> sessionImages = new ArrayList<>();
         List<SessionImageEntity> sessionImageEntities = getSessionImageEntities(sessionId);
@@ -35,6 +30,11 @@ public class SessionImageService {
             sessionImages.add(sessionImageFactory.createSessionImage(sessionImageEntity));
         }
         return new SessionImages(sessionImages);
+    }
+
+    public Long createSessionImage(long sessionId, String imageUrl, String imageType) throws IOException {
+        SessionImage sessionImage = sessionImageFactory.createSessionImage(imageUrl, imageType);
+        return sessionImageRepository.save(sessionImageFactory.createImageEntity(sessionImage, sessionId));
     }
 
     public void deleteSessionImage(long sessionImageId) {

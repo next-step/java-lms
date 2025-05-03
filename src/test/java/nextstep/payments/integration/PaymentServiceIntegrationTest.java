@@ -61,7 +61,7 @@ public class PaymentServiceIntegrationTest {
         NsUser nsUser = userService.getUser("100");
 
         Payment payment = new Payment(session, nsUser, 200_000L);
-        long savedPaymentId = paymentService.savePayment(payment);
+        long savedPaymentId = paymentService.createPayment(payment);
 
         userService.saveUser(new NsUser("101", "password", "test", "javajigi@slipp.net", "강사"));
         paymentService.approve(savedPaymentId, "101");
@@ -87,7 +87,7 @@ public class PaymentServiceIntegrationTest {
         NsUser nsUser = userService.getUser("200");
 
         Payment payment = new Payment(session, nsUser, 200_000L);
-        long savedPaymentId = paymentService.savePayment(payment);
+        long savedPaymentId = paymentService.createPayment(payment);
 
         userService.saveUser(new NsUser("201", "password", "test", "javajigi@slipp.net", "강사"));
         paymentService.cancel(savedPaymentId, "201");
@@ -112,6 +112,6 @@ public class PaymentServiceIntegrationTest {
         userService.saveUser(new NsUser("300", "password", "test", "javajigi@slipp.net", "비 선발 인원"));
         NsUser nsUser = userService.getUser("300");
 
-        assertDoesNotThrow(() -> paymentService.savePayment(new Payment(session, nsUser, 200_000L)));
+        assertDoesNotThrow(() -> paymentService.createPayment(new Payment(session, nsUser, 200_000L)));
     }
 }

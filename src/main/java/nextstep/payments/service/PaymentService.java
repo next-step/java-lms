@@ -47,7 +47,7 @@ public class PaymentService {
         Payment newPayment = payment(newPaymentId);
 
         if (payments.canEnroll(session, newPayment)) {
-            savePayment(newPayment);
+            createPayment(newPayment);
             return true;
         }
 
@@ -76,7 +76,7 @@ public class PaymentService {
         return false;
     }
 
-    public long savePayment(Payment payment) {
+    public long createPayment(Payment payment) {
         return paymentRepository.save(paymentFactory.createPaymentEntity(payment));
     }
 
