@@ -2,6 +2,7 @@ package nextstep.payments.service;
 
 import nextstep.courses.domain.session.Session;
 import nextstep.payments.domain.Payment;
+import nextstep.payments.domain.PaymentStatus;
 import nextstep.payments.domain.Payments;
 import nextstep.payments.entity.PaymentEntity;
 import nextstep.stub.factory.TestPaymentFactory;
@@ -116,6 +117,48 @@ class PaymentServiceTest {
         );
 
         assertThat(paymentService.cancel(10L, "1")).isEqualTo(expectedResult);
+    }
+
+    @DisplayName("결재 정보 생성")
+    @Test
+    void testCreatePayment() {
+        TestPaymentRepository paymentRepository =
+            new TestPaymentRepository(1L, createPaymentEntity(1L, "2", 5L));
+        TestPaymentFactory paymentFactory = new TestPaymentFactory();
+        TestSessionService sessionService = new TestSessionService();
+        TestUserService userService = new TestUserService();
+
+        PaymentService paymentService = new PaymentService(
+            paymentRepository,
+            paymentFactory,
+            sessionService,
+            userService
+        );
+
+        paymentService.createPayment(new Payment());
+
+        assertThat(paymentRepository.getSaveCalled()).isEqualTo(1);
+    }
+
+    @DisplayName("결재 정보 상태 업데이트")
+    @Test
+    void testUpdatePaymentStatus() {
+        TestPaymentRepository paymentRepository =
+            new TestPaymentRepository(1L, createPaymentEntity(1L, "2", 5L));
+        TestPaymentFactory paymentFactory = new TestPaymentFactory();
+        TestSessionService sessionService = new TestSessionService();
+        TestUserService userService = new TestUserService();
+
+        PaymentService paymentService = new PaymentService(
+            paymentRepository,
+            paymentFactory,
+            sessionService,
+            userService
+        );
+
+        paymentService.updatePaymentStatus(1L, PaymentStatus.APPROVED);
+
+        assertThat(paymentRepository.getUpdateCalled()).isEqualTo(1);
     }
 
     private PaymentEntity createPaymentEntity(Long id, String userId, Long sessionId) {

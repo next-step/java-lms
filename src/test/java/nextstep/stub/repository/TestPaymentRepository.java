@@ -10,6 +10,7 @@ public class TestPaymentRepository implements PaymentRepository {
     private final PaymentEntity findByIdResult;
     private final List<PaymentEntity> findBySessionResult;
     private int saveCalled = 0;
+    private int updateCalled = 0;
 
     public TestPaymentRepository(long saveResult) {
         this(saveResult, null, List.of());
@@ -43,9 +44,14 @@ public class TestPaymentRepository implements PaymentRepository {
 
     @Override
     public void updateStatus(Long paymentId, String status) {
+        updateCalled++;
     }
 
     public int getSaveCalled() {
         return saveCalled;
+    }
+
+    public int getUpdateCalled() {
+        return updateCalled;
     }
 }

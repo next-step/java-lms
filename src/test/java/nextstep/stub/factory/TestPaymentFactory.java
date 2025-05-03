@@ -11,22 +11,24 @@ import nextstep.users.domain.NsUser;
 public class TestPaymentFactory extends PaymentFactory {
     private final Payment createPaymentResult;
     private final Payments createPaymentsResult;
+    private final PaymentEntity createPaymentEntityResult;
 
     public TestPaymentFactory() {
-        this(null, null);
+        this(null, null, null);
     }
 
     public TestPaymentFactory(Payment createPaymentResult) {
-        this(createPaymentResult, null);
+        this(createPaymentResult, null, null);
     }
 
     public TestPaymentFactory(Payments createPaymentsResult) {
-        this(null, createPaymentsResult);
+        this(null, createPaymentsResult, null);
     }
 
-    public TestPaymentFactory(Payment createPaymentResult, Payments createPaymentsResult) {
+    public TestPaymentFactory(Payment createPaymentResult, Payments createPaymentsResult, PaymentEntity createPaymentEntityResult) {
         this.createPaymentResult = createPaymentResult;
         this.createPaymentsResult = createPaymentsResult;
+        this.createPaymentEntityResult = createPaymentEntityResult;
     }
 
     @Override
@@ -37,5 +39,10 @@ public class TestPaymentFactory extends PaymentFactory {
     @Override
     public Payments createPayments(Session session, PaymentEntityUserMap paymentEntityNsUserMap) {
         return createPaymentsResult;
+    }
+
+    @Override
+    public PaymentEntity createPaymentEntity(Payment payment) {
+        return createPaymentEntityResult;
     }
 }
