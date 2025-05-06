@@ -20,4 +20,8 @@ public class SessionMetadata {
     public LocalDate endAt() {
         return period.endAt();
     }
+
+    public CoverImage getCoverImage() {
+        return coverImage;
+    }
 }

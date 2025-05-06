@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
 
 import nextstep.courses.CannotEnrollException;
@@ -62,8 +63,8 @@ public class Session {
     }
 
     /* ------------ 정보성 메서드 ------------ */
-    public Amount price() {
-        return enrollment.price();
+    public BigInteger price() {
+        return enrollment.price().getAmount();
     }
 
     public boolean isFree() {
@@ -78,4 +79,19 @@ public class Session {
         return metadata.endAt();
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public CoverImage getCoverImage() {
+        return metadata.getCoverImage();
+    }
+
+    public SessionStatus getStatus() {
+        return status;
+    }
+
+    public Long getMaxCapacity() {
+        return enrollment.remainingSeats().orElseGet(() -> (long)0);
+    }
 }
