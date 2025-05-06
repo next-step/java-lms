@@ -2,6 +2,7 @@ package nextstep.courses.domain.session;
 
 import java.time.LocalDate;
 
+import nextstep.courses.CannotEnrollException;
 import nextstep.courses.domain.Amount;
 import nextstep.courses.domain.session.metadata.Period;
 import nextstep.courses.domain.session.metadata.SessionMetadata;
@@ -13,41 +14,50 @@ import nextstep.payments.domain.Payment;
  */
 public class Session {
     private final Long id;
+    private SessionStatus status;
     private final SessionMetadata metadata;
     private final Enrollment enrollment;
 
-    public Session(Long id, Period period) {
-        this(id, period, SessionStatus.PREPARING);
-    }
-
-    public Session(Long id, Period period, SessionStatus status) {
-        this(id, period, status, EnrollmentPolicy.free());
-    }
-
-    public Session(Long id, Period period, SessionStatus status, EnrollmentPolicy enrollmentPolicy) {
-        this(id, period, status, enrollmentPolicy, null);
-    }
-
-    public Session(Long id, Period period, SessionStatus status, EnrollmentPolicy enrollmentPolicy,
+    private Session(Long id, SessionStatus status, EnrollmentPolicy enrollmentPolicy, Period period,
         CoverImage coverImage) {
         this.id = id;
+        this.status = status;
         this.metadata = new SessionMetadata(period, coverImage);
-        this.enrollment = new Enrollment(status, enrollmentPolicy);
+        this.enrollment = new Enrollment(enrollmentPolicy);
+    }
+
+    public static Session createFreeSession(Long id, Period period, CoverImage coverImage) {
+        return new Session(id, SessionStatus.PREPARING, new FreeEnrollmentPolicy(), period, coverImage);
+    }
+
+    public static Session createPaidSession(Long id, Period period, CoverImage coverImage, Amount price,
+        long capacity) {
+        return new Session(id, SessionStatus.PREPARING, new PaidEnrollmentPolicy(price, capacity), period, coverImage);
+    }
+
+    /* 기능 */
+    public void open() {
+        this.status = SessionStatus.OPEN;
+    }
+
+    public void close() {
+        this.status = SessionStatus.CLOSED;
     }
 
     /* ------------ 정책 검증 ------------ */
-    // 모집중 상태인지
-    private boolean isOpen() {
-        return enrollment.isOpen();
-    }
-
     // 수강신청이 가능한 "상태"인지 체크 (모집중 + 좌석 여유)
     public boolean canEnroll() {
-        return enrollment.canEnroll();
+        if (!status.isOpen()) {
+            return false;
+        }
+        return enrollment.hasCapacity();
     }
 
     // 실제 수강신청
     public void enroll(Payment payment) {
+        if (!status.isOpen()) {
+            throw new CannotEnrollException("강의가 모집중이 아닙니다");
+        }
         enrollment.enroll(payment);
     }
 
@@ -67,4 +77,5 @@ public class Session {
     public LocalDate endAt() {
         return metadata.endAt();
     }
+
 }
