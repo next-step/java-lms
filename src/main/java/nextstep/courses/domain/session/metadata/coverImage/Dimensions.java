@@ -37,4 +37,13 @@ public class Dimensions {
     public int hashCode() {
         return Objects.hash(width, height);
     }
+
+    /* getter */
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 }

@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Objects;
 
@@ -22,6 +23,10 @@ public class Amount {
 
     public static Amount of(long amount) {
         return new Amount(BigInteger.valueOf(amount));
+    }
+
+    public static Amount of(BigInteger amount) {
+        return new Amount(amount);
     }
 
     public BigInteger getAmount() {

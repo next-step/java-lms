@@ -18,6 +18,12 @@ public class Enrollment {
         this.enrollmentPolicy = enrollmentPolicy;
     }
 
+    /* 복원용 생성자 */
+    public Enrollment(EnrollmentPolicy enrollmentPolicy, int initialCount) {
+        this.enrollmentPolicy = enrollmentPolicy;
+        this.enrolledCount = initialCount;
+    }
+
     /* ------------ 정책 검증 ------------ */
     public OptionalLong remainingSeats() {
         return enrollmentPolicy.remainingSeats(enrolledCount);

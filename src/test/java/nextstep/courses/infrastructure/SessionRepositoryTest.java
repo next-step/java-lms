@@ -1,8 +1,10 @@
 package nextstep.courses.infrastructure;
 
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.time.LocalDate;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,14 +38,10 @@ public class SessionRepositoryTest {
     void crud() {
         Period period = new Period(LocalDate.now(), LocalDate.now().plusDays(1));
         Session session = Session.createPaidSession(1L, period, null, Amount.of(10_000), 3);
-
-
         int result = sessionRepository.save(session);
-
-        Assertions.assertEquals(1, result);
+        assertEquals(1, result);
         Session found = sessionRepository.findById(1L);
-        // org.assertj.core.api.Assertions.assertThat(found.getId()).isEqualTo(1L);
+        assertThat(found.price()).isEqualTo(Amount.of(10_000).getAmount());
     }
-
 
 }

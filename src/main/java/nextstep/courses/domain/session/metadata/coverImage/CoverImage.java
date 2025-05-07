@@ -13,8 +13,26 @@ public class CoverImage {
         this.dimensions = dimensions;
     }
 
+    /* getter */
+
     public Long getId() {
         return id;
+    }
+
+    public Long getSize() {
+        return size.getBytes();
+    }
+
+    public int getWidth() {
+        return dimensions.getWidth();
+    }
+
+    public int getHeight() {
+        return dimensions.getHeight();
+    }
+
+    public String getExtension() {
+        return type.getExtension();
     }
 
 }

@@ -17,7 +17,7 @@ public class Session {
     private final Long id;
     private SessionStatus status;
     private final SessionMetadata metadata;
-    private final Enrollment enrollment;
+    private Enrollment enrollment;
 
     private Session(Long id, SessionStatus status, EnrollmentPolicy enrollmentPolicy, Period period,
         CoverImage coverImage) {
@@ -34,6 +34,19 @@ public class Session {
     public static Session createPaidSession(Long id, Period period, CoverImage coverImage, Amount price,
         long capacity) {
         return new Session(id, SessionStatus.PREPARING, new PaidEnrollmentPolicy(price, capacity), period, coverImage);
+    }
+
+    public static Session restoreSession(Long id, SessionStatus status, Period period, CoverImage coverImage,
+        Amount price, long maxCapacity, int enrolledCount) {
+        EnrollmentPolicy policy;
+        if (price.equals(BigInteger.ZERO)) {
+            policy = new FreeEnrollmentPolicy();
+        } else {
+            policy = new PaidEnrollmentPolicy(price, maxCapacity);
+        }
+        Session session = new Session(id, status, policy, period, coverImage);
+        session.enrollment = new Enrollment(policy, enrolledCount);
+        return session;
     }
 
     /* 기능 */

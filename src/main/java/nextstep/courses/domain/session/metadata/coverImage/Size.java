@@ -47,4 +47,9 @@ public class Size {
     public int hashCode() {
         return Objects.hashCode(bytes);
     }
+
+    /* Getter */
+    public long getBytes() {
+        return bytes;
+    }
 }
