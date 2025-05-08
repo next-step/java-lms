@@ -52,7 +52,7 @@ public class JdbcSessionRepository implements SessionRepository {
             Period period = new Period(toLocalDate(rs.getTimestamp(3)), toLocalDate(rs.getTimestamp(4)));
             SessionStatus status = SessionStatus.valueOf(rs.getString(5));
             Amount price = Amount.of(rs.getObject(6, BigInteger.class));
-            Long maxCapacity = rs.getLong(7);
+            Long maxCapacity = rs.getObject(7, Long.class);
             int enrolledCount = rs.getInt(8);
             return Session.restoreSession(sessionId, status, period, coverImage, price, maxCapacity, enrolledCount);
         };

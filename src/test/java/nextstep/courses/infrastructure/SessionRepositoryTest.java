@@ -18,6 +18,11 @@ import nextstep.courses.domain.Amount;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.domain.session.metadata.Period;
+import nextstep.courses.domain.session.metadata.coverImage.CoverImage;
+import nextstep.courses.domain.session.metadata.coverImage.CoverImageRepository;
+import nextstep.courses.domain.session.metadata.coverImage.Dimensions;
+import nextstep.courses.domain.session.metadata.coverImage.ImageType;
+import nextstep.courses.domain.session.metadata.coverImage.Size;
 
 @JdbcTest
 public class SessionRepositoryTest {
@@ -27,16 +32,17 @@ public class SessionRepositoryTest {
     JdbcTemplate jdbcTemplate;
 
     SessionRepository sessionRepository;
+    Period period;
 
     @BeforeEach
     void setUp() {
         sessionRepository = new JdbcSessionRepository(jdbcTemplate);
+        period = new Period(LocalDate.now(), LocalDate.now().plusDays(1));
     }
 
     @Test
     @DisplayName("세션 저장 후 조회")
     void crud() {
-        Period period = new Period(LocalDate.now(), LocalDate.now().plusDays(1));
         Session session = Session.createPaidSession(1L, period, null, Amount.of(10_000), 3);
         int result = sessionRepository.save(session);
         assertEquals(1, result);
@@ -44,4 +50,16 @@ public class SessionRepositoryTest {
         assertThat(found.price()).isEqualTo(Amount.of(10_000).getAmount());
     }
 
+    @Test
+    @DisplayName("커버이미지 같이 저장하는 경우")
+    void crudWithCoverImage() {
+        CoverImage coverImage = new CoverImage(2L, Size.ofBytes(1024), ImageType.fromExtension("jpg"), new Dimensions(900,600));
+        CoverImageRepository coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
+        coverImageRepository.save(coverImage);
+        Session session = Session.createPaidSession(2L, period, coverImage, Amount.of(10_000), 3);
+        int result = sessionRepository.save(session);
+        assertEquals(1, result);
+        Session found = sessionRepository.findById(2L);
+        assertThat(found.getCoverImage().getId()).isEqualTo(2L);
+    }
 }
