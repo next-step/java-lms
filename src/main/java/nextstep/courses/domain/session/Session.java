@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 import nextstep.courses.CannotEnrollException;
 import nextstep.courses.InvalidPeriodException;
+
 import nextstep.courses.domain.Amount;
 import nextstep.courses.domain.session.metadata.Period;
 import nextstep.courses.domain.session.metadata.SessionMetadata;

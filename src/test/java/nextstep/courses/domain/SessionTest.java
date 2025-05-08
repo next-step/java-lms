@@ -28,6 +28,7 @@ public class SessionTest {
     @DisplayName("강의는 시작일과 종료일을 가진다.")
     void createSession() {
         Session session = Session.createFreeSession(1L, period, null);
+
         assertAll(
             () -> assertEquals(session.startAt(), LocalDate.now()),
             () -> assertEquals(session.endAt(), LocalDate.now().plusDays(1))
@@ -61,6 +62,7 @@ public class SessionTest {
         }
 
         assertEquals(expected, session.canEnroll());
+
     }
 
     @Test
@@ -68,6 +70,7 @@ public class SessionTest {
     void paidSessionTest() {
         Session paidSession = Session.createPaidSession(1L, period, null, Amount.of(10_000), 10);
         Session freeSession = Session.createFreeSession(1L, period, null);
+
         assertAll(
             () -> assertFalse(paidSession.isFree()),
             () -> assertTrue(freeSession.isFree())

@@ -7,5 +7,4 @@ public enum SessionStatus {
     public boolean isOpen() {
         return this == OPEN;
     }
-
 }

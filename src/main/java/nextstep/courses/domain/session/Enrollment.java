@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+
 import java.util.OptionalLong;
 
 import nextstep.courses.CannotEnrollException;
