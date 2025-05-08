@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
@@ -7,8 +8,11 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionStatus;
 import nextstep.courses.domain.session.metadata.Period;
 
 public class SessionTest {
@@ -31,18 +35,32 @@ public class SessionTest {
     }
 
     @Test
-    @DisplayName("강의는 모집중 상태일때만 수강신청이 가능하다")
-    void unableToRegister() {
-        Session preparingSession = Session.createFreeSession(1L, period, null);
-        Session openSession = Session.createFreeSession(1L, period, null);
-        openSession.open();
-        Session closedSession = Session.createFreeSession(1L, period, null);
-        closedSession.close();
-        assertAll(
-            () -> assertFalse(preparingSession.canEnroll()),
-            () -> assertTrue(openSession.canEnroll()),
-            () -> assertFalse(closedSession.canEnroll())
-        );
+    @DisplayName("종료일 이후에는 수강상태를 변경할 수 없다.")
+    void endSession() {
+        period = new Period(LocalDate.now().minusDays(2), LocalDate.now().minusDays(1));
+        Session session = Session.createFreeSession(1L, period, null);
+        assertThatThrownBy(
+            session::close
+        ).isInstanceOf(IllegalStateException.class);
+    }
+
+    @ParameterizedTest()
+    @CsvSource({
+        "PREPARING, false",
+        "OPEN, true",
+        "CLOSED, false"
+    })
+    void canEnrollOnlyWhenOpen(SessionStatus status, boolean expected) {
+        Session session = Session.createFreeSession(1L, period, null);
+
+        if (status == SessionStatus.OPEN) {
+            session.open();
+        } else if (status == SessionStatus.CLOSED) {
+            session.open();
+            session.close();
+        }
+
+        assertEquals(expected, session.canEnroll());
     }
 
     @Test

@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.time.LocalDate;
 
 import nextstep.courses.CannotEnrollException;
+import nextstep.courses.InvalidPeriodException;
 import nextstep.courses.domain.Amount;
 import nextstep.courses.domain.session.metadata.Period;
 import nextstep.courses.domain.session.metadata.SessionMetadata;
@@ -51,16 +52,26 @@ public class Session {
 
     /* 기능 */
     public void open() {
+        validateNotEnded();
         this.status = SessionStatus.OPEN;
     }
 
     public void close() {
+        validateNotEnded();
         this.status = SessionStatus.CLOSED;
+    }
+
+    private void validateNotEnded() {
+        LocalDate today = LocalDate.now();
+        if (today.isAfter(endAt())) {
+            throw new IllegalStateException("종료일 ( " + endAt() + " )이 지난 강의는 더이상 변경할 수 없습니다.");
+        }
     }
 
     /* ------------ 정책 검증 ------------ */
     // 수강신청이 가능한 "상태"인지 체크 (모집중 + 좌석 여유)
     public boolean canEnroll() {
+        validateNotEnded();
         if (!status.isOpen()) {
             return false;
         }
