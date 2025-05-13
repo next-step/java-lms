@@ -7,8 +7,6 @@ import nextstep.courses.domain.session.SessionId;
 import nextstep.courses.domain.session.SessionProgressStatus;
 import nextstep.courses.domain.session.SessionRecruitmentStatus;
 import nextstep.courses.domain.session.SessionType;
-import nextstep.courses.domain.session.enrollment.Enrollments;
-import nextstep.courses.domain.session.enrollment.PaidEnrollments;
 import nextstep.courses.domain.session.info.SessionInfo;
 import nextstep.courses.domain.session.info.basic.SessionBasicInfo;
 import nextstep.courses.domain.session.info.detail.SessionDetailInfo;
@@ -35,34 +33,22 @@ public class SessionDto {
     public static SessionDto of(Session session) {
         SessionId sessionId = session.getId();
         SessionInfo sessionInfo = session.getInfo();
-        Enrollments enrollments = session.getEnrollments();
 
         SessionBasicInfo sessionBasicInfo = sessionInfo.getBasicInfo();
         SessionDetailInfo sessionDetailInfo = sessionInfo.getDetailInfo();
-
         SessionPeriod sessionPeriod = sessionDetailInfo.getPeriod();
-        SessionType type = sessionDetailInfo.getType();
-
-        int maxEnrollment = getMaxEnrollment(type, enrollments);
 
         return SessionDto.builder()
                 .id(sessionId.getId())
                 .courseId(sessionId.getCourseId())
                 .title(sessionBasicInfo.getTitle())
                 .sessionType(sessionDetailInfo.getType())
-                .progressStatus(enrollments.getProgressStatus())
-                .recruitmentStatus(enrollments.getRecruitmentStatus())
+                .progressStatus(sessionInfo.getProgressStatus())
+                .recruitmentStatus(sessionInfo.getRecruitmentStatus())
                 .startDate(sessionPeriod.getStartDate())
                 .endDate(sessionPeriod.getEndDate())
-                .maximumEnrollment(maxEnrollment)
+                .maximumEnrollment(sessionInfo.getMaxEnrollment())
                 .build();
-    }
-
-    private static int getMaxEnrollment(SessionType type, Enrollments enrollments) {
-        if (type.isPaid()) {
-            return ((PaidEnrollments) enrollments).getMaxEnrollment();
-        }
-        return 0;
     }
 
     public void setTimeStampForUpdate() {

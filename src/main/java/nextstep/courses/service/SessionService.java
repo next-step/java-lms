@@ -3,6 +3,7 @@ package nextstep.courses.service;
 import lombok.RequiredArgsConstructor;
 import nextstep.courses.domain.session.*;
 import nextstep.courses.domain.session.enrollment.Enrollments;
+import nextstep.courses.domain.session.enrollment.EnrollmentStatus;
 import nextstep.courses.domain.session.enrollment.FreeEnrollments;
 import nextstep.courses.domain.session.enrollment.PaidEnrollments;
 import nextstep.courses.domain.session.info.SessionInfo;
@@ -34,20 +35,38 @@ public class SessionService {
     @Transactional
     public void enroll(Long sessionId, String userId, String paymentId) {
         Session session = findSession(sessionId);
-
         NsUser user = userService.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
         Payment payment = null;
         if (session.isPaid()) {
             payment = paymentService.payment(paymentId);
+            if (payment == null) {
+                throw new IllegalArgumentException("유료 강의는 결제가 필요합니다.");
+            }
+            session.getInfo().validatePayment(payment);
         }
 
-        session.enroll(user, payment);
+        Enrollments enrollments = session.createEnrollments();
+        enrollments.enroll(user);
         
         SessionDto updatedSessionDto = SessionDto.of(session);
         updatedSessionDto.setTimeStampForUpdate();
         sessionEnrollmentRepository.save(sessionId, user.getId());
+    }
+
+    @Transactional
+    public void approve(Long sessionId, String userId) {
+        Session session = findSession(sessionId);
+        NsUser user = userService.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+
+        Enrollments enrollments = session.createEnrollments();
+        enrollments.approve(user);
+
+        SessionDto updatedSessionDto = SessionDto.of(session);
+        updatedSessionDto.setTimeStampForUpdate();
+        sessionEnrollmentRepository.updateStatus(sessionId, user.getId(), EnrollmentStatus.ENROLLED);
     }
 
     private Session findSession(Long sessionId) {
@@ -61,11 +80,16 @@ public class SessionService {
         SessionBasicInfo sessionBasicInfo = new SessionBasicInfo(sessionDto.getTitle(),
                 imageService.findThumbnailBySessionId(sessionDto.getId()));
         SessionDetailInfo sessionDetailInfo = getSessionDetailInfo(sessionDto);
-        SessionInfo sessionInfo = new SessionInfo(sessionBasicInfo, sessionDetailInfo);
+        SessionInfo sessionInfo = new SessionInfo(
+                sessionBasicInfo, 
+                sessionDetailInfo, 
+                sessionDto.getMaximumEnrollment(),
+                sessionDto.getProgressStatus(),
+                sessionDto.getRecruitmentStatus()
+        );
 
-        Enrollments enrollments = getEnrollment(sessionDto);
         SessionId entityId = new SessionId(sessionDto.getId(), sessionDto.getCourseId());
-        return new Session(entityId, sessionInfo, enrollments);
+        return new Session(entityId, sessionInfo);
     }
 
     private SessionDetailInfo getSessionDetailInfo(SessionDto sessionDto) {

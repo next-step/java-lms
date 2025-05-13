@@ -85,3 +85,11 @@
     - [x] Enrollments 리팩토링
   - [x] 수강 신청 승인
   - [x] 수강 신청 취소
+- [ ] 피드백
+  - [x] Enrollments 를 Session 의 필드에서 제거
+  - [ ] Enrollment 메소드 위치 이동
+    - [ ] approve
+    - [ ] cancel
+    - [ ] 상태 확인 메소드
+  - [ ] AbstractEnrollments 추가
+  - [ ] Session 테스트 데이터 생성 방법 변경

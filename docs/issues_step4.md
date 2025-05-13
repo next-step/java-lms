@@ -19,3 +19,8 @@
     - EnrollmentManager는 수강 신청 상태와 관계 없이 List<NsUser> 도 필요
     - List<NsUser> 대신 Map<NsUser, EnrollmentStatus>를 갖도록 변경하자
     - 이러면 별도의 Enrollment 객체는 필요하지 않음
+## 피드백
+### Enrollments - Session 관계
+- Enrollments는 Session에 의존
+- 그러나 Enrollments가 Session의 필드일 필요성이 있을까?
+- 
