@@ -37,12 +37,7 @@ public class EnrollmentManager {
             throw new IllegalArgumentException("해당 사용자의 수강신청 정보가 없습니다.");
         }
 
-        EnrollmentStatus currentStatus = enrollmentStatuses.get(user);
-        if (currentStatus != EnrollmentStatus.PENDING_APPROVAL) {
-            throw new IllegalStateException("승인 대기 상태의 수강신청만 승인할 수 있습니다.");
-        }
-
-        enrollmentStatuses.put(user, EnrollmentStatus.ENROLLED);
+        enrollmentStatuses.computeIfPresent(user, (k, currentStatus) -> currentStatus.approve());
     }
 
     public void cancelEnrollment(NsUser user) {
@@ -50,12 +45,7 @@ public class EnrollmentManager {
             throw new IllegalArgumentException("해당 사용자의 수강신청 정보가 없습니다.");
         }
 
-        EnrollmentStatus currentStatus = enrollmentStatuses.get(user);
-        if (currentStatus != EnrollmentStatus.PENDING_APPROVAL && currentStatus != EnrollmentStatus.ENROLLED) {
-            throw new IllegalStateException("승인 대기 또는 수강신청 상태만 취소할 수 있습니다.");
-        }
-
-        enrollmentStatuses.put(user, EnrollmentStatus.CANCELLED);
+        enrollmentStatuses.computeIfPresent(user, (k, currentStatus) -> currentStatus.cancel());
     }
 
     public EnrollmentStatus getEnrollmentStatus(NsUser user) {
