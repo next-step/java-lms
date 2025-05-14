@@ -30,4 +30,16 @@ public enum EnrollmentStatus {
         }
         throw new IllegalStateException("승인 대기 또는 수강신청 상태만 취소할 수 있습니다.");
     }
+
+    public boolean isPendingApproval() {
+        return this == EnrollmentStatus.PENDING_APPROVAL;
+    }
+
+    public boolean isEnrolled() {
+        return this == EnrollmentStatus.ENROLLED;
+    }
+
+    public boolean isCancelled() {
+        return this == EnrollmentStatus.CANCELLED;
+    }
 }

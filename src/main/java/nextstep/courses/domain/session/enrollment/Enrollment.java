@@ -32,14 +32,14 @@ public class Enrollment {
     }
 
     public boolean isPendingApproval() {
-        return enrollmentStatus == EnrollmentStatus.PENDING_APPROVAL;
+        return enrollmentStatus.isPendingApproval();
     }
 
     public boolean isEnrolled() {
-        return enrollmentStatus == EnrollmentStatus.ENROLLED;
+        return enrollmentStatus.isEnrolled();
     }
 
     public boolean isCancelled() {
-        return enrollmentStatus == EnrollmentStatus.CANCELLED;
+        return enrollmentStatus.isCancelled();
     }
 }
