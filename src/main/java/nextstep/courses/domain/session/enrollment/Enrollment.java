@@ -24,20 +24,11 @@ public class Enrollment {
     }
 
     public void approve() {
-        if (enrollmentStatus == EnrollmentStatus.PENDING_APPROVAL) {
-            enrollmentStatus = EnrollmentStatus.ENROLLED;
-        } else {
-            throw new IllegalStateException("승인 대기 상태의 수강신청만 승인할 수 있습니다.");
-        }
+        enrollmentStatus = enrollmentStatus.approve();
     }
 
     public void cancel() {
-        if (enrollmentStatus == EnrollmentStatus.PENDING_APPROVAL || 
-            enrollmentStatus == EnrollmentStatus.ENROLLED) {
-            enrollmentStatus = EnrollmentStatus.CANCELLED;
-        } else {
-            throw new IllegalStateException("승인 대기 또는 수강신청 상태만 취소할 수 있습니다.");
-        }
+        enrollmentStatus = enrollmentStatus.cancel();
     }
 
     public boolean isPendingApproval() {
