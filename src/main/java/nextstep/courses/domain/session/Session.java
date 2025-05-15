@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import lombok.Builder;
 import lombok.Getter;
 import nextstep.courses.domain.session.enrollment.Enrollments;
 import nextstep.courses.domain.session.enrollment.FreeEnrollments;
@@ -7,6 +8,7 @@ import nextstep.courses.domain.session.enrollment.PaidEnrollments;
 import nextstep.courses.domain.session.info.SessionInfo;
 
 @Getter
+@Builder(toBuilder = true)
 public class Session {
     private final SessionId id;
     private final SessionInfo info;

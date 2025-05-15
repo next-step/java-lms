@@ -35,10 +35,9 @@ class SessionTest {
         SessionDetailInfo detailInfo = new SessionDetailInfo(period, price);
         SessionBasicInfo basicInfo = new SessionBasicInfo("강의 제목", THUMBNAIL);
         SessionInfo sessionInfo = new SessionInfo(basicInfo, detailInfo, 30);
-        Session session = new Session(
-                new SessionId(1L, 1L),
-                sessionInfo
-        );
+        Session session = SessionTestData.defaultSession()
+                .info(sessionInfo)
+                .build();
 
         assertThat(session.isPaid()).isTrue();
     }
@@ -51,10 +50,9 @@ class SessionTest {
         SessionDetailInfo detailInfo = new SessionDetailInfo(period, price);
         SessionBasicInfo basicInfo = new SessionBasicInfo("강의 제목", THUMBNAIL);
         SessionInfo sessionInfo = new SessionInfo(basicInfo, detailInfo, 0);
-        Session session = new Session(
-                new SessionId(1L, 1L),
-                sessionInfo
-        );
+        Session session = SessionTestData.defaultSession()
+                .info(sessionInfo)
+                .build();
 
         assertThat(session.isPaid()).isFalse();
     }
@@ -67,10 +65,9 @@ class SessionTest {
         SessionDetailInfo detailInfo = new SessionDetailInfo(period, price);
         SessionBasicInfo basicInfo = new SessionBasicInfo("강의 제목", THUMBNAIL);
         SessionInfo sessionInfo = new SessionInfo(basicInfo, detailInfo, 30);
-        Session session = new Session(
-                new SessionId(1L, 1L),
-                sessionInfo
-        );
+        Session session = SessionTestData.defaultSession()
+                .info(sessionInfo)
+                .build();
 
         Enrollments enrollments = session.createEnrollments();
         assertThat(enrollments).isInstanceOf(PaidEnrollments.class);
@@ -84,10 +81,9 @@ class SessionTest {
         SessionDetailInfo detailInfo = new SessionDetailInfo(period, price);
         SessionBasicInfo basicInfo = new SessionBasicInfo("강의 제목", THUMBNAIL);
         SessionInfo sessionInfo = new SessionInfo(basicInfo, detailInfo, 0);
-        Session session = new Session(
-                new SessionId(1L, 1L),
-                sessionInfo
-        );
+        Session session = SessionTestData.defaultSession()
+                .info(sessionInfo)
+                .build();
 
         Enrollments enrollments = session.createEnrollments();
         assertThat(enrollments).isInstanceOf(FreeEnrollments.class);
@@ -99,17 +95,23 @@ class SessionTest {
         SessionThumbnail thumbnail = new SessionThumbnail();
         thumbnail.addThumbnail("test1.jpg", 1024L, 300, 200);
         thumbnail.addThumbnail("test2.jpg", 1024L, 300, 200);
-        
+
         SessionPeriod period = new SessionPeriod(START_DATE, END_DATE);
         SessionPrice price = new SessionPrice(SessionType.PAID, 10000);
         SessionDetailInfo detailInfo = new SessionDetailInfo(period, price);
         SessionBasicInfo basicInfo = new SessionBasicInfo("강의 제목", thumbnail);
         SessionInfo sessionInfo = new SessionInfo(basicInfo, detailInfo, 30);
-        Session session = new Session(
-                new SessionId(1L, 1L),
-                sessionInfo
-        );
-        
+        Session session = SessionTestData.defaultSession()
+                .info(sessionInfo)
+                .build();
+
         assertThat(session.getInfo().getBasicInfo().getThumbnail().getThumbnails()).hasSize(2);
     }
-} 
+}
+
+class SessionTestData {
+    static Session.SessionBuilder defaultSession() {
+        return Session.builder()
+                .id(new SessionId(1L, 1L));
+    }
+}
