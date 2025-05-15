@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session.info;
 
+import lombok.Builder;
 import lombok.Getter;
 import nextstep.courses.domain.session.SessionProgressStatus;
 import nextstep.courses.domain.session.SessionRecruitmentStatus;
@@ -8,6 +9,7 @@ import nextstep.courses.domain.session.info.detail.SessionDetailInfo;
 import nextstep.payments.domain.Payment;
 
 @Getter
+@Builder(toBuilder = true)
 public class SessionInfo {
     private final SessionBasicInfo basicInfo;
     private final SessionDetailInfo detailInfo;

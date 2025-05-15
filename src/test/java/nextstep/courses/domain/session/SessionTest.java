@@ -33,10 +33,13 @@ class SessionTest {
         SessionPeriod period = new SessionPeriod(START_DATE, END_DATE);
         SessionPrice price = new SessionPrice(SessionType.PAID, 10000);
         SessionDetailInfo detailInfo = new SessionDetailInfo(period, price);
-        SessionBasicInfo basicInfo = new SessionBasicInfo("강의 제목", THUMBNAIL);
-        SessionInfo sessionInfo = new SessionInfo(basicInfo, detailInfo, 30);
+        int maxEnrollment = 30;
+
         Session session = SessionTestData.defaultSession()
-                .info(sessionInfo)
+                .info(SessionTestData.defaultSessionInfo()
+                        .detailInfo(detailInfo)
+                        .maxEnrollment(maxEnrollment)
+                        .build())
                 .build();
 
         assertThat(session.isPaid()).isTrue();
@@ -48,10 +51,11 @@ class SessionTest {
         SessionPeriod period = new SessionPeriod(START_DATE, END_DATE);
         SessionPrice price = new SessionPrice(SessionType.FREE, 0);
         SessionDetailInfo detailInfo = new SessionDetailInfo(period, price);
-        SessionBasicInfo basicInfo = new SessionBasicInfo("강의 제목", THUMBNAIL);
-        SessionInfo sessionInfo = new SessionInfo(basicInfo, detailInfo, 0);
+
         Session session = SessionTestData.defaultSession()
-                .info(sessionInfo)
+                .info(SessionTestData.defaultSessionInfo()
+                        .detailInfo(detailInfo)
+                        .build())
                 .build();
 
         assertThat(session.isPaid()).isFalse();
@@ -63,10 +67,13 @@ class SessionTest {
         SessionPeriod period = new SessionPeriod(START_DATE, END_DATE);
         SessionPrice price = new SessionPrice(SessionType.PAID, 10000);
         SessionDetailInfo detailInfo = new SessionDetailInfo(period, price);
-        SessionBasicInfo basicInfo = new SessionBasicInfo("강의 제목", THUMBNAIL);
-        SessionInfo sessionInfo = new SessionInfo(basicInfo, detailInfo, 30);
+        int maxEnrollment = 30;
+
         Session session = SessionTestData.defaultSession()
-                .info(sessionInfo)
+                .info(SessionTestData.defaultSessionInfo()
+                        .detailInfo(detailInfo)
+                        .maxEnrollment(maxEnrollment)
+                        .build())
                 .build();
 
         Enrollments enrollments = session.createEnrollments();
@@ -79,10 +86,11 @@ class SessionTest {
         SessionPeriod period = new SessionPeriod(START_DATE, END_DATE);
         SessionPrice price = new SessionPrice(SessionType.FREE, 0);
         SessionDetailInfo detailInfo = new SessionDetailInfo(period, price);
-        SessionBasicInfo basicInfo = new SessionBasicInfo("강의 제목", THUMBNAIL);
-        SessionInfo sessionInfo = new SessionInfo(basicInfo, detailInfo, 0);
+
         Session session = SessionTestData.defaultSession()
-                .info(sessionInfo)
+                .info(SessionTestData.defaultSessionInfo()
+                        .detailInfo(detailInfo)
+                        .build())
                 .build();
 
         Enrollments enrollments = session.createEnrollments();
@@ -100,9 +108,14 @@ class SessionTest {
         SessionPrice price = new SessionPrice(SessionType.PAID, 10000);
         SessionDetailInfo detailInfo = new SessionDetailInfo(period, price);
         SessionBasicInfo basicInfo = new SessionBasicInfo("강의 제목", thumbnail);
-        SessionInfo sessionInfo = new SessionInfo(basicInfo, detailInfo, 30);
+        int maxEnrollment = 30;
+
         Session session = SessionTestData.defaultSession()
-                .info(sessionInfo)
+                .info(SessionTestData.defaultSessionInfo()
+                        .basicInfo(basicInfo)
+                        .detailInfo(detailInfo)
+                        .maxEnrollment(maxEnrollment)
+                        .build())
                 .build();
 
         assertThat(session.getInfo().getBasicInfo().getThumbnail().getThumbnails()).hasSize(2);
@@ -113,5 +126,11 @@ class SessionTestData {
     static Session.SessionBuilder defaultSession() {
         return Session.builder()
                 .id(new SessionId(1L, 1L));
+    }
+
+    static SessionInfo.SessionInfoBuilder defaultSessionInfo() {
+        return SessionInfo.builder()
+                .basicInfo(new SessionBasicInfo("강의 제목", new SessionThumbnail()))
+                .maxEnrollment(0);
     }
 }
