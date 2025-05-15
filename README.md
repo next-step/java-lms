@@ -91,5 +91,5 @@
     - [x] approve
     - [x] cancel
     - [x] 상태 확인 메소드
+  - [x] Session 테스트 데이터 생성 방법 변경
   - [ ] AbstractEnrollments 추가
-  - [ ] Session 테스트 데이터 생성 방법 변경

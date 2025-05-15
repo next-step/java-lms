@@ -18,8 +18,6 @@ import java.time.LocalDate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class SessionTest {
-    private static final LocalDate START_DATE = LocalDate.now();
-    private static final LocalDate END_DATE = START_DATE.plusMonths(1);
     public static final SessionThumbnail THUMBNAIL = new SessionThumbnail();
 
     @BeforeAll
@@ -30,14 +28,11 @@ class SessionTest {
     @Test
     @DisplayName("강의를 생성한다")
     void create() {
-        SessionPeriod period = new SessionPeriod(START_DATE, END_DATE);
-        SessionPrice price = new SessionPrice(SessionType.PAID, 10000);
-        SessionDetailInfo detailInfo = new SessionDetailInfo(period, price);
         int maxEnrollment = 30;
 
         Session session = SessionTestData.defaultSession()
                 .info(SessionTestData.defaultSessionInfo()
-                        .detailInfo(detailInfo)
+                        .detailInfo(SessionTestData.paidSessionDetailInfo())
                         .maxEnrollment(maxEnrollment)
                         .build())
                 .build();
@@ -48,13 +43,9 @@ class SessionTest {
     @Test
     @DisplayName("무료 강의를 생성한다")
     void createFreeSession() {
-        SessionPeriod period = new SessionPeriod(START_DATE, END_DATE);
-        SessionPrice price = new SessionPrice(SessionType.FREE, 0);
-        SessionDetailInfo detailInfo = new SessionDetailInfo(period, price);
-
         Session session = SessionTestData.defaultSession()
                 .info(SessionTestData.defaultSessionInfo()
-                        .detailInfo(detailInfo)
+                        .detailInfo(SessionTestData.freeSessionDetailInfo())
                         .build())
                 .build();
 
@@ -64,14 +55,11 @@ class SessionTest {
     @Test
     @DisplayName("유료 강의의 Enrollments를 생성한다")
     void createPaidEnrollments() {
-        SessionPeriod period = new SessionPeriod(START_DATE, END_DATE);
-        SessionPrice price = new SessionPrice(SessionType.PAID, 10000);
-        SessionDetailInfo detailInfo = new SessionDetailInfo(period, price);
         int maxEnrollment = 30;
 
         Session session = SessionTestData.defaultSession()
                 .info(SessionTestData.defaultSessionInfo()
-                        .detailInfo(detailInfo)
+                        .detailInfo(SessionTestData.paidSessionDetailInfo())
                         .maxEnrollment(maxEnrollment)
                         .build())
                 .build();
@@ -83,13 +71,9 @@ class SessionTest {
     @Test
     @DisplayName("무료 강의의 Enrollments를 생성한다")
     void createFreeEnrollments() {
-        SessionPeriod period = new SessionPeriod(START_DATE, END_DATE);
-        SessionPrice price = new SessionPrice(SessionType.FREE, 0);
-        SessionDetailInfo detailInfo = new SessionDetailInfo(period, price);
-
         Session session = SessionTestData.defaultSession()
                 .info(SessionTestData.defaultSessionInfo()
-                        .detailInfo(detailInfo)
+                        .detailInfo(SessionTestData.freeSessionDetailInfo())
                         .build())
                 .build();
 
@@ -104,16 +88,13 @@ class SessionTest {
         thumbnail.addThumbnail("test1.jpg", 1024L, 300, 200);
         thumbnail.addThumbnail("test2.jpg", 1024L, 300, 200);
 
-        SessionPeriod period = new SessionPeriod(START_DATE, END_DATE);
-        SessionPrice price = new SessionPrice(SessionType.PAID, 10000);
-        SessionDetailInfo detailInfo = new SessionDetailInfo(period, price);
         SessionBasicInfo basicInfo = new SessionBasicInfo("강의 제목", thumbnail);
         int maxEnrollment = 30;
 
         Session session = SessionTestData.defaultSession()
                 .info(SessionTestData.defaultSessionInfo()
                         .basicInfo(basicInfo)
-                        .detailInfo(detailInfo)
+                        .detailInfo(SessionTestData.freeSessionDetailInfo())
                         .maxEnrollment(maxEnrollment)
                         .build())
                 .build();
@@ -132,5 +113,28 @@ class SessionTestData {
         return SessionInfo.builder()
                 .basicInfo(new SessionBasicInfo("강의 제목", new SessionThumbnail()))
                 .maxEnrollment(0);
+    }
+
+    static SessionDetailInfo freeSessionDetailInfo() {
+        LocalDate startDate = LocalDate.now();
+        LocalDate endDate = startDate.plusMonths(1);
+        SessionPrice price = new SessionPrice(SessionType.FREE, 0);
+
+        return SessionDetailInfo.builder()
+                .period(new SessionPeriod(startDate, endDate))
+                .price(price)
+                .build();
+    }
+
+
+    static SessionDetailInfo paidSessionDetailInfo() {
+        LocalDate startDate = LocalDate.now();
+        LocalDate endDate = startDate.plusMonths(1);
+        SessionPrice price = new SessionPrice(SessionType.PAID, 10000);
+
+        return SessionDetailInfo.builder()
+                .period(new SessionPeriod(startDate, endDate))
+                .price(price)
+                .build();
     }
 }

@@ -1,10 +1,12 @@
 package nextstep.courses.domain.session.info.detail;
 
+import lombok.Builder;
 import lombok.Getter;
 import nextstep.courses.domain.session.SessionType;
 import nextstep.payments.domain.Payment;
 
 @Getter
+@Builder(toBuilder = true)
 public class SessionDetailInfo {
     private final SessionPeriod period;
     private final SessionPrice price;
