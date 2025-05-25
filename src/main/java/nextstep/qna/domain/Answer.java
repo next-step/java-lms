@@ -1,10 +1,10 @@
 package nextstep.qna.domain;
 
+import java.time.LocalDateTime;
+
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
-
-import java.time.LocalDateTime;
 
 public class Answer {
     private Long id;
@@ -22,6 +22,7 @@ public class Answer {
     private LocalDateTime updatedDate;
 
     public Answer() {
+    
     }
 
     public Answer(NsUser writer, Question question, String contents) {
@@ -56,6 +57,10 @@ public class Answer {
         return deleted;
     }
 
+    public void delete() {
+        this.deleted = true;
+    }
+
     public boolean isOwner(NsUser writer) {
         return this.writer.equals(writer);
     }
@@ -76,4 +81,5 @@ public class Answer {
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
+
 }

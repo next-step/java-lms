@@ -102,8 +102,13 @@ public class Question {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.getId(), this.writer, LocalDateTime.now()));
 
+        Answers answerList = new Answers(answers);
+        answerList.validateOwndBy(loginUser);
+        
+        List<DeleteHistory> histories = answerList.deleteAll();
+        
         for (Answer answer: answers) {
-            answer.delete(); 
+            answer.delete();
             deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
         }
 
