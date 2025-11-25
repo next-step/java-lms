@@ -53,6 +53,10 @@ public class Answer {
         return this;
     }
 
+    public void updateDeleted(){
+        this.deleted = true;
+    }
+
     public boolean isDeleted() {
         return deleted;
     }

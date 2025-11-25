@@ -99,8 +99,30 @@ public class Question {
         }
     }
 
+    public List<DeleteHistory> delete(long questionId) {
+        updateDeleted();
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, this.writer, LocalDateTime.now()));
+        addDeleteAnswerHistory(deleteHistories);
+
+        return deleteHistories;
+    }
+
+    private void addDeleteAnswerHistory(List<DeleteHistory> deleteHistories) {
+        for (Answer answer : this.answers) {
+            answer.updateDeleted();
+            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
+        }
+    }
+
+    private void updateDeleted() {
+        this.deleted = true;
+    }
+
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
+
 }

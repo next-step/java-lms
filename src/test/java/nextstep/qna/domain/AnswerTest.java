@@ -2,8 +2,11 @@ package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
-import org.junit.jupiter.api.Assertions;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AnswerTest {
     public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
@@ -11,8 +14,14 @@ public class AnswerTest {
 
     @Test
     void 다른_사용자가_작성한_답변이_존재하면_에러발생(){
-        Assertions.assertThrows(CannotDeleteException.class, () -> {
+        assertThrows(CannotDeleteException.class, () -> {
             A1.validateAnswerOwner(NsUserTest.SANJIGI);
         });
+    }
+
+    @Test
+    void 답변삭제(){
+        A1.updateDeleted();
+        assertThat(A1.isDeleted()).isTrue();
     }
 }
