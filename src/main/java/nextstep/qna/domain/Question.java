@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -66,7 +66,7 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        answers.add(answer);
+        this.answers.add(answer);
     }
 
     public boolean isOwner(NsUser loginUser) {
@@ -83,14 +83,12 @@ public class Question {
     }
 
     public List<Answer> getAnswers() {
-        return answers;
+        return answers.getAnswers();
     }
 
     public void validateDeletable(NsUser loginUser) throws CannotDeleteException {
         validateOwner(loginUser);
-        for (Answer answer : this.answers) {
-            answer.validateAnswerOwner(loginUser);
-        }
+        answers.validateAnswerOwner(loginUser);
     }
 
     private void validateOwner(NsUser loginUser) throws CannotDeleteException {
@@ -100,6 +98,7 @@ public class Question {
     }
 
     public List<DeleteHistory> delete(long questionId) {
+        // todo 2개의 역학을 하고 있다고 느껴집니다. deleted 상태를 Setter 사용하지 않고 어떻게 처리해야될지 고민입니다.
         updateDeleted();
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
@@ -110,10 +109,7 @@ public class Question {
     }
 
     private void addDeleteAnswerHistory(List<DeleteHistory> deleteHistories) {
-        for (Answer answer : this.answers) {
-            answer.updateDeleted();
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
-        }
+        this.answers.addDeleteAnswerHistory(deleteHistories);
     }
 
     private void updateDeleted() {
