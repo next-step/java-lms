@@ -12,7 +12,7 @@ public class QuestionTest {
     @Test
     void 글쓴이가_로그인한_유저와_같지않으면_에러발생(){
         Assertions.assertThrows(CannotDeleteException.class, () -> {
-            Q1.validateOwner(NsUserTest.SANJIGI);
+            Q1.validateDeletable(NsUserTest.SANJIGI);
         });
     }
 
