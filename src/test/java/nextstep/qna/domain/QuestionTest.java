@@ -22,7 +22,7 @@ public class QuestionTest {
 
     @Test
     void 질문_답글_삭제_목록_조회(){
-        List<DeleteHistory> deleteHistories = Q1.delete(1L);
+        List<DeleteHistory> deleteHistories = Q1.delete();
         assertThat(deleteHistories).hasSize(1);
     }
 

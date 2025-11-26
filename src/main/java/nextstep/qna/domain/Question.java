@@ -77,12 +77,12 @@ public class Question extends BaseModel {
         }
     }
 
-    public List<DeleteHistory> delete(long questionId) {
+    public List<DeleteHistory> delete() {
         // todo 2개의 역할을 하고 있다고 느껴집니다. deleted 상태를 Setter 사용하지 않고 어떻게 처리해야될지 고민입니다.
         updateDeleted();
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, this.writer, LocalDateTime.now()));
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
         addDeleteAnswerHistory(deleteHistories);
 
         return deleteHistories;
