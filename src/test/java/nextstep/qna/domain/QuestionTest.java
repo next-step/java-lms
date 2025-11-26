@@ -4,7 +4,6 @@ import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,17 +15,13 @@ public class QuestionTest {
     @Test
     void 글쓴이가_로그인한_유저와_같지않으면_에러발생(){
         assertThrows(CannotDeleteException.class, () -> {
-            Q1.validateDeletable(NsUserTest.SANJIGI);
+            Q1.delete(NsUserTest.SANJIGI);
         });
     }
 
     @Test
-    void 질문_답글_삭제_목록_조회(){
-        List<DeleteHistory> deleteHistories = Q1.delete();
-        assertThat(deleteHistories).hasSize(1);
+    void 질문_삭제() throws CannotDeleteException {
+        Q1.delete(NsUserTest.JAVAJIGI);
+        assertThat(Q1.deleted).isTrue();
     }
-
-
-
-
 }

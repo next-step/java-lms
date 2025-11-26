@@ -22,12 +22,12 @@ public class Answers {
     public void validateAnswerOwner(NsUser loginUser) throws CannotDeleteException {
         for (Answer answer : this.answers) {
             answer.validateAnswerOwner(loginUser);
+            answer.updateDeleted();
         }
     }
 
     public void addDeleteAnswerHistory(List<DeleteHistory> deleteHistories) {
         for (Answer answer : this.answers) {
-            answer.updateDeleted();
             deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
         }
     }

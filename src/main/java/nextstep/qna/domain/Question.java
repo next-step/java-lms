@@ -66,25 +66,22 @@ public class Question extends BaseModel {
         return answers.getAnswers();
     }
 
-    public void validateDeletable(NsUser loginUser) throws CannotDeleteException {
-        validateOwner(loginUser);
-        answers.validateAnswerOwner(loginUser);
-    }
-
     private void validateOwner(NsUser loginUser) throws CannotDeleteException {
         if (!this.isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
     }
 
-    public List<DeleteHistory> delete() {
-        // todo 2개의 역할을 하고 있다고 느껴집니다. deleted 상태를 Setter 사용하지 않고 어떻게 처리해야될지 고민입니다.
+    public void delete(NsUser loginUser) throws CannotDeleteException {
+        validateOwner(loginUser);
         updateDeleted();
+        answers.validateAnswerOwner(loginUser);
+    }
 
+    public List<DeleteHistory> toDeleteHistories(){
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
         addDeleteAnswerHistory(deleteHistories);
-
         return deleteHistories;
     }
 
