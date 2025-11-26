@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Question {
+public class Question extends BaseModel {
     private Long id;
 
     private String title;
@@ -17,12 +17,6 @@ public class Question {
     private NsUser writer;
 
     private Answers answers = new Answers();
-
-    private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
 
     public Question() {
     }

@@ -5,9 +5,7 @@ import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
-
-public class Answer {
+public class Answer extends BaseModel {
     private Long id;
 
     private NsUser writer;
@@ -15,12 +13,6 @@ public class Answer {
     private Question question;
 
     private String contents;
-
-    private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
 
     public Answer() {
     }
@@ -53,7 +45,7 @@ public class Answer {
         return this;
     }
 
-    public void updateDeleted(){
+    public void updateDeleted() {
         this.deleted = true;
     }
 
