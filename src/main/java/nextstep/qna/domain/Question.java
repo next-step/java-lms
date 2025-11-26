@@ -10,9 +10,9 @@ import java.util.List;
 public class Question extends BaseModel {
     private Long id;
 
-    private String title;
+    private Title title;
 
-    private String contents;
+    private Contents contents;
 
     private NsUser writer;
 
@@ -26,6 +26,10 @@ public class Question extends BaseModel {
     }
 
     public Question(Long id, NsUser writer, String title, String contents) {
+        this(id, writer, new Title(title), new Contents(contents));
+    }
+
+    public Question(Long id, NsUser writer, Title title, Contents contents) {
         this.id = id;
         this.writer = writer;
         this.title = title;
@@ -34,24 +38,6 @@ public class Question extends BaseModel {
 
     public Long getId() {
         return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
     }
 
     public NsUser getWriter() {

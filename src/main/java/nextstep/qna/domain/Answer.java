@@ -12,7 +12,7 @@ public class Answer extends BaseModel {
 
     private Question question;
 
-    private String contents;
+    private Contents contents;
 
     public Answer() {
     }
@@ -33,7 +33,7 @@ public class Answer extends BaseModel {
 
         this.writer = writer;
         this.question = question;
-        this.contents = contents;
+        this.contents = new Contents(contents);
     }
 
     public Long getId() {
@@ -61,9 +61,6 @@ public class Answer extends BaseModel {
         return writer;
     }
 
-    public String getContents() {
-        return contents;
-    }
 
     public void toQuestion(Question question) {
         this.question = question;
