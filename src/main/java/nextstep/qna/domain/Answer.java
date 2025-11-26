@@ -72,6 +72,11 @@ public class Answer {
         this.question = question;
     }
 
+    public DeleteHistory delete(){
+        this.deleted = true;
+        return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
+    }
+
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
