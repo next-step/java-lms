@@ -15,13 +15,13 @@ public class QuestionTest {
     @Test
     void 글쓴이가_로그인한_유저와_같지않으면_에러발생(){
         assertThrows(CannotDeleteException.class, () -> {
-            Q1.delete(NsUserTest.SANJIGI);
+            Q1.delete(Q2.getWriter());
         });
     }
 
     @Test
     void 질문_삭제() throws CannotDeleteException {
-        Q1.delete(NsUserTest.JAVAJIGI);
+        Q1.delete(Q1.getWriter());
         assertThat(Q1.deleted).isTrue();
     }
 }

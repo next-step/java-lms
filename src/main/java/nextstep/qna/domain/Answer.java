@@ -18,10 +18,14 @@ public class Answer extends BaseModel {
     }
 
     public Answer(NsUser writer, Question question, String contents) {
-        this(null, writer, question, contents);
+        this(null, writer, question, new Contents(contents));
     }
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
+       this(id, writer, question, new Contents(contents));
+    }
+
+    public Answer(Long id, NsUser writer, Question question, Contents contents) {
         this.id = id;
         if (writer == null) {
             throw new UnAuthorizedException();
@@ -33,7 +37,7 @@ public class Answer extends BaseModel {
 
         this.writer = writer;
         this.question = question;
-        this.contents = new Contents(contents);
+        this.contents = contents;
     }
 
     public Long getId() {

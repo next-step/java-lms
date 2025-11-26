@@ -1,7 +1,11 @@
 package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
+import nextstep.qna.NotFoundException;
+import nextstep.qna.UnAuthenticationException;
+import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUserTest;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
@@ -22,5 +26,19 @@ public class AnswerTest {
     void 답변삭제(){
         A1.updateDeleted();
         assertThat(A1.isDeleted()).isTrue();
+    }
+
+    @Test
+    void 작성자가_null이면_에러발생(){
+        Assertions.assertThrows(UnAuthorizedException.class, () -> {
+            new Answer(null, QuestionTest.Q1, "Contents1");
+        });
+    }
+
+    @Test
+    void 질문이_null이면_에러발생(){
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            new Answer(NsUserTest.JAVAJIGI, null, "Contents1");
+        });
     }
 }
