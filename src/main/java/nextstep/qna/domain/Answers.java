@@ -29,13 +29,10 @@ public class Answers {
         }
         return histories;
     }
+
     private void checkDeletable(NsUser loginUser) throws CannotDeleteException {
         if (answers.stream().anyMatch(answer -> !answer.isOwner(loginUser))) {
             throw new CannotDeleteException("다른 사람의 답변이 존재하여 삭제할 수 없습니다.");
         }
-    }
-
-    public List<Answer> getAnswers() {
-        return new ArrayList<>(answers);
     }
 }
