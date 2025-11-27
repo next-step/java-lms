@@ -22,6 +22,6 @@ public class QuestionTest {
     @Test
     void 질문_삭제() throws CannotDeleteException {
         Q1.delete(Q1.getWriter());
-        assertThat(Q1.deleted).isTrue();
+        assertThat(Q1.isDeleted()).isTrue();
     }
 }

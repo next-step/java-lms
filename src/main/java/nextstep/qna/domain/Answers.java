@@ -26,9 +26,11 @@ public class Answers {
         }
     }
 
-    public void addDeleteAnswerHistory(List<DeleteHistory> deleteHistories) {
+    public List<DeleteHistory> addDeleteAnswerHistory() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : this.answers) {
             deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
         }
+        return deleteHistories;
     }
 }

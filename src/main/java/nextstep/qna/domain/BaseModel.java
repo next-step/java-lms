@@ -4,9 +4,17 @@ import java.time.LocalDateTime;
 
 public abstract class BaseModel {
 
-    public LocalDateTime createdDate = LocalDateTime.now();
+    private LocalDateTime createdDate = LocalDateTime.now();
 
-    public LocalDateTime updatedDate;
+    private LocalDateTime updatedDate;
 
-    public boolean deleted = false;
+    private boolean deleted = false;
+
+    protected void deleted(){
+        this.deleted = true;
+    }
+
+    protected boolean getDeleted() {
+        return deleted;
+    }
 }

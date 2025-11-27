@@ -54,34 +54,37 @@ public class Question extends BaseModel {
     }
 
     public boolean isDeleted() {
-        return deleted;
+        return getDeleted();
     }
 
     private void validateOwner(NsUser loginUser) throws CannotDeleteException {
         if (!this.isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
+        updateDeleted();
     }
 
     public void delete(NsUser loginUser) throws CannotDeleteException {
         validateOwner(loginUser);
-        updateDeleted();
         answers.validateAnswerOwner(loginUser);
     }
 
     public List<DeleteHistory> toDeleteHistories(){
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
-        addDeleteAnswerHistory(deleteHistories);
+
+        List<DeleteHistory> answerDeleteHistories = addDeleteAnswerHistory();
+        deleteHistories.addAll(answerDeleteHistories);
+
         return deleteHistories;
     }
 
-    private void addDeleteAnswerHistory(List<DeleteHistory> deleteHistories) {
-        this.answers.addDeleteAnswerHistory(deleteHistories);
+    private List<DeleteHistory> addDeleteAnswerHistory() {
+        return this.answers.addDeleteAnswerHistory();
     }
 
     private void updateDeleted() {
-        this.deleted = true;
+        deleted();
     }
 
     @Override

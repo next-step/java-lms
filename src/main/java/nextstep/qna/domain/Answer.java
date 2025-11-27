@@ -44,17 +44,12 @@ public class Answer extends BaseModel {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     private void updateDeleted() {
-        this.deleted = true;
+        deleted();
     }
 
     public boolean isDeleted() {
-        return deleted;
+        return getDeleted();
     }
 
     public boolean isOwner(NsUser writer) {
