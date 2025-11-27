@@ -8,9 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Question extends BaseEntity {
-    private String title;
-
-    private String contents;
+    private QuestionContent content;
 
     private NsUser writer;
 
@@ -27,10 +25,13 @@ public class Question extends BaseEntity {
     }
 
     public Question(Long id, NsUser writer, String title, String contents) {
+        this(id, writer, new QuestionContent(title, contents));
+    }
+
+    public Question(Long id, NsUser writer, QuestionContent content) {
         super(id);
         this.writer = writer;
-        this.title = title;
-        this.contents = contents;
+        this.content = content;
     }
 
     public NsUser getWriter() {
@@ -69,6 +70,6 @@ public class Question extends BaseEntity {
 
     @Override
     public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+        return "Question [id=" + getId() + ", title=" + content.getTitle() + ", contents=" + content.getContents() + ", writer=" + writer + "]";
     }
 }
