@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Question extends BaseModel {
+public class Question extends SoftDeletableModel {
     private Long id;
 
     private Title title;

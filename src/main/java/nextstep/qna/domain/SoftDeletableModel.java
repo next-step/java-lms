@@ -2,7 +2,7 @@ package nextstep.qna.domain;
 
 import java.time.LocalDateTime;
 
-public abstract class BaseModel {
+public abstract class SoftDeletableModel {
 
     private LocalDateTime createdDate = LocalDateTime.now();
 

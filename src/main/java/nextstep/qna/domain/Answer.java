@@ -5,7 +5,7 @@ import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
-public class Answer extends BaseModel {
+public class Answer extends SoftDeletableModel {
     private Long id;
 
     private NsUser writer;
