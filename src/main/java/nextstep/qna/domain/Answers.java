@@ -22,7 +22,7 @@ public class Answers {
     public void validateAnswerOwner(NsUser loginUser) throws CannotDeleteException {
         for (Answer answer : this.answers) {
             answer.validateAnswerOwner(loginUser);
-            answer.updateDeleted();
+
         }
     }
 

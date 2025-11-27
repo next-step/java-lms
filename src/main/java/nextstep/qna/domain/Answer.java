@@ -49,7 +49,7 @@ public class Answer extends BaseModel {
         return this;
     }
 
-    public void updateDeleted() {
+    private void updateDeleted() {
         this.deleted = true;
     }
 
@@ -74,6 +74,7 @@ public class Answer extends BaseModel {
         if (!this.isOwner(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
+        updateDeleted();
     }
 
     @Override

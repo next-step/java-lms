@@ -53,17 +53,8 @@ public class Question extends BaseModel {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers.getAnswers();
     }
 
     private void validateOwner(NsUser loginUser) throws CannotDeleteException {

@@ -2,7 +2,6 @@ package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
-import nextstep.qna.UnAuthenticationException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Assertions;
@@ -23,8 +22,8 @@ public class AnswerTest {
     }
 
     @Test
-    void 답변삭제(){
-        A1.updateDeleted();
+    void 답변삭제() throws CannotDeleteException {
+        A1.validateAnswerOwner(A1.getWriter());
         assertThat(A1.isDeleted()).isTrue();
     }
 
