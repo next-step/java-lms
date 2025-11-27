@@ -19,7 +19,7 @@ public class AnswersTest {
         Answer answer2 = new Answer(12L, NsUserTest.JAVAJIGI, question, "answer2");
         Answers answers = new Answers(Arrays.asList(answer1, answer2));
 
-        answers.checkDeletable(NsUserTest.JAVAJIGI);
+        List<DeleteHistory> delete = answers.delete(NsUserTest.JAVAJIGI);
     }
 
     @Test
@@ -30,19 +30,19 @@ public class AnswersTest {
         Answers answers = new Answers(Arrays.asList(answer1, answer2));
 
         assertThatThrownBy(() -> {
-            answers.checkDeletable(NsUserTest.JAVAJIGI);
+            answers.delete(NsUserTest.JAVAJIGI);
         }).isInstanceOf(CannotDeleteException.class)
-                .hasMessageContaining("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+                .hasMessageContaining("다른 사람의 답변이 존재하여 삭제할 수 없습니다.");
     }
 
     @Test
-    public void 모든_답변_삭제_및_DeleteHistory_반환() {
+    public void 모든_답변_삭제_및_DeleteHistory_반환() throws CannotDeleteException {
         Question question = new Question(1L, NsUserTest.JAVAJIGI, "title", "contents");
         Answer answer1 = new Answer(11L, NsUserTest.JAVAJIGI, question, "answer1");
         Answer answer2 = new Answer(12L, NsUserTest.JAVAJIGI, question, "answer2");
         Answers answers = new Answers(Arrays.asList(answer1, answer2));
 
-        List<DeleteHistory> deleteHistories = answers.delete();
+        List<DeleteHistory> deleteHistories = answers.delete(NsUserTest.JAVAJIGI);
 
         assertThat(answer1.isDeleted()).isTrue();
         assertThat(answer2.isDeleted()).isTrue();

@@ -91,26 +91,16 @@ public class Question {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
-        checkDeletableAnswers(loginUser);
-
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(deleteQuestion());
-        deleteHistories.addAll(deleteAnswers());
+        deleteHistories.addAll(answers.delete(loginUser));
 
         return deleteHistories;
-    }
-
-    private void checkDeletableAnswers(NsUser loginUser) throws CannotDeleteException {
-        answers.checkDeletable(loginUser);
     }
 
     private DeleteHistory deleteQuestion() {
         this.deleted = true;
         return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
-    }
-
-    private List<DeleteHistory> deleteAnswers() {
-        return answers.delete();
     }
 
     @Override
