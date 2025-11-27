@@ -12,20 +12,20 @@ public class Answer extends SoftDeletableModel {
 
     private Question question;
 
-    private Contents contents;
+    private QuestionBody contents;
 
     public Answer() {
     }
 
     public Answer(NsUser writer, Question question, String contents) {
-        this(null, writer, question, new Contents(contents));
+        this(null, writer, question, new QuestionBody(contents));
     }
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
-       this(id, writer, question, new Contents(contents));
+       this(id, writer, question, new QuestionBody(contents));
     }
 
-    public Answer(Long id, NsUser writer, Question question, Contents contents) {
+    public Answer(Long id, NsUser writer, Question question, QuestionBody contents) {
         this.id = id;
         if (writer == null) {
             throw new UnAuthorizedException();

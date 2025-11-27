@@ -1,10 +1,10 @@
 package nextstep.qna.domain;
 
-public class Title {
+public class QuestionBody {
 
     private String value;
 
-    public Title(String value) {
+    public QuestionBody(String value) {
         this.value = value;
     }
 }

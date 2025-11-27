@@ -10,9 +10,9 @@ import java.util.List;
 public class Question extends SoftDeletableModel {
     private Long id;
 
-    private Title title;
+    private QuestionBody title;
 
-    private Contents contents;
+    private QuestionBody contents;
 
     private NsUser writer;
 
@@ -26,10 +26,10 @@ public class Question extends SoftDeletableModel {
     }
 
     public Question(Long id, NsUser writer, String title, String contents) {
-        this(id, writer, new Title(title), new Contents(contents));
+        this(id, writer, new QuestionBody(title), new QuestionBody(contents));
     }
 
-    public Question(Long id, NsUser writer, Title title, Contents contents) {
+    public Question(Long id, NsUser writer, QuestionBody title, QuestionBody contents) {
         this.id = id;
         this.writer = writer;
         this.title = title;
