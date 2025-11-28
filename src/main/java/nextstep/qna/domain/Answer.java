@@ -12,7 +12,7 @@ public class Answer extends SoftDeletableModel {
 
     private Question question;
 
-    private QuestionBody contents;
+    private QuestionBody questionBody;
 
     public Answer() {
     }
@@ -25,7 +25,7 @@ public class Answer extends SoftDeletableModel {
        this(id, writer, question, new QuestionBody(contents));
     }
 
-    public Answer(Long id, NsUser writer, Question question, QuestionBody contents) {
+    public Answer(Long id, NsUser writer, Question question, QuestionBody questionBody) {
         this.id = id;
         if (writer == null) {
             throw new UnAuthorizedException();
@@ -37,7 +37,7 @@ public class Answer extends SoftDeletableModel {
 
         this.writer = writer;
         this.question = question;
-        this.contents = contents;
+        this.questionBody = questionBody;
     }
 
     public Long getId() {
@@ -72,6 +72,6 @@ public class Answer extends SoftDeletableModel {
 
     @Override
     public String toString() {
-        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + questionBody.getContents() + "]";
     }
 }
