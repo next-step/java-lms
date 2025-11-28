@@ -10,7 +10,7 @@ public abstract class SoftDeletableModel {
 
     private boolean deleted = false;
 
-    protected void deleted(){
+    protected void updateDeleted(){
         this.deleted = true;
     }
 

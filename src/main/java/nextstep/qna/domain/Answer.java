@@ -44,9 +44,7 @@ public class Answer extends SoftDeletableModel {
         return id;
     }
 
-    private void updateDeleted() {
-        deleted();
-    }
+
 
     public boolean isDeleted() {
         return getDeleted();

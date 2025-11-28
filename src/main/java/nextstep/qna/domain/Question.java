@@ -83,10 +83,6 @@ public class Question extends SoftDeletableModel {
         return this.answers.addDeleteAnswerHistory();
     }
 
-    private void updateDeleted() {
-        deleted();
-    }
-
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
