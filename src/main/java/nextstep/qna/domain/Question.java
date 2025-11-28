@@ -57,16 +57,16 @@ public class Question extends SoftDeletableModel {
         return getDeleted();
     }
 
-    private void validateOwner(NsUser loginUser) throws CannotDeleteException {
+    public void delete(NsUser loginUser) throws CannotDeleteException {
+        deleteQuestion(loginUser);
+        answers.deleteAnswer(loginUser);
+    }
+
+    private void deleteQuestion(NsUser loginUser) throws CannotDeleteException {
         if (!this.isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
         updateDeleted();
-    }
-
-    public void delete(NsUser loginUser) throws CannotDeleteException {
-        validateOwner(loginUser);
-        answers.validateAnswerOwner(loginUser);
     }
 
     public List<DeleteHistory> toDeleteHistories(){

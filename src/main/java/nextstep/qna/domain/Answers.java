@@ -19,10 +19,9 @@ public class Answers {
         return answers;
     }
 
-    public void validateAnswerOwner(NsUser loginUser) throws CannotDeleteException {
+    public void deleteAnswer(NsUser loginUser) throws CannotDeleteException {
         for (Answer answer : this.answers) {
-            answer.validateAnswerOwner(loginUser);
-
+            answer.delete(loginUser);
         }
     }
 

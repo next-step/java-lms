@@ -17,13 +17,13 @@ public class AnswerTest {
     @Test
     void 다른_사용자가_작성한_답변이_존재하면_에러발생(){
         assertThrows(CannotDeleteException.class, () -> {
-            A1.validateAnswerOwner(NsUserTest.SANJIGI);
+            A1.delete(NsUserTest.SANJIGI);
         });
     }
 
     @Test
     void 답변삭제() throws CannotDeleteException {
-        A1.validateAnswerOwner(A1.getWriter());
+        A1.delete(A1.getWriter());
         assertThat(A1.isDeleted()).isTrue();
     }
 
