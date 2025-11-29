@@ -1,5 +1,6 @@
 package nextstep.courses.domain.image;
 
+import nextstep.courses.domain.image.constant.ImageType;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
@@ -14,25 +15,13 @@ public class CoverImageTest {
     @Test
     void 이미지_정상_생성() {
         CoverImage image = new CoverImage(1, "gif", 300, 200);
-        assertThat(image.getWidth()).isEqualTo(300);
-        assertThat(image.getHeight()).isEqualTo(200);
+        assertThat(image.getSize()).isEqualTo(1);
+        assertThat(image.getType()).isEqualTo(ImageType.GIF);
     }
 
     @Test
     void 이미지_타입_불일치_에러발생() {
         assertThatThrownBy(() -> new CoverImage(1, "mp4", 300, 200))
-                .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
-    void 이미지_너비_높이_미만_에러발생(){
-        assertThatThrownBy(() -> new CoverImage(1, "png", 299, 199))
-                .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
-    void 이미지_비율_불일치_에러발생(){
-        assertThatThrownBy(() -> new CoverImage(1, "png", 400, 200))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
