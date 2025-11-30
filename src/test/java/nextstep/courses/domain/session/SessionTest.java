@@ -22,7 +22,7 @@ public class SessionTest {
                 100, 300_000L, "pending", COVER_IMAGE);
 
         Assertions.assertThat(session.getSessionType()).isEqualTo(SessionType.PAID);
-        Assertions.assertThat(session.getTuition()).isEqualTo(300_000L);
+        Assertions.assertThat(session.getTuition().getValue()).isEqualTo(300_000L);
         Assertions.assertThat(session.getSessionStatus()).isEqualTo(SessionStatus.PENDING);
         Assertions.assertThat(session.getMaxCapacity()).isEqualTo(100);
     }
@@ -33,7 +33,7 @@ public class SessionTest {
 
         Assertions.assertThat(session.getSessionType()).isEqualTo(SessionType.FREE);
         Assertions.assertThat(session.getMaxCapacity()).isEqualTo(Integer.MAX_VALUE);
-        Assertions.assertThat(session.getTuition()).isEqualTo(0L);
+        Assertions.assertThat(session.getTuition().getValue()).isEqualTo(0L);
     }
 
     @Test

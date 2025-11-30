@@ -7,6 +7,7 @@ import nextstep.courses.domain.session.constant.SessionType;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Session {
 
@@ -14,7 +15,7 @@ public class Session {
     private final SessionRange sessionRange;
     private final SessionType sessionType;
     private final int maxCapacity;
-    private final Long tuition;
+    private final Tuition tuition;
     private SessionStatus sessionStatus;
     private CoverImage coverImage;
     private List<Enrollment> enrollments = new ArrayList<>();
@@ -28,10 +29,10 @@ public class Session {
     }
 
     public Session(Long id, LocalDateTime startDate, LocalDateTime endDate, SessionType sessionType, int maxCapacity, Long tuition, SessionStatus sessionStatus, CoverImage coverImage) {
-        this(id, new SessionRange(startDate, endDate), sessionType, maxCapacity, tuition, sessionStatus, coverImage);
+        this(id, new SessionRange(startDate, endDate), sessionType, maxCapacity, new Tuition(tuition), sessionStatus, coverImage);
     }
 
-    public Session(Long id, SessionRange sessionRange, SessionType sessionType, int maxCapacity, Long tuition, SessionStatus sessionStatus, CoverImage coverImage) {
+    public Session(Long id, SessionRange sessionRange, SessionType sessionType, int maxCapacity, Tuition tuition, SessionStatus sessionStatus, CoverImage coverImage) {
         this.id = id;
         this.sessionRange = sessionRange;
         this.sessionType = sessionType;
@@ -81,7 +82,7 @@ public class Session {
         return maxCapacity;
     }
 
-    public long getTuition() {
+    public Tuition getTuition() {
         return tuition;
     }
 
@@ -89,4 +90,15 @@ public class Session {
         return sessionStatus;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Session session = (Session) o;
+        return getMaxCapacity() == session.getMaxCapacity() && Objects.equals(id, session.id) && Objects.equals(sessionRange, session.sessionRange) && getSessionType() == session.getSessionType() && Objects.equals(getTuition(), session.getTuition()) && getSessionStatus() == session.getSessionStatus() && Objects.equals(coverImage, session.coverImage) && Objects.equals(enrollments, session.enrollments);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, sessionRange, getSessionType(), getMaxCapacity(), getTuition(), getSessionStatus(), coverImage, enrollments);
+    }
 }
