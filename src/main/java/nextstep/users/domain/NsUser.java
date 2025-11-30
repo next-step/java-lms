@@ -25,6 +25,10 @@ public class NsUser {
     public NsUser() {
     }
 
+    public NsUser(Long id) {
+      this(id, null, null, null, null);
+    }
+
     public NsUser(Long id, String userId, String password, String name, String email) {
         this(id, userId, password, name, email, LocalDateTime.now(), null);
     }
@@ -47,37 +51,10 @@ public class NsUser {
         return userId;
     }
 
-    public NsUser setUserId(String userId) {
-        this.userId = userId;
-        return this;
-    }
-
     public String getPassword() {
         return password;
     }
 
-    public NsUser setPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public NsUser setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public NsUser setEmail(String email) {
-        this.email = email;
-        return this;
-    }
 
     public void update(NsUser loginUser, NsUser target) {
         if (!matchUserId(loginUser.getUserId())) {
@@ -124,7 +101,21 @@ public class NsUser {
         }
     }
 
-    @Override
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    NsUser nsUser = (NsUser) o;
+    return Objects.equals(id, nsUser.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(id);
+  }
+
+  @Override
     public String toString() {
         return "NsUser{" +
                 "id=" + id +

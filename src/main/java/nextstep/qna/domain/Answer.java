@@ -1,10 +1,9 @@
 package nextstep.qna.domain;
 
+import java.time.LocalDateTime;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
-
-import java.time.LocalDateTime;
 
 public class Answer {
     private Long id;
@@ -29,27 +28,25 @@ public class Answer {
     }
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
+        validate(writer, question);
         this.id = id;
-        if(writer == null) {
-            throw new UnAuthorizedException();
-        }
-
-        if(question == null) {
-            throw new NotFoundException();
-        }
-
         this.writer = writer;
         this.question = question;
         this.contents = contents;
     }
 
-    public Long getId() {
-        return id;
+    private static void validate(NsUser writer, Question question){
+      if(writer == null) {
+        throw new UnAuthorizedException();
+      }
+
+      if(question == null) {
+        throw new NotFoundException();
+      }
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public Long getId() {
+        return id;
     }
 
     public boolean isDeleted() {
@@ -64,16 +61,21 @@ public class Answer {
         return writer;
     }
 
-    public String getContents() {
-        return contents;
+    public void delete() {
+     this.deleted = true;
     }
 
     public void toQuestion(Question question) {
         this.question = question;
     }
 
-    @Override
+  public DeleteHistory createDeleteHistory() {
+    return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
+  }
+
+  @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
+
 }
