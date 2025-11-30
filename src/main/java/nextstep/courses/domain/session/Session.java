@@ -14,7 +14,7 @@ public class Session {
     private Long id;
     private final SessionRange sessionRange;
     private final SessionType sessionType;
-    private final int maxCapacity;
+    private final Capacity maxCapacity;
     private final Tuition tuition;
     private SessionStatus sessionStatus;
     private CoverImage coverImage;
@@ -29,10 +29,10 @@ public class Session {
     }
 
     public Session(Long id, LocalDateTime startDate, LocalDateTime endDate, SessionType sessionType, int maxCapacity, Long tuition, SessionStatus sessionStatus, CoverImage coverImage) {
-        this(id, new SessionRange(startDate, endDate), sessionType, maxCapacity, new Tuition(tuition), sessionStatus, coverImage);
+        this(id, new SessionRange(startDate, endDate), sessionType, new Capacity(maxCapacity), new Tuition(tuition), sessionStatus, coverImage);
     }
 
-    public Session(Long id, SessionRange sessionRange, SessionType sessionType, int maxCapacity, Tuition tuition, SessionStatus sessionStatus, CoverImage coverImage) {
+    public Session(Long id, SessionRange sessionRange, SessionType sessionType, Capacity maxCapacity, Tuition tuition, SessionStatus sessionStatus, CoverImage coverImage) {
         this.id = id;
         this.sessionRange = sessionRange;
         this.sessionType = sessionType;
@@ -63,7 +63,7 @@ public class Session {
     }
 
     private void validateNotFull() {
-        if (this.maxCapacity <= this.enrollments.size()) {
+        if (this.maxCapacity.matchSize(this.enrollments.size())) {
             throw new IllegalArgumentException("수강인원이 초과했습니다.");
         }
     }
@@ -78,7 +78,7 @@ public class Session {
         return sessionType;
     }
 
-    public int getMaxCapacity() {
+    public Capacity getMaxCapacity() {
         return maxCapacity;
     }
 
