@@ -5,8 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Session {
-    private final LocalDate startDate;
-    private final LocalDate endDate;
+    private final SessionPeriod period;
     private final SessionImage coverImage;
     private final SessionStatus status;
     private final Set<Long> enrolledStudentIds;
@@ -25,18 +24,14 @@ public class Session {
     }
 
     public Session(LocalDate startDate, LocalDate endDate, SessionImage coverImage, SessionStatus status, Set<Long> enrolledStudentIds) {
-        validateDate(startDate, endDate);
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this(new SessionPeriod(startDate, endDate), coverImage, status, enrolledStudentIds);
+    }
+
+    public Session(SessionPeriod period, SessionImage coverImage, SessionStatus status, Set<Long> enrolledStudentIds) {
+        this.period = period;
         this.coverImage = coverImage;
         this.status = status;
         this.enrolledStudentIds = enrolledStudentIds;
-    }
-
-    private void validateDate(LocalDate startDate, LocalDate endDate) {
-        if (endDate.isBefore(startDate)) {
-            throw new IllegalArgumentException("종료일은 시작일보다 이후여야 한다");
-        }
     }
 
     public void enroll(Long studentId) {

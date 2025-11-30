@@ -21,18 +21,6 @@ public class SessionTest {
     }
 
     @Test
-    public void 종료일이_시작일보다_이전이면_예외() {
-        LocalDate startDate = LocalDate.of(2026, 11, 3);
-        LocalDate endDate = LocalDate.of(2025, 12, 18);
-        SessionImage image = new SessionImage(500_000L, "png", 900, 600);
-
-        assertThatThrownBy(() -> new Session(startDate, endDate, image))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("종료일은 시작일보다 이후여야 한다");
-    }
-
-
-    @Test
     public void 준비중_상태일때_수강신청_불가() {
         SessionImage image = new SessionImage(500_000L, "png", 900, 600);
         Session session = new Session(START_DATE, END_DATE, image, "준비중");
