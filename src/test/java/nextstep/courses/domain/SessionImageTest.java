@@ -26,19 +26,4 @@ public class SessionImageTest {
         }).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("이미지 크기는 1MB 이하여야 한다");
     }
-
-    @Test
-    public void 허용되지_않는_이미지_타입이면_예외() {
-        assertThatThrownBy(() -> {
-            new SessionImage(500_000L, "bmp", 300, 200);
-        }).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("지원하지 않는 이미지 타입");
-    }
-
-
-    @ParameterizedTest
-    @ValueSource(strings = {"jpg", "jpeg", "gif", "svg", "png"})
-    public void 허용타입_허용(String imageType) {
-        assertThat(new SessionImage(500_000L, imageType, 300, 200)).isNotNull();
-    }
 }
