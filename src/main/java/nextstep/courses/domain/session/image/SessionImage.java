@@ -1,11 +1,7 @@
 package nextstep.courses.domain.session.image;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class SessionImage {
     private static final long MAX_FILE_SIZE = 1024 * 1024;
-    private static final List<String> ALLOWED_TYPES = Arrays.asList("gif", "jpg", "jpeg", "png", "svg");
 
     private final long fileSize;
     private final ImageType imageType;
