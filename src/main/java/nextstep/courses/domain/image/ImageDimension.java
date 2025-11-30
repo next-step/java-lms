@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.image;
 
 public class ImageDimension {
     private static final int MIN_WIDTH = 300;
