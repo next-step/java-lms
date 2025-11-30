@@ -52,7 +52,7 @@ public class SessionTest {
     @Test
     public void 유료강의의_최대인원을_초과하면_예외() {
         long fee = 100_000L;
-        Session session = new Session(START_DATE,END_DATE, IMAGE, "모집중", "PAID", 2, fee);
+        Session session = new Session(START_DATE,END_DATE, IMAGE, "모집중",  2, fee);
 
         session.enroll(1L, fee);
         session.enroll(2L, fee);
@@ -66,7 +66,7 @@ public class SessionTest {
     @Test
     public void 유료강의의_결제금액이_수강료와_일치하지_않으면_예외() {
         long fee = 100_000L;
-        Session session = new Session(START_DATE, END_DATE, IMAGE, "모집중", "PAID", 10, fee);
+        Session session = new Session(START_DATE, END_DATE, IMAGE, "모집중", 10, fee);
 
         assertThatThrownBy(() -> {
             session.enroll(1L, 50_000L);
@@ -77,7 +77,7 @@ public class SessionTest {
     @Test
     public void 유료강의_결제금액이_수강료와_일치하면_수강성공() {
         long fee = 100_000L;
-        Session session = new Session(START_DATE,END_DATE, IMAGE, "모집중", "PAID", 10, fee);
+        Session session = new Session(START_DATE,END_DATE, IMAGE, "모집중", 10, fee);
 
         session.enroll(1L, fee);
 

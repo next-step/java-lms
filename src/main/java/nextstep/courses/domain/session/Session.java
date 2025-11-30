@@ -9,9 +9,7 @@ public class Session {
     private final SessionImage coverImage;
     private final SessionStatus status;
     private final Set<Long> enrolledStudentIds;
-    private final String sessionType;
-    private final Integer maximumCapacity;
-    private final Long fee;
+    private final SessionType sessionType;
 
 
     public Session(LocalDate startDate, LocalDate endDate, SessionImage coverImage) {
@@ -30,23 +28,20 @@ public class Session {
         this(new SessionPeriod(startDate, endDate), coverImage, status, enrolledStudentIds);
     }
 
+    public Session(LocalDate startDate, LocalDate endDate, SessionImage image, String status, int maximumCapacity, long fee) {
+        this(new SessionPeriod(startDate, endDate), image, SessionStatus.from(status), new HashSet<>(), new PaidSessionType(maximumCapacity, fee));
+    }
+
     public Session(SessionPeriod period, SessionImage coverImage, SessionStatus status, Set<Long> enrolledStudentIds) {
-        this(period, coverImage, status, enrolledStudentIds, "무료", 3, 100_000L);
+        this(period, coverImage, status, enrolledStudentIds, new FreeSessionType());
     }
 
-    public Session(LocalDate startDate, LocalDate endDate, SessionImage image, String status, String sessionType, int maximumCapacity, long fee) {
-        this(new SessionPeriod(startDate, endDate), image, SessionStatus.from(status), new HashSet<>(), sessionType, maximumCapacity, fee);
-
-    }
-
-    public Session(SessionPeriod period, SessionImage coverImage, SessionStatus status, Set<Long> enrolledStudentIds, String sessionType, Integer maximumCapacity, Long fee) {
+    public Session(SessionPeriod period, SessionImage coverImage, SessionStatus status, Set<Long> enrolledStudentIds, SessionType sessionType) {
         this.period = period;
         this.coverImage = coverImage;
         this.status = status;
         this.enrolledStudentIds = enrolledStudentIds;
         this.sessionType = sessionType;
-        this.maximumCapacity = maximumCapacity;
-        this.fee = fee;
     }
 
     public void enroll(Long studentId) {
@@ -57,13 +52,12 @@ public class Session {
         if (!status.canEnroll()) {
             throw new IllegalStateException("모집중인 강의만 수강 신청할 수 있다");
         }
-        if ("PAID".equals(sessionType)) {
-            if (paymentAmount == null || !paymentAmount.equals(fee)) {
-                throw new IllegalArgumentException("결제 금액이 수강료와 일치하지 않습니다.");
-            }
-            if (maximumCapacity != null && enrolledStudentIds.size() >= maximumCapacity) {
-                throw new IllegalStateException("최대 수강 인원을 초과했습니다.");
-            }
+        if (!sessionType.isValidPayment(paymentAmount)) {
+            throw new IllegalArgumentException("결제 금액이 수강료와 일치하지 않습니다.");
+        }
+
+        if (sessionType.isOverCapacity(enrolledStudentIds.size())) {
+            throw new IllegalStateException("최대 수강 인원을 초과했습니다.");
         }
         enrolledStudentIds.add(studentId);
     }
