@@ -8,12 +8,12 @@ public class Session {
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final SessionImage coverImage;
-    private final String status;
+    private final SessionStatus status;
     private final Set<Long> enrolledStudentIds;
 
 
     public Session(LocalDate startDate, LocalDate endDate, SessionImage coverImage) {
-        this(startDate, endDate, coverImage, "준비중", new HashSet<>());
+        this(startDate, endDate, coverImage, SessionStatus.PREPARING, new HashSet<>());
     }
 
     public Session(LocalDate startDate, LocalDate endDate, SessionImage coverImage, String status) {
@@ -21,6 +21,10 @@ public class Session {
     }
 
     public Session(LocalDate startDate, LocalDate endDate, SessionImage coverImage, String status, Set<Long> enrolledStudentIds) {
+        this(startDate, endDate, coverImage, SessionStatus.from(status), enrolledStudentIds);
+    }
+
+    public Session(LocalDate startDate, LocalDate endDate, SessionImage coverImage, SessionStatus status, Set<Long> enrolledStudentIds) {
         validateDate(startDate, endDate);
         this.startDate = startDate;
         this.endDate = endDate;
@@ -36,7 +40,7 @@ public class Session {
     }
 
     public void enroll(Long studentId) {
-        if (!"모집중".equals(status)) {
+        if (!status.canEnroll()) {
             throw new IllegalStateException("모집중인 강의만 수강 신청할 수 있다");
         }
         enrolledStudentIds.add(studentId);
