@@ -63,4 +63,8 @@ public class Payment {
     public Long getAmount() {
         return amount;
     }
+
+    public boolean matchAmount(Long tuition) {
+        return this.amount == tuition;
+    }
 }
