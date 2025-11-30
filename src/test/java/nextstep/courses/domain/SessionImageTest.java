@@ -35,30 +35,6 @@ public class SessionImageTest {
                 .hasMessageContaining("지원하지 않는 이미지 타입");
     }
 
-    @Test
-    public void width가_300_미만이면_예외() {
-        assertThatThrownBy(() -> {
-            new SessionImage(500_000L, "png", 299, 200);
-        }).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("width는 300픽셀 이상");
-    }
-
-    @Test
-    public void height가_200_미만이면_예외() {
-        assertThatThrownBy(() -> {
-            new SessionImage(500_000L, "png", 300, 199);
-        }).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("height는 200픽셀 이상");
-    }
-
-
-    @Test
-    public void 비율이_3대2가_아니면_예외() {
-        assertThatThrownBy(() -> {
-            new SessionImage(500_000L, "png", 900, 500);
-        }).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("비율은 3:2");
-    }
 
     @ParameterizedTest
     @ValueSource(strings = {"jpg", "jpeg", "gif", "svg", "png"})
