@@ -1,5 +1,7 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.session.image.SessionImage;
+
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;

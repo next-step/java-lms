@@ -1,7 +1,4 @@
-package nextstep.courses.domain.session;
-
-import nextstep.courses.domain.image.ImageDimension;
-import nextstep.courses.domain.image.ImageType;
+package nextstep.courses.domain.session.image;
 
 import java.util.Arrays;
 import java.util.List;

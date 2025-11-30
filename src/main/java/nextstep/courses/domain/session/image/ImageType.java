@@ -1,4 +1,4 @@
-package nextstep.courses.domain.image;
+package nextstep.courses.domain.session.image;
 
 import java.util.Arrays;
 
