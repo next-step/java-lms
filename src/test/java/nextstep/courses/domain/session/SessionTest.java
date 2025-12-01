@@ -15,20 +15,9 @@ public class SessionTest {
 
     @Test
     public void 정상적인_강의_생성() {
-
-        Session session = new Session(START_DATE, END_DATE, IMAGE);
-
-        assertThat(session).isNotNull();
-    }
-
-    @Test
-    public void 준비중_상태일때_수강신청_불가() {
         Session session = new Session(START_DATE, END_DATE, IMAGE, "준비중");
 
-        assertThatThrownBy(() -> {
-            session.enroll(1L);
-        }).isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("모집중인 강의만 수강 신청할 수 있다");
+        assertThat(session).isNotNull();
     }
 
     @Test
@@ -38,30 +27,6 @@ public class SessionTest {
         session.enroll(1L);
 
         assertThat(session.isEnrolled(1L)).isTrue();
-    }
-
-    @Test
-    public void 종료_상태일때_수강신청_불가() {
-        Session session = new Session(START_DATE, END_DATE, IMAGE, "종료");
-
-        assertThatThrownBy(() -> {
-            session.enroll(1L);
-        }).isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("모집중인 강의만 수강 신청할 수 있다");
-    }
-
-    @Test
-    public void 유료강의의_최대인원을_초과하면_예외() {
-        long fee = 100_000L;
-        Session session = new Session(START_DATE,END_DATE, IMAGE, "모집중",  2, fee);
-
-        session.enroll(1L, fee);
-        session.enroll(2L, fee);
-
-        assertThatThrownBy(() -> {
-            session.enroll(3L, fee);
-        }).isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("최대 수강 인원을 초과");
     }
 
     @Test

@@ -9,14 +9,7 @@ import java.util.Set;
 public class Session {
     private final SessionPeriod period;
     private final SessionImage coverImage;
-    private final SessionStatus status;
-    private final Set<Long> enrolledStudentIds;
-    private final SessionType sessionType;
-
-
-    public Session(LocalDate startDate, LocalDate endDate, SessionImage coverImage) {
-        this(startDate, endDate, coverImage, SessionStatus.PREPARING, new HashSet<>());
-    }
+    private final Enrollment enrollment;
 
     public Session(LocalDate startDate, LocalDate endDate, SessionImage coverImage, String status) {
         this(startDate, endDate, coverImage, status, new HashSet<>());
@@ -35,36 +28,28 @@ public class Session {
     }
 
     public Session(SessionPeriod period, SessionImage coverImage, SessionStatus status, Set<Long> enrolledStudentIds) {
-        this(period, coverImage, status, enrolledStudentIds, new FreeSessionType());
+        this(period, coverImage, new Enrollment(status, new FreeSessionType(), enrolledStudentIds));
     }
 
     public Session(SessionPeriod period, SessionImage coverImage, SessionStatus status, Set<Long> enrolledStudentIds, SessionType sessionType) {
+        this(period, coverImage, new Enrollment(status, sessionType, enrolledStudentIds));
+    }
+
+    public Session(SessionPeriod period, SessionImage coverImage, Enrollment enrollment) {
         this.period = period;
         this.coverImage = coverImage;
-        this.status = status;
-        this.enrolledStudentIds = enrolledStudentIds;
-        this.sessionType = sessionType;
+        this.enrollment = enrollment;
     }
 
     public void enroll(Long studentId) {
-        enroll(studentId, null);
+        enrollment.enroll(studentId);
     }
 
     public void enroll(Long studentId, Long paymentAmount) {
-        if (!status.canEnroll()) {
-            throw new IllegalStateException("모집중인 강의만 수강 신청할 수 있다");
-        }
-        if (!sessionType.isValidPayment(paymentAmount)) {
-            throw new IllegalArgumentException("결제 금액이 수강료와 일치하지 않습니다.");
-        }
-
-        if (sessionType.isOverCapacity(enrolledStudentIds.size())) {
-            throw new IllegalStateException("최대 수강 인원을 초과했습니다.");
-        }
-        enrolledStudentIds.add(studentId);
+        enrollment.enroll(studentId, paymentAmount);
     }
 
     public boolean isEnrolled(Long studentId) {
-        return enrolledStudentIds.contains(studentId);
+        return enrollment.isEnrolled(studentId);
     }
 }
