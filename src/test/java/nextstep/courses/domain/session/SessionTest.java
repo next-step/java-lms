@@ -1,6 +1,9 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.image.CoverImage;
+import nextstep.courses.domain.session.builder.EnrollmentBuilder;
+import nextstep.courses.domain.session.builder.SessionBuilder;
+import nextstep.courses.domain.session.builder.SessionPolicyBuilder;
 import nextstep.courses.domain.session.constant.SessionStatus;
 import nextstep.courses.domain.session.constant.SessionType;
 import nextstep.payments.domain.Payment;
@@ -19,13 +22,12 @@ public class SessionTest {
 
     @Test
     void 유료_강의_정상_생성() {
-        Session session = new Session(1L, START_DATE, END_DATE, "paid",
-                100, 300_000L, "pending", COVER_IMAGE);
+        Session sessionBuilder = new SessionBuilder().build();
 
-        assertThat(session.getSessionPolicy().getSessionType()).isEqualTo(SessionType.PAID);
-        assertThat(session.getSessionPolicy().getTuition()).isEqualTo(new Tuition(300_000L));
-        assertThat(session.getSessionStatus()).isEqualTo(SessionStatus.PENDING);
-        assertThat(session.getSessionPolicy().getMaxCapacity()).isEqualTo(new Capacity(100));
+        assertThat(sessionBuilder.getSessionPolicy().getSessionType()).isEqualTo(SessionType.PAID);
+        assertThat(sessionBuilder.getSessionPolicy().getTuition()).isEqualTo(new Tuition(300_000L));
+        assertThat(sessionBuilder.getSessionStatus()).isEqualTo(SessionStatus.PENDING);
+        assertThat(sessionBuilder.getSessionPolicy().getMaxCapacity()).isEqualTo(new Capacity(100));
     }
 
     @Test
@@ -39,9 +41,8 @@ public class SessionTest {
 
     @Test
     void 수강신청시_모집중이_아닐경우_예외발생() {
-        Session session = new Session(2L, START_DATE, END_DATE, "paid",
-                100, 300_000L, "pending", COVER_IMAGE);
-        Enrollment enrollment = new Enrollment(NsUserTest.JAVAJIGI, 2L, new Payment(2L, 1L, 300_000L));
+        Session session = new SessionBuilder().withSessionStatus(SessionStatus.PENDING).build();
+        Enrollment enrollment = new EnrollmentBuilder().build();
 
         assertThatThrownBy(() -> session.addEnrollment(enrollment))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -50,14 +51,15 @@ public class SessionTest {
 
     @Test
     void 유료강의_최대_수강인원_초과시_예외발생() {
-        Session session = new Session(1L, START_DATE, END_DATE, "paid",
-                1, 300_000L, "active", COVER_IMAGE);
-        Enrollment enrollment1 = new Enrollment(NsUserTest.JAVAJIGI, 1L, new Payment(1L, 1L, 300_000L));
-        Enrollment enrollment2 = new Enrollment(NsUserTest.SANJIGI, 1L, new Payment(1L, 2L, 300_000L));
+        Session session = new SessionBuilder()
+                .withSessionPolicy(new SessionPolicyBuilder().withMaxCapacity(1).build())
+                .withSessionStatus(SessionStatus.ACTIVE)
+                .withEnrollment(new EnrollmentBuilder().build())
+                .build();
 
-        session.addEnrollment(enrollment1);
+        Enrollment newEnrollment = new Enrollment(NsUserTest.SANJIGI, 1L, new Payment(1L, 2L, 300_000L));
 
-        assertThatThrownBy(() -> session.addEnrollment(enrollment2))
+        assertThatThrownBy(() -> session.addEnrollment(newEnrollment))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("수강인원이 초과했습니다.");
     }

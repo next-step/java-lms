@@ -11,6 +11,10 @@ public class SessionPolicy {
     private final Tuition tuition;
     private final SessionType sessionType;
 
+    public SessionPolicy(int maxCapacity, Long tuition, String sessionType) {
+        this(new Capacity(maxCapacity), new Tuition(tuition), SessionType.from(sessionType.toUpperCase()));
+    }
+
     public SessionPolicy(Capacity maxCapacity, Tuition tuition, SessionType sessionType) {
         this.maxCapacity = maxCapacity;
         this.tuition = tuition;

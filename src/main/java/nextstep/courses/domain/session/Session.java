@@ -5,15 +5,13 @@ import nextstep.courses.domain.session.constant.SessionStatus;
 import nextstep.courses.domain.session.constant.SessionType;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class Session extends SessionCore {
 
     private final Long id;
     private final CoverImage coverImage;
-    private final Enrollments enrollments = new Enrollments();
+    private final Enrollments enrollments;
 
     public Session(Long id, LocalDateTime startDate, LocalDateTime endDate, String sessionType, String sessionStatus, CoverImage coverImage) {
         this(id, startDate, endDate, sessionType, Integer.MAX_VALUE, 0L, sessionStatus, coverImage);
@@ -35,6 +33,14 @@ public class Session extends SessionCore {
         super(sessionRange, sessionPolicy, sessionStatus);
         this.id = id;
         this.coverImage = coverImage;
+        this.enrollments = new Enrollments();
+    }
+
+    public Session(Long id, SessionRange sessionRange, SessionPolicy sessionPolicy, SessionStatus sessionStatus, CoverImage coverImage, Enrollments enrollments) {
+        super(sessionRange, sessionPolicy, sessionStatus);
+        this.id = id;
+        this.coverImage = coverImage;
+        this.enrollments = enrollments;
     }
 
     public void addEnrollment(Enrollment enrollment) {
@@ -54,5 +60,14 @@ public class Session extends SessionCore {
     @Override
     public int hashCode() {
         return Objects.hash(id, coverImage, enrollments);
+    }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "id=" + id +
+                ", coverImage=" + coverImage +
+                ", enrollments=" + enrollments +
+                '}';
     }
 }

@@ -27,7 +27,7 @@ public class Enrollment {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Enrollment that = (Enrollment) o;
-        return Objects.equals(user, that.user) && Objects.equals(sessionId, that.sessionId);
+        return Objects.equals(user.getId(), that.user.getId()) && Objects.equals(sessionId, that.sessionId);
     }
 
     @Override

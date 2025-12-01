@@ -22,5 +22,10 @@ public class Enrollments {
         }
     }
 
-
+    @Override
+    public String toString() {
+        return "Enrollments{" +
+                "enrollments=" + enrollments +
+                '}';
+    }
 }
