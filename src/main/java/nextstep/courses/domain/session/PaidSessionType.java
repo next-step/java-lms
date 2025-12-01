@@ -1,6 +1,6 @@
 package nextstep.courses.domain.session;
 
-public class PaidSessionType extends SessionType {
+public class PaidSessionType implements SessionType {
 
     private final Integer maximumCapacity;
     private final Long fee;

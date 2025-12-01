@@ -1,10 +1,10 @@
 package nextstep.courses.domain.session;
 
-public abstract class SessionType {
+public interface SessionType {
 
-    public abstract boolean isFree();
+    public  boolean isFree();
 
-    public abstract boolean isOverCapacity(int currentEnrollmentCount);
+    public  boolean isOverCapacity(int currentEnrollmentCount);
 
-    public abstract boolean isValidPayment(Long paymentAmount);
+    public  boolean isValidPayment(Long paymentAmount);
 }

@@ -1,6 +1,6 @@
 package nextstep.courses.domain.session;
 
-public class FreeSessionType extends SessionType {
+public class FreeSessionType implements SessionType {
     @Override
     public boolean isFree() {
         return true;
