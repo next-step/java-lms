@@ -22,7 +22,7 @@ public abstract class SessionCore {
         }
     }
 
-    protected void validateNotFull(List<Enrollment> enrollments) {
+    protected void validateNotFull(Enrollments enrollments) {
         if (this.sessionPolicy.matchSize(enrollments.size())) {
             throw new IllegalArgumentException("수강인원이 초과했습니다.");
         }
@@ -32,11 +32,6 @@ public abstract class SessionCore {
         if (!this.sessionStatus.equals(SessionStatus.ACTIVE)) {
             throw new IllegalArgumentException("현재는 강의 모집중이 아닙니다.");
         }
-    }
-
-
-    public SessionRange getSessionRange() {
-        return sessionRange;
     }
 
     public SessionPolicy getSessionPolicy() {

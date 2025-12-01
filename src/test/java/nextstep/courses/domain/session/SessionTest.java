@@ -62,18 +62,4 @@ public class SessionTest {
                 .hasMessageContaining("수강인원이 초과했습니다.");
     }
 
-    @Test
-    void 중복_수강신청시_예외발생() {
-        Session session = new Session(1L, START_DATE, END_DATE, "paid",
-                100, 300_000L, "active", COVER_IMAGE);
-        Enrollment enrollment1 = new Enrollment(NsUserTest.JAVAJIGI, 1L, new Payment(1L, 1L, 300_000L));
-        Enrollment enrollment2 = new Enrollment(NsUserTest.JAVAJIGI, 1L, new Payment(1L, 1L, 300_000L));
-
-        session.addEnrollment(enrollment1);
-
-        assertThatThrownBy(() -> session.addEnrollment(enrollment2))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("이미 신청한 강의입니다.");
-    }
-
 }

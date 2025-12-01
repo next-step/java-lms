@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Session extends SessionCore{
+public class Session extends SessionCore {
 
     private final Long id;
     private final CoverImage coverImage;
-    private final List<Enrollment> enrollments = new ArrayList<>();
+    private final Enrollments enrollments = new Enrollments();
 
     public Session(Long id, LocalDateTime startDate, LocalDateTime endDate, String sessionType, String sessionStatus, CoverImage coverImage) {
         this(id, startDate, endDate, sessionType, Integer.MAX_VALUE, 0L, sessionStatus, coverImage);
@@ -39,19 +39,10 @@ public class Session extends SessionCore{
 
     public void addEnrollment(Enrollment enrollment) {
         validatePaymentAmount(enrollment);
-        validateNotDuplicate(enrollment);
         validateNotFull(this.enrollments);
         validateSessionStatus();
         this.enrollments.add(enrollment);
     }
-
-
-    private void validateNotDuplicate(Enrollment enrollment) {
-        if (this.enrollments.contains(enrollment)) {
-            throw new IllegalArgumentException("이미 신청한 강의입니다.");
-        }
-    }
-
 
     @Override
     public boolean equals(Object o) {
