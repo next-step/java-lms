@@ -17,8 +17,8 @@ public class Enrollment {
         this.payment = payment;
     }
 
-    public void isPaymentAmount(Tuition tuition) {
-        if(tuition.matchAmount(payment)){
+    public void isPaymentAmount(SessionPolicy sessionPolicy) {
+        if(sessionPolicy.matchAmount(payment)){
             throw new IllegalArgumentException("강의 금액과 결제 금액이 일치하지 않습니다.");
         }
     }

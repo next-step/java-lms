@@ -9,16 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Session {
+public class Session extends SessionCore{
 
-    private Long id;
-    private final SessionRange sessionRange;
-    private final SessionType sessionType;
-    private final Capacity maxCapacity;
-    private final Tuition tuition;
-    private SessionStatus sessionStatus;
-    private CoverImage coverImage;
-    private List<Enrollment> enrollments = new ArrayList<>();
+    private final Long id;
+    private final CoverImage coverImage;
+    private final List<Enrollment> enrollments = new ArrayList<>();
 
     public Session(Long id, LocalDateTime startDate, LocalDateTime endDate, String sessionType, String sessionStatus, CoverImage coverImage) {
         this(id, startDate, endDate, sessionType, Integer.MAX_VALUE, 0L, sessionStatus, coverImage);
@@ -33,28 +28,23 @@ public class Session {
     }
 
     public Session(Long id, SessionRange sessionRange, SessionType sessionType, Capacity maxCapacity, Tuition tuition, SessionStatus sessionStatus, CoverImage coverImage) {
+        this(id, sessionRange, new SessionPolicy(maxCapacity, tuition, sessionType), sessionStatus, coverImage);
+    }
+
+    public Session(Long id, SessionRange sessionRange, SessionPolicy sessionPolicy, SessionStatus sessionStatus, CoverImage coverImage) {
+        super(sessionRange, sessionPolicy, sessionStatus);
         this.id = id;
-        this.sessionRange = sessionRange;
-        this.sessionType = sessionType;
-        this.maxCapacity = maxCapacity;
-        this.tuition = tuition;
-        this.sessionStatus = sessionStatus;
         this.coverImage = coverImage;
     }
 
     public void addEnrollment(Enrollment enrollment) {
         validatePaymentAmount(enrollment);
         validateNotDuplicate(enrollment);
-        validateNotFull();
+        validateNotFull(this.enrollments);
         validateSessionStatus();
         this.enrollments.add(enrollment);
     }
 
-    private void validatePaymentAmount(Enrollment enrollment) {
-        if(sessionType.equals(SessionType.PAID)){
-            enrollment.isPaymentAmount(tuition);
-        }
-    }
 
     private void validateNotDuplicate(Enrollment enrollment) {
         if (this.enrollments.contains(enrollment)) {
@@ -62,43 +52,16 @@ public class Session {
         }
     }
 
-    private void validateNotFull() {
-        if (this.maxCapacity.matchSize(this.enrollments.size())) {
-            throw new IllegalArgumentException("수강인원이 초과했습니다.");
-        }
-    }
-
-    private void validateSessionStatus() {
-        if (!this.sessionStatus.equals(SessionStatus.ACTIVE)) {
-            throw new IllegalArgumentException("현재는 강의 모집중이 아닙니다.");
-        }
-    }
-
-    public SessionType getSessionType() {
-        return sessionType;
-    }
-
-    public Capacity getMaxCapacity() {
-        return maxCapacity;
-    }
-
-    public Tuition getTuition() {
-        return tuition;
-    }
-
-    public SessionStatus getSessionStatus() {
-        return sessionStatus;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Session session = (Session) o;
-        return getMaxCapacity() == session.getMaxCapacity() && Objects.equals(id, session.id) && Objects.equals(sessionRange, session.sessionRange) && getSessionType() == session.getSessionType() && Objects.equals(getTuition(), session.getTuition()) && getSessionStatus() == session.getSessionStatus() && Objects.equals(coverImage, session.coverImage) && Objects.equals(enrollments, session.enrollments);
+        return Objects.equals(id, session.id) && Objects.equals(coverImage, session.coverImage) && Objects.equals(enrollments, session.enrollments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, sessionRange, getSessionType(), getMaxCapacity(), getTuition(), getSessionStatus(), coverImage, enrollments);
+        return Objects.hash(id, coverImage, enrollments);
     }
 }

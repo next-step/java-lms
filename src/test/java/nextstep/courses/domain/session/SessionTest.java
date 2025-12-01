@@ -5,10 +5,11 @@ import nextstep.courses.domain.session.constant.SessionStatus;
 import nextstep.courses.domain.session.constant.SessionType;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+
+import static org.assertj.core.api.Assertions.*;
 
 public class SessionTest {
 
@@ -21,19 +22,19 @@ public class SessionTest {
         Session session = new Session(1L, START_DATE, END_DATE, "paid",
                 100, 300_000L, "pending", COVER_IMAGE);
 
-        Assertions.assertThat(session.getSessionType()).isEqualTo(SessionType.PAID);
-        Assertions.assertThat(session.getTuition().getValue()).isEqualTo(300_000L);
-        Assertions.assertThat(session.getSessionStatus()).isEqualTo(SessionStatus.PENDING);
-        Assertions.assertThat(session.getMaxCapacity().getValue()).isEqualTo(100);
+        assertThat(session.getSessionPolicy().getSessionType()).isEqualTo(SessionType.PAID);
+        assertThat(session.getSessionPolicy().getTuition()).isEqualTo(new Tuition(300_000L));
+        assertThat(session.getSessionStatus()).isEqualTo(SessionStatus.PENDING);
+        assertThat(session.getSessionPolicy().getMaxCapacity()).isEqualTo(new Capacity(100));
     }
 
     @Test
     void 무료_강의_정상_생성() {
         Session session = new Session(1L, START_DATE, END_DATE, "free", "pending", COVER_IMAGE);
 
-        Assertions.assertThat(session.getSessionType()).isEqualTo(SessionType.FREE);
-        Assertions.assertThat(session.getMaxCapacity().getValue()).isEqualTo(Integer.MAX_VALUE);
-        Assertions.assertThat(session.getTuition().getValue()).isEqualTo(0L);
+        assertThat(session.getSessionPolicy().getSessionType()).isEqualTo(SessionType.FREE);
+        assertThat(session.getSessionPolicy().getMaxCapacity()).isEqualTo(new Capacity(Integer.MAX_VALUE));
+        assertThat(session.getSessionPolicy().getTuition()).isEqualTo(new Tuition(0L));
     }
 
     @Test
@@ -42,7 +43,7 @@ public class SessionTest {
                 100, 300_000L, "pending", COVER_IMAGE);
         Enrollment enrollment = new Enrollment(NsUserTest.JAVAJIGI, 2L, new Payment(2L, 1L, 300_000L));
 
-        Assertions.assertThatThrownBy(() -> session.addEnrollment(enrollment))
+        assertThatThrownBy(() -> session.addEnrollment(enrollment))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("현재는 강의 모집중이 아닙니다.");
     }
@@ -56,7 +57,7 @@ public class SessionTest {
 
         session.addEnrollment(enrollment1);
 
-        Assertions.assertThatThrownBy(() -> session.addEnrollment(enrollment2))
+        assertThatThrownBy(() -> session.addEnrollment(enrollment2))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("수강인원이 초과했습니다.");
     }
@@ -70,7 +71,7 @@ public class SessionTest {
 
         session.addEnrollment(enrollment1);
 
-        Assertions.assertThatThrownBy(() -> session.addEnrollment(enrollment2))
+        assertThatThrownBy(() -> session.addEnrollment(enrollment2))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("이미 신청한 강의입니다.");
     }
