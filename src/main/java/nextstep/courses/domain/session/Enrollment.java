@@ -1,5 +1,7 @@
 package nextstep.courses.domain.session;
 
+import nextstep.payments.domain.Payment;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,11 +24,11 @@ public class Enrollment {
         enroll(studentId, null);
     }
 
-    public void enroll(Long studentId, Long paymentAmount) {
+    public void enroll(Long studentId, Payment payment) {
         if (!status.canEnroll()) {
             throw new IllegalStateException("모집중인 강의만 수강 신청할 수 있다");
         }
-        if (!sessionType.isValidPayment(paymentAmount)) {
+        if (!sessionType.isValidPayment(payment)) {
             throw new IllegalArgumentException("결제 금액이 수강료와 일치하지 않습니다.");
         }
 

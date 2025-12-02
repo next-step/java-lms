@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,7 +31,7 @@ public class EnrollmentTest {
         SessionType type = new PaidSessionType(10, 100_000L);
         Enrollment enrollment = new Enrollment(SessionStatus.RECRUITING, type);
 
-        assertThatThrownBy(() -> enrollment.enroll(1L, 50_000L))
+        assertThatThrownBy(() -> enrollment.enroll(1L, new Payment("결제번호-1", 1L, 1L, 50_000L)))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("결제 금액이 수강료와 일치하지 않습니다");
     }
@@ -41,11 +42,11 @@ public class EnrollmentTest {
         SessionType type = new PaidSessionType(2, fee);
         Enrollment enrollment = new Enrollment(SessionStatus.RECRUITING, type);
 
-        enrollment.enroll(1L, fee);
-        enrollment.enroll(2L, fee);
+        enrollment.enroll(1L, new Payment("결제번호-1", 1L, 1L, fee));
+        enrollment.enroll(2L, new Payment("결제번호-2", 1L, 2L, fee));
 
         assertThatThrownBy(() -> {
-            enrollment.enroll(3L, fee);
+            enrollment.enroll(3L, new Payment("결제번호-1", 1L, 3L, fee));
         }).isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("최대 수강 인원을 초과");
     }

@@ -1,5 +1,7 @@
 package nextstep.courses.domain.session;
 
+import nextstep.payments.domain.Payment;
+
 public class FreeSessionType implements SessionType {
     @Override
     public boolean isFree() {
@@ -12,7 +14,7 @@ public class FreeSessionType implements SessionType {
     }
 
     @Override
-    public boolean isValidPayment(Long paymentAmount) {
+    public boolean isValidPayment(Payment payment) {
         return true;
     }
 }

@@ -1,5 +1,7 @@
 package nextstep.courses.domain.session;
 
+import nextstep.payments.domain.Payment;
+
 public class PaidSessionType implements SessionType {
 
     private final Integer maximumCapacity;
@@ -25,11 +27,11 @@ public class PaidSessionType implements SessionType {
     }
 
     @Override
-    public boolean isValidPayment(Long paymentAmount) {
-        if (isFree()) {
-            return true;
+    public boolean isValidPayment(Payment payment) {
+        if (payment == null) {
+            return false;
         }
-        return paymentAmount != null && paymentAmount.equals(fee);
+        return payment.isAmountEquals(fee);
     }
 
     public int getMaxCapacity() {

@@ -26,4 +26,12 @@ public class Payment {
         this.amount = amount;
         this.createdAt = LocalDateTime.now();
     }
+
+    public boolean isAmountEquals(long fee) {
+        return amount != null && amount == fee;
+    }
+
+    public String getId() {
+        return id;
+    }
 }

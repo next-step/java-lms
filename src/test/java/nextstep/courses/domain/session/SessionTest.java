@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.image.SessionImage;
+import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -45,7 +46,7 @@ public class SessionTest {
         Session session = new Session(START_DATE, END_DATE, IMAGE, "모집중", 10, fee);
 
         assertThatThrownBy(() -> {
-            session.enroll(1L, 50_000L);
+            session.enroll(1L, new Payment("결제번호-1", 1L, 1L, 50_000L));
         }).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("결제 금액이 수강료와 일치하지 않습니다");
     }
@@ -55,7 +56,7 @@ public class SessionTest {
         long fee = 100_000L;
         Session session = new Session(START_DATE, END_DATE, IMAGE, "모집중", 10, fee);
 
-        session.enroll(1L, fee);
+        session.enroll(1L, new Payment("결제번호-1", 1L, 1L, fee));
 
         assertThat(session.isEnrolled(1L)).isTrue();
     }

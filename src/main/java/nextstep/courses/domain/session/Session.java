@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.image.SessionImage;
+import nextstep.payments.domain.Payment;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -39,8 +40,8 @@ public class Session {
         enrollment.enroll(studentId);
     }
 
-    public void enroll(Long studentId, Long paymentAmount) {
-        enrollment.enroll(studentId, paymentAmount);
+    public void enroll(Long studentId, Payment pay) {
+        enrollment.enroll(studentId, pay);
     }
 
     public boolean isEnrolled(Long studentId) {

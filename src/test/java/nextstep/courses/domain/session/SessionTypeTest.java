@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,9 +48,8 @@ public class SessionTypeTest {
     @Test
     public void 유료강의_결제금액_검증() {
         SessionType sessionType = new PaidSessionType(10, 100_000L);
-
-        assertThat(sessionType.isValidPayment(100_000L)).isTrue();
-        assertThat(sessionType.isValidPayment(50_000L)).isFalse();
+        assertThat(sessionType.isValidPayment(new Payment("결제번호-1", 1L, 1L, 100_000L))).isTrue();
+        assertThat(sessionType.isValidPayment(new Payment("결제번호-2", 1L, 2L, 50_000L))).isFalse();
         assertThat(sessionType.isValidPayment(null)).isFalse();
     }
 
@@ -58,6 +58,6 @@ public class SessionTypeTest {
         SessionType sessionType = new FreeSessionType();
 
         assertThat(sessionType.isValidPayment(null)).isTrue();
-        assertThat(sessionType.isValidPayment(0L)).isTrue();
+        assertThat(sessionType.isValidPayment(new Payment("결제번호-1", 1L, 1L, 0L))).isTrue();
     }
 }
