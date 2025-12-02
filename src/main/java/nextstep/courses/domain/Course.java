@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Course {
     private Long id;
@@ -50,4 +51,18 @@ public class Course {
                 ", updatedAt=" + updatedAt +
                 '}';
     }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Course course = (Course) o;
+    return Objects.equals(id, course.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(id);
+  }
 }
