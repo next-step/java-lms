@@ -48,3 +48,34 @@ create table delete_history (
     deleted_by_id bigint,
     primary key (id)
 );
+
+create table session (
+    id bigint not null,
+    course_id bigint not null,
+    cover_image_id bigint,
+    start_date timestamp not null,
+    end_date timestamp not null,
+    max_capacity int not null,
+    tuition bigint not null,
+    session_type varchar(30),
+    session_status varchar(30),
+    created_at timestamp not null,
+    updated_at timestamp,
+    primary key (id)
+);
+
+create table cover_image (
+       id bigint not null,
+       size bigint,
+       type varchar(30),
+       width int,
+       height int,
+       primary key (id)
+);
+
+create table enrollment (
+    id bigint not null,
+    session_id bigint not null,
+    user_id bigint not null,
+    primary key (id)
+);
