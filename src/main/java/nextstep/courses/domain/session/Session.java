@@ -30,10 +30,7 @@ public class Session extends SessionCore {
     }
 
     public Session(Long id, SessionRange sessionRange, SessionPolicy sessionPolicy, SessionStatus sessionStatus, CoverImage coverImage) {
-        super(sessionRange, sessionPolicy, sessionStatus);
-        this.id = id;
-        this.coverImage = coverImage;
-        this.enrollments = new Enrollments();
+        this(id, sessionRange, sessionPolicy, sessionStatus, coverImage, new Enrollments());
     }
 
     public Session(Long id, SessionRange sessionRange, SessionPolicy sessionPolicy, SessionStatus sessionStatus, CoverImage coverImage, Enrollments enrollments) {
