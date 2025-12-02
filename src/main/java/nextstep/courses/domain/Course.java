@@ -1,5 +1,8 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.Sessions;
+
 import java.time.LocalDateTime;
 
 public class Course {
@@ -13,11 +16,18 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
+    private Sessions sessions;
+
     public Course() {
     }
 
     public Course(String title, Long creatorId) {
         this(0L, title, creatorId, LocalDateTime.now(), null);
+    }
+
+    public Course(String title, Long creatorId, Sessions sessions) {
+        this(0L, title, creatorId, LocalDateTime.now(), null);
+        this.sessions = sessions;
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -38,6 +48,17 @@ public class Course {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public Sessions getSessions() {
+        return sessions;
+    }
+
+    public void addSession(Session session) {
+        if (sessions == null) {
+            throw new IllegalStateException("Sessions가 초기화되지 않았습니다.");
+        }
+        sessions.add(session);
     }
 
     @Override
