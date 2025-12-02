@@ -1,73 +1,64 @@
 package nextstep.courses.domain;
 
-public class Session {
+public class Session extends BaseEntity {
   private final Course course;
-  private final SessionCoverImage coverImage;
+  private final int term;
+  private final SessionCoverImage cover;
   private final SessionPeriod period;
   private final RecruitmentState state;
+  private final SessionEnrollment enrollment;
 
-  private final int maxCapacity;
-  private final int tuitionFee;
-  private final int studentCount;
-
-  public Session(Course course, SessionCoverImage coverImage, String startDay, String endDay) {
-    this(course, coverImage, startDay, endDay, Integer.MAX_VALUE, 0);
+  public Session(Course course, int term, SessionCoverImage cover, String startDay, String endDay) {
+    this(null, course, term, cover, new SessionPeriod(startDay, endDay), SessionEnrollment.free());
   }
 
-  public Session(Course course, SessionCoverImage coverImage, String startDay, String endDay, int maxCapacity, int tuitionFee) {
-    this(course, coverImage, new SessionPeriod(startDay, endDay), maxCapacity, tuitionFee, 0);
+  public Session(Course course, int term, SessionCoverImage cover, String startDay, String endDay, int maxCapacity, int tuitionFee) {
+    this(null, course, term, cover, new SessionPeriod(startDay, endDay), SessionEnrollment.paid(maxCapacity, tuitionFee));
   }
 
-  public Session(Course course, SessionCoverImage coverImage, String startDay, String endDay, int maxCapacity, int tuitionFee, int studentCount) {
-    this(course, coverImage, new SessionPeriod(startDay, endDay), maxCapacity, tuitionFee, studentCount);
+  public Session(Course course, int term, SessionCoverImage cover, String startDay, String endDay, int maxCapacity, int tuitionFee, int studentCount) {
+    this(null, course, term, cover, new SessionPeriod(startDay, endDay), new SessionEnrollment(maxCapacity, tuitionFee, studentCount));
   }
 
-  public Session(Course course, SessionCoverImage coverImage, SessionPeriod period, int maxCapacity, int tuitionFee, int studentCount) {
-    this(course, coverImage, period, maxCapacity, tuitionFee, studentCount, RecruitmentState.PREPARING);
+  public Session(Long id, Course course, int term, SessionCoverImage cover, SessionPeriod period, SessionEnrollment enrollment) {
+    this(id, course, term, cover, period, enrollment, RecruitmentState.PREPARING);
   }
 
-  public Session(Course course, SessionCoverImage coverImage, SessionPeriod period, int maxCapacity, int tuitionFee, int studentCount, RecruitmentState state) {
-    validateCapacity(maxCapacity, studentCount);
+  public Session(Long id, Course course, int term, SessionCoverImage cover, SessionPeriod period, SessionEnrollment enrollment, RecruitmentState state) {
+    super(id);
     this.course = course;
-    this.coverImage = coverImage;
+    this.term = term;
+    this.cover = cover;
     this.period = period;
-    this.maxCapacity = maxCapacity;
-    this.tuitionFee = tuitionFee;
-    this.studentCount = studentCount;
+    this.enrollment = enrollment;
     this.state = state;
   }
 
-  public Session enroll(){
-    return this.enroll(0);
+  public Session enroll() {
+    return enroll(0);
   }
 
   public Session enroll(int payAmount) {
     validateState();
-    validateCapacity(maxCapacity, studentCount + 1);
-    validateTuitionFee(payAmount);
-    return increaseStudent();
+    return new Session(getId(), course, term, cover, period, enrollment.enroll(payAmount), state);
   }
 
   public Session openEnrollment() {
     if (state != RecruitmentState.PREPARING) {
       throw new IllegalStateException("준비중인 강의만 모집을 시작할 수 있습니다.");
     }
-    return new Session(this.course, this.coverImage, this.period, this.maxCapacity, this.tuitionFee, this.studentCount, RecruitmentState.RECRUITING);
+    return new Session(getId(), course, term, cover, period, enrollment, RecruitmentState.RECRUITING);
   }
 
   public Session closeEnrollment() {
     if (state != RecruitmentState.RECRUITING) {
       throw new IllegalStateException("모집중인 강의만 종료할 수 있습니다.");
     }
-    return new Session(this.course, this.coverImage, this.period, this.maxCapacity, this.tuitionFee, this.studentCount, RecruitmentState.CLOSED);
+    return new Session(getId(), course, term, cover, period, enrollment, RecruitmentState.CLOSED);
   }
 
   public RecruitmentState getState() {
     return state;
-  }
-
-  private Session increaseStudent() {
-    return new Session(this.course, this.coverImage, this.period, this.maxCapacity, this.tuitionFee, this.studentCount + 1, this.state);
   }
 
   private void validateState() {
@@ -75,17 +66,4 @@ public class Session {
       throw new IllegalStateException("모집중인 강의만 수강신청이 가능합니다.");
     }
   }
-
-  private void validateTuitionFee(int payAmount){
-    if(payAmount != tuitionFee){
-      throw new IllegalArgumentException("수강료와 지불한 금액이 정확히 일치해야 합니다.");
-    }
-  }
-
-  private void validateCapacity(int maxCapacity, int studentCount){
-    if(maxCapacity < studentCount){
-      throw new IllegalArgumentException("최대 수강 인원을 초과할 수 없습니다.");
-    }
-  }
-
 }

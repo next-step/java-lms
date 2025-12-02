@@ -15,11 +15,11 @@ class SessionImageDimensionTest {
   }
 
   @ParameterizedTest
-  @CsvSource({"299,299", "299,300", "300,299"})
+  @CsvSource({"299,299", "299,300", "300,199"})
   void 그_외_너비_예외(int width, int height){
     assertThatThrownBy(() -> new SessionImageDimension(width, height))
         .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("이미지는 가로 x 세로 3대 1이어야 합니다.");
+        .hasMessage("이미지는 가로 300이상, 세로 200 이상이어야 합니다.");
   }
 
   @ParameterizedTest
@@ -30,9 +30,11 @@ class SessionImageDimensionTest {
   }
 
   @ParameterizedTest
-  @CsvSource({"200,300", "300,1", "300,199"})
+  @CsvSource({"400,200", "600,300", "900,400"})
   void 그_외_비율_예외(int width, int height){
-
+    assertThatThrownBy(() -> new SessionImageDimension(width, height))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("이미지는 가로 x 세로 3대 2이어야 합니다.");
   }
 
 }
