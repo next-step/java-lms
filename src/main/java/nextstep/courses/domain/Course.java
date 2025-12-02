@@ -38,6 +38,10 @@ public class Course {
         this.sessions.add(session);
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getTitle() {
         return title;
     }

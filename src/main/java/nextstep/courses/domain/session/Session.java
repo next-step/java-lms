@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.Course;
 import nextstep.courses.domain.image.CoverImage;
 import nextstep.courses.domain.session.constant.SessionStatus;
 import nextstep.courses.domain.session.constant.SessionType;
@@ -10,8 +11,11 @@ import java.util.Objects;
 public class Session extends SessionCore {
 
     private final Long id;
+    private Course course;
     private final CoverImage coverImage;
     private final Enrollments enrollments;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public Session(Long id, LocalDateTime startDate, LocalDateTime endDate, String sessionType, String sessionStatus, CoverImage coverImage) {
         this(id, startDate, endDate, sessionType, Integer.MAX_VALUE, 0L, sessionStatus, coverImage);
@@ -30,14 +34,21 @@ public class Session extends SessionCore {
     }
 
     public Session(Long id, SessionRange sessionRange, SessionPolicy sessionPolicy, SessionStatus sessionStatus, CoverImage coverImage) {
-        this(id, sessionRange, sessionPolicy, sessionStatus, coverImage, new Enrollments());
+        this(id, null, sessionRange, sessionPolicy, sessionStatus, coverImage, new Enrollments(), LocalDateTime.now(), null);
     }
 
-    public Session(Long id, SessionRange sessionRange, SessionPolicy sessionPolicy, SessionStatus sessionStatus, CoverImage coverImage, Enrollments enrollments) {
+    public Session(Long id, Course course, SessionRange sessionRange, SessionPolicy sessionPolicy, SessionStatus sessionStatus, CoverImage coverImage, Enrollments enrollments) {
+        this(id, course, sessionRange, sessionPolicy, sessionStatus, coverImage, new Enrollments(), LocalDateTime.now(), null);
+    }
+
+    public Session(Long id, Course course, SessionRange sessionRange, SessionPolicy sessionPolicy, SessionStatus sessionStatus, CoverImage coverImage, Enrollments enrollments, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(sessionRange, sessionPolicy, sessionStatus);
         this.id = id;
+        this.course = course;
         this.coverImage = coverImage;
         this.enrollments = enrollments;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public void addEnrollment(Enrollment enrollment) {
@@ -45,6 +56,26 @@ public class Session extends SessionCore {
         validateNotFull(this.enrollments);
         validateSessionStatus();
         this.enrollments.add(enrollment);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public CoverImage getCoverImage() {
+        return coverImage;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
     @Override
@@ -67,4 +98,6 @@ public class Session extends SessionCore {
                 ", enrollments=" + enrollments +
                 '}';
     }
+
+
 }

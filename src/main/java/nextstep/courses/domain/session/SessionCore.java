@@ -2,7 +2,8 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.constant.SessionStatus;
 
-import java.util.List;
+import java.time.LocalDateTime;
+
 
 public abstract class SessionCore {
 
@@ -32,6 +33,26 @@ public abstract class SessionCore {
         if (!this.sessionStatus.equals(SessionStatus.ACTIVE)) {
             throw new IllegalArgumentException("현재는 강의 모집중이 아닙니다.");
         }
+    }
+
+    public LocalDateTime getStartDate() {
+        return sessionRange.getStartDate();
+    }
+
+    public LocalDateTime getEndDate() {
+        return sessionRange.getEndDate();
+    }
+
+    public int getMaxCapacity() {
+        return sessionPolicy.getMaxCapacity().getValue();
+    }
+
+    public Long getTuition() {
+        return sessionPolicy.getTuition().getValue();
+    }
+
+    public String getSessionType() {
+        return sessionPolicy.getSessionType().toString();
     }
 
     public SessionPolicy getSessionPolicy() {
