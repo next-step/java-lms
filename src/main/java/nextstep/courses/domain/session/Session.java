@@ -7,35 +7,29 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Session {
+    private final int cohort;
     private final SessionPeriod period;
     private final SessionImage coverImage;
     private final Enrollment enrollment;
 
     public Session(LocalDate startDate, LocalDate endDate, SessionImage coverImage, String status) {
-        this(startDate, endDate, coverImage, status, new HashSet<>());
-    }
-
-    public Session(LocalDate startDate, LocalDate endDate, SessionImage coverImage, String status, Set<Long> enrolledStudentIds) {
-        this(startDate, endDate, coverImage, SessionStatus.from(status), enrolledStudentIds);
-    }
-
-    public Session(LocalDate startDate, LocalDate endDate, SessionImage coverImage, SessionStatus status, Set<Long> enrolledStudentIds) {
-        this(new SessionPeriod(startDate, endDate), coverImage, status, enrolledStudentIds);
+        this(new SessionPeriod(startDate, endDate), coverImage, SessionStatus.from(status), new HashSet<>(), new FreeSessionType());
     }
 
     public Session(LocalDate startDate, LocalDate endDate, SessionImage image, String status, int maximumCapacity, long fee) {
         this(new SessionPeriod(startDate, endDate), image, SessionStatus.from(status), new HashSet<>(), new PaidSessionType(maximumCapacity, fee));
     }
 
-    public Session(SessionPeriod period, SessionImage coverImage, SessionStatus status, Set<Long> enrolledStudentIds) {
-        this(period, coverImage, new Enrollment(status, new FreeSessionType(), enrolledStudentIds));
-    }
-
     public Session(SessionPeriod period, SessionImage coverImage, SessionStatus status, Set<Long> enrolledStudentIds, SessionType sessionType) {
-        this(period, coverImage, new Enrollment(status, sessionType, enrolledStudentIds));
+        this(1, period, coverImage, new Enrollment(status, sessionType, enrolledStudentIds));
     }
 
-    public Session(SessionPeriod period, SessionImage coverImage, Enrollment enrollment) {
+    public Session(int cohort, LocalDate startDate, LocalDate endDate, SessionImage image) {
+        this(cohort, new SessionPeriod(startDate, endDate), image, new Enrollment(SessionStatus.PREPARING, new FreeSessionType()));
+    }
+
+    public Session(int cohort, SessionPeriod period, SessionImage coverImage, Enrollment enrollment) {
+        this.cohort = cohort;
         this.period = period;
         this.coverImage = coverImage;
         this.enrollment = enrollment;
@@ -51,5 +45,9 @@ public class Session {
 
     public boolean isEnrolled(Long studentId) {
         return enrollment.isEnrolled(studentId);
+    }
+
+    public int getCohort() {
+        return cohort;
     }
 }
