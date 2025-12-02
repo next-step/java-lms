@@ -33,25 +33,19 @@ public class Session extends BaseEntity {
   }
 
   public Session enroll(int payAmount) {
-    validateState();
+    validateEnrollState();
     return new Session(getId(), course, term, cover, period, type.enroll(payAmount), state);
   }
 
-  public Session openEnrollment() {
-    if (state != SessionState.PREPARING) {
-      throw new IllegalStateException("준비중인 강의만 모집을 시작할 수 있습니다.");
-    }
-    return new Session(getId(), course, term, cover, period, type, SessionState.RECRUITING);
+  public Session open() {
+    return new Session(getId(), course, term, cover, period, type, state.open());
   }
 
-  public Session closeEnrollment() {
-    if (state != SessionState.RECRUITING) {
-      throw new IllegalStateException("모집중인 강의만 종료할 수 있습니다.");
-    }
-    return new Session(getId(), course, term, cover, period, type, SessionState.CLOSED);
+  public Session close() {
+    return new Session(getId(), course, term, cover, period, type, state.close());
   }
 
-  private void validateState() {
+  private void validateEnrollState() {
     if (!state.canEnroll()) {
       throw new IllegalStateException("모집중인 강의만 수강신청이 가능합니다.");
     }

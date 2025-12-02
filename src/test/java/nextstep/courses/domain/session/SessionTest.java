@@ -14,7 +14,7 @@ class SessionTest {
   @Test
   void 모집중일때_수강신청_가능() {
     Session session = new Session(new Course("TDD", 1L), TERM, COVER_IMAGE, "2025-01-01", "2025-01-31");
-    Session recruiting = session.openEnrollment();
+    Session recruiting = session.open();
 
     assertDoesNotThrow(() -> recruiting.enroll(0));
   }
@@ -31,9 +31,9 @@ class SessionTest {
   @Test
   void 준비중이_아닐때_모집시작하면_예외() {
     Session session = new Session(new Course("TDD", 1L), TERM, COVER_IMAGE, "2025-01-01", "2025-01-31");
-    Session recruiting = session.openEnrollment();
+    Session recruiting = session.open();
 
-    assertThatThrownBy(() -> recruiting.openEnrollment())
+    assertThatThrownBy(() -> recruiting.open())
         .isInstanceOf(IllegalStateException.class)
         .hasMessage("준비중인 강의만 모집을 시작할 수 있습니다.");
   }
@@ -42,7 +42,7 @@ class SessionTest {
   void 모집중이_아닐때_종료하면_예외() {
     Session preparing = new Session(new Course("TDD", 1L), TERM, COVER_IMAGE, "2025-01-01", "2025-01-31");
 
-    assertThatThrownBy(() -> preparing.closeEnrollment())
+    assertThatThrownBy(() -> preparing.close())
         .isInstanceOf(IllegalStateException.class)
         .hasMessage("모집중인 강의만 종료할 수 있습니다.");
   }

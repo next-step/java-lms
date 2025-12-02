@@ -5,16 +5,18 @@ public enum SessionState {
   RECRUITING,
   CLOSED;
 
-  public SessionState next() {
-    switch (this) {
-      case PREPARING :
-        return RECRUITING;
-      case RECRUITING :
-        return CLOSED;
-      case CLOSED :
-        throw new IllegalStateException("종료된 강의는 상태를 변경할 수 없습니다.");
+  public SessionState open() {
+    if (this != PREPARING) {
+      throw new IllegalStateException("준비중인 강의만 모집을 시작할 수 있습니다.");
     }
-    throw new IllegalStateException("잘못된 강의 상태 입니다.");
+    return RECRUITING;
+  }
+
+  public SessionState close() {
+    if (this != RECRUITING) {
+      throw new IllegalStateException("모집중인 강의만 종료할 수 있습니다.");
+    }
+    return CLOSED;
   }
 
   public boolean canEnroll() {
