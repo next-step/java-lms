@@ -1,7 +1,8 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.course;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import nextstep.courses.domain.BaseEntity;
 
 public class Course extends BaseEntity {
     private String title;

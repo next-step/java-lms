@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.image;
 
 public class SessionImageCapacity {
   private static final long MAX_CAPACITY_BYTES = 1024 * 1024; // 1MB

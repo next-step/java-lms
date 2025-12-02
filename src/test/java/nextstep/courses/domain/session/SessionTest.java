@@ -1,8 +1,10 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
+import nextstep.courses.domain.course.Course;
+import nextstep.courses.domain.image.SessionCoverImage;
 import org.junit.jupiter.api.Test;
 
 class SessionTest {

@@ -1,7 +1,6 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.image;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public enum SessionImageExtension {

@@ -1,11 +1,11 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
-public enum RecruitmentState {
+public enum SessionState {
   PREPARING,
   RECRUITING,
   CLOSED;
 
-  public RecruitmentState next() {
+  public SessionState next() {
     switch (this) {
       case PREPARING :
         return RECRUITING;
