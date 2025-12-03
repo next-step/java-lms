@@ -2,6 +2,13 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
+import nextstep.courses.domain.session.Enrollment;
+import nextstep.courses.domain.session.FreeSessionType;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionPeriod;
+import nextstep.courses.domain.session.SessionStatus;
+import nextstep.courses.domain.session.Sessions;
+import nextstep.courses.domain.session.image.SessionImage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -9,6 +16,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,10 +40,30 @@ public class CourseRepositoryTest {
     @Test
     void crud() {
         Course course = new Course("TDD, 클린 코드 with Java", 1L);
-        int count = courseRepository.save(course);
-        assertThat(count).isEqualTo(1);
-        Course savedCourse = courseRepository.findById(1L);
+        Long courseId = courseRepository.save(course);
+        assertThat(courseId).isEqualTo(1L);
+        Course savedCourse = courseRepository.findById(courseId);
         assertThat(course.getTitle()).isEqualTo(savedCourse.getTitle());
         LOGGER.debug("Course: {}", savedCourse);
+    }
+
+    @Test
+    void sessions를_가진_course_저장하고_조회한다() {
+        LocalDate startDate = LocalDate.of(2025, 11, 3);
+        LocalDate endDate = LocalDate.of(2025, 12, 18);
+        SessionImage image = new SessionImage(500_000L, "png", 300, 200);
+
+        Session session1 = new Session(1, new SessionPeriod(startDate, endDate), image, new Enrollment(SessionStatus.RECRUITING, new FreeSessionType()));
+        Session session2 = new Session(2, new SessionPeriod(startDate, endDate), image, new Enrollment(SessionStatus.RECRUITING, new FreeSessionType()));
+
+        Sessions sessions = new Sessions(new ArrayList<>(List.of(session1, session2)));
+        Course course = new Course("TDD, 클린 코드 with Java", 1L, sessions);
+
+        Long savedCourseId = courseRepository.save(course);
+
+        Course savedCourse = courseRepository.findById(savedCourseId);
+        assertThat(savedCourse.getTitle()).isEqualTo("TDD, 클린 코드 with Java");
+        assertThat(savedCourse.getSessions()).isNotNull();
+        assertThat(savedCourse.getSessions().size()).isEqualTo(2);
     }
 }

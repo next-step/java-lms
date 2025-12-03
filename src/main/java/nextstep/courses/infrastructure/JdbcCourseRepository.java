@@ -2,12 +2,26 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
+import nextstep.courses.domain.session.Enrollment;
+import nextstep.courses.domain.session.FreeSessionType;
+import nextstep.courses.domain.session.PaidSessionType;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionStatus;
+import nextstep.courses.domain.session.SessionType;
+import nextstep.courses.domain.session.Sessions;
+import nextstep.courses.domain.session.image.SessionImage;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
 
 @Repository("courseRepository")
 public class JdbcCourseRepository implements CourseRepository {
@@ -18,21 +32,118 @@ public class JdbcCourseRepository implements CourseRepository {
     }
 
     @Override
-    public int save(Course course) {
+    public Long save(Course course) {
         String sql = "insert into course (title, creator_id, created_at) values(?, ?, ?)";
-        return jdbcTemplate.update(sql, course.getTitle(), course.getCreatorId(), course.getCreatedAt());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
+            ps.setString(1, course.getTitle());
+            ps.setLong(2, course.getCreatorId());
+            ps.setTimestamp(3, Timestamp.valueOf(course.getCreatedAt()));
+            return ps;
+        }, keyHolder);
+
+        Long courseId = Objects.requireNonNull(keyHolder.getKey()).longValue();
+
+        if (course.getSessions() != null) {
+            saveSessions(courseId, course.getSessions());
+        }
+
+        return courseId;
     }
+
+    private void saveSessions(Long courseId, Sessions sessions) {
+        for (int i = 1; i <= sessions.size(); i++) {
+            Session session = sessions.findByCohort(i);
+            if (session != null) {
+                saveSession(courseId, session);
+            }
+        }
+    }
+
+    private void saveSession(Long courseId, Session session) {
+        Long imageId = saveSessionImage(session.getImage());
+
+        String sql = "insert into session (course_id, cohort, start_date, end_date, image_id, status, session_type, max_capacity, fee, created_at) " +
+                "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        jdbcTemplate.update(sql,
+                courseId,
+                session.getCohort(),
+                Date.valueOf(session.getStartDate()),
+                Date.valueOf(session.getEndDate()),
+                imageId,
+                "준비중",
+                "FREE",
+                null,
+                null,
+                Timestamp.valueOf(LocalDateTime.now()));
+    }
+
+    private Long saveSessionImage(SessionImage image) {
+        String sql = "insert into session_image (file_size, image_type, width, height) values(?, ?, ?, ?)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
+            ps.setLong(1, 500_000L);
+            ps.setString(2, "png");
+            ps.setInt(3, image.getWidth());
+            ps.setInt(4, image.getHeight());
+            return ps;
+        }, keyHolder);
+
+        return keyHolder.getKey().longValue();
+    }
+
 
     @Override
     public Course findById(Long id) {
         String sql = "select id, title, creator_id, created_at, updated_at from course where id = ?";
-        RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(
-                rs.getLong(1),
-                rs.getString(2),
-                rs.getLong(3),
-                toLocalDateTime(rs.getTimestamp(4)),
-                toLocalDateTime(rs.getTimestamp(5)));
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+        RowMapper<Course> rowMapper = (rs, rowNum) -> {
+            Course course = new Course(
+                    rs.getLong(1),
+                    rs.getString(2),
+                    rs.getLong(3),
+                    toLocalDateTime(rs.getTimestamp(4)),
+                    toLocalDateTime(rs.getTimestamp(5)));
+            return course;
+        };
+        Course course = jdbcTemplate.queryForObject(sql, rowMapper, id);
+
+        return new Course(course.getId(), course.getTitle(), course.getCreatorId(), course.getCreatedAt(), null, findSessionsByCourseId(id));
+    }
+
+    private Sessions findSessionsByCourseId(Long courseId) {
+        String sql = "select s.id, s.cohort, s.start_date, s.end_date, s.status, s.session_type, s.max_capacity, s.fee, " +
+                "i.file_size, i.image_type, i.width, i.height " +
+                "from session s " +
+                "join session_image i on s.image_id = i.id " +
+                "where s.course_id = ? " +
+                "order by s.cohort";
+
+        List<Session> sessionList = jdbcTemplate.query(sql, (rs, rowNum) -> {
+            SessionImage image = new SessionImage(
+                    rs.getLong("file_size"),
+                    rs.getString("image_type"),
+                    rs.getInt("width"),
+                    rs.getInt("height"));
+
+            SessionStatus status = SessionStatus.from(rs.getString("status"));
+            SessionType type = "FREE".equals(rs.getString("session_type"))
+                    ? new FreeSessionType()
+                    : new PaidSessionType(rs.getInt("max_capacity"), rs.getLong("fee"));
+
+            return new Session(
+                    rs.getInt("cohort"),
+                    rs.getDate("start_date").toLocalDate(),
+                    rs.getDate("end_date").toLocalDate(),
+                    image,
+                    new Enrollment(status, type));
+        }, courseId);
+
+        return new Sessions(sessionList);
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

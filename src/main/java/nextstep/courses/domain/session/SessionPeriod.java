@@ -18,4 +18,11 @@ public class SessionPeriod {
         }
     }
 
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
 }

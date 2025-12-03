@@ -29,6 +29,10 @@ public class Session {
         this(cohort, new SessionPeriod(startDate, endDate), image, new Enrollment(SessionStatus.PREPARING, new FreeSessionType()));
     }
 
+    public Session(int cohort, LocalDate startDate, LocalDate endDate, SessionImage image, Enrollment enrollment) {
+        this(cohort, new SessionPeriod(startDate, endDate), image, enrollment);
+    }
+
     public Session(int cohort, SessionPeriod period, SessionImage coverImage, Enrollment enrollment) {
         this.cohort = cohort;
         this.period = period;
@@ -51,4 +55,17 @@ public class Session {
     public int getCohort() {
         return cohort;
     }
+
+    public SessionImage getImage() {
+        return coverImage;
+    }
+
+    public LocalDate getStartDate() {
+        return period.getStartDate();
+    }
+
+    public LocalDate getEndDate() {
+        return period.getEndDate();
+    }
+
 }
