@@ -15,6 +15,10 @@ public class CoverImage {
         this(size, ImageType.fromName(type.toUpperCase()), width, height);
     }
 
+    public CoverImage(Long id, long size, String type, int width, int height) {
+        this(id, size, ImageType.fromName(type.toUpperCase()), width, height);
+    }
+
     public CoverImage(long size, ImageType type, int width, int height) {
         this(0L, size, type, new ImageDimentsion(width, height));
     }
@@ -49,5 +53,12 @@ public class CoverImage {
         return type;
     }
 
+    public int getWidth(){
+        return this.dimentsion.getWidth();
+    }
+
+    public int getHeight(){
+        return this.dimentsion.getHeight();
+    }
 
 }

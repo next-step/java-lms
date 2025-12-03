@@ -32,4 +32,12 @@ public class ImageDimentsion {
     private static boolean isSize(int width, int height) {
         return width < MIN_WIDTH || height < MIN_HEIGHT;
     }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 }
