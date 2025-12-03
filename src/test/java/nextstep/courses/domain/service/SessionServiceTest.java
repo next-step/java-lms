@@ -25,6 +25,8 @@ class SessionServiceTest {
 
         assertThat(saveSession.getCourse().getTitle()).isEqualTo("TDD, 클린 코드 with Java");
         assertThat(saveSession.getCourse().getCreatorId()).isEqualTo(1L);
+
+        assertThat(saveSession.getEnrollments()).hasSize(2);
     }
 
 

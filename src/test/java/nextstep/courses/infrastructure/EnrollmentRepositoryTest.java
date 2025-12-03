@@ -1,0 +1,41 @@
+package nextstep.courses.infrastructure;
+
+import nextstep.courses.domain.session.repository.EnrollmentRepository;
+import nextstep.courses.record.EnrollmentRecord;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@JdbcTest
+public class EnrollmentRepositoryTest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EnrollmentRepositoryTest.class);
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    private EnrollmentRepository enrollmentRepository;
+
+    @BeforeEach
+    void setUp() {
+         enrollmentRepository= new JdbcEnrollmentRespository(jdbcTemplate);
+    }
+
+    @Test
+    void crud() {
+        int count = enrollmentRepository.save(1L, 1L, 1L);
+        assertThat(count).isEqualTo(1);
+
+        List<EnrollmentRecord> enrollments = enrollmentRepository.findBySessionId(1L);
+        assertThat(enrollments).hasSize(1);
+    }
+
+
+}

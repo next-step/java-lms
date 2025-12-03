@@ -1,7 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionRepository;
+import nextstep.courses.domain.session.repository.SessionRepository;
 import nextstep.courses.domain.session.builder.SessionBuilder;
 import nextstep.courses.record.SessionRecord;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,11 +30,11 @@ public class SessionRepositoryTest {
 
     @Test
     void crud(){
-        Session session = new SessionBuilder().build();
+        Session session = new SessionBuilder().withId(2L).build();
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
 
-        SessionRecord sessionRecord = sessionRepository.findById(1L);
+        SessionRecord sessionRecord = sessionRepository.findById(2L);
         assertThat(sessionRecord.getMaxCapacity()).isEqualTo(100);
         assertThat(sessionRecord.getTuition()).isEqualTo(300_000L);
     }

@@ -15,3 +15,6 @@ INSERT INTO session(id, course_id, cover_image_id, start_date, end_date, max_cap
 VALUES (1, 1, 1,CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 100, 300000, 'PAID', 'ACTIVE', CURRENT_TIMESTAMP() );
 
 INSERT INTO cover_image (id, size, type, width, height) VALUES (1, 1, 'png', 300, 200);
+
+INSERT INTO enrollment (id, user_id, session_id) VALUES  (1, 1, 1);
+INSERT INTO enrollment (id, user_id, session_id) VALUES  (2, 2, 1);

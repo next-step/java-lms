@@ -6,6 +6,7 @@ import nextstep.courses.domain.session.constant.SessionStatus;
 import nextstep.courses.domain.session.constant.SessionType;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 public class Session extends SessionCore {
@@ -38,7 +39,7 @@ public class Session extends SessionCore {
     }
 
     public Session(Long id, Course course, SessionRange sessionRange, SessionPolicy sessionPolicy, SessionStatus sessionStatus, CoverImage coverImage, Enrollments enrollments) {
-        this(id, course, sessionRange, sessionPolicy, sessionStatus, coverImage, new Enrollments(), LocalDateTime.now(), null);
+        this(id, course, sessionRange, sessionPolicy, sessionStatus, coverImage, enrollments, LocalDateTime.now(), null);
     }
 
     public Session(Long id, Course course, SessionRange sessionRange, SessionPolicy sessionPolicy, SessionStatus sessionStatus, CoverImage coverImage, Enrollments enrollments, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -76,6 +77,10 @@ public class Session extends SessionCore {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public List<Enrollment> getEnrollments() {
+        return enrollments.getEnrollments();
     }
 
     @Override

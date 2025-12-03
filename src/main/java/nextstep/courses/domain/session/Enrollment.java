@@ -7,11 +7,17 @@ import java.util.Objects;
 
 public class Enrollment {
 
+    private final Long id;
     private final NsUser user;
     private final Long sessionId;
     private final Payment payment;
 
     public Enrollment(NsUser user, Long sessionId, Payment payment) {
+        this(0L, user, sessionId, payment);
+    }
+
+    public Enrollment(Long id, NsUser user, Long sessionId, Payment payment) {
+        this.id = id;
         this.user = user;
         this.sessionId = sessionId;
         this.payment = payment;
@@ -35,4 +41,13 @@ public class Enrollment {
         return Objects.hash(user, sessionId, payment);
     }
 
+    @Override
+    public String toString() {
+        return "Enrollment{" +
+                "id=" + id +
+                ", user=" + user +
+                ", sessionId=" + sessionId +
+                ", payment=" + payment +
+                '}';
+    }
 }

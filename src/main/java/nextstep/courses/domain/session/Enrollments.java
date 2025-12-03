@@ -22,6 +22,10 @@ public class Enrollments {
         }
     }
 
+    public List<Enrollment> getEnrollments() {
+        return enrollments;
+    }
+
     @Override
     public String toString() {
         return "Enrollments{" +
