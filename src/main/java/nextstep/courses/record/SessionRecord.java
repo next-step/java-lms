@@ -52,14 +52,19 @@ public class SessionRecord {
         return new SessionPolicy(this.maxCapacity, this.tuition, this.sessionType);
     }
 
-    @Override
-    public String toString() {
-        return "SessionRecord{" +
-                "id=" + id +
-                ", courseId=" + courseId +
-                ", coverImageId=" + coverImageId +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
+    public Long getCourseId() {
+        return courseId;
+    }
+
+    public Long getCoverImageId() {
+        return coverImageId;
+    }
+
+    public int getMaxCapacity() {
+        return maxCapacity;
+    }
+
+    public Long getTuition() {
+        return tuition;
     }
 }

@@ -35,6 +35,8 @@ public class SessionRepositoryTest {
         assertThat(count).isEqualTo(1);
 
         SessionRecord sessionRecord = sessionRepository.findById(1L);
+        assertThat(sessionRecord.getMaxCapacity()).isEqualTo(100);
+        assertThat(sessionRecord.getTuition()).isEqualTo(300_000L);
     }
 
 
