@@ -1,12 +1,14 @@
 package nextstep.courses.domain.image;
 
 public class SessionImageDimension {
-  private int width;
-  private int height;
   private static final int MIN_WIDTH = 300;
   private static final int MIN_HEIGHT = 200;
   private static final int RATIO_W = 3;
   private static final int RATIO_H = 2;
+
+  private int width;
+  private int height;
+
   public SessionImageDimension(int width, int height) {
     validateMinLength(width, height);
     validateRatio(width, height);
