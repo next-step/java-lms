@@ -21,8 +21,8 @@ public class Session {
         this(new SessionPeriod(startDate, endDate), image, SessionStatus.from(status), new HashSet<>(), new PaidSessionType(maximumCapacity, fee));
     }
 
-    public Session(SessionPeriod period, SessionImage coverImage, SessionStatus status, Set<Long> enrolledStudentIds, SessionType sessionType) {
-        this(1, period, coverImage, new Enrollment(status, sessionType, enrolledStudentIds));
+    public Session(SessionPeriod period, SessionImage coverImage, SessionStatus status, Set<Long> enrolledNsUserIds, SessionType sessionType) {
+        this(1, period, coverImage, new Enrollment(status, sessionType, enrolledNsUserIds));
     }
 
     public Session(int cohort, LocalDate startDate, LocalDate endDate, SessionImage image) {
@@ -36,16 +36,16 @@ public class Session {
         this.enrollment = enrollment;
     }
 
-    public void enroll(Long studentId) {
-        enrollment.enroll(studentId);
+    public void enroll(Long nsUserId) {
+        enrollment.enroll(nsUserId);
     }
 
-    public void enroll(Long studentId, Payment pay) {
-        enrollment.enroll(studentId, pay);
+    public void enroll(Long nsUserId, Payment pay) {
+        enrollment.enroll(nsUserId, pay);
     }
 
-    public boolean isEnrolled(Long studentId) {
-        return enrollment.isEnrolled(studentId);
+    public boolean isEnrolled(Long nsUserId) {
+        return enrollment.isEnrolled(nsUserId);
     }
 
     public int getCohort() {
