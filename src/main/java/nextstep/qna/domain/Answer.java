@@ -1,79 +1,53 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
-import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
+public class Answer extends SoftDeletable {
+    private final BaseEntity contents;
+    private final Question question;
+    private TimeStamp timeStamp;
 
-public class Answer {
-    private Long id;
-
-    private NsUser writer;
-
-    private Question question;
-
-    private String contents;
-
-    private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
-
-    public Answer() {
-    }
 
     public Answer(NsUser writer, Question question, String contents) {
         this(null, writer, question, contents);
     }
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
-        this.id = id;
-        if(writer == null) {
-            throw new UnAuthorizedException();
-        }
+        this(question, new BaseEntity(id, writer, contents), new TimeStamp());
+    }
 
+    public Answer(Question question, BaseEntity contents, TimeStamp timeStamp) {
         if(question == null) {
             throw new NotFoundException();
         }
-
-        this.writer = writer;
         this.question = question;
         this.contents = contents;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
+        this.timeStamp = timeStamp;
     }
 
     public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
+        return contents.isWrittenBy(writer);
     }
 
-    public NsUser getWriter() {
-        return writer;
+    @Override
+    public void deleteBy(NsUser requestUser) throws CannotDeleteException {
+        if (!isOwner(requestUser)) {
+            throw new CannotDeleteException("답변자 외에는 답변을 삭제할 수 없습니다.");
+        }
+        delete();
     }
 
-    public String getContents() {
-        return contents;
-    }
-
-    public void toQuestion(Question question) {
-        this.question = question;
+    public DeleteHistory toDeleteHistory() throws CannotDeleteException {
+        if (!isDeleted()) {
+            throw new CannotDeleteException("삭제되지 않아서 삭제 히스토리를 구할 수 없습니다.");
+        }
+        return contents.toDeleteHistory(ContentType.ANSWER);
     }
 
     @Override
     public String toString() {
-        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+        return "Answer [" + contents.toString() + "]";
     }
 }
