@@ -10,9 +10,9 @@ import java.time.LocalDateTime;
 
 public class SessionBuilder {
 
-    private Long id = 1L;
+    private Long id = 23334L;
     private Course course = new Course("TDD, 클린 코드 with Java", 1L);
-    private CoverImage coverImage = new CoverImage(1L, "png", 300, 200);
+    private CoverImage coverImage = new CoverImage(2L, "png", 300, 200);
     private SessionRange sessionRange = new SessionRangeBuilder().build();
     private SessionPolicy sessionPolicy = new SessionPolicyBuilder().build();
     private SessionStatus sessionStatus = SessionStatus.PENDING;

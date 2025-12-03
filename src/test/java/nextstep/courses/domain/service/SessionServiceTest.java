@@ -1,6 +1,9 @@
 package nextstep.courses.domain.service;
 
+import nextstep.courses.domain.session.Enrollment;
 import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.builder.SessionBuilder;
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,6 +30,22 @@ class SessionServiceTest {
         assertThat(saveSession.getCourse().getCreatorId()).isEqualTo(1L);
 
         assertThat(saveSession.getEnrollments()).hasSize(2);
+    }
+
+    @Test
+    void session_생성(){
+        Session session = new SessionBuilder().build();
+        int count = sessionService.save(session);
+        assertThat(count).isEqualTo(1);
+    }
+
+    @Test
+    void 수강신청_진행(){
+        Session session = sessionService.findById(2L);
+        Enrollment enrollment = new Enrollment(300L, NsUserTest.JAVAJIGI, session.getId());
+
+        int count = sessionService.saveEnrollment(enrollment);
+        assertThat(count).isEqualTo(1);
     }
 
 

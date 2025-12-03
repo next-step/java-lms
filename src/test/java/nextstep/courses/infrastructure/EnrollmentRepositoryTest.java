@@ -1,7 +1,9 @@
 package nextstep.courses.infrastructure;
 
+import nextstep.courses.domain.session.Enrollment;
 import nextstep.courses.domain.session.repository.EnrollmentRepository;
 import nextstep.courses.record.EnrollmentRecord;
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -25,16 +27,16 @@ public class EnrollmentRepositoryTest {
 
     @BeforeEach
     void setUp() {
-         enrollmentRepository= new JdbcEnrollmentRespository(jdbcTemplate);
+        enrollmentRepository = new JdbcEnrollmentRespository(jdbcTemplate);
     }
 
     @Test
     void crud() {
-        int count = enrollmentRepository.save(1L, 1L, 1L);
+        int count = enrollmentRepository.save(new Enrollment(3L, NsUserTest.JAVAJIGI, 1L));
         assertThat(count).isEqualTo(1);
 
         List<EnrollmentRecord> enrollments = enrollmentRepository.findBySessionId(1L);
-        assertThat(enrollments).hasSize(1);
+        assertThat(enrollments).hasSize(3);
     }
 
 

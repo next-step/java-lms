@@ -14,10 +14,10 @@ import nextstep.courses.record.SessionRecord;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class SessionService {
@@ -48,6 +48,17 @@ public class SessionService {
         Enrollments enrollments = toEnrollments(enrollmentRecords);
 
         return sessionRecord.toSession(saveCourse, saveCoverImage, enrollments);
+    }
+
+    @Transactional
+    public int save(Session session) {
+        coverImageRepository.save(session.getCoverImage());
+        return sessionRepository.save(session);
+    }
+
+    @Transactional
+    public int saveEnrollment(Enrollment enrollment) {
+        return enrollmentRepository.save(enrollment);
     }
 
     private Enrollments toEnrollments(List<EnrollmentRecord> enrollmentRecords) {

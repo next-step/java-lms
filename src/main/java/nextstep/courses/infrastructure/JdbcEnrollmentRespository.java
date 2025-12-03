@@ -1,5 +1,6 @@
 package nextstep.courses.infrastructure;
 
+import nextstep.courses.domain.session.Enrollment;
 import nextstep.courses.domain.session.repository.EnrollmentRepository;
 import nextstep.courses.record.EnrollmentRecord;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -17,9 +18,9 @@ public class JdbcEnrollmentRespository implements EnrollmentRepository {
     }
 
     @Override
-    public int save(Long id, Long seesionId, Long userId) {
+    public int save(Enrollment enrollment) {
         String sql = "insert into enrollment (id, session_id, user_id) values (?,?, ?)";
-        return jdbcTemplate.update(sql, id, seesionId, userId);
+        return jdbcTemplate.update(sql, enrollment.getId(), enrollment.getSessionId(), enrollment.getUser().getId());
     }
 
     @Override
