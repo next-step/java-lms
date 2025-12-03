@@ -41,7 +41,7 @@ public class CourseRepositoryTest {
     void crud() {
         Course course = new Course("TDD, 클린 코드 with Java", 1L);
         Long courseId = courseRepository.save(course);
-        assertThat(courseId).isEqualTo(1L);
+        assertThat(courseId).isGreaterThan(0L); // TODO 다른테스트와 시퀀스가 충돌나서 임시 조치
         Course savedCourse = courseRepository.findById(courseId);
         assertThat(course.getTitle()).isEqualTo(savedCourse.getTitle());
         LOGGER.debug("Course: {}", savedCourse);
@@ -51,7 +51,7 @@ public class CourseRepositoryTest {
     void sessions를_가진_course_저장하고_조회한다() {
         LocalDate startDate = LocalDate.of(2025, 11, 3);
         LocalDate endDate = LocalDate.of(2025, 12, 18);
-        SessionImage image = new SessionImage(500_000L, "png", 300, 200);
+        SessionImage image = new SessionImage(300_000L, "png", 600, 400);
 
         Session session1 = new Session(1, new SessionPeriod(startDate, endDate), image, new Enrollment(SessionStatus.RECRUITING, new FreeSessionType()));
         Session session2 = new Session(2, new SessionPeriod(startDate, endDate), image, new Enrollment(SessionStatus.RECRUITING, new FreeSessionType()));
@@ -65,5 +65,23 @@ public class CourseRepositoryTest {
         assertThat(savedCourse.getTitle()).isEqualTo("TDD, 클린 코드 with Java");
         assertThat(savedCourse.getSessions()).isNotNull();
         assertThat(savedCourse.getSessions().size()).isEqualTo(2);
+    }
+
+    @Test
+    void 같은_이미지를_사용하는_세션들은_이미지를_재사용한다() {
+        LocalDate startDate = LocalDate.of(2025, 11, 3);
+        LocalDate endDate = LocalDate.of(2025, 12, 18);
+        SessionImage image = new SessionImage(500_000L, "png", 600, 400);
+
+        Session session1 = new Session(1, startDate, endDate, image, new Enrollment(SessionStatus.RECRUITING, new FreeSessionType()));
+        Session session2 = new Session(2, startDate, endDate, image, new Enrollment(SessionStatus.RECRUITING, new FreeSessionType()));
+
+        Sessions sessions = new Sessions(new ArrayList<>(List.of(session1, session2)));
+        Course course = new Course("TDD, 클린 코드 with Java", 1L, sessions);
+
+        courseRepository.save(course);
+
+        Integer imageCount = jdbcTemplate.queryForObject("select count(*) from session_image", Integer.class);
+        assertThat(imageCount).isEqualTo(1);
     }
 }

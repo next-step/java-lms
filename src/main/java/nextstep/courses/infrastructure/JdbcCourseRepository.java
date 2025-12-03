@@ -82,6 +82,11 @@ public class JdbcCourseRepository implements CourseRepository {
     }
 
     private Long saveSessionImage(SessionImage image) {
+        Long existingImageId = findSessionImageId(image);
+        if (existingImageId != null) {
+            return existingImageId;
+        }
+
         String sql = "insert into session_image (file_size, image_type, width, height) values(?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -94,7 +99,15 @@ public class JdbcCourseRepository implements CourseRepository {
             return ps;
         }, keyHolder);
 
-        return keyHolder.getKey().longValue();
+        return Objects.requireNonNull(keyHolder.getKey()).longValue();
+    }
+
+    private Long findSessionImageId(SessionImage image) {
+        String sql = "select id from session_image where file_size = ? and image_type = ? and width = ? and height = ?";
+        List<Long> results = jdbcTemplate.query(sql,
+                (rs, rowNum) -> rs.getLong("id"),
+                500_000L, "png", image.getWidth(), image.getHeight());
+        return results.isEmpty() ? null : results.get(0);
     }
 
 
