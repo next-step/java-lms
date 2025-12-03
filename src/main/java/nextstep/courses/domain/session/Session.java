@@ -24,7 +24,7 @@ public class Session extends BaseEntity {
     this.enrollment = enrollment;
   }
 
-  public void enroll(int payAmount) {
+  public void enroll(long payAmount) {
     enrollment.enroll(payAmount);
   }
 

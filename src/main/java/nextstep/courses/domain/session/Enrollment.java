@@ -20,7 +20,7 @@ public class Enrollment {
         this.type = type;
     }
 
-    public void enroll(int payAmount) {
+    public void enroll(long payAmount) {
         validateState();
         this.type = type.enroll(payAmount);
     }

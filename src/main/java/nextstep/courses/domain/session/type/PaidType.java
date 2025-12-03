@@ -4,14 +4,14 @@ import java.util.Objects;
 
 public class PaidType implements SessionType {
     private final int maxCapacity;
-    private final int tuitionFee;
+    private final long tuitionFee;
     private final int studentCount;
 
-    public PaidType(int maxCapacity, int tuitionFee) {
+    public PaidType(int maxCapacity, long tuitionFee) {
         this(maxCapacity, tuitionFee, 0);
     }
 
-    public PaidType(int maxCapacity, int tuitionFee, int studentCount) {
+    public PaidType(int maxCapacity, long tuitionFee, int studentCount) {
         validateCapacity(maxCapacity, studentCount);
         this.maxCapacity = maxCapacity;
         this.tuitionFee = tuitionFee;
@@ -19,7 +19,7 @@ public class PaidType implements SessionType {
     }
 
     @Override
-    public SessionType enroll(int payAmount) {
+    public SessionType enroll(long payAmount) {
         int newCount = studentCount + 1;
         validateCapacity(maxCapacity, newCount);
         validateTuitionFee(payAmount);
@@ -32,7 +32,7 @@ public class PaidType implements SessionType {
         }
     }
 
-    private void validateTuitionFee(int payAmount) {
+    private void validateTuitionFee(long payAmount) {
         if (payAmount != tuitionFee) {
             throw new IllegalArgumentException("수강료와 지불한 금액이 정확히 일치해야 합니다.");
         }
