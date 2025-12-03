@@ -3,6 +3,7 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.session.Enrollment;
 import nextstep.courses.domain.session.repository.EnrollmentRepository;
 import nextstep.courses.record.EnrollmentRecord;
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,7 @@ public class EnrollmentRepositoryTest {
 
     @Test
     void crud() {
-        int count = enrollmentRepository.save(new Enrollment(3L, NsUserTest.JAVAJIGI, 1L));
+        int count = enrollmentRepository.save(new Enrollment(NsUserTest.JAVAJIGI, 1L, new Payment(1L, 1L, 300_000L)));
         assertThat(count).isEqualTo(1);
 
         List<EnrollmentRecord> enrollments = enrollmentRepository.findBySessionId(1L);

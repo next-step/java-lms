@@ -16,10 +16,6 @@ public class Enrollment {
         this(0L, user, sessionId, payment);
     }
 
-    public Enrollment(Long id, NsUser user, Long sessionId) {
-        this(id, user, sessionId, null);
-    }
-
     public Enrollment(Long id, NsUser user, Long sessionId, Payment payment) {
         this.id = id;
         this.user = user;
@@ -28,7 +24,7 @@ public class Enrollment {
     }
 
     public void isPaymentAmount(SessionPolicy sessionPolicy) {
-        if(sessionPolicy.matchAmount(payment)){
+        if(!sessionPolicy.matchAmount(this.payment)){
             throw new IllegalArgumentException("강의 금액과 결제 금액이 일치하지 않습니다.");
         }
     }

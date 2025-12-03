@@ -1,7 +1,5 @@
 package nextstep.payments.domain;
 
-import nextstep.courses.domain.session.Tuition;
-
 import java.time.LocalDateTime;
 
 public class Payment {

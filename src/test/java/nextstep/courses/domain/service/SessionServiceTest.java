@@ -3,6 +3,7 @@ package nextstep.courses.domain.service;
 import nextstep.courses.domain.session.Enrollment;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.builder.SessionBuilder;
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,8 @@ class SessionServiceTest {
     @Test
     void 수강신청_진행(){
         Session session = sessionService.findById(2L);
-        Enrollment enrollment = new Enrollment(300L, NsUserTest.JAVAJIGI, session.getId());
+        Enrollment enrollment = new Enrollment(300L, NsUserTest.JAVAJIGI, session.getId(), new Payment(2L, 1L, 300_000L));
+        session.addEnrollment(enrollment);
 
         int count = sessionService.saveEnrollment(enrollment);
         assertThat(count).isEqualTo(1);

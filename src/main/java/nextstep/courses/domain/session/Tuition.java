@@ -13,7 +13,7 @@ public class Tuition {
     }
 
     public boolean matchAmount(Payment payment) {
-        return this.value == payment.getAmount();
+        return this.value.equals(payment.getAmount());
     }
 
     public Long getValue() {
@@ -30,5 +30,12 @@ public class Tuition {
     @Override
     public int hashCode() {
         return Objects.hashCode(value);
+    }
+
+    @Override
+    public String toString() {
+        return "Tuition{" +
+                "value=" + value +
+                '}';
     }
 }

@@ -15,9 +15,8 @@ public class JdbcCoverImageRespository implements CoverImageRepository {
 
     @Override
     public int save(CoverImage coverImage) {
-        String sql = "insert into cover_image (id, size, type, width, height) values (?, ?, ?, ?, ?)";
+        String sql = "insert into cover_image (size, type, width, height) values (?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
-                coverImage.getId(),
                 coverImage.getSize(),
                 coverImage.getType().toString(),
                 coverImage.getWidth(),
@@ -26,7 +25,7 @@ public class JdbcCoverImageRespository implements CoverImageRepository {
 
     @Override
     public CoverImage findById(Long id) {
-        String sql  = "select * from cover_image where id = ?";
+        String sql = "select * from cover_image where id = ?";
         return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
             return new CoverImage(
                     rs.getLong("id"),
