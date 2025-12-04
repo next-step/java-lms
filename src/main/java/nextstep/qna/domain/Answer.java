@@ -4,50 +4,53 @@ import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
 
-public class Answer extends SoftDeletable {
-    private final BaseEntity contents;
+public class Answer {
+    private final SoftDeletableBaseEntity baseEntity;
     private final Question question;
-    private TimeStamp timeStamp;
+    private final ContentDetails contentDetails;
 
 
-    public Answer(NsUser writer, Question question, String contents) {
-        this(null, writer, question, contents);
+    public Answer(NsUser writer, Question question, String entity) {
+        this(null, writer, question, entity);
     }
 
-    public Answer(Long id, NsUser writer, Question question, String contents) {
-        this(question, new BaseEntity(id, writer, contents), new TimeStamp());
+    Answer(Long id, NsUser writer, Question question, String content) {
+        this(new SoftDeletableBaseEntity(id), question, new ContentDetails(writer, content));
     }
 
-    public Answer(Question question, BaseEntity contents, TimeStamp timeStamp) {
+    Answer(SoftDeletableBaseEntity baseEntity, Question question, ContentDetails contentDetails) {
         if(question == null) {
             throw new NotFoundException();
         }
+        this.baseEntity = baseEntity;
         this.question = question;
-        this.contents = contents;
-        this.timeStamp = timeStamp;
+        this.contentDetails = contentDetails;
     }
 
-    public boolean isOwner(NsUser writer) {
-        return contents.isWrittenBy(writer);
-    }
-
-    @Override
     public void deleteBy(NsUser requestUser) throws CannotDeleteException {
         if (!isOwner(requestUser)) {
             throw new CannotDeleteException("답변자 외에는 답변을 삭제할 수 없습니다.");
         }
-        delete();
+        baseEntity.delete();
+    }
+
+    private boolean isOwner(NsUser writer) {
+        return contentDetails.isWrittenBy(writer);
+    }
+
+    public boolean isDeleted() {
+        return baseEntity.isDeleted();
     }
 
     public DeleteHistory toDeleteHistory() throws CannotDeleteException {
-        if (!isDeleted()) {
+        if (!baseEntity.isDeleted()) {
             throw new CannotDeleteException("삭제되지 않아서 삭제 히스토리를 구할 수 없습니다.");
         }
-        return contents.toDeleteHistory(ContentType.ANSWER);
+        return new DeleteHistory(ContentType.ANSWER, baseEntity.getId(), contentDetails.getWriter());
     }
 
     @Override
     public String toString() {
-        return "Answer [" + contents.toString() + "]";
+        return "Answer [" + super.toString() + "]";
     }
 }

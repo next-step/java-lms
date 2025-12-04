@@ -4,31 +4,28 @@ import nextstep.users.domain.NsUser;
 
 public class QuestionBody {
     private final String title;
-    private final BaseEntity baseEntity;
+    private final ContentDetails contentDetails;
 
-    public QuestionBody(Long id, NsUser writer, String title, String contents) {
-        this(title, new BaseEntity(id, writer, contents));
+
+    public QuestionBody(NsUser writer, String title, String contents) {
+        this(title, new ContentDetails(writer, contents));
     }
 
-    public QuestionBody(String title, BaseEntity baseEntity) {
+    public QuestionBody(String title, ContentDetails contentDetails) {
         this.title = title;
-        this.baseEntity = baseEntity;
-    }
-
-    public Long getId() {
-        return baseEntity.getId();
+        this.contentDetails = contentDetails;
     }
 
     public boolean isWrittenBy(NsUser writer) {
-        return baseEntity.isWrittenBy(writer);
+        return contentDetails.isWrittenBy(writer);
     }
 
-    public DeleteHistory toDeleteHistory() {
-        return baseEntity.toDeleteHistory(ContentType.QUESTION);
+    public NsUser getWriter() {
+        return contentDetails.getWriter();
     }
 
     @Override
     public String toString() {
-        return  "title='" + title + '\'' + baseEntity.toString() + '\'';
+        return  "title='" + title + '\'' + contentDetails.toString() + '\'';
     }
 }
