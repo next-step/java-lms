@@ -31,7 +31,7 @@ public class SessionRepositoryTest {
     @Test
     void crud(){
         Session session = new SessionBuilder().withId(2L).build();
-        int count = sessionRepository.save(session);
+        int count = sessionRepository.save(session.toSessionRecord());
         assertThat(count).isEqualTo(1);
 
         SessionRecord sessionRecord = sessionRepository.findById(1000L);

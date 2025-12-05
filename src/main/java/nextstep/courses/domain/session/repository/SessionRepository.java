@@ -6,7 +6,7 @@ import nextstep.courses.record.SessionRecord;
 
 public interface SessionRepository {
 
-    int save(Session session);
+    int save(SessionRecord sessionRecord);
 
     SessionRecord findById(Long id);
 

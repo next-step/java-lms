@@ -2,7 +2,7 @@
 ***
 
 ## 코드 리뷰
-> PR 링크 :
+> PR 링크 : [#798](https://github.com/next-step/java-lms/pull/798)
 
 ## 나의 학습 목표
 

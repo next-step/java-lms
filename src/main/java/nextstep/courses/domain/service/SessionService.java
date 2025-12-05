@@ -53,11 +53,16 @@ public class SessionService {
     @Transactional
     public int save(Session session) {
         coverImageRepository.save(session.getCoverImage());
-        return sessionRepository.save(session);
+        return sessionRepository.save(session.toSessionRecord());
     }
 
     @Transactional
     public int saveEnrollment(Enrollment enrollment) {
+        SessionRecord sessionRecord = sessionRepository.findById(enrollment.getSessionId());
+        List<EnrollmentRecord> enrollmentRecords = enrollmentRepository.findBySessionId(enrollment.getSessionId());
+        Session session = sessionRecord.toSession(null, null, toEnrollments(enrollmentRecords));
+        session.addEnrollment(enrollment);
+
         return enrollmentRepository.save(enrollment);
     }
 

@@ -59,6 +59,10 @@ public abstract class SessionCore {
         return sessionPolicy;
     }
 
+    public SessionRange getSessionRange() {
+        return sessionRange;
+    }
+
     public SessionStatus getSessionStatus() {
         return sessionStatus;
     }

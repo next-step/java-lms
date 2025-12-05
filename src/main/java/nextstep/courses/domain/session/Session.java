@@ -4,6 +4,7 @@ import nextstep.courses.domain.Course;
 import nextstep.courses.domain.image.CoverImage;
 import nextstep.courses.domain.session.constant.SessionStatus;
 import nextstep.courses.domain.session.constant.SessionType;
+import nextstep.courses.record.SessionRecord;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -81,6 +82,22 @@ public class Session extends SessionCore {
 
     public List<Enrollment> getEnrollments() {
         return enrollments.getEnrollments();
+    }
+
+    public SessionRecord toSessionRecord() {
+        return new SessionRecord(
+                this.id,
+                this.course.getId(),
+                this.coverImage.getId(),
+                this.getSessionRange().getStartDate(),
+                this.getSessionRange().getEndDate(),
+                this.getMaxCapacity(),
+                this.getTuition(),
+                this.getSessionType(),
+                this.getSessionStatus().toString(),
+                this.createdAt,
+                this.updatedAt
+        );
     }
 
     @Override

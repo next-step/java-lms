@@ -67,4 +67,28 @@ public class SessionRecord {
     public Long getTuition() {
         return tuition;
     }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public String getSessionType() {
+        return sessionType;
+    }
+
+    public String getSessionStatus() {
+        return sessionStatus;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 }
