@@ -12,6 +12,7 @@ import nextstep.courses.domain.session.repository.SessionRepository;
 import nextstep.courses.record.EnrollmentRecord;
 import nextstep.courses.record.SessionRecord;
 import nextstep.payments.domain.Payment;
+import nextstep.payments.repository.PaymentRepository;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import org.springframework.stereotype.Service;
@@ -28,17 +29,20 @@ public class SessionService {
     private final CourseRepository courseRepository;
     private final EnrollmentRepository enrollmentRepository;
     private final UserRepository userRepository;
+    private final PaymentRepository paymentRepository;
 
     public SessionService(SessionRepository sessionRepository,
                           CoverImageRepository coverImageRepository,
                           CourseRepository courseRepository,
                           EnrollmentRepository enrollmentRepository,
-                          UserRepository userRepository) {
+                          UserRepository userRepository,
+                          PaymentRepository paymentRepository) {
         this.sessionRepository = sessionRepository;
         this.coverImageRepository = coverImageRepository;
         this.courseRepository = courseRepository;
         this.enrollmentRepository = enrollmentRepository;
         this.userRepository = userRepository;
+        this.paymentRepository = paymentRepository;
     }
 
     public Session findById(Long id) {
@@ -63,6 +67,8 @@ public class SessionService {
         List<EnrollmentRecord> enrollmentRecords = enrollmentRepository.findBySessionId(enrollment.getSessionId());
         Session session = sessionRecord.toSession(null, null, toEnrollments(enrollmentRecords));
         session.addEnrollment(enrollment, payment);
+
+        paymentRepository.save(payment);
 
         return enrollmentRepository.save(enrollment);
     }
