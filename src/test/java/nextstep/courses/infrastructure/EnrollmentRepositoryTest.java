@@ -33,7 +33,7 @@ public class EnrollmentRepositoryTest {
 
     @Test
     void crud() {
-        int count = enrollmentRepository.save(new Enrollment(NsUserTest.JAVAJIGI, 1L, new Payment(1L, 1L, 300_000L)));
+        int count = enrollmentRepository.save(new Enrollment(NsUserTest.JAVAJIGI, 1L));
         assertThat(count).isEqualTo(1);
 
         List<EnrollmentRecord> enrollments = enrollmentRepository.findBySessionId(1L);

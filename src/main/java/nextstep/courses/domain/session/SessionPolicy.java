@@ -21,8 +21,10 @@ public class SessionPolicy {
         this.sessionType = sessionType;
     }
 
-    public boolean matchAmount(Payment payment) {
-        return this.tuition.matchAmount(payment);
+    public void matchAmount(Payment payment) {
+        if(!this.tuition.matchAmount(payment)){
+            throw new IllegalArgumentException("강의 금액과 결제 금액이 일치하지 않습니다.");
+        }
     }
 
     public boolean matchSize(int enrollmentsSize) {

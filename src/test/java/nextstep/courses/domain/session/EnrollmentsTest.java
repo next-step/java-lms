@@ -3,6 +3,7 @@ package nextstep.courses.domain.session;
 import nextstep.courses.domain.session.builder.EnrollmentBuilder;
 import nextstep.courses.domain.session.builder.SessionBuilder;
 import nextstep.courses.domain.session.constant.SessionStatus;
+import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.Test;
 
 
@@ -19,7 +20,8 @@ class EnrollmentsTest {
 
         Enrollment newEnrollment = new EnrollmentBuilder().build();
 
-        assertThatThrownBy(() -> session.addEnrollment(newEnrollment))
+
+        assertThatThrownBy(() -> session.addEnrollment(newEnrollment, new Payment(1L, 1L, 300_000L)))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("이미 신청한 강의입니다.");
     }

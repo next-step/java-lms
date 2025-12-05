@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.constant.SessionStatus;
+import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;
 
@@ -17,9 +18,9 @@ public abstract class SessionCore {
         this.sessionStatus = sessionStatus;
     }
 
-    protected void validatePaymentAmount(Enrollment enrollment) {
+    protected void validatePaymentAmount(Payment payment) {
         if (this.sessionPolicy.isSessionType()) {
-            enrollment.isPaymentAmount(this.sessionPolicy);
+            sessionPolicy.matchAmount(payment);
         }
     }
 

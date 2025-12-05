@@ -5,6 +5,7 @@ import nextstep.courses.domain.image.CoverImage;
 import nextstep.courses.domain.session.constant.SessionStatus;
 import nextstep.courses.domain.session.constant.SessionType;
 import nextstep.courses.record.SessionRecord;
+import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -53,8 +54,8 @@ public class Session extends SessionCore {
         this.updatedAt = updatedAt;
     }
 
-    public void addEnrollment(Enrollment enrollment) {
-        validatePaymentAmount(enrollment);
+    public void addEnrollment(Enrollment enrollment, Payment payment) {
+        validatePaymentAmount(payment);
         validateNotFull(this.enrollments);
         validateSessionStatus();
         this.enrollments.add(enrollment);

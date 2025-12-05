@@ -43,8 +43,9 @@ public class SessionTest {
     void 수강신청시_모집중이_아닐경우_예외발생() {
         Session session = new SessionBuilder().withSessionStatus(SessionStatus.PENDING).build();
         Enrollment enrollment = new EnrollmentBuilder().build();
+        Payment payment = new Payment(1L, 1L, 300_000L);
 
-        assertThatThrownBy(() -> session.addEnrollment(enrollment))
+        assertThatThrownBy(() -> session.addEnrollment(enrollment, payment))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("현재는 강의 모집중이 아닙니다.");
     }
@@ -57,9 +58,10 @@ public class SessionTest {
                 .withEnrollment(new EnrollmentBuilder().build())
                 .build();
 
-        Enrollment newEnrollment = new Enrollment(NsUserTest.SANJIGI, 1L, new Payment(1L, 2L, 300_000L));
+        Enrollment newEnrollment = new Enrollment(NsUserTest.SANJIGI, 1L);
+        Payment payment = new Payment(1L, 1L, 300_000L);
 
-        assertThatThrownBy(() -> session.addEnrollment(newEnrollment))
+        assertThatThrownBy(() -> session.addEnrollment(newEnrollment, payment))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("수강인원이 초과했습니다.");
     }

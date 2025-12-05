@@ -1,6 +1,5 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.repository.SessionRepository;
 import nextstep.courses.record.SessionRecord;
 import org.springframework.jdbc.core.JdbcOperations;

@@ -11,6 +11,7 @@ import nextstep.courses.domain.session.repository.EnrollmentRepository;
 import nextstep.courses.domain.session.repository.SessionRepository;
 import nextstep.courses.record.EnrollmentRecord;
 import nextstep.courses.record.SessionRecord;
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import org.springframework.stereotype.Service;
@@ -57,11 +58,11 @@ public class SessionService {
     }
 
     @Transactional
-    public int saveEnrollment(Enrollment enrollment) {
+    public int saveEnrollment(Enrollment enrollment, Payment payment) {
         SessionRecord sessionRecord = sessionRepository.findById(enrollment.getSessionId());
         List<EnrollmentRecord> enrollmentRecords = enrollmentRepository.findBySessionId(enrollment.getSessionId());
         Session session = sessionRecord.toSession(null, null, toEnrollments(enrollmentRecords));
-        session.addEnrollment(enrollment);
+        session.addEnrollment(enrollment, payment);
 
         return enrollmentRepository.save(enrollment);
     }

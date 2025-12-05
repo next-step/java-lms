@@ -8,7 +8,6 @@ public class EnrollmentBuilder {
 
     private NsUser user = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
     private Long sessionId = 1L;
-    private Payment payment = new Payment(1L, 1L, 300_000L);
 
     public EnrollmentBuilder withUser(NsUser user) {
         this.user = user;
@@ -20,13 +19,9 @@ public class EnrollmentBuilder {
         return this;
     }
 
-    public EnrollmentBuilder withPayment(Payment payment) {
-        this.payment = payment;
-        return this;
-    }
 
     public Enrollment build() {
-        return new Enrollment(user, sessionId, payment);
+        return new Enrollment(user, sessionId);
     }
 
 }

@@ -16,7 +16,7 @@ public class EnrollmentRecord {
     }
 
     public Enrollment toEnrollment(NsUser user) {
-        return new Enrollment(this.id, user, this.sessionId, null);
+        return new Enrollment(this.id, user, this.sessionId);
     }
 
     public Long getId() {
