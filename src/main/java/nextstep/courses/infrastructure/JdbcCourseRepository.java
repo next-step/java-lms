@@ -2,9 +2,6 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
-import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionRepository;
-import nextstep.courses.domain.session.Sessions;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -14,16 +11,13 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Repository("courseRepository")
 public class JdbcCourseRepository implements CourseRepository {
     private JdbcOperations jdbcTemplate;
-    private SessionRepository sessionRepository;
 
-    public JdbcCourseRepository(JdbcOperations jdbcTemplate, SessionRepository sessionRepository) {
+    public JdbcCourseRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.sessionRepository = sessionRepository;
     }
 
     @Override
@@ -39,23 +33,24 @@ public class JdbcCourseRepository implements CourseRepository {
             return ps;
         }, keyHolder);
 
-        Long courseId = Objects.requireNonNull(keyHolder.getKey()).longValue();
-
-        if (course.getSessions() != null) {
-            saveSessions(courseId, course.getSessions());
-        }
-
-        return courseId;
+//        Long courseId = Objects.requireNonNull(keyHolder.getKey()).longValue();
+//
+//        if (course.getSessions() != null) {
+//            saveSessions(courseId, course.getSessions());
+//        }
+//
+//        return courseId;
+        return keyHolder.getKey().longValue();
     }
 
-    private void saveSessions(Long courseId, Sessions sessions) {
-        for (int i = 1; i <= sessions.size(); i++) {
-            Session session = sessions.findByCohort(i);
-            if (session != null) {
-                sessionRepository.save(courseId, session);
-            }
-        }
-    }
+//    private void saveSessions(Long courseId, Sessions sessions) {
+//        for (int i = 1; i <= sessions.size(); i++) {
+//            Session session = sessions.findByCohort(i);
+//            if (session != null) {
+//                sessionRepository.save(courseId, session);
+//            }
+//        }
+//    }
 
 
     @Override
@@ -70,9 +65,10 @@ public class JdbcCourseRepository implements CourseRepository {
                     toLocalDateTime(rs.getTimestamp(5)));
             return course;
         };
-        Course course = jdbcTemplate.queryForObject(sql, rowMapper, id);
-
-        return new Course(course.getId(), course.getTitle(), course.getCreatorId(), course.getCreatedAt(), null, sessionRepository.findByCourseId(id));
+//        Course course = jdbcTemplate.queryForObject(sql, rowMapper, id);
+//
+//        return new Course(course.getId(), course.getTitle(), course.getCreatorId(), course.getCreatedAt(), null, sessionRepository.findByCourseId(id));
+        return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
 
