@@ -102,12 +102,6 @@ public class JdbcSessionRepository implements SessionRepository {
         return jdbcTemplate.queryForObject(sql, Long.class, courseId, cohort);
     }
 
-    @Override
-    public void saveEnrollment(Long sessionId, Long nsUserId) {
-        String sql = "insert into session_enrollment (session_id, ns_user_id, enrolled_at) values(?, ?, ?)";
-        jdbcTemplate.update(sql, sessionId, nsUserId, Timestamp.valueOf(LocalDateTime.now()));
-    }
-
     private Long saveSessionImage(SessionImage image) {
         Long existingImageId = findSessionImageId(image);
         if (existingImageId != null) {

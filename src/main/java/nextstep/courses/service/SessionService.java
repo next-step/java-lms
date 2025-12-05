@@ -1,9 +1,11 @@
 package nextstep.courses.service;
 
+import nextstep.courses.domain.session.EnrollmentRepository;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.domain.session.Sessions;
 import nextstep.payments.domain.Payment;
+import nextstep.payments.service.PaymentService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,9 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class SessionService {
     private final SessionRepository sessionRepository;
+    private final EnrollmentRepository enrollmentRepository;
 
-    public SessionService(SessionRepository sessionRepository) {
+    public SessionService(SessionRepository sessionRepository, EnrollmentRepository enrollmentRepository) {
         this.sessionRepository = sessionRepository;
+        this.enrollmentRepository = enrollmentRepository;
     }
 
     //TODO 추후 메서드의 파라미터는 사용하기에 따라 정리한다(현재 인수 4개)
@@ -28,6 +32,6 @@ public class SessionService {
         session.enroll(nsUserId, payment);
 
         Long sessionId = sessionRepository.findSessionIdByCourseIdAndCohort(courseId, cohort);
-        sessionRepository.saveEnrollment(sessionId, nsUserId);
+        enrollmentRepository.save(sessionId, nsUserId);
     }
 }
