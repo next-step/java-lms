@@ -41,4 +41,12 @@ public class Enrollment {
     public boolean isEnrolled(Long nsUserId) {
         return enrolledNsUserIds.contains(nsUserId);
     }
+
+    public SessionStatus getStatus() {
+        return status;
+    }
+
+    public SessionType getSessionType() {
+        return sessionType;
+    }
 }

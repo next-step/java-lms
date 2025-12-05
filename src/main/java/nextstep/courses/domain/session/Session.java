@@ -60,6 +60,10 @@ public class Session {
         return coverImage;
     }
 
+    public Enrollment getEnrollment() {
+        return enrollment;
+    }
+
     public LocalDate getStartDate() {
         return period.getStartDate();
     }

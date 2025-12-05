@@ -65,6 +65,20 @@ public class JdbcCourseRepository implements CourseRepository {
     private void saveSession(Long courseId, Session session) {
         Long imageId = saveSessionImage(session.getImage());
 
+        Enrollment enrollment = session.getEnrollment();
+        SessionStatus status = enrollment.getStatus();
+        SessionType type = enrollment.getSessionType();
+        String sessionTypeStr = type.isFree() ? "FREE" : "PAID";
+        Integer maxCapacity = null;
+        Long fee = null;
+
+        if (!type.isFree()) {
+            PaidSessionType paidType = (PaidSessionType) type;
+            maxCapacity = paidType.getMaxCapacity();
+            fee = paidType.getFee();
+        }
+
+
         String sql = "insert into session (course_id, cohort, start_date, end_date, image_id, status, session_type, max_capacity, fee, created_at) " +
                 "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -74,10 +88,10 @@ public class JdbcCourseRepository implements CourseRepository {
                 Date.valueOf(session.getStartDate()),
                 Date.valueOf(session.getEndDate()),
                 imageId,
-                "준비중",
-                "FREE",
-                null,
-                null,
+                status.getValue(),
+                sessionTypeStr,
+                maxCapacity,
+                fee,
                 Timestamp.valueOf(LocalDateTime.now()));
     }
 
@@ -92,8 +106,8 @@ public class JdbcCourseRepository implements CourseRepository {
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
-            ps.setLong(1, 500_000L);
-            ps.setString(2, "png");
+            ps.setLong(1, image.getFileSize());
+            ps.setString(2, image.getImageTypeValue());
             ps.setInt(3, image.getWidth());
             ps.setInt(4, image.getHeight());
             return ps;
@@ -106,7 +120,10 @@ public class JdbcCourseRepository implements CourseRepository {
         String sql = "select id from session_image where file_size = ? and image_type = ? and width = ? and height = ?";
         List<Long> results = jdbcTemplate.query(sql,
                 (rs, rowNum) -> rs.getLong("id"),
-                500_000L, "png", image.getWidth(), image.getHeight());
+                image.getFileSize(),
+                image.getImageTypeValue(),
+                image.getWidth(),
+                image.getHeight());
         return results.isEmpty() ? null : results.get(0);
     }
 

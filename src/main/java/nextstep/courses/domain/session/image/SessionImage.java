@@ -36,4 +36,12 @@ public class SessionImage {
     public int getHeight() {
         return imageDimension.getHeight();
     }
+
+    public long getFileSize() {
+        return fileSize;
+    }
+
+    public String getImageTypeValue() {
+        return imageType.getValue();
+    }
 }

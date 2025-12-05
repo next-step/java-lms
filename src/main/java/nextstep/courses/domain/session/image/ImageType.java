@@ -21,4 +21,8 @@ public enum ImageType {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("지원하지 않는 이미지 타입: " + extension));
     }
+
+    public String getValue() {
+        return value;
+    }
 }

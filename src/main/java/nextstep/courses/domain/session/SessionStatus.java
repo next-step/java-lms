@@ -23,4 +23,8 @@ public enum SessionStatus {
     public boolean canEnroll() {
         return this == RECRUITING;
     }
+
+    public String getValue() {
+        return value;
+    }
 }
