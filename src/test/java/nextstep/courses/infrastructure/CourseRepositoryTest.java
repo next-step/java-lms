@@ -6,6 +6,7 @@ import nextstep.courses.domain.session.Enrollment;
 import nextstep.courses.domain.session.FreeSessionType;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionPeriod;
+import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.domain.session.SessionStatus;
 import nextstep.courses.domain.session.Sessions;
 import nextstep.courses.domain.session.image.SessionImage;
@@ -34,7 +35,8 @@ public class CourseRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        courseRepository = new JdbcCourseRepository(jdbcTemplate);
+        SessionRepository sessionRepository = new JdbcSessionRepository(jdbcTemplate);
+        courseRepository = new JdbcCourseRepository(jdbcTemplate, sessionRepository);
     }
 
     @Test
