@@ -9,9 +9,7 @@ import nextstep.users.domain.NsUser;
 public class Question {
     private Long id;
 
-    private String title;
-
-    private String contents;
+    private QuestionContent content;
 
     private NsUser writer;
 
@@ -26,15 +24,14 @@ public class Question {
     public Question() {
     }
 
-    public Question(NsUser writer, String title, String contents) {
-        this(0L, writer, title, contents);
+    public Question(NsUser writer, QuestionContent content) {
+        this(0L, writer, content);
     }
 
-    public Question(Long id, NsUser writer, String title, String contents) {
+    public Question(Long id, NsUser writer, QuestionContent content) {
         this.id = id;
         this.writer = writer;
-        this.title = title;
-        this.contents = contents;
+        this.content = content;
     }
 
     public Long getId() {
@@ -42,21 +39,12 @@ public class Question {
     }
 
     public String getTitle() {
-        return title;
+        return content.title();
     }
 
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
 
     public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
+        return content.contents();
     }
 
     public NsUser getWriter() {
@@ -99,6 +87,6 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+        return "Question [id=" + getId() + ", content=" + content + ", writer=" + writer + "]";
     }
 }

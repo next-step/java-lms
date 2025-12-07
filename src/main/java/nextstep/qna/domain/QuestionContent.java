@@ -18,4 +18,11 @@ public class QuestionContent {
     public String contents() {
         return contents;
     }
+
+    @Override
+    public String toString() {
+        return "QuestionContent{" +
+                ", title=" + title + ", contents=" + contents +
+                '}';
+    }
 }

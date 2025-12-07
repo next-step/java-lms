@@ -1,5 +1,7 @@
 package nextstep.qna.domain;
 
+import static nextstep.qna.domain.QuestionContentTest.QC1;
+import static nextstep.qna.domain.QuestionContentTest.QC2;
 import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static nextstep.users.domain.NsUserTest.SANJIGI;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -7,13 +9,12 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import nextstep.qna.CannotDeleteException;
-import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class QuestionTest {
-    public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-    public static final Question Q2 = new Question(SANJIGI, "title2", "contents2");
+    public static final Question Q1 = new Question(JAVAJIGI, QC1);
+    public static final Question Q2 = new Question(SANJIGI, QC2);
 
     @DisplayName("질문 작성자는 자신의 질문을 삭제할 수 있다")
     @Test
