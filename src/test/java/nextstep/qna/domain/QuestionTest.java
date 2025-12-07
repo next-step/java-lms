@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static nextstep.users.domain.NsUserTest.SANJIGI;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -34,5 +35,11 @@ public class QuestionTest {
     void shouldChangeDeletedStatus_whenDeleteByOwner() throws CannotDeleteException {
         Q2.delete(SANJIGI);
         assertThat(Q2.isDeleted()).isTrue();
+    }
+
+    @DisplayName("삭제 시 삭제 이력을 반환한다")
+    @Test
+    void shouldReturnDeleteHistory_whenDeletePossible() throws CannotDeleteException {
+        assertThat(Q1.delete(JAVAJIGI)).hasSize(1);
     }
 }

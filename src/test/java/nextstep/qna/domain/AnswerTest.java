@@ -37,4 +37,10 @@ public class AnswerTest {
         assertThat(A1.isDeleted()).isTrue();
     }
 
+    @DisplayName("삭제 시 삭제 이력을 반환한다")
+    @Test
+    void shouldReturnDeleteHistory_whenDeletePossible() throws CannotDeleteException {
+        assertThat(A1.delete(JAVAJIGI)).hasSize(1);
+    }
+
 }
