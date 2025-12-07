@@ -1,5 +1,9 @@
 package nextstep.courses.domain.session.type;
 
+import nextstep.courses.domain.registration.Registrations;
+
 public interface SessionType {
-    SessionType enroll(long payAmount);
+    void validateEnroll(long payAmount);
+
+    Registrations getRegistrations();
 }

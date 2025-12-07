@@ -21,4 +21,12 @@ public class SessionPeriod {
       throw new IllegalArgumentException("시작일은 종료일보다 이전이어야 합니다.");
     }
   }
+
+  public LocalDate startDay() {
+    return startDay;
+  }
+
+  public LocalDate endDay() {
+    return endDay;
+  }
 }

@@ -5,7 +5,7 @@ import nextstep.courses.domain.session.type.SessionType;
 
 public class Enrollment {
     private SessionState state;
-    private SessionType type;
+    private final SessionType type;
 
     public Enrollment() {
         this(SessionState.PREPARING, new FreeType());
@@ -20,9 +20,9 @@ public class Enrollment {
         this.type = type;
     }
 
-    public void enroll(long payAmount) {
+    public void validateEnroll(long payAmount) {
         validateState();
-        this.type = type.enroll(payAmount);
+        type.validateEnroll(payAmount);
     }
 
     public void open() {
@@ -37,5 +37,13 @@ public class Enrollment {
         if (!state.canEnroll()) {
             throw new IllegalStateException("모집중인 강의만 수강신청이 가능합니다.");
         }
+    }
+
+    public SessionState getState() {
+        return state;
+    }
+
+    public SessionType getType() {
+        return type;
     }
 }

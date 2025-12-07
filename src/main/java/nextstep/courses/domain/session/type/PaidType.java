@@ -1,35 +1,25 @@
 package nextstep.courses.domain.session.type;
 
 import java.util.Objects;
+import nextstep.courses.domain.registration.Registrations;
 
 public class PaidType implements SessionType {
-    private final int maxCapacity;
     private final long tuitionFee;
-    private final int studentCount;
+    private final Registrations registrations;
 
     public PaidType(int maxCapacity, long tuitionFee) {
-        this(maxCapacity, tuitionFee, 0);
+        this(tuitionFee, new Registrations(maxCapacity));
     }
 
-    public PaidType(int maxCapacity, long tuitionFee, int studentCount) {
-        validateCapacity(maxCapacity, studentCount);
-        this.maxCapacity = maxCapacity;
+    public PaidType(long tuitionFee, Registrations registrations) {
         this.tuitionFee = tuitionFee;
-        this.studentCount = studentCount;
+        this.registrations = registrations;
     }
 
     @Override
-    public SessionType enroll(long payAmount) {
-        int newCount = studentCount + 1;
-        validateCapacity(maxCapacity, newCount);
+    public void validateEnroll(long payAmount) {
         validateTuitionFee(payAmount);
-        return new PaidType(maxCapacity, tuitionFee, newCount);
-    }
-
-    private void validateCapacity(int maxCapacity, int studentCount) {
-        if (maxCapacity < studentCount) {
-            throw new IllegalArgumentException("최대 수강 인원을 초과할 수 없습니다.");
-        }
+        registrations.validateCapacity();
     }
 
     private void validateTuitionFee(long payAmount) {
@@ -38,18 +28,26 @@ public class PaidType implements SessionType {
         }
     }
 
+    public long getTuitionFee() {
+        return tuitionFee;
+    }
+
+    @Override
+    public Registrations getRegistrations() {
+        return registrations;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PaidType that = (PaidType) o;
-        return maxCapacity == that.maxCapacity
-            && tuitionFee == that.tuitionFee
-            && studentCount == that.studentCount;
+        return tuitionFee == that.tuitionFee
+            && Objects.equals(registrations, that.registrations);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(maxCapacity, tuitionFee, studentCount);
+        return Objects.hash(tuitionFee, registrations);
     }
 }
