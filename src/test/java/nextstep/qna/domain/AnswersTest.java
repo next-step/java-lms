@@ -18,4 +18,12 @@ class AnswersTest {
         assertThat(answers.deleteAll(JAVAJIGI)).hasSize(2);
     }
 
+    @DisplayName("Answers에 Answer를 추가할 수 있다")
+    @Test
+    void shouldAddAnswerToAnswers() {
+        Answers answers = new Answers(A1);
+        answers.add(A3);
+        assertThat(answers.answers()).hasSize(2);
+    }
+
 }
