@@ -119,6 +119,7 @@ public class JdbcSessionRepository implements SessionRepository {
             Enrollment enrollment = new Enrollment(status, type);
 
             return new Session(
+                    rs.getLong("id"),
                     rs.getInt("cohort"),
                     rs.getDate("start_date").toLocalDate(),
                     rs.getDate("end_date").toLocalDate(),

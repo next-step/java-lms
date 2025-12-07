@@ -3,17 +3,21 @@ package nextstep.courses.domain.session;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class EnrollmentTest {
     @Test
     public void 모집중_상태일때_수강신청_가능() {
-        Enrollment enrollment = new Enrollment(SessionStatus.RECRUITING, new FreeSessionType());
+        Enrollment enrollment = new Enrollment(1L, SessionStatus.RECRUITING, new FreeSessionType(), Collections.emptyList());
 
-        enrollment.enroll(1L);
+        EnrolledStudent student = enrollment.enroll(1L, null);
 
-        assertThat(enrollment.isEnrolled(1L)).isTrue();
+        assertThat(student.getNsUserId()).isEqualTo(1L);
+        assertThat(student.getSessionId()).isEqualTo(1L);
     }
 
     @Test
@@ -21,7 +25,7 @@ public class EnrollmentTest {
         Enrollment enrollment = new Enrollment(SessionStatus.PREPARING, new FreeSessionType());
 
         assertThatThrownBy(() -> {
-            enrollment.enroll(1L);
+            enrollment.enroll(1L, null);
         }).isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("모집중인 강의만 수강 신청할 수 있다");
     }
@@ -29,7 +33,7 @@ public class EnrollmentTest {
     @Test
     public void 유료_강의_결제금액_검증() {
         SessionType type = new PaidSessionType(10, 100_000L);
-        Enrollment enrollment = new Enrollment(SessionStatus.RECRUITING, type);
+        Enrollment enrollment = new Enrollment(1L, SessionStatus.RECRUITING, type, Collections.emptyList());
 
         assertThatThrownBy(() -> enrollment.enroll(1L, new Payment("결제번호-1", 1L, 1L, 50_000L)))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -40,10 +44,13 @@ public class EnrollmentTest {
     public void 유료강의의_최대인원을_초과하면_예외() {
         long fee = 100_000L;
         SessionType type = new PaidSessionType(2, fee);
-        Enrollment enrollment = new Enrollment(SessionStatus.RECRUITING, type);
 
-        enrollment.enroll(1L, new Payment("결제번호-1", 1L, 1L, fee));
-        enrollment.enroll(2L, new Payment("결제번호-2", 1L, 2L, fee));
+        List<EnrolledStudent> currentStudent = List.of(
+                new EnrolledStudent(1L, 1L),
+                new EnrolledStudent(1L, 2L)
+        );
+
+        Enrollment enrollment = new Enrollment(1L, SessionStatus.RECRUITING, type, currentStudent);
 
         assertThatThrownBy(() -> {
             enrollment.enroll(3L, new Payment("결제번호-1", 1L, 3L, fee));

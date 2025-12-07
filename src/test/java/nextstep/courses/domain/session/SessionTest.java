@@ -5,6 +5,7 @@ import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -33,32 +34,12 @@ public class SessionTest {
 
     @Test
     public void 모집중_상태일때_수강신청_가능() {
-        Session session = new Session(START_DATE, END_DATE, IMAGE, "모집중");
+        Session session = new Session(1L, 1, START_DATE, END_DATE, IMAGE, new Enrollment(SessionStatus.RECRUITING, new FreeSessionType()));
+        Enrollment enrollment = session.createEnrollment(Collections.emptyList());
+        EnrolledStudent student = enrollment.enroll(1L, null);
 
-        session.enroll(1L);
-
-        assertThat(session.isEnrolled(1L)).isTrue();
-    }
-
-    @Test
-    public void 유료강의의_결제금액이_수강료와_일치하지_않으면_예외() {
-        long fee = 100_000L;
-        Session session = new Session(START_DATE, END_DATE, IMAGE, "모집중", 10, fee);
-
-        assertThatThrownBy(() -> {
-            session.enroll(1L, new Payment("결제번호-1", 1L, 1L, 50_000L));
-        }).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("결제 금액이 수강료와 일치하지 않습니다");
-    }
-
-    @Test
-    public void 유료강의_결제금액이_수강료와_일치하면_수강성공() {
-        long fee = 100_000L;
-        Session session = new Session(START_DATE, END_DATE, IMAGE, "모집중", 10, fee);
-
-        session.enroll(1L, new Payment("결제번호-1", 1L, 1L, fee));
-
-        assertThat(session.isEnrolled(1L)).isTrue();
+        assertThat(student.getNsUserId()).isEqualTo(1L);
+        assertThat(student.getSessionId()).isEqualTo(1L);
     }
 
 

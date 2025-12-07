@@ -2,29 +2,29 @@ package nextstep.courses.domain.session;
 
 import nextstep.payments.domain.Payment;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Enrollment {
+    private final Long sessionId;
     private final SessionStatus status;
     private final SessionType sessionType;
-    private final Set<Long> enrolledNsUserIds;
+    private final List<EnrolledStudent> enrolledStudents;
 
     public Enrollment(SessionStatus status, SessionType sessionType) {
-        this(status, sessionType, new HashSet<>());
+        this(null, status, sessionType, Collections.emptyList());
     }
 
-    public Enrollment(SessionStatus status, SessionType sessionType, Set<Long> enrolledNsUserIds) {
+    public Enrollment(Long sessionId, SessionStatus status, SessionType sessionType, List<EnrolledStudent> enrolledStudents) {
+        this.sessionId = sessionId;
         this.status = status;
         this.sessionType = sessionType;
-        this.enrolledNsUserIds = enrolledNsUserIds;
+        this.enrolledStudents = enrolledStudents;
     }
 
-    public void enroll(Long nsUserId) {
-        enroll(nsUserId, null);
-    }
-
-    public void enroll(Long nsUserId, Payment payment) {
+    public EnrolledStudent enroll(Long nsUserId, Payment payment) {
         if (!status.canEnroll()) {
             throw new IllegalStateException("모집중인 강의만 수강 신청할 수 있다");
         }
@@ -32,14 +32,10 @@ public class Enrollment {
             throw new IllegalArgumentException("결제 금액이 수강료와 일치하지 않습니다.");
         }
 
-        if (sessionType.isOverCapacity(enrolledNsUserIds.size())) {
+        if (sessionType.isOverCapacity(enrolledStudents.size())) {
             throw new IllegalStateException("최대 수강 인원을 초과했습니다.");
         }
-        enrolledNsUserIds.add(nsUserId);
-    }
-
-    public boolean isEnrolled(Long nsUserId) {
-        return enrolledNsUserIds.contains(nsUserId);
+        return new EnrolledStudent(sessionId,nsUserId);
     }
 
     public SessionStatus getStatus() {
