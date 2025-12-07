@@ -20,18 +20,10 @@ public class SessionService {
         this.enrollmentRepository = enrollmentRepository;
     }
 
-    //TODO 추후 메서드의 파라미터는 사용하기에 따라 정리한다(현재 인수 4개)
-    public void enroll(Long courseId, int cohort, Long nsUserId, Payment payment) {
-        Sessions sessions = sessionRepository.findByCourseId(courseId);
-        Session session = sessions.findByCohort(cohort);
-
-        if (session == null) {
-            throw new IllegalArgumentException("해당 기수의 강의를 찾을 수 없습니다.");
-        }
-
+    public void enroll(Long sessionId, Long nsUserId, Payment payment) {
+        Session session = sessionRepository.findById(sessionId);
         session.enroll(nsUserId, payment);
 
-        Long sessionId = sessionRepository.findSessionIdByCourseIdAndCohort(courseId, cohort);
         enrollmentRepository.save(sessionId, nsUserId);
     }
 }

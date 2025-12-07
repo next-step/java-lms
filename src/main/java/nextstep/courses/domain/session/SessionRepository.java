@@ -5,5 +5,5 @@ public interface SessionRepository {
 
     Sessions findByCourseId(Long courseId);
 
-    Long findSessionIdByCourseIdAndCohort(Long courseId, int cohort);
+    Session findById(Long SessionId);
 }

@@ -97,9 +97,34 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public Long findSessionIdByCourseIdAndCohort(Long courseId, int cohort) {
-        String sql = "select id from session where course_id = ? and cohort = ?";
-        return jdbcTemplate.queryForObject(sql, Long.class, courseId, cohort);
+    public Session findById(Long sessionId) {
+        String sql = "select s.id, s.cohort, s.start_date, s.end_date, s.status, s.session_type, s.max_capacity, s.fee, " +
+                "i.file_size, i.image_type, i.width, i.height " +
+                "from session s " +
+                "join session_image i on s.image_id = i.id " +
+                "where s.id = ?";
+
+        return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
+            SessionImage image = new SessionImage(
+                    rs.getLong("file_size"),
+                    rs.getString("image_type"),
+                    rs.getInt("width"),
+                    rs.getInt("height"));
+
+            SessionStatus status = SessionStatus.from(rs.getString("status"));
+            SessionType type = "FREE".equals(rs.getString("session_type"))
+                    ? new FreeSessionType()
+                    : new PaidSessionType(rs.getInt("max_capacity"), rs.getLong("fee"));
+
+            Enrollment enrollment = new Enrollment(status, type);
+
+            return new Session(
+                    rs.getInt("cohort"),
+                    rs.getDate("start_date").toLocalDate(),
+                    rs.getDate("end_date").toLocalDate(),
+                    image,
+                    enrollment);
+        }, sessionId);
     }
 
     private Long saveSessionImage(SessionImage image) {
