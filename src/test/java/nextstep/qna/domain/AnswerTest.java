@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 public class AnswerTest {
     public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
     public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
+    public static final Answer A3 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents3");
 
     @DisplayName("답변 작성자가 로그인 사용자일 경우 삭제 가능하다")
     @Test
