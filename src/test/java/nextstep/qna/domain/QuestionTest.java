@@ -1,6 +1,7 @@
 package nextstep.qna.domain;
 
 import static nextstep.users.domain.NsUserTest.SANJIGI;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -28,4 +29,10 @@ public class QuestionTest {
                 .hasMessageContaining("질문을 삭제할 권한이 없습니다");
     }
 
+    @DisplayName("삭제 가능한 경우 상태가 변경된다")
+    @Test
+    void shouldChangeDeletedStatus_whenDeleteByOwner() throws CannotDeleteException {
+        Q2.delete(SANJIGI);
+        assertThat(Q2.isDeleted()).isTrue();
+    }
 }
