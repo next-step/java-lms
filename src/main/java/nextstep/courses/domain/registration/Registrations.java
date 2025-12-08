@@ -22,9 +22,6 @@ public class Registrations {
     this.maxCapacity = maxCapacity;
   }
 
-  public static Registrations of(List<Registration> registrations, int maxCapacity) {
-    return new Registrations(registrations, maxCapacity);
-  }
 
   public Registrations add(Registration registration) {
     validateCapacity();

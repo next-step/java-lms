@@ -35,5 +35,11 @@ public class SessionImageDimension {
     return b == 0 ? a : gcd(b, a % b);
   }
 
+  public int width() {
+    return width;
+  }
 
+  public int height() {
+    return height;
+  }
 }

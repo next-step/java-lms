@@ -1,6 +1,7 @@
 package nextstep.courses.infrastructure.mapper;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import nextstep.courses.domain.registration.Registration;
 import nextstep.courses.domain.registration.Registrations;
 import nextstep.courses.infrastructure.entity.RegistrationEntity;
@@ -31,7 +32,7 @@ public class RegistrationMapper {
     public static Registrations toDomain(List<RegistrationEntity> entities, int maxCapacity) {
         List<Registration> registrations = entities.stream()
             .map(RegistrationMapper::toDomain)
-            .toList();
-        return Registrations.of(registrations, maxCapacity);
+            .collect(Collectors.toList());
+        return new Registrations(registrations, maxCapacity);
     }
 }

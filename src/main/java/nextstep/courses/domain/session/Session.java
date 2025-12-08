@@ -1,8 +1,12 @@
 package nextstep.courses.domain.session;
 
+import java.util.List;
 import nextstep.courses.domain.BaseEntity;
 import nextstep.courses.domain.image.SessionCoverImage;
+import nextstep.courses.domain.registration.Registration;
+import nextstep.courses.domain.registration.Registrations;
 import nextstep.courses.domain.session.type.SessionType;
+import nextstep.payments.domain.Payment;
 
 public class Session extends BaseEntity {
   private final Long courseId;

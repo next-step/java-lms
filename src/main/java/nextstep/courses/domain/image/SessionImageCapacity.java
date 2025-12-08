@@ -26,4 +26,7 @@ public class SessionImageCapacity {
     }
   }
 
+  public long bytes() {
+    return bytes;
+  }
 }

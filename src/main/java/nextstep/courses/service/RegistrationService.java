@@ -1,7 +1,9 @@
 package nextstep.courses.service;
 
+import java.util.List;
 import nextstep.courses.domain.registration.Registration;
 import nextstep.courses.domain.registration.RegistrationRepository;
+import nextstep.courses.domain.session.Enrollment;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
 import nextstep.payments.domain.Payment;

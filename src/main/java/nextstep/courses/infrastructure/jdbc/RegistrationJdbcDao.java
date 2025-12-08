@@ -1,27 +1,21 @@
-package nextstep.courses.infrastructure;
+package nextstep.courses.infrastructure.jdbc;
 
 import java.sql.Timestamp;
 import java.util.List;
-import nextstep.courses.domain.registration.Registration;
-import nextstep.courses.domain.registration.RegistrationRepository;
 import nextstep.courses.infrastructure.entity.RegistrationEntity;
-import nextstep.courses.infrastructure.mapper.RegistrationMapper;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
-@Repository("registrationRepository")
-public class JdbcRegistrationRepository implements RegistrationRepository {
+@Component
+public class RegistrationJdbcDao {
     private final JdbcOperations jdbcTemplate;
 
-    public JdbcRegistrationRepository(JdbcOperations jdbcTemplate) {
+    public RegistrationJdbcDao(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Override
-    public int save(Registration registration) {
-        RegistrationEntity entity = RegistrationMapper.toEntity(registration);
-
+    public int save(RegistrationEntity entity) {
         String sql = "insert into registration (session_id, student_id, enrolled_at) values(?, ?, ?)";
 
         return jdbcTemplate.update(sql,
@@ -31,25 +25,16 @@ public class JdbcRegistrationRepository implements RegistrationRepository {
         );
     }
 
-    @Override
-    public Registration findById(Long id) {
+    public RegistrationEntity findById(Long id) {
         String sql = "select id, session_id, student_id, enrolled_at from registration where id = ?";
-
-        RegistrationEntity entity = jdbcTemplate.queryForObject(sql, rowMapper(), id);
-        return RegistrationMapper.toDomain(entity);
+        return jdbcTemplate.queryForObject(sql, rowMapper(), id);
     }
 
-    @Override
-    public List<Registration> findBySessionId(Long sessionId) {
+    public List<RegistrationEntity> findBySessionId(Long sessionId) {
         String sql = "select id, session_id, student_id, enrolled_at from registration where session_id = ?";
-
-        List<RegistrationEntity> entities = jdbcTemplate.query(sql, rowMapper(), sessionId);
-        return entities.stream()
-            .map(RegistrationMapper::toDomain)
-            .toList();
+        return jdbcTemplate.query(sql, rowMapper(), sessionId);
     }
 
-    @Override
     public int countBySessionId(Long sessionId) {
         String sql = "select count(*) from registration where session_id = ?";
         return jdbcTemplate.queryForObject(sql, Integer.class, sessionId);
