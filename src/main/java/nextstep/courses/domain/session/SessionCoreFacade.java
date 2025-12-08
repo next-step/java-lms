@@ -19,4 +19,5 @@ public interface SessionCoreFacade {
     void validatePaymentAmount(Payment payment);
     void validateNotFull(Enrollments enrollments);
     void validateSessionStatus();
+    void validateRecruitmentStatus();
 }

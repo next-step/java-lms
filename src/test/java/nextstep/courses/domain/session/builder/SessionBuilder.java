@@ -3,6 +3,7 @@ package nextstep.courses.domain.session.builder;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.image.CoverImage;
 import nextstep.courses.domain.session.*;
+import nextstep.courses.domain.session.constant.SessionRecruitmentStatus;
 import nextstep.courses.domain.session.constant.SessionStatus;
 
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ public class SessionBuilder {
     private Enrollments enrollments = new Enrollments();
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt;
+    private SessionRecruitmentStatus recruit;
 
     public SessionBuilder withId(Long id) {
         this.id = id;
@@ -65,8 +67,21 @@ public class SessionBuilder {
         return this;
     }
 
+    public SessionBuilder withRecruit(SessionRecruitmentStatus recruit) {
+        this.recruit = recruit;
+        return this;
+    }
+
+    private SessionCoreFacade createdSessionCore(){
+        if(this.recruit != null) {
+            return new SessionCoreV2(this.sessionRange, this.sessionPolicy, this.sessionStatus, recruit);
+        }
+
+        return new SessionCore(this.sessionRange, this.sessionPolicy, this.sessionStatus);
+    }
+
     public Session build() {
-        return new Session(id, course, coverImage, enrollments, createdAt, updatedAt, new SessionCore(sessionRange, sessionPolicy, sessionStatus));
+        return new Session(id, course, coverImage, enrollments, createdAt, updatedAt, createdSessionCore());
     }
 
 }

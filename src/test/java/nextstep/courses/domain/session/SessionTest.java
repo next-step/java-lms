@@ -66,4 +66,14 @@ public class SessionTest {
                 .hasMessageContaining("수강인원이 초과했습니다.");
     }
 
+    @Test
+    void 모집정보_추가하여_강의_생성() {
+        Session sessionBuilder = new SessionBuilder().build();
+
+        assertThat(sessionBuilder.getSessionCore().getSessionPolicy().getSessionType()).isEqualTo(SessionType.PAID);
+        assertThat(sessionBuilder.getSessionCore().getSessionPolicy().getTuition()).isEqualTo(new Tuition(300_000L));
+        assertThat(sessionBuilder.getSessionCore().getSessionStatus()).isEqualTo(SessionStatus.PENDING);
+        assertThat(sessionBuilder.getSessionCore().getSessionPolicy().getMaxCapacity()).isEqualTo(new Capacity(100));
+    }
+
 }

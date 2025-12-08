@@ -53,6 +53,7 @@ public class Session extends BaseEntity {
         sessionCore.validatePaymentAmount(payment);
         sessionCore.validateNotFull(this.enrollments);
         sessionCore.validateSessionStatus();
+        sessionCore.validateRecruitmentStatus();
         this.enrollments.add(enrollment);
     }
 

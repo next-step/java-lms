@@ -39,6 +39,11 @@ public class SessionCore implements SessionCoreFacade {
         }
     }
 
+    @Override
+    public void validateRecruitmentStatus() {
+
+    }
+
     public LocalDateTime getStartDate() {
         return sessionRange.getStartDate();
     }
