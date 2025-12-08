@@ -6,7 +6,7 @@ import nextstep.payments.domain.Payment;
 import java.time.LocalDateTime;
 
 
-public abstract class SessionCore {
+public class SessionCore {
 
     private final SessionRange sessionRange;
     private final SessionPolicy sessionPolicy;

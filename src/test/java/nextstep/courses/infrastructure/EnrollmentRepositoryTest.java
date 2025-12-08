@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,7 +34,7 @@ public class EnrollmentRepositoryTest {
 
     @Test
     void crud() {
-        int count = enrollmentRepository.save(new Enrollment(NsUserTest.JAVAJIGI, 1L));
+        int count = enrollmentRepository.save(new Enrollment(NsUserTest.JAVAJIGI, 1L, LocalDateTime.now(), null));
         assertThat(count).isEqualTo(1);
 
         List<EnrollmentRecord> enrollments = enrollmentRepository.findBySessionId(1L);

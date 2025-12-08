@@ -1,9 +1,6 @@
 package nextstep.courses.record;
 
-import nextstep.courses.domain.Course;
-import nextstep.courses.domain.image.CoverImage;
 import nextstep.courses.domain.session.*;
-import nextstep.courses.domain.session.constant.SessionStatus;
 
 import java.time.LocalDateTime;
 

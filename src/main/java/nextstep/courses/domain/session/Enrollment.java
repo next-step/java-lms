@@ -2,26 +2,22 @@ package nextstep.courses.domain.session;
 
 import nextstep.users.domain.NsUser;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Enrollment {
+public class Enrollment extends BaseEntity {
 
-    private final Long id;
     private final NsUser user;
     private final Long sessionId;
 
-    public Enrollment(NsUser user, Long sessionId) {
-        this(0L, user, sessionId);
+    public Enrollment(NsUser user, Long sessionId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(0L, user, sessionId, createdAt, updatedAt);
     }
 
-    public Enrollment(Long id, NsUser user, Long sessionId) {
-        this.id = id;
+    public Enrollment(Long id, NsUser user, Long sessionId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(id, createdAt, updatedAt);
         this.user = user;
         this.sessionId = sessionId;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public NsUser getUser() {
@@ -47,8 +43,7 @@ public class Enrollment {
     @Override
     public String toString() {
         return "Enrollment{" +
-                "id=" + id +
-                ", user=" + user +
+                "  user=" + user +
                 ", sessionId=" + sessionId +
                 '}';
     }

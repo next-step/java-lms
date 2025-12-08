@@ -19,5 +19,5 @@ VALUES (2, 1, 1,CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 100, 300000, 'PAID', '
 
 INSERT INTO cover_image (id, size, type, width, height) VALUES (1, 1, 'png', 300, 200);
 
-INSERT INTO enrollment (id, user_id, session_id) VALUES  (1, 1, 1);
-INSERT INTO enrollment (id, user_id, session_id) VALUES  (2, 2, 1);
+INSERT INTO enrollment (id, user_id, session_id, created_at) VALUES  (1, 1, 1, CURRENT_TIMESTAMP());
+INSERT INTO enrollment (id, user_id, session_id, created_at) VALUES  (2, 2, 1, CURRENT_TIMESTAMP());

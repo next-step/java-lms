@@ -14,12 +14,12 @@ public class SessionMapper {
                 session.getId(),
                 session.getCourse().getId(),
                 session.getCoverImage().getId(),
-                session.getStartDate(),
-                session.getEndDate(),
-                session.getMaxCapacity(),
-                session.getTuition(),
-                session.getSessionType(),
-                session.getSessionStatus().name(),
+                session.getSessionCore().getStartDate(),
+                session.getSessionCore().getEndDate(),
+                session.getSessionCore().getMaxCapacity(),
+                session.getSessionCore().getTuition(),
+                session.getSessionCore().getSessionType(),
+                session.getSessionCore().getSessionStatus().name(),
                 session.getCreatedAt(),
                 session.getUpdatedAt()
         );

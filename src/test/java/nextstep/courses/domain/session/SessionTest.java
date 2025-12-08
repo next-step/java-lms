@@ -24,19 +24,19 @@ public class SessionTest {
     void 유료_강의_정상_생성() {
         Session sessionBuilder = new SessionBuilder().build();
 
-        assertThat(sessionBuilder.getSessionPolicy().getSessionType()).isEqualTo(SessionType.PAID);
-        assertThat(sessionBuilder.getSessionPolicy().getTuition()).isEqualTo(new Tuition(300_000L));
-        assertThat(sessionBuilder.getSessionStatus()).isEqualTo(SessionStatus.PENDING);
-        assertThat(sessionBuilder.getSessionPolicy().getMaxCapacity()).isEqualTo(new Capacity(100));
+        assertThat(sessionBuilder.getSessionCore().getSessionPolicy().getSessionType()).isEqualTo(SessionType.PAID);
+        assertThat(sessionBuilder.getSessionCore().getSessionPolicy().getTuition()).isEqualTo(new Tuition(300_000L));
+        assertThat(sessionBuilder.getSessionCore().getSessionStatus()).isEqualTo(SessionStatus.PENDING);
+        assertThat(sessionBuilder.getSessionCore().getSessionPolicy().getMaxCapacity()).isEqualTo(new Capacity(100));
     }
 
     @Test
     void 무료_강의_정상_생성() {
         Session session = new Session(1L, START_DATE, END_DATE, "free", "pending", COVER_IMAGE);
 
-        assertThat(session.getSessionPolicy().getSessionType()).isEqualTo(SessionType.FREE);
-        assertThat(session.getSessionPolicy().getMaxCapacity()).isEqualTo(new Capacity(Integer.MAX_VALUE));
-        assertThat(session.getSessionPolicy().getTuition()).isEqualTo(new Tuition(0L));
+        assertThat(session.getSessionCore().getSessionPolicy().getSessionType()).isEqualTo(SessionType.FREE);
+        assertThat(session.getSessionCore().getSessionPolicy().getMaxCapacity()).isEqualTo(new Capacity(Integer.MAX_VALUE));
+        assertThat(session.getSessionCore().getSessionPolicy().getTuition()).isEqualTo(new Tuition(0L));
     }
 
     @Test
@@ -58,7 +58,7 @@ public class SessionTest {
                 .withEnrollment(new EnrollmentBuilder().build())
                 .build();
 
-        Enrollment newEnrollment = new Enrollment(NsUserTest.SANJIGI, 1L);
+        Enrollment newEnrollment = new Enrollment(NsUserTest.SANJIGI, 1L, LocalDateTime.now(), null);
         Payment payment = new Payment(1L, 1L, 300_000L);
 
         assertThatThrownBy(() -> session.addEnrollment(newEnrollment, payment))

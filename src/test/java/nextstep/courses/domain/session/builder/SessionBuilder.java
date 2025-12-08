@@ -66,7 +66,7 @@ public class SessionBuilder {
     }
 
     public Session build() {
-        return new Session(id, course, sessionRange, sessionPolicy, sessionStatus, coverImage, enrollments, createdAt, updatedAt);
+        return new Session(id, course, coverImage, enrollments, createdAt, updatedAt, new SessionCore(sessionRange, sessionPolicy, sessionStatus));
     }
 
 }

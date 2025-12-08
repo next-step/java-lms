@@ -4,6 +4,8 @@ import nextstep.courses.domain.session.Enrollment;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
+import java.time.LocalDateTime;
+
 public class EnrollmentBuilder {
 
     private NsUser user = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
@@ -21,7 +23,7 @@ public class EnrollmentBuilder {
 
 
     public Enrollment build() {
-        return new Enrollment(user, sessionId);
+        return new Enrollment(user, sessionId, LocalDateTime.now(), null);
     }
 
 }
