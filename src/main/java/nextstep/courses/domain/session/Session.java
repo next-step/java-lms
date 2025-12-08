@@ -15,7 +15,7 @@ public class Session extends BaseEntity {
     private Course course;
     private final CoverImage coverImage;
     private final Enrollments enrollments;
-    private SessionCore sessionCore;
+    private final SessionCoreFacade sessionCore;
 
     public Session(Long id, LocalDateTime startDate, LocalDateTime endDate, String sessionType, String sessionStatus, CoverImage coverImage) {
         this(id, startDate, endDate, sessionType, Integer.MAX_VALUE, 0L, sessionStatus, coverImage);
@@ -41,7 +41,7 @@ public class Session extends BaseEntity {
         this(id, course, coverImage, enrollments, LocalDateTime.now(), null, new SessionCore(sessionRange, sessionPolicy, sessionStatus));
     }
 
-    public Session(Long id, Course course, CoverImage coverImage, Enrollments enrollments, LocalDateTime createdAt, LocalDateTime updatedAt, SessionCore sessionCore) {
+    public Session(Long id, Course course, CoverImage coverImage, Enrollments enrollments, LocalDateTime createdAt, LocalDateTime updatedAt, SessionCoreFacade sessionCore) {
         super(id, createdAt, updatedAt);
         this.course = course;
         this.coverImage = coverImage;
@@ -65,7 +65,7 @@ public class Session extends BaseEntity {
         return coverImage;
     }
 
-    public SessionCore getSessionCore() {
+    public SessionCoreFacade getSessionCore() {
         return sessionCore;
     }
 

@@ -5,14 +5,13 @@ import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;
 
-
-public class SessionCore implements SessionCoreFacade {
+public class SessionCoreV2 implements SessionCoreFacade{
 
     private final SessionRange sessionRange;
     private final SessionPolicy sessionPolicy;
     private final SessionStatus sessionStatus;
 
-    public SessionCore(SessionRange sessionRange, SessionPolicy sessionPolicy, SessionStatus sessionStatus) {
+    public SessionCoreV2(SessionRange sessionRange, SessionPolicy sessionPolicy, SessionStatus sessionStatus) {
         this.sessionRange = sessionRange;
         this.sessionPolicy = sessionPolicy;
         this.sessionStatus = sessionStatus;
@@ -70,4 +69,5 @@ public class SessionCore implements SessionCoreFacade {
     public SessionStatus getSessionStatus() {
         return sessionStatus;
     }
+
 }
