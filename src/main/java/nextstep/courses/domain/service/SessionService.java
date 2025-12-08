@@ -7,6 +7,7 @@ import nextstep.courses.domain.image.CoverImageRepository;
 import nextstep.courses.domain.session.Enrollment;
 import nextstep.courses.domain.session.Enrollments;
 import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.mapper.SessionMapper;
 import nextstep.courses.domain.session.repository.EnrollmentRepository;
 import nextstep.courses.domain.session.repository.SessionRepository;
 import nextstep.courses.record.EnrollmentRecord;
@@ -52,20 +53,20 @@ public class SessionService {
         List<EnrollmentRecord> enrollmentRecords = enrollmentRepository.findBySessionId(id);
         Enrollments enrollments = toEnrollments(enrollmentRecords);
 
-        return sessionRecord.toSession(saveCourse, saveCoverImage, enrollments);
+        return SessionMapper.toDomain(sessionRecord, saveCourse, saveCoverImage, enrollments);
     }
 
     @Transactional
     public int save(Session session) {
         coverImageRepository.save(session.getCoverImage());
-        return sessionRepository.save(session.toSessionRecord());
+        return sessionRepository.save(SessionMapper.toEntity(session));
     }
 
     @Transactional
     public int saveEnrollment(Enrollment enrollment, Payment payment) {
         SessionRecord sessionRecord = sessionRepository.findById(enrollment.getSessionId());
         List<EnrollmentRecord> enrollmentRecords = enrollmentRepository.findBySessionId(enrollment.getSessionId());
-        Session session = sessionRecord.toSession(null, null, toEnrollments(enrollmentRecords));
+        Session session = SessionMapper.toDomain(sessionRecord, null, null, toEnrollments(enrollmentRecords));
         session.addEnrollment(enrollment, payment);
 
         paymentRepository.save(payment);

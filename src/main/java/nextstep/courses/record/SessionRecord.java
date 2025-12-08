@@ -39,17 +39,16 @@ public class SessionRecord {
         this.updatedAt = updatedAt;
     }
 
-    public Session toSession(Course course, CoverImage coverImage, Enrollments enrollments) {
-        return new Session(this.id, course, createdSessionRange(), createdSessionPolicy(),
-                SessionStatus.from(this.sessionStatus), coverImage, enrollments);
-    }
-
-    private SessionRange createdSessionRange() {
+    public SessionRange createdSessionRange() {
         return new SessionRange(this.startDate, this.endDate);
     }
 
-    private SessionPolicy createdSessionPolicy() {
+    public SessionPolicy createdSessionPolicy() {
         return new SessionPolicy(this.maxCapacity, this.tuition, this.sessionType);
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Long getCourseId() {

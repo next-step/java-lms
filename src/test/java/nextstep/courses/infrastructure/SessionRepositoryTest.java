@@ -1,6 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.mapper.SessionMapper;
 import nextstep.courses.domain.session.repository.SessionRepository;
 import nextstep.courses.domain.session.builder.SessionBuilder;
 import nextstep.courses.record.SessionRecord;
@@ -31,7 +32,7 @@ public class SessionRepositoryTest {
     @Test
     void crud(){
         Session session = new SessionBuilder().withId(2L).build();
-        int count = sessionRepository.save(session.toSessionRecord());
+        int count = sessionRepository.save(SessionMapper.toEntity(session));
         assertThat(count).isEqualTo(1);
 
         SessionRecord sessionRecord = sessionRepository.findById(1000L);

@@ -85,22 +85,6 @@ public class Session extends SessionCore {
         return enrollments.getEnrollments();
     }
 
-    public SessionRecord toSessionRecord() {
-        return new SessionRecord(
-                this.id,
-                this.course.getId(),
-                this.coverImage.getId(),
-                this.getSessionRange().getStartDate(),
-                this.getSessionRange().getEndDate(),
-                this.getMaxCapacity(),
-                this.getTuition(),
-                this.getSessionType(),
-                this.getSessionStatus().toString(),
-                this.createdAt,
-                this.updatedAt
-        );
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
