@@ -7,14 +7,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class ProgressStatusTest {
     @Test
-    public void 각상태별_생성확인() {
+    void 각상태별_생성확인() {
         assertThat(ProgressStatus.PREPARING.getValue()).isEqualTo("준비중");
         assertThat(ProgressStatus.IN_PROGRESS.getValue()).isEqualTo("진행중");
         assertThat(ProgressStatus.CLOSED.getValue()).isEqualTo("종료");
     }
 
     @Test
-    public void 잘못된_상태_문자열이면_예외() {
+    void 잘못된_상태_문자열이면_예외() {
         assertThatThrownBy(() -> {
             ProgressStatus.from("모집중");
         }).isInstanceOf(IllegalArgumentException.class)

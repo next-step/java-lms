@@ -43,4 +43,29 @@ public class SessionTest {
     }
 
 
+
+    @Test
+    void 진행중이면서_모집중일때_수강신청_가능() {
+        Session session = new Session(1L, 1, START_DATE, END_DATE, IMAGE,
+                ProgressStatus.IN_PROGRESS, RecruitmentStatus.RECRUITING, new FreeSessionType());
+
+        Enrollment enrollment = session.createEnrollment(java.util.Collections.emptyList());
+        EnrolledStudent student = enrollment.enroll(1L, null);
+
+        assertThat(student.getNsUserId()).isEqualTo(1L);
+        assertThat(student.getSessionId()).isEqualTo(1L);
+    }
+
+    @Test
+    void 기존_SessionStatus만있어도_생성_가능() {
+        LocalDate startDate = LocalDate.of(2024, 1, 1);
+        LocalDate endDate = LocalDate.of(2024, 3, 31);
+        SessionImage image = new SessionImage(500_000L, "png", 900, 600);
+
+        Session session = new Session(1L, 1, startDate, endDate, image, SessionStatus.RECRUITING, new FreeSessionType());
+
+        assertThat(session.getStatus()).isEqualTo(SessionStatus.RECRUITING);
+    }
+
+
 }

@@ -9,6 +9,8 @@ public class Session {
     private final Long id;
     private final SessionInfo sessionInfo;
     private final SessionStatus status;
+    private final ProgressStatus progressStatus;
+    private final RecruitmentStatus recruitmentStatus;
     private final SessionType sessionType;
 
     public Session(LocalDate startDate, LocalDate endDate, SessionImage coverImage, String status) {
@@ -36,21 +38,36 @@ public class Session {
     }
 
     public Session(Long id, int cohort, SessionPeriod period, SessionImage coverImage, SessionStatus status, SessionType sessionType) {
-        this(id, new SessionInfo(cohort,period,coverImage),status,sessionType);
+        this(id, new SessionInfo(cohort, period, coverImage), status, sessionType);
     }
 
     public Session(Long id, SessionInfo sessionInfo, SessionStatus status, SessionType sessionType) {
-        this.id = id;
-        this.sessionInfo = sessionInfo;
-        this.status = status;
-        this.sessionType = sessionType;
+        this(id, sessionInfo, status, null, null, sessionType);
+    }
+
+
+    public Session(Long id, int cohort, LocalDate startDate, LocalDate endDate, SessionImage image, ProgressStatus progressStatus, RecruitmentStatus recruitmentStatus, SessionType sessionType) {
+        this(id, new SessionInfo(cohort, startDate, endDate, image), null, progressStatus, recruitmentStatus, sessionType);
     }
 
     public Session(int cohort, LocalDate startDate, LocalDate endDate, SessionImage image) {
         this(cohort, startDate, endDate, image, SessionStatus.PREPARING);
     }
 
+    public Session(Long id, SessionInfo sessionInfo, SessionStatus status, ProgressStatus progressStatus, RecruitmentStatus recruitmentStatus, SessionType sessionType) {
+        this.id = id;
+        this.sessionInfo = sessionInfo;
+        this.status = status;
+        this.progressStatus = progressStatus;
+        this.recruitmentStatus = recruitmentStatus;
+        this.sessionType = sessionType;
+    }
+
+
     public Enrollment createEnrollment(List<EnrolledStudent> currentStudents) {
+        if (recruitmentStatus != null) {
+            return new Enrollment(id, recruitmentStatus, sessionType, currentStudents);
+        }
         return new Enrollment(id, status, sessionType, currentStudents);
     }
 
@@ -72,6 +89,14 @@ public class Session {
 
     public SessionType getSessionType() {
         return sessionType;
+    }
+
+    public ProgressStatus getProgressStatus() {
+        return progressStatus;
+    }
+
+    public RecruitmentStatus getRecruitmentStatus() {
+        return recruitmentStatus;
     }
 
     public LocalDate getStartDate() {

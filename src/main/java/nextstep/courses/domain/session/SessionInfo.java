@@ -9,6 +9,10 @@ public class SessionInfo {
     private final SessionPeriod period;
     private final SessionImage coverImage;
 
+    public SessionInfo(int cohort, LocalDate startDate, LocalDate endDate, SessionImage image) {
+        this(cohort, new SessionPeriod(startDate, endDate), image);
+    }
+
     public SessionInfo(int cohort, SessionPeriod period, SessionImage coverImage) {
         this.cohort = cohort;
         this.period = period;
