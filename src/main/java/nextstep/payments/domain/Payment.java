@@ -19,11 +19,27 @@ public class Payment {
     public Payment() {
     }
 
+    public Payment(Long sessionId, Long nsUserId, Long amount) {
+        this(null, sessionId, nsUserId, amount);
+    }
+
     public Payment(String id, Long sessionId, Long nsUserId, Long amount) {
         this.id = id;
         this.sessionId = sessionId;
         this.nsUserId = nsUserId;
         this.amount = amount;
         this.createdAt = LocalDateTime.now();
+    }
+
+    public boolean isSameAmount(long amount) {
+        return this.amount == amount;
+    }
+
+    public boolean isPaidFor(Long sessionId) {
+        return sessionId.equals(this.sessionId);
+    }
+
+    public boolean isPaidBy(Long userId) {
+        return userId.equals(this.nsUserId);
     }
 }
