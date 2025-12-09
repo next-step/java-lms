@@ -7,9 +7,7 @@ import java.util.List;
 
 public class Session {
     private final Long id;
-    private final int cohort;
-    private final SessionPeriod period;
-    private final SessionImage coverImage;
+    private final SessionInfo sessionInfo;
     private final SessionStatus status;
     private final SessionType sessionType;
 
@@ -38,10 +36,12 @@ public class Session {
     }
 
     public Session(Long id, int cohort, SessionPeriod period, SessionImage coverImage, SessionStatus status, SessionType sessionType) {
+        this(id, new SessionInfo(cohort,period,coverImage),status,sessionType);
+    }
+
+    public Session(Long id, SessionInfo sessionInfo, SessionStatus status, SessionType sessionType) {
         this.id = id;
-        this.cohort = cohort;
-        this.period = period;
-        this.coverImage = coverImage;
+        this.sessionInfo = sessionInfo;
         this.status = status;
         this.sessionType = sessionType;
     }
@@ -59,11 +59,11 @@ public class Session {
     }
 
     public int getCohort() {
-        return cohort;
+        return sessionInfo.getCohort();
     }
 
     public SessionImage getImage() {
-        return coverImage;
+        return sessionInfo.getCoverImage();
     }
 
     public SessionStatus getStatus() {
@@ -75,11 +75,11 @@ public class Session {
     }
 
     public LocalDate getStartDate() {
-        return period.getStartDate();
+        return sessionInfo.getStartDate();
     }
 
     public LocalDate getEndDate() {
-        return period.getEndDate();
+        return sessionInfo.getEndDate();
     }
 
 }
