@@ -1,0 +1,29 @@
+package nextstep.courses.domain.session.type;
+
+import nextstep.courses.domain.session.EnrollmentCondition;
+import nextstep.courses.domain.session.EnrollmentConditionTest;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+class PaidTest {
+    private final static Long SESSION_ID = 123L;
+
+    @Test
+    void 유료_강의는_수강생이_결제한_금액과_수강료가_일치할_때_수강_신청이_가능하다() {
+        Paid paidSession = new Paid(SESSION_ID, 30_000L);
+        assertThat(paidSession.canEnroll(EnrollmentConditionTest.JAVAJIGI_ENROLLMENT)).isTrue();
+    }
+
+    @Test
+    void 유료_강의는_수강생이_결제한_금액과_수강료가_불일치하면_수강_신청이_불가하다() {
+        Paid paidSession = new Paid(SESSION_ID, 20_000L);
+        assertThat(paidSession.canEnroll(EnrollmentConditionTest.JAVAJIGI_ENROLLMENT)).isFalse();
+    }
+
+    @Test
+    void 유료_강의는_수강생이_결제한_강의와_신청한_강의가_불일치하면_수강_신청이_불가하다() {
+        Paid paidSession = new Paid(124, 20_000L);
+        assertThat(paidSession.canEnroll(EnrollmentConditionTest.JAVAJIGI_ENROLLMENT)).isFalse();
+    }
+}
