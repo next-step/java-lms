@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
@@ -10,6 +11,7 @@ public class Answer {
     private Long id;
 
     private NsUser writer;
+    private Long writerId;
 
     private Question question;
 
@@ -28,6 +30,10 @@ public class Answer {
         this(null, writer, question, contents);
     }
 
+    public Answer(long writerId, Question question, String contents) {
+        this(null, writerId, question, contents);
+    }
+
     public Answer(Long id, NsUser writer, Question question, String contents) {
         this.id = id;
         if(writer == null) {
@@ -43,6 +49,41 @@ public class Answer {
         this.contents = contents;
     }
 
+    public Answer(Long id, long writerId, Question question, String contents) {
+        this.id = id;
+        if(writerId <= 0L) {
+            throw new UnAuthorizedException();
+        }
+
+        if(question == null) {
+            throw new NotFoundException();
+        }
+
+        this.writerId = writerId;
+        this.question = question;
+        this.contents = contents;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void putOnDelete(long requesterId) {
+//        if (!isOwner(requesterId)) {
+//            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+//        }
+
+        this.deleted = true;
+    }
+
+    public boolean isOwner(NsUser writer) {
+        return this.writer.equals(writer);
+    }
+
+    public boolean isOwner(long writerId) {
+        return this.writerId == writerId;
+    }
+
     public Long getId() {
         return id;
     }
@@ -52,20 +93,8 @@ public class Answer {
         return this;
     }
 
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
-    }
-
     public NsUser getWriter() {
         return writer;
-    }
-
-    public String getContents() {
-        return contents;
     }
 
     public void toQuestion(Question question) {

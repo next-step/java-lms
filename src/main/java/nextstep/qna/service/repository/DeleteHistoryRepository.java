@@ -1,6 +1,7 @@
-package nextstep.qna.domain;
+package nextstep.qna.service.repository;
 
 import java.util.List;
+import nextstep.qna.domain.DeleteHistory;
 
 public interface DeleteHistoryRepository {
 
