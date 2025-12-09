@@ -7,13 +7,14 @@ import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.constant.SessionStatus;
 import nextstep.courses.record.SessionRecord;
 
+import java.util.List;
+
 public class SessionMapper {
 
     public static SessionRecord toEntity(Session session) {
         return new SessionRecord(
                 session.getId(),
                 session.getCourse().getId(),
-                session.getCoverImage().getId(),
                 session.getSessionCore().getStartDate(),
                 session.getSessionCore().getEndDate(),
                 session.getSessionCore().getMaxCapacity(),
@@ -25,14 +26,14 @@ public class SessionMapper {
         );
     }
 
-    public static Session toDomain(SessionRecord record, Course course, CoverImage coverImage, Enrollments enrollments) {
+    public static Session toDomain(SessionRecord record, Course course, List<CoverImage> coverImages, Enrollments enrollments) {
         return new Session(
                 record.getId(),
                 course,
                 record.createdSessionRange(),
                 record.createdSessionPolicy(),
                 SessionStatus.from(record.getSessionStatus()),
-                coverImage,
+                coverImages,
                 enrollments
         );
     }

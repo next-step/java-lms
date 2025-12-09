@@ -2,6 +2,7 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.image.CoverImage;
+import nextstep.courses.domain.image.CoverImages;
 import nextstep.courses.domain.session.constant.SessionStatus;
 import nextstep.courses.domain.session.constant.SessionType;
 import nextstep.payments.domain.Payment;
@@ -13,7 +14,7 @@ import java.util.Objects;
 public class Session extends BaseEntity {
 
     private Course course;
-    private final CoverImage coverImage;
+    private CoverImages coverImages;
     private final Enrollments enrollments;
     private final SessionCoreFacade sessionCore;
 
@@ -34,20 +35,25 @@ public class Session extends BaseEntity {
     }
 
     public Session(Long id, SessionRange sessionRange, SessionPolicy sessionPolicy, SessionStatus sessionStatus, CoverImage coverImage) {
-        this(id, null, coverImage, new Enrollments(), LocalDateTime.now(), null, new SessionCore(sessionRange, sessionPolicy, sessionStatus));
+        this(id, null, new CoverImages(coverImage), new Enrollments(), LocalDateTime.now(), null, new SessionCore(sessionRange, sessionPolicy, sessionStatus));
     }
 
     public Session(Long id, Course course, SessionRange sessionRange, SessionPolicy sessionPolicy, SessionStatus sessionStatus, CoverImage coverImage, Enrollments enrollments) {
-        this(id, course, coverImage, enrollments, LocalDateTime.now(), null, new SessionCore(sessionRange, sessionPolicy, sessionStatus));
+        this(id, course, new CoverImages(coverImage), enrollments, LocalDateTime.now(), null, new SessionCore(sessionRange, sessionPolicy, sessionStatus));
     }
 
-    public Session(Long id, Course course, CoverImage coverImage, Enrollments enrollments, LocalDateTime createdAt, LocalDateTime updatedAt, SessionCoreFacade sessionCore) {
+    public Session(Long id, Course course, SessionRange sessionRange, SessionPolicy sessionPolicy, SessionStatus sessionStatus, List<CoverImage> coverImages, Enrollments enrollments) {
+        this(id, course, new CoverImages(coverImages), enrollments, LocalDateTime.now(), null, new SessionCore(sessionRange, sessionPolicy, sessionStatus));
+    }
+
+    public Session(Long id, Course course, CoverImages coverImages, Enrollments enrollments, LocalDateTime createdAt, LocalDateTime updatedAt, SessionCoreFacade sessionCore) {
         super(id, createdAt, updatedAt);
         this.course = course;
-        this.coverImage = coverImage;
+        this.coverImages = coverImages;
         this.enrollments = enrollments;
         this.sessionCore = sessionCore;
     }
+
 
     public void addEnrollment(Enrollment enrollment, Payment payment) {
         sessionCore.validatePaymentAmount(payment);
@@ -62,8 +68,8 @@ public class Session extends BaseEntity {
         return course;
     }
 
-    public CoverImage getCoverImage() {
-        return coverImage;
+    public List<CoverImage> getCoverImages() {
+        return coverImages.getCoverImages();
     }
 
     public SessionCoreFacade getSessionCore() {
@@ -74,23 +80,24 @@ public class Session extends BaseEntity {
         return enrollments.getEnrollments();
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Session session = (Session) o;
-        return Objects.equals(getCourse(), session.getCourse()) && Objects.equals(getCoverImage(), session.getCoverImage()) && Objects.equals(getEnrollments(), session.getEnrollments()) && Objects.equals(getSessionCore(), session.getSessionCore());
+        return Objects.equals(getCourse(), session.getCourse()) && Objects.equals(getCoverImages(), session.getCoverImages()) && Objects.equals(getEnrollments(), session.getEnrollments()) && Objects.equals(getSessionCore(), session.getSessionCore());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getCourse(), getCoverImage(), getEnrollments(), getSessionCore());
+        return Objects.hash(getCourse(), getCoverImages(), getEnrollments(), getSessionCore());
     }
 
     @Override
     public String toString() {
         return "Session{" +
                 "course=" + course +
-                ", coverImage=" + coverImage +
+                ", coverImages=" + coverImages +
                 ", enrollments=" + enrollments +
                 ", sessionCore=" + sessionCore +
                 '}';

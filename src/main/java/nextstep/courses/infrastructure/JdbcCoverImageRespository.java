@@ -5,6 +5,9 @@ import nextstep.courses.domain.image.CoverImageRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
+import java.util.List;
+
 @Repository("coverImageRepository")
 public class JdbcCoverImageRespository implements CoverImageRepository {
     private JdbcOperations jdbcTemplate;
@@ -24,16 +27,17 @@ public class JdbcCoverImageRespository implements CoverImageRepository {
     }
 
     @Override
-    public CoverImage findById(Long id) {
-        String sql = "select * from cover_image where id = ?";
-        return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
+    public List<CoverImage> findBySessionId(Long sessionId) {
+        String sql = "select * from cover_image where session_id = ?";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
             return new CoverImage(
                     rs.getLong("id"),
+                    rs.getLong("session_id"),
                     rs.getLong("size"),
                     rs.getString("type"),
                     rs.getInt("width"),
                     rs.getInt("height")
             );
-        }, id);
+        }, sessionId);
     }
 }

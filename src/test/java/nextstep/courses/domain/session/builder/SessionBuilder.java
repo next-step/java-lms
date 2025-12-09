@@ -2,6 +2,7 @@ package nextstep.courses.domain.session.builder;
 
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.image.CoverImage;
+import nextstep.courses.domain.image.CoverImages;
 import nextstep.courses.domain.session.*;
 import nextstep.courses.domain.session.constant.SessionRecruitmentStatus;
 import nextstep.courses.domain.session.constant.SessionStatus;
@@ -13,7 +14,7 @@ public class SessionBuilder {
 
     private Long id = 23334L;
     private Course course = new Course("TDD, 클린 코드 with Java", 1L);
-    private CoverImage coverImage = new CoverImage(2L, "png", 300, 200);
+    private CoverImages coverImages = new CoverImages(new CoverImage(2L, "png", 300, 200));
     private SessionRange sessionRange = new SessionRangeBuilder().build();
     private SessionPolicy sessionPolicy = new SessionPolicyBuilder().build();
     private SessionStatus sessionStatus = SessionStatus.PENDING;
@@ -32,8 +33,8 @@ public class SessionBuilder {
         return this;
     }
 
-    public SessionBuilder withCoverImage(CoverImage coverImage) {
-        this.coverImage = coverImage;
+    public SessionBuilder withCoverImages(CoverImages coverImages) {
+        this.coverImages = coverImages;
         return this;
     }
 
@@ -81,7 +82,7 @@ public class SessionBuilder {
     }
 
     public Session build() {
-        return new Session(id, course, coverImage, enrollments, createdAt, updatedAt, createdSessionCore());
+        return new Session(id, course, coverImages, enrollments, createdAt, updatedAt, createdSessionCore());
     }
 
 }

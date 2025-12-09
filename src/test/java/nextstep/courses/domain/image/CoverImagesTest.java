@@ -7,11 +7,13 @@ import org.junit.jupiter.api.Test;
 class CoverImagesTest {
 
     @Test
-    void 이미지_등록(){
+    void 여러_이미지_등록(){
         CoverImages coverImages = new CoverImages();
         CoverImage coverImage = new CoverImage(1L, "png", 300, 200);
+        CoverImage coverImage2 = new CoverImage(1L, "png", 300, 200);
         coverImages.add(coverImage);
-        Assertions.assertThat(coverImages.size()).isEqualTo(1);
+        coverImages.add(coverImage2);
+        Assertions.assertThat(coverImages.size()).isEqualTo(2);
     }
 
 }

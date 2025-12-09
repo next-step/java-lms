@@ -3,12 +3,12 @@ package nextstep.courses.record;
 import nextstep.courses.domain.session.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class SessionRecord {
 
     private Long id;
     private Long courseId;
-    private Long coverImageId;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private int maxCapacity;
@@ -18,14 +18,13 @@ public class SessionRecord {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public SessionRecord(Long id, Long courseId, Long coverImageId,
+    public SessionRecord(Long id, Long courseId,
                          LocalDateTime startDate, LocalDateTime endDate,
                          int maxCapacity, Long tuition,
                          String sessionType, String sessionStatus,
                          LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.courseId = courseId;
-        this.coverImageId = coverImageId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.maxCapacity = maxCapacity;
@@ -50,10 +49,6 @@ public class SessionRecord {
 
     public Long getCourseId() {
         return courseId;
-    }
-
-    public Long getCoverImageId() {
-        return coverImageId;
     }
 
     public int getMaxCapacity() {

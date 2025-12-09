@@ -4,6 +4,7 @@ import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
 import nextstep.courses.domain.image.CoverImage;
 import nextstep.courses.domain.image.CoverImageRepository;
+import nextstep.courses.domain.image.CoverImages;
 import nextstep.courses.domain.session.Enrollment;
 import nextstep.courses.domain.session.Enrollments;
 import nextstep.courses.domain.session.Session;
@@ -48,17 +49,20 @@ public class SessionService {
 
     public Session findById(Long id) {
         SessionRecord sessionRecord = sessionRepository.findById(id);
-        CoverImage saveCoverImage = coverImageRepository.findById(sessionRecord.getCoverImageId());
+        List<CoverImage> saveCoverImages = coverImageRepository.findBySessionId(id);
         Course saveCourse = courseRepository.findById(sessionRecord.getCourseId());
         List<EnrollmentRecord> enrollmentRecords = enrollmentRepository.findBySessionId(id);
         Enrollments enrollments = toEnrollments(enrollmentRecords);
 
-        return SessionMapper.toDomain(sessionRecord, saveCourse, saveCoverImage, enrollments);
+        return SessionMapper.toDomain(sessionRecord, saveCourse, saveCoverImages, enrollments);
     }
 
     @Transactional
     public int save(Session session) {
-        coverImageRepository.save(session.getCoverImage());
+        for (CoverImage coverImage : session.getCoverImages()) {
+            coverImageRepository.save(coverImage);
+        }
+
         return sessionRepository.save(SessionMapper.toEntity(session));
     }
 
