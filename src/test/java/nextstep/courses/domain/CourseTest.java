@@ -1,9 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.session.Enrollment;
-import nextstep.courses.domain.session.FreeSessionType;
 import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionStatus;
 import nextstep.courses.domain.session.Sessions;
 import nextstep.courses.domain.session.image.SessionImage;
 import org.junit.jupiter.api.Test;
@@ -12,7 +9,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class CourseTest {
     private static final LocalDate START_DATE = LocalDate.of(2025, 11, 3);
@@ -48,5 +44,5 @@ class CourseTest {
 
         assertThat(course.getSessions().size()).isEqualTo(2);
     }
-    
+
 }

@@ -34,7 +34,7 @@ public class SessionTest {
 
     @Test
     public void 모집중_상태일때_수강신청_가능() {
-        Session session = new Session(1L, 1, START_DATE, END_DATE, IMAGE, new Enrollment(SessionStatus.RECRUITING, new FreeSessionType()));
+        Session session = new Session(1L, 1, START_DATE, END_DATE, IMAGE, SessionStatus.RECRUITING, new FreeSessionType());
         Enrollment enrollment = session.createEnrollment(Collections.emptyList());
         EnrolledStudent student = enrollment.enroll(1L, null);
 

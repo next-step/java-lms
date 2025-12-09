@@ -33,9 +33,8 @@ public class JdbcSessionRepository implements SessionRepository {
     public void save(Long courseId, Session session) {
         Long imageId = saveSessionImage(session.getImage());
 
-        Enrollment enrollment = session.getEnrollment();
-        SessionStatus status = enrollment.getStatus();
-        SessionType type = enrollment.getSessionType();
+        SessionStatus status = session.getStatus();
+        SessionType type = session.getSessionType();
 
         String sessionTypeStr = type.isFree() ? "FREE" : "PAID";
         Integer maxCapacity = null;
@@ -90,7 +89,10 @@ public class JdbcSessionRepository implements SessionRepository {
                     rs.getDate("start_date").toLocalDate(),
                     rs.getDate("end_date").toLocalDate(),
                     image,
-                    new Enrollment(status, type));
+                    status,
+                    type
+
+            );
         }, courseId);
 
         return new Sessions(sessionList);
@@ -116,15 +118,14 @@ public class JdbcSessionRepository implements SessionRepository {
                     ? new FreeSessionType()
                     : new PaidSessionType(rs.getInt("max_capacity"), rs.getLong("fee"));
 
-            Enrollment enrollment = new Enrollment(status, type);
-
             return new Session(
                     rs.getLong("id"),
                     rs.getInt("cohort"),
                     rs.getDate("start_date").toLocalDate(),
                     rs.getDate("end_date").toLocalDate(),
                     image,
-                    enrollment);
+                    status,
+                    type);
         }, sessionId);
     }
 
