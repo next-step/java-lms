@@ -2,7 +2,6 @@ package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
@@ -29,7 +28,7 @@ public class QuestionTest {
     @Test
     void delete() {
         Question question = new Question(1L, NsUserTest.JAVAJIGI, "title1", "contents1");
-        question.delete();
+        question.deleteQuestion();
         assertThat(question.isDeleted()).isTrue();
     }
 }

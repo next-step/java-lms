@@ -92,9 +92,19 @@ public class Question {
         }
     }
 
-    public DeleteHistory delete() {
+    public DeleteHistory deleteQuestion() {
         setDeleted(true);
         return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
+    }
+
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        validateOwner(loginUser);
+        answers.validateDeletableUser(loginUser);
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(deleteQuestion());
+        deleteHistories.addAll(answers.deleteAll());
+        return deleteHistories;
     }
 
     @Override
