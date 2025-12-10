@@ -12,15 +12,19 @@ public class EnrollmentRecord {
     private Long id;
     private Long userId;
     private Long sessionId;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
     private String selectionStatus;
     private String enrollmentStatus;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    public EnrollmentRecord(Long id, Long userId, Long sessionId) {
+    public EnrollmentRecord(Long id, Long userId, Long sessionId, String selectionStatus, String enrollmentStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.sessionId = sessionId;
+        this.selectionStatus = selectionStatus;
+        this.enrollmentStatus = enrollmentStatus;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public Enrollment toEnrollment(NsUser user) {
