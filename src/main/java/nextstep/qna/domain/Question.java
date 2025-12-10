@@ -42,7 +42,7 @@ public class Question extends BaseEntity {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        setDeleted(true);
+        markAsDeleted();
         deleteHistories.add(
                 new DeleteHistory(ContentType.QUESTION, getId(), getWriter(), LocalDateTime.now()));
         deleteHistories.addAll(answers.deleteAll(user));

@@ -23,8 +23,8 @@ public abstract class BaseEntity extends BaseTimeEntity {
         return writer;
     }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public void markAsDeleted() {
+        this.deleted = true;
     }
 
     public boolean isOwner(NsUser loginUser) {
