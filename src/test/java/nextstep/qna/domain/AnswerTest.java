@@ -19,14 +19,14 @@ public class AnswerTest {
     @DisplayName("답변 작성자가 로그인 사용자일 경우 삭제 가능하다")
     @Test
     void shouldNotThrow_whenUserIsOwner() {
-        assertThatCode(() -> A1.delete(JAVAJIGI))
+        assertThatCode(() -> A1.deleteWithHistory(JAVAJIGI))
                 .doesNotThrowAnyException();
     }
 
     @DisplayName("답변 중 다른 사람이 쓴 답변이 있는 경우 삭제 불가하다")
     @Test
     void shouldThrow_whenUserAndWriterDifferent() {
-        assertThatThrownBy(() -> A1.delete(SANJIGI))
+        assertThatThrownBy(() -> A1.deleteWithHistory(SANJIGI))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessageContaining("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
@@ -34,14 +34,14 @@ public class AnswerTest {
     @DisplayName("답변 작성자가 삭제할 경우 상태가 변경된다")
     @Test
     void shouldChangeDeletedStatus_whenDeleteByOwner() throws CannotDeleteException {
-        A1.delete(JAVAJIGI);
+        A1.deleteWithHistory(JAVAJIGI);
         assertThat(A1.isDeleted()).isTrue();
     }
 
     @DisplayName("삭제 시 삭제 이력을 반환한다")
     @Test
     void shouldReturnDeleteHistory_whenDeletePossible() throws CannotDeleteException {
-        assertThat(A1.delete(JAVAJIGI)).hasSize(1);
+        assertThat(A1.deleteWithHistory(JAVAJIGI)).hasSize(1);
     }
 
 }

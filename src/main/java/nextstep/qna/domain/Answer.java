@@ -44,11 +44,19 @@ public class Answer extends BaseEntity {
         this.question = question;
     }
 
-    public List<DeleteHistory> delete(NsUser user) throws CannotDeleteException {
+    public List<DeleteHistory> deleteWithHistory(NsUser user) throws CannotDeleteException {
+        delete(user);
+        return createDeleteHistory();
+    }
+
+    private void delete(NsUser user) throws CannotDeleteException {
         if (!isOwner(user)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
         markAsDeleted();
+    }
+
+    private List<DeleteHistory> createDeleteHistory() {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(
                 new DeleteHistory(ContentType.ANSWER, getId(), getWriter(), LocalDateTime.now()));
