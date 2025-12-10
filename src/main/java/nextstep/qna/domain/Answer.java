@@ -8,30 +8,23 @@ import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
-public class Answer {
-    private Long id;
-
-    private NsUser writer;
+public class Answer extends BaseEntity {
 
     private Question question;
 
     private String contents;
-
-    private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
-
-    public Answer() {
-    }
 
     public Answer(NsUser writer, Question question, String contents) {
         this(null, writer, question, contents);
     }
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
-        this.id = id;
+        super(id, writer);
+        this.question = question;
+        this.contents = contents;
+    }
+
+    public static Answer create(NsUser writer, Question question, String contents) {
         if (writer == null) {
             throw new UnAuthorizedException();
         }
@@ -40,30 +33,7 @@ public class Answer {
             throw new NotFoundException();
         }
 
-        this.writer = writer;
-        this.question = question;
-        this.contents = contents;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
-    }
-
-    public NsUser getWriter() {
-        return writer;
+        return new Answer(null, writer, question, contents);
     }
 
     public String getContents() {
@@ -81,12 +51,12 @@ public class Answer {
         setDeleted(true);
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(
-                new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now()));
+                new DeleteHistory(ContentType.ANSWER, getId(), getWriter(), LocalDateTime.now()));
         return deleteHistories;
     }
 
     @Override
     public String toString() {
-        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+        return "Answer [id=" + getId() + ", writer=" + getWriter() + ", contents=" + contents + "]";
     }
 }
