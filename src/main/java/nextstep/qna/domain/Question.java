@@ -3,7 +3,8 @@ package nextstep.qna.domain;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import nextstep.qna.CannotDeleteException;
+import nextstep.qna.exception.unchecked.CannotDeleteException;
+import nextstep.qna.exception.unchecked.WrongRequestException;
 import nextstep.users.domain.NsUser;
 
 public class Question {
@@ -81,21 +82,41 @@ public class Question {
             throw new IllegalArgumentException("잘못된 요청자 정보 입니다.");
         }
 
-//        if (!isOwner(requesterId)) {
-//            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-//        }
-//
-//        if (hasAnswers() || !isAllSameContentsWriter()) {
-//            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-//        }
+        if (!isOwner(requesterId)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+
+        if (hasAnswers() && !isAllSameContentsWriter()) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
 
         this.deleted = true;
-//        putOnAllAnswersDelete(requesterId);
+        putOnAllAnswersDelete(requesterId);
     }
 
     public void putOnAllAnswersDelete(long requesterId) {
         this.answers.forEach(answer -> answer.putOnDelete(requesterId));
     }
+
+    public DeleteHistory createQuestionDeleteHistory() {
+        if (!deleted) {
+            throw new WrongRequestException("삭제되지 않은 질문은 삭제이력을 생성할 수 없습니다.");
+        }
+
+        return new DeleteHistory(ContentType.QUESTION, this.id, this.writerId, LocalDateTime.now());
+    }
+
+    public List<DeleteHistory> bringAllDeleteHistories() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(createQuestionDeleteHistory());
+
+        for (Answer answer : answers) {
+            deleteHistories.add(answer.createAnswerDeleteHistory());
+        }
+
+        return deleteHistories;
+    }
+
 
     public Long getId() {
         return id;
