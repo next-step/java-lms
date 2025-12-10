@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 public class Answer {
     private Long id;
 
-    private NsUser writer;
     private Long writerId;
 
     private Question question;
@@ -27,27 +26,8 @@ public class Answer {
     public Answer() {
     }
 
-    public Answer(NsUser writer, Question question, String contents) {
-        this(null, writer, question, contents);
-    }
-
     public Answer(long writerId, Question question, String contents) {
         this(null, writerId, question, contents);
-    }
-
-    public Answer(Long id, NsUser writer, Question question, String contents) {
-        this.id = id;
-        if(writer == null) {
-            throw new UnAuthorizedException();
-        }
-
-        if(question == null) {
-            throw new NotFoundException();
-        }
-
-        this.writer = writer;
-        this.question = question;
-        this.contents = contents;
     }
 
     public Answer(Long id, long writerId, Question question, String contents) {
@@ -77,33 +57,16 @@ public class Answer {
         this.deleted = true;
     }
 
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
-    }
-
     public boolean isOwner(long writerId) {
         return this.writerId == writerId;
     }
 
     public DeleteHistory createAnswerDeleteHistory() {
-        if (!deleted) {
+        if (!isDeleted()) {
             throw new WrongRequestException("삭제되지 않은 답변은 삭제이력을 생성할 수 없습니다.");
         }
 
         return new DeleteHistory(ContentType.ANSWER, this.id, this.writerId, LocalDateTime.now());
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
-    public NsUser getWriter() {
-        return writer;
     }
 
     public void toQuestion(Question question) {
@@ -112,6 +75,6 @@ public class Answer {
 
     @Override
     public String toString() {
-        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+        return "Answer [id=" + id + ", writerId=" + writerId + ", contents=" + contents + "]";
     }
 }

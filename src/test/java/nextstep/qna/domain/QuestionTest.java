@@ -5,13 +5,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import nextstep.qna.exception.unchecked.CannotDeleteException;
 import nextstep.qna.exception.unchecked.WrongRequestException;
-import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
 public class QuestionTest {
-    public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-    public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
-
 
     @Test
     void 요청자가_질문자와_동일한지_확인할_수_있다() {
@@ -25,7 +21,7 @@ public class QuestionTest {
     void 질문에_답변이_있는지_확인할_수_있다() {
         Question question = new Question(1L, "title1", "contents1");
         question.addAnswer(
-                new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents1"));
+                new Answer(1L, question, "Answers Contents1"));
 
         assertThat(question.hasAnswers()).isTrue();
     }
@@ -116,7 +112,8 @@ public class QuestionTest {
     }
 
     @Test
-    void 삭제되지_않은_질문객체를_삭제이력_객체로_만들수_없다() {;
+    void 삭제되지_않은_질문객체를_삭제이력_객체로_만들수_없다() {
+        ;
         Question question = new Question(1L, "title1", "contents1");
 
         assertThatThrownBy(

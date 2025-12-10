@@ -12,19 +12,11 @@ public class DeleteHistory {
 
     private Long contentId;
 
-    private NsUser deletedBy;
     private Long deletedId;
 
     private LocalDateTime createdDate = LocalDateTime.now();
 
     public DeleteHistory() {
-    }
-
-    public DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
-        this.contentType = contentType;
-        this.contentId = contentId;
-        this.deletedBy = deletedBy;
-        this.createdDate = createdDate;
     }
 
     public DeleteHistory(ContentType contentType, Long contentId, Long deletedId, LocalDateTime createdDate) {
@@ -42,17 +34,17 @@ public class DeleteHistory {
         return Objects.equals(id, that.id) &&
                 contentType == that.contentType &&
                 Objects.equals(contentId, that.contentId) &&
-                Objects.equals(deletedBy, that.deletedBy);
+                Objects.equals(deletedId, that.deletedId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, contentType, contentId, deletedBy);
+        return Objects.hash(id, contentType, contentId, deletedId);
     }
 
     @Override
     public String toString() {
         return "DeleteHistory [id=" + id + ", contentType=" + contentType + ", contentId=" + contentId + ", deletedBy="
-                + deletedBy + ", createdDate=" + createdDate + "]";
+                + deletedId + ", createdDate=" + createdDate + "]";
     }
 }

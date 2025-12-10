@@ -15,7 +15,6 @@ public class Question {
 
     private String contents;
 
-    private NsUser writer;
     private Long writerId;
 
     private List<Answer> answers = new ArrayList<>();
@@ -29,19 +28,8 @@ public class Question {
     public Question() {
     }
 
-    public Question(NsUser writer, String title, String contents) {
-        this(0L, writer, title, contents);
-    }
-
     public Question(long writerId, String title, String contents) {
         this(0L, writerId, title, contents);
-    }
-
-    public Question(Long id, NsUser writer, String title, String contents) {
-        this.id = id;
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
     }
 
     public Question(Long id, long writerId, String title, String contents) {
@@ -49,10 +37,6 @@ public class Question {
         this.writerId = writerId;
         this.title = title;
         this.contents = contents;
-    }
-
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
     }
 
     public boolean isOwner(long requesterId) {
@@ -117,27 +101,9 @@ public class Question {
         return deleteHistories;
     }
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public NsUser getWriter() {
-        return writer;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
-    }
-
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     @Override
     public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents
-                + ", writer=" + writer + "]";
+        return "Question [id=" + id + ", title=" + title + ", contents=" + contents
+                + ", writerId=" + writerId + "]";
     }
 }
