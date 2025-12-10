@@ -1,6 +1,7 @@
 package nextstep.courses.infrastructure.mapper;
 
 import nextstep.courses.domain.image.SessionCoverImage;
+import nextstep.courses.domain.image.SessionCoverImages;
 import nextstep.courses.domain.image.SessionImageCapacity;
 import nextstep.courses.domain.image.SessionImageDimension;
 import nextstep.courses.domain.image.SessionImageExtension;

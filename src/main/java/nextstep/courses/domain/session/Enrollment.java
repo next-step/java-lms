@@ -4,14 +4,14 @@ import nextstep.courses.domain.registration.Registration;
 import nextstep.courses.domain.registration.Registrations;
 
 public class Enrollment {
-    private final Session session;
+    private final Long sessionId;
     private final SessionState state;
     private final SessionPolicy policy;
     private final Registrations registrations;
 
-    public Enrollment(Session session, SessionState state, SessionPolicy policy, Registrations registrations) {
+    public Enrollment(Long sessionId, SessionState state, SessionPolicy policy, Registrations registrations) {
         validateState(state);
-        this.session = session;
+        this.sessionId = sessionId;
         this.state = state;
         this.policy = policy;
         this.registrations = registrations;
@@ -24,7 +24,7 @@ public class Enrollment {
 
         policy.validate(payAmount, registrations);
 
-        return new Registration(session.getId(), userId);
+        return new Registration(sessionId, userId);
     }
 
     private void validateState(SessionState state) {

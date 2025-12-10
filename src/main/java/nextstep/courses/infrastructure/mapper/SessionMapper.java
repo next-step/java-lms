@@ -1,6 +1,7 @@
 package nextstep.courses.infrastructure.mapper;
 
 import nextstep.courses.domain.image.SessionCoverImage;
+import nextstep.courses.domain.image.SessionCoverImages;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionPeriod;
 import nextstep.courses.domain.session.SessionPolicy;
@@ -53,7 +54,7 @@ public class SessionMapper {
         );
     }
 
-    public static Session toDomain(SessionEntity entity, SessionCoverImage coverImage) {
+    public static Session toDomain(SessionEntity entity, SessionCoverImages coverImages) {
         SessionPeriod period = new SessionPeriod(entity.getStartDay(), entity.getEndDay());
         SessionState state = SessionState.valueOf(entity.getState());
         SessionPolicy sessionPolicy = createSessionPolicy(entity);
@@ -64,7 +65,7 @@ public class SessionMapper {
             new Term(entity.getTerm()),
             period,
             state,
-            coverImage
+            coverImages
         );
     }
 

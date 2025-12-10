@@ -5,5 +5,5 @@ public interface SessionImageRepository {
 
     SessionCoverImage findById(Long id);
 
-    SessionCoverImage findBySessionId(Long sessionId);
+    SessionCoverImages findBySessionId(Long sessionId);
 }

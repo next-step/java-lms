@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.image.SessionCoverImage;
+import nextstep.courses.domain.image.SessionCoverImages;
 
 public class SessionBuilder {
     private Long id = null;
@@ -9,7 +10,7 @@ public class SessionBuilder {
     private SessionPeriod period = new SessionPeriod("2025-01-01", "2025-01-31");
     private SessionState state = SessionState.PREPARING;
   private SessionPolicy sessionPolicy = new SessionPolicy();
-    private SessionCoverImage coverImage = null;
+    private SessionCoverImages coverImages = null;
 
     public static SessionBuilder aSession() {
         return new SessionBuilder();
@@ -45,8 +46,8 @@ public class SessionBuilder {
         return this;
     }
 
-    public SessionBuilder withCoverImage(SessionCoverImage coverImage) {
-        this.coverImage = coverImage;
+    public SessionBuilder withCoverImages(SessionCoverImages coverImages) {
+        this.coverImages = coverImages;
         return this;
     }
 
@@ -66,6 +67,6 @@ public class SessionBuilder {
     }
 
     public Session build() {
-      return sessionPolicy.createSession(id, courseId, term, period, state, coverImage);
+      return sessionPolicy.createSession(id, courseId, term, period, state, coverImages);
     }
 }

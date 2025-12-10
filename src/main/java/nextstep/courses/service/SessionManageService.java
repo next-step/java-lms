@@ -1,6 +1,8 @@
 package nextstep.courses.service;
 
+import java.util.List;
 import nextstep.courses.domain.image.SessionCoverImage;
+import nextstep.courses.domain.image.SessionCoverImages;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionPolicy;
 import nextstep.courses.domain.session.SessionRepository;
@@ -16,19 +18,17 @@ public class SessionManageService {
     }
 
     public void createFreeSession(Long courseId, int term, String startDay, String endDay,
-                                  int imageWidth, int imageHeight, String imageExtension, long imageBytes) {
-        SessionCoverImage coverImage = new SessionCoverImage(null, imageWidth, imageHeight, imageExtension, imageBytes);
+                                  List<SessionCoverImage> images) {
         SessionPolicy sessionPolicy = SessionPolicy.free();
-        Session session = sessionPolicy.createSession(courseId, term, startDay, endDay, coverImage);
+        Session session = sessionPolicy.createSession(courseId, term, startDay, endDay, new SessionCoverImages(images));
         sessionRepository.save(session);
     }
 
     public void createPaidSession(Long courseId, int term, String startDay, String endDay,
                                   int maxCapacity, long tuitionFee,
-                                  int imageWidth, int imageHeight, String imageExtension, long imageBytes) {
-        SessionCoverImage coverImage = new SessionCoverImage(null, imageWidth, imageHeight, imageExtension, imageBytes);
+                                  List<SessionCoverImage> coverImages) {
         SessionPolicy sessionPolicy = SessionPolicy.paid(tuitionFee, maxCapacity);
-        Session session = sessionPolicy.createSession(courseId, term, startDay, endDay, coverImage);
+        Session session = sessionPolicy.createSession(courseId, term, startDay, endDay, new SessionCoverImages(coverImages));
         sessionRepository.save(session);
     }
 

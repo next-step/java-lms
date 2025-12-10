@@ -1,6 +1,9 @@
 package nextstep.courses.infrastructure;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import nextstep.courses.domain.image.SessionCoverImage;
+import nextstep.courses.domain.image.SessionCoverImages;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.domain.session.SessionState;
@@ -28,16 +31,16 @@ public class SessionRepositoryImpl implements SessionRepository {
     @Override
     public Session findById(Long id) {
         SessionEntity entity = sessionJdbcDao.findById(id);
-        SessionCoverImage coverImage = findCoverImageBySessionId(id);
-        return SessionMapper.toDomain(entity, coverImage);
+        SessionCoverImages coverImages = findCoverImagesBySessionId(id);
+        return SessionMapper.toDomain(entity, coverImages);
     }
 
-    private SessionCoverImage findCoverImageBySessionId(Long sessionId) {
-        SessionCoverImageEntity entity = sessionJdbcDao.findCoverImageBySessionId(sessionId);
+    private SessionCoverImages findCoverImagesBySessionId(Long sessionId) {
+        List<SessionCoverImageEntity> entity = sessionJdbcDao.findCoverImagesBySessionId(sessionId);
         if (entity == null) {
             return null;
         }
-        return SessionCoverImageMapper.toDomain(entity);
+        return new SessionCoverImages(entity.stream().map(SessionCoverImageMapper::toDomain).collect(Collectors.toList()));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package nextstep.courses.infrastructure.jdbc;
 
+import java.util.List;
 import nextstep.courses.infrastructure.entity.SessionCoverImageEntity;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -30,9 +31,9 @@ public class SessionImageJdbcDao {
         return jdbcTemplate.queryForObject(sql, rowMapper(), id);
     }
 
-    public SessionCoverImageEntity findBySessionId(Long sessionId) {
+    public List<SessionCoverImageEntity> findBySessionId(Long sessionId) {
         String sql = "select id, session_id, width, height, extension, capacity from session_cover_image where session_id = ?";
-        return jdbcTemplate.queryForObject(sql, rowMapper(), sessionId);
+        return jdbcTemplate.query(sql, rowMapper(), sessionId);
     }
 
     private RowMapper<SessionCoverImageEntity> rowMapper() {

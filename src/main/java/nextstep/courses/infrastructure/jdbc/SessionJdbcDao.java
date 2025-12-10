@@ -52,10 +52,10 @@ public class SessionJdbcDao {
         return jdbcTemplate.queryForObject(sql, sessionRowMapper(), id);
     }
 
-    public SessionCoverImageEntity findCoverImageBySessionId(Long sessionId) {
+    public List<SessionCoverImageEntity> findCoverImagesBySessionId(Long sessionId) {
         String sql = "select id, session_id, width, height, extension, capacity from session_cover_image where session_id = ?";
         try {
-            return jdbcTemplate.queryForObject(sql, coverImageRowMapper(), sessionId);
+            return jdbcTemplate.query(sql, coverImageRowMapper(), sessionId);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
