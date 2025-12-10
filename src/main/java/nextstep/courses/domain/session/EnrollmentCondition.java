@@ -12,7 +12,7 @@ public class EnrollmentCondition {
 
     public EnrollmentCondition(NsUser user, Payment payment) {
         if (!paidBySameUser(user, payment)) {
-            throw new IllegalArgumentException("잘못된 수강 신청 조건입니다. ");
+            throw new IllegalArgumentException("수강 신청자와 결제자 정보가 불일치합니다.");
         }
         this.user = user;
         this.payment = payment;
