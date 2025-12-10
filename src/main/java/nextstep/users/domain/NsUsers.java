@@ -1,5 +1,7 @@
 package nextstep.users.domain;
 
+import nextstep.courses.domain.session.Capacity;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,7 +20,7 @@ public class NsUsers {
         this.users.add(user);
     }
 
-    public boolean hasLessThan(int size) {
-        return this.users.size() < size;
+    public boolean isLessThan(Capacity capacity) {
+        return capacity.isGreaterThan(this.users.size());
     }
 }
