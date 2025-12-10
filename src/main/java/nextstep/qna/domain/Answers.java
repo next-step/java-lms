@@ -31,11 +31,11 @@ public class Answers {
         this.answers.add(answer);
     }
 
-    public List<DeleteHistory> delete() {
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
 
         for (Answer answer : answers) {
-            answer.delete();
+            answer.markAsDeleted(loginUser);
             deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
         }
 

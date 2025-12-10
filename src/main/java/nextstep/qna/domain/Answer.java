@@ -48,13 +48,9 @@ public class Answer {
         return id;
     }
 
-    private Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
-    public void delete() {
-        setDeleted(true);
+    public void markAsDeleted(NsUser loginUser) throws CannotDeleteException {
+        validateDeletableBy(loginUser);
+        this.deleted = true;
     }
 
     public boolean isDeleted() {
