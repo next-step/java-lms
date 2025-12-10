@@ -8,7 +8,7 @@ public class SessionBuilder {
     private Long courseId = 1L;
     private Term term = new Term(1);
     private SessionPeriod period = new SessionPeriod("2025-01-01", "2025-01-31");
-    private SessionState state = SessionState.PREPARING;
+    private SessionProgressState state = SessionProgressState.PREPARING;
   private SessionPolicy sessionPolicy = new SessionPolicy();
     private SessionCoverImages coverImages = null;
 
@@ -36,7 +36,7 @@ public class SessionBuilder {
         return this;
     }
 
-    public SessionBuilder withState(SessionState state) {
+    public SessionBuilder withState(SessionProgressState state) {
         this.state = state;
         return this;
     }
@@ -51,10 +51,6 @@ public class SessionBuilder {
         return this;
     }
 
-    public SessionBuilder recruiting() {
-        this.state = SessionState.RECRUITING;
-        return this;
-    }
 
   public SessionBuilder paid(long tuitionFee, int maxCapacity) {
     this.sessionPolicy = SessionPolicy.paid(tuitionFee, maxCapacity);

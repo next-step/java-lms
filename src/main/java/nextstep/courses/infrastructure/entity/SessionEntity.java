@@ -10,13 +10,14 @@ public class SessionEntity {
     private final LocalDate startDay;
     private final LocalDate endDay;
     private final String state;
+    private final String recruitmentStatus;
     private final String type;
     private final Integer maxCapacity;
     private final Long tuitionFee;
     private final LocalDateTime createdAt;
 
     public SessionEntity(Long id, Long courseId, int term, LocalDate startDay, LocalDate endDay,
-                         String state, String type, Integer maxCapacity, Long tuitionFee,
+                         String state, String recruitmentStatus, String type, Integer maxCapacity, Long tuitionFee,
                          LocalDateTime createdAt) {
         this.id = id;
         this.courseId = courseId;
@@ -24,6 +25,7 @@ public class SessionEntity {
         this.startDay = startDay;
         this.endDay = endDay;
         this.state = state;
+        this.recruitmentStatus = recruitmentStatus;
         this.type = type;
         this.maxCapacity = maxCapacity;
         this.tuitionFee = tuitionFee;
@@ -52,6 +54,10 @@ public class SessionEntity {
 
     public String getState() {
         return state;
+    }
+
+    public String getRecruitmentStatus() {
+        return recruitmentStatus;
     }
 
     public String getType() {

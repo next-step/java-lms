@@ -34,14 +34,14 @@ public class SessionManageService {
 
     public void openSession(Long sessionId) {
         Session session = sessionRepository.findById(sessionId);
-        session.open();
-        sessionRepository.updateState(sessionId, session.getState());
+        session.start();
+        sessionRepository.updateState(sessionId, session.getProgressState());
     }
 
     public void closeSession(Long sessionId) {
         Session session = sessionRepository.findById(sessionId);
-        session.close();
-        sessionRepository.updateState(sessionId, session.getState());
+        session.finish();
+        sessionRepository.updateState(sessionId, session.getProgressState());
     }
 
     public Session findById(Long sessionId) {

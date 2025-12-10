@@ -31,7 +31,7 @@ public class SessionPolicy {
         return new Session(courseId, term, startDay, endDay, this, coverImages);
     }
 
-    public Session createSession(Long id, Long courseId, Term term, SessionPeriod period, SessionState state, SessionCoverImages coverImages) {
+    public Session createSession(Long id, Long courseId, Term term, SessionPeriod period, SessionProgressState state, SessionCoverImages coverImages) {
         return new Session(id, courseId, term, period, state, this, coverImages);
     }
 

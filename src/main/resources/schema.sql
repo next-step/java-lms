@@ -56,6 +56,7 @@ create table session (
     start_day date not null,
     end_day date not null,
     state varchar(20) not null,
+    recruitment_status varchar(20) not null,
     type varchar(10) not null,
     max_capacity int,
     tuition_fee bigint,

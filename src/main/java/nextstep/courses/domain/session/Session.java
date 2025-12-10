@@ -2,10 +2,10 @@ package nextstep.courses.domain.session;
 
 import java.util.List;
 import nextstep.courses.domain.BaseEntity;
-import nextstep.courses.domain.image.SessionCoverImage;
 import nextstep.courses.domain.image.SessionCoverImages;
 import nextstep.courses.domain.registration.Registration;
 import nextstep.courses.domain.registration.Registrations;
+import nextstep.courses.domain.session.recruit.Recruiting;
 
 public class Session extends BaseEntity {
     private final Long courseId;
@@ -13,40 +13,48 @@ public class Session extends BaseEntity {
     private final SessionPeriod period;
     private final SessionCoverImages coverImages;
     private final SessionPolicy sessionPolicy;
-    private SessionState state;
+    private SessionProgressState progressState;
 
     public Session(Long courseId, int term, String startDay, String endDay, SessionCoverImages coverImages) {
-        this(null, courseId, new Term(term), new SessionPeriod(startDay, endDay), SessionState.PREPARING, new SessionPolicy(), coverImages);
+        this(null, courseId, new Term(term), new SessionPeriod(startDay, endDay), SessionProgressState.PREPARING, new SessionPolicy(), coverImages);
     }
 
     public Session(Long courseId, int term, String startDay, String endDay, SessionPolicy sessionPolicy, SessionCoverImages coverImages) {
-        this(null, courseId, new Term(term), new SessionPeriod(startDay, endDay), SessionState.PREPARING, sessionPolicy, coverImages);
+        this(null, courseId, new Term(term), new SessionPeriod(startDay, endDay), SessionProgressState.PREPARING, sessionPolicy, coverImages);
     }
 
-    public Session(Long id, Long courseId, Term term, SessionPeriod period, SessionState state, SessionPolicy sessionPolicy, SessionCoverImages coverImages) {
+    public Session(Long id, Long courseId, Term term, SessionPeriod period, SessionProgressState progressState, SessionPolicy sessionPolicy, SessionCoverImages coverImages) {
         super(id);
         this.courseId = courseId;
         this.term = term;
         this.period = period;
-        this.state = state;
+        this.progressState = progressState;
         this.sessionPolicy = sessionPolicy;
         this.coverImages = coverImages;
     }
 
     public Enrollment enrollment(Registrations registrations) {
-      return new Enrollment(this.getId(), state, sessionPolicy, registrations);
+        validateCanCreateEnrollment();
+        return new Enrollment(this.getId(), new Recruiting(), sessionPolicy, registrations);
     }
 
     public Enrollment enrollment(List<Registration> registrations) {
-        return new Enrollment(this.getId(), state, sessionPolicy, new Registrations(registrations));
+        validateCanCreateEnrollment();
+        return new Enrollment(this.getId(), new Recruiting(), sessionPolicy, new Registrations(registrations));
     }
 
-    public void open() {
-        this.state = state.open();
+    private void validateCanCreateEnrollment() {
+        if (!progressState.canCreateEnrollment()) {
+            throw new IllegalStateException("종료된 강의는 수강신청을 할 수 없습니다.");
+        }
     }
 
-    public void close() {
-        this.state = state.close();
+    public void start() {
+        this.progressState = progressState.start();
+    }
+
+    public void finish() {
+        this.progressState = progressState.finish();
     }
 
     public Long getCourseId() {
@@ -61,8 +69,8 @@ public class Session extends BaseEntity {
         return period;
     }
 
-    public SessionState getState() {
-        return state;
+    public SessionProgressState getProgressState() {
+        return progressState;
     }
 
     public SessionPolicy getSessionPolicy() {

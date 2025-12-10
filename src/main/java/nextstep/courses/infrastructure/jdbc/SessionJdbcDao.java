@@ -3,7 +3,7 @@ package nextstep.courses.infrastructure.jdbc;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
-import nextstep.courses.domain.session.SessionState;
+import nextstep.courses.domain.session.SessionProgressState;
 import nextstep.courses.infrastructure.entity.RegistrationEntity;
 import nextstep.courses.infrastructure.entity.SessionCoverImageEntity;
 import nextstep.courses.infrastructure.entity.SessionEntity;
@@ -21,7 +21,7 @@ public class SessionJdbcDao {
     }
 
     public int save(SessionEntity entity) {
-        String sql = "insert into session (course_id, term, start_day, end_day, state, type, max_capacity, tuition_fee, created_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into session (course_id, term, start_day, end_day, state, recruitment_status, type, max_capacity, tuition_fee, created_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         return jdbcTemplate.update(sql,
             entity.getCourseId(),
@@ -29,6 +29,7 @@ public class SessionJdbcDao {
             Date.valueOf(entity.getStartDay()),
             Date.valueOf(entity.getEndDay()),
             entity.getState(),
+            entity.getRecruitmentStatus(),
             entity.getType(),
             entity.getMaxCapacity(),
             entity.getTuitionFee(),
@@ -48,7 +49,7 @@ public class SessionJdbcDao {
     }
 
     public SessionEntity findById(Long id) {
-        String sql = "select id, course_id, term, start_day, end_day, state, type, max_capacity, tuition_fee, created_at from session where id = ?";
+        String sql = "select id, course_id, term, start_day, end_day, state, recruitment_status, type, max_capacity, tuition_fee, created_at from session where id = ?";
         return jdbcTemplate.queryForObject(sql, sessionRowMapper(), id);
     }
 
@@ -66,7 +67,7 @@ public class SessionJdbcDao {
         return jdbcTemplate.query(sql, registrationRowMapper(), sessionId);
     }
 
-    public int updateState(Long id, SessionState state) {
+    public int updateState(Long id, SessionProgressState state) {
         String sql = "update session set state = ? where id = ?";
         return jdbcTemplate.update(sql, state.name(), id);
     }
@@ -79,6 +80,7 @@ public class SessionJdbcDao {
             toLocalDate(rs.getDate("start_day")),
             toLocalDate(rs.getDate("end_day")),
             rs.getString("state"),
+            rs.getString("recruitment_status"),
             rs.getString("type"),
             rs.getObject("max_capacity", Integer.class),
             rs.getObject("tuition_fee", Long.class),

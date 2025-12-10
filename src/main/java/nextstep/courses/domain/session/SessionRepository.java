@@ -6,5 +6,5 @@ public interface SessionRepository {
 
     Session findById(Long id);
 
-    int updateState(Long id, SessionState state);
+    int updateState(Long id, SessionProgressState state);
 }

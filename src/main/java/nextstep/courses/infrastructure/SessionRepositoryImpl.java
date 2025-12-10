@@ -5,8 +5,8 @@ import java.util.stream.Collectors;
 import nextstep.courses.domain.image.SessionCoverImage;
 import nextstep.courses.domain.image.SessionCoverImages;
 import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionProgressState;
 import nextstep.courses.domain.session.SessionRepository;
-import nextstep.courses.domain.session.SessionState;
 import nextstep.courses.infrastructure.entity.SessionCoverImageEntity;
 import nextstep.courses.infrastructure.entity.SessionEntity;
 import nextstep.courses.infrastructure.jdbc.SessionJdbcDao;
@@ -44,7 +44,7 @@ public class SessionRepositoryImpl implements SessionRepository {
     }
 
     @Override
-    public int updateState(Long id, SessionState state) {
+    public int updateState(Long id, SessionProgressState state) {
         return sessionJdbcDao.updateState(id, state);
     }
 }

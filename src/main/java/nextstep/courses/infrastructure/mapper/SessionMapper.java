@@ -5,7 +5,7 @@ import nextstep.courses.domain.image.SessionCoverImages;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionPeriod;
 import nextstep.courses.domain.session.SessionPolicy;
-import nextstep.courses.domain.session.SessionState;
+import nextstep.courses.domain.session.SessionProgressState;
 import nextstep.courses.domain.session.Term;
 import nextstep.courses.domain.session.policy.capacity.CapacityPolicy;
 import nextstep.courses.domain.session.policy.capacity.LimitedCapacity;
@@ -46,7 +46,8 @@ public class SessionMapper {
             session.getTerm().getValue(),
             session.getPeriod().startDay(),
             session.getPeriod().endDay(),
-            session.getState().name(),
+            session.getProgressState().name(),
+            "NOT_RECRUITING",
             typeName,
             maxCapacity,
             tuitionFee,
@@ -56,7 +57,7 @@ public class SessionMapper {
 
     public static Session toDomain(SessionEntity entity, SessionCoverImages coverImages) {
         SessionPeriod period = new SessionPeriod(entity.getStartDay(), entity.getEndDay());
-        SessionState state = SessionState.valueOf(entity.getState());
+        SessionProgressState state = SessionProgressState.valueOf(entity.getState());
         SessionPolicy sessionPolicy = createSessionPolicy(entity);
 
         return sessionPolicy.createSession(
