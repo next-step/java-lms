@@ -47,9 +47,8 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public void updateDeleted() {
+        this.deleted = true;
     }
 
     public boolean isDeleted() {
@@ -78,7 +77,7 @@ public class Answer {
     }
 
     public DeleteHistory delete() {
-        setDeleted(true);
+        updateDeleted();
         return new DeleteHistory(ContentType.ANSWER, getId(), getWriter(), LocalDateTime.now());
     }
 }
