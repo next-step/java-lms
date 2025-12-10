@@ -5,22 +5,10 @@ import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
-
-public class Answer {
-    private Long id;
-
-    private NsUser writer;
-
+public class Answer extends BaseEntity {
     private Question question;
 
-    private String contents;
-
-    private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
+    private PostContent postContent;
 
     public Answer() {
     }
@@ -30,8 +18,12 @@ public class Answer {
     }
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
-        this.id = id;
-        if(writer == null) {
+        this(id, question, new PostContent(writer,contents));
+    }
+
+    public Answer(Long id, Question question, PostContent postContent) {
+        super(id);
+        if(postContent.isWriter()) {
             throw new UnAuthorizedException();
         }
 
@@ -39,34 +31,21 @@ public class Answer {
             throw new NotFoundException();
         }
 
-        this.writer = writer;
         this.question = question;
-        this.contents = contents;
-    }
-
-    public Long getId() {
-        return id;
+        this.postContent = postContent;
     }
 
     public void markAsDeleted(NsUser loginUser) throws CannotDeleteException {
         validateDeletableBy(loginUser);
-        this.deleted = true;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
+        delete();
     }
 
     public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
+        return this.postContent.isOwner(writer);
     }
 
     public NsUser getWriter() {
-        return writer;
-    }
-
-    public String getContents() {
-        return contents;
+        return this.postContent.getWriter();
     }
 
     public void toQuestion(Question question) {
@@ -81,6 +60,9 @@ public class Answer {
 
     @Override
     public String toString() {
-        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+        return "Answer{" +
+                "question=" + question +
+                ", postContent=" + postContent +
+                '}';
     }
 }

@@ -7,43 +7,28 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Question {
-    private Long id;
-
-    private String title;
-
-    private String contents;
-
-    private NsUser writer;
+public class Question extends BaseEntity {
+    private PostContent postContent;
 
     private Answers answers = new Answers();
-
-    private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
 
     public Question() {
     }
 
     public Question(NsUser writer, String title, String contents) {
-        this(0L, writer, title, contents);
+        this(0L, new PostContent(writer, title, contents));
     }
 
     public Question(Long id, NsUser writer, String title, String contents) {
-        this.id = id;
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
+        this(id, new PostContent(writer, title, contents));
     }
-
-    public Long getId() {
-        return id;
+    public Question(Long id, PostContent postContent) {
+        super(id);
+        this.postContent = postContent;
     }
 
     public NsUser getWriter() {
-        return writer;
+        return postContent.getWriter();
     }
 
     public void addAnswer(Answer answer) {
@@ -52,16 +37,12 @@ public class Question {
     }
 
     public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
+        return postContent.isOwner(loginUser);
     }
 
     public void markAsDeleted(NsUser loginUser) throws CannotDeleteException {
         validateDeletableBy(loginUser);
-        this.deleted = true;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
+        delete();
     }
 
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
@@ -69,7 +50,7 @@ public class Question {
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
 
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.getWriter(), LocalDateTime.now()));
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, getId(), this.getWriter(), LocalDateTime.now()));
 
         deleteHistories.addAll(answers.delete(loginUser));
 
@@ -86,6 +67,9 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+        return "Question{" +
+                "postContent=" + postContent +
+                ", answers=" + answers +
+                '}';
     }
 }
