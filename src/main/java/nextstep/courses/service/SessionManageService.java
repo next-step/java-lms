@@ -2,8 +2,8 @@ package nextstep.courses.service;
 
 import nextstep.courses.domain.image.SessionCoverImage;
 import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionPolicy;
 import nextstep.courses.domain.session.SessionRepository;
-import nextstep.courses.domain.session.type.PaidType;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,7 +18,8 @@ public class SessionManageService {
     public void createFreeSession(Long courseId, int term, String startDay, String endDay,
                                   int imageWidth, int imageHeight, String imageExtension, long imageBytes) {
         SessionCoverImage coverImage = new SessionCoverImage(null, imageWidth, imageHeight, imageExtension, imageBytes);
-        Session session = new Session(courseId, term, startDay, endDay, coverImage);
+        SessionPolicy sessionPolicy = SessionPolicy.free();
+        Session session = sessionPolicy.createSession(courseId, term, startDay, endDay, coverImage);
         sessionRepository.save(session);
     }
 
@@ -26,8 +27,8 @@ public class SessionManageService {
                                   int maxCapacity, long tuitionFee,
                                   int imageWidth, int imageHeight, String imageExtension, long imageBytes) {
         SessionCoverImage coverImage = new SessionCoverImage(null, imageWidth, imageHeight, imageExtension, imageBytes);
-        PaidType paidType = new PaidType(maxCapacity, tuitionFee);
-        Session session = new Session(courseId, term, startDay, endDay, paidType, coverImage);
+        SessionPolicy sessionPolicy = SessionPolicy.paid(tuitionFee, maxCapacity);
+        Session session = sessionPolicy.createSession(courseId, term, startDay, endDay, coverImage);
         sessionRepository.save(session);
     }
 

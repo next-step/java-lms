@@ -1,7 +1,6 @@
 package nextstep.courses.domain.registration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
@@ -9,26 +8,27 @@ import org.junit.jupiter.api.Test;
 class RegistrationsTest {
 
     @Test
-    void 최대수강인원_초과하면_예외() {
-        Registrations registrations = new Registrations(1);
+    void 중복_등록하면_예외() {
+      Registrations registrations = new Registrations();
         registrations = registrations.add(new Registration(1L, 1L));
 
         Registrations finalRegistrations = registrations;
-        assertThatThrownBy(() -> finalRegistrations.add(new Registration(1L, 2L)))
+      assertThatThrownBy(() -> finalRegistrations.add(new Registration(1L, 1L)))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("최대 수강 인원을 초과할 수 없습니다.");
+          .hasMessage("이미 수강신청한 학생입니다.");
     }
 
     @Test
-    void 최대수강인원_이하면_등록_가능() {
-        Registrations registrations = new Registrations(2);
+    void 새로운_학생_등록_가능() {
+      Registrations registrations = new Registrations();
 
-        assertThatCode(() -> registrations.add(new Registration(1L, 1L)))
-            .doesNotThrowAnyException();
+      Registrations updated = registrations.add(new Registration(1L, 1L));
+
+      assertThat(updated.count()).isEqualTo(1);
     }
 
     @Test
-    void 무제한이면_수강인원_제한없음() {
+    void 여러_학생_등록_가능() {
         Registrations registrations = new Registrations();
 
         for (long i = 0; i < 1000; i++) {

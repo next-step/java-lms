@@ -4,50 +4,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Registrations {
-  private static final int UNLIMITED = -1;
+    private final List<Registration> registrations;
 
-  private final List<Registration> registrations;
-  private final int maxCapacity;
-
-  public Registrations() {
-    this(new ArrayList<>(), UNLIMITED);
-  }
-
-  public Registrations(int maxCapacity) {
-    this(new ArrayList<>(), maxCapacity);
-  }
-
-  public Registrations(List<Registration> registrations, int maxCapacity) {
-    this.registrations = registrations;
-    this.maxCapacity = maxCapacity;
-  }
-
-
-  public Registrations add(Registration registration) {
-    validateCapacity();
-    List<Registration> newList = new ArrayList<>(registrations);
-    newList.add(registration);
-    return new Registrations(newList, maxCapacity);
-  }
-
-  public void validateCapacity() {
-    if (isUnlimited()) {
-      return;
+    public Registrations() {
+        this(new ArrayList<>());
     }
-    if (registrations.size() >= maxCapacity) {
-      throw new IllegalArgumentException("최대 수강 인원을 초과할 수 없습니다.");
+
+    public Registrations(List<Registration> registrations) {
+        this.registrations = new ArrayList<>(registrations);
     }
-  }
 
-  private boolean isUnlimited() {
-    return maxCapacity == UNLIMITED;
-  }
+    public Registrations add(Registration registration) {
+        validateDuplicateRegistration(registration);
+        List<Registration> newList = new ArrayList<>(registrations);
+        newList.add(registration);
+        return new Registrations(newList);
+    }
 
-  public int getMaxCapacity() {
-    return maxCapacity;
-  }
+    private void validateDuplicateRegistration(Registration registration) {
+        if (isAlreadyRegistered(registration.getStudentId())) {
+            throw new IllegalArgumentException("이미 수강신청한 학생입니다.");
+        }
+    }
 
-  public int count() {
-    return registrations.size();
-  }
+    public boolean isAlreadyRegistered(long studentId) {
+        return registrations.stream()
+            .anyMatch(registration -> registration.getStudentId().equals(studentId));
+    }
+
+    public void validateCapacity(int maxCapacity) {
+        if (count() > maxCapacity) {
+            throw new IllegalStateException("최대 수강 인원을 초과할 수 없습니다.");
+        }
+    }
+
+    public int count() {
+        return registrations.size();
+    }
 }

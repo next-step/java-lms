@@ -5,66 +5,70 @@ import nextstep.courses.domain.BaseEntity;
 import nextstep.courses.domain.image.SessionCoverImage;
 import nextstep.courses.domain.registration.Registration;
 import nextstep.courses.domain.registration.Registrations;
-import nextstep.courses.domain.session.type.SessionType;
-import nextstep.payments.domain.Payment;
 
 public class Session extends BaseEntity {
-  private final Long courseId;
-  private final Term term;
-  private final SessionPeriod period;
-  private final Enrollment enrollment;
-  private final SessionCoverImage coverImage;
+    private final Long courseId;
+    private final Term term;
+    private final SessionPeriod period;
+    private final SessionCoverImage coverImage;
+    private final SessionPolicy sessionPolicy;
+    private SessionState state;
 
-  public Session(Long courseId, int term, String startDay, String endDay, SessionCoverImage coverImage) {
-    this(null, courseId, new Term(term), new SessionPeriod(startDay, endDay), new Enrollment(), coverImage);
-  }
+    public Session(Long courseId, int term, String startDay, String endDay, SessionCoverImage coverImage) {
+        this(null, courseId, new Term(term), new SessionPeriod(startDay, endDay), SessionState.PREPARING, new SessionPolicy(), coverImage);
+    }
 
-  public Session(Long courseId, int term, String startDay, String endDay, SessionType type, SessionCoverImage coverImage) {
-    this(null, courseId, new Term(term), new SessionPeriod(startDay, endDay), new Enrollment(type), coverImage);
-  }
+    public Session(Long courseId, int term, String startDay, String endDay, SessionPolicy sessionPolicy, SessionCoverImage coverImage) {
+        this(null, courseId, new Term(term), new SessionPeriod(startDay, endDay), SessionState.PREPARING, sessionPolicy, coverImage);
+    }
 
-  public Session(Long id, Long courseId, Term term, SessionPeriod period, Enrollment enrollment, SessionCoverImage coverImage) {
-    super(id);
-    this.courseId = courseId;
-    this.term = term;
-    this.period = period;
-    this.enrollment = enrollment;
-    this.coverImage = coverImage;
-  }
+    public Session(Long id, Long courseId, Term term, SessionPeriod period, SessionState state, SessionPolicy sessionPolicy, SessionCoverImage coverImage) {
+        super(id);
+        this.courseId = courseId;
+        this.term = term;
+        this.period = period;
+        this.state = state;
+        this.sessionPolicy = sessionPolicy;
+        this.coverImage = coverImage;
+    }
 
-  public void validateEnroll(long payAmount) {
-    enrollment.validateEnroll(payAmount);
-  }
+    public Enrollment enrollment(Registrations registrations) {
+      return new Enrollment(this, state, sessionPolicy, registrations);
+    }
 
-  public void open() {
-    enrollment.open();
-  }
+    public Enrollment enrollment(List<Registration> registrations) {
+        return new Enrollment(this, state, sessionPolicy, new Registrations(registrations));
+    }
 
-  public void close() {
-    enrollment.close();
-  }
+    public void open() {
+        this.state = state.open();
+    }
 
-  public Long getCourseId() {
-    return courseId;
-  }
+    public void close() {
+        this.state = state.close();
+    }
 
-  public Term getTerm() {
-    return term;
-  }
+    public Long getCourseId() {
+        return courseId;
+    }
 
-  public SessionPeriod getPeriod() {
-    return period;
-  }
+    public Term getTerm() {
+        return term;
+    }
 
-  public Enrollment getEnrollment() {
-    return enrollment;
-  }
+    public SessionPeriod getPeriod() {
+        return period;
+    }
 
-  public SessionState getState() {
-    return enrollment.getState();
-  }
+    public SessionState getState() {
+        return state;
+    }
 
-  public SessionCoverImage getCoverImage() {
-    return coverImage;
-  }
+    public SessionPolicy getSessionPolicy() {
+        return sessionPolicy;
+    }
+
+    public SessionCoverImage getCoverImage() {
+        return coverImage;
+    }
 }

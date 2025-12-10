@@ -29,10 +29,4 @@ public class RegistrationMapper {
         );
     }
 
-    public static Registrations toDomain(List<RegistrationEntity> entities, int maxCapacity) {
-        List<Registration> registrations = entities.stream()
-            .map(RegistrationMapper::toDomain)
-            .collect(Collectors.toList());
-        return new Registrations(registrations, maxCapacity);
-    }
 }

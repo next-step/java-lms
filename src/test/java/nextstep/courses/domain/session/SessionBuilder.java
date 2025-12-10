@@ -1,9 +1,6 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.image.SessionCoverImage;
-import nextstep.courses.domain.session.type.FreeType;
-import nextstep.courses.domain.session.type.PaidType;
-import nextstep.courses.domain.session.type.SessionType;
 
 public class SessionBuilder {
     private Long id = null;
@@ -11,7 +8,7 @@ public class SessionBuilder {
     private Term term = new Term(1);
     private SessionPeriod period = new SessionPeriod("2025-01-01", "2025-01-31");
     private SessionState state = SessionState.PREPARING;
-    private SessionType type = new FreeType();
+  private SessionPolicy sessionPolicy = new SessionPolicy();
     private SessionCoverImage coverImage = null;
 
     public static SessionBuilder aSession() {
@@ -43,8 +40,8 @@ public class SessionBuilder {
         return this;
     }
 
-    public SessionBuilder withType(SessionType type) {
-        this.type = type;
+  public SessionBuilder withSessionPolicy(SessionPolicy sessionPolicy) {
+    this.sessionPolicy = sessionPolicy;
         return this;
     }
 
@@ -58,13 +55,17 @@ public class SessionBuilder {
         return this;
     }
 
-    public SessionBuilder paid(int maxCapacity, long tuitionFee) {
-        this.type = new PaidType(maxCapacity, tuitionFee);
+  public SessionBuilder paid(long tuitionFee, int maxCapacity) {
+    this.sessionPolicy = SessionPolicy.paid(tuitionFee, maxCapacity);
+    return this;
+  }
+
+  public SessionBuilder free() {
+    this.sessionPolicy = SessionPolicy.free();
         return this;
     }
 
     public Session build() {
-        Enrollment enrollment = new Enrollment(state, type);
-        return new Session(id, courseId, term, period, enrollment, coverImage);
+      return sessionPolicy.createSession(id, courseId, term, period, state, coverImage);
     }
 }

@@ -3,6 +3,7 @@ package nextstep.courses.service;
 import java.util.List;
 import nextstep.courses.domain.registration.Registration;
 import nextstep.courses.domain.registration.RegistrationRepository;
+import nextstep.courses.domain.registration.Registrations;
 import nextstep.courses.domain.session.Enrollment;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
@@ -23,9 +24,11 @@ public class RegistrationService {
 
     public void register(Payment payment) {
         Session session = sessionRepository.findById(payment.getSessionId());
-        session.validateEnroll(payment.getAmount());
+        List<Registration> registered = registrationRepository.findBySessionId(session.getId());
 
-        Registration registration = new Registration(payment.getSessionId(), payment.getNsUserId());
+        Enrollment enrollment = session.enrollment(registered);
+        Registration registration = enrollment.enroll(payment.getAmount(), payment.getNsUserId());
+
         registrationRepository.save(registration);
     }
 }

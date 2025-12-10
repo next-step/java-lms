@@ -1,49 +1,35 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.session.type.FreeType;
-import nextstep.courses.domain.session.type.SessionType;
+import nextstep.courses.domain.registration.Registration;
+import nextstep.courses.domain.registration.Registrations;
 
 public class Enrollment {
-    private SessionState state;
-    private final SessionType type;
+    private final Session session;
+    private final SessionState state;
+    private final SessionPolicy policy;
+    private final Registrations registrations;
 
-    public Enrollment() {
-        this(SessionState.PREPARING, new FreeType());
-    }
-
-    public Enrollment(SessionType type) {
-        this(SessionState.PREPARING, type);
-    }
-
-    public Enrollment(SessionState state, SessionType type) {
+    public Enrollment(Session session, SessionState state, SessionPolicy policy, Registrations registrations) {
+        validateState(state);
+        this.session = session;
         this.state = state;
-        this.type = type;
+        this.policy = policy;
+        this.registrations = registrations;
     }
 
-    public void validateEnroll(long payAmount) {
-        validateState();
-        type.validateEnroll(payAmount);
+    public Registration enroll(long payAmount, long userId) {
+        if (registrations.isAlreadyRegistered(userId)) {
+            throw new IllegalArgumentException("이미 수강신청한 학생입니다.");
+        }
+
+        policy.validate(payAmount, registrations);
+
+        return new Registration(session.getId(), userId);
     }
 
-    public void open() {
-        this.state = state.open();
-    }
-
-    public void close() {
-        this.state = state.close();
-    }
-
-    private void validateState() {
+    private void validateState(SessionState state) {
         if (!state.canEnroll()) {
             throw new IllegalStateException("모집중인 강의만 수강신청이 가능합니다.");
         }
-    }
-
-    public SessionState getState() {
-        return state;
-    }
-
-    public SessionType getType() {
-        return type;
     }
 }
