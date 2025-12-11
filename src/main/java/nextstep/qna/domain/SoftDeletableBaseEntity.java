@@ -23,7 +23,7 @@ public abstract class SoftDeletableBaseEntity extends BaseTimeEntity {
         return writer;
     }
 
-    public void markAsDeleted() {
+    protected void markAsDeleted() {
         this.deleted = true;
     }
 
