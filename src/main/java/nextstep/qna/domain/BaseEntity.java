@@ -21,7 +21,7 @@ public abstract class BaseEntity {
         return id;
     }
 
-    public void delete() {
+    protected void markAsDeleted() {
         this.deleted = true;
     }
 

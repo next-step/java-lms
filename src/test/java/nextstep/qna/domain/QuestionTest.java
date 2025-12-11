@@ -13,7 +13,7 @@ public class QuestionTest {
     @Test
     void 삭제할_수_없는_유저일_때() {
         assertThatThrownBy(()->
-                Q1.validateDeletableBy(NsUserTest.SANJIGI)
+                Q1.delete(NsUserTest.SANJIGI)
         ).isInstanceOf(CannotDeleteException.class)
                 .hasMessageContaining("질문을 삭제할 권한이 없습니다.");
 
@@ -21,8 +21,16 @@ public class QuestionTest {
 
     @Test
     void 질문_삭제_성공() throws CannotDeleteException {
+        Q1.addAnswer(AnswerTest.A1);
         Q1.delete(NsUserTest.JAVAJIGI);
 
         assertThat(Q1.isDeleted()).isTrue();
+    }
+
+    @Test
+    void 삭제_히스토리_생성() {
+        Q1.addAnswer(AnswerTest.A1);
+
+        assertThat(Q1.createDeleteHistories()).hasSize(2);
     }
 }

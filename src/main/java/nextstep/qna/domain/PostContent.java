@@ -7,10 +7,6 @@ public class PostContent {
     private final String title;
     private final String contents;
 
-    public PostContent(NsUser writer, String contents) {
-        this(writer, "", contents);
-    }
-
     public PostContent(NsUser writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
@@ -23,9 +19,5 @@ public class PostContent {
 
     public boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
-    }
-
-    public boolean isWriter() {
-        return writer == null;
     }
 }

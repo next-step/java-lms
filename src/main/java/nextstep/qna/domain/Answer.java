@@ -5,10 +5,12 @@ import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
+import java.time.LocalDateTime;
+
 public class Answer extends BaseEntity {
     private Question question;
-
-    private PostContent postContent;
+    private NsUser writer;
+    private String contents;
 
     public Answer() {
     }
@@ -18,12 +20,8 @@ public class Answer extends BaseEntity {
     }
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
-        this(id, question, new PostContent(writer,contents));
-    }
-
-    public Answer(Long id, Question question, PostContent postContent) {
         super(id);
-        if(postContent.isWriter()) {
+        if(writer == null) {
             throw new UnAuthorizedException();
         }
 
@@ -31,38 +29,39 @@ public class Answer extends BaseEntity {
             throw new NotFoundException();
         }
 
+        this.writer = writer;
         this.question = question;
-        this.postContent = postContent;
+        this.contents = contents;
     }
 
-    public void markAsDeleted(NsUser loginUser) throws CannotDeleteException {
+    public void delete(NsUser loginUser) throws CannotDeleteException {
         validateDeletableBy(loginUser);
-        delete();
+        markAsDeleted();
     }
 
     public boolean isOwner(NsUser writer) {
-        return this.postContent.isOwner(writer);
+        return this.writer.equals(writer);
     }
 
     public NsUser getWriter() {
-        return this.postContent.getWriter();
+        return this.writer;
     }
 
     public void toQuestion(Question question) {
         this.question = question;
     }
 
-    public void validateDeletableBy(NsUser loginUser) throws CannotDeleteException {
+    private void validateDeletableBy(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
     }
+    public DeleteHistory createDeleteHistory() {
+        return new DeleteHistory(ContentType.ANSWER, getId(), getWriter(), LocalDateTime.now());
+    }
 
     @Override
     public String toString() {
-        return "Answer{" +
-                "question=" + question +
-                ", postContent=" + postContent +
-                '}';
+        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 }
