@@ -9,5 +9,11 @@ public interface RegistrationRepository {
 
     List<Registration> findBySessionId(Long sessionId);
 
+    List<Registration> findApprovedBySessionId(Long sessionId);
+
     int countBySessionId(Long sessionId);
+
+   Registration findBySessionIdAndUserId(Long id, Long nsUserId);
+
+  void delete(Long sessionId, Long studentId);
 }

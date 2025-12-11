@@ -58,6 +58,7 @@ create table session (
     state varchar(20) not null,
     recruitment_status varchar(20) not null,
     type varchar(10) not null,
+    approval_policy varchar(10) not null,
     max_capacity int,
     tuition_fee bigint,
     created_at timestamp not null,
@@ -80,5 +81,6 @@ create table registration (
     session_id bigint not null,
     student_id bigint not null,
     enrolled_at timestamp not null,
+    approved boolean default false,
     primary key (id)
 );

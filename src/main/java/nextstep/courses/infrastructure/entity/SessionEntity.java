@@ -12,13 +12,14 @@ public class SessionEntity {
     private final String state;
     private final String recruitmentStatus;
     private final String type;
+    private final String approvalPolicy;
     private final Integer maxCapacity;
     private final Long tuitionFee;
     private final LocalDateTime createdAt;
 
     public SessionEntity(Long id, Long courseId, int term, LocalDate startDay, LocalDate endDay,
-                         String state, String recruitmentStatus, String type, Integer maxCapacity, Long tuitionFee,
-                         LocalDateTime createdAt) {
+                         String state, String recruitmentStatus, String type, String approvalPolicy,
+                         Integer maxCapacity, Long tuitionFee, LocalDateTime createdAt) {
         this.id = id;
         this.courseId = courseId;
         this.term = term;
@@ -27,6 +28,7 @@ public class SessionEntity {
         this.state = state;
         this.recruitmentStatus = recruitmentStatus;
         this.type = type;
+        this.approvalPolicy = approvalPolicy;
         this.maxCapacity = maxCapacity;
         this.tuitionFee = tuitionFee;
         this.createdAt = createdAt;
@@ -62,6 +64,10 @@ public class SessionEntity {
 
     public String getType() {
         return type;
+    }
+
+    public String getApprovalPolicy() {
+        return approvalPolicy;
     }
 
     public Integer getMaxCapacity() {

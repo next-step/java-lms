@@ -38,6 +38,14 @@ public class Enrollment {
         this.recruitmentStatus = recruitmentStatus.close();
     }
 
+    public Registration approve(Registration registration) {
+        if (policy.getApprovalPolicy().canAutoApprove()) {
+            registration.approve();
+            return registration;
+        }
+        return null;
+    }
+
     private void validateRecruitmentStatus(RecruitmentStatus status) {
         if (!status.canEnroll()) {
             throw new IllegalStateException("모집중인 강의만 수강신청이 가능합니다.");

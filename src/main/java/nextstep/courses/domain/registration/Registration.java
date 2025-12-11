@@ -8,16 +8,22 @@ public class Registration {
   private final Long sessionId;
   private final Long studentId;
   private final LocalDateTime enrolledAt;
+  private boolean approved;
 
   public Registration(Long sessionId, Long studentId) {
-    this(null, sessionId, studentId, LocalDateTime.now());
+    this(null, sessionId, studentId, LocalDateTime.now(), true);
   }
 
   public Registration(Long id, Long sessionId, Long studentId, LocalDateTime enrolledAt) {
+    this(id, sessionId, studentId, enrolledAt, true);
+  }
+
+  public Registration(Long id, Long sessionId, Long studentId, LocalDateTime enrolledAt, boolean approved) {
     this.id = id;
     this.sessionId = sessionId;
     this.studentId = studentId;
     this.enrolledAt = enrolledAt;
+    this.approved = approved;
   }
 
   public boolean contains(Long studentId) {
@@ -38,5 +44,15 @@ public class Registration {
 
   public LocalDateTime getEnrolledAt() {
     return enrolledAt;
+  }
+
+  public void approve() {
+    this.approved = true;
+  }
+
+  public void unregister() {
+    if(!this.approved){
+      throw new IllegalArgumentException("선발되어 취소할 수 없습니다.");
+    }
   }
 }

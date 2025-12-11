@@ -32,6 +32,10 @@ public class Session extends BaseEntity {
         this.sessionPolicy = sessionPolicy;
         this.coverImages = coverImages;
     }
+    public Enrollment enrollment(Registration registration) {
+      validateCanCreateEnrollment();
+      return new Enrollment(this.getId(), new Recruiting(), sessionPolicy, new Registrations(registration));
+    }
 
     public Enrollment enrollment(Registrations registrations) {
         validateCanCreateEnrollment();

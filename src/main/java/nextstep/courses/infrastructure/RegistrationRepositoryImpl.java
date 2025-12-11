@@ -37,8 +37,27 @@ public class RegistrationRepositoryImpl implements RegistrationRepository {
             .collect(Collectors.toList());
     }
 
-    @Override
+  @Override
+  public List<Registration> findApprovedBySessionId(Long sessionId) {
+    List<RegistrationEntity> entities = registrationJdbcDao.findByApprovedBySessionId(sessionId);
+    return entities.stream()
+        .map(RegistrationMapper::toDomain)
+        .collect(Collectors.toList());
+  }
+
+  @Override
     public int countBySessionId(Long sessionId) {
         return registrationJdbcDao.countBySessionId(sessionId);
     }
+
+  @Override
+  public Registration findBySessionIdAndUserId(Long sessionId, Long nsUserId) {
+    RegistrationEntity entities = registrationJdbcDao.findBySessionIdAndUserId(sessionId, nsUserId);
+    return RegistrationMapper.toDomain(entities);
+  }
+
+  @Override
+  public void delete(Long sessionId, Long studentId) {
+    registrationJdbcDao.deleteBySessionIdAndUserId(sessionId, studentId);
+  }
 }

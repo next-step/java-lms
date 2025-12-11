@@ -10,6 +10,10 @@ public class Registrations {
         this(new ArrayList<>());
     }
 
+    public Registrations(Registration registration) {
+      this.registrations = new ArrayList<>(List.of(registration));
+    }
+
     public Registrations(List<Registration> registrations) {
         this.registrations = new ArrayList<>(registrations);
     }

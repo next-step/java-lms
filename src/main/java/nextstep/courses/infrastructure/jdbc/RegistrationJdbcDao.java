@@ -48,4 +48,19 @@ public class RegistrationJdbcDao {
             rs.getTimestamp("enrolled_at").toLocalDateTime()
         );
     }
+
+  public List<RegistrationEntity> findByApprovedBySessionId(Long id) {
+    String sql = "select id, session_id, student_id, enrolled_at from registration where id = ? and approved = true";
+    return jdbcTemplate.query(sql, rowMapper(), id, true);
+  }
+
+  public RegistrationEntity findBySessionIdAndUserId(Long sessionId, Long nsUserId) {
+    String sql = "select id, session_id, student_id, enrolled_at from registration where session_id = ? and student_id = ?";
+    return jdbcTemplate.queryForObject(sql, rowMapper(), sessionId, nsUserId);
+  }
+
+  public void deleteBySessionIdAndUserId(Long sessionId, Long studentId) {
+    String sql = "delete from registration where session_id = ? and student_id = ?";
+    jdbcTemplate.update(sql, sessionId, studentId);
+  }
 }

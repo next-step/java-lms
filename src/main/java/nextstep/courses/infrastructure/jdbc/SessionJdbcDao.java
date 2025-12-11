@@ -21,7 +21,7 @@ public class SessionJdbcDao {
     }
 
     public int save(SessionEntity entity) {
-        String sql = "insert into session (course_id, term, start_day, end_day, state, recruitment_status, type, max_capacity, tuition_fee, created_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into session (course_id, term, start_day, end_day, state, recruitment_status, type, approval_policy, max_capacity, tuition_fee, created_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         return jdbcTemplate.update(sql,
             entity.getCourseId(),
@@ -31,6 +31,7 @@ public class SessionJdbcDao {
             entity.getState(),
             entity.getRecruitmentStatus(),
             entity.getType(),
+            entity.getApprovalPolicy(),
             entity.getMaxCapacity(),
             entity.getTuitionFee(),
             entity.getCreatedAt()
@@ -49,7 +50,7 @@ public class SessionJdbcDao {
     }
 
     public SessionEntity findById(Long id) {
-        String sql = "select id, course_id, term, start_day, end_day, state, recruitment_status, type, max_capacity, tuition_fee, created_at from session where id = ?";
+        String sql = "select id, course_id, term, start_day, end_day, state, recruitment_status, type, approval_policy, max_capacity, tuition_fee, created_at from session where id = ?";
         return jdbcTemplate.queryForObject(sql, sessionRowMapper(), id);
     }
 
@@ -82,6 +83,7 @@ public class SessionJdbcDao {
             rs.getString("state"),
             rs.getString("recruitment_status"),
             rs.getString("type"),
+            rs.getString("approval_policy"),
             rs.getObject("max_capacity", Integer.class),
             rs.getObject("tuition_fee", Long.class),
             rs.getTimestamp("created_at") != null ? rs.getTimestamp("created_at").toLocalDateTime() : null

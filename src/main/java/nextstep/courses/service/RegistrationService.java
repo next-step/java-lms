@@ -31,4 +31,11 @@ public class RegistrationService {
 
         registrationRepository.save(registration);
     }
+
+    public void unregister(Payment payment) {
+      Session session = sessionRepository.findById(payment.getSessionId());
+      Registration registered = registrationRepository.findBySessionIdAndUserId(session.getId(), payment.getNsUserId());
+      registered.unregister();
+      registrationRepository.delete(registered.getSessionId(), registered.getStudentId());
+    }
 }

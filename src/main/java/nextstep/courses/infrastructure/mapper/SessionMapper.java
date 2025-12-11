@@ -7,6 +7,7 @@ import nextstep.courses.domain.session.SessionPeriod;
 import nextstep.courses.domain.session.SessionPolicy;
 import nextstep.courses.domain.session.SessionProgressState;
 import nextstep.courses.domain.session.Term;
+import nextstep.courses.domain.session.policy.approval.ApprovalPolicy;
 import nextstep.courses.domain.session.policy.capacity.CapacityPolicy;
 import nextstep.courses.domain.session.policy.capacity.LimitedCapacity;
 import nextstep.courses.domain.session.policy.capacity.UnlimitedCapacity;
@@ -49,6 +50,7 @@ public class SessionMapper {
             session.getProgressState().name(),
             "NOT_RECRUITING",
             typeName,
+            sessionPolicy.getApprovalPolicy().name(),
             maxCapacity,
             tuitionFee,
             session.getCreatedAt()
@@ -73,7 +75,8 @@ public class SessionMapper {
     private static SessionPolicy createSessionPolicy(SessionEntity entity) {
         TuitionPolicy tuitionPolicy = createTuitionPolicy(entity);
         CapacityPolicy capacityPolicy = createCapacityPolicy(entity);
-        return new SessionPolicy(tuitionPolicy, capacityPolicy);
+        ApprovalPolicy approvalPolicy = ApprovalPolicy.valueOf(entity.getApprovalPolicy());
+        return new SessionPolicy(tuitionPolicy, capacityPolicy, approvalPolicy);
     }
 
     private static TuitionPolicy createTuitionPolicy(SessionEntity entity) {
