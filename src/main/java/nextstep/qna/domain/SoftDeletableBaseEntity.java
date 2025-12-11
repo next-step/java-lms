@@ -2,7 +2,7 @@ package nextstep.qna.domain;
 
 import nextstep.users.domain.NsUser;
 
-public abstract class BaseEntity extends BaseTimeEntity {
+public abstract class SoftDeletableBaseEntity extends BaseTimeEntity {
 
     private Long id;
 
@@ -10,7 +10,7 @@ public abstract class BaseEntity extends BaseTimeEntity {
 
     private boolean deleted = false;
 
-    protected BaseEntity(Long id, NsUser writer) {
+    protected SoftDeletableBaseEntity(Long id, NsUser writer) {
         this.id = id;
         this.writer = writer;
     }

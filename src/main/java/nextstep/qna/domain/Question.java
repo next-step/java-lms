@@ -6,7 +6,7 @@ import java.util.List;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
-public class Question extends BaseEntity {
+public class Question extends SoftDeletableBaseEntity {
     private QuestionContent content;
 
     private Answers answers = new Answers();

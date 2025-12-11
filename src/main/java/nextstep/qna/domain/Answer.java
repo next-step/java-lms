@@ -8,7 +8,7 @@ import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
-public class Answer extends BaseEntity {
+public class Answer extends SoftDeletableBaseEntity {
 
     private Question question;
 
