@@ -23,5 +23,35 @@ class SessionTest {
         assertThat(session.status()).isEqualTo(SessionStatus.PREPARING);
     }
 
+    @Test
+    void whenCreatingFreeSession_thenMaxCapacityIsNull() {
+        Session freeSession = new Session(START_DATE, END_DATE, false, null);
+        assertThat(freeSession.isPaid()).isFalse();
+        assertThat(freeSession.maxCapacity()).isNull();
+    }
 
+    @Test
+    void whenCreatingFreeSessionWithNonNullCapacity_thenThrow() {
+        assertThatThrownBy(() -> new Session(START_DATE, END_DATE, false, 10))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("무료 강의는 최대 수강인원이 없어야 합니다");
+    }
+
+    @Test
+    void whenCreatingPaidSession_thenMaxCapacityMustBePositive() {
+        Session paidSession = new Session(START_DATE, END_DATE, true, 5);
+        assertThat(paidSession.isPaid()).isTrue();
+        assertThat(paidSession.maxCapacity()).isEqualTo(5);
+    }
+
+    @Test
+    void whenCreatingPaidSessionWithInvalidCapacity_thenThrow() {
+        assertThatThrownBy(() -> new Session(START_DATE, END_DATE, true, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("유료 강의는 최대 수강인원이 있어야 합니다");
+
+        assertThatThrownBy(() -> new Session(START_DATE, END_DATE, true, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("유료 강의는 최대 수강인원이 있어야 합니다");
+    }
 }
