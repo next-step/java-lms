@@ -80,4 +80,18 @@ class SessionTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("유료 강의는 0원 초과");
     }
+
+    @Test
+    void whenSessionStatusIsOpen_thenCanEnrollIsTrue() {
+        Session session = new Session(START_DATE, END_DATE, false, null, 0);
+        session.startRecruiting();
+        assertThat(session.canEnroll()).isTrue();
+    }
+
+    @Test
+    void whenSessionStatusIsNotOpen_thenCanEnrollIsFalse() {
+        Session session = new Session(START_DATE, END_DATE, false, null, 0);
+        assertThat(session.canEnroll()).isFalse();
+    }
+
 }

@@ -10,7 +10,7 @@ public class Session {
 
     private final LocalDate endDate;
 
-    private final SessionStatus status;
+    private SessionStatus status;
 
     private final boolean isPaid;
 
@@ -54,6 +54,14 @@ public class Session {
         return fee;
     }
 
+    public boolean canEnroll() {
+        return status == SessionStatus.OPEN;
+    }
+
+    public void startRecruiting() {
+        this.status = SessionStatus.OPEN;
+    }
+
     private void validateDate(LocalDate startDate, LocalDate endDate) {
         if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException(ERROR_INVALID_DATE);
@@ -77,5 +85,4 @@ public class Session {
             throw new IllegalArgumentException("무료 강의는 0원 이어야 합니다");
         }
     }
-
 }
