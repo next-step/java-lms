@@ -18,12 +18,19 @@ public class Session {
 
     private final int fee;
 
+    private int enrollCount;
+
     public Session(LocalDate startDate, LocalDate endDate) {
         this(startDate, endDate, false, null, 0);
     }
 
     public Session(LocalDate startDate, LocalDate endDate, boolean isPaid, Integer maxCapacity) {
         this(startDate, endDate, isPaid, maxCapacity, 0);
+    }
+
+    Session(LocalDate startDate, LocalDate endDate, boolean isPaid, Integer maxCapacity, int fee, int enrollCount) {
+        this(startDate, endDate, isPaid, maxCapacity, fee);
+        this.enrollCount = enrollCount;
     }
 
     public Session(LocalDate startDate, LocalDate endDate, boolean isPaid, Integer maxCapacity, int fee) {
@@ -36,6 +43,7 @@ public class Session {
         this.isPaid = isPaid;
         this.maxCapacity = maxCapacity;
         this.fee = fee;
+        this.enrollCount = 0;
     }
 
     public SessionStatus status() {
@@ -55,6 +63,9 @@ public class Session {
     }
 
     public boolean canEnroll() {
+        if (isPaid() && enrollCount >= maxCapacity) {
+            return false;
+        }
         return status == SessionStatus.OPEN;
     }
 
@@ -85,4 +96,5 @@ public class Session {
             throw new IllegalArgumentException("무료 강의는 0원 이어야 합니다");
         }
     }
+
 }

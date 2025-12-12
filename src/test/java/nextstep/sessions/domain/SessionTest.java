@@ -94,4 +94,10 @@ class SessionTest {
         assertThat(session.canEnroll()).isFalse();
     }
 
+    @Test
+    void whenEnrollCountIsOverMaxCapacity_thenCanEnrollIsFalse() {
+        Session session = new Session(START_DATE, END_DATE, true, 1, 100_000, 1);
+        assertThat(session.canEnroll()).isFalse();
+    }
+
 }
