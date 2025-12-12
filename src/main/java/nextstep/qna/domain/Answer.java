@@ -44,19 +44,14 @@ public class Answer extends SoftDeletableBaseEntity {
         this.question = question;
     }
 
-    public List<DeleteHistory> deleteWithHistory(NsUser user) throws CannotDeleteException {
-        delete(user);
-        return createDeleteHistory();
-    }
-
-    private void delete(NsUser user) throws CannotDeleteException {
+    public void delete(NsUser user) throws CannotDeleteException {
         if (!isOwner(user)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
         markAsDeleted();
     }
 
-    private List<DeleteHistory> createDeleteHistory() {
+    public List<DeleteHistory> toDeleteHistories() {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(
                 new DeleteHistory(ContentType.ANSWER, getId(), getWriter(), LocalDateTime.now()));

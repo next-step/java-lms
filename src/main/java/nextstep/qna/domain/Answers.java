@@ -27,10 +27,16 @@ public class Answers {
         answers.add(answer);
     }
 
-    public List<DeleteHistory> deleteAll(NsUser user) throws CannotDeleteException {
+    public void delete(NsUser user) throws CannotDeleteException {
+        for (Answer answer : answers) {
+            answer.delete(user);
+        }
+    }
+
+    public List<DeleteHistory> toDeleteHistories() throws CannotDeleteException {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : answers) {
-            deleteHistories.addAll(answer.deleteWithHistory(user));
+            deleteHistories.addAll(answer.toDeleteHistories());
         }
         return deleteHistories;
     }

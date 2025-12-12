@@ -37,24 +37,19 @@ public class Question extends SoftDeletableBaseEntity {
         return answers;
     }
 
-    public List<DeleteHistory> deleteWithHistory(NsUser user) throws CannotDeleteException {
-        delete(user);
-        List<DeleteHistory> histories = createDeleteHistory(user);
-        histories.addAll(answers.deleteAll(user));
-        return histories;
-    }
-
-    private void delete(NsUser user) throws CannotDeleteException {
+    public void delete(NsUser user) throws CannotDeleteException {
         if (!isOwner(user)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
         markAsDeleted();
+        answers.delete(user);
     }
 
-    private List<DeleteHistory> createDeleteHistory(NsUser user) throws CannotDeleteException {
+    public List<DeleteHistory> toDeleteHistories() throws CannotDeleteException {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(
                 new DeleteHistory(ContentType.QUESTION, getId(), getWriter(), LocalDateTime.now()));
+        deleteHistories.addAll(answers.toDeleteHistories());
         return deleteHistories;
     }
 
