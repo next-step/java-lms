@@ -62,6 +62,10 @@ public class Session {
         return fee;
     }
 
+    public int enrollCount() {
+        return enrollCount;
+    }
+
     public boolean canEnroll() {
         if (isPaid() && enrollCount >= maxCapacity) {
             return false;
@@ -71,6 +75,13 @@ public class Session {
 
     public void startRecruiting() {
         this.status = SessionStatus.OPEN;
+    }
+
+    public void enroll() {
+        if (!canEnroll()) {
+            throw new IllegalArgumentException("수강 신청을 할 수 없습니다");
+        }
+        enrollCount++;
     }
 
     private void validateDate(LocalDate startDate, LocalDate endDate) {

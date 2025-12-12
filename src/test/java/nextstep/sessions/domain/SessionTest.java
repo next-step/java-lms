@@ -100,4 +100,22 @@ class SessionTest {
         assertThat(session.canEnroll()).isFalse();
     }
 
+    @Test
+    void whenEnroll_thenEnrollCountIncrease() {
+        Session session = new Session(START_DATE, END_DATE, true, 1, 100_000);
+        session.startRecruiting();
+        int before = session.enrollCount();
+        session.enroll();
+        int after = session.enrollCount();
+        assertThat(after - before).isEqualTo(1);
+    }
+
+    @Test
+    void whenEnrollImpossible_thenThrow() {
+        Session session = new Session(START_DATE, END_DATE, true, 1, 100_000, 1);
+        assertThatThrownBy(session::enroll)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("수강 신청을 할 수 없습니다");
+    }
+
 }
