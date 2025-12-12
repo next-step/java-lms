@@ -9,11 +9,18 @@ public class Session {
     private final LocalDate startDate;
 
     private final LocalDate endDate;
-    
+
+    private final SessionStatus status;
+
     public Session(LocalDate startDate, LocalDate endDate) {
         validateDate(startDate, endDate);
         this.startDate = startDate;
         this.endDate = endDate;
+        this.status = SessionStatus.PREPARING;
+    }
+
+    public SessionStatus status() {
+        return status;
     }
 
     private void validateDate(LocalDate startDate, LocalDate endDate) {
