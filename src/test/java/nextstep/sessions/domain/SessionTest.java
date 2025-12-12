@@ -39,7 +39,7 @@ class SessionTest {
 
     @Test
     void whenCreatingPaidSession_thenMaxCapacityMustBePositive() {
-        Session paidSession = new Session(START_DATE, END_DATE, true, 5);
+        Session paidSession = new Session(START_DATE, END_DATE, true, 5, 100_000);
         assertThat(paidSession.isPaid()).isTrue();
         assertThat(paidSession.maxCapacity()).isEqualTo(5);
     }
@@ -53,5 +53,31 @@ class SessionTest {
         assertThatThrownBy(() -> new Session(START_DATE, END_DATE, true, 0))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("유료 강의는 최대 수강인원이 있어야 합니다");
+    }
+
+    @Test
+    void whenCreatingFreeSession_thenFeeIsZero() {
+        Session freeSession = new Session(START_DATE, END_DATE, false, null, 0);
+        assertThat(freeSession.fee()).isEqualTo(0);
+    }
+
+    @Test
+    void whenCreatingFreeSessionWithInvalidFee_thenThrow() {
+        assertThatThrownBy(() -> new Session(START_DATE, END_DATE, false, null, 500_000))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("무료 강의는 0원");
+    }
+
+    @Test
+    void whenCreatingPaidSession_thenFeeIsOverZero() {
+        Session paidSession = new Session(START_DATE, END_DATE, true, 5, 100_000);
+        assertThat(paidSession.fee()).isEqualTo(100_000);
+    }
+
+    @Test
+    void whenCreatingPaidSessionWithInvalidFee_thenThrow() {
+        assertThatThrownBy(() -> new Session(START_DATE, END_DATE, true, 5, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("유료 강의는 0원 초과");
     }
 }
