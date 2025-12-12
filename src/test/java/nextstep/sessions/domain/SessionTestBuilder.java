@@ -10,6 +10,7 @@ class SessionTestBuilder {
     private Integer maxCapacity = null;
     private int fee = 0;
     private int enrollCount = 0;
+    private SessionImage image = SessionImageTest.IMAGE;
 
     public SessionTestBuilder paid(Integer maxCapacity, int fee) {
         this.paid = true;
@@ -42,9 +43,8 @@ class SessionTestBuilder {
 
     public Session build() {
         if (paid) {
-            return new Session(startDate, endDate, true, maxCapacity, fee, enrollCount);
-        } else {
-            return new Session(startDate, endDate, false, maxCapacity, fee);
+            return new Session(startDate, endDate, true, maxCapacity, fee, enrollCount, image);
         }
+        return new Session(startDate, endDate, false, maxCapacity, fee, image);
     }
 }

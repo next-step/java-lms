@@ -20,23 +20,20 @@ public class Session {
 
     private int enrollCount;
 
-    public Session(LocalDate startDate, LocalDate endDate) {
-        this(startDate, endDate, false, null, 0);
-    }
+    private SessionImage image;
 
-    public Session(LocalDate startDate, LocalDate endDate, boolean isPaid, Integer maxCapacity) {
-        this(startDate, endDate, isPaid, maxCapacity, 0);
-    }
-
-    Session(LocalDate startDate, LocalDate endDate, boolean isPaid, Integer maxCapacity, int fee, int enrollCount) {
-        this(startDate, endDate, isPaid, maxCapacity, fee);
+    Session(LocalDate startDate, LocalDate endDate, boolean isPaid, Integer maxCapacity, int fee, int enrollCount,
+            SessionImage image) {
+        this(startDate, endDate, isPaid, maxCapacity, fee, image);
         this.enrollCount = enrollCount;
     }
 
-    public Session(LocalDate startDate, LocalDate endDate, boolean isPaid, Integer maxCapacity, int fee) {
+    public Session(LocalDate startDate, LocalDate endDate, boolean isPaid, Integer maxCapacity, int fee,
+                   SessionImage image) {
         validateDate(startDate, endDate);
         validateCapacity(isPaid, maxCapacity);
         validateFee(isPaid, fee);
+        validateImage(image);
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = SessionStatus.PREPARING;
@@ -105,6 +102,12 @@ public class Session {
         }
         if (!isPaid && fee != 0) {
             throw new IllegalArgumentException("무료 강의는 0원 이어야 합니다");
+        }
+    }
+
+    private static void validateImage(SessionImage image) {
+        if (image == null) {
+            throw new IllegalArgumentException("강의 커버 이미지는 필수입니다.");
         }
     }
 

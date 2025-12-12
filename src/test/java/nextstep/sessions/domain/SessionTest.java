@@ -13,7 +13,7 @@ class SessionTest {
 
     @Test
     void startDateMustBeBeforeEndDate() {
-        assertThatThrownBy(() -> new Session(END_DATE, START_DATE))
+        assertThatThrownBy(() -> new Session(END_DATE, START_DATE, false, null, 0, SessionImageTest.IMAGE))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("시작일이 종료일보다");
     }
