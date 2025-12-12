@@ -70,6 +70,8 @@ create table session
     end_date     date        not null,
     image_id     bigint      not null,
     status       varchar(20) not null,
+    progress_status varchar(20),
+    recruitment_status varchar(20),
     session_type varchar(20) not null,
     max_capacity int,
     fee          bigint,
