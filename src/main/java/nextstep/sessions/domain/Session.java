@@ -4,67 +4,43 @@ import java.time.LocalDate;
 
 public class Session {
 
-    static final String ERROR_INVALID_DATE = "시작일이 종료일보다 빨라야 합니다";
-
-    private final LocalDate startDate;
-
-    private final LocalDate endDate;
+    private final Period period;
 
     private SessionStatus status;
 
-    private final boolean isPaid;
+    private final SessionPricing pricing;
 
-    private final Integer maxCapacity;
-
-    private final int fee;
-
-    private int enrollCount;
+    private Capacity capacity;
 
     private SessionImage image;
 
     Session(LocalDate startDate, LocalDate endDate, boolean isPaid, Integer maxCapacity, int fee, int enrollCount,
             SessionImage image) {
         this(startDate, endDate, isPaid, maxCapacity, fee, image);
-        this.enrollCount = enrollCount;
     }
 
     public Session(LocalDate startDate, LocalDate endDate, boolean isPaid, Integer maxCapacity, int fee,
                    SessionImage image) {
-        validateDate(startDate, endDate);
-        validateCapacity(isPaid, maxCapacity);
-        validateFee(isPaid, fee);
+        this(new Period(startDate, endDate), new SessionPricing(isPaid, fee), new Capacity(maxCapacity), image);
+    }
+
+    public Session(Period period, SessionPricing pricing, Capacity capacity,
+                   SessionImage image) {
+        validatePricingAndCapacity(pricing, capacity);
         validateImage(image);
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.period = period;
         this.status = SessionStatus.PREPARING;
-        this.isPaid = isPaid;
-        this.maxCapacity = maxCapacity;
-        this.fee = fee;
-        this.enrollCount = 0;
+        this.pricing = pricing;
+        this.capacity = capacity;
+        this.image = image;
     }
 
     public SessionStatus status() {
         return status;
     }
 
-    public boolean isPaid() {
-        return isPaid;
-    }
-
-    public Integer maxCapacity() {
-        return maxCapacity;
-    }
-
-    public int fee() {
-        return fee;
-    }
-
-    public int enrollCount() {
-        return enrollCount;
-    }
-
     public boolean canEnroll() {
-        if (isPaid() && enrollCount >= maxCapacity) {
+        if (!capacity.canEnroll()) {
             return false;
         }
         return status == SessionStatus.OPEN;
@@ -78,30 +54,16 @@ public class Session {
         if (!canEnroll()) {
             throw new IllegalArgumentException("수강 신청을 할 수 없습니다");
         }
-        enrollCount++;
+        this.capacity = capacity.increaseEnrollCount();
     }
 
-    private void validateDate(LocalDate startDate, LocalDate endDate) {
-        if (startDate.isAfter(endDate)) {
-            throw new IllegalArgumentException(ERROR_INVALID_DATE);
-        }
-    }
-
-    private void validateCapacity(boolean isPaid, Integer maxCapacity) {
-        if (isPaid && (maxCapacity == null || maxCapacity <= 0)) {
+    private void validatePricingAndCapacity(SessionPricing pricing, Capacity capacity) {
+        if (pricing.isPaid() && capacity.isUnlimited()) {
             throw new IllegalArgumentException("유료 강의는 최대 수강인원이 있어야 합니다");
         }
-        if (!isPaid && maxCapacity != null) {
-            throw new IllegalArgumentException("무료 강의는 최대 수강인원이 없어야 합니다");
-        }
-    }
 
-    private void validateFee(boolean isPaid, int fee) {
-        if (isPaid && fee <= 0) {
-            throw new IllegalArgumentException("유료 강의는 0원 초과 여야 합니다");
-        }
-        if (!isPaid && fee != 0) {
-            throw new IllegalArgumentException("무료 강의는 0원 이어야 합니다");
+        if (!pricing.isPaid() && !capacity.isUnlimited()) {
+            throw new IllegalArgumentException("무료 강의는 최대 수강 인원이 없어야 합니다");
         }
     }
 

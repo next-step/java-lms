@@ -37,6 +37,10 @@ public class Capacity {
         return maxCapacity == null || enrollCount < maxCapacity;
     }
 
+    public boolean isUnlimited() {
+        return maxCapacity == null;
+    }
+
     public Capacity increaseEnrollCount() {
         if (!canEnroll()) {
             throw new IllegalArgumentException(ERROR_CANNOT_ENROLL);

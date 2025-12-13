@@ -4,8 +4,8 @@ import java.time.LocalDate;
 
 class SessionTestBuilder {
 
-    private LocalDate startDate = SessionTest.START_DATE;
-    private LocalDate endDate = SessionTest.END_DATE;
+    private LocalDate startDate = PeriodTest.START_DATE;
+    private LocalDate endDate = PeriodTest.END_DATE;
     private boolean paid = false;
     private Integer maxCapacity = null;
     private int fee = 0;
