@@ -28,19 +28,9 @@ public class Answers {
         answers.add(answer);
     }
 
-    public void validateDeletableUser(NsUser loginUser) throws CannotDeleteException {
+    public void deleteAll(NsUser loginUser) throws CannotDeleteException {
         for (Answer answer : answers) {
-            if (!answer.isOwner(loginUser)) {
-                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-            }
+            answer.delete(loginUser);
         }
-    }
-
-    public List<DeleteHistory> deleteAll() {
-        List<DeleteHistory> list = new ArrayList<>();
-        for (Answer answer : answers) {
-            list.add(answer.delete());
-        }
-        return list;
     }
 }
