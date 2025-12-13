@@ -9,6 +9,7 @@ class PeriodTest {
 
     static final LocalDate START_DATE = LocalDate.of(2025, 11, 3);
     static final LocalDate END_DATE = LocalDate.of(2025, 12, 18);
+    public static final Period P1 = new Period(START_DATE, END_DATE);
 
     @Test
     void startDateMustBeBeforeEndDate() {

@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Test;
 
 class SessionPricingTest {
 
+    public static final SessionPricing FREE_SP = new SessionPricing(false, 0);
+    public static final SessionPricing PAID_SP = new SessionPricing(true, 100_000);
+
     @Test
     void freeSession_feeIsZero() {
         SessionPricing freeSessionPricing = new SessionPricing(false, 0);
