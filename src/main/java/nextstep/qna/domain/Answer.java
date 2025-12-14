@@ -1,14 +1,13 @@
 package nextstep.qna.domain;
 
+import java.time.LocalDateTime;
 import nextstep.qna.exception.unchecked.CannotDeleteException;
 import nextstep.qna.exception.unchecked.NotFoundException;
 import nextstep.qna.exception.unchecked.UnAuthorizedException;
 import nextstep.qna.exception.unchecked.WrongRequestException;
-import nextstep.users.domain.NsUser;
-
-import java.time.LocalDateTime;
 
 public class Answer {
+
     private Long id;
 
     private Long writerId;
@@ -32,11 +31,11 @@ public class Answer {
 
     public Answer(Long id, long writerId, Question question, String contents) {
         this.id = id;
-        if(writerId <= 0L) {
+        if (writerId <= 0L) {
             throw new UnAuthorizedException();
         }
 
-        if(question == null) {
+        if (question == null) {
             throw new NotFoundException();
         }
 

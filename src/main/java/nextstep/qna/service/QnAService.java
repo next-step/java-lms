@@ -1,5 +1,6 @@
 package nextstep.qna.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.annotation.Resource;
 import nextstep.qna.domain.DeleteHistory;
@@ -24,8 +25,10 @@ public class QnAService {
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(NotFoundException::new);
 
+        LocalDateTime fixedDeletedDateTime = LocalDateTime.now();
+
         List<DeleteHistory> deleteHistories = new QnADomainService()
-                .deleteQuestion(requesterId, question);
+                .deleteQuestion(requesterId, question, fixedDeletedDateTime);
 
         deleteHistoryService.saveAll(deleteHistories);
     }

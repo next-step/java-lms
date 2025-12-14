@@ -1,13 +1,14 @@
 package nextstep.qna.domain;
 
+import static java.util.Objects.isNull;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import nextstep.qna.exception.unchecked.CannotDeleteException;
 import nextstep.qna.exception.unchecked.WrongRequestException;
-import nextstep.users.domain.NsUser;
 
-public class Question {
+public class Question extends SoftDeleteAbleDomain {
 
     private Long id;
 
@@ -18,15 +19,6 @@ public class Question {
     private Long writerId;
 
     private List<Answer> answers = new ArrayList<>();
-
-    private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
-
-    public Question() {
-    }
 
     public Question(long writerId, String title, String contents) {
         this(0L, writerId, title, contents);
@@ -49,7 +41,7 @@ public class Question {
     }
 
     public boolean isDeleted() {
-        return deleted;
+        return super.isDeleted();
     }
 
     public boolean hasAnswers() {
@@ -74,7 +66,7 @@ public class Question {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
 
-        this.deleted = true;
+        super.updateDeleted();
         putOnAllAnswersDelete(requesterId);
     }
 
@@ -82,17 +74,21 @@ public class Question {
         this.answers.forEach(answer -> answer.putOnDelete(requesterId));
     }
 
-    public DeleteHistory createQuestionDeleteHistory() {
-        if (!deleted) {
+    public DeleteHistory createQuestionDeleteHistory(LocalDateTime deletedDateTime) {
+        if (isNull(deletedDateTime)) {
+            throw new WrongRequestException("삭제시점은 필수 입니다.");
+        }
+
+        if (!super.isDeleted()) {
             throw new WrongRequestException("삭제되지 않은 질문은 삭제이력을 생성할 수 없습니다.");
         }
 
-        return new DeleteHistory(ContentType.QUESTION, this.id, this.writerId, LocalDateTime.now());
+        return new DeleteHistory(ContentType.QUESTION, this.id, this.writerId, deletedDateTime);
     }
 
-    public List<DeleteHistory> bringAllDeleteHistories() {
+    public List<DeleteHistory> bringAllDeleteHistories(LocalDateTime deletedDateTime) {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(createQuestionDeleteHistory());
+        deleteHistories.add(createQuestionDeleteHistory(deletedDateTime));
 
         for (Answer answer : answers) {
             deleteHistories.add(answer.createAnswerDeleteHistory());
