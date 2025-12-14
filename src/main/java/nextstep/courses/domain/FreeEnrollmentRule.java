@@ -7,6 +7,16 @@ public class FreeEnrollmentRule implements EnrollmentRule {
     }
 
     @Override
+    public void validateMoney(Money money) {
+
+    }
+
+    @Override
+    public void validateCapacity(int enrolledCount) {
+
+    }
+
+    @Override
     public SessionType getType() {
         return SessionType.FREE;
     }

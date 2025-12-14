@@ -9,7 +9,7 @@ public class Capacity {
     }
 
     private void validation(int capacity) {
-        if(capacity <= 0) {
+        if (capacity <= 0) {
             throw new IllegalArgumentException("인원이 1 이상이어야 합니다.");
         }
     }

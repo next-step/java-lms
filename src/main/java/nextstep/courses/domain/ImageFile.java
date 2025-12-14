@@ -31,7 +31,7 @@ public class ImageFile {
     }
 
     private void validateImageType(ImageType type) {
-        if(type == ImageType.UNKNOWN) {
+        if (type == ImageType.UNKNOWN) {
             throw new IllegalArgumentException("지원하지 않는 이미지 타입입니다. (허용 형식: gif, jpg/jpeg, png, svg)");
         }
     }
