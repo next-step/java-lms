@@ -10,9 +10,7 @@ import java.util.List;
 public class Question {
     private Long id;
 
-    private String title;
-
-    private String contents;
+    private QuestionContent content;
 
     private NsUser writer;
 
@@ -34,30 +32,11 @@ public class Question {
     public Question(Long id, NsUser writer, String title, String contents) {
         this.id = id;
         this.writer = writer;
-        this.title = title;
-        this.contents = contents;
+        this.content = new QuestionContent(title, contents);
     }
 
     public Long getId() {
         return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
     }
 
     public NsUser getWriter() {
@@ -79,10 +58,6 @@ public class Question {
 
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public Answers getAnswers() {
-        return answers;
     }
 
     private void validateOwner(NsUser loginUser) throws CannotDeleteException {
@@ -107,10 +82,5 @@ public class Question {
         deleteHistories.add(deleteHistory());
         deleteHistories.addAll(answers.toDeleteHistories());
         return deleteHistories;
-    }
-
-    @Override
-    public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 }
