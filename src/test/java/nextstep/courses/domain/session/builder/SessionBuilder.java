@@ -21,7 +21,7 @@ public class SessionBuilder {
     private Enrollments enrollments = new Enrollments();
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt;
-    private SessionRecruitmentStatus recruit;
+    private SessionRecruitmentStatus recruit = SessionRecruitmentStatus.RECRUITING;
 
     public SessionBuilder withId(Long id) {
         this.id = id;
@@ -73,12 +73,8 @@ public class SessionBuilder {
         return this;
     }
 
-    private SessionCoreFacade createdSessionCore(){
-        if(this.recruit != null) {
-            return new SessionCoreV2(this.sessionRange, this.sessionPolicy, this.sessionStatus, recruit);
-        }
-
-        return new SessionCore(this.sessionRange, this.sessionPolicy, this.sessionStatus);
+    private SessionCore createdSessionCore() {
+        return new SessionCore(this.sessionRange, this.sessionPolicy, this.sessionStatus, recruit);
     }
 
     public Session build() {

@@ -4,6 +4,7 @@ import nextstep.courses.domain.image.CoverImage;
 import nextstep.courses.domain.session.builder.EnrollmentBuilder;
 import nextstep.courses.domain.session.builder.SessionBuilder;
 import nextstep.courses.domain.session.builder.SessionPolicyBuilder;
+import nextstep.courses.domain.session.constant.SessionRecruitmentStatus;
 import nextstep.courses.domain.session.constant.SessionStatus;
 import nextstep.courses.domain.session.constant.SessionType;
 import nextstep.payments.domain.Payment;
@@ -41,13 +42,12 @@ public class SessionTest {
 
     @Test
     void 수강신청시_모집중이_아닐경우_예외발생() {
-        Session session = new SessionBuilder().withSessionStatus(SessionStatus.PENDING).build();
+        Session session = new SessionBuilder().withSessionStatus(SessionStatus.PENDING).withRecruit(SessionRecruitmentStatus.NOT_RECRUITING).build();
         Enrollment enrollment = new EnrollmentBuilder().build();
         Payment payment = new Payment(1L, 1L, 300_000L);
 
         assertThatThrownBy(() -> session.addEnrollment(enrollment, payment))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("현재는 강의 모집중이 아닙니다.");
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test

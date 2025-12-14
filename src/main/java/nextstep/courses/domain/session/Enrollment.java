@@ -70,7 +70,7 @@ public class Enrollment extends BaseEntity {
     }
 
     private boolean isNotSelectedAndApproved(EnrollmentStatus enrollmentStatus) {
-        return this.selectionStatus.equals(SelectionStatus.NOT_SELECTED) && enrollmentStatus.equals(EnrollmentStatus.APPROVED);
+        return this.selectionStatus.isNotSelected() && enrollmentStatus.isApproved();
     }
 
     public SelectionStatus getSelectionStatus() {

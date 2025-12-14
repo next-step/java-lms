@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
 
-class SessionCoreV2Test {
+class SessionCoreTest {
 
     @Test
     void 강의신청시_비모집상태_에러발생(){

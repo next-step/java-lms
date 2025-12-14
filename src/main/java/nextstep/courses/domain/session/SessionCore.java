@@ -1,47 +1,47 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.session.constant.SessionRecruitmentStatus;
 import nextstep.courses.domain.session.constant.SessionStatus;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;
 
-
-public class SessionCore implements SessionCoreFacade {
+public class SessionCore {
 
     private final SessionRange sessionRange;
     private final SessionPolicy sessionPolicy;
     private final SessionStatus sessionStatus;
+    private final SessionRecruitmentStatus sessionRecruitmentStatus;
 
-    public SessionCore(SessionRange sessionRange, SessionPolicy sessionPolicy, SessionStatus sessionStatus) {
+    public SessionCore(SessionRange sessionRange, SessionPolicy sessionPolicy, SessionStatus sessionStatus, SessionRecruitmentStatus sessionRecruitmentStatus) {
         this.sessionRange = sessionRange;
         this.sessionPolicy = sessionPolicy;
         this.sessionStatus = sessionStatus;
+        this.sessionRecruitmentStatus = sessionRecruitmentStatus;
     }
 
-    @Override
     public void validatePaymentAmount(Payment payment) {
         if (this.sessionPolicy.isSessionType()) {
             sessionPolicy.matchAmount(payment);
         }
     }
 
-    @Override
     public void validateNotFull(Enrollments enrollments) {
         if (this.sessionPolicy.matchSize(enrollments.size())) {
             throw new IllegalArgumentException("수강인원이 초과했습니다.");
         }
     }
 
-    @Override
     public void validateSessionStatus() {
-        if (!this.sessionStatus.equals(SessionStatus.ACTIVE)) {
-            throw new IllegalArgumentException("현재는 강의 모집중이 아닙니다.");
+        if (this.sessionStatus.equals(SessionStatus.FINISHED)) {
+            throw new IllegalArgumentException("종료된 강의입니다.");
         }
     }
 
-    @Override
     public void validateRecruitmentStatus() {
-
+        if(this.sessionRecruitmentStatus.equals(SessionRecruitmentStatus.NOT_RECRUITING)) {
+            throw new IllegalArgumentException("현재는 모집기간이 아닙니다.");
+        }
     }
 
     public LocalDateTime getStartDate() {
@@ -74,5 +74,9 @@ public class SessionCore implements SessionCoreFacade {
 
     public SessionStatus getSessionStatus() {
         return sessionStatus;
+    }
+
+    public SessionRecruitmentStatus getSessionRecruitmentStatus() {
+        return sessionRecruitmentStatus;
     }
 }

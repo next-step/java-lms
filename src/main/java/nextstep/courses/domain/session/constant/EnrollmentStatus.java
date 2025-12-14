@@ -27,4 +27,8 @@ public enum EnrollmentStatus {
     public boolean isCancled() {
         return this.equals(CANCELLED);
     }
+
+    public boolean isApproved() {
+        return this.equals(APPROVED);
+    }
 }

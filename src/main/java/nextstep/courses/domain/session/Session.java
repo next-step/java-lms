@@ -3,6 +3,7 @@ package nextstep.courses.domain.session;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.image.CoverImage;
 import nextstep.courses.domain.image.CoverImages;
+import nextstep.courses.domain.session.constant.SessionRecruitmentStatus;
 import nextstep.courses.domain.session.constant.SessionStatus;
 import nextstep.courses.domain.session.constant.SessionType;
 import nextstep.payments.domain.Payment;
@@ -16,7 +17,7 @@ public class Session extends BaseEntity {
     private Course course;
     private CoverImages coverImages;
     private final Enrollments enrollments;
-    private final SessionCoreFacade sessionCore;
+    private final SessionCore sessionCore;
 
     public Session(Long id, LocalDateTime startDate, LocalDateTime endDate, String sessionType, String sessionStatus, CoverImage coverImage) {
         this(id, startDate, endDate, sessionType, Integer.MAX_VALUE, 0L, sessionStatus, coverImage);
@@ -35,18 +36,14 @@ public class Session extends BaseEntity {
     }
 
     public Session(Long id, SessionRange sessionRange, SessionPolicy sessionPolicy, SessionStatus sessionStatus, CoverImage coverImage) {
-        this(id, null, new CoverImages(coverImage), new Enrollments(), LocalDateTime.now(), null, new SessionCore(sessionRange, sessionPolicy, sessionStatus));
+        this(id, null, new CoverImages(coverImage), new Enrollments(), LocalDateTime.now(), null, new SessionCore(sessionRange, sessionPolicy, sessionStatus, SessionRecruitmentStatus.RECRUITING));
     }
 
-    public Session(Long id, Course course, SessionRange sessionRange, SessionPolicy sessionPolicy, SessionStatus sessionStatus, CoverImage coverImage, Enrollments enrollments) {
-        this(id, course, new CoverImages(coverImage), enrollments, LocalDateTime.now(), null, new SessionCore(sessionRange, sessionPolicy, sessionStatus));
+    public Session(Long id, Course course, SessionRange sessionRange, SessionPolicy sessionPolicy, SessionStatus sessionStatus, List<CoverImage> coverImages, Enrollments enrollments, SessionRecruitmentStatus sessionRecruitmentStatus) {
+        this(id, course, new CoverImages(coverImages), enrollments, LocalDateTime.now(), null, new SessionCore(sessionRange, sessionPolicy, sessionStatus, sessionRecruitmentStatus));
     }
 
-    public Session(Long id, Course course, SessionRange sessionRange, SessionPolicy sessionPolicy, SessionStatus sessionStatus, List<CoverImage> coverImages, Enrollments enrollments) {
-        this(id, course, new CoverImages(coverImages), enrollments, LocalDateTime.now(), null, new SessionCore(sessionRange, sessionPolicy, sessionStatus));
-    }
-
-    public Session(Long id, Course course, CoverImages coverImages, Enrollments enrollments, LocalDateTime createdAt, LocalDateTime updatedAt, SessionCoreFacade sessionCore) {
+    public Session(Long id, Course course, CoverImages coverImages, Enrollments enrollments, LocalDateTime createdAt, LocalDateTime updatedAt, SessionCore sessionCore) {
         super(id, createdAt, updatedAt);
         this.course = course;
         this.coverImages = coverImages;
@@ -72,7 +69,7 @@ public class Session extends BaseEntity {
         return coverImages.getCoverImages();
     }
 
-    public SessionCoreFacade getSessionCore() {
+    public SessionCore getSessionCore() {
         return sessionCore;
     }
 

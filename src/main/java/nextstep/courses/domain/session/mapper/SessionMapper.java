@@ -4,6 +4,7 @@ import nextstep.courses.domain.Course;
 import nextstep.courses.domain.image.CoverImage;
 import nextstep.courses.domain.session.Enrollments;
 import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.constant.SessionRecruitmentStatus;
 import nextstep.courses.domain.session.constant.SessionStatus;
 import nextstep.courses.record.SessionRecord;
 
@@ -21,6 +22,7 @@ public class SessionMapper {
                 session.getSessionCore().getTuition(),
                 session.getSessionCore().getSessionType(),
                 session.getSessionCore().getSessionStatus().name(),
+                session.getSessionCore().getSessionRecruitmentStatus().name(),
                 session.getCreatedAt(),
                 session.getUpdatedAt()
         );
@@ -34,7 +36,8 @@ public class SessionMapper {
                 record.createdSessionPolicy(),
                 SessionStatus.from(record.getSessionStatus()),
                 coverImages,
-                enrollments
+                enrollments,
+                SessionRecruitmentStatus.from(record.getRecruitmentStatus())
         );
     }
 }

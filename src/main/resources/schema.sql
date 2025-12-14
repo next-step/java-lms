@@ -59,6 +59,7 @@ create table session (
     recruit varchar(30),
     session_type varchar(30),
     session_status varchar(30),
+    recruitment_status varchar(30),
     created_at timestamp not null,
     updated_at timestamp,
     primary key (id)

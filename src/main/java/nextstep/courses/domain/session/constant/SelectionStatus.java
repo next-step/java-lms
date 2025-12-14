@@ -31,4 +31,8 @@ public enum SelectionStatus {
     public boolean isSelected() {
         return this.equals(SELECTED);
     }
+
+    public boolean isNotSelected() {
+        return this.equals(NOT_SELECTED);
+    }
 }
