@@ -3,10 +3,8 @@ package nextstep.qna.domain;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Answers {
 
@@ -14,10 +12,6 @@ public class Answers {
 
     public Answers() {
         this(new ArrayList<>());
-    }
-
-    public Answers(Answer... answers) {
-        this(List.of(answers));
     }
 
     public Answers(List<Answer> answers) {

@@ -14,9 +14,6 @@ public class Question extends DeletableBaseEntity {
 
     private Answers answers = new Answers();
 
-    public Question() {
-    }
-
     public Question(NsUser writer, String title, String contents) {
         this(0L, writer, title, contents);
     }
