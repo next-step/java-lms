@@ -3,7 +3,6 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.session.Enrollment;
 import nextstep.courses.domain.session.repository.EnrollmentRepository;
 import nextstep.courses.record.EnrollmentRecord;
-import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

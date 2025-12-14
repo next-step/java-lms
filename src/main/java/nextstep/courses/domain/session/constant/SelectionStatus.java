@@ -27,4 +27,8 @@ public enum SelectionStatus {
     private boolean matchStatus(String value) {
         return this.value.equals(value);
     }
+
+    public boolean isSelected() {
+        return this.equals(SELECTED);
+    }
 }

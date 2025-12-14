@@ -23,4 +23,8 @@ public enum EnrollmentStatus {
     private boolean matchStatus(String value) {
         return this.value.equals(value);
     }
+
+    public boolean isCancled() {
+        return this.equals(CANCELLED);
+    }
 }

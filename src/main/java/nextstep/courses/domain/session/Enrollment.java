@@ -66,7 +66,7 @@ public class Enrollment extends BaseEntity {
     }
 
     private boolean isSelectedAndCancelled(EnrollmentStatus enrollmentStatus) {
-        return this.selectionStatus.equals(SelectionStatus.SELECTED) && enrollmentStatus.equals(EnrollmentStatus.CANCELLED);
+        return this.selectionStatus.isSelected() && enrollmentStatus.isCancled();
     }
 
     private boolean isNotSelectedAndApproved(EnrollmentStatus enrollmentStatus) {
