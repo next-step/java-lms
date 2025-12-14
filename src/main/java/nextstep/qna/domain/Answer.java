@@ -6,7 +6,7 @@ import nextstep.qna.exception.unchecked.NotFoundException;
 import nextstep.qna.exception.unchecked.UnAuthorizedException;
 import nextstep.qna.exception.unchecked.WrongRequestException;
 
-public class Answer {
+public class Answer extends SoftDeleteAbleDomain{
 
     private Long id;
 
@@ -15,15 +15,6 @@ public class Answer {
     private Question question;
 
     private String contents;
-
-    private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
-
-    public Answer() {
-    }
 
     public Answer(long writerId, Question question, String contents) {
         this(null, writerId, question, contents);
@@ -45,7 +36,7 @@ public class Answer {
     }
 
     public boolean isDeleted() {
-        return deleted;
+        return super.isDeleted();
     }
 
     public void putOnDelete(long requesterId) {
@@ -53,7 +44,7 @@ public class Answer {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
-        this.deleted = true;
+        super.updateDeleted();
     }
 
     public boolean isOwner(long writerId) {
