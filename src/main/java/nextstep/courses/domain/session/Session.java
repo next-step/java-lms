@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.image.SessionImage;
+import nextstep.courses.domain.session.image.SessionImages;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -55,7 +56,11 @@ public class Session {
     }
 
     public SessionImage getImage() {
-        return sessionInfo.getCoverImage();
+        return sessionInfo.getImage();
+    }
+
+    public SessionImages getImages() {
+        return sessionInfo.getImages();
     }
 
     public SessionType getSessionType() {

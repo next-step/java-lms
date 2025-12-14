@@ -1,22 +1,23 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.image.SessionImage;
+import nextstep.courses.domain.session.image.SessionImages;
 
 import java.time.LocalDate;
 
 public class SessionInfo {
     private final int cohort;
     private final SessionPeriod period;
-    private final SessionImage coverImage;
+    private final SessionImages images;
 
     public SessionInfo(int cohort, LocalDate startDate, LocalDate endDate, SessionImage image) {
-        this(cohort, new SessionPeriod(startDate, endDate), image);
+        this(cohort, new SessionPeriod(startDate, endDate), new SessionImages(image));
     }
 
-    public SessionInfo(int cohort, SessionPeriod period, SessionImage coverImage) {
+    public SessionInfo(int cohort, SessionPeriod period, SessionImages images) {
         this.cohort = cohort;
         this.period = period;
-        this.coverImage = coverImage;
+        this.images = images;
     }
 
     public int getCohort() {
@@ -31,7 +32,11 @@ public class SessionInfo {
         return period.getEndDate();
     }
 
-    public SessionImage getCoverImage() {
-        return coverImage;
+    public SessionImage getImage() {
+        return images.getFirstImage();
+    }
+
+    public SessionImages getImages() {
+        return images;
     }
 }
