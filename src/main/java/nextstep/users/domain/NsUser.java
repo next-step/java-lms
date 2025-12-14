@@ -1,43 +1,31 @@
 package nextstep.users.domain;
 
+import nextstep.common.domain.BaseEntity;
 import nextstep.qna.exception.unchecked.UnAuthorizedException;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class NsUser {
-    public static final GuestNsUser GUEST_USER = new GuestNsUser();
-
-    private Long id;
-
+public class NsUser extends BaseEntity {
     private LogInPairKey logInPairKey;
 
     private String name;
 
     private String email;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
-    public NsUser() {
-    }
-
     public NsUser(Long id, String userId, String password, String name, String email) {
         this(id, userId, password, name, email, LocalDateTime.now(), null);
     }
 
     public NsUser(Long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
+        super(id, createdAt, updatedAt);
         this.logInPairKey = new LogInPairKey(userId, password);
         this.name = name;
         this.email = email;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public Long getId() {
-        return id;
+        return super.getId();
     }
 
     public String getName() {
@@ -61,26 +49,13 @@ public class NsUser {
         return this.logInPairKey.equals(targetKey);
     }
 
-    public boolean isGuestUser() {
-        return false;
-    }
-
-    private static class GuestNsUser extends NsUser {
-        @Override
-        public boolean isGuestUser() {
-            return true;
-        }
-    }
-
     @Override
     public String toString() {
         return "NsUser{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", userId='" + logInPairKey + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
                 '}';
     }
 }

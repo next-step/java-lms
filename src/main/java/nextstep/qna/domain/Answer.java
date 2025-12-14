@@ -1,19 +1,15 @@
 package nextstep.qna.domain;
 
 import java.time.LocalDateTime;
+import nextstep.common.domain.SoftDeletableBaseEntity;
 import nextstep.qna.exception.unchecked.CannotDeleteException;
 import nextstep.qna.exception.unchecked.NotFoundException;
 import nextstep.qna.exception.unchecked.UnAuthorizedException;
 import nextstep.qna.exception.unchecked.WrongRequestException;
 
-public class Answer extends SoftDeleteAbleClass {
-
-    private Long id;
-
+public class Answer extends SoftDeletableBaseEntity {
     private Long writerId;
-
     private Question question;
-
     private BoardContent boardContent;
 
     public Answer(long writerId, Question question, String contents) {
@@ -21,7 +17,7 @@ public class Answer extends SoftDeleteAbleClass {
     }
 
     public Answer(Long id, long writerId, Question question, String contents) {
-        this.id = id;
+        super(id);
         if (writerId <= 0L) {
             throw new UnAuthorizedException();
         }
@@ -56,7 +52,7 @@ public class Answer extends SoftDeleteAbleClass {
             throw new WrongRequestException("삭제되지 않은 답변은 삭제이력을 생성할 수 없습니다.");
         }
 
-        return new DeleteHistory(ContentType.ANSWER, this.id, this.writerId, LocalDateTime.now());
+        return new DeleteHistory(ContentType.ANSWER, super.getId(), this.writerId, LocalDateTime.now());
     }
 
     public void toQuestion(Question question) {
@@ -65,7 +61,7 @@ public class Answer extends SoftDeleteAbleClass {
 
     @Override
     public String toString() {
-        return "Answer [id=" + id
+        return "Answer [id=" + super.getId()
                 + ", writerId=" + writerId
                 + ", contents=" + boardContent
                 + "]";

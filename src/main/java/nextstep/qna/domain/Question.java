@@ -5,17 +5,13 @@ import static java.util.Objects.isNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import nextstep.common.domain.SoftDeletableBaseEntity;
 import nextstep.qna.exception.unchecked.CannotDeleteException;
 import nextstep.qna.exception.unchecked.WrongRequestException;
 
-public class Question extends SoftDeleteAbleClass {
-
-    private Long id;
-
+public class Question extends SoftDeletableBaseEntity {
     private BoardContent boardContent;
-
     private Long writerId;
-
     private List<Answer> answers = new ArrayList<>();
 
     public Question(long writerId, String title, String contents) {
@@ -23,7 +19,7 @@ public class Question extends SoftDeleteAbleClass {
     }
 
     public Question(Long id, long writerId, String title, String contents) {
-        this.id = id;
+        super(id);
         this.writerId = writerId;
         this.boardContent = new BoardContent(title, contents);
     }
@@ -80,7 +76,7 @@ public class Question extends SoftDeleteAbleClass {
             throw new WrongRequestException("삭제되지 않은 질문은 삭제이력을 생성할 수 없습니다.");
         }
 
-        return new DeleteHistory(ContentType.QUESTION, this.id, this.writerId, deletedDateTime);
+        return new DeleteHistory(ContentType.QUESTION, super.getId(), this.writerId, deletedDateTime);
     }
 
     public List<DeleteHistory> bringAllDeleteHistories(LocalDateTime deletedDateTime) {
@@ -96,7 +92,7 @@ public class Question extends SoftDeleteAbleClass {
 
     @Override
     public String toString() {
-        return "Question [id=" + id
+        return "Question [id=" + super.getId()
                 + ", boardContents=" + boardContent
                 + ", writerId=" + writerId
                 + "]";
