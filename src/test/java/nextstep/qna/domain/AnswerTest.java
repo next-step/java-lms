@@ -5,6 +5,8 @@ import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -28,5 +30,14 @@ public class AnswerTest {
         answer.delete(user);
 
         assertThat(answer.isDeleted()).isTrue();
+    }
+
+    @Test
+    void deleteHistory_생성() {
+        Answer answer = AnswerTest.A1;
+
+        DeleteHistory history = answer.deleteHistory();
+
+        assertThat(history).isEqualTo(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
     }
 }
