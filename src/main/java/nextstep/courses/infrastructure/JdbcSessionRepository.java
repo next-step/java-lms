@@ -46,17 +46,9 @@ public class JdbcSessionRepository implements SessionRepository {
             fee = paidType.getFee();
         }
 
-        String statusValue;
-        String progressStatusValue = null;
-        String recruitmentStatusValue = null;
-
-        if (session.getProgressStatus() != null && session.getRecruitmentStatus() != null) {
-            progressStatusValue = session.getProgressStatus().getValue();
-            recruitmentStatusValue = session.getRecruitmentStatus().getValue();
-            statusValue = session.getRecruitmentStatus().canEnroll() ? "모집중" : session.getProgressStatus().getValue();
-        } else {
-            statusValue = session.getStatus().getValue();
-        }
+        String progressStatusValue = session.getProgressStatus().getValue();
+        String recruitmentStatusValue = session.getRecruitmentStatus().getValue();
+        String statusValue = session.getRecruitmentStatus().canEnroll() ? "모집중" : session.getProgressStatus().getValue();
 
         String sql = "insert into session (course_id, cohort, start_date, end_date, image_id, status, progress_status, recruitment_status, session_type, max_capacity, fee, created_at)" +
                 "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -99,27 +91,17 @@ public class JdbcSessionRepository implements SessionRepository {
                     ? new FreeSessionType()
                     : new PaidSessionType(rs.getInt("max_capacity"), rs.getLong("fee"));
 
-            String progressStatusValue = rs.getString("progress_status");
-            String recruitmentStatusValue = rs.getString("recruitment_status");
-            if (progressStatusValue != null && recruitmentStatusValue != null) {
-                return new Session(
-                        rs.getLong("id"),
-                        rs.getInt("cohort"),
-                        rs.getDate("start_date").toLocalDate(),
-                        rs.getDate("end_date").toLocalDate(),
-                        image,
-                        ProgressStatus.from(progressStatusValue),
-                        RecruitmentStatus.from(recruitmentStatusValue),
-                        type);
-            }
-            SessionStatus status = SessionStatus.from(rs.getString("status"));
+            ProgressStatus progressStatus = ProgressStatus.from(rs.getString("progress_status"));
+            RecruitmentStatus recruitmentStatus = RecruitmentStatus.from(rs.getString("recruitment_status"));
+
             return new Session(
                     rs.getLong("id"),
                     rs.getInt("cohort"),
                     rs.getDate("start_date").toLocalDate(),
                     rs.getDate("end_date").toLocalDate(),
                     image,
-                    status,
+                    progressStatus,
+                    recruitmentStatus,
                     type);
         }, courseId);
 
@@ -141,7 +123,9 @@ public class JdbcSessionRepository implements SessionRepository {
                     rs.getInt("width"),
                     rs.getInt("height"));
 
-            SessionStatus status = SessionStatus.from(rs.getString("status"));
+            ProgressStatus progressStatus = ProgressStatus.from(rs.getString("progress_status"));
+            RecruitmentStatus recruitmentStatus = RecruitmentStatus.from(rs.getString("recruitment_status"));
+
             SessionType type = "FREE".equals(rs.getString("session_type"))
                     ? new FreeSessionType()
                     : new PaidSessionType(rs.getInt("max_capacity"), rs.getLong("fee"));
@@ -152,7 +136,8 @@ public class JdbcSessionRepository implements SessionRepository {
                     rs.getDate("start_date").toLocalDate(),
                     rs.getDate("end_date").toLocalDate(),
                     image,
-                    status,
+                    progressStatus,
+                    recruitmentStatus,
                     type);
         }, sessionId);
     }

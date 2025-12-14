@@ -1,5 +1,8 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.session.FreeSessionType;
+import nextstep.courses.domain.session.ProgressStatus;
+import nextstep.courses.domain.session.RecruitmentStatus;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.Sessions;
 import nextstep.courses.domain.session.image.SessionImage;
@@ -18,8 +21,8 @@ class CourseTest {
     @Test
     public void 세션을_가진_과정_생성() {
 
-        Session session1 = new Session(1, START_DATE, END_DATE, IMAGE);
-        Session session2 = new Session(2, START_DATE, END_DATE, IMAGE);
+        Session session1 = new Session(1, START_DATE, END_DATE, IMAGE, ProgressStatus.PREPARING, RecruitmentStatus.RECRUITING, new FreeSessionType());
+        Session session2 = new Session(2, START_DATE, END_DATE, IMAGE, ProgressStatus.PREPARING, RecruitmentStatus.NOT_RECRUITING, new FreeSessionType());
         Sessions sessions = new Sessions(new ArrayList<>());
         sessions.add(session1);
         sessions.add(session2);
@@ -33,13 +36,13 @@ class CourseTest {
     @Test
     public void 과정에_새로운_기수_추가() {
 
-        Session session1 = new Session(1, START_DATE, END_DATE, IMAGE);
+        Session session1 = new Session(1, START_DATE, END_DATE, IMAGE,ProgressStatus.PREPARING, RecruitmentStatus.RECRUITING,new FreeSessionType());
         Sessions sessions = new Sessions(new ArrayList<>());
         sessions.add(session1);
 
         Course course = new Course("JPA의사실과 오해", 1L, sessions);
 
-        Session session2 = new Session(2, START_DATE, END_DATE, IMAGE);
+        Session session2 = new Session(2, START_DATE, END_DATE, IMAGE,ProgressStatus.PREPARING, RecruitmentStatus.RECRUITING,new FreeSessionType());
         course.addSession(session2);
 
         assertThat(course.getSessions().size()).isEqualTo(2);
