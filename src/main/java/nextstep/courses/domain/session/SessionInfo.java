@@ -13,6 +13,10 @@ public class SessionInfo {
     public SessionInfo(int cohort, LocalDate startDate, LocalDate endDate, SessionImage image) {
         this(cohort, new SessionPeriod(startDate, endDate), new SessionImages(image));
     }
+    public SessionInfo(int cohort, LocalDate startDate, LocalDate endDate, SessionImages images) {
+        this(cohort, new SessionPeriod(startDate, endDate), images);
+    }
+
 
     public SessionInfo(int cohort, SessionPeriod period, SessionImages images) {
         this.cohort = cohort;
