@@ -9,10 +9,13 @@ import java.util.Objects;
 
 public class Enrollment extends BaseEntity {
     private final NsUser user;
-
     private final Long sessionId;
     private SelectionStatus selectionStatus;
     private EnrollmentStatus enrollmentStatus;
+
+    public Enrollment(NsUser user, Long sessionId) {
+        this(user, sessionId, LocalDateTime.now(), null);
+    }
 
     public Enrollment(NsUser user, Long sessionId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this(0L, user, sessionId, createdAt, updatedAt, SelectionStatus.PENDING, EnrollmentStatus.WAITING);
@@ -21,7 +24,6 @@ public class Enrollment extends BaseEntity {
     public Enrollment(Long id, NsUser user, Long sessionId, LocalDateTime createdAt, LocalDateTime updatedAt, String selectionStatus, String enrollmentStatus) {
         this(id, user, sessionId, createdAt, updatedAt, SelectionStatus.valueOf(selectionStatus.toUpperCase()), EnrollmentStatus.valueOf(enrollmentStatus.toUpperCase()));
     }
-
 
     public Enrollment(NsUser user, Long sessionId, LocalDateTime createdAt, LocalDateTime updatedAt, SelectionStatus selectionStatus, EnrollmentStatus enrollmentStatus) {
         this(0L, user, sessionId, createdAt, updatedAt, selectionStatus, enrollmentStatus);

@@ -52,4 +52,12 @@ public class EnrollmentRecord {
     public String getEnrollmentStatus() {
         return enrollmentStatus;
     }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 }

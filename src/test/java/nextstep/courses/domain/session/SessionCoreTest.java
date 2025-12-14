@@ -10,17 +10,24 @@ import static org.assertj.core.api.Assertions.*;
 
 class SessionCoreTest {
 
+
     @Test
     void 강의신청시_비모집상태_에러발생(){
         Session session = new SessionBuilder().withRecruit(SessionRecruitmentStatus.NOT_RECRUITING).build();
-        assertThatThrownBy(() -> session.addEnrollment(new EnrollmentBuilder().build(), new Payment(1L, 1L, 300_000L)))
+        Enrollment enrollment = new EnrollmentBuilder().build();
+        EnrollmentApply enrollmentApply = new EnrollmentApply(new Enrollments(enrollment), new Payment(1L, 1L, 300_000L), session.getSessionCore());
+
+        assertThatThrownBy(() -> enrollmentApply.enroll(enrollment.getUser(), session.getId()))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     void 강의신청시_모집상태_정상_신청(){
         Session session = new SessionBuilder().withRecruit(SessionRecruitmentStatus.RECRUITING).build();
-        session.addEnrollment(new EnrollmentBuilder().build(), new Payment(1L, 1L, 300_000L));
-        assertThat(session.getEnrollments()).hasSize(1);
+        Enrollment enrollment = new EnrollmentBuilder().build();
+        EnrollmentApply enrollmentApply = new EnrollmentApply(new Enrollments(), new Payment(1L, 1L, 300_000L), session.getSessionCore());
+        enrollmentApply.enroll(enrollment.getUser(), session.getId());
+
+        assertThat(enrollmentApply.getEnrollments()).hasSize(1);
     }
 }

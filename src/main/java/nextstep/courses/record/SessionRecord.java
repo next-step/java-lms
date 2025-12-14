@@ -1,8 +1,11 @@
 package nextstep.courses.record;
 
 import nextstep.courses.domain.session.*;
+import nextstep.courses.domain.session.constant.SessionRecruitmentStatus;
+import nextstep.courses.domain.session.constant.SessionStatus;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class SessionRecord {
 
@@ -42,6 +45,15 @@ public class SessionRecord {
 
     public SessionPolicy createdSessionPolicy() {
         return new SessionPolicy(this.maxCapacity, this.tuition, this.sessionType);
+    }
+
+    public SessionCore createdSessionCore() {
+        return new SessionCore(
+                createdSessionRange(),
+                createdSessionPolicy(),
+                SessionStatus.from(this.sessionStatus),
+                SessionRecruitmentStatus.from(this.recruitmentStatus)
+        );
     }
 
     public Long getId() {
@@ -87,4 +99,5 @@ public class SessionRecord {
     public String getRecruitmentStatus() {
         return recruitmentStatus;
     }
+
 }

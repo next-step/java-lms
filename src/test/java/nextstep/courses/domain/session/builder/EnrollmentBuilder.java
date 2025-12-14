@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class EnrollmentBuilder {
 
     private NsUser user = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
-    private Long sessionId = 1L;
+    private Long sessionId = 23334L;
     private SelectionStatus selectionStatus = SelectionStatus.PENDING;
     private EnrollmentStatus enrollmentStatus = EnrollmentStatus.WAITING;
 

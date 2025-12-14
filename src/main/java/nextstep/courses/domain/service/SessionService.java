@@ -6,6 +6,7 @@ import nextstep.courses.domain.image.CoverImage;
 import nextstep.courses.domain.image.CoverImageRepository;
 import nextstep.courses.domain.image.CoverImages;
 import nextstep.courses.domain.session.Enrollment;
+import nextstep.courses.domain.session.EnrollmentApply;
 import nextstep.courses.domain.session.Enrollments;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.mapper.SessionMapper;
@@ -24,7 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SessionService {
+public class SessionService  {
 
     private final SessionRepository sessionRepository;
     private final CoverImageRepository coverImageRepository;
@@ -67,11 +68,11 @@ public class SessionService {
     }
 
     @Transactional
-    public int saveEnrollment(Enrollment enrollment, Payment payment) {
-        SessionRecord sessionRecord = sessionRepository.findById(enrollment.getSessionId());
-        List<EnrollmentRecord> enrollmentRecords = enrollmentRepository.findBySessionId(enrollment.getSessionId());
-        Session session = SessionMapper.toDomain(sessionRecord, null, null, toEnrollments(enrollmentRecords));
-        session.addEnrollment(enrollment, payment);
+    public int saveEnrollment(NsUser user, Long sessionId, Payment payment) {
+        SessionRecord sessionRecord = sessionRepository.findById(sessionId);
+        List<EnrollmentRecord> enrollmentRecords = enrollmentRepository.findBySessionId(sessionId);
+        EnrollmentApply enrollmentApply = new EnrollmentApply(toEnrollments(enrollmentRecords), payment, sessionRecord.createdSessionCore());
+        Enrollment enrollment = enrollmentApply.enroll(user, sessionId);
 
         paymentRepository.save(payment);
 
@@ -88,6 +89,5 @@ public class SessionService {
 
         return enrollments;
     }
-
 
 }

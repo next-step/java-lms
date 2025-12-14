@@ -6,10 +6,11 @@ import nextstep.courses.domain.session.constant.SessionStatus;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.Test;
 
-
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class EnrollmentsTest {
+
+    private static final Enrollment E1 = new EnrollmentBuilder().build();
 
     @Test
     void 중복_수강신청시_예외발생() {
@@ -18,10 +19,9 @@ class EnrollmentsTest {
                 .withSessionStatus(SessionStatus.ACTIVE)
                 .build();
 
-        Enrollment newEnrollment = new EnrollmentBuilder().build();
+        EnrollmentApply enrollmentApply = new EnrollmentApply(new Enrollments(E1), new Payment(1L, 1L, 300_000L), session.getSessionCore());
 
-
-        assertThatThrownBy(() -> session.addEnrollment(newEnrollment, new Payment(1L, 1L, 300_000L)))
+        assertThatThrownBy(() -> enrollmentApply.enroll(E1.getUser(), session.getId()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("이미 신청한 강의입니다.");
     }
