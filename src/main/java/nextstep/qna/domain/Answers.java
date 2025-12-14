@@ -33,4 +33,12 @@ public class Answers {
             answer.delete(loginUser);
         }
     }
+
+    public List<DeleteHistory> toDeleteHistories() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        for (Answer answer : answers) {
+            deleteHistories.add(answer.deleteHistory());
+        }
+        return deleteHistories;
+    }
 }
