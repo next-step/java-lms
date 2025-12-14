@@ -7,20 +7,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Question {
-    private Long id;
-
+public class Question extends DeletableBaseEntity {
     private QuestionContent content;
 
     private NsUser writer;
 
     private Answers answers = new Answers();
-
-    private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
 
     public Question() {
     }
@@ -30,13 +22,9 @@ public class Question {
     }
 
     public Question(Long id, NsUser writer, String title, String contents) {
-        this.id = id;
+        super(id);
         this.writer = writer;
         this.content = new QuestionContent(title, contents);
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public NsUser getWriter() {
@@ -52,14 +40,6 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    private void delete() {
-        this.deleted = true;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
     private void validateOwner(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
@@ -67,7 +47,7 @@ public class Question {
     }
 
     public DeleteHistory deleteHistory() {
-        return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
+        return new DeleteHistory(ContentType.QUESTION, getId(), writer, LocalDateTime.now());
     }
 
     public void delete(NsUser loginUser) throws CannotDeleteException {
