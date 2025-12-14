@@ -73,7 +73,7 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public void updateDeleted() {
+    private void delete() {
         this.deleted = true;
     }
 
@@ -85,28 +85,27 @@ public class Question {
         return answers;
     }
 
-    public void validateOwner(NsUser loginUser) throws CannotDeleteException {
+    private void validateOwner(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
     }
 
-    public DeleteHistory deleteQuestion() {
-        updateDeleted();
+    public DeleteHistory deleteHistory() {
         return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
     }
 
-    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+    public void delete(NsUser loginUser) throws CannotDeleteException {
         validateOwner(loginUser);
-        //answers.validateDeletableUser(loginUser);
+        delete();
 
-        return createDeleteHistories();
+        answers.deleteAll(loginUser);
     }
 
-    private List<DeleteHistory> createDeleteHistories() {
+    public List<DeleteHistory> toDeleteHistories() {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(deleteQuestion());
-        //deleteHistories.addAll(answers.deleteAll());
+        deleteHistories.add(deleteHistory());
+        deleteHistories.addAll(answers.toDeleteHistories());
         return deleteHistories;
     }
 
