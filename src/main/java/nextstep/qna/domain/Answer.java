@@ -14,7 +14,7 @@ public class Answer extends SoftDeleteAbleClass {
 
     private Question question;
 
-    private String contents;
+    private BoardContent boardContent;
 
     public Answer(long writerId, Question question, String contents) {
         this(null, writerId, question, contents);
@@ -32,7 +32,7 @@ public class Answer extends SoftDeleteAbleClass {
 
         this.writerId = writerId;
         this.question = question;
-        this.contents = contents;
+        this.boardContent = new BoardContent("" , contents);
     }
 
     public boolean isDeleted() {
@@ -65,6 +65,9 @@ public class Answer extends SoftDeleteAbleClass {
 
     @Override
     public String toString() {
-        return "Answer [id=" + id + ", writerId=" + writerId + ", contents=" + contents + "]";
+        return "Answer [id=" + id
+                + ", writerId=" + writerId
+                + ", contents=" + boardContent
+                + "]";
     }
 }

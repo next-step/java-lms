@@ -12,9 +12,7 @@ public class Question extends SoftDeleteAbleClass {
 
     private Long id;
 
-    private String title;
-
-    private String contents;
+    private BoardContent boardContent;
 
     private Long writerId;
 
@@ -27,8 +25,7 @@ public class Question extends SoftDeleteAbleClass {
     public Question(Long id, long writerId, String title, String contents) {
         this.id = id;
         this.writerId = writerId;
-        this.title = title;
-        this.contents = contents;
+        this.boardContent = new BoardContent(title, contents);
     }
 
     public boolean isOwner(long requesterId) {
@@ -99,7 +96,9 @@ public class Question extends SoftDeleteAbleClass {
 
     @Override
     public String toString() {
-        return "Question [id=" + id + ", title=" + title + ", contents=" + contents
-                + ", writerId=" + writerId + "]";
+        return "Question [id=" + id
+                + ", boardContents=" + boardContent
+                + ", writerId=" + writerId
+                + "]";
     }
 }
