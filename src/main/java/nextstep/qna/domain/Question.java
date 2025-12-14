@@ -44,7 +44,7 @@ public class Question extends DeletableBaseEntity {
     }
 
     public DeleteHistory deleteHistory() {
-        return new DeleteHistory(ContentType.QUESTION, getId(), writer, LocalDateTime.now());
+        return DeleteHistory.from(ContentType.QUESTION, getId(), writer, LocalDateTime.now());
     }
 
     public void delete(NsUser loginUser) throws CannotDeleteException {

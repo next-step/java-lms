@@ -65,6 +65,6 @@ public class Answer extends DeletableBaseEntity {
     }
 
     public DeleteHistory deleteHistory() {
-        return new DeleteHistory(ContentType.ANSWER, getId(), getWriter(), LocalDateTime.now());
+        return DeleteHistory.from(ContentType.ANSWER, getId(), getWriter(), LocalDateTime.now());
     }
 }

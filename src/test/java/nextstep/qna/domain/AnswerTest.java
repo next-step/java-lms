@@ -38,6 +38,6 @@ public class AnswerTest {
 
         DeleteHistory history = answer.deleteHistory();
 
-        assertThat(history).isEqualTo(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
+        assertThat(history).isEqualTo(DeleteHistory.from(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
     }
 }
