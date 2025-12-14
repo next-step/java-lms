@@ -4,6 +4,7 @@
 - [🚀 1단계 - 레거시 코드 리팩터링](./docs/01-refactoring.md)
 - [🚀 2단계 - 수강신청(도메인 모델)](./docs/02-lms-domain-model.md)
 - [🚀 3단계 - 수강신청(DB 적용)](./docs/03-lms-db.md)
+- [🚀 4단계 - 수강신청(요구사항 변경)](./docs/04-lms-refactor.md)
 
 ## 진행 방법
 * 학습 관리 시스템의 수강신청 요구사항을 파악한다.
