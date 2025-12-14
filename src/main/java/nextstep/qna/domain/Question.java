@@ -8,7 +8,7 @@ import java.util.List;
 import nextstep.qna.exception.unchecked.CannotDeleteException;
 import nextstep.qna.exception.unchecked.WrongRequestException;
 
-public class Question extends SoftDeleteAbleDomain {
+public class Question extends SoftDeleteAbleClass {
 
     private Long id;
 

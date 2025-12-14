@@ -6,7 +6,7 @@ import nextstep.qna.exception.unchecked.NotFoundException;
 import nextstep.qna.exception.unchecked.UnAuthorizedException;
 import nextstep.qna.exception.unchecked.WrongRequestException;
 
-public class Answer extends SoftDeleteAbleDomain{
+public class Answer extends SoftDeleteAbleClass {
 
     private Long id;
 

@@ -2,7 +2,7 @@ package nextstep.qna.domain;
 
 import java.time.LocalDateTime;
 
-public abstract class SoftDeleteAbleDomain {
+public abstract class SoftDeleteAbleClass {
 
     private boolean deleted = false;
 
