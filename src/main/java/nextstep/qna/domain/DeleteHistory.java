@@ -1,50 +1,53 @@
 package nextstep.qna.domain;
 
+import static java.util.Objects.*;
+
+import nextstep.common.domain.BaseEntity;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class DeleteHistory {
-    private Long id;
-
+public class DeleteHistory extends BaseEntity {
     private ContentType contentType;
-
     private Long contentId;
-
     private Long deletedId;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    public DeleteHistory() {
+    public DeleteHistory(ContentType contentType, Long contentId, Long deletedId, LocalDateTime createdDate) {
+        this(0L, contentType, contentId, deletedId, createdDate, null);
     }
 
-    public DeleteHistory(ContentType contentType, Long contentId, Long deletedId, LocalDateTime createdDate) {
+    public DeleteHistory(Long id, ContentType contentType, Long contentId, Long deletedId, LocalDateTime createdDate, LocalDateTime updateDate) {
+        super(id, createdDate, updateDate);
         this.contentType = contentType;
         this.contentId = contentId;
         this.deletedId = deletedId;
-        this.createdDate = createdDate;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         DeleteHistory that = (DeleteHistory) o;
-        return Objects.equals(id, that.id) &&
-                contentType == that.contentType &&
-                Objects.equals(contentId, that.contentId) &&
-                Objects.equals(deletedId, that.deletedId);
+        return super.equals(o)
+                && contentType == that.contentType
+                && Objects.equals(contentId, that.contentId)
+                && Objects.equals(deletedId, that.deletedId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, contentType, contentId, deletedId);
+        return hash(super.hashCode(), contentType, contentId, deletedId);
     }
 
     @Override
     public String toString() {
-        return "DeleteHistory [id=" + id + ", contentType=" + contentType + ", contentId=" + contentId + ", deletedBy="
-                + deletedId + ", createdDate=" + createdDate + "]";
+        return "DeleteHistory{" +
+                "id=" + super.toString() +
+                ", contentType=" + contentType +
+                ", contentId=" + contentId +
+                ", deletedId=" + deletedId +
+                '}';
     }
 }

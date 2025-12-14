@@ -47,12 +47,12 @@ public class Answer extends SoftDeletableBaseEntity {
         return this.writerId == writerId;
     }
 
-    public DeleteHistory createAnswerDeleteHistory() {
+    public DeleteHistory createAnswerDeleteHistory(LocalDateTime deletedDateTime) {
         if (!isDeleted()) {
             throw new WrongRequestException("삭제되지 않은 답변은 삭제이력을 생성할 수 없습니다.");
         }
 
-        return new DeleteHistory(ContentType.ANSWER, super.getId(), this.writerId, LocalDateTime.now());
+        return new DeleteHistory(ContentType.ANSWER, super.getId(), this.writerId, deletedDateTime);
     }
 
     public void toQuestion(Question question) {

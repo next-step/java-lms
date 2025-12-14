@@ -3,8 +3,8 @@ package nextstep.qna.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.time.LocalDateTime;
 import nextstep.qna.exception.unchecked.WrongRequestException;
-import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
 public class AnswerTest {
@@ -24,7 +24,7 @@ public class AnswerTest {
         Answer answer = new Answer(1L, question, "Answers Contents1");
         answer.putOnDelete(1L);
 
-        assertThat(answer.createAnswerDeleteHistory()).isNotNull();
+        assertThat(answer.createAnswerDeleteHistory(LocalDateTime.now())).isNotNull();
     }
 
     @Test
@@ -33,7 +33,7 @@ public class AnswerTest {
         Answer answer = new Answer(1L, question, "Answers Contents1");
 
         assertThatThrownBy(
-                answer::createAnswerDeleteHistory
+                () -> answer.createAnswerDeleteHistory(LocalDateTime.now())
         ).isInstanceOf(WrongRequestException.class);
     }
 

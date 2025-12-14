@@ -21,11 +21,9 @@ public class QnAService {
     private DeleteHistoryService deleteHistoryService;
 
     @Transactional
-    public void deleteQuestion(long requesterId, long questionId) {
+    public void deleteQuestion(long requesterId, long questionId, LocalDateTime fixedDeletedDateTime) {
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(NotFoundException::new);
-
-        LocalDateTime fixedDeletedDateTime = LocalDateTime.now();
 
         List<DeleteHistory> deleteHistories = new QnADomainService()
                 .deleteQuestion(requesterId, question, fixedDeletedDateTime);

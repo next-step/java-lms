@@ -84,7 +84,7 @@ public class Question extends SoftDeletableBaseEntity {
         deleteHistories.add(createQuestionDeleteHistory(deletedDateTime));
 
         for (Answer answer : answers) {
-            deleteHistories.add(answer.createAnswerDeleteHistory());
+            deleteHistories.add(answer.createAnswerDeleteHistory(deletedDateTime));
         }
 
         return deleteHistories;

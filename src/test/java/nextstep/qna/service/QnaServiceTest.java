@@ -24,6 +24,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class QnaServiceTest {
+
     @Mock
     private QuestionRepository questionRepository;
 
@@ -46,47 +47,51 @@ public class QnaServiceTest {
     @Test
     public void delete_성공() {
         when(questionRepository.findById(1L)).thenReturn(Optional.of(question));
+        LocalDateTime fixedNow = LocalDateTime.now();
 
         assertThat(question.isDeleted()).isFalse();
-        qnAService.deleteQuestion(1L, 1L);
+        qnAService.deleteQuestion(1L, 1L, fixedNow);
 
         assertThat(question.isDeleted()).isTrue();
-        verifyDeleteHistories();
+        verifyDeleteHistories(fixedNow);
     }
 
     @Test
     public void delete_다른_사람이_쓴_글() {
         when(questionRepository.findById(1L)).thenReturn(Optional.of(question));
+        LocalDateTime fixedNow = LocalDateTime.now();
 
         assertThatThrownBy(() ->
-            qnAService.deleteQuestion(2L, 1L)
+                qnAService.deleteQuestion(2L, 1L, fixedNow)
         ).isInstanceOf(CannotDeleteException.class);
     }
 
     @Test
     public void delete_성공_질문자_답변자_같음() {
         when(questionRepository.findById(1L)).thenReturn(Optional.of(question));
+        LocalDateTime fixedNow = LocalDateTime.now();
 
-        qnAService.deleteQuestion(1L, 1L);
+        qnAService.deleteQuestion(1L, 1L, fixedNow);
 
         assertThat(question.isDeleted()).isTrue();
         assertThat(answer.isDeleted()).isTrue();
-        verifyDeleteHistories();
+        verifyDeleteHistories(fixedNow);
     }
 
     @Test
     public void delete_답변_중_다른_사람이_쓴_글() {
         when(questionRepository.findById(1L)).thenReturn(Optional.of(question));
+        LocalDateTime fixedNow = LocalDateTime.now();
 
         assertThatThrownBy(() ->
-            qnAService.deleteQuestion(2L, 1L)
+                qnAService.deleteQuestion(2L, 1L, fixedNow)
         ).isInstanceOf(CannotDeleteException.class);
     }
 
-    private void verifyDeleteHistories() {
+    private void verifyDeleteHistories(LocalDateTime fixedNow) {
         List<DeleteHistory> deleteHistories = Arrays.asList(
-                new DeleteHistory(ContentType.QUESTION, 1L, 1L, LocalDateTime.now()),
-                new DeleteHistory(ContentType.ANSWER, 11L, 1L, LocalDateTime.now()));
+                new DeleteHistory(ContentType.QUESTION, 1L, 1L, fixedNow),
+                new DeleteHistory(ContentType.ANSWER, 11L, 1L, fixedNow));
         verify(deleteHistoryService).saveAll(deleteHistories);
     }
 }
