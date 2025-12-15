@@ -8,7 +8,7 @@ class SessionInfoTest {
 
     @Test
     void imageNull_throwsExcepiton() {
-        assertThatThrownBy(() -> new SessionInfo(PeriodTest.P1, SessionPricingTest.FREE_SP, null))
+        assertThatThrownBy(() -> new SessionInfo(PeriodTest.P1, null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("강의 커버 이미지는 필수입니다");
     }

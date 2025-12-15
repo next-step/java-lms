@@ -1,10 +1,11 @@
 package nextstep.sessions.domain;
 
 import java.time.LocalDate;
+import nextstep.payments.domain.Payment;
 
 public class Session {
 
-    private final Period period;
+    private SessionInfo sessionInfo;
 
     private SessionStatus status;
 
@@ -12,7 +13,7 @@ public class Session {
 
     private Capacity capacity;
 
-    private SessionImage image;
+    private EnrollmentPolicy enrollmentPolicy;
 
     Session(LocalDate startDate, LocalDate endDate, boolean isPaid, Integer maxCapacity, int fee, int enrollCount,
             SessionImage image) {
@@ -21,37 +22,33 @@ public class Session {
 
     public Session(LocalDate startDate, LocalDate endDate, boolean isPaid, Integer maxCapacity, int fee,
                    SessionImage image) {
-        this(new Period(startDate, endDate), new SessionPricing(isPaid, fee), new Capacity(maxCapacity), image);
+        this(new SessionInfo(new Period(startDate, endDate), image),
+                new SessionPricing(isPaid, fee), new Capacity(maxCapacity));
     }
 
-    public Session(Period period, SessionPricing pricing, Capacity capacity,
-                   SessionImage image) {
+    public Session(SessionInfo sessionInfo, SessionPricing pricing, Capacity capacity) {
         validatePricingAndCapacity(pricing, capacity);
-        validateImage(image);
-        this.period = period;
+        this.sessionInfo = sessionInfo;
         this.status = SessionStatus.PREPARING;
         this.pricing = pricing;
         this.capacity = capacity;
-        this.image = image;
+        this.enrollmentPolicy = createEnrollmentPolicy(pricing);
     }
 
     public SessionStatus status() {
         return status;
     }
 
-    public boolean canEnroll() {
-        if (!capacity.canEnroll()) {
-            return false;
-        }
-        return status == SessionStatus.OPEN;
+    public boolean canEnroll(Payment payment) {
+        return enrollmentPolicy.canEnroll(capacity, payment) && isOpen();
     }
 
     public void startRecruiting() {
         this.status = SessionStatus.OPEN;
     }
 
-    public void enroll() {
-        if (!canEnroll()) {
+    public void enroll(Payment payment) {
+        if (!canEnroll(payment)) {
             throw new IllegalArgumentException("수강 신청을 할 수 없습니다");
         }
         this.capacity = capacity.increaseEnrollCount();
@@ -67,10 +64,15 @@ public class Session {
         }
     }
 
-    private static void validateImage(SessionImage image) {
-        if (image == null) {
-            throw new IllegalArgumentException("강의 커버 이미지는 필수입니다.");
+    private EnrollmentPolicy createEnrollmentPolicy(SessionPricing pricing) {
+        if (pricing.isPaid()) {
+            return new PaidEnrollmentPolicy(pricing.fee());
         }
+        return new FreeEnrollmentPolicy();
+    }
+
+    private boolean isOpen() {
+        return status == SessionStatus.OPEN;
     }
 
 }

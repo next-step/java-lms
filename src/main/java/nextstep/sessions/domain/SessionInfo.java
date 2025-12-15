@@ -6,19 +6,12 @@ public class SessionInfo {
 
     private final Period period;
 
-    private final SessionPricing pricing;
-
     private SessionImage image;
 
-    public SessionInfo(Period period, SessionPricing pricing, SessionImage image) {
+    public SessionInfo(Period period, SessionImage image) {
         validateImage(image);
         this.period = period;
-        this.pricing = pricing;
         this.image = image;
-    }
-
-    public SessionPricing pricing() {
-        return pricing;
     }
 
     private static void validateImage(SessionImage image) {

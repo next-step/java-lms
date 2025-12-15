@@ -3,6 +3,7 @@ package nextstep.sessions.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import nextstep.payments.domain.PaymentTest;
 import org.junit.jupiter.api.Test;
 
 class SessionTest {
@@ -28,13 +29,13 @@ class SessionTest {
     void whenSessionStatusIsOpen_thenCanEnrollIsTrue() {
         Session session = new SessionTestBuilder().free().build();
         session.startRecruiting();
-        assertThat(session.canEnroll()).isTrue();
+        assertThat(session.canEnroll(PaymentTest.PAYMENT_1000)).isTrue();
     }
 
     @Test
     void whenSessionStatusIsNotOpen_thenCanEnrollIsFalse() {
         Session session = new SessionTestBuilder().free().build();
-        assertThat(session.canEnroll()).isFalse();
+        assertThat(session.canEnroll(PaymentTest.PAYMENT_1000)).isFalse();
     }
 
     @Test
@@ -43,7 +44,7 @@ class SessionTest {
                 .paid(1, 100_000)
                 .enrollCount(1)
                 .build();
-        assertThatThrownBy(session::enroll)
+        assertThatThrownBy(() -> session.enroll(PaymentTest.PAYMENT_1000))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("수강 신청을 할 수 없습니다");
     }
