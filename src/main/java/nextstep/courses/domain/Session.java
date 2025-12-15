@@ -25,13 +25,12 @@ public class Session {
         return enrollments.countEnrollments();
     }
 
-    public void enroll(Enrollment enrollment) {
+    public void enroll(Enrollment enrollment, Money money) {
         validationRecruiting();
 
-        enrollment.validateBelongsTo(this);
+        enrollment.validateBelongsTo(getId());
 
-        enrollmentRule.validateMoney(enrollment.getMoney());
-        enrollmentRule.validateCapacity(enrollments.countEnrollments());
+        enrollmentRule.validate(money, countEnrollments());
 
         enrollments.enroll(enrollment);
     }

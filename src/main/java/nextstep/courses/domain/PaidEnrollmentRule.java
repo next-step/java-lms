@@ -14,8 +14,8 @@ public class PaidEnrollmentRule implements EnrollmentRule {
     }
 
     @Override
-    public void validate(int money, int enrolledCount) {
-        validateMoney(new Money(money));
+    public void validate(Money money, int enrolledCount) {
+        validateMoney(money);
         validateCapacity(enrolledCount);
     }
 

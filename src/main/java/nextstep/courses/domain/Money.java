@@ -3,7 +3,9 @@ package nextstep.courses.domain;
 import java.util.Objects;
 
 public class Money {
-    private int money;
+    public static  final Money ZERO = new Money(0);
+
+    private final int money;
 
     public Money(int money) {
         validation(money);
@@ -21,7 +23,7 @@ public class Money {
     }
 
     public boolean matches(Money money) {
-        return this.money == money.getMoney();
+        return matches(money.getMoney());
     }
 
     public int getMoney() {

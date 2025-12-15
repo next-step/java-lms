@@ -1,7 +1,7 @@
 package nextstep.courses.domain;
 
 public interface EnrollmentRule {
-    void validate(int money, int enrolledCount);
+    void validate(Money money, int enrolledCount);
 
     void validateMoney(Money money);
 
