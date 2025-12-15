@@ -41,6 +41,14 @@ public class Capacity {
         return maxCapacity == null;
     }
 
+    public boolean isFull() {
+        return enrollCount >= maxCapacity;
+    }
+
+    public boolean hasAvailableSeat() {
+        return !isFull();
+    }
+
     public Capacity increaseEnrollCount() {
         if (!canEnroll()) {
             throw new IllegalArgumentException(ERROR_CANNOT_ENROLL);

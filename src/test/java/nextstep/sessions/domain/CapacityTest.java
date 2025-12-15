@@ -36,6 +36,18 @@ class CapacityTest {
     }
 
     @Test
+    void enrollEqualsMax_isFullReturnsTrue() {
+        Capacity capacity = new Capacity(3, 3);
+        assertThat(capacity.isFull()).isTrue();
+    }
+
+    @Test
+    void enrollLessThanMax_isFullReturnsFalse() {
+        Capacity capacity = new Capacity(3, 2);
+        assertThat(capacity.isFull()).isFalse();
+    }
+
+    @Test
     void increaseEnrollCount_incrementsEnrollCountByOne() {
         Capacity capacity = new Capacity(null);
         Capacity afterIncrease = capacity.increaseEnrollCount();
