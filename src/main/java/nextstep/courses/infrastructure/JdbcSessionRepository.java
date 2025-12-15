@@ -99,7 +99,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Sessions findByCourseId(Long courseId) {
-        String sql = "select s.id, s.cohort, s.start_date, s.end_date, s.image_id, s.status, s.progress_status, s.recruitment_status " +
+        String sql = "select s.id, s.cohort, s.start_date, s.end_date, s.image_id, s.progress_status, s.recruitment_status " +
                 "s.session_type, s.max_capacity, s.fee, " +
                 "from session s " +
                 "where s.course_id = ? " +
@@ -132,7 +132,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(Long sessionId) {
-        String sql = "select s.id, s.cohort, s.start_date, s.end_date, s.image_id, s.status, s.session_type, s.max_capacity, s.fee, " +
+        String sql = "select s.id, s.cohort, s.start_date, s.end_date, s.image_id, s.session_type, s.max_capacity, s.fee, " +
                 "from session s " +
                 "where s.id = ?";
 
