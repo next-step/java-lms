@@ -93,6 +93,9 @@ create table session_enrollment
     session_id  bigint    not null,
     ns_user_id  bigint    not null,
     enrolled_at timestamp not null,
+    enrollment_status varchar(20),
+    approved_at timestamp,
+    approved_by bigint,
     primary key (id),
     foreign key (session_id) references session (id),
     foreign key (ns_user_id) references ns_user (id)

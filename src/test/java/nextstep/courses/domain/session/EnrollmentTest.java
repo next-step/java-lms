@@ -58,4 +58,26 @@ public class EnrollmentTest {
                 .hasMessageContaining("최대 수강 인원을 초과");
     }
 
+    @Test
+    public void 신청서_생성() {
+        Enrollment enrollment = new Enrollment(1L, RecruitmentStatus.RECRUITING, new FreeSessionType(), Collections.emptyList());
+
+        EnrollmentApplication application = enrollment.apply(1L, null);
+
+        assertThat(application.getSessionId()).isEqualTo(1L);
+        assertThat(application.getNsUserId()).isEqualTo(1L);
+        assertThat(application.getStatus()).isEqualTo(EnrollmentStatus.PENDING);
+    }
+
+    @Test
+    public void 신청서_승인하여_수강생_등록() {
+        Enrollment enrollment = new Enrollment(1L, RecruitmentStatus.RECRUITING, new FreeSessionType(), Collections.emptyList());
+        EnrollmentApplication application = enrollment.apply(1L, null);
+
+        EnrolledStudent student = enrollment.approve(application, 100L);
+
+        assertThat(student.getSessionId()).isEqualTo(1L);
+        assertThat(student.getNsUserId()).isEqualTo(1L);
+        assertThat(application.getStatus()).isEqualTo(EnrollmentStatus.APPROVED);
+    }
 }
