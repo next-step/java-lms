@@ -2,40 +2,28 @@ package nextstep.sessions.domain;
 
 public class SessionImage {
 
-    private final String fileName;
+    private final FileName fileName;
     private final ImageSize imageSize;
     private final ImageDimension imageDimension;
     private final ImageType type;
 
     SessionImage(String fileName, long size, int width, int height) {
-        this(fileName, new ImageSize(size), new ImageDimension(width, height));
+        this(new FileName(fileName), new ImageSize(size), new ImageDimension(width, height));
     }
 
-    public SessionImage(String fileName, ImageSize imageSize, ImageDimension imageDimension) {
-        validateFileName(fileName);
+    public SessionImage(FileName fileName, ImageSize imageSize, ImageDimension imageDimension) {
         this.fileName = fileName;
         this.imageSize = imageSize;
         this.imageDimension = imageDimension;
-        this.type = extractType(fileName);
+        this.type = ImageType.from(fileName.extension());
     }
 
     public String fileName() {
-        return fileName;
+        return fileName.value();
     }
 
     public long size() {
         return imageSize.value();
-    }
-
-    private void validateFileName(String fileName) {
-        if (fileName == null || fileName.trim().isEmpty()) {
-            throw new IllegalArgumentException("파일명은 빈 값일 수 없습니다");
-        }
-    }
-
-    private ImageType extractType(String fileName) {
-        String ext = fileName.substring(fileName.lastIndexOf('.') + 1);
-        return ImageType.from(ext);
     }
 
 }

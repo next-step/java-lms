@@ -10,6 +10,10 @@ public class FileName {
         this.value = value;
     }
 
+    public String value() {
+        return value;
+    }
+
     public String extension() {
         return value.substring(value.lastIndexOf('.') + 1);
     }
