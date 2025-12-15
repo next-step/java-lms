@@ -1,6 +1,7 @@
 package nextstep.sessions.domain;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
@@ -17,6 +18,28 @@ public class Enrollment {
         this.user = user;
         this.payment = payment;
         this.enrolledAt = LocalDateTime.now();
+    }
+
+    public Payment payment() {
+        return payment;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Enrollment that = (Enrollment) o;
+        return Objects.equals(user, that.user) && Objects.equals(payment, that.payment)
+                && Objects.equals(enrolledAt, that.enrolledAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(user, payment, enrolledAt);
     }
 
     private static void validateUserPayMatch(NsUser user, Payment payment) {

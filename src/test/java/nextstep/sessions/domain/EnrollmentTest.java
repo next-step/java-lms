@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 
 class EnrollmentTest {
 
+    public static Enrollment E1 = new Enrollment(NsUserTest.JAVAJIGI, PaymentTest.PAYMENT_1000);
+
     @Test
     void validateUserAndPayment() {
         assertThatThrownBy(() -> new Enrollment(NsUserTest.SANJIGI, PaymentTest.PAYMENT_1000))
