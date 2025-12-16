@@ -71,6 +71,7 @@ public class Question {
 
     public void delete(NsUser loginUser) throws CannotDeleteException {
         validateOwner(loginUser);
+        deleteAnswers(loginUser);
         this.deleted = true;
     }
 
@@ -82,6 +83,12 @@ public class Question {
 
     private boolean isNotOwner(NsUser loginUser) {
         return !writer.equals(loginUser);
+    }
+
+    private void deleteAnswers(NsUser loginUser) throws CannotDeleteException {
+        for (Answer answer : answers) {
+            answer.delete(loginUser);
+        }
     }
 
     public boolean isDeleted() {

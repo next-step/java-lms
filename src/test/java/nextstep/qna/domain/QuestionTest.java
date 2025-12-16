@@ -24,4 +24,13 @@ public class QuestionTest {
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessageContaining("질문을 삭제할 권한이 없습니다.");
     }
+
+    @Test
+    void 질문_작성자가_아닌_다른_사용자가_댓글을_남긴_경우에_삭제를_시도하면_예외가_발생한다() {
+        Q1.addAnswer(AnswerTest.A2);
+
+        assertThatThrownBy(() -> Q1.delete(NsUserTest.JAVAJIGI))
+                .isInstanceOf(CannotDeleteException.class)
+                .hasMessageContaining("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+    }
 }
