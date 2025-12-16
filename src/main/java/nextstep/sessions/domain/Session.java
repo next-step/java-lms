@@ -69,7 +69,7 @@ public class Session {
     }
 
     private void validatePaymentAmount(Enrollment enrollment) {
-        if (pricing.isPaid() && !enrollment.payment().isPaidFor(pricing.fee())) {
+        if (!enrollment.canPayFor(pricing)) {
             throw new IllegalArgumentException(ERROR_PAYMENT_AMOUNT_MISMATCH);
         }
     }

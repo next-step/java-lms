@@ -24,6 +24,10 @@ public class Enrollment {
         return payment;
     }
 
+    public boolean canPayFor(SessionPricing pricing) {
+        return !pricing.isPaid() || payment.isPaidFor(pricing.fee());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
