@@ -3,6 +3,8 @@ package nextstep.qna.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
@@ -32,5 +34,21 @@ public class QuestionTest {
         assertThatThrownBy(() -> Q1.delete(NsUserTest.JAVAJIGI))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessageContaining("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+    }
+
+    @Test
+    void 삭제_히스토리를_생성한다() {
+        Question question = new Question(NsUserTest.JAVAJIGI, "title", "contents");
+        Answer answer = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents");
+
+        question.addAnswer(answer);
+
+        List<DeleteHistory> deleteHistories = question.deleteHistories();
+
+        assertThat(deleteHistories).hasSize(2);
+        assertThat(deleteHistories).contains(
+                new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now()),
+                new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now())
+        );
     }
 }

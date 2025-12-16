@@ -30,4 +30,13 @@ public class Answers {
     public List<Answer> value() {
         return answers;
     }
+
+    public List<DeleteHistory> deleteHistories() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
+        for (Answer answer : answers) {
+            deleteHistories.add(answer.deleteHistory());
+        }
+        return deleteHistories;
+    }
 }
