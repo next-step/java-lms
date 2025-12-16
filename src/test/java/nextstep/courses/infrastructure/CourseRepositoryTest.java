@@ -1,7 +1,8 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.Course;
-import nextstep.courses.domain.CourseRepository;
+import nextstep.courses.course.domain.Course;
+import nextstep.courses.course.service.repository.CourseRepository;
+import nextstep.courses.course.infrastructure.JdbcCourseRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
