@@ -7,7 +7,7 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
-public class Question {
+public class Question extends DeletableBaseEntity {
     private Long id;
 
     private QuestionContent questionContent;
@@ -16,12 +16,6 @@ public class Question {
 
     private Answers answers = new Answers();
 
-    private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
-
     public Question() {
     }
 
@@ -29,10 +23,18 @@ public class Question {
         this(0L, writer, title, contents);
     }
 
+    public Question(NsUser writer, QuestionContent questionContent) {
+        this(0L, writer, questionContent);
+    }
+
     public Question(Long id, NsUser writer, String title, String contents) {
+        this(id, writer, new QuestionContent(title, contents));
+    }
+
+    public Question(Long id, NsUser writer, QuestionContent questionContent) {
         this.id = id;
         this.writer = writer;
-        this.questionContent = new QuestionContent(title, contents);
+        this.questionContent = questionContent;
     }
 
     public Long getId() {
@@ -51,7 +53,7 @@ public class Question {
     public void delete(NsUser loginUser) throws CannotDeleteException {
         validateOwner(loginUser);
         answers.deleteAll(loginUser);
-        this.deleted = true;
+        delete();
     }
 
     private void validateOwner(NsUser writer) throws CannotDeleteException {
@@ -65,7 +67,7 @@ public class Question {
     }
 
     public boolean isDeleted() {
-        return deleted;
+        return super.isDeleted();
     }
 
     public Answers answers() {
