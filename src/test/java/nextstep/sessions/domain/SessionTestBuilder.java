@@ -4,10 +4,13 @@ import java.time.LocalDate;
 
 class SessionTestBuilder {
 
+    private Long id = 1L;
     private LocalDate startDate = PeriodTest.START_DATE;
     private LocalDate endDate = PeriodTest.END_DATE;
+    private SessionStatus status = SessionStatus.PREPARING;
     private boolean paid = false;
-    private Integer maxCapacity = null;
+    private Integer maxCapacity = Integer.MAX_VALUE;
+    private boolean unlimited = true;
     private int fee = 0;
     private int enrollCount = 0;
     private SessionImage image = SessionImageTest.IMAGE;
@@ -15,14 +18,20 @@ class SessionTestBuilder {
     public SessionTestBuilder paid(Integer maxCapacity, int fee) {
         this.paid = true;
         this.maxCapacity = maxCapacity;
+        this.unlimited = false;
         this.fee = fee;
         return this;
     }
 
     public SessionTestBuilder free() {
         this.paid = false;
-        this.maxCapacity = null;
+        this.maxCapacity = Integer.MAX_VALUE;
         this.fee = 0;
+        return this;
+    }
+
+    public SessionTestBuilder id(Long id) {
+        this.id = id;
         return this;
     }
 
@@ -43,8 +52,9 @@ class SessionTestBuilder {
 
     public Session build() {
         if (paid) {
-            return new Session(startDate, endDate, true, maxCapacity, fee, enrollCount, image);
+            return new Session(id, startDate, endDate, true, maxCapacity, false, fee, enrollCount, image);
         }
-        return new Session(startDate, endDate, false, maxCapacity, fee, image);
+        return new Session(id, startDate, endDate, false, maxCapacity, true, fee, enrollCount, image);
     }
+
 }

@@ -7,51 +7,51 @@ import org.junit.jupiter.api.Test;
 
 class CapacityTest {
 
+    public static final Capacity FREE_CAPACITY = new Capacity(Integer.MAX_VALUE, true);
+    public static final Capacity PAID_CAPACITY = new Capacity(10, true);
+
     @Test
-    void freeCapacity_maxCapacityIsNull() {
-        Capacity freeCapacity = new Capacity(null);
-        assertThat(freeCapacity.maxCapacity()).isNull();
-        assertThat(freeCapacity.canEnroll()).isTrue();
+    void freeCapacity_isUnlimitedIsTrue() {
+        assertThat(FREE_CAPACITY.isUnlimited()).isTrue();
+        assertThat(FREE_CAPACITY.canEnroll()).isTrue();
     }
 
     @Test
     void paidCapacity_maxCapacityMustBePositive() {
-        Capacity paidCapacity = new Capacity(5, 0);
-        assertThat(paidCapacity.maxCapacity()).isEqualTo(5);
-        assertThat(paidCapacity.canEnroll()).isTrue();
+        assertThat(PAID_CAPACITY.maxCapacity()).isEqualTo(10);
+        assertThat(PAID_CAPACITY.canEnroll()).isTrue();
     }
 
     @Test
     void paidCapacity_invalidMaxCapacity_throwsException() {
-        assertThatThrownBy(() -> new Capacity(0, 0))
+        assertThatThrownBy(() -> new Capacity(0, false, 0))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("유료 강의는 최대 수강인원이 있어야 합니다");
     }
 
     @Test
     void enrollCountExceedsMax_throwsException() {
-        assertThatThrownBy(() -> new Capacity(1, 2))
+        assertThatThrownBy(() -> new Capacity(1, false, 2))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("수강 인원은 수강 정원을 초과할 수 없습니다");
     }
 
     @Test
     void enrollEqualsMax_isFullReturnsTrue() {
-        Capacity capacity = new Capacity(3, 3);
+        Capacity capacity = new Capacity(3, false, 3);
         assertThat(capacity.isFull()).isTrue();
     }
 
     @Test
     void enrollLessThanMax_isFullReturnsFalse() {
-        Capacity capacity = new Capacity(3, 2);
+        Capacity capacity = new Capacity(3, false, 2);
         assertThat(capacity.isFull()).isFalse();
     }
 
     @Test
     void increaseEnrollCount_incrementsEnrollCountByOne() {
-        Capacity capacity = new Capacity(null);
-        Capacity afterIncrease = capacity.increaseEnrollCount();
-        assertThat(afterIncrease.enrollCount() - capacity.enrollCount()).isEqualTo(1);
+        Capacity afterIncrease = FREE_CAPACITY.increaseEnrollCount();
+        assertThat(afterIncrease.enrollCount() - FREE_CAPACITY.enrollCount()).isEqualTo(1);
     }
 
 }

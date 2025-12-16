@@ -9,7 +9,7 @@ class FreeEnrollmentPolicyTest {
 
     @Test
     void validate_throwsException_whenCapacityIsLimited() {
-        Capacity limitedCapacity = new Capacity(3);
+        Capacity limitedCapacity = new Capacity(3, false);
         FreeEnrollmentPolicy policy = new FreeEnrollmentPolicy();
         assertThatThrownBy(() -> policy.validate(limitedCapacity))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -18,7 +18,7 @@ class FreeEnrollmentPolicyTest {
 
     @Test
     void validate_passes_whenCapacityIsUnlimited() {
-        Capacity unlimitedCapacity = new Capacity(null);
+        Capacity unlimitedCapacity = CapacityTest.FREE_CAPACITY;
         FreeEnrollmentPolicy policy = new FreeEnrollmentPolicy();
         assertThatCode(() -> policy.validate(unlimitedCapacity))
                 .doesNotThrowAnyException();

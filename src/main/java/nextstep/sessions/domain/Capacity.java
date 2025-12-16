@@ -10,18 +10,21 @@ public class Capacity {
     private static final int DEFAULT_ENROLL_COUNT = 0;
 
     private final Integer maxCapacity;
+    private final boolean unlimited;
     private final int enrollCount;
 
-    public Capacity(Integer maxCapacity) {
-        this(maxCapacity, DEFAULT_ENROLL_COUNT);
+
+    public Capacity(Integer maxCapacity, boolean unlimited) {
+        this(maxCapacity, unlimited, DEFAULT_ENROLL_COUNT);
     }
 
-    Capacity(Integer maxCapacity, int enrollCount) {
+    public Capacity(Integer maxCapacity, boolean unlimited, int enrollCount) {
         validateMaxCapacity(maxCapacity);
         validateEnrollCount(enrollCount);
         validateEnrollCountWithinCapacity(maxCapacity, enrollCount);
 
         this.maxCapacity = maxCapacity;
+        this.unlimited = unlimited;
         this.enrollCount = enrollCount;
     }
 
@@ -34,11 +37,11 @@ public class Capacity {
     }
 
     public boolean canEnroll() {
-        return maxCapacity == null || enrollCount < maxCapacity;
+        return unlimited || enrollCount < maxCapacity;
     }
 
     public boolean isUnlimited() {
-        return maxCapacity == null;
+        return unlimited;
     }
 
     public boolean isFull() {
@@ -53,11 +56,11 @@ public class Capacity {
         if (!canEnroll()) {
             throw new IllegalArgumentException(ERROR_CANNOT_ENROLL);
         }
-        return new Capacity(maxCapacity, enrollCount + 1);
+        return new Capacity(maxCapacity, unlimited, enrollCount + 1);
     }
 
-    private static void validateMaxCapacity(Integer maxCapacity) {
-        if (maxCapacity != null && maxCapacity <= 0) {
+    private void validateMaxCapacity(Integer maxCapacity) {
+        if (!unlimited && (maxCapacity == null || maxCapacity <= 0)) {
             throw new IllegalArgumentException(ERROR_MAX_CAPACITY_REQUIRED);
         }
     }
