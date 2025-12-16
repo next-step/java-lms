@@ -10,9 +10,7 @@ import java.time.LocalDateTime;
 public class Question {
     private Long id;
 
-    private String title;
-
-    private String contents;
+    private QuestionContent questionContent;
 
     private NsUser writer;
 
@@ -34,30 +32,11 @@ public class Question {
     public Question(Long id, NsUser writer, String title, String contents) {
         this.id = id;
         this.writer = writer;
-        this.title = title;
-        this.contents = contents;
+        this.questionContent = new QuestionContent(title, contents);
     }
 
     public Long getId() {
         return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
     }
 
     public NsUser getWriter() {
@@ -102,6 +81,7 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+        return "Question [id=" + getId() + ", title=" + questionContent.title()
+                + ", contents=" + questionContent.contents() + ", writer=" + writer + "]";
     }
 }
