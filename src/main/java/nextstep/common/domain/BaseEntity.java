@@ -8,18 +8,22 @@ public abstract class BaseEntity {
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
 
-    protected BaseEntity(Long id) {
-        this(id, LocalDateTime.now(), LocalDateTime.now());
-    }
-
-    public BaseEntity(Long id, LocalDateTime createdDate, LocalDateTime updatedDate) {
+    protected BaseEntity(Long id, LocalDateTime createdDate, LocalDateTime updatedDate) {
         this.id = id;
         this.createdDate = createdDate;
         this.updatedDate = updatedDate;
     }
 
-    public Long getId() {
+    protected Long getId() {
         return id;
+    }
+
+    protected LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    protected LocalDateTime getUpdatedDate() {
+        return updatedDate;
     }
 
     @Override

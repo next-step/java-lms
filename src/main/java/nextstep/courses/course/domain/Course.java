@@ -1,28 +1,21 @@
 package nextstep.courses.course.domain;
 
 import java.time.LocalDateTime;
+import nextstep.common.domain.BaseEntity;
 import nextstep.courses.course.domain.enumaration.CourseChargeType;
 
-public class Course {
-    private Long id;
-
+public class Course extends BaseEntity {
     private String title;
-
     private Long creatorId;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
     private CourseChargeType courseChargeType;
 
-    public Course() {
-    }
 
     public Course(String title, Long creatorId) {
         this(0L, title, creatorId, LocalDateTime.now(), null, CourseChargeType.PAID);
     }
 
+    // TODO 중요한 도메인 객체에서 여러가지 생성자 버전을 외부에 제공할때 식별자를 외부에 열어놓는다는것 자체가 아직은 좀 불안하네요.
+    //  일단 주생성자에만 식별자 파라미터를 열어놓고 그 외엔 모두 닫아놓는 방식으로 구현해보려고 하는데 어떻게 생각하시나요?
     public Course(String title, Long creatorId, CourseChargeType courseChargeType) {
         this(0L, title, creatorId, LocalDateTime.now(), null, courseChargeType);
     }
@@ -34,12 +27,7 @@ public class Course {
             LocalDateTime createdAt,
             LocalDateTime updatedAt
     ) {
-        this.id = id;
-        this.title = title;
-        this.creatorId = creatorId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.courseChargeType = CourseChargeType.PAID;
+        this(id, title, creatorId, createdAt, updatedAt, CourseChargeType.PAID);
     }
 
     public Course(
@@ -50,11 +38,9 @@ public class Course {
             LocalDateTime updatedAt,
             CourseChargeType courseChargeType
     ) {
-        this.id = id;
+        super(id, createdAt, updatedAt);
         this.title = title;
         this.creatorId = creatorId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
         this.courseChargeType = courseChargeType;
     }
 
@@ -74,18 +60,14 @@ public class Course {
         return creatorId;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
 
     @Override
     public String toString() {
         return "Course{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
+                "id='" + super.getId() + '\'' +
+                "title='" + title + '\'' +
                 ", creatorId=" + creatorId +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
+                ", courseChargeType=" + courseChargeType +
                 '}';
     }
 }
