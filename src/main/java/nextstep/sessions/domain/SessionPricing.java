@@ -8,10 +8,18 @@ public class SessionPricing {
     private final boolean isPaid;
     private final int fee;
 
-    public SessionPricing(boolean isPaid, int fee) {
+    SessionPricing(boolean isPaid, int fee) {
         validateFee(isPaid, fee);
         this.isPaid = isPaid;
         this.fee = fee;
+    }
+
+    public static SessionPricing paid(int fee) {
+        return new SessionPricing(true, fee);
+    }
+
+    public static SessionPricing free() {
+        return new SessionPricing(false, 0);
     }
 
     public boolean isPaid() {

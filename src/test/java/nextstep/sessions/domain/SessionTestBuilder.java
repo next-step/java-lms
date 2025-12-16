@@ -52,9 +52,9 @@ class SessionTestBuilder {
 
     public Session build() {
         if (paid) {
-            return new Session(id, startDate, endDate, true, maxCapacity, false, fee, enrollCount, image);
+            return Session.paidLimited(id, startDate, endDate, fee, maxCapacity, image);
         }
-        return new Session(id, startDate, endDate, false, maxCapacity, true, fee, enrollCount, image);
+        return Session.freeUnlimited(id, startDate, endDate, image);
     }
 
 }

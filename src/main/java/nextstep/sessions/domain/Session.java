@@ -20,20 +20,23 @@ public class Session {
 
     private final Enrollments enrollments = new Enrollments();
 
-    public Session(Long id, LocalDate startDate, LocalDate endDate, boolean isPaid, Integer maxCapacity,
-                   boolean unlimited, int fee, int enrollCount,
-                   SessionImage image) {
-        this(id, new SessionInfo(new Period(startDate, endDate), image),
-                new SessionPricing(isPaid, fee), new Capacity(maxCapacity, unlimited, enrollCount));
-    }
-
-    public Session(Long id, SessionInfo sessionInfo, SessionPricing pricing, Capacity capacity) {
-        validatePricingAndCapacity(pricing, capacity);
+    Session(Long id, SessionInfo sessionInfo, SessionPricing pricing, Capacity capacity) {
         this.id = id;
         this.sessionInfo = sessionInfo;
         this.status = SessionStatus.PREPARING;
         this.pricing = pricing;
         this.capacity = capacity;
+    }
+
+    public static Session paidLimited(Long id, LocalDate startDate, LocalDate endDate, int fee, int maxCapacity,
+                                      SessionImage image) {
+        SessionInfo info = new SessionInfo(new Period(startDate, endDate), image);
+        return new Session(id, info, SessionPricing.paid(fee), Capacity.limited(maxCapacity));
+    }
+
+    public static Session freeUnlimited(Long id, LocalDate startDate, LocalDate endDate, SessionImage image) {
+        SessionInfo info = new SessionInfo(new Period(startDate, endDate), image);
+        return new Session(id, info, SessionPricing.free(), Capacity.unlimited());
     }
 
     public SessionStatus status() {
@@ -48,8 +51,9 @@ public class Session {
         validateOpen();
         validateCapacity();
         validatePaymentAmount(enrollment);
+
         enrollments.add(enrollment);
-        this.capacity = capacity.increaseEnrollCount();
+        capacity = capacity.increaseEnrollCount();
     }
 
     private void validateOpen() {
@@ -60,22 +64,13 @@ public class Session {
 
     private void validateCapacity() {
         if (capacity.isFull()) {
-            throw new IllegalStateException(Session.ERROR_CAPACITY_EXCEEDED);
+            throw new IllegalStateException(ERROR_CAPACITY_EXCEEDED);
         }
     }
 
     private void validatePaymentAmount(Enrollment enrollment) {
         if (pricing.isPaid() && !enrollment.payment().isPaidFor(pricing.fee())) {
             throw new IllegalArgumentException(ERROR_PAYMENT_AMOUNT_MISMATCH);
-        }
-    }
-
-    private void validatePricingAndCapacity(SessionPricing pricing, Capacity capacity) {
-        if (pricing.isPaid() && capacity.isUnlimited()) {
-            throw new IllegalArgumentException("유료 강의는 최대 수강인원이 있어야 합니다");
-        }
-        if (!pricing.isPaid() && !capacity.isUnlimited()) {
-            throw new IllegalArgumentException("무료 강의는 최대 수강 인원이 없어야 합니다");
         }
     }
 

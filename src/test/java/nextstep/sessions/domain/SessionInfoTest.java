@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 
 class SessionInfoTest {
 
+    public static final SessionInfo INFO = new SessionInfo(PeriodTest.P1, SessionImageTest.IMAGE);
+
     @Test
     void imageNull_throwsExcepiton() {
         assertThatThrownBy(() -> new SessionInfo(PeriodTest.P1, null))

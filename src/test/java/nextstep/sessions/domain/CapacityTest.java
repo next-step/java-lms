@@ -9,6 +9,7 @@ class CapacityTest {
 
     public static final Capacity FREE_CAPACITY = new Capacity(Integer.MAX_VALUE, true);
     public static final Capacity PAID_CAPACITY = new Capacity(10, true);
+    public static final Capacity PAID_CAPACITy_FULL = new Capacity(10, true, 10);
 
     @Test
     void freeCapacity_isUnlimitedIsTrue() {

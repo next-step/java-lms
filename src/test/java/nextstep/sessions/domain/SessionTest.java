@@ -13,18 +13,6 @@ class SessionTest {
         assertThat(session.status()).isEqualTo(SessionStatus.PREPARING);
     }
 
-
-    @Test
-    void whenCreatingPaidSessionWithInvalidCapacity_thenThrow() {
-        assertThatThrownBy(() -> new SessionTestBuilder().paid(null, 100_000).build())
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("유료 강의는 최대 수강인원이 있어야 합니다");
-
-        assertThatThrownBy(() -> new SessionTestBuilder().paid(0, 100_000).build())
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("유료 강의는 최대 수강인원이 있어야 합니다");
-    }
-
     @Test
     void whenStartRecruiting_StatusIsOpen() {
         Session session = new SessionTestBuilder().free().build();
@@ -42,7 +30,8 @@ class SessionTest {
 
     @Test
     void whenCapacityFull_thenThrows() {
-        Session session = new SessionTestBuilder().paid(5, 1000).id(1L).enrollCount(5).build();
+        Session session = new Session(1L, SessionInfoTest.INFO, SessionPricingTest.PAID_SP,
+                CapacityTest.PAID_CAPACITy_FULL);
         session.startRecruiting();
         assertThatThrownBy(() -> session.enroll(EnrollmentTest.E1))
                 .isInstanceOf(IllegalStateException.class)

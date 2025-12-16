@@ -14,11 +14,11 @@ public class Capacity {
     private final int enrollCount;
 
 
-    public Capacity(Integer maxCapacity, boolean unlimited) {
+    Capacity(Integer maxCapacity, boolean unlimited) {
         this(maxCapacity, unlimited, DEFAULT_ENROLL_COUNT);
     }
 
-    public Capacity(Integer maxCapacity, boolean unlimited, int enrollCount) {
+    Capacity(Integer maxCapacity, boolean unlimited, int enrollCount) {
         validateMaxCapacity(maxCapacity);
         validateEnrollCount(enrollCount);
         validateEnrollCountWithinCapacity(maxCapacity, enrollCount);
@@ -26,6 +26,14 @@ public class Capacity {
         this.maxCapacity = maxCapacity;
         this.unlimited = unlimited;
         this.enrollCount = enrollCount;
+    }
+
+    public static Capacity limited(int maxCapacity) {
+        return new Capacity(maxCapacity, false, DEFAULT_ENROLL_COUNT);
+    }
+
+    public static Capacity unlimited() {
+        return new Capacity(Integer.MAX_VALUE, true, 0);
     }
 
     public Integer maxCapacity() {
