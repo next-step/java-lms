@@ -1,14 +1,19 @@
 package nextstep.courses.course.domain;
 
+import static java.util.Objects.isNull;
+import static org.springframework.util.StringUtils.hasText;
+
 import java.time.LocalDateTime;
 import nextstep.common.domain.BaseEntity;
+import nextstep.courses.cohort.domain.enumeration.CohortStateType;
 import nextstep.courses.course.domain.enumaration.CourseChargeType;
 
 public class Course extends BaseEntity {
+
     private String title;
     private Long creatorId;
     private CourseChargeType courseChargeType;
-
+    private CohortStateType cohortStateType;
 
     public Course(String title, Long creatorId) {
         this(0L, title, creatorId, LocalDateTime.now(), null, CourseChargeType.PAID);
@@ -39,6 +44,19 @@ public class Course extends BaseEntity {
             CourseChargeType courseChargeType
     ) {
         super(id, createdAt, updatedAt);
+
+        if (!hasText(title)) {
+            throw new IllegalArgumentException("강의제목은 필수값 입니다.");
+        }
+
+        if (isNull(creatorId) || creatorId <= 0L) {
+            throw new IllegalArgumentException("강의 생성자 정보는 필수 값 입니다.");
+        }
+
+        if (isNull(courseChargeType)) {
+            throw new IllegalArgumentException("강의 결제타입은 필수 값 입니다.");
+        }
+
         this.title = title;
         this.creatorId = creatorId;
         this.courseChargeType = courseChargeType;
