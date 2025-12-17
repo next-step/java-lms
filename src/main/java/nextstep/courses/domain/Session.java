@@ -33,6 +33,9 @@ public class Session {
         this.sessionState = sessionState;
     }
 
-    public void enroll() {
+    public Enrollment enroll(Long userId, Payment payment) {
+        sessionState.validateEnroll();
+        enrollmentPolicy.validateEnrollment(payment);
+        return new Enrollment(this.id, userId);
     }
 }
