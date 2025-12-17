@@ -15,12 +15,12 @@ public class Session {
             , LocalDateTime startDate
             , LocalDateTime endDate
             , int size
-            , ImageType imageType
+            , String fileName
             , int width
             , int height
             , EnrollmentPolicy enrollmentPolicy
             , SessionState sessionState) {
-        this(id, new SessionDuration(startDate, endDate), new CoverImage(size, imageType, width, height)
+        this(id, new SessionDuration(startDate, endDate), new CoverImage(size, fileName, width, height)
                 , enrollmentPolicy, sessionState);
     }
 

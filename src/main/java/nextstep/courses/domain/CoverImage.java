@@ -5,11 +5,11 @@ public class CoverImage {
     private ImageType imageType;
     private ImageDimension imageDimension;
 
-    public CoverImage(int size, ImageType imageType, int width, int height) {
-        this(new ImageSize(size), imageType, new ImageDimension(width, height));
+    public CoverImage(int size, String fileName, int width, int height) {
+        this(new ImageSize(size), ImageType.fromFileName(fileName), new ImageDimension(width, height));
     }
 
-    public CoverImage(ImageSize imageSize, ImageType imageType, ImageDimension imageDimension) {
+    private CoverImage(ImageSize imageSize, ImageType imageType, ImageDimension imageDimension) {
         this.imageSize = imageSize;
         this.imageType = imageType;
         this.imageDimension = imageDimension;
