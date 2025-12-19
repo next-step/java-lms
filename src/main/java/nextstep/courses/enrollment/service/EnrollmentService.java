@@ -1,6 +1,5 @@
 package nextstep.courses.enrollment.service;
 
-import nextstep.courses.cohort.service.repository.CohortRepository;
 import nextstep.courses.course.domain.Course;
 import nextstep.courses.course.domain.service.CourseDomainService;
 import nextstep.courses.course.service.repository.CourseRepository;
@@ -16,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EnrollmentService {
+
     private final CourseRepository courseRepository;
     private final EnrollmentRepository enrollmentRepository;
     private final PaymentRepository paymentRepository;
@@ -37,6 +37,7 @@ public class EnrollmentService {
         Course course = courseRepository.findById(request.getCourseId())
                 .orElseThrow(NotFoundException::new);
         if (course.isPaid()) {
+            // TODO 결제 모듈 이벤트 처리로 리팩토링 예정.
             Payment payment = paymentRepository.findById(request.getPaymentId())
                     .orElseThrow(NotFoundException::new);
             if (!payment.isPayedCohort(request.getCohortId())) {

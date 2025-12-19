@@ -6,8 +6,6 @@ import nextstep.courses.enrollment.domain.Enrollment;
 public class CourseDomainService {
 
     public Enrollment registerEnrollment(Course course, Long cohortId, Long studentId) {
-        // 결제정보도 적용필요
-
         if (!course.isCanEnrollBy(cohortId)) {
             throw new IllegalArgumentException("해당기수는 수강신청 할 수 없는 상태입니다");
         }
