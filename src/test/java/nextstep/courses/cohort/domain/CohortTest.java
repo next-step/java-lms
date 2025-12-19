@@ -1,10 +1,12 @@
 package nextstep.courses.cohort.domain;
 
+import static nextstep.courses.cohort.domain.fixture.CohortFixture.식별자를_전달받아_기수픽스처를_생성한다;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
 import nextstep.courses.cohort.domain.enumeration.CohortStateType;
+import nextstep.courses.cohort.domain.fixture.CohortFixture;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -13,7 +15,7 @@ class CohortTest {
 
     @Test
     void 기수생성시_코스식별자가_비정상이면_예외처리_할_수_있다() {
-        assertThatThrownBy(() -> new Cohort(0L, 1, 0, LocalDateTime.now(), LocalDateTime.now(),
+        assertThatThrownBy(() -> new Cohort(0L, 5, 1, 0, LocalDateTime.now(), LocalDateTime.now(),
                         LocalDateTime.now(), LocalDateTime.now())
         ).isInstanceOf(IllegalArgumentException.class);
     }
@@ -29,7 +31,7 @@ class CohortTest {
     @CsvSource({"19, true", "20, false"})
     void 현재_수강인원을_더_받을수_있는지_확인할_수_있다(int presentStudentCount, boolean result) {
         // 최대 수강인원, 현재 수강인원 전부 필요할듯.
-        Cohort cohort = new Cohort(1L, 20, presentStudentCount, LocalDateTime.now(), LocalDateTime.now(),
+        Cohort cohort = new Cohort(1L, 5, 20, presentStudentCount, LocalDateTime.now(), LocalDateTime.now(),
                 LocalDateTime.now(), LocalDateTime.now());
 
         assertThat(cohort.isCanResist()).isEqualTo(result);
@@ -43,7 +45,7 @@ class CohortTest {
     @Test
     void 기수의_상태를_수강신청_기간으로_변경할_수_있다() {
         // 특정 날짜값 받고 + 수강신청 기간인지 확인 + 신청상태로 상태변경
-        Cohort cohort = new Cohort(1L, 20, 0,
+        Cohort cohort = new Cohort(1L, 5,  20, 0,
                 LocalDateTime.of(2025, 1, 1, 0, 0, 0),
                 LocalDateTime.of(2025, 1, 10, 23, 59, 59),
                 LocalDateTime.of(2025, 1, 17, 0, 0, 0),
@@ -58,7 +60,7 @@ class CohortTest {
     @Test
     void 수강신청기간이_아닌데_기수의_상태를_수강신청_기간으로_변경하면_예외처리_할_수_있다() {
         // 특정 날짜값 받고 + 수강신청 기간인지 확인 + 신청상태로 상태변경
-        Cohort cohort = new Cohort(1L, 20, 0,
+        Cohort cohort = new Cohort(1L, 5, 20, 0,
                 LocalDateTime.of(2025, 1, 1, 0, 0, 0),
                 LocalDateTime.of(2025, 1, 10, 23, 59, 59),
                 LocalDateTime.of(2025, 1, 17, 0, 0, 0),
@@ -73,7 +75,7 @@ class CohortTest {
     @Test
     void 기수의_상태를_수강_기간으로_변경할_수_있다() {
         // 특정 날짜값 받고 + 수강신청 기간인지 확인 + 신청상태로 상태변경
-        Cohort cohort = new Cohort(1L, 20, 0,
+        Cohort cohort = new Cohort(1L, 5, 20, 0,
                 LocalDateTime.of(2025, 1, 1, 0, 0, 0),
                 LocalDateTime.of(2025, 1, 10, 23, 59, 59),
                 LocalDateTime.of(2025, 1, 17, 0, 0, 0),
@@ -88,7 +90,7 @@ class CohortTest {
     @Test
     void 수강기간이_아닌데_기수의_상태를_수강중으로_변경하면_예외처리_할_수_있다() {
         // 특정 날짜값 받고 + 수강신청 기간인지 확인 + 신청상태로 상태변경
-        Cohort cohort = new Cohort(1L, 20, 0,
+        Cohort cohort = new Cohort(1L, 5, 20, 0,
                 LocalDateTime.of(2025, 1, 1, 0, 0, 0),
                 LocalDateTime.of(2025, 1, 10, 23, 59, 59),
                 LocalDateTime.of(2025, 1, 17, 0, 0, 0),
@@ -98,5 +100,12 @@ class CohortTest {
         assertThatThrownBy(
                 () -> cohort.putOnActive(LocalDateTime.of(2025, 2, 26, 0, 0, 0))
         ).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void 기수의_식별자가_같은지_식별할_수_있다() {
+        Cohort cohort = 식별자를_전달받아_기수픽스처를_생성한다(1L);
+
+        assertThat(cohort.isSameCohortId(1L)).isTrue();
     }
 }

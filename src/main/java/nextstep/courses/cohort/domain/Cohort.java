@@ -1,12 +1,16 @@
 package nextstep.courses.cohort.domain;
 
+import static java.util.Objects.isNull;
+
 import java.time.LocalDateTime;
+import java.util.Objects;
 import nextstep.common.domain.BaseEntity;
 import nextstep.courses.cohort.domain.enumeration.CohortStateType;
 
 public class Cohort extends BaseEntity {
 
     private final Long courseId;
+    private int cohortCount;
     private int maxStudentCount;
     private int presentStudentCount;
     private CohortStateType cohortStateType;
@@ -15,6 +19,7 @@ public class Cohort extends BaseEntity {
 
     public Cohort(
             Long courseId,
+            int cohortCount,
             int maxStudentCount,
             int presentStudentCount,
             LocalDateTime registerStartDate,
@@ -22,12 +27,13 @@ public class Cohort extends BaseEntity {
             LocalDateTime cohortStartDate,
             LocalDateTime cohortEndDate
     ) {
-        this(0L, courseId, maxStudentCount, presentStudentCount, CohortStateType.PREPARE, registerStartDate, registerEndDate, cohortStartDate, cohortEndDate, null, null);
+        this(0L, courseId, cohortCount, maxStudentCount, presentStudentCount, CohortStateType.PREPARE, registerStartDate, registerEndDate, cohortStartDate, cohortEndDate, null, null);
     }
 
     public Cohort(
             Long id,
             Long courseId,
+            int cohortCount,
             int maxStudentCount,
             int presentStudentCount,
             CohortStateType cohortStateType,
@@ -43,7 +49,12 @@ public class Cohort extends BaseEntity {
             throw new IllegalArgumentException("기수는 관련 코스정보가 필수 입니다.");
         }
 
+        if (cohortCount <= 0) {
+            throw new IllegalArgumentException("기수는 회차정보가 필수 입니다.");
+        }
+
         this.courseId = courseId;
+        this.cohortCount = cohortCount;
         this.maxStudentCount = maxStudentCount;
         this.presentStudentCount = presentStudentCount;
         this.cohortStateType = cohortStateType;
@@ -52,9 +63,9 @@ public class Cohort extends BaseEntity {
     }
 
     public boolean isCanResist() {
-//        if (this.cohortStateType.equals(CohortStateType.PREPARE)) {
-//            // 고민.. 위에서 말했던 대로 약간... 수강신청가능 같은 어떤 상태가 필요할듯
-//        }
+        if (!this.cohortStateType.equals(CohortStateType.PREPARE)) {
+            return false;
+        }
 
         return this.maxStudentCount > this.presentStudentCount;
     }
@@ -85,7 +96,38 @@ public class Cohort extends BaseEntity {
         this.cohortStateType = CohortStateType.ACTIVE;
     }
 
+    public boolean isSameCohortId(Long cohortId) {
+        if (isNull(cohortId)) {
+            return false;
+        }
+
+        return super.getId().equals(cohortId);
+    }
+
     public CohortStateType cohortStateType() {
         return this.cohortStateType;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        Cohort cohort = (Cohort) o;
+        return cohortCount == cohort.cohortCount && maxStudentCount == cohort.maxStudentCount
+                && presentStudentCount == cohort.presentStudentCount && Objects.equals(
+                courseId, cohort.courseId) && cohortStateType == cohort.cohortStateType
+                && Objects.equals(registerPeriod, cohort.registerPeriod)
+                && Objects.equals(cohortPeriod, cohort.cohortPeriod);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), courseId, cohortCount, maxStudentCount,
+                presentStudentCount, cohortStateType, registerPeriod, cohortPeriod);
     }
 }
