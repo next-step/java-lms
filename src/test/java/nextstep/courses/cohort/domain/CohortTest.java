@@ -108,4 +108,15 @@ class CohortTest {
 
         assertThat(cohort.isSameCohortId(1L)).isTrue();
     }
+
+    @Test
+    void 기수의_현재수강인원을_1만큼_증가시킬_수_있다() {
+        Cohort cohort = new Cohort(1L, 5, 20, 19, LocalDateTime.now(), LocalDateTime.now(),
+                LocalDateTime.now(), LocalDateTime.now());
+        assertThat(cohort.isCanResist()).isTrue();
+
+        cohort.plusOnePresent();
+
+        assertThat(cohort.isCanResist()).isFalse();
+    }
 }

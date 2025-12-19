@@ -79,6 +79,7 @@ public class Course extends BaseEntity {
         return this.courseChargeType.equals(CourseChargeType.FREE);
     }
 
+
     public boolean isCanEnrollBy(Long cohortId) {
         if (isNull(cohortId)) {
             return false;
@@ -92,6 +93,18 @@ public class Course extends BaseEntity {
 
         return cohort.map(Cohort::isCanResist).orElse(false);
 
+    }
+
+    public void plusOnePresentStudent(Long cohortId) {
+        if (isNull(cohortId)) {
+            return;
+        }
+
+        if (!isCanEnrollBy(cohortId)) {
+            return;
+        }
+
+        this.cohorts.plusOnePresent(cohortId);
     }
 
     public String getTitle() {

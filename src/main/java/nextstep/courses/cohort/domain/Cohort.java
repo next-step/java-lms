@@ -104,6 +104,14 @@ public class Cohort extends BaseEntity {
         return super.getId().equals(cohortId);
     }
 
+    public void plusOnePresent() {
+        if(!isCanResist()) {
+            return;
+        }
+
+        this.presentStudentCount++;
+    }
+
     public CohortStateType cohortStateType() {
         return this.cohortStateType;
     }

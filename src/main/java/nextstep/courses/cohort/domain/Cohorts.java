@@ -15,4 +15,8 @@ public class Cohorts {
                 .filter(cohort -> cohort.isSameCohortId(cohortId))
                 .findFirst();
     }
+
+    public void plusOnePresent(Long cohortId) {
+        findCohortById(cohortId).ifPresent(Cohort::plusOnePresent);
+    }
 }
