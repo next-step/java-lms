@@ -59,32 +59,4 @@ class CourseTest {
         ).isTrue();
     }
 
-    @Test
-    void 기수식별자를_통해_해당기수가_신청가능한_상태인지_확인할_수_있다() {
-        Cohorts cohorts = new Cohorts(List.of(
-                식별자와_상태를_전달받아_기수픽스처를_생성한다(1L, CohortStateType.END),
-                식별자와_상태를_전달받아_기수픽스처를_생성한다(2L, CohortStateType.ACTIVE),
-                식별자와_상태를_전달받아_기수픽스처를_생성한다(3L, CohortStateType.PREPARE)
-        ));
-        Course course = new Course("TDD, 객체지향 과정", 1L, CourseChargeType.FREE, cohorts);
-
-        assertThat(
-                course.isCanEnrollBy(3L)
-        ).isTrue();
-    }
-
-    @Test
-    void 잘못된_기수식별자는_신청가능한_상태인지_확인할_수_없다() {
-        Cohorts cohorts = new Cohorts(List.of(
-                식별자와_상태를_전달받아_기수픽스처를_생성한다(1L, CohortStateType.END),
-                식별자와_상태를_전달받아_기수픽스처를_생성한다(2L, CohortStateType.ACTIVE),
-                식별자와_상태를_전달받아_기수픽스처를_생성한다(3L, CohortStateType.PREPARE)
-        ));
-        Course course = new Course("TDD, 객체지향 과정", 1L, CourseChargeType.FREE, cohorts);
-
-        assertThat(course.isCanEnrollBy(4L)).isFalse();
-        assertThat(course.isCanEnrollBy(2L)).isFalse();
-    }
-
-
 }

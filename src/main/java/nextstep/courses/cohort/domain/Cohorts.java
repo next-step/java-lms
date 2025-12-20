@@ -9,14 +9,4 @@ public class Cohorts {
     public Cohorts(List<Cohort> cohorts) {
         this.cohorts = cohorts;
     }
-
-    public Optional<Cohort> findCohortById(Long cohortId) {
-        return cohorts.stream()
-                .filter(cohort -> cohort.isSameCohortId(cohortId))
-                .findFirst();
-    }
-
-    public void plusOnePresent(Long cohortId) {
-        findCohortById(cohortId).ifPresent(Cohort::plusOnePresent);
-    }
 }

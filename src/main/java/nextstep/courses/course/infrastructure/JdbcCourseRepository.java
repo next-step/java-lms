@@ -36,6 +36,11 @@ public class JdbcCourseRepository implements CourseRepository {
         return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, id));
     }
 
+    @Override
+    public void plusOnePresentCount() {
+
+    }
+
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
         if (timestamp == null) {
             return null;

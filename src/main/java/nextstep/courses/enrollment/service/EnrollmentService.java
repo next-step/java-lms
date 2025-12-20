@@ -1,7 +1,9 @@
 package nextstep.courses.enrollment.service;
 
+import nextstep.courses.cohort.domain.Cohort;
+import nextstep.courses.cohort.domain.service.CohortDomainService;
+import nextstep.courses.cohort.service.repository.CohortRepository;
 import nextstep.courses.course.domain.Course;
-import nextstep.courses.course.domain.service.CourseDomainService;
 import nextstep.courses.course.service.repository.CourseRepository;
 import nextstep.courses.enrollment.domain.Enrollment;
 import nextstep.courses.enrollment.service.dto.EnrollmentSaveRequest;
@@ -19,25 +21,26 @@ public class EnrollmentService {
     private final CourseRepository courseRepository;
     private final EnrollmentRepository enrollmentRepository;
     private final PaymentRepository paymentRepository;
+    private final CohortRepository cohortRepository;
 
     @Autowired
     public EnrollmentService(
             CourseRepository courseRepository,
             EnrollmentRepository enrollmentRepository,
-            PaymentRepository paymentRepository
+            PaymentRepository paymentRepository,
+            CohortRepository cohortRepository
     ) {
         this.courseRepository = courseRepository;
         this.enrollmentRepository = enrollmentRepository;
         this.paymentRepository = paymentRepository;
+        this.cohortRepository = cohortRepository;
     }
-
 
     @Transactional
     public void saveEnrollment(EnrollmentSaveRequest request) {
         Course course = courseRepository.findById(request.getCourseId())
                 .orElseThrow(NotFoundException::new);
         if (course.isPaid()) {
-            // TODO 결제 모듈 이벤트 처리로 리팩토링 예정.
             Payment payment = paymentRepository.findById(request.getPaymentId())
                     .orElseThrow(NotFoundException::new);
             if (!payment.isPayedCohort(request.getCohortId())) {
@@ -45,8 +48,10 @@ public class EnrollmentService {
             }
         }
 
-        Enrollment enrollment = new CourseDomainService().registerEnrollment(
-                course, request.getCohortId(), request.getStudentId());
+        Cohort cohort = cohortRepository.findById(request.getCohortId())
+                .orElseThrow(NotFoundException::new);
+        Enrollment enrollment = new CohortDomainService().registerEnrollment(
+                cohort, request.getStudentId(), request.getCourseId());
 
         enrollmentRepository.save(enrollment);
         courseRepository.plusOnePresentCount();

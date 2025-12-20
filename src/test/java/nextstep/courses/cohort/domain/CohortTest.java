@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
 import nextstep.courses.cohort.domain.enumeration.CohortStateType;
-import nextstep.courses.cohort.domain.fixture.CohortFixture;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -103,10 +102,10 @@ class CohortTest {
     }
 
     @Test
-    void 기수의_식별자가_같은지_식별할_수_있다() {
+    void 코스의_식별자가_같은지_식별할_수_있다() {
         Cohort cohort = 식별자를_전달받아_기수픽스처를_생성한다(1L);
 
-        assertThat(cohort.isSameCohortId(1L)).isTrue();
+        assertThat(cohort.isSameCourseId(2L)).isTrue();
     }
 
     @Test
@@ -115,7 +114,7 @@ class CohortTest {
                 LocalDateTime.now(), LocalDateTime.now());
         assertThat(cohort.isCanResist()).isTrue();
 
-        cohort.plusOnePresent();
+        cohort.registerStudent();
 
         assertThat(cohort.isCanResist()).isFalse();
     }

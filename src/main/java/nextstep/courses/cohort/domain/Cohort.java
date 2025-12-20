@@ -96,15 +96,15 @@ public class Cohort extends BaseEntity {
         this.cohortStateType = CohortStateType.ACTIVE;
     }
 
-    public boolean isSameCohortId(Long cohortId) {
-        if (isNull(cohortId)) {
+    public boolean isSameCourseId(Long courseId) {
+        if (isNull(courseId)) {
             return false;
         }
 
-        return super.getId().equals(cohortId);
+        return this.courseId.equals(courseId);
     }
 
-    public void plusOnePresent() {
+    public void registerStudent() {
         if(!isCanResist()) {
             return;
         }
@@ -112,10 +112,14 @@ public class Cohort extends BaseEntity {
         this.presentStudentCount++;
     }
 
+
     public CohortStateType cohortStateType() {
         return this.cohortStateType;
     }
 
+    public Long getId() {
+        return super.getId();
+    }
 
     @Override
     public boolean equals(Object o) {
