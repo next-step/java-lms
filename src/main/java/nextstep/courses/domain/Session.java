@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import java.util.Objects;
+
 public class Session {
 
     private final Long id;
@@ -46,5 +48,27 @@ public class Session {
 
     public int currentEnrollmentCount() {
         return enrollments.size();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Session session = (Session) o;
+        return Objects.equals(id, session.id)
+                && Objects.equals(sessionPeriod, session.sessionPeriod)
+                && Objects.equals(coverImage, session.coverImage)
+                && Objects.equals(sessionPolicy, session.sessionPolicy)
+                && sessionStatus == session.sessionStatus
+                && Objects.equals(enrollments, session.enrollments);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, sessionPeriod, coverImage, sessionPolicy, sessionStatus, enrollments);
     }
 }
