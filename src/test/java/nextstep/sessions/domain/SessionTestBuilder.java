@@ -12,7 +12,6 @@ class SessionTestBuilder {
     private Integer maxCapacity = Integer.MAX_VALUE;
     private boolean unlimited = true;
     private int fee = 0;
-    private int enrollCount = 0;
     private SessionImage image = SessionImageTest.IMAGE;
 
     public SessionTestBuilder paid(Integer maxCapacity, int fee) {
@@ -45,11 +44,6 @@ class SessionTestBuilder {
         return this;
     }
 
-    public SessionTestBuilder enrollCount(int count) {
-        this.enrollCount = count;
-        return this;
-    }
-
     public Session build() {
         if (paid) {
             return Session.paidLimited(id, startDate, endDate, fee, maxCapacity, image);
@@ -57,4 +51,10 @@ class SessionTestBuilder {
         return Session.freeUnlimited(id, startDate, endDate, image);
     }
 
+    public Session buildPaidSessionFull() {
+        Session paidSession = Session.paidLimited(id, startDate, endDate, fee, maxCapacity, image);
+        paidSession.startRecruiting();
+        paidSession.enroll(EnrollmentTest.E1);
+        return paidSession;
+    }
 }

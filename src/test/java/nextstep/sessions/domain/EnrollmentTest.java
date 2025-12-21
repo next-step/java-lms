@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 class EnrollmentTest {
 
     public static Enrollment E1 = new Enrollment(NsUserTest.JAVAJIGI, PaymentTest.PAYMENT_1000);
+    public static Enrollment E2 = new Enrollment(NsUserTest.SANJIGI, PaymentTest.PAYMENT_SAN_1000);
+
 
     @Test
     void validateUserAndPayment() {

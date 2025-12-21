@@ -30,10 +30,8 @@ class SessionTest {
 
     @Test
     void whenCapacityFull_thenThrows() {
-        Session session = new Session(1L, SessionInfoTest.INFO, SessionPricingTest.PAID_SP,
-                CapacityTest.PAID_CAPACITy_FULL);
-        session.startRecruiting();
-        assertThatThrownBy(() -> session.enroll(EnrollmentTest.E1))
+        Session session = new SessionTestBuilder().paid(1, 1_000).buildPaidSessionFull();
+        assertThatThrownBy(() -> session.enroll(EnrollmentTest.E2))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining(Session.ERROR_CAPACITY_EXCEEDED);
     }

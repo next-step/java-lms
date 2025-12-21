@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 public class PaymentTest {
     public static final Payment PAYMENT_1000 = new Payment("p1", 1L, 1L, 1000L);
+    public static final Payment PAYMENT_SAN_1000 = new Payment("p1", 1L, 2L, 1000L);
 
     @Test
     void isPaidBy_returnsTrue_whenMatch() {

@@ -53,7 +53,6 @@ public class Session {
         validatePaymentAmount(enrollment);
 
         enrollments.add(enrollment);
-        capacity = capacity.increaseEnrollCount();
     }
 
     private void validateOpen() {
@@ -63,7 +62,7 @@ public class Session {
     }
 
     private void validateCapacity() {
-        if (capacity.isFull()) {
+        if (!capacity.canEnroll(enrollments.size())) {
             throw new IllegalStateException(ERROR_CAPACITY_EXCEEDED);
         }
     }
