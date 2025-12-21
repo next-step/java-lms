@@ -9,8 +9,9 @@
 * [텍스트와 이미지로 살펴보는 온라인 코드 리뷰 과정](https://github.com/next-step/nextstep-docs/tree/master/codereview)
 
 ## 문서
-- **[1단계 - 레거시 코드 리팩터링](./docs/레거시_코드_리팩토링.md)**
-    > 구현 코드 PR 및 리뷰: [https://github.com/next-step/java-lms/pull/817](https://github.com/next-step/java-lms/pull/817)
-- **[2단계 - 수강신청(도메인 모델)](./docs/수강신청(도메인%20모델).md)**
-- **[3단계 - 수강신청(DB 적용)]()**
-- **[4단계 - 수강신청(요구사항 변경)]()**
+| 단계    | 설계 및 구현 정리 | 관련 PR |
+|-------|------|---------|
+| Step1 | [레거시 코드 리팩터링](./docs/레거시_코드_리팩토링.md) | https://github.com/next-step/java-lms/pull/817 |
+| Step2 | [수강신청(도메인 모델)](./docs/수강신청(도메인%20모델).md) | https://github.com/next-step/java-lms/pull/822 |
+| Step3 | 수강신청(DB 적용) | - |
+| Step4 | 수강신청(요구사항 변경) | - |
