@@ -25,4 +25,8 @@ public class Enrollments {
             throw new RuntimeException("이미 수강 신청한 강의입니다.");
         }
     }
+
+    public int size() {
+        return enrollments.size();
+    }
 }
