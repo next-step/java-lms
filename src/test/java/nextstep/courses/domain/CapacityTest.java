@@ -10,7 +10,7 @@ public class CapacityTest {
     @Test
     void 최대_수강_인원이_음수라면_예외가_발생한다() {
         assertThatThrownBy(() -> new Capacity(-1))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("최대 수강 인원은 0 이상이어야 합니다.");
     }
 

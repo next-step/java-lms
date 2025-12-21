@@ -11,7 +11,7 @@ public class Capacity {
 
     private void validate(int value) {
         if (value < 0) {
-            throw new IllegalArgumentException("최대 수강 인원은 0 이상이어야 합니다.");
+            throw new RuntimeException("최대 수강 인원은 0 이상이어야 합니다.");
         }
     }
 

@@ -21,7 +21,7 @@ public class ImageFile {
 
     private void validateSize(long imageSize) {
         if (imageSize > MAX_IMAGE_SIZE_BYTES) {
-            throw new IllegalArgumentException("이미지 크기는 1MB 이하여야 합니다.");
+            throw new RuntimeException("이미지 크기는 1MB 이하여야 합니다.");
         }
     }
 }

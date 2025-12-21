@@ -10,7 +10,7 @@ public class MoneyTest {
     @Test
     void 금액이_음수라면_예외가_발생한다() {
         assertThatThrownBy(() -> new Money(-100))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("금액은 0 이상이어야 합니다.");
     }
 

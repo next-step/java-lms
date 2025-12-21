@@ -18,14 +18,14 @@ public class PaidSessionPolicyTest {
     @Test
     void 금액이_수강료와_일치하지_않으면_예외가_발생한다() {
         assertThatThrownBy(() -> paidSessionPolicy.validate(new Money(450_000), 47))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("결제 금액이 수강료와 일치하지 않습니다.");
     }
 
     @Test
     void 현재_수강_신청_인원이_정원_이상이면_예외가_발생한다() {
         assertThatThrownBy(() -> paidSessionPolicy.validate(new Money(500_000), 50))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("수강 인원이 초과되었습니다.");
     }
 }

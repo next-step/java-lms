@@ -22,13 +22,13 @@ public class PaidSessionPolicy implements SessionPolicy {
 
     private void validatePayment(Money payment) {
         if (!price.equals(payment)) {
-            throw new IllegalArgumentException("결제 금액이 수강료와 일치하지 않습니다.");
+            throw new RuntimeException("결제 금액이 수강료와 일치하지 않습니다.");
         }
     }
 
     private void validateEnrollmentCount(int currentEnrollmentCount) {
         if (capacity.isFull(currentEnrollmentCount)) {
-            throw new IllegalArgumentException("수강 인원이 초과되었습니다.");
+            throw new RuntimeException("수강 인원이 초과되었습니다.");
         }
     }
 }

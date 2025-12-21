@@ -13,7 +13,7 @@ public class Money {
 
     private void validate(int value) {
         if (value < 0) {
-            throw new IllegalArgumentException("금액은 0 이상이어야 합니다.");
+            throw new RuntimeException("금액은 0 이상이어야 합니다.");
         }
     }
 

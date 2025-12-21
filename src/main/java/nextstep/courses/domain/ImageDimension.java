@@ -23,16 +23,16 @@ public class ImageDimension {
 
     private void validateDimension(int width, int height) {
         if (width < MIN_WIDTH_PIXEL) {
-            throw new IllegalArgumentException(String.format("이미지 너비는 %d픽셀 이상이어야 합니다.", MIN_WIDTH_PIXEL));
+            throw new RuntimeException(String.format("이미지 너비는 %d픽셀 이상이어야 합니다.", MIN_WIDTH_PIXEL));
         }
         if (height < MIN_HEIGHT_PIXEL) {
-            throw new IllegalArgumentException(String.format("이미지 높이는 %d픽셀 이상이어야 합니다.", MIN_HEIGHT_PIXEL));
+            throw new RuntimeException(String.format("이미지 높이는 %d픽셀 이상이어야 합니다.", MIN_HEIGHT_PIXEL));
         }
     }
 
     private void validateAspectRatio(int width, int height) {
         if (width * HEIGHT_RATIO != height * WIDTH_RATIO) {
-            throw new IllegalArgumentException(String.format("이미지 비율은 %d:%d여야 합니다.", WIDTH_RATIO, HEIGHT_RATIO));
+            throw new RuntimeException(String.format("이미지 비율은 %d:%d여야 합니다.", WIDTH_RATIO, HEIGHT_RATIO));
         }
     }
 }

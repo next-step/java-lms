@@ -15,7 +15,7 @@ public class SessionPeriod {
 
     private void validateDate(LocalDate startDate, LocalDate endDate) {
         if (startDate.isAfter(endDate)) {
-            throw new IllegalArgumentException("강의 시작일은 강의 종료일 이전이어야 합니다.");
+            throw new RuntimeException("강의 시작일은 강의 종료일 이전이어야 합니다.");
         }
     }
 }
