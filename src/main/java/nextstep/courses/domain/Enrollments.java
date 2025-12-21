@@ -29,4 +29,13 @@ public class Enrollments {
     public int size() {
         return enrollments.size();
     }
+
+    public List<Long> studentIds() {
+        List<Long> studentIds = new ArrayList<>();
+
+        for (Enrollment enrollment : enrollments) {
+            studentIds.add(enrollment.studentId());
+        }
+        return studentIds;
+    }
 }

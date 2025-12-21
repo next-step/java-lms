@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
@@ -13,5 +14,16 @@ public class EnrollmentsTest {
 
         assertThatThrownBy(() -> enrollments.add(new Enrollment(1L, 1L)))
                 .isInstanceOf(RuntimeException.class);
+    }
+
+    @Test
+    void 수강신청한_학생_아이디를_반환한다() {
+        Enrollments enrollments = new Enrollments(List.of(
+                new Enrollment(1L, 1L),
+                new Enrollment(2L, 1L),
+                new Enrollment(3L, 1L)
+        ));
+
+        assertThat(enrollments.studentIds()).containsExactly(1L, 2L, 3L);
     }
 }
