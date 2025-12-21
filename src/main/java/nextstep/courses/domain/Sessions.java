@@ -25,4 +25,8 @@ public class Sessions {
             throw new RuntimeException("이미 포함된 강의입니다.");
         }
     }
+
+    public int size() {
+        return this.sessions.size();
+    }
 }
