@@ -12,4 +12,8 @@ public class Enrollment {
         this.userId = userId;
         this.enrollmentDate = LocalDateTime.now();
     }
+
+    public boolean isSameUser(Long userId) {
+        return this.userId.equals(userId);
+    }
 }

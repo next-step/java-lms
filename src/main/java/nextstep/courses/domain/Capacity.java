@@ -5,6 +5,10 @@ public class Capacity {
     private final int max;
     private int current;
 
+    public Capacity(int max) {
+        this(max, 0);
+    }
+
     public Capacity(int max, int current) {
         this.max = max;
         this.current = current;
@@ -14,5 +18,10 @@ public class Capacity {
         if (current > max) {
             throw new IllegalStateException();
         }
+    }
+
+    public void increase() {
+        validateAvailable();
+        this.current++;
     }
 }

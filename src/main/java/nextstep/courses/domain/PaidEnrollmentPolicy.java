@@ -5,16 +5,13 @@ import nextstep.payments.domain.Payment;
 public class PaidEnrollmentPolicy implements EnrollmentPolicy {
 
     private final Money money;
-    private final Capacity capacity;
 
-    public PaidEnrollmentPolicy(Money money, Capacity capacity) {
+    public PaidEnrollmentPolicy(Money money) {
         this.money = money;
-        this.capacity = capacity;
     }
 
     @Override
     public void validateEnrollment(Payment payment) {
-        capacity.validateAvailable();
         validatePayment(payment);
     }
 
