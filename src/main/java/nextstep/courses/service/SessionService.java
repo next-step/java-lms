@@ -2,7 +2,7 @@ package nextstep.courses.service;
 
 import nextstep.courses.domain.session.EnrolledStudent;
 import nextstep.courses.domain.session.Enrollment;
-import nextstep.courses.domain.session.EnrollmentApplication;
+import nextstep.courses.domain.session.EnrollmentCandidate;
 import nextstep.courses.domain.session.EnrollmentRepository;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
@@ -37,9 +37,9 @@ public class SessionService {
         List<EnrolledStudent> students = enrollmentRepository.findBySessionId(sessionId);
 
         Enrollment enrollment = session.createEnrollment(students);
-        EnrollmentApplication application = enrollment.apply(nsUserId, payment);
+        EnrollmentCandidate candidate = enrollment.apply(nsUserId, payment);
 
-        enrollmentRepository.saveApplication(application);
+        enrollmentRepository.saveCandidate(candidate);
     }
 
     public void approveEnrollment(Long sessionId, Long nsUserId, Long instructorId) {
@@ -47,10 +47,10 @@ public class SessionService {
         List<EnrolledStudent> students = enrollmentRepository.findBySessionId(sessionId);
 
         Enrollment enrollment = session.createEnrollment(students);
-        EnrollmentApplication application = new EnrollmentApplication(sessionId, nsUserId, null);
-        EnrolledStudent student = enrollment.approve(application, instructorId);
+        EnrollmentCandidate candidate = new EnrollmentCandidate(sessionId, nsUserId, null);
+        EnrolledStudent student = enrollment.approve(candidate, instructorId);
 
-        enrollmentRepository.updateApplication(application);
+        enrollmentRepository.updateCandidate(candidate);
         enrollmentRepository.save(student);
     }
 

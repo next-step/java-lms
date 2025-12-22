@@ -59,25 +59,25 @@ public class EnrollmentTest {
     }
 
     @Test
-    public void 신청서_생성() {
+    public void 수강후보자_생성() {
         Enrollment enrollment = new Enrollment(1L, RecruitmentStatus.RECRUITING, new FreeSessionType(), Collections.emptyList());
 
-        EnrollmentApplication application = enrollment.apply(1L, null);
+        EnrollmentCandidate candidate = enrollment.apply(1L, null);
 
-        assertThat(application.getSessionId()).isEqualTo(1L);
-        assertThat(application.getNsUserId()).isEqualTo(1L);
-        assertThat(application.getStatus()).isEqualTo(EnrollmentStatus.PENDING);
+        assertThat(candidate.getSessionId()).isEqualTo(1L);
+        assertThat(candidate.getNsUserId()).isEqualTo(1L);
+        assertThat(candidate.getStatus()).isEqualTo(EnrollmentStatus.PENDING);
     }
 
     @Test
-    public void 신청서_승인하여_수강생_등록() {
+    public void 수강후보자_승인하여_수강생_등록() {
         Enrollment enrollment = new Enrollment(1L, RecruitmentStatus.RECRUITING, new FreeSessionType(), Collections.emptyList());
-        EnrollmentApplication application = enrollment.apply(1L, null);
+        EnrollmentCandidate candidate = enrollment.apply(1L, null);
 
-        EnrolledStudent student = enrollment.approve(application, 100L);
+        EnrolledStudent student = enrollment.approve(candidate, 100L);
 
         assertThat(student.getSessionId()).isEqualTo(1L);
         assertThat(student.getNsUserId()).isEqualTo(1L);
-        assertThat(application.getStatus()).isEqualTo(EnrollmentStatus.APPROVED);
+        assertThat(candidate.getStatus()).isEqualTo(EnrollmentStatus.APPROVED);
     }
 }

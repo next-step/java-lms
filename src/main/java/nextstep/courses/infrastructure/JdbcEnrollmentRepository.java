@@ -1,7 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.EnrolledStudent;
-import nextstep.courses.domain.session.EnrollmentApplication;
+import nextstep.courses.domain.session.EnrollmentCandidate;
 import nextstep.courses.domain.session.EnrollmentRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
@@ -35,29 +35,29 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
     }
 
     @Override
-    public void saveApplication(EnrollmentApplication application) {
+    public void saveCandidate(EnrollmentCandidate candidate) {
         String sql = "insert into session_enrollment (session_id, ns_user_id, enrolled_at, enrollment_status) values(?, ?, ?, ?)";
         jdbcTemplate.update(sql,
-                application.getSessionId(),
-                application.getNsUserId(),
+                candidate.getSessionId(),
+                candidate.getNsUserId(),
                 Timestamp.valueOf(LocalDateTime.now()),
-                application.getStatus().getValue());
+                candidate.getStatus().getValue());
     }
 
     @Override
-    public void updateApplication(EnrollmentApplication application) {
+    public void updateCandidate(EnrollmentCandidate candidate) {
         String sql = "update session_enrollment set enrollment_status = ?, approved_at = ?, approved_by = ? " +
                 "where session_id = ? and ns_user_id = ?";
 
-        Timestamp approvedAt = application.getApprovedAt() != null
-                ? Timestamp.valueOf(application.getApprovedAt())
+        Timestamp approvedAt = candidate.getApprovedAt() != null
+                ? Timestamp.valueOf(candidate.getApprovedAt())
                 : null;
 
         jdbcTemplate.update(sql,
-                application.getStatus().getValue(),
+                candidate.getStatus().getValue(),
                 approvedAt,
-                application.getApprovedBy(),
-                application.getSessionId(),
-                application.getNsUserId());
+                candidate.getApprovedBy(),
+                candidate.getSessionId(),
+                candidate.getNsUserId());
     }
 }

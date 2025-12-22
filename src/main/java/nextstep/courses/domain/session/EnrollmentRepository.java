@@ -7,7 +7,7 @@ public interface EnrollmentRepository {
 
     List<EnrolledStudent> findBySessionId(Long sessionId);
 
-    void saveApplication(EnrollmentApplication application);
+    void saveCandidate(EnrollmentCandidate candidate);
 
-    void updateApplication(EnrollmentApplication application);
+    void updateCandidate(EnrollmentCandidate candidate);
 }

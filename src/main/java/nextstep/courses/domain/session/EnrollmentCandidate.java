@@ -4,7 +4,7 @@ import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;
 
-public class EnrollmentApplication {
+public class EnrollmentCandidate {
     private final Long sessionId;
     private final Long nsUserId;
     private final Payment payment;
@@ -12,11 +12,11 @@ public class EnrollmentApplication {
     private LocalDateTime approvedAt;
     private Long approvedBy;
 
-    public EnrollmentApplication(Long sessionId, Long nsUserId, Payment payment) {
+    public EnrollmentCandidate(Long sessionId, Long nsUserId, Payment payment) {
         this(sessionId, nsUserId, payment, EnrollmentStatus.PENDING, LocalDateTime.now(), null);
     }
 
-    public EnrollmentApplication(Long sessionId, Long nsUserId, Payment payment, EnrollmentStatus status, LocalDateTime approvedAt, Long approvedBy) {
+    public EnrollmentCandidate(Long sessionId, Long nsUserId, Payment payment, EnrollmentStatus status, LocalDateTime approvedAt, Long approvedBy) {
         this.sessionId = sessionId;
         this.nsUserId = nsUserId;
         this.payment = payment;

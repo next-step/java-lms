@@ -37,7 +37,7 @@ public class Enrollment {
         return new EnrolledStudent(sessionId, nsUserId);
     }
 
-    public EnrollmentApplication apply(Long nsUserId, Payment payment) {
+    public EnrollmentCandidate apply(Long nsUserId, Payment payment) {
         if (!recruitmentStatus.canEnroll()) {
             throw new IllegalStateException("모집중인 강의만 수강 신청할 수 있습니다.");
         }
@@ -47,12 +47,12 @@ public class Enrollment {
         if (sessionType.isOverCapacity(enrolledStudents.size())) {
             throw new IllegalStateException("최대 수강 인원을 초과했습니다.");
         }
-        return new EnrollmentApplication(sessionId, nsUserId, payment);
+        return new EnrollmentCandidate(sessionId, nsUserId, payment);
     }
 
-    public EnrolledStudent approve(EnrollmentApplication application, Long adminId) {
-        application.approve(adminId);
-        return new EnrolledStudent(application.getSessionId(), application.getNsUserId());
+    public EnrolledStudent approve(EnrollmentCandidate candidate, Long adminId) {
+        candidate.approve(adminId);
+        return new EnrolledStudent(candidate.getSessionId(), candidate.getNsUserId());
     }
 
 
