@@ -8,9 +8,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class CapacityTest {
 
     @Test
-    @DisplayName("최대 인원을 넘어서 수강신청이 들어오면 Exceptionn")
+    @DisplayName("현재인원이 최대인원이면 수강신청 불가능")
     void max() {
-        Capacity capacity = new Capacity(300, 301);
+        Capacity capacity = new Capacity(300, 300);
         assertThatThrownBy(() -> capacity.validateAvailable())
                 .isInstanceOf(IllegalStateException.class);
     }

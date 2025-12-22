@@ -15,13 +15,12 @@ public class Capacity {
     }
 
     public void validateAvailable() {
-        if (current > max) {
+        if (current >= max) {
             throw new IllegalStateException();
         }
     }
 
     public void increase() {
-        validateAvailable();
         this.current++;
     }
 }
