@@ -25,7 +25,6 @@ public class EnrollmentCandidateTest {
         candidate.approve(100L);
 
         assertThat(candidate.getStatus()).isEqualTo(EnrollmentStatus.APPROVED);
-        assertThat(candidate.getApprovedBy()).isEqualTo(100L);
     }
 
     @Test

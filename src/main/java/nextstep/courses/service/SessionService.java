@@ -3,7 +3,10 @@ package nextstep.courses.service;
 import nextstep.courses.domain.session.EnrolledStudent;
 import nextstep.courses.domain.session.Enrollment;
 import nextstep.courses.domain.session.EnrollmentCandidate;
+import nextstep.courses.domain.session.EnrollmentHistory;
+import nextstep.courses.domain.session.EnrollmentHistoryRepository;
 import nextstep.courses.domain.session.EnrollmentRepository;
+import nextstep.courses.domain.session.EnrollmentStatus;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
 import nextstep.payments.domain.Payment;
@@ -17,10 +20,12 @@ import java.util.List;
 public class SessionService {
     private final SessionRepository sessionRepository;
     private final EnrollmentRepository enrollmentRepository;
+    private final EnrollmentHistoryRepository historyRepository;
 
-    public SessionService(SessionRepository sessionRepository, EnrollmentRepository enrollmentRepository) {
+    public SessionService(SessionRepository sessionRepository, EnrollmentRepository enrollmentRepository, EnrollmentHistoryRepository historyRepository) {
         this.sessionRepository = sessionRepository;
         this.enrollmentRepository = enrollmentRepository;
+        this.historyRepository = historyRepository;
     }
 
     public void enroll(Long sessionId, Long nsUserId, Payment payment) {
@@ -40,6 +45,9 @@ public class SessionService {
         EnrollmentCandidate candidate = enrollment.apply(nsUserId, payment);
 
         enrollmentRepository.saveCandidate(candidate);
+
+        EnrollmentHistory history = new EnrollmentHistory(sessionId, nsUserId);
+        historyRepository.save(history);
     }
 
     public void approveEnrollment(Long sessionId, Long nsUserId, Long instructorId) {
@@ -52,6 +60,9 @@ public class SessionService {
 
         enrollmentRepository.updateCandidate(candidate);
         enrollmentRepository.save(student);
+
+        EnrollmentHistory history = new EnrollmentHistory(sessionId, nsUserId, EnrollmentStatus.APPROVED, instructorId);
+        historyRepository.save(history);
     }
 
 }

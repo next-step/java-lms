@@ -46,17 +46,12 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
 
     @Override
     public void updateCandidate(EnrollmentCandidate candidate) {
-        String sql = "update session_enrollment set enrollment_status = ?, approved_at = ?, approved_by = ? " +
+        String sql = "update session_enrollment set enrollment_status = ? " +
                 "where session_id = ? and ns_user_id = ?";
 
-        Timestamp approvedAt = candidate.getApprovedAt() != null
-                ? Timestamp.valueOf(candidate.getApprovedAt())
-                : null;
 
         jdbcTemplate.update(sql,
                 candidate.getStatus().getValue(),
-                approvedAt,
-                candidate.getApprovedBy(),
                 candidate.getSessionId(),
                 candidate.getNsUserId());
     }

@@ -1,24 +1,18 @@
 package nextstep.courses.domain.session;
 
-import java.time.LocalDateTime;
-
 public class EnrollmentCandidate {
     private final Long sessionId;
     private final Long nsUserId;
     private EnrollmentStatus status;
-    private LocalDateTime approvedAt;
-    private Long approvedBy;
 
     public EnrollmentCandidate(Long sessionId, Long nsUserId) {
-        this(sessionId, nsUserId, EnrollmentStatus.PENDING, LocalDateTime.now(), null);
+        this(sessionId, nsUserId, EnrollmentStatus.PENDING);
     }
 
-    public EnrollmentCandidate(Long sessionId, Long nsUserId, EnrollmentStatus status, LocalDateTime approvedAt, Long approvedBy) {
+    public EnrollmentCandidate(Long sessionId, Long nsUserId, EnrollmentStatus status) {
         this.sessionId = sessionId;
         this.nsUserId = nsUserId;
         this.status = status;
-        this.approvedAt = approvedAt;
-        this.approvedBy = approvedBy;
     }
 
     public void approve(Long adminId) {
@@ -26,8 +20,6 @@ public class EnrollmentCandidate {
             throw new IllegalStateException("대기 중인 신청만 승인 가능합니다.");
         }
         this.status = EnrollmentStatus.APPROVED;
-        this.approvedAt = LocalDateTime.now();
-        this.approvedBy = adminId;
     }
 
     public void cancel() {
@@ -47,13 +39,5 @@ public class EnrollmentCandidate {
 
     public EnrollmentStatus getStatus() {
         return status;
-    }
-
-    public LocalDateTime getApprovedAt() {
-        return approvedAt;
-    }
-
-    public Long getApprovedBy() {
-        return approvedBy;
     }
 }
