@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import java.util.Objects;
+
 public class ImageFile {
     private static final long MAX_SIZE = 1024 * 1024; // 1MB
     private static final int MIN_WIDTH_PX = 300;
@@ -7,27 +9,52 @@ public class ImageFile {
     private static final int WIDTH_RATIO = 3;
     private static final int HEIGHT_RATIO = 2;
 
-    private long size;
-    private ImageType imageType;
-    private int width;
-    private int height;
+    private Long id;
+    private final long size;
+    private final ImageType imageType;
+    private final int width;
+    private final int height;
 
+    public ImageFile(Long id) {
+        this(1L, MAX_SIZE, "png", MIN_WIDTH_PX, MIN_HEIGHT_PX);
+    }
 
     public ImageFile(long size) {
-        this(size, "png", 300, 200);
+        this(1L, size, "png", MIN_WIDTH_PX , MIN_HEIGHT_PX);
     }
 
     public ImageFile(long size, String imageType, int width, int height) {
+        this(1L, size, imageType, width, height);
+    }
+
+    public ImageFile(Long id, long size, String imageType, int width, int height) {
         validateSize(size);
         validateDimensions(width, height);
 
         ImageType type = ImageType.getType(imageType);
         validateImageType(type);
 
+        this.id = id;
         this.size = size;
         this.imageType = type;
         this.width = width;
         this.height = height;
+    }
+
+    public long getSize() {
+        return this.size;
+    }
+
+    public ImageType getImageType() {
+        return this.imageType;
+    }
+
+    public int getWidth() {
+        return this.width;
+    }
+
+    public int getHeight() {
+        return this.height;
     }
 
     private void validateImageType(ImageType type) {
@@ -60,5 +87,32 @@ public class ImageFile {
         if (size > MAX_SIZE) {
             throw new IllegalArgumentException("이미지 파일 크기는 1MB 이하여야 합니다. (현재: " + size + ")");
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        ImageFile imageFile = (ImageFile) o;
+        return size == imageFile.size && width == imageFile.width && height == imageFile.height && Objects.equals(id, imageFile.id) && imageType == imageFile.imageType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, size, imageType, width, height);
+    }
+
+    @Override
+    public String toString() {
+        return "ImageFile{" +
+                "id=" + id +
+                ", size=" + size +
+                ", imageType=" + imageType +
+                ", width=" + width +
+                ", height=" + height +
+                '}';
+    }
+
+    public Long getImageId() {
+        return this.id;
     }
 }

@@ -25,4 +25,14 @@ public class FreeEnrollmentRule implements EnrollmentRule {
     public SessionType getType() {
         return SessionType.FREE;
     }
+
+    @Override
+    public int getPrice() {
+        return 0;
+    }
+
+    @Override
+    public int getCapacity() {
+        return 0;
+    }
 }

@@ -17,4 +17,8 @@ public class Capacity {
     public boolean isFull(int enrolledCount) {
         return capacity <= enrolledCount;
     }
+
+    public int getCapacity() {
+        return capacity;
+    }
 }
