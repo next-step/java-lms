@@ -1,11 +1,11 @@
 package nextstep.courses.service;
 
-import nextstep.courses.domain.session.Enrollment;
-import nextstep.courses.domain.session.EnrollmentCandidate;
-import nextstep.courses.domain.session.EnrollmentHistory;
-import nextstep.courses.domain.session.EnrollmentHistoryRepository;
-import nextstep.courses.domain.session.EnrollmentRepository;
-import nextstep.courses.domain.session.EnrollmentStatus;
+import nextstep.courses.domain.enrollment.Enrollment;
+import nextstep.courses.domain.enrollment.EnrollmentCandidate;
+import nextstep.courses.domain.enrollment.EnrollmentHistory;
+import nextstep.courses.domain.enrollment.EnrollmentHistoryRepository;
+import nextstep.courses.domain.enrollment.EnrollmentRepository;
+import nextstep.courses.domain.enrollment.EnrollmentStatus;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
 import nextstep.payments.domain.Payment;

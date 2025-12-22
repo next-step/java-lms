@@ -1,6 +1,8 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.session.image.SessionImage;
+import nextstep.courses.domain.enrollment.Enrollment;
+import nextstep.courses.domain.enrollment.EnrollmentCandidate;
+import nextstep.courses.domain.image.SessionImage;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;

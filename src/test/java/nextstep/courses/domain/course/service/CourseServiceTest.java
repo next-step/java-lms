@@ -1,11 +1,11 @@
-package nextstep.courses.domain.session.service;
+package nextstep.courses.domain.course.service;
 
-import nextstep.courses.domain.Course;
-import nextstep.courses.domain.CourseRepository;
+import nextstep.courses.domain.course.Course;
+import nextstep.courses.domain.course.CourseRepository;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.domain.session.Sessions;
-import nextstep.courses.domain.session.image.SessionImage;
+import nextstep.courses.domain.image.SessionImage;
 import nextstep.courses.infrastructure.JdbcCourseRepository;
 import nextstep.courses.infrastructure.JdbcSessionRepository;
 import nextstep.courses.service.CourseService;

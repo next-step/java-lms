@@ -1,8 +1,8 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.session.EnrollmentHistory;
-import nextstep.courses.domain.session.EnrollmentHistoryRepository;
-import nextstep.courses.domain.session.EnrollmentStatus;
+import nextstep.courses.domain.enrollment.EnrollmentHistory;
+import nextstep.courses.domain.enrollment.EnrollmentHistoryRepository;
+import nextstep.courses.domain.enrollment.EnrollmentStatus;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
 

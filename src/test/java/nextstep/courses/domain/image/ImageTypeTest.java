@@ -1,6 +1,5 @@
-package nextstep.courses.domain.session.image;
+package nextstep.courses.domain.image;
 
-import nextstep.courses.domain.session.image.ImageType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

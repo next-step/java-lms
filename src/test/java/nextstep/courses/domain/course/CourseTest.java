@@ -1,11 +1,11 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.course;
 
 import nextstep.courses.domain.session.FreeSessionType;
 import nextstep.courses.domain.session.ProgressStatus;
 import nextstep.courses.domain.session.RecruitmentStatus;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.Sessions;
-import nextstep.courses.domain.session.image.SessionImage;
+import nextstep.courses.domain.image.SessionImage;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;

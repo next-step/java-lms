@@ -1,4 +1,4 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.enrollment;
 
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.Test;

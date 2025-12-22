@@ -1,5 +1,7 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.enrollment;
 
+import nextstep.courses.domain.session.RecruitmentStatus;
+import nextstep.courses.domain.session.SessionType;
 import nextstep.payments.domain.Payment;
 
 import java.util.Collections;

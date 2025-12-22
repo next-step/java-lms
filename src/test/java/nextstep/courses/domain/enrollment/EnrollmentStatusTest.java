@@ -1,4 +1,4 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.enrollment;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

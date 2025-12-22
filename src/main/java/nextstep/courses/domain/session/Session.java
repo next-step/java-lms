@@ -1,7 +1,9 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.session.image.SessionImage;
-import nextstep.courses.domain.session.image.SessionImages;
+import nextstep.courses.domain.enrollment.Enrollment;
+import nextstep.courses.domain.enrollment.EnrollmentCandidate;
+import nextstep.courses.domain.image.SessionImage;
+import nextstep.courses.domain.image.SessionImages;
 
 import java.time.LocalDate;
 import java.util.List;
