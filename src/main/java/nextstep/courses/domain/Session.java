@@ -10,6 +10,7 @@ public class Session {
     private final CoverImage coverImage;
     private final EnrollmentPolicy enrollmentPolicy;
     private final SessionState sessionState;
+    private final Enrollments enrollments;
 
     public Session(long id
             , LocalDateTime startDate
@@ -19,23 +20,29 @@ public class Session {
             , int width
             , int height
             , EnrollmentPolicy enrollmentPolicy
-            , SessionState sessionState) {
+            , SessionState sessionState
+            , Enrollments enrollments) {
         this(id, new SessionDuration(startDate, endDate), new CoverImage(size, fileName, width, height)
-                , enrollmentPolicy, sessionState);
+                , enrollmentPolicy, sessionState, enrollments);
     }
 
     public Session(long id, SessionDuration sessionDuration, CoverImage coverImage
-            , EnrollmentPolicy enrollmentPolicy, SessionState sessionState) {
+            , EnrollmentPolicy enrollmentPolicy, SessionState sessionState, Enrollments enrollments) {
         this.id = id;
         this.sessionDuration = sessionDuration;
         this.coverImage = coverImage;
         this.enrollmentPolicy = enrollmentPolicy;
         this.sessionState = sessionState;
+        this.enrollments = enrollments;
     }
 
     public Enrollment enroll(Long userId, Payment payment) {
         sessionState.validateEnroll();
         enrollmentPolicy.validateEnrollment(payment);
-        return new Enrollment(this.id, userId);
+        return enrollments.add(this.id, userId);
+    }
+
+    public long getId() {
+        return id;
     }
 }
