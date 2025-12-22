@@ -12,69 +12,37 @@ public class Session {
 
     private SessionInfo sessionInfo;
 
-    private SessionStatus status;
+    private SessionEnrollment sessionEnrollment;
 
-    private final SessionPricing pricing;
-
-    private Capacity capacity;
-
-    private final Enrollments enrollments = new Enrollments();
-
-    Session(Long id, SessionInfo sessionInfo, SessionPricing pricing, Capacity capacity) {
+    Session(Long id, SessionInfo sessionInfo, SessionEnrollment sessionEnrollment) {
         this.id = id;
         this.sessionInfo = sessionInfo;
-        this.status = SessionStatus.PREPARING;
-        this.pricing = pricing;
-        this.capacity = capacity;
+        this.sessionEnrollment = sessionEnrollment;
     }
 
     public static Session paidLimited(Long id, LocalDate startDate, LocalDate endDate, int fee, int maxCapacity,
                                       SessionImage image) {
         SessionInfo info = new SessionInfo(new Period(startDate, endDate), image);
-        return new Session(id, info, SessionPricing.paid(fee), Capacity.limited(maxCapacity));
+        SessionEnrollment enrollment = SessionEnrollment.paidLimited(fee, maxCapacity);
+        return new Session(id, info, enrollment);
     }
 
     public static Session freeUnlimited(Long id, LocalDate startDate, LocalDate endDate, SessionImage image) {
         SessionInfo info = new SessionInfo(new Period(startDate, endDate), image);
-        return new Session(id, info, SessionPricing.free(), Capacity.unlimited());
+        SessionEnrollment enrollment = SessionEnrollment.freeUnlimited();
+        return new Session(id, info, enrollment);
     }
 
     public SessionStatus status() {
-        return status;
+        return sessionEnrollment.status();
     }
 
     public void startRecruiting() {
-        this.status = SessionStatus.OPEN;
+        sessionEnrollment.startRecruiting();
     }
 
     public void enroll(Enrollment enrollment) {
-        validateOpen();
-        validateCapacity();
-        validatePaymentAmount(enrollment);
-
-        enrollments.add(enrollment);
-    }
-
-    private void validateOpen() {
-        if (!isOpen()) {
-            throw new IllegalStateException(ERROR_SESSION_NOT_OPEN);
-        }
-    }
-
-    private void validateCapacity() {
-        if (!capacity.canEnroll(enrollments.size())) {
-            throw new IllegalStateException(ERROR_CAPACITY_EXCEEDED);
-        }
-    }
-
-    private void validatePaymentAmount(Enrollment enrollment) {
-        if (!enrollment.canPayFor(pricing)) {
-            throw new IllegalArgumentException(ERROR_PAYMENT_AMOUNT_MISMATCH);
-        }
-    }
-
-    private boolean isOpen() {
-        return status == SessionStatus.OPEN;
+        sessionEnrollment.enroll(enrollment);
     }
 
 }

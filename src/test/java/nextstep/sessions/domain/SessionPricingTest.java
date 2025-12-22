@@ -9,6 +9,7 @@ class SessionPricingTest {
 
     public static final SessionPricing FREE_SP = new SessionPricing(false, 0);
     public static final SessionPricing PAID_SP = new SessionPricing(true, 100_000);
+    public static final SessionPricing PAID_SP_2 = new SessionPricing(true, 1_000);
 
     @Test
     void freeSession_feeIsZero() {
