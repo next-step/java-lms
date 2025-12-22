@@ -2,6 +2,7 @@ package nextstep.sessions.domain;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import nextstep.sessions.domain.image.SessionImageTest;
 import org.junit.jupiter.api.Test;
 
 class SessionInfoTest {

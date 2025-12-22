@@ -1,8 +1,10 @@
-package nextstep.sessions.domain;
+package nextstep.sessions.domain.enrollment;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import nextstep.sessions.domain.Session;
+import nextstep.sessions.domain.SessionStatus;
 import org.junit.jupiter.api.Test;
 
 class SessionEnrollmentTest {

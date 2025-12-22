@@ -1,5 +1,7 @@
 package nextstep.sessions.domain;
 
+import nextstep.sessions.domain.image.SessionImage;
+
 public class SessionInfo {
 
     static final String ERROR_COVER_IMAGE_REQUIRED = "강의 커버 이미지는 필수입니다";

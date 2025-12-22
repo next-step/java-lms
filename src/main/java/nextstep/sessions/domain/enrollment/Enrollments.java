@@ -1,4 +1,4 @@
-package nextstep.sessions.domain;
+package nextstep.sessions.domain.enrollment;
 
 import java.util.HashSet;
 import java.util.Set;

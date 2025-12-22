@@ -1,10 +1,10 @@
-package nextstep.sessions.domain;
+package nextstep.sessions.domain.image;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
-class SessionImageTest {
+public class SessionImageTest {
 
     public static final SessionImage IMAGE = new SessionImage(
             "cover.png",

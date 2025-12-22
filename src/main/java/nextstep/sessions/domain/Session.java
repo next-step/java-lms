@@ -1,6 +1,9 @@
 package nextstep.sessions.domain;
 
 import java.time.LocalDate;
+import nextstep.sessions.domain.enrollment.Enrollment;
+import nextstep.sessions.domain.enrollment.SessionEnrollment;
+import nextstep.sessions.domain.image.SessionImage;
 
 public class Session {
 

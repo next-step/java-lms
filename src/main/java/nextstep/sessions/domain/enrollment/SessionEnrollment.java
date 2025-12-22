@@ -1,4 +1,7 @@
-package nextstep.sessions.domain;
+package nextstep.sessions.domain.enrollment;
+
+import nextstep.sessions.domain.SessionPricing;
+import nextstep.sessions.domain.SessionStatus;
 
 public class SessionEnrollment {
 
@@ -18,14 +21,14 @@ public class SessionEnrollment {
         this.enrollments = new Enrollments();
     }
 
-    static SessionEnrollment paidLimited(int fee, int maxCapacity) {
+    public static SessionEnrollment paidLimited(int fee, int maxCapacity) {
         return new SessionEnrollment(
                 SessionPricing.paid(fee),
                 Capacity.limited(maxCapacity)
         );
     }
 
-    static SessionEnrollment freeUnlimited() {
+    public static SessionEnrollment freeUnlimited() {
         return new SessionEnrollment(
                 SessionPricing.free(),
                 Capacity.unlimited()
@@ -36,11 +39,11 @@ public class SessionEnrollment {
         return status;
     }
 
-    void startRecruiting() {
+    public void startRecruiting() {
         this.status = SessionStatus.OPEN;
     }
 
-    void enroll(Enrollment enrollment) {
+    public void enroll(Enrollment enrollment) {
         validateOpen();
         validateCapacity();
         validatePayment(enrollment);

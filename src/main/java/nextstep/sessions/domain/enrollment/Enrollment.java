@@ -1,8 +1,9 @@
-package nextstep.sessions.domain;
+package nextstep.sessions.domain.enrollment;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 import nextstep.payments.domain.Payment;
+import nextstep.sessions.domain.SessionPricing;
 import nextstep.users.domain.NsUser;
 
 public class Enrollment {
