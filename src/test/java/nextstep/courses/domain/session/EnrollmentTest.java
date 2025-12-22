@@ -14,10 +14,10 @@ public class EnrollmentTest {
     public void 모집중_상태일때_수강신청_가능() {
         Enrollment enrollment = new Enrollment(1L, RecruitmentStatus.RECRUITING, new FreeSessionType(), Collections.emptyList());
 
-        EnrolledStudent student = enrollment.enroll(1L, null);
+        EnrollmentCandidate candidate = enrollment.enroll(1L, null);
 
-        assertThat(student.getNsUserId()).isEqualTo(1L);
-        assertThat(student.getSessionId()).isEqualTo(1L);
+        assertThat(candidate.getNsUserId()).isEqualTo(1L);
+        assertThat(candidate.getSessionId()).isEqualTo(1L);
     }
 
     @Test
@@ -45,9 +45,9 @@ public class EnrollmentTest {
         long fee = 100_000L;
         SessionType type = new PaidSessionType(2, fee);
 
-        List<EnrolledStudent> currentStudent = List.of(
-                new EnrolledStudent(1L, 1L),
-                new EnrolledStudent(1L, 2L)
+        List<EnrollmentCandidate> currentStudent = List.of(
+                new EnrollmentCandidate(1L, 1L),
+                new EnrollmentCandidate(1L, 2L)
         );
 
         Enrollment enrollment = new Enrollment(1L, RecruitmentStatus.RECRUITING, type, currentStudent);
@@ -74,10 +74,10 @@ public class EnrollmentTest {
         Enrollment enrollment = new Enrollment(1L, RecruitmentStatus.RECRUITING, new FreeSessionType(), Collections.emptyList());
         EnrollmentCandidate candidate = enrollment.apply(1L, null);
 
-        EnrolledStudent student = enrollment.approve(candidate, 100L);
+        EnrollmentCandidate approved = enrollment.approve(candidate, 100L);
 
-        assertThat(student.getSessionId()).isEqualTo(1L);
-        assertThat(student.getNsUserId()).isEqualTo(1L);
+        assertThat(approved.getSessionId()).isEqualTo(1L);
+        assertThat(approved.getNsUserId()).isEqualTo(1L);
         assertThat(candidate.getStatus()).isEqualTo(EnrollmentStatus.APPROVED);
     }
 }

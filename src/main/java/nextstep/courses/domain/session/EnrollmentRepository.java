@@ -3,11 +3,11 @@ package nextstep.courses.domain.session;
 import java.util.List;
 
 public interface EnrollmentRepository {
-    void save(EnrolledStudent enrolledStudent);
+    void save(EnrollmentCandidate candidate);
 
-    List<EnrolledStudent> findBySessionId(Long sessionId);
+    List<EnrollmentCandidate> findBySessionId(Long sessionId);
 
-    void saveCandidate(EnrollmentCandidate candidate);
+//    void saveCandidate(EnrollmentCandidate candidate);
 
-    void updateCandidate(EnrollmentCandidate candidate);
+    void update(EnrollmentCandidate candidate);
 }

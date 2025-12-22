@@ -35,10 +35,10 @@ public class SessionTest {
         Session session = new Session(1L, 1, START_DATE, END_DATE, IMAGE,
                 ProgressStatus.PREPARING, RecruitmentStatus.RECRUITING, new FreeSessionType());
         Enrollment enrollment = session.createEnrollment(Collections.emptyList());
-        EnrolledStudent student = enrollment.enroll(1L, null);
+        EnrollmentCandidate candidate = enrollment.enroll(1L, null);
 
-        assertThat(student.getNsUserId()).isEqualTo(1L);
-        assertThat(student.getSessionId()).isEqualTo(1L);
+        assertThat(candidate.getNsUserId()).isEqualTo(1L);
+        assertThat(candidate.getSessionId()).isEqualTo(1L);
     }
 
 
@@ -48,10 +48,10 @@ public class SessionTest {
                 ProgressStatus.IN_PROGRESS, RecruitmentStatus.RECRUITING, new FreeSessionType());
 
         Enrollment enrollment = session.createEnrollment(java.util.Collections.emptyList());
-        EnrolledStudent student = enrollment.enroll(1L, null);
+        EnrollmentCandidate candidate = enrollment.enroll(1L, null);
 
-        assertThat(student.getNsUserId()).isEqualTo(1L);
-        assertThat(student.getSessionId()).isEqualTo(1L);
+        assertThat(candidate.getNsUserId()).isEqualTo(1L);
+        assertThat(candidate.getSessionId()).isEqualTo(1L);
     }
 
     @Test

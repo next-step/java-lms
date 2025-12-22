@@ -43,7 +43,7 @@ public class Session {
     }
 
 
-    public Enrollment createEnrollment(List<EnrolledStudent> currentStudents) {
+    public Enrollment createEnrollment(List<EnrollmentCandidate> currentStudents) {
         return new Enrollment(id, recruitmentStatus, sessionType, currentStudents);
     }
 

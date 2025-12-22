@@ -9,21 +9,21 @@ public class Enrollment {
     private final Long sessionId;
     private final RecruitmentStatus recruitmentStatus;
     private final SessionType sessionType;
-    private final List<EnrolledStudent> enrolledStudents;
+    private final List<EnrollmentCandidate> enrolledStudents;
 
     public Enrollment(RecruitmentStatus recruitmentStatus, SessionType sessionType) {
         this(null, recruitmentStatus, sessionType, Collections.emptyList());
     }
 
 
-    public Enrollment(Long sessionId, RecruitmentStatus recruitmentStatus, SessionType sessionType, List<EnrolledStudent> enrolledStudents) {
+    public Enrollment(Long sessionId, RecruitmentStatus recruitmentStatus, SessionType sessionType, List<EnrollmentCandidate> enrolledStudents) {
         this.sessionId = sessionId;
         this.recruitmentStatus = recruitmentStatus;
         this.sessionType = sessionType;
         this.enrolledStudents = enrolledStudents;
     }
 
-    public EnrolledStudent enroll(Long nsUserId, Payment payment) {
+    public EnrollmentCandidate enroll(Long nsUserId, Payment payment) {
         if (!recruitmentStatus.canEnroll()) {
             throw new IllegalStateException("모집중인 강의만 수강 신청할 수 있다");
         }
@@ -34,7 +34,7 @@ public class Enrollment {
         if (sessionType.isOverCapacity(enrolledStudents.size())) {
             throw new IllegalStateException("최대 수강 인원을 초과했습니다.");
         }
-        return new EnrolledStudent(sessionId, nsUserId);
+        return new EnrollmentCandidate(sessionId, nsUserId);
     }
 
     public EnrollmentCandidate apply(Long nsUserId, Payment payment) {
@@ -50,9 +50,9 @@ public class Enrollment {
         return new EnrollmentCandidate(sessionId, nsUserId);
     }
 
-    public EnrolledStudent approve(EnrollmentCandidate candidate, Long adminId) {
+    public EnrollmentCandidate approve(EnrollmentCandidate candidate, Long adminId) {
         candidate.approve(adminId);
-        return new EnrolledStudent(candidate.getSessionId(), candidate.getNsUserId());
+        return candidate;
     }
 
 
