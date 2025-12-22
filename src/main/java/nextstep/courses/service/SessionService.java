@@ -47,7 +47,7 @@ public class SessionService {
         List<EnrolledStudent> students = enrollmentRepository.findBySessionId(sessionId);
 
         Enrollment enrollment = session.createEnrollment(students);
-        EnrollmentCandidate candidate = new EnrollmentCandidate(sessionId, nsUserId, null);
+        EnrollmentCandidate candidate = new EnrollmentCandidate(sessionId, nsUserId);
         EnrolledStudent student = enrollment.approve(candidate, instructorId);
 
         enrollmentRepository.updateCandidate(candidate);

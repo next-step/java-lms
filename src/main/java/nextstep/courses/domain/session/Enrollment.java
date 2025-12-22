@@ -47,7 +47,7 @@ public class Enrollment {
         if (sessionType.isOverCapacity(enrolledStudents.size())) {
             throw new IllegalStateException("최대 수강 인원을 초과했습니다.");
         }
-        return new EnrollmentCandidate(sessionId, nsUserId, payment);
+        return new EnrollmentCandidate(sessionId, nsUserId);
     }
 
     public EnrolledStudent approve(EnrollmentCandidate candidate, Long adminId) {

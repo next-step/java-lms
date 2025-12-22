@@ -1,25 +1,21 @@
 package nextstep.courses.domain.session;
 
-import nextstep.payments.domain.Payment;
-
 import java.time.LocalDateTime;
 
 public class EnrollmentCandidate {
     private final Long sessionId;
     private final Long nsUserId;
-    private final Payment payment;
     private EnrollmentStatus status;
     private LocalDateTime approvedAt;
     private Long approvedBy;
 
-    public EnrollmentCandidate(Long sessionId, Long nsUserId, Payment payment) {
-        this(sessionId, nsUserId, payment, EnrollmentStatus.PENDING, LocalDateTime.now(), null);
+    public EnrollmentCandidate(Long sessionId, Long nsUserId) {
+        this(sessionId, nsUserId, EnrollmentStatus.PENDING, LocalDateTime.now(), null);
     }
 
-    public EnrollmentCandidate(Long sessionId, Long nsUserId, Payment payment, EnrollmentStatus status, LocalDateTime approvedAt, Long approvedBy) {
+    public EnrollmentCandidate(Long sessionId, Long nsUserId, EnrollmentStatus status, LocalDateTime approvedAt, Long approvedBy) {
         this.sessionId = sessionId;
         this.nsUserId = nsUserId;
-        this.payment = payment;
         this.status = status;
         this.approvedAt = approvedAt;
         this.approvedBy = approvedBy;
@@ -47,10 +43,6 @@ public class EnrollmentCandidate {
 
     public Long getNsUserId() {
         return nsUserId;
-    }
-
-    public Payment getPayment() {
-        return payment;
     }
 
     public EnrollmentStatus getStatus() {
