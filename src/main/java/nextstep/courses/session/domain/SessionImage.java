@@ -3,12 +3,10 @@ package nextstep.courses.session.domain;
 import static org.springframework.util.StringUtils.hasText;
 
 public class SessionImage {
-
     public static final long MB = 1024 * 1024;
     public static final int MIN_WIDTH = 300;
     public static final int MIN_HEIGHT = 200;
     private static final String EXTENSION_REGEX = ".*\\.(jpg|jpeg|png|gif|svg)$";;
-
 
     private String url;
     private String name;
@@ -16,8 +14,6 @@ public class SessionImage {
     private int width;
     private int height;
 
-    public SessionImage() {
-    }
 
     public SessionImage(String url, long size, String name, int width, int height) {
         if (!hasText(url)) {
@@ -48,10 +44,11 @@ public class SessionImage {
     }
 
 
-    public boolean isRatioThreeToTwo(int width, int height) {
+    private boolean isRatioThreeToTwo(int width, int height) {
         if (width <= 0 || height <= 0) {
             return false;
         }
+
         return width * 2 == height * 3;
     }
 }

@@ -11,8 +11,7 @@ public class Cohort extends BaseEntity {
 
     private final Long courseId;
     private int cohortCount;
-    private int maxStudentCount;
-    private int presentStudentCount;
+    private CohortStudentCount cohortStudentCount;
     private CohortStateType cohortStateType;
     private Period registerPeriod;
     private Period cohortPeriod;
@@ -27,7 +26,9 @@ public class Cohort extends BaseEntity {
             LocalDateTime cohortStartDate,
             LocalDateTime cohortEndDate
     ) {
-        this(0L, courseId, cohortCount, maxStudentCount, presentStudentCount, CohortStateType.PREPARE, registerStartDate, registerEndDate, cohortStartDate, cohortEndDate, null, null);
+        this(0L, courseId, cohortCount, maxStudentCount, presentStudentCount,
+                CohortStateType.PREPARE, registerStartDate, registerEndDate, cohortStartDate,
+                cohortEndDate, null, null);
     }
 
     public Cohort(
@@ -55,8 +56,7 @@ public class Cohort extends BaseEntity {
 
         this.courseId = courseId;
         this.cohortCount = cohortCount;
-        this.maxStudentCount = maxStudentCount;
-        this.presentStudentCount = presentStudentCount;
+        this.cohortStudentCount = new CohortStudentCount(maxStudentCount, presentStudentCount);
         this.cohortStateType = cohortStateType;
         this.registerPeriod = new Period(registerStartDate, registerEndDate);
         this.cohortPeriod = new Period(cohortStartDate, cohortEndDate);
@@ -67,7 +67,7 @@ public class Cohort extends BaseEntity {
             return false;
         }
 
-        return this.maxStudentCount > this.presentStudentCount;
+        return this.cohortStudentCount.isNotOverMax();
     }
 
     public boolean isInRecruitBy(LocalDateTime now) {
@@ -105,11 +105,11 @@ public class Cohort extends BaseEntity {
     }
 
     public void registerStudent() {
-        if(!isCanResist()) {
+        if (!isCanResist()) {
             return;
         }
 
-        this.presentStudentCount++;
+        this.cohortStudentCount.plusOneCountAtPresent();
     }
 
 
@@ -130,16 +130,17 @@ public class Cohort extends BaseEntity {
             return false;
         }
         Cohort cohort = (Cohort) o;
-        return cohortCount == cohort.cohortCount && maxStudentCount == cohort.maxStudentCount
-                && presentStudentCount == cohort.presentStudentCount && Objects.equals(
-                courseId, cohort.courseId) && cohortStateType == cohort.cohortStateType
+        return cohortCount == cohort.cohortCount
+                && Objects.equals(courseId, cohort.courseId)
+                && Objects.equals(cohortStudentCount, cohort.cohortStudentCount)
+                && cohortStateType == cohort.cohortStateType
                 && Objects.equals(registerPeriod, cohort.registerPeriod)
                 && Objects.equals(cohortPeriod, cohort.cohortPeriod);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), courseId, cohortCount, maxStudentCount,
-                presentStudentCount, cohortStateType, registerPeriod, cohortPeriod);
+        return Objects.hash(super.hashCode(), courseId, cohortCount,
+                cohortStudentCount, cohortStateType, registerPeriod, cohortPeriod);
     }
 }
