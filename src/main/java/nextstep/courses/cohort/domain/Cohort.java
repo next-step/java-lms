@@ -77,31 +77,32 @@ public class Cohort extends BaseEntity {
     }
 
     public boolean isCanResist() {
-        if (!this.cohortState2.isSameState(CohortStateType.PREPARE)) {
+        if (!this.cohortState2.isSameState(CohortStateType.RECRUIT)) {
             return false;
         }
 
         return this.cohortStudentCount.isNotOverMax();
     }
 
-    public void putOnRecruitEnd(LocalDateTime now) {
+    public boolean putOnRecruitEnd(LocalDateTime now) {
         if (isNull(now)) {
-            throw new IllegalArgumentException("현재시점은 필수 값 입니다.");
+            return false;
         }
 
         if (this.cohortState2.isBeforeRecruitPeriod(now)) {
-            throw new IllegalArgumentException("현재는 수강신청 기간전 입니다");
+            return false;
         }
 
         if (!this.cohortState2.isSameState(CohortStateType.RECRUIT)) {
-            throw new IllegalArgumentException("해당 기수의 상태가 수강신청이 아니기 때문에 신청마감상태로 변경할 수 없습니다");
+            return false;
         }
 
         if (this.cohortState2.isInRecruitPeriod(now) && this.cohortStudentCount.isNotOverMax()) {
-            throw new IllegalArgumentException("현재는 수강신청 기간입니다");
+            return false;
         }
 
         this.cohortState2.changeRecruitEnd();
+        return true;
     }
 
     public boolean isSameCourseId(Long courseId) {

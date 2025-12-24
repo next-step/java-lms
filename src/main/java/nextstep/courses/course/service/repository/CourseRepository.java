@@ -9,6 +9,4 @@ public interface CourseRepository {
     int save(Course course);
 
     Optional<Course> findById(Long id);
-
-    void plusOnePresentCount();
 }

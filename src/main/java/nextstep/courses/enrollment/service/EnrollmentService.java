@@ -50,10 +50,12 @@ public class EnrollmentService {
 
         Cohort cohort = cohortRepository.findById(request.getCohortId())
                 .orElseThrow(NotFoundException::new);
-        Enrollment enrollment = new CohortDomainService().registerEnrollment(
-                cohort, request.getStudentId(), request.getCourseId());
+
+        CohortDomainService cohortDomainService = new CohortDomainService();
+        Enrollment enrollment = cohortDomainService.registerEnrollment(cohort, request.getStudentId(), request.getCourseId());
+        cohortDomainService.updateStateToRecruitEnd(cohort);
 
         enrollmentRepository.save(enrollment);
-        courseRepository.plusOnePresentCount();
+        cohortRepository.update(cohort);
     }
 }

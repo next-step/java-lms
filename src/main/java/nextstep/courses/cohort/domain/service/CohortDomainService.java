@@ -1,5 +1,8 @@
 package nextstep.courses.cohort.domain.service;
 
+import static java.util.Objects.isNull;
+
+import java.time.LocalDateTime;
 import nextstep.courses.cohort.domain.Cohort;
 import nextstep.courses.enrollment.domain.Enrollment;
 import nextstep.qna.exception.unchecked.WrongRequestException;
@@ -21,6 +24,11 @@ public class CohortDomainService {
         return new Enrollment(studentId, cohort.getId());
     }
 
-    // 여기에 상태체크 한번 더 하는 로직 적용할 예정. 인원상태 보고 인원 다 찼으면 인원풀필 상태로 변경하는 로직도 구현 예정
-    // 일단 상태가 인원마감 상태는 확인 및 적용하는 로직 필요
+    public void updateStateToRecruitEnd(Cohort cohort) {
+        if (isNull(cohort)) {
+            return;
+        }
+
+        cohort.putOnRecruitEnd(LocalDateTime.now());
+    }
 }

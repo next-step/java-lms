@@ -32,7 +32,9 @@ class CohortTest {
     @CsvSource({"19, true", "20, false"})
     void 현재_수강인원을_더_받을수_있는지_확인할_수_있다(int presentStudentCount, boolean result) {
         // 최대 수강인원, 현재 수강인원 전부 필요할듯.
-        Cohort cohort = new Cohort(1L, 5, 20, presentStudentCount, LocalDateTime.now(), LocalDateTime.now(),
+        Cohort cohort = new Cohort(1L, 5, 20, presentStudentCount,
+                RECRUIT,
+                LocalDateTime.now(), LocalDateTime.now(),
                 LocalDateTime.now(), LocalDateTime.now());
 
         assertThat(cohort.isCanResist()).isEqualTo(result);
@@ -47,7 +49,9 @@ class CohortTest {
 
     @Test
     void 기수의_현재수강인원을_1만큼_증가시킬_수_있다() {
-        Cohort cohort = new Cohort(1L, 5, 20, 19, LocalDateTime.now(), LocalDateTime.now(),
+        Cohort cohort = new Cohort(1L, 5, 20, 19,
+                CohortStateType.RECRUIT,
+                LocalDateTime.now(), LocalDateTime.now(),
                 LocalDateTime.now(), LocalDateTime.now());
         assertThat(cohort.isCanResist()).isTrue();
 
@@ -66,8 +70,9 @@ class CohortTest {
                 LocalDateTime.of(2025, 2, 25, 23, 59, 59)
         );
 
-        cohort.putOnRecruitEnd(LocalDateTime.of(2025, 1, 11, 0, 0, 0));
-
+        assertThat(
+                cohort.putOnRecruitEnd(LocalDateTime.of(2025, 1, 11, 0, 0, 0))
+        ).isTrue();
         assertThat(cohort.isCohortStateType(RECRUIT_END)).isTrue();
     }
 
@@ -81,23 +86,26 @@ class CohortTest {
                 LocalDateTime.of(2025, 2, 25, 23, 59, 59)
         );
 
-        cohort.putOnRecruitEnd(LocalDateTime.of(2025, 1, 9, 0, 0, 0));
-
+        assertThat(
+                cohort.putOnRecruitEnd(LocalDateTime.of(2025, 1, 9, 0, 0, 0))
+        ).isTrue();
         assertThat(cohort.isCohortStateType(RECRUIT_END)).isTrue();
     }
 
     @Test
     void 현시점이_수강신청기간이고_모집인원의_정원이_초과되지_않았을떄_수강신청종료로_변경할_수_없다() {
         Cohort cohort = new Cohort(1L, 5, 20, 0,
+                CohortStateType.RECRUIT,
                 LocalDateTime.of(2025, 1, 1, 0, 0, 0),
                 LocalDateTime.of(2025, 1, 10, 23, 59, 59),
                 LocalDateTime.of(2025, 1, 17, 0, 0, 0),
                 LocalDateTime.of(2025, 2, 25, 23, 59, 59)
         );
 
-        assertThatThrownBy(
-                () -> cohort.putOnRecruitEnd(LocalDateTime.of(2025, 1, 9, 0, 0, 0))
-        ).isInstanceOf(IllegalArgumentException.class);
+        assertThat(
+                cohort.putOnRecruitEnd(LocalDateTime.of(2025, 1, 9, 0, 0, 0))
+        ).isFalse();
+        assertThat(cohort.isCohortStateType(RECRUIT_END)).isFalse();
     }
 
     @Test
@@ -109,9 +117,10 @@ class CohortTest {
                 LocalDateTime.of(2025, 2, 25, 23, 59, 59)
         );
 
-        assertThatThrownBy(
-                () -> cohort.putOnRecruitEnd(LocalDateTime.of(2025, 1, 1, 0, 0, 0))
-        ).isInstanceOf(IllegalArgumentException.class);
+        assertThat(
+                cohort.putOnRecruitEnd(LocalDateTime.of(2025, 1, 1, 0, 0, 0))
+        ).isFalse();
+        assertThat(cohort.isCohortStateType(RECRUIT_END)).isFalse();
     }
 
     @Test
@@ -123,9 +132,10 @@ class CohortTest {
                 LocalDateTime.of(2025, 2, 25, 23, 59, 59)
         );
 
-        assertThatThrownBy(
-                () -> cohort.putOnRecruitEnd(null)
-        ).isInstanceOf(IllegalArgumentException.class);
+        assertThat(
+                cohort.putOnRecruitEnd(null)
+        ).isFalse();
+        assertThat(cohort.isCohortStateType(RECRUIT_END)).isFalse();
     }
 
 }

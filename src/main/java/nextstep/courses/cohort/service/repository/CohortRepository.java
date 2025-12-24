@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface CohortRepository {
 
     Optional<Cohort> findById(Long id);
+
+    void update(Cohort cohort);
 }
