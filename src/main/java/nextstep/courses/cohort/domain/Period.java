@@ -27,4 +27,12 @@ public class Period {
 
         return startDateAfter && endDateBefore;
     }
+
+    public boolean isOverEndDate(LocalDateTime targetDate) {
+        return this.endDate.isBefore(targetDate);
+    }
+
+    public boolean isBeforeStartDate(LocalDateTime targetDate) {
+        return this.startDate.isAfter(targetDate);
+    }
 }

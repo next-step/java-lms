@@ -1,5 +1,7 @@
 package nextstep.courses.cohort.domain;
 
+import static nextstep.courses.cohort.domain.enumeration.CohortStateType.RECRUIT;
+import static nextstep.courses.cohort.domain.enumeration.CohortStateType.RECRUIT_END;
 import static nextstep.courses.cohort.domain.fixture.CohortFixture.식별자를_전달받아_기수픽스처를_생성한다;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -37,71 +39,6 @@ class CohortTest {
     }
 
     @Test
-    void 지금이_수강_기간인지_확인할_수_있다() {
-        // 기간 객체엔 특정 날짜 값이 시작-종료 중간값인지 확인하는 메서드 + 기수에선 수강기간 확인 메서드로 표현성 극대화
-    }
-
-    @Test
-    void 기수의_상태를_수강신청_기간으로_변경할_수_있다() {
-        // 특정 날짜값 받고 + 수강신청 기간인지 확인 + 신청상태로 상태변경
-        Cohort cohort = new Cohort(1L, 5,  20, 0,
-                LocalDateTime.of(2025, 1, 1, 0, 0, 0),
-                LocalDateTime.of(2025, 1, 10, 23, 59, 59),
-                LocalDateTime.of(2025, 1, 17, 0, 0, 0),
-                LocalDateTime.of(2025, 2, 25, 23, 59, 59)
-        );
-
-        cohort.putOnRecruit(LocalDateTime.of(2025, 1, 1, 0, 0, 1));
-
-        assertThat(cohort.cohortStateType()).isEqualTo(CohortStateType.RECRUIT);
-    }
-
-    @Test
-    void 수강신청기간이_아닌데_기수의_상태를_수강신청_기간으로_변경하면_예외처리_할_수_있다() {
-        // 특정 날짜값 받고 + 수강신청 기간인지 확인 + 신청상태로 상태변경
-        Cohort cohort = new Cohort(1L, 5, 20, 0,
-                LocalDateTime.of(2025, 1, 1, 0, 0, 0),
-                LocalDateTime.of(2025, 1, 10, 23, 59, 59),
-                LocalDateTime.of(2025, 1, 17, 0, 0, 0),
-                LocalDateTime.of(2025, 2, 25, 23, 59, 59)
-        );
-
-        assertThatThrownBy(
-                () -> cohort.putOnRecruit(LocalDateTime.of(2025, 1, 11, 0, 0, 1))
-        ).isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
-    void 기수의_상태를_수강_기간으로_변경할_수_있다() {
-        // 특정 날짜값 받고 + 수강신청 기간인지 확인 + 신청상태로 상태변경
-        Cohort cohort = new Cohort(1L, 5, 20, 0,
-                LocalDateTime.of(2025, 1, 1, 0, 0, 0),
-                LocalDateTime.of(2025, 1, 10, 23, 59, 59),
-                LocalDateTime.of(2025, 1, 17, 0, 0, 0),
-                LocalDateTime.of(2025, 2, 25, 23, 59, 59)
-        );
-
-        cohort.putOnActive(LocalDateTime.of(2025, 1, 17, 0, 0, 1));
-
-        assertThat(cohort.cohortStateType()).isEqualTo(CohortStateType.ACTIVE);
-    }
-
-    @Test
-    void 수강기간이_아닌데_기수의_상태를_수강중으로_변경하면_예외처리_할_수_있다() {
-        // 특정 날짜값 받고 + 수강신청 기간인지 확인 + 신청상태로 상태변경
-        Cohort cohort = new Cohort(1L, 5, 20, 0,
-                LocalDateTime.of(2025, 1, 1, 0, 0, 0),
-                LocalDateTime.of(2025, 1, 10, 23, 59, 59),
-                LocalDateTime.of(2025, 1, 17, 0, 0, 0),
-                LocalDateTime.of(2025, 2, 25, 23, 59, 59)
-        );
-
-        assertThatThrownBy(
-                () -> cohort.putOnActive(LocalDateTime.of(2025, 2, 26, 0, 0, 0))
-        ).isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
     void 코스의_식별자가_같은지_식별할_수_있다() {
         Cohort cohort = 식별자를_전달받아_기수픽스처를_생성한다(1L);
 
@@ -118,4 +55,77 @@ class CohortTest {
 
         assertThat(cohort.isCanResist()).isFalse();
     }
+
+    @Test
+    void 현시점이_수강신청기간보다_미래면_기수의_상태를_수강신청종료로_변경할_수_있다() {
+        Cohort cohort = new Cohort(1L, 5, 20, 0,
+                RECRUIT,
+                LocalDateTime.of(2025, 1, 1, 0, 0, 0),
+                LocalDateTime.of(2025, 1, 10, 23, 59, 59),
+                LocalDateTime.of(2025, 1, 17, 0, 0, 0),
+                LocalDateTime.of(2025, 2, 25, 23, 59, 59)
+        );
+
+        cohort.putOnRecruitEnd(LocalDateTime.of(2025, 1, 11, 0, 0, 0));
+
+        assertThat(cohort.isCohortStateType(RECRUIT_END)).isTrue();
+    }
+
+    @Test
+    void 현시점이_수강신청기간이라도_기수의_최대인원이_모집됐으면_수강신청종료로_변경할_수_있다() {
+        Cohort cohort = new Cohort(1L, 5, 20, 20,
+                RECRUIT,
+                LocalDateTime.of(2025, 1, 1, 0, 0, 0),
+                LocalDateTime.of(2025, 1, 10, 23, 59, 59),
+                LocalDateTime.of(2025, 1, 17, 0, 0, 0),
+                LocalDateTime.of(2025, 2, 25, 23, 59, 59)
+        );
+
+        cohort.putOnRecruitEnd(LocalDateTime.of(2025, 1, 9, 0, 0, 0));
+
+        assertThat(cohort.isCohortStateType(RECRUIT_END)).isTrue();
+    }
+
+    @Test
+    void 현시점이_수강신청기간이고_모집인원의_정원이_초과되지_않았을떄_수강신청종료로_변경할_수_없다() {
+        Cohort cohort = new Cohort(1L, 5, 20, 0,
+                LocalDateTime.of(2025, 1, 1, 0, 0, 0),
+                LocalDateTime.of(2025, 1, 10, 23, 59, 59),
+                LocalDateTime.of(2025, 1, 17, 0, 0, 0),
+                LocalDateTime.of(2025, 2, 25, 23, 59, 59)
+        );
+
+        assertThatThrownBy(
+                () -> cohort.putOnRecruitEnd(LocalDateTime.of(2025, 1, 9, 0, 0, 0))
+        ).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void 현시점이_수강신청이전이면_수강신청종료로_변경할_수_없다() {
+        Cohort cohort = new Cohort(1L, 5, 20, 0,
+                LocalDateTime.of(2025, 1, 1, 0, 0, 1),
+                LocalDateTime.of(2025, 1, 10, 23, 59, 59),
+                LocalDateTime.of(2025, 1, 17, 0, 0, 0),
+                LocalDateTime.of(2025, 2, 25, 23, 59, 59)
+        );
+
+        assertThatThrownBy(
+                () -> cohort.putOnRecruitEnd(LocalDateTime.of(2025, 1, 1, 0, 0, 0))
+        ).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void 현시점파라미터가_NULL인경우_예외처리_할_수_있다() {
+        Cohort cohort = new Cohort(1L, 5, 20, 0,
+                LocalDateTime.of(2025, 1, 1, 0, 0, 1),
+                LocalDateTime.of(2025, 1, 10, 23, 59, 59),
+                LocalDateTime.of(2025, 1, 17, 0, 0, 0),
+                LocalDateTime.of(2025, 2, 25, 23, 59, 59)
+        );
+
+        assertThatThrownBy(
+                () -> cohort.putOnRecruitEnd(null)
+        ).isInstanceOf(IllegalArgumentException.class);
+    }
+
 }
