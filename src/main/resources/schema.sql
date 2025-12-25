@@ -54,7 +54,7 @@ create table session (
     start_at timestamp not null,
     end_at timestamp not null,
     cover_image_size varchar(20),
-    cover_image_type varchar(20),
+    cover_image_name varchar(20),
     cover_image_width int,
     cover_image_height int,
     policy_type varchar(20) not null,
