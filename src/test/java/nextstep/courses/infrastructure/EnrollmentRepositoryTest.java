@@ -1,8 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Enrollment;
-import nextstep.courses.domain.EnrollmentRepository;
-import org.assertj.core.api.Assertions;
+import nextstep.courses.repository.EnrollmentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;

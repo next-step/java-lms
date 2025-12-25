@@ -1,7 +1,6 @@
 package nextstep.courses.domain;
 
 import nextstep.payments.domain.Payment;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 

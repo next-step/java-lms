@@ -1,4 +1,6 @@
-package nextstep.courses.domain;
+package nextstep.courses.repository;
+
+import nextstep.courses.domain.Enrollment;
 
 import java.util.List;
 

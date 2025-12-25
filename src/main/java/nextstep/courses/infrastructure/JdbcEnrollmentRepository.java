@@ -1,7 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Enrollment;
-import nextstep.courses.domain.EnrollmentRepository;
+import nextstep.courses.repository.EnrollmentRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
 
