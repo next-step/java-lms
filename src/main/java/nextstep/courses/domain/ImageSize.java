@@ -26,4 +26,8 @@ public class ImageSize {
     public int hashCode() {
         return Objects.hashCode(imageSize);
     }
+
+    public int value() {
+        return imageSize;
+    }
 }

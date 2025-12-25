@@ -23,4 +23,8 @@ public class Capacity {
     public void increase() {
         this.current++;
     }
+
+    public int value() {
+        return max;
+    }
 }

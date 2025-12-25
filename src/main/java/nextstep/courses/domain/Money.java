@@ -13,6 +13,10 @@ public class Money {
         return this.equals(other);
     }
 
+    public long value() {
+        return amount;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;

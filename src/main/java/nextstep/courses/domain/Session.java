@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.payments.domain.Payment;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 
@@ -44,5 +45,45 @@ public class Session {
 
     public long getId() {
         return id;
+    }
+
+    public LocalDateTime getStartDate() {
+        return sessionDuration.getStartDate();
+    }
+
+    public LocalDateTime getEndDate() {
+        return sessionDuration.getEndDate();
+    }
+
+    public int getCoverImageSize() {
+        return coverImage.getImageSize();
+    }
+
+    public String getCoverImageName() {
+        return coverImage.getImageName();
+    }
+
+    public int getCoverImageWidth() {
+        return coverImage.getCoverImageWidth();
+    }
+
+    public int getCoverImageHeight() {
+        return coverImage.getCoverImageHeight();
+    }
+
+    public String getPolicyType() {
+        return enrollmentPolicy.type().name();
+    }
+
+    public long getPrice() {
+        return enrollmentPolicy.price();
+    }
+
+    public String getState() {
+        return sessionState.name();
+    }
+
+    public int getCapacity() {
+        return enrollments.getCapacity();
     }
 }

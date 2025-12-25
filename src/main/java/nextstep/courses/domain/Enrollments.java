@@ -39,6 +39,10 @@ public class Enrollments {
         return enrollments.stream()
                 .anyMatch(enrollment -> enrollment.isSameUser(userId));
     }
+
+    public int getCapacity() {
+        return capacity.value();
+    }
 }
 
 

@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import org.springframework.cglib.core.Local;
+
 import java.time.LocalDateTime;
 
 public class SessionDuration {
@@ -16,5 +18,13 @@ public class SessionDuration {
         if (!startDate.isBefore(endDate)) {
             throw new IllegalArgumentException();
         }
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
     }
 }

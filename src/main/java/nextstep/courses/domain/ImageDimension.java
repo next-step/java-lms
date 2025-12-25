@@ -27,4 +27,12 @@ public class ImageDimension {
             throw new IllegalArgumentException();
         }
     }
+
+    public int width() {
+        return width;
+    }
+
+    public int height() {
+        return height;
+    }
 }

@@ -11,6 +11,16 @@ public class PaidEnrollmentPolicy implements EnrollmentPolicy {
     }
 
     @Override
+    public PolicyType type() {
+        return PolicyType.PAID;
+    }
+
+    @Override
+    public Long price() {
+        return money.value();
+    }
+
+    @Override
     public void validateEnrollment(Payment payment) {
         validatePayment(payment);
     }
