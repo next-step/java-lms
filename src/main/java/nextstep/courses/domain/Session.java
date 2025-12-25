@@ -86,4 +86,16 @@ public class Session {
     public int getCapacity() {
         return enrollments.getCapacity();
     }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "id=" + id +
+                ", sessionDuration=" + sessionDuration +
+                ", coverImage=" + coverImage +
+                ", enrollmentPolicy=" + enrollmentPolicy +
+                ", sessionState=" + sessionState +
+                ", enrollments=" + enrollments +
+                '}';
+    }
 }
