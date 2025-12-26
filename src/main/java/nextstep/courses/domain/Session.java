@@ -50,12 +50,20 @@ public class Session {
         return this.sessionStatus.toString();
     }
 
-    public int getPrice() {
-        return this.enrollmentRule.getPrice();
+    public Integer getPrice() {
+        if (enrollmentRule.getType().equals(SessionType.PAID)) {
+            return ((PaidEnrollmentRule) this.enrollmentRule).getPrice();
+        }
+
+        return null;
     }
 
-    public int getCapacity() {
-        return this.enrollmentRule.getCapacity();
+    public Integer getCapacity() {
+        if (enrollmentRule.getType().equals(SessionType.PAID)) {
+            return ((PaidEnrollmentRule) this.enrollmentRule).getCapacity();
+        }
+
+        return null;
     }
 
     public LocalDateTime getStartTime() {

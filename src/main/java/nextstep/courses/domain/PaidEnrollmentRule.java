@@ -38,12 +38,10 @@ public class PaidEnrollmentRule implements EnrollmentRule {
         return SessionType.PAID;
     }
 
-    @Override
     public int getPrice() {
         return this.price.getMoney();
     }
 
-    @Override
     public int getCapacity() {
         return this.capacity.getCapacity();
     }

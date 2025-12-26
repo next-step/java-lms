@@ -8,8 +8,4 @@ public interface EnrollmentRule {
     void validateCapacity(int enrolledCount);
 
     SessionType getType();
-
-    int getPrice();
-
-    int getCapacity();
 }
