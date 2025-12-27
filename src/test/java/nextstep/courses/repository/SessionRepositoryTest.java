@@ -3,7 +3,6 @@ package nextstep.courses.repository;
 import nextstep.courses.domain.*;
 import nextstep.courses.infrastructure.JdbcImageFileRepository;
 import nextstep.courses.infrastructure.JdbcSessionRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
@@ -11,7 +10,7 @@ import org.springframework.context.annotation.Import;
 
 import java.time.LocalDateTime;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
 @Import({JdbcSessionRepository.class, JdbcImageFileRepository.class})
@@ -50,9 +49,10 @@ public class SessionRepositoryTest {
 
         Session session = new Session(imageFile, period, sessionStatus, enrollmentRule, enrollments);
 
+
         Long sessionId = jdbcSessionRepository.save(session);
 
-        Session found = jdbcSessionRepository.findById2(sessionId);
+        Session found = jdbcSessionRepository.findById(sessionId);
 
         assertThat(found.getSessionStatus()).isEqualTo(session.getSessionStatus());
         assertThat(found.getPeriod()).isEqualTo(session.getPeriod());

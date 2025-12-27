@@ -61,75 +61,7 @@ public class JdbcSessionRepository implements SessionRepository {
         }
     }
 
-    @Override
     public Session findById(long id) {
-        String sql = "select " +
-                "s.id, " +
-                "s.session_status, " +
-                "s.price, " +
-                "s.capacity, " +
-                "s.start_time, " +
-                "s.end_time, " +
-                "i.id AS image_id, " +
-                "i.size, " +
-                "i.image_type, " +
-                "i.width, " +
-                "i.height " +
-                "from session s " +
-                "join image_file i " +
-                "on s.image_id = i.id " +
-                "where s.id = ?";
-
-        return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
-
-            // 1️⃣ ImageFile (지금은 ID만 복원)
-            ImageFile imageFile = new ImageFile(
-                    rs.getLong("image_id"),
-                    rs.getLong("size"),
-                    rs.getString("image_type"),
-                    rs.getInt("width"),
-                    rs.getInt("height")
-            );
-
-            // 2️⃣ SessionPeriod
-            SessionPeriod period = new SessionPeriod(
-                    rs.getObject("start_time", LocalDateTime.class),
-                    rs.getObject("end_time", LocalDateTime.class)
-            );
-
-            // 3️⃣ SessionStatus
-            SessionStatus status =
-                    SessionStatus.valueOf(rs.getString("session_status"));
-
-            // 4️⃣ EnrollmentRule
-            Integer price = rs.getObject("price", Integer.class);
-
-            EnrollmentRule enrollmentRule;
-            if (price != null) {
-                enrollmentRule = new PaidEnrollmentRule(
-                        price,
-                        rs.getInt("capacity")
-                );
-            } else {
-                enrollmentRule = new FreeEnrollmentRule();
-            }
-
-            // 5️⃣ Enrollments (조회 시점에서는 비어 있음)
-            Enrollments enrollments = new Enrollments();
-
-            return new Session(
-                    rs.getLong("id"),
-                    imageFile,
-                    period,
-                    status,
-                    enrollmentRule,
-                    enrollments
-            );
-        }, id);
-    }
-
-
-    public Session findById2(long id) {
         String sql = "select " +
                 "s.id, " +
                 "s.session_status, " +

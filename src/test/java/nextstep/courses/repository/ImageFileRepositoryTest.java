@@ -1,8 +1,6 @@
 package nextstep.courses.repository;
 
-import nextstep.courses.domain.Enrollment;
 import nextstep.courses.domain.ImageFile;
-import nextstep.courses.domain.ImageType;
 import nextstep.courses.infrastructure.JdbcImageFileRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

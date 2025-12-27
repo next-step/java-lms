@@ -10,6 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.util.List;
 
 @Repository("enrollmentRepository")
 public class JdbcEnrollmentRepository implements EnrollmentRepository {
@@ -47,4 +48,19 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
 
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
+
+    @Override
+    public List<Enrollment> findBySessionId(Long sessionId) {
+        String sql = "select * from enrollment where session_id = ?";
+
+        RowMapper<Enrollment> rowMapper = (rs, rowNum) -> new Enrollment(
+                rs.getLong("id"),
+                rs.getLong("student_id"),
+                rs.getLong("session_id")
+        );
+
+        return jdbcTemplate.query(sql, rowMapper, sessionId);
+    }
+
+
 }

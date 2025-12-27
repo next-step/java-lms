@@ -15,6 +15,10 @@ public class Session {
         this(id, imageFile, new SessionPeriod(startTime, endTime), SessionStatus.valueOf(sessionStatus), allocateEnrollmentRule(price, capacity), new Enrollments());
     }
 
+    public Session(ImageFile imageFile, SessionPeriod period, SessionStatus sessionStatus, EnrollmentRule enrollmentRule) {
+        this(null,  imageFile, period, sessionStatus, enrollmentRule, new Enrollments());
+    }
+
     public Session(ImageFile imageFile, SessionPeriod period, SessionStatus sessionStatus, EnrollmentRule enrollmentRule, Enrollments enrollments) {
         this(null,  imageFile, period, sessionStatus, enrollmentRule, enrollments);
     }

@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class SessionBuilder {
     private Long id = 1L;
-    private ImageFile imageFile = new ImageFile(1024 * 1024);
+    private ImageFile imageFile = new ImageFile(1024 * 1024, "png", 300 , 200);
     private SessionPeriod period =
             new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(7));
     private SessionStatus sessionStatus = SessionStatus.RECRUITING;
