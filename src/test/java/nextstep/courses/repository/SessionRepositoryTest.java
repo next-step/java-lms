@@ -52,7 +52,7 @@ public class SessionRepositoryTest {
 
         Long sessionId = jdbcSessionRepository.save(session);
 
-        Session found = jdbcSessionRepository.findById(sessionId);
+        Session found = jdbcSessionRepository.findById2(sessionId);
 
         assertThat(found.getSessionStatus()).isEqualTo(session.getSessionStatus());
         assertThat(found.getPeriod()).isEqualTo(session.getPeriod());

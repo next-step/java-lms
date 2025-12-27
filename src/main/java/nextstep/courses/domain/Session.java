@@ -11,6 +11,10 @@ public class Session {
     private final EnrollmentRule enrollmentRule;
     private final Enrollments enrollments;
 
+    public Session(Long id,ImageFile imageFile, LocalDateTime startTime, LocalDateTime endTime, String sessionStatus, Integer price, Integer capacity) {
+        this(id, imageFile, new SessionPeriod(startTime, endTime), SessionStatus.valueOf(sessionStatus), allocateEnrollmentRule(price, capacity), new Enrollments());
+    }
+
     public Session(ImageFile imageFile, SessionPeriod period, SessionStatus sessionStatus, EnrollmentRule enrollmentRule, Enrollments enrollments) {
         this(null,  imageFile, period, sessionStatus, enrollmentRule, enrollments);
     }
@@ -76,6 +80,14 @@ public class Session {
 
     public SessionPeriod getPeriod() {
         return this.period;
+    }
+
+    private static EnrollmentRule allocateEnrollmentRule(Integer price, Integer capacity) {
+        if (price != null) {
+            return new PaidEnrollmentRule(price, capacity);
+        }
+
+        return new FreeEnrollmentRule();
     }
 
     private void validationRecruiting() {

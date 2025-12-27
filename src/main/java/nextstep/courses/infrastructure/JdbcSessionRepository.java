@@ -129,4 +129,47 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
 
+    public Session findById2(long id) {
+        String sql = "select " +
+                "s.id, " +
+                "s.session_status, " +
+                "s.price, " +
+                "s.capacity, " +
+                "s.start_time, " +
+                "s.end_time, " +
+                "i.id AS image_id, " +
+                "i.size, " +
+                "i.image_type, " +
+                "i.width, " +
+                "i.height " +
+                "from session s " +
+                "join image_file i " +
+                "on s.image_id = i.id " +
+                "where s.id = ?";
+
+        return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
+
+            ImageFile imageFile = new ImageFile(
+                    rs.getLong("image_id"),
+                    rs.getLong("size"),
+                    rs.getString("image_type"),
+                    rs.getInt("width"),
+                    rs.getInt("height")
+            );
+
+            Session session = new Session(
+                    rs.getLong("id"),
+                    imageFile,
+                    rs.getObject("start_time", LocalDateTime.class),
+                    rs.getObject("end_time", LocalDateTime.class),
+                    rs.getString("session_status"),
+                    rs.getObject("price", Integer.class),
+                    rs.getObject("capacity", Integer.class)
+            );
+
+            return session;
+        }, id);
+    }
+
+
 }
