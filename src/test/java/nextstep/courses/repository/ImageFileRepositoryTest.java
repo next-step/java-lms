@@ -20,15 +20,15 @@ public class ImageFileRepositoryTest {
 
     @Test
     void save() {
-        int save = imageFileRepository.save(new ImageFile(1024 * 1024, "jpg", 300, 200));
+        Long imageId = imageFileRepository.save(new ImageFile(1024 * 1024, "jpg", 300, 200));
 
-        assertThat(save).isEqualTo(1);
+        assertThat(imageId).isNotNull();
     }
 
     @Test
     void find() {
-        imageFileRepository.save(new ImageFile(1024 * 1024, "jpg", 300, 200));
+        Long imageId = imageFileRepository.save(new ImageFile(1024 * 1024, "jpg", 300, 200));
 
-        assertThat((imageFileRepository.findById(1L))).isEqualTo(new ImageFile(1L,1024 * 1024, "jpg", 300, 200));
+        assertThat((imageFileRepository.findById(imageId))).isEqualTo(new ImageFile(1L,1024 * 1024, "jpg", 300, 200));
     }
 }

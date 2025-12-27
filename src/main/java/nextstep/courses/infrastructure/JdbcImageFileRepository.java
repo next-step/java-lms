@@ -4,7 +4,11 @@ import nextstep.courses.domain.ImageFile;
 import nextstep.courses.repository.ImageFileRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+
+import java.sql.PreparedStatement;
 
 @Repository("imageFileRepository")
 public class JdbcImageFileRepository implements ImageFileRepository {
@@ -16,16 +20,21 @@ public class JdbcImageFileRepository implements ImageFileRepository {
     }
 
     @Override
-    public int save(ImageFile imageFile) {
+    public Long save(ImageFile imageFile) {
         String sql = "insert into image_file (size, image_type, width, height) values (?, ?, ?, ?)";
 
-        return jdbcTemplate.update(sql,
-                imageFile.getSize(),
-                imageFile.getImageType().toString(),
-                imageFile.getWidth(),
-                imageFile.getHeight()
-        );
+        KeyHolder keyHolder = new GeneratedKeyHolder();
 
+        jdbcTemplate.update(connect -> {
+            PreparedStatement ps = connect.prepareStatement(sql, new String[]{"id"});
+            ps.setLong(1, imageFile.getSize());
+            ps.setString(2, imageFile.getImageType().toString());
+            ps.setInt(3, imageFile.getWidth());
+            ps.setInt(4, imageFile.getHeight());
+            return ps;
+        }, keyHolder);
+
+        return keyHolder.getKey().longValue();
     }
 
     @Override

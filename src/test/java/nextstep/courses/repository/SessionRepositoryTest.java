@@ -1,6 +1,7 @@
 package nextstep.courses.repository;
 
 import nextstep.courses.domain.*;
+import nextstep.courses.infrastructure.JdbcImageFileRepository;
 import nextstep.courses.infrastructure.JdbcSessionRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,15 +14,17 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.*;
 
 @JdbcTest
-@Import(JdbcSessionRepository.class)
+@Import({JdbcSessionRepository.class, JdbcImageFileRepository.class})
 public class SessionRepositoryTest {
 
     @Autowired
     JdbcSessionRepository jdbcSessionRepository;
 
+    @Autowired
+    JdbcImageFileRepository jdbcImageFileRepository;
+
     @Test
     void save() {
-
         ImageFile imageFile = new ImageFile(1024*1024);
         SessionPeriod period = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(7));
         SessionStatus sessionStatus = SessionStatus.RECRUITING;
@@ -30,14 +33,16 @@ public class SessionRepositoryTest {
 
         Session session = new Session(imageFile, period, sessionStatus, enrollmentRule, enrollments);
 
-        int save = jdbcSessionRepository.save(session);
+        Long sessionId = jdbcSessionRepository.save(session);
 
-        assertThat(save).isEqualTo(1);
+        assertThat(sessionId).isNotNull();
     }
 
     @Test
     void find() {
-        ImageFile imageFile = new ImageFile(1);
+        ImageFile imageFile = new ImageFile(1024 * 1024, "png", 300 , 200);
+        jdbcImageFileRepository.save(imageFile);
+
         SessionPeriod period = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(7));
         SessionStatus sessionStatus = SessionStatus.RECRUITING;
         EnrollmentRule enrollmentRule = new PaidEnrollmentRule(50000, 10);
@@ -45,9 +50,9 @@ public class SessionRepositoryTest {
 
         Session session = new Session(imageFile, period, sessionStatus, enrollmentRule, enrollments);
 
-        jdbcSessionRepository.save(session);
+        Long sessionId = jdbcSessionRepository.save(session);
 
-        Session found = jdbcSessionRepository.findById(1L);
+        Session found = jdbcSessionRepository.findById(sessionId);
 
         assertThat(found.getSessionStatus()).isEqualTo(session.getSessionStatus());
         assertThat(found.getPeriod()).isEqualTo(session.getPeriod());

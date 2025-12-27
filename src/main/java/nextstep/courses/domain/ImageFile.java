@@ -15,9 +15,6 @@ public class ImageFile {
     private final int width;
     private final int height;
 
-    public ImageFile(Long id) {
-        this(1L, MAX_SIZE, "png", MIN_WIDTH_PX, MIN_HEIGHT_PX);
-    }
 
     public ImageFile(long size) {
         this(1L, size, "png", MIN_WIDTH_PX , MIN_HEIGHT_PX);

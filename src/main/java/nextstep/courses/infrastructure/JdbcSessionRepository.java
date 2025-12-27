@@ -3,9 +3,14 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.*;
 import nextstep.courses.repository.SessionRepository;
 import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.sql.Types;
 import java.time.LocalDateTime;
 
 
@@ -19,27 +24,72 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public int save(Session session) {
+    public Long save(Session session) {
         String sql = "insert into session (image_id, session_status, price, capacity, start_time, end_time) values (?, ?, ?, ?, ?, ?)";
 
+        KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        return jdbcTemplate.update(sql,
-                session.getImageId(),
-                session.getSessionStatus(),
-                session.getPrice(),
-                session.getCapacity(),
-                session.getStartTime(),
-                session.getEndTime());
+        jdbcTemplate.update(connect -> {
+            PreparedStatement ps = connect.prepareStatement(sql, new String[]{"id"});
+            ps.setLong(1, session.getImageId());
+            ps.setString(2 , session.getSessionStatus());
+            ps.setInt(3 , session.getPrice());
+            ps.setInt(4 , session.getCapacity());
+            extractedPrice(session, ps);
+            extractedCapacity(session, ps);
+            ps.setTimestamp(5, Timestamp.valueOf(session.getStartTime()));
+            ps.setTimestamp(6, Timestamp.valueOf(session.getEndTime()));
+            return ps;
+        }, keyHolder);
+
+        return keyHolder.getKey().longValue();
+    }
+
+    private static void extractedCapacity(Session session, PreparedStatement ps) throws SQLException {
+        if (session.getCapacity() != null) {
+            ps.setInt(4, session.getCapacity());
+        } else {
+            ps.setNull(4, Types.INTEGER);
+        }
+    }
+
+    private static void extractedPrice(Session session, PreparedStatement ps) throws SQLException {
+        if (session.getPrice() != null) {
+            ps.setInt(3, session.getPrice());
+        } else {
+            ps.setNull(3, Types.INTEGER);
+        }
     }
 
     @Override
     public Session findById(long id) {
-        String sql = "select * from session where id = ?";
+        String sql = "select " +
+                "s.id, " +
+                "s.session_status, " +
+                "s.price, " +
+                "s.capacity, " +
+                "s.start_time, " +
+                "s.end_time, " +
+                "i.id AS image_id, " +
+                "i.size, " +
+                "i.image_type, " +
+                "i.width, " +
+                "i.height " +
+                "from session s " +
+                "join image_file i " +
+                "on s.image_id = i.id " +
+                "where s.id = ?";
 
         return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
 
             // 1️⃣ ImageFile (지금은 ID만 복원)
-            ImageFile imageFile = new ImageFile(rs.getLong("image_id"));
+            ImageFile imageFile = new ImageFile(
+                    rs.getLong("image_id"),
+                    rs.getLong("size"),
+                    rs.getString("image_type"),
+                    rs.getInt("width"),
+                    rs.getInt("height")
+            );
 
             // 2️⃣ SessionPeriod
             SessionPeriod period = new SessionPeriod(
@@ -77,4 +127,6 @@ public class JdbcSessionRepository implements SessionRepository {
             );
         }, id);
     }
+
+
 }

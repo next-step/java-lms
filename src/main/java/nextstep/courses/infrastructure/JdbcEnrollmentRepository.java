@@ -3,8 +3,13 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.Enrollment;
 import nextstep.courses.repository.EnrollmentRepository;
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+
+import java.sql.PreparedStatement;
 
 @Repository("enrollmentRepository")
 public class JdbcEnrollmentRepository implements EnrollmentRepository {
@@ -16,9 +21,19 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
     }
 
     @Override
-    public int save(Enrollment enrollment) {
+    public Long save(Enrollment enrollment) {
         String sql = "insert into enrollment (student_id, session_id) values (?, ?)";
-        return jdbcTemplate.update(sql, enrollment.getStudentId(), enrollment.getSessionId());
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connect -> {
+            PreparedStatement ps = connect.prepareStatement(sql, new String[]{"id"});
+            ps.setLong(1, enrollment.getStudentId());
+            ps.setLong(2, enrollment.getSessionId());
+            return ps;
+        }, keyHolder);
+
+        return keyHolder.getKey().longValue();
     }
 
     @Override
