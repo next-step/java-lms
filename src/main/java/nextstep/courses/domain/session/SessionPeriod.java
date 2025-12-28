@@ -18,4 +18,12 @@ public class SessionPeriod {
             throw new RuntimeException("강의 시작일은 강의 종료일 이전이어야 합니다.");
         }
     }
+
+    public LocalDate startDate() {
+        return this.startDate;
+    }
+
+    public LocalDate endDate() {
+        return this.endDate;
+    }
 }

@@ -35,4 +35,12 @@ public class ImageDimension {
             throw new RuntimeException(String.format("이미지 비율은 %d:%d여야 합니다.", WIDTH_RATIO, HEIGHT_RATIO));
         }
     }
+
+    public int width() {
+        return this.width;
+    }
+
+    public int height() {
+        return this.height;
+    }
 }

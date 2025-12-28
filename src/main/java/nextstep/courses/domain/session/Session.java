@@ -4,6 +4,7 @@ import java.util.Objects;
 import nextstep.courses.domain.image.CoverImage;
 import nextstep.courses.domain.enrollment.Enrollment;
 import nextstep.courses.domain.enrollment.Enrollments;
+import nextstep.courses.domain.policy.SessionType;
 import nextstep.courses.domain.value.Money;
 import nextstep.courses.domain.policy.SessionPolicy;
 
@@ -75,5 +76,45 @@ public class Session {
     @Override
     public int hashCode() {
         return Objects.hash(id, sessionPeriod, coverImage, sessionPolicy, sessionStatus, enrollments);
+    }
+
+    public SessionPeriod period() {
+        return this.sessionPeriod;
+    }
+
+    public String coverImageName() {
+        return this.coverImage.fileName();
+    }
+
+    public long coverImageSize() {
+        return this.coverImage.imageSize();
+    }
+
+    public String coverImageType() {
+        return this.coverImage.imageType().name();
+    }
+
+    public int coverImageWidth() {
+        return this.coverImage.width();
+    }
+
+    public int coverImageHeight() {
+        return this.coverImage.height();
+    }
+
+    public SessionType type() {
+        return this.sessionPolicy.type();
+    }
+
+    public SessionStatus status() {
+        return this.sessionStatus;
+    }
+
+    public Integer price() {
+        return sessionPolicy.price();
+    }
+
+    public Integer capacity() {
+        return sessionPolicy.capacity();
     }
 }

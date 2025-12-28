@@ -24,4 +24,16 @@ public class ImageFile {
             throw new RuntimeException("이미지 크기는 1MB 이하여야 합니다.");
         }
     }
+
+    public String name() {
+        return this.fileName;
+    }
+
+    public long size() {
+        return this.imageSize;
+    }
+
+    public ImageType type() {
+        return this.imageType;
+    }
 }
