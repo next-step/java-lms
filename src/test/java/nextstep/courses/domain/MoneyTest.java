@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import org.assertj.core.api.Assertions;
+import nextstep.courses.domain.enrollment.Money;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

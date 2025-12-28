@@ -1,5 +1,9 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.enrollment.Enrollment;
+import nextstep.courses.domain.enrollment.EnrollmentPolicy;
+import nextstep.courses.domain.enrollment.Enrollments;
+import nextstep.courses.domain.session.cover.CoverImage;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;

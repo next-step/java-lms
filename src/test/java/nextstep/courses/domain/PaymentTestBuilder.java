@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.enrollment.Money;
+import nextstep.courses.domain.session.Session;
 import nextstep.payments.domain.Payment;
 
 public class PaymentTestBuilder {

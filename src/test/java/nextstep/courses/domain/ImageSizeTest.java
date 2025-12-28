@@ -1,9 +1,10 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.session.cover.ImageSize;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.courses.domain.ImageSize.MAX_SIZE;
+import static nextstep.courses.domain.session.cover.ImageSize.MAX_SIZE;
 import static org.assertj.core.api.Assertions.*;
 
 class ImageSizeTest {

@@ -1,6 +1,4 @@
-package nextstep.courses.domain;
-
-import org.springframework.cglib.core.Local;
+package nextstep.courses.domain.session;
 
 import java.time.LocalDateTime;
 

@@ -1,6 +1,6 @@
 package nextstep.payments.domain;
 
-import nextstep.courses.domain.Money;
+import nextstep.courses.domain.enrollment.Money;
 
 import java.time.LocalDateTime;
 

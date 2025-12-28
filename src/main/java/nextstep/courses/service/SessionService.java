@@ -1,7 +1,7 @@
 package nextstep.courses.service;
 
-import nextstep.courses.domain.Enrollment;
-import nextstep.courses.domain.Session;
+import nextstep.courses.domain.enrollment.Enrollment;
+import nextstep.courses.domain.session.Session;
 import nextstep.courses.repository.EnrollmentRepository;
 import nextstep.courses.repository.SessionRepository;
 import nextstep.payments.domain.Payment;

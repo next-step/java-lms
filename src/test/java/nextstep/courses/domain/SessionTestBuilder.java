@@ -1,5 +1,11 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.enrollment.*;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionDuration;
+import nextstep.courses.domain.session.SessionState;
+import nextstep.courses.domain.session.cover.CoverImage;
+
 import java.time.LocalDateTime;
 
 public class SessionTestBuilder {

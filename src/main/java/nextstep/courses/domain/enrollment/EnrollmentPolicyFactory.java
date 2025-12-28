@@ -1,7 +1,7 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.enrollment;
 
-import static nextstep.courses.domain.PolicyType.FREE;
-import static nextstep.courses.domain.PolicyType.PAID;
+import static nextstep.courses.domain.enrollment.PolicyType.FREE;
+import static nextstep.courses.domain.enrollment.PolicyType.PAID;
 
 public class EnrollmentPolicyFactory {
     public static EnrollmentPolicy create(String name, Long price) {
