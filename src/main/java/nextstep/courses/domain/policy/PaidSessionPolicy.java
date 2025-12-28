@@ -23,6 +23,11 @@ public class PaidSessionPolicy implements SessionPolicy {
         validateEnrollmentCount(currentEnrollmentCount);
     }
 
+    @Override
+    public SessionType type() {
+        return SessionType.PAID;
+    }
+
     private void validatePayment(Money payment) {
         if (!price.equals(payment)) {
             throw new RuntimeException("결제 금액이 수강료와 일치하지 않습니다.");

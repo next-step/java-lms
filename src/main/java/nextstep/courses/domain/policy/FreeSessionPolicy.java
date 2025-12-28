@@ -7,4 +7,9 @@ public class FreeSessionPolicy implements SessionPolicy {
     @Override
     public void validate(Money payment, int currentEnrollmentCount) {
     }
+
+    @Override
+    public SessionType type() {
+        return SessionType.FREE;
+    }
 }
