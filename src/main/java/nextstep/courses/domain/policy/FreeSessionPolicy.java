@@ -12,4 +12,14 @@ public class FreeSessionPolicy implements SessionPolicy {
     public SessionType type() {
         return SessionType.FREE;
     }
+
+    @Override
+    public Integer price() {
+        return null;
+    }
+
+    @Override
+    public Integer capacity() {
+        return null;
+    }
 }

@@ -18,4 +18,8 @@ public class Capacity {
     public boolean isFull(int count) {
         return value <= count;
     }
+
+    public int value() {
+        return this.value;
+    }
 }

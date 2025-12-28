@@ -39,4 +39,14 @@ public class PaidSessionPolicy implements SessionPolicy {
             throw new RuntimeException("수강 인원이 초과되었습니다.");
         }
     }
+
+    @Override
+    public Integer price() {
+        return this.price.value();
+    }
+
+    @Override
+    public Integer capacity() {
+        return this.capacity.value();
+    }
 }
