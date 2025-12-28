@@ -25,7 +25,7 @@ public class Enrollments {
         capacity.validateAvailable();
     }
 
-    public Enrollment add(Long sessionId, Long userId) {
+    public Enrollment enroll(Long sessionId, Long userId) {
         validateEnroll(userId);
 
         Enrollment enrollment = new Enrollment(sessionId, userId);

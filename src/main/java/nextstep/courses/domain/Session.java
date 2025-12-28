@@ -39,7 +39,7 @@ public class Session {
     public Enrollment enroll(Long userId, Payment payment) {
         sessionState.validateEnroll();
         enrollmentPolicy.validateEnrollment(payment);
-        return enrollments.add(this.id, userId);
+        return enrollments.enroll(this.id, userId);
     }
 
     public long getId() {

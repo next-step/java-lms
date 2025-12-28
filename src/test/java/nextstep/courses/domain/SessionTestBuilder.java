@@ -40,7 +40,7 @@ public class SessionTestBuilder {
 
     public SessionTestBuilder withFullEnrollments(int count) {
         for (int i = 0; i < count; i++) {
-            enrollments.add(this.id, (long) i + 1);
+            enrollments.enroll(this.id, (long) i + 1);
         }
         return this;
     }

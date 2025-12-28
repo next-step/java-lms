@@ -7,9 +7,9 @@ class EnrollmentsTest {
     @Test
     void Enrollments_sameUserId() {
         Enrollments enrollments = new Enrollments(new Capacity(2));
-        enrollments.add(1L, 10L);
+        enrollments.enroll(1L, 10L);
 
-        assertThatThrownBy(() -> enrollments.add(1L, 10L))
+        assertThatThrownBy(() -> enrollments.enroll(1L, 10L))
                 .isInstanceOf(IllegalStateException.class);
     }
 }
