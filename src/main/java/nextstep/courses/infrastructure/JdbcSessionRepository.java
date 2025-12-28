@@ -40,7 +40,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getString("cover_image_name"),
                 rs.getInt("cover_image_width"),
                 rs.getInt("cover_image_height"),
-                PolicyType.create(rs.getString("policy_type"), rs.getLong("price")),
+                EnrollmentPolicyFactory.create(rs.getString("policy_type"), rs.getLong("price")),
                 SessionState.valueOf(rs.getString("state")),
                 new Enrollments(new Capacity(rs.getInt("capacity")))
         );
