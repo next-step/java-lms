@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 
 public class Session {
     private final long id;
+    private final long courseId;
     private final SessionDuration sessionDuration;
     private final CoverImage coverImage;
     private final EnrollmentPolicy enrollmentPolicy;
@@ -17,6 +18,7 @@ public class Session {
     private final Enrollments enrollments;
 
     public Session(long id
+            , long courseId
             , LocalDateTime startDate
             , LocalDateTime endDate
             , int size
@@ -26,13 +28,15 @@ public class Session {
             , EnrollmentPolicy enrollmentPolicy
             , SessionState sessionState
             , Enrollments enrollments) {
-        this(id, new SessionDuration(startDate, endDate), new CoverImage(size, fileName, width, height)
+
+        this(id, courseId, new SessionDuration(startDate, endDate), new CoverImage(size, fileName, width, height)
                 , enrollmentPolicy, sessionState, enrollments);
     }
 
-    public Session(long id, SessionDuration sessionDuration, CoverImage coverImage
+    public Session(long id, long courseId, SessionDuration sessionDuration, CoverImage coverImage
             , EnrollmentPolicy enrollmentPolicy, SessionState sessionState, Enrollments enrollments) {
         this.id = id;
+        this.courseId = courseId;
         this.sessionDuration = sessionDuration;
         this.coverImage = coverImage;
         this.enrollmentPolicy = enrollmentPolicy;
@@ -48,6 +52,10 @@ public class Session {
 
     public long getId() {
         return id;
+    }
+
+    public long getCourseId() {
+        return courseId;
     }
 
     public LocalDateTime getStartDate() {

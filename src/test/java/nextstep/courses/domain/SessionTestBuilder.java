@@ -12,6 +12,8 @@ public class SessionTestBuilder {
 
     private long id = 1L;
 
+    private long courseId = 10L;
+
     private SessionDuration sessionDuration = new SessionDuration(
                     LocalDateTime.now().plusDays(1),
                     LocalDateTime.now().plusDays(2)
@@ -27,6 +29,16 @@ public class SessionTestBuilder {
 
     public static SessionTestBuilder aSession() {
         return new SessionTestBuilder();
+    }
+
+    public SessionTestBuilder withId(long id) {
+        this.id = id;
+        return this;
+    }
+
+    public SessionTestBuilder withCourseId(long courseId) {
+        this.courseId = courseId;
+        return this;
     }
 
     public SessionTestBuilder withClosedSession() {
@@ -54,6 +66,7 @@ public class SessionTestBuilder {
     public Session build() {
         return new Session(
                 id,
+                courseId,
                 sessionDuration,
                 coverImage,
                 enrollmentPolicy,

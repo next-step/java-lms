@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
@@ -39,5 +41,30 @@ public class SessionRepositoryTest {
         Session savedSession = sessionRepository.findById(1L);
         assertThat(session.getCoverImageName()).isEqualTo(savedSession.getCoverImageName());
         LOGGER.debug("Session: {}", savedSession);
+    }
+
+    @Test
+    void findByCourseId() {
+        Session session = SessionTestBuilder.aSession()
+                .withId(1L)
+                .withCourseId(10L)
+                .withCapacity(10)
+                .withPaidEnrollment(new Money(5000L))
+                .build();
+        int count = sessionRepository.save(session);
+
+        session = SessionTestBuilder.aSession()
+                .withId(2L)
+                .withCourseId(10L)
+                .withCapacity(10)
+                .withPaidEnrollment(new Money(5000L))
+                .build();
+        count += sessionRepository.save(session);
+
+        assertThat(count).isEqualTo(2);
+
+        List<Session> sessions = sessionRepository.findByCourseId(10L);
+        assertThat(sessions).hasSize(2);
+        LOGGER.debug("Sessions: {}", sessions);
     }
 }

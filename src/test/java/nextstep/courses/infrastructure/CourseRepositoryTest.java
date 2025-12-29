@@ -2,6 +2,7 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Course;
 import nextstep.courses.repository.CourseRepository;
+import nextstep.courses.repository.SessionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -20,10 +21,12 @@ public class CourseRepositoryTest {
     private JdbcTemplate jdbcTemplate;
 
     private CourseRepository courseRepository;
+    private SessionRepository sessionRepository;
 
     @BeforeEach
     void setUp() {
-        courseRepository = new JdbcCourseRepository(jdbcTemplate);
+        sessionRepository = new JdbcSessionRepository(jdbcTemplate);
+        courseRepository = new JdbcCourseRepository(jdbcTemplate, sessionRepository);
     }
 
     @Test
