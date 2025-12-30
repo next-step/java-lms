@@ -9,8 +9,8 @@ public class SessionTest {
 
     @Test
     void 무료_강의_등록() {
-        Session session = SessionBuilder.aRecuitingSession()
-                .asFreeSession()
+        Session session = SessionBuilder.builder()
+                .withEnrollmentRule(new FreeEnrollmentRule())
                 .build();
 
         session.enroll(new Enrollment(1L, 1L), Money.ZERO);
@@ -20,8 +20,8 @@ public class SessionTest {
 
     @Test
     void 강의_등록_성공() {
-        Session session = SessionBuilder.aRecuitingSession()
-                .asPaidSession(50000, 10)
+        Session session = SessionBuilder.builder()
+                .withEnrollmentRule(new PaidEnrollmentRule(50_000,10))
                 .build();
 
         session.enroll(new Enrollment(1L, 1L), new Money(50000));
@@ -31,8 +31,8 @@ public class SessionTest {
 
     @Test
     void 강의_금액_불일치_예외() {
-        Session session = SessionBuilder.aRecuitingSession()
-                .asPaidSession(50000, 10)
+        Session session = SessionBuilder.builder()
+                .withEnrollmentRule(new PaidEnrollmentRule(50_000,10))
                 .build();
 
         assertThatThrownBy(
@@ -44,8 +44,9 @@ public class SessionTest {
 
     @Test
     void 마감된_강의_등록시_예외() {
-        Session session = SessionBuilder.anEndSession()
-                .asPaidSession(50000, 10)
+        Session session = SessionBuilder.builder()
+                .withEnrollmentRule(new PaidEnrollmentRule(50_000,10))
+                .withStatus(SessionStatus.END)
                 .build();
 
         assertThatThrownBy(
@@ -56,8 +57,8 @@ public class SessionTest {
 
     @Test
     void 정원_초과_등록시_예외() {
-        Session session = SessionBuilder.aRecuitingSession()
-                .asPaidSession(50000, 1)
+        Session session = SessionBuilder.builder()
+                .withEnrollmentRule(new PaidEnrollmentRule(50_000,1))
                 .build();
 
         session.enroll(new Enrollment(1L, 1L), new Money(50000));
@@ -70,8 +71,8 @@ public class SessionTest {
 
     @Test
     void 이미_수강_중인_강의_등록시_예외() {
-        Session session = SessionBuilder.aRecuitingSession()
-                .asPaidSession(50000, 2)
+        Session session = SessionBuilder.builder()
+                .withEnrollmentRule(new PaidEnrollmentRule(50_000,2))
                 .build();
 
         session.enroll(new Enrollment(1L, 1L), new Money(50000));
@@ -84,8 +85,8 @@ public class SessionTest {
 
     @Test
     void 신청한_강의와_결제한_강의와_다를_경우_예외() {
-        Session session = SessionBuilder.aRecuitingSession()
-                .asPaidSession(50000, 2)
+        Session session = SessionBuilder.builder()
+                .withEnrollmentRule(new PaidEnrollmentRule(50_000,2))
                 .build();
 
         assertThatThrownBy(

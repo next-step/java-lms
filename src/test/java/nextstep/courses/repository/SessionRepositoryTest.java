@@ -24,13 +24,9 @@ public class SessionRepositoryTest {
 
     @Test
     void save() {
-        ImageFile imageFile = new ImageFile(1024*1024);
-        SessionPeriod period = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(7));
-        SessionStatus sessionStatus = SessionStatus.RECRUITING;
-        EnrollmentRule enrollmentRule = new PaidEnrollmentRule(50000, 10);
-        Enrollments enrollments = new Enrollments();
-
-        Session session = new Session(imageFile, period, sessionStatus, enrollmentRule, enrollments);
+        Session session = SessionBuilder.builder()
+                .withEnrollmentRule(new PaidEnrollmentRule(50000, 10))
+                .build();
 
         Long sessionId = jdbcSessionRepository.save(session);
 
@@ -42,13 +38,10 @@ public class SessionRepositoryTest {
         ImageFile imageFile = new ImageFile(1024 * 1024, "png", 300 , 200);
         jdbcImageFileRepository.save(imageFile);
 
-        SessionPeriod period = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(7));
-        SessionStatus sessionStatus = SessionStatus.RECRUITING;
-        EnrollmentRule enrollmentRule = new PaidEnrollmentRule(50000, 10);
-        Enrollments enrollments = new Enrollments();
-
-        Session session = new Session(imageFile, period, sessionStatus, enrollmentRule, enrollments);
-
+        Session session = SessionBuilder.builder()
+                .withImageFile(imageFile)
+                .withEnrollmentRule(new PaidEnrollmentRule(50000, 10))
+                .build();
 
         Long sessionId = jdbcSessionRepository.save(session);
 

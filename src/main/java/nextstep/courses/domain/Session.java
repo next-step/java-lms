@@ -63,7 +63,7 @@ public class Session {
             return ((PaidEnrollmentRule) this.enrollmentRule).getPrice();
         }
 
-        return null;
+        return 0;
     }
 
     public Integer getCapacity() {
@@ -71,7 +71,7 @@ public class Session {
             return ((PaidEnrollmentRule) this.enrollmentRule).getCapacity();
         }
 
-        return null;
+        return Integer.MAX_VALUE;
     }
 
     public LocalDateTime getStartTime() {
