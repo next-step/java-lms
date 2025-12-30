@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Question extends Content {
     private String title;
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers;
 
     public Question() {
     }
@@ -20,6 +20,7 @@ public class Question extends Content {
     public Question(Long id, NsUser writer, String title, String contents) {
         super(id, writer, contents);
         this.title = title;
+        this.answers = new Answers();
     }
 
 
@@ -43,7 +44,7 @@ public class Question extends Content {
     }
 
     public List<Answer> getAnswers() {
-        return answers;
+        return answers.getAnswers();
     }
 
     @Override
