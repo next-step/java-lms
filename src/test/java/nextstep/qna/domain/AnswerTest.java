@@ -3,8 +3,6 @@ package nextstep.qna.domain;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-
 import static org.assertj.core.api.Assertions.*;
 
 public class AnswerTest {
@@ -13,6 +11,6 @@ public class AnswerTest {
 
     @Test
     public void Delete() {
-        assertThat(A1.delete()).isEqualTo(new DeleteHistory(ContentType.ANSWER, null, NsUserTest.JAVAJIGI, LocalDateTime.now()));
+        assertThat(A1.delete()).isEqualTo(DeleteHistoryTest.a1DeleteHistory);
     }
 }
