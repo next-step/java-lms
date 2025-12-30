@@ -4,10 +4,16 @@ import java.util.Objects;
 
 public class Enrollment {
 
+    private final Long id;
     private final Long studentId;
     private final Long sessionId;
 
     public Enrollment(Long studentId, Long sessionId) {
+        this(0L, studentId, sessionId);
+    }
+
+    public Enrollment(Long id, Long studentId, Long sessionId) {
+        this.id = id;
         this.studentId = studentId;
         this.sessionId = sessionId;
     }
