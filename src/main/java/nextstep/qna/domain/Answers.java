@@ -1,5 +1,7 @@
 package nextstep.qna.domain;
 
+import nextstep.users.domain.NsUser;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -23,11 +25,11 @@ public class Answers {
         return answers;
     }
 
-    public List<DeleteHistory> delete() {
+    public List<DeleteHistory> delete(NsUser writer) throws Exception {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
 
         for (Answer answer : answers) {
-            deleteHistories.add(answer.delete());
+            deleteHistories.add(answer.delete(writer));
         }
 
         return deleteHistories;

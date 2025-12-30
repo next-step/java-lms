@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -19,7 +20,10 @@ public class AnswersTest {
     }
 
     @Test
-    public void delete() {
-        assertThat(ans1.delete()).isEqualTo(List.of(DeleteHistoryTest.a1DeleteHistory, DeleteHistoryTest.a2DeleteHistory));
+    public void delete() throws Exception {
+        Answers answers = new Answers();
+        answers.add(AnswerTest.A2);
+
+        assertThat(answers.delete(NsUserTest.SANJIGI)).isEqualTo(List.of(DeleteHistoryTest.a2DeleteHistory));
     }
 }
