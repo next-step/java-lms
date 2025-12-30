@@ -9,18 +9,18 @@ public class MoneyTest {
 
     @Test
     void 금액이_음수라면_예외가_발생한다() {
-        assertThatThrownBy(() -> new Money(-100))
+        assertThatThrownBy(() -> new Money(-100L))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("금액은 0 이상이어야 합니다.");
     }
 
     @Test
     void 금액이_같다면_같은_Money라고_판단한다() {
-        assertThat(new Money(1000)).isEqualTo(new Money(1000));
+        assertThat(new Money(1000L)).isEqualTo(new Money(1000L));
     }
 
     @Test
     void 금액이_같지_않다면_다른_Money라고_판단한다() {
-        assertThat(new Money(1000)).isNotEqualTo(new Money(500));
+        assertThat(new Money(1000L)).isNotEqualTo(new Money(500L));
     }
 }

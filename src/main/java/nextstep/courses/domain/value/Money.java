@@ -6,6 +6,10 @@ public class Money {
 
     private final int value;
 
+    public Money(long value) {
+        this((int) value);
+    }
+
     public Money(int value) {
         validate(value);
         this.value = value;

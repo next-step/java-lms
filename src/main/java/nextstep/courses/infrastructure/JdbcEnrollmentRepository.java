@@ -6,7 +6,9 @@ import nextstep.courses.domain.enrollment.Enrollment;
 import nextstep.courses.domain.enrollment.EnrollmentRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
+@Repository("enrollmentRepository")
 public class JdbcEnrollmentRepository implements EnrollmentRepository {
 
     private JdbcOperations jdbcTemplate;

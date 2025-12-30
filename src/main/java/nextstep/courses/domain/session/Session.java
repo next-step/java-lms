@@ -40,10 +40,12 @@ public class Session {
         this.enrollments = enrollments;
     }
 
-    public void enroll(Long studentId, Money payment) {
+    public Enrollment enroll(Long studentId, Money payment) {
         validateCanEnroll();
         sessionPolicy.validate(payment, this.currentEnrollmentCount());
-        enrollments.add(new Enrollment(studentId, this.id));
+        Enrollment enrollment = new Enrollment(studentId, this.id);
+        enrollments.add(enrollment);
+        return enrollment;
     }
 
     private void validateCanEnroll() {
