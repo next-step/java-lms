@@ -37,11 +37,12 @@ public class SessionRepositoryTest {
     }
 
     @Test
-    void 강의_저장에_성공한다() {
+    void crud() {
         Session session = new Session(sessionPeriod, coverImage, new FreeSessionPolicy(), SessionStatus.RECRUITING);
-
         int count = sessionRepository.save(session);
-
         assertThat(count).isEqualTo(1);
+        Session savedSession = sessionRepository.findById(1L);
+        assertThat(session.status()).isEqualTo(savedSession.status());
+        LOGGER.debug("Session: {}", savedSession);
     }
 }

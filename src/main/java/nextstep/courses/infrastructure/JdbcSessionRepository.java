@@ -1,9 +1,22 @@
 package nextstep.courses.infrastructure;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import nextstep.courses.domain.enrollment.Enrollments;
+import nextstep.courses.domain.image.CoverImage;
+import nextstep.courses.domain.policy.FreeSessionPolicy;
+import nextstep.courses.domain.policy.PaidSessionPolicy;
+import nextstep.courses.domain.policy.SessionPolicy;
+import nextstep.courses.domain.policy.SessionType;
 import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionPeriod;
 import nextstep.courses.domain.session.SessionRepository;
+import nextstep.courses.domain.session.SessionStatus;
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.RowMapper;
 
 public class JdbcSessionRepository implements SessionRepository {
 
@@ -30,6 +43,50 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(Long id) {
-        return null;
+        String sql = "select id, start_date, end_date, cover_image_file_name, cover_image_size, cover_image_type, "
+                + "cover_image_width, cover_image_height, policy_type, price, capacity, session_status, created_at "
+                + "from session where id = ?";
+        RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
+                rs.getLong("id"),
+                mapSessionPeriod(rs),
+                mapCoverImage(rs),
+                mapPolicy(rs),
+                SessionStatus.valueOf(rs.getString("session_status")),
+                new Enrollments());
+        return jdbcTemplate.queryForObject(sql,rowMapper, id);
+    }
+
+    private SessionPeriod mapSessionPeriod(ResultSet rs) throws SQLException {
+        return new SessionPeriod(
+                toLocalDate(rs.getTimestamp("start_date")),
+                toLocalDate(rs.getTimestamp("end_date"))
+        );
+    }
+
+    private CoverImage mapCoverImage(ResultSet rs) throws SQLException {
+        return new CoverImage(
+                rs.getString("cover_image_file_name"),
+                rs.getLong("cover_image_size"),
+                rs.getInt("cover_image_width"),
+                rs.getInt("cover_image_height")
+        );
+    }
+
+    private SessionPolicy mapPolicy(ResultSet rs) throws SQLException {
+        SessionType sessionType = SessionType.valueOf(rs.getString("policy_type"));
+
+        if (sessionType == SessionType.FREE) {
+            return new FreeSessionPolicy();
+        }
+        int price = rs.getInt("price");
+        int capacity = rs.getInt("capacity");
+        return new PaidSessionPolicy(price, capacity);
+    }
+
+    private LocalDate toLocalDate(Timestamp timestamp) {
+        if (timestamp == null) {
+            return null;
+        }
+        return timestamp.toLocalDateTime().toLocalDate();
     }
 }
