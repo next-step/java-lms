@@ -1,10 +1,12 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Question extends Content {
     private String title;
@@ -23,20 +25,19 @@ public class Question extends Content {
         this.answers = new Answers();
     }
 
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        if (!isOwner(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
 
-    public String getTitle() {
-        return title;
+        this.deleted = true;
+        List<DeleteHistory> deleteHistory = new ArrayList<>(List.of(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now())));
+        deleteHistory.addAll(answers.delete(loginUser));
+
+        return deleteHistory;
+
     }
 
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
@@ -50,5 +51,18 @@ public class Question extends Content {
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Question question = (Question) o;
+        return Objects.equals(title, question.title) && Objects.equals(answers, question.answers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), title, answers);
     }
 }
