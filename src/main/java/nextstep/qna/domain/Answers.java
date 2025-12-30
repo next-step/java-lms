@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class Answers {
         return answers;
     }
 
-    public List<DeleteHistory> delete(NsUser writer) throws Exception {
+    public List<DeleteHistory> delete(NsUser writer) throws CannotDeleteException {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
 
         for (Answer answer : answers) {
