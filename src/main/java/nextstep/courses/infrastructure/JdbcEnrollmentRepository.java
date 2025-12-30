@@ -5,6 +5,7 @@ import java.util.List;
 import nextstep.courses.domain.enrollment.Enrollment;
 import nextstep.courses.domain.enrollment.EnrollmentRepository;
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.RowMapper;
 
 public class JdbcEnrollmentRepository implements EnrollmentRepository {
 
@@ -22,7 +23,12 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
 
     @Override
     public Enrollment findById(Long id) {
-        return null;
+        String sql = "select id, student_id, session_id from enrollment where id = ?";
+        RowMapper<Enrollment> rowMapper = (rs, rowNum) -> new Enrollment(
+                rs.getLong("id"),
+                rs.getLong("student_id"),
+                rs.getLong("session_id"));
+        return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
     @Override

@@ -32,5 +32,9 @@ public class EnrollmentRepositoryTest {
         Enrollment enrollment = new Enrollment(1L, 1L);
         int count = enrollmentRepository.save(enrollment);
         assertThat(count).isEqualTo(1);
+        Enrollment savedEnrollment = enrollmentRepository.findById(1L);
+        assertThat(enrollment.studentId()).isEqualTo(savedEnrollment.studentId());
+        assertThat(enrollment.sessionId()).isEqualTo(savedEnrollment.sessionId());
+        LOGGER.debug("Enrollment: {}", savedEnrollment);
     }
 }
