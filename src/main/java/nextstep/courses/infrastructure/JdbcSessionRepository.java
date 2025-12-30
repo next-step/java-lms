@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import nextstep.courses.domain.enrollment.Enrollment;
 import nextstep.courses.domain.enrollment.Enrollments;
 import nextstep.courses.domain.image.CoverImage;
 import nextstep.courses.domain.policy.FreeSessionPolicy;
@@ -17,7 +19,9 @@ import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.domain.session.SessionStatus;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
+@Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
 
     private JdbcOperations jdbcTemplate;
@@ -52,7 +56,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 mapCoverImage(rs),
                 mapPolicy(rs),
                 SessionStatus.valueOf(rs.getString("session_status")),
-                new Enrollments());
+                findEnrollments(id));
         return jdbcTemplate.queryForObject(sql,rowMapper, id);
     }
 
@@ -88,5 +92,15 @@ public class JdbcSessionRepository implements SessionRepository {
             return null;
         }
         return timestamp.toLocalDateTime().toLocalDate();
+    }
+
+    private Enrollments findEnrollments(Long sessionId) {
+        String sql = "select id, student_id, session_id from enrollment where session_id = ?";
+        List<Enrollment> enrollments = jdbcTemplate.query(sql, (rs, rowNum) -> new Enrollment(
+                rs.getLong("id"),
+                rs.getLong("student_id"),
+                rs.getLong("session_id")
+        ), sessionId);
+        return new Enrollments(enrollments);
     }
 }
