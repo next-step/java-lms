@@ -25,3 +25,21 @@
 - 앞 단계에서 구현한 도메인 모델을 DB 테이블과 매핑하고, 데이터를 저장한다.
   - CRUD 쿼리와 코드를 구현하는데 집중하기 보다 테이블을 설계하고 객체 매핑하는 부분에 집중한다.
 - Payment는 테이블 매핑을 고려하지 않아도 된다.
+
+## 🤔 고민한 부분
+- Session을 Aggregate Root로 설계하면서 **Aggregate 조회 시 내부 엔티티(Enrollment)까지 어디에서 조립하는 것이 적절한지** 고민했다.
+- 수강 신청 규칙은 Session이 통제하지만 Enrollment는 별도의 테이블과 Repository를 통해 저장되기 때문에 조회 시점의 책임 경계가 명확하지 않다고 느꼈다.
+- JDBC 환경에서
+  - Repository가 Session과 Enrollment를 함께 조회해 Aggregate를 완성하는 방식과
+  - Session과 Enrollment를 각각 조회한 뒤 Service 계층에서 조합하는 방식 중 어떤 접근이 도메인 모델의 의도를 더 잘 드러내는지 고민했다.
+- 이번 구현에서는 Aggregate 단위로 조회하는 흐름을 선택해 SessionRepository에서 Enrollment까지 함께 조회해 Session을 조립하도록 구현했다.
+
+---
+
+## 구현 방향 요약
+
+- 이번 단계의 목표를 **도메인 모델을 유지한 채 JDBC로 DB에 매핑하는 것**으로 설정했다.
+- DB 전용 엔티티를 별도로 두지 않고 Repository에서 `RowMapper`를 통해 도메인 객체를 직접 조립했다.
+- Session은 수강 신청 규칙을 통제하는 **Aggregate Root**로 두고 Enrollment는 수강 신청이라는 행위의 결과로 생성되는 내부 엔티티로 설계했다.
+- Enrollment는 독립적인 저장 흐름을 가지므로 별도의 테이블과 Repository로 분리했다.
+- 조회 시에는 Aggregate 단위로 다루는 것이 자연스럽다고 판단해 SessionRepository에서 Enrollment까지 함께 조회해 Session을 구성하도록 구현했다.

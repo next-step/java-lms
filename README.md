@@ -13,5 +13,5 @@
 |-------|------------------------------------------|------------------------------------------------|
 | Step1 | [레거시 코드 리팩터링](./docs/레거시_코드_리팩토링.md)     | https://github.com/next-step/java-lms/pull/817 |
 | Step2 | [수강신청(도메인 모델)](./docs/수강신청(도메인%20모델).md) | https://github.com/next-step/java-lms/pull/822 |
-| Step3 | [수강신청(DB 적용)](./docs/수강신청(DB%20적용).md)   | -                                              |
+| Step3 | [수강신청(DB 적용)](./docs/수강신청(DB%20적용).md)   | https://github.com/next-step/java-lms/pull/827 |
 | Step4 | 수강신청(요구사항 변경)                            | -                                              |
