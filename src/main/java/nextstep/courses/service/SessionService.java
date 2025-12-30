@@ -1,6 +1,5 @@
 package nextstep.courses.service;
 
-import java.util.List;
 import nextstep.courses.domain.enrollment.Enrollment;
 import nextstep.courses.domain.enrollment.EnrollmentRepository;
 import nextstep.courses.domain.session.Session;
