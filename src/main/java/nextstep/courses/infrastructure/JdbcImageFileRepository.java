@@ -20,7 +20,7 @@ public class JdbcImageFileRepository implements ImageFileRepository {
     }
 
     @Override
-    public Long save(ImageFile imageFile) {
+    public ImageFile save(ImageFile imageFile) {
         String sql = "insert into image_file (size, image_type, width, height) values (?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -34,7 +34,9 @@ public class JdbcImageFileRepository implements ImageFileRepository {
             return ps;
         }, keyHolder);
 
-        return keyHolder.getKey().longValue();
+        Long id = keyHolder.getKey().longValue();
+
+        return new ImageFile(id, imageFile.getSize(), imageFile.getImageType().toString(), imageFile.getWidth(), imageFile.getHeight());
     }
 
     @Override

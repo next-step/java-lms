@@ -8,6 +8,45 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class SessionTest {
 
     @Test
+    void 모집중인_무료_강의_등록_성공() {
+        Session session = SessionBuilder.builder()
+                .withEnrollmentRule(new FreeEnrollmentRule())
+                .withRecruitingStatus(SessionRecruitingStatus.RECRUITING)
+                .withProgressStatus(SessionProgressStatus.READY)
+                .build();
+
+        session.enroll(new Enrollment(1L, 1L), Money.ZERO);
+
+        assertThat(session.countEnrollments()).isEqualTo(1);
+    }
+
+    @Test
+    void 모집중이지만_종료된_강의_등록_실패() {
+        Session session = SessionBuilder.builder()
+                .withEnrollmentRule(new FreeEnrollmentRule())
+                .withRecruitingStatus(SessionRecruitingStatus.RECRUITING)
+                .withProgressStatus(SessionProgressStatus.END)
+                .build();
+
+        assertThatThrownBy(() ->  session.enroll(new Enrollment(1L, 1L), Money.ZERO))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("종료된 강의는 수강 신청할 수 없습니다.");
+    }
+
+    @Test
+    void 모집중이고_진행중인_강의_등록_성공() {
+        Session session = SessionBuilder.builder()
+                .withEnrollmentRule(new FreeEnrollmentRule())
+                .withRecruitingStatus(SessionRecruitingStatus.RECRUITING)
+                .withProgressStatus(SessionProgressStatus.IN_PROGRESS)
+                .build();
+
+        session.enroll(new Enrollment(1L, 1L), Money.ZERO);
+
+        assertThat(session.countEnrollments()).isEqualTo(1);
+    }
+
+    @Test
     void 무료_강의_등록() {
         Session session = SessionBuilder.builder()
                 .withEnrollmentRule(new FreeEnrollmentRule())
@@ -46,7 +85,7 @@ public class SessionTest {
     void 마감된_강의_등록시_예외() {
         Session session = SessionBuilder.builder()
                 .withEnrollmentRule(new PaidEnrollmentRule(50_000,10))
-                .withStatus(SessionStatus.END)
+                .withRecruitingStatus(SessionRecruitingStatus.CLOSE)
                 .build();
 
         assertThatThrownBy(

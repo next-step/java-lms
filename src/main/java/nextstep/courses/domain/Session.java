@@ -7,27 +7,25 @@ public class Session {
     private final Long id;
     private final ImageFile imageFile;
     private final SessionPeriod period;
-    private final SessionStatus sessionStatus;
+    private final SessionProgressStatus progressStatus;
+    private final SessionRecruitingStatus recruitingStatus;
     private final EnrollmentRule enrollmentRule;
     private final Enrollments enrollments;
 
-    public Session(Long id,ImageFile imageFile, LocalDateTime startTime, LocalDateTime endTime, String sessionStatus, Integer price, Integer capacity) {
-        this(id, imageFile, new SessionPeriod(startTime, endTime), SessionStatus.valueOf(sessionStatus), allocateEnrollmentRule(price, capacity), new Enrollments());
+    public Session(Long id, ImageFile imageFile, LocalDateTime startTime, LocalDateTime endTime, String recruitingStatus, String progressStatus, String sessionType ,Integer price, Integer capacity) {
+        this(id, imageFile, new SessionPeriod(startTime, endTime), SessionRecruitingStatus.valueOf(recruitingStatus), SessionProgressStatus.valueOf(progressStatus), allocateEnrollmentRule(sessionType, price, capacity), new Enrollments());
     }
 
-    public Session(ImageFile imageFile, SessionPeriod period, SessionStatus sessionStatus, EnrollmentRule enrollmentRule) {
-        this(null,  imageFile, period, sessionStatus, enrollmentRule, new Enrollments());
+    public Session(ImageFile imageFile, SessionPeriod period, SessionRecruitingStatus recruitingStatus, SessionProgressStatus progressStatus, EnrollmentRule enrollmentRule) {
+        this(null, imageFile, period, recruitingStatus, progressStatus, enrollmentRule, new Enrollments());
     }
 
-    public Session(ImageFile imageFile, SessionPeriod period, SessionStatus sessionStatus, EnrollmentRule enrollmentRule, Enrollments enrollments) {
-        this(null,  imageFile, period, sessionStatus, enrollmentRule, enrollments);
-    }
-
-    public Session(Long id, ImageFile imageFile, SessionPeriod period, SessionStatus sessionStatus, EnrollmentRule enrollmentRule, Enrollments enrollments) {
+    public Session(Long id, ImageFile imageFile, SessionPeriod period, SessionRecruitingStatus recruitingStatus, SessionProgressStatus progressStatus, EnrollmentRule enrollmentRule, Enrollments enrollments) {
         this.id = id;
         this.imageFile = imageFile;
         this.period = period;
-        this.sessionStatus = sessionStatus;
+        this.progressStatus = progressStatus;
+        this.recruitingStatus = recruitingStatus;
         this.enrollmentRule = enrollmentRule;
         this.enrollments = enrollments;
     }
@@ -37,7 +35,7 @@ public class Session {
     }
 
     public void enroll(Enrollment enrollment, Money money) {
-        validationRecruiting();
+        validationStatus();
 
         enrollment.validateBelongsTo(getId());
 
@@ -54,8 +52,12 @@ public class Session {
         return this.imageFile.getImageId();
     }
 
-    public String getSessionStatus() {
-        return this.sessionStatus.toString();
+    public String getProgressStatus() {
+        return this.progressStatus.toString();
+    }
+
+    public String getRecruitingStatus() {
+        return this.recruitingStatus.toString();
     }
 
     public Integer getPrice() {
@@ -86,17 +88,25 @@ public class Session {
         return this.period;
     }
 
-    private static EnrollmentRule allocateEnrollmentRule(Integer price, Integer capacity) {
-        if (price != null) {
+    public String getType() {
+        return this.enrollmentRule.getType().toString();
+    }
+
+    private static EnrollmentRule allocateEnrollmentRule(String sessionType, Integer price, Integer capacity) {
+        if (SessionType.from(sessionType).isPaid()) {
             return new PaidEnrollmentRule(price, capacity);
         }
 
         return new FreeEnrollmentRule();
     }
 
-    private void validationRecruiting() {
-        if (!sessionStatus.enableRecruiting()) {
+    private void validationStatus() {
+        if (!recruitingStatus.enableRecruiting()) {
             throw new IllegalArgumentException("모집중인 강의만 수강 신청할 수 있습니다.");
+        }
+
+        if (!progressStatus.enableProgress()) {
+            throw new IllegalArgumentException("종료된 강의는 수강 신청할 수 없습니다.");
         }
     }
 
@@ -104,12 +114,12 @@ public class Session {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Session session = (Session) o;
-        return Objects.equals(id, session.id) && Objects.equals(imageFile, session.imageFile) && Objects.equals(period, session.period) && sessionStatus == session.sessionStatus && Objects.equals(enrollmentRule, session.enrollmentRule) && Objects.equals(enrollments, session.enrollments);
+        return Objects.equals(id, session.id) && Objects.equals(imageFile, session.imageFile) && Objects.equals(period, session.period) && progressStatus == session.progressStatus && recruitingStatus == session.recruitingStatus && Objects.equals(enrollmentRule, session.enrollmentRule) && Objects.equals(enrollments, session.enrollments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, imageFile, period, sessionStatus, enrollmentRule, enrollments);
+        return Objects.hash(id, imageFile, period, progressStatus, recruitingStatus, enrollmentRule, enrollments);
     }
 
     @Override
@@ -118,7 +128,8 @@ public class Session {
                 "id=" + id +
                 ", imageFile=" + imageFile +
                 ", period=" + period +
-                ", sessionStatus=" + sessionStatus +
+                ", progressStatus=" + progressStatus +
+                ", recruitingStatus=" + recruitingStatus +
                 ", enrollmentRule=" + enrollmentRule +
                 ", enrollments=" + enrollments +
                 '}';

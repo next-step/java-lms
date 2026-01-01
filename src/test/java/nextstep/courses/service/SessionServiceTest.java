@@ -27,20 +27,22 @@ class SessionServiceTest {
         SessionPeriod period = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(7));
 
 
-        Long sessionId = sessionService.createSession(imageFile, period, SessionStatus.RECRUITING, new PaidEnrollmentRule(50000, 10));
+        Long sessionId = sessionService.createSession(imageFile, period, SessionRecruitingStatus.RECRUITING, SessionProgressStatus.READY, new PaidEnrollmentRule(50000, 10));
 
         Session found = sessionService.findSession(sessionId);
 
-        assertThat(found.getSessionStatus())
-                .isEqualTo(SessionStatus.RECRUITING.toString());
+        assertThat(found.getRecruitingStatus())
+                .isEqualTo(SessionRecruitingStatus.RECRUITING.toString());
         assertThat(found.getPeriod()).isEqualTo(period);
     }
 
     @Test
     void 수강신청_성공() {
         ImageFile imageFile = new ImageFile(1024 * 1024, "png", 300, 200);
+
         SessionPeriod period = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(7));
-        Long sessionId = sessionService.createSession(imageFile, period, SessionStatus.RECRUITING, new PaidEnrollmentRule(50000, 10));
+
+        Long sessionId = sessionService.createSession(imageFile, period, SessionRecruitingStatus.RECRUITING, SessionProgressStatus.READY, new PaidEnrollmentRule(50000, 10));
 
         sessionService.enroll(sessionId, 10L, new Money(50000));
 

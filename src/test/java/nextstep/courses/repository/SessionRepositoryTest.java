@@ -36,10 +36,10 @@ public class SessionRepositoryTest {
     @Test
     void find() {
         ImageFile imageFile = new ImageFile(1024 * 1024, "png", 300 , 200);
-        jdbcImageFileRepository.save(imageFile);
+        ImageFile savedImageFile = jdbcImageFileRepository.save(imageFile);
 
         Session session = SessionBuilder.builder()
-                .withImageFile(imageFile)
+                .withImageFile(savedImageFile)
                 .withEnrollmentRule(new PaidEnrollmentRule(50000, 10))
                 .build();
 
@@ -47,7 +47,7 @@ public class SessionRepositoryTest {
 
         Session found = jdbcSessionRepository.findById(sessionId);
 
-        assertThat(found.getSessionStatus()).isEqualTo(session.getSessionStatus());
+        assertThat(found.getRecruitingStatus()).isEqualTo(session.getRecruitingStatus());
         assertThat(found.getPeriod()).isEqualTo(session.getPeriod());
     }
 }

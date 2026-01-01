@@ -7,7 +7,8 @@ public class SessionBuilder {
     private Long id;
     private ImageFile imageFile;
     private SessionPeriod period;
-    private SessionStatus sessionStatus;
+    private SessionRecruitingStatus recruitingStatus;
+    private SessionProgressStatus progressStatus;
     private EnrollmentRule enrollmentRule;
     private Enrollments enrollments;
 
@@ -19,7 +20,8 @@ public class SessionBuilder {
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(7)
         );
-        this.sessionStatus = SessionStatus.RECRUITING;
+        this.recruitingStatus = SessionRecruitingStatus.RECRUITING;
+        this.progressStatus = SessionProgressStatus.READY;
         this.enrollmentRule = new FreeEnrollmentRule();
         this.enrollments = new Enrollments();
     }
@@ -45,8 +47,13 @@ public class SessionBuilder {
         return this;
     }
 
-    public SessionBuilder withStatus(SessionStatus status) {
-        this.sessionStatus = status;
+    public SessionBuilder withProgressStatus(SessionProgressStatus status) {
+        this.progressStatus = status;
+        return this;
+    }
+
+    public SessionBuilder withRecruitingStatus(SessionRecruitingStatus status) {
+        this.recruitingStatus = status;
         return this;
     }
 
@@ -67,7 +74,8 @@ public class SessionBuilder {
                 id,
                 imageFile,
                 period,
-                sessionStatus,
+                recruitingStatus,
+                progressStatus,
                 enrollmentRule,
                 enrollments
         );

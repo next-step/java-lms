@@ -1,18 +1,17 @@
 package nextstep.courses.domain;
 
-public enum SessionStatus {
-    PREPARING("준비중"),
+public enum SessionRecruitingStatus {
     RECRUITING("모집중"),
-    END("종료"),
+    CLOSE("비모집중"),
     ;
 
     private final String status;
 
-    SessionStatus(String status) {
+    SessionRecruitingStatus(String status) {
         this.status = status;
     }
 
     public boolean enableRecruiting() {
-        return this == SessionStatus.RECRUITING;
+        return this == SessionRecruitingStatus.RECRUITING;
     }
 }

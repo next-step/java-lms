@@ -25,12 +25,13 @@ public class SessionService {
     @Transactional
     public Long createSession(ImageFile imageFile,
                               SessionPeriod period,
-                              SessionStatus status,
+                              SessionRecruitingStatus recruitingStatus,
+                              SessionProgressStatus progressStatus,
                               EnrollmentRule enrollmentRule) {
 
-        imageFileRepository.save(imageFile);
+        ImageFile savedImageFile = imageFileRepository.save(imageFile);
 
-        Session session = new Session(imageFile, period, status, enrollmentRule);
+        Session session = new Session(savedImageFile, period, recruitingStatus, progressStatus, enrollmentRule);
 
         return sessionRepository.save(session);
     }
@@ -42,7 +43,7 @@ public class SessionService {
 
     @Transactional
     public void enroll(Long sessionId, Long memberId, Money money) {
-        Session session = sessionRepository.findById(sessionId);
+        Session session = findSession(sessionId);
 
         Enrollment enrollment = new Enrollment(memberId, sessionId);
 
