@@ -14,6 +14,10 @@ public class Sessions {
         this.sessions = new ArrayList<>(sessions);
     }
 
+    public static Sessions empty() {
+        return new Sessions(List.of());
+    }
+
     public void add(Session session) {
         this.sessions.add(session);
     }

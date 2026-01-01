@@ -14,11 +14,9 @@ import java.time.LocalDateTime;
 @Repository("courseRepository")
 public class JdbcCourseRepository implements CourseRepository {
     private JdbcOperations jdbcTemplate;
-    private final SessionRepository sessionRepository;
 
-    public JdbcCourseRepository(JdbcOperations jdbcTemplate, SessionRepository sessionRepository) {
+    public JdbcCourseRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.sessionRepository = sessionRepository;
     }
 
     @Override
@@ -34,7 +32,7 @@ public class JdbcCourseRepository implements CourseRepository {
                 rs.getLong(1),
                 rs.getString(2),
                 rs.getLong(3),
-                new Sessions(sessionRepository.findByCourseId(id)),
+                Sessions.empty(),
                 toLocalDateTime(rs.getTimestamp(4)),
                 toLocalDateTime(rs.getTimestamp(5)));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);

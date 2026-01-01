@@ -12,7 +12,7 @@ public class Course {
 
     private Long creatorId;
 
-    private final Sessions sessions;
+    private Sessions sessions;
 
     private LocalDateTime createdAt;
 
@@ -56,5 +56,9 @@ public class Course {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    public void attachSessions(Sessions sessions) {
+        this.sessions = sessions;
     }
 }
