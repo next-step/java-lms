@@ -24,6 +24,6 @@ public class AnswersTest {
         Answers answers = new Answers();
         answers.add(AnswerTest.A2);
 
-        assertThat(answers.delete(NsUserTest.SANJIGI)).isEqualTo(List.of(DeleteHistoryTest.a2DeleteHistory));
+        assertThat(answers.delete(NsUserTest.SANJIGI)).isEqualTo(List.of(DeleteHistoryTest.A2DeleteHistory));
     }
 }

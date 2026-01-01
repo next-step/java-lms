@@ -11,6 +11,6 @@ public class AnswerTest {
 
     @Test
     public void Delete() throws Exception {
-        assertThat(A1.delete(NsUserTest.JAVAJIGI)).isEqualTo(DeleteHistoryTest.a1DeleteHistory);
+        assertThat(A1.delete(NsUserTest.JAVAJIGI)).isEqualTo(DeleteHistoryTest.A1DeleteHistory);
     }
 }
