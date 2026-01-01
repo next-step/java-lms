@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
@@ -15,5 +16,10 @@ public class QuestionTest {
     public void delete() throws Exception {
         Q1.addAnswer(AnswerTest.A1);
         assertThat(Q1.delete(NsUserTest.JAVAJIGI)).isEqualTo(List.of(DeleteHistoryTest.Q1DeleteHistory, DeleteHistoryTest.A1DeleteHistory));
+    }
+
+    @Test
+    public void deleteByWronguser() {
+        assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI)).isInstanceOf(CannotDeleteException.class);
     }
 }
