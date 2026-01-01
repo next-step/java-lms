@@ -22,10 +22,6 @@ public class Answers {
         this.answers.add(answer);
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
-    }
-
     public List<DeleteHistory> delete(NsUser writer) throws CannotDeleteException {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
 
