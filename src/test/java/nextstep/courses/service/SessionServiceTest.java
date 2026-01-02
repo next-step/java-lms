@@ -2,6 +2,7 @@ package nextstep.courses.service;
 
 import nextstep.courses.domain.*;
 import nextstep.courses.repository.EnrollmentRepository;
+import nextstep.courses.repository.ImageFileRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,11 +24,11 @@ class SessionServiceTest {
 
     @Test
     void 강의를_개설하고_조회하기() {
-        ImageFile imageFile = new ImageFile(1024 * 1024, "png", 300, 200);
+        ImageFiles imageFiles = new ImageFiles(new ImageFile(1024 * 1024, "png", 300, 200));
+
         SessionPeriod period = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(7));
 
-
-        Long sessionId = sessionService.createSession(imageFile, period, SessionRecruitingStatus.RECRUITING, SessionProgressStatus.READY, new PaidEnrollmentRule(50000, 10));
+        Long sessionId = sessionService.createSession(imageFiles, period, SessionRecruitingStatus.RECRUITING, SessionProgressStatus.READY, new PaidEnrollmentRule(50000, 10));
 
         Session found = sessionService.findSession(sessionId);
 
@@ -38,11 +39,11 @@ class SessionServiceTest {
 
     @Test
     void 수강신청_성공() {
-        ImageFile imageFile = new ImageFile(1024 * 1024, "png", 300, 200);
+        ImageFiles imageFiles = new ImageFiles(new ImageFile(1024 * 1024, "png", 300, 200));
 
         SessionPeriod period = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(7));
 
-        Long sessionId = sessionService.createSession(imageFile, period, SessionRecruitingStatus.RECRUITING, SessionProgressStatus.READY, new PaidEnrollmentRule(50000, 10));
+        Long sessionId = sessionService.createSession(imageFiles, period, SessionRecruitingStatus.RECRUITING, SessionProgressStatus.READY, new PaidEnrollmentRule(50000, 10));
 
         sessionService.enroll(sessionId, 10L, new Money(50000));
 

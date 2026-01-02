@@ -24,40 +24,42 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public Long save(Session session) {
-        String sql = "insert into session (image_id, session_type, recruiting_status, progress_status, price, capacity, start_time, end_time) values (?, ?, ?, ?, ?, ?, ?, ?)";
+    public Session save(Session session) {
+        String sql = "insert into session (session_type, recruiting_status, progress_status, price, capacity, start_time, end_time) values (?, ?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connect -> {
             PreparedStatement ps = connect.prepareStatement(sql, new String[]{"id"});
-            ps.setLong(1, session.getImageId());
-            ps.setString(2, session.getType());
-            ps.setString(3 , session.getRecruitingStatus());
-            ps.setString(4 , session.getProgressStatus());
+            ps.setString(1, session.getType());
+            ps.setString(2 , session.getRecruitingStatus());
+            ps.setString(3 , session.getProgressStatus());
             extractedPrice(session, ps);
             extractedCapacity(session, ps);
-            ps.setTimestamp(7, Timestamp.valueOf(session.getStartTime()));
-            ps.setTimestamp(8, Timestamp.valueOf(session.getEndTime()));
+            ps.setTimestamp(6, Timestamp.valueOf(session.getStartTime()));
+            ps.setTimestamp(7, Timestamp.valueOf(session.getEndTime()));
             return ps;
         }, keyHolder);
 
-        return keyHolder.getKey().longValue();
+
+        long id = keyHolder.getKey().longValue();
+
+        return new Session(id, session.getStartTime(), session.getEndTime(), session.getRecruitingStatus(), session.getProgressStatus(), session.getType(), session.getPrice(), session.getCapacity());
     }
 
     private static void extractedCapacity(Session session, PreparedStatement ps) throws SQLException {
         if (session.getCapacity() != null) {
-            ps.setInt(6, session.getCapacity());
+            ps.setInt(5, session.getCapacity());
         } else {
-            ps.setNull(6, Types.INTEGER);
+            ps.setNull(5, Types.INTEGER);
         }
     }
 
     private static void extractedPrice(Session session, PreparedStatement ps) throws SQLException {
         if (session.getPrice() != null) {
-            ps.setInt(5, session.getPrice());
+            ps.setInt(4, session.getPrice());
         } else {
-            ps.setNull(5, Types.INTEGER);
+            ps.setNull(4, Types.INTEGER);
         }
     }
 
@@ -71,29 +73,13 @@ public class JdbcSessionRepository implements SessionRepository {
                 "s.capacity, " +
                 "s.start_time, " +
                 "s.end_time, " +
-                "i.id AS image_id, " +
-                "i.size, " +
-                "i.image_type, " +
-                "i.width, " +
-                "i.height " +
                 "from session s " +
-                "join image_file i " +
-                "on s.image_id = i.id " +
                 "where s.id = ?";
 
         return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
 
-            ImageFile imageFile = new ImageFile(
-                    rs.getLong("image_id"),
-                    rs.getLong("size"),
-                    rs.getString("image_type"),
-                    rs.getInt("width"),
-                    rs.getInt("height")
-            );
-
             Session session = new Session(
                     rs.getLong("id"),
-                    imageFile,
                     rs.getObject("start_time", LocalDateTime.class),
                     rs.getObject("end_time", LocalDateTime.class),
                     rs.getString("recruiting_status"),

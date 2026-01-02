@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class SessionBuilder {
 
     private Long id;
-    private ImageFile imageFile;
+    private ImageFiles imageFiles;
     private SessionPeriod period;
     private SessionRecruitingStatus recruitingStatus;
     private SessionProgressStatus progressStatus;
@@ -15,7 +15,7 @@ public class SessionBuilder {
     private SessionBuilder() {
         // ✅ 테스트에 바로 쓸 수 있는 기본값
         this.id = 1L;
-        this.imageFile = new ImageFile(1024 * 1024, "png", 300, 200);
+        this.imageFiles = new ImageFiles(new ImageFile(1024 * 1024, "png", 300, 200));
         this.period = new SessionPeriod(
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(7)
@@ -34,11 +34,6 @@ public class SessionBuilder {
 
     public SessionBuilder withId(Long id) {
         this.id = id;
-        return this;
-    }
-
-    public SessionBuilder withImageFile(ImageFile imageFile) {
-        this.imageFile = imageFile;
         return this;
     }
 
@@ -67,12 +62,18 @@ public class SessionBuilder {
         return this;
     }
 
+    public SessionBuilder withImageFiles(ImageFile imageFile) {
+        this.imageFiles = new ImageFiles(imageFile);
+        return this;
+    }
+
+
     // ===== 생성 =====
 
     public Session build() {
         return new Session(
                 id,
-                imageFile,
+                imageFiles,
                 period,
                 recruitingStatus,
                 progressStatus,

@@ -23,17 +23,22 @@ public class SessionService {
     }
 
     @Transactional
-    public Long createSession(ImageFile imageFile,
+    public Long createSession(ImageFiles imageFiles,
                               SessionPeriod period,
                               SessionRecruitingStatus recruitingStatus,
                               SessionProgressStatus progressStatus,
                               EnrollmentRule enrollmentRule) {
 
-        ImageFile savedImageFile = imageFileRepository.save(imageFile);
+        Session session = new Session(period, recruitingStatus, progressStatus, enrollmentRule);
 
-        Session session = new Session(savedImageFile, period, recruitingStatus, progressStatus, enrollmentRule);
+        Session savedSession = sessionRepository.save(session);
 
-        return sessionRepository.save(session);
+        for(ImageFile imageFile : imageFiles.getImageFiles()) {
+            savedSession.addImageFile(imageFile);
+            imageFileRepository.save(imageFile);
+        }
+
+        return savedSession.getId();
     }
 
     @Transactional(readOnly = true)

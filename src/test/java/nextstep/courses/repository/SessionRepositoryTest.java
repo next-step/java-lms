@@ -28,9 +28,9 @@ public class SessionRepositoryTest {
                 .withEnrollmentRule(new PaidEnrollmentRule(50000, 10))
                 .build();
 
-        Long sessionId = jdbcSessionRepository.save(session);
+        Session savedSession = jdbcSessionRepository.save(session);
 
-        assertThat(sessionId).isNotNull();
+        assertThat(savedSession).isNotNull();
     }
 
     @Test
@@ -39,13 +39,13 @@ public class SessionRepositoryTest {
         ImageFile savedImageFile = jdbcImageFileRepository.save(imageFile);
 
         Session session = SessionBuilder.builder()
-                .withImageFile(savedImageFile)
+                .withImageFiles(savedImageFile)
                 .withEnrollmentRule(new PaidEnrollmentRule(50000, 10))
                 .build();
 
-        Long sessionId = jdbcSessionRepository.save(session);
+        Session savedSession = jdbcSessionRepository.save(session);
 
-        Session found = jdbcSessionRepository.findById(sessionId);
+        Session found = jdbcSessionRepository.findById(savedSession.getId());
 
         assertThat(found.getRecruitingStatus()).isEqualTo(session.getRecruitingStatus());
         assertThat(found.getPeriod()).isEqualTo(session.getPeriod());

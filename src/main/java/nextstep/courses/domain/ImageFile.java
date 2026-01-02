@@ -10,6 +10,7 @@ public class ImageFile {
     private static final int HEIGHT_RATIO = 2;
 
     private Long id;
+    private Long sessionId;
     private final long size;
     private final ImageType imageType;
     private final int width;
@@ -17,14 +18,14 @@ public class ImageFile {
 
 
     public ImageFile(long size) {
-        this(1L, size, "png", MIN_WIDTH_PX , MIN_HEIGHT_PX);
+        this(null, 1L, size, "png", MIN_WIDTH_PX , MIN_HEIGHT_PX);
     }
 
     public ImageFile(long size, String imageType, int width, int height) {
-        this(1L, size, imageType, width, height);
+        this(null, 1L, size, imageType, width, height);
     }
 
-    public ImageFile(Long id, long size, String imageType, int width, int height) {
+    public ImageFile(Long id, Long sessionId, long size, String imageType, int width, int height) {
         validateSize(size);
         validateDimensions(width, height);
 
@@ -32,6 +33,7 @@ public class ImageFile {
         validateImageType(type);
 
         this.id = id;
+        this.sessionId = sessionId;
         this.size = size;
         this.imageType = type;
         this.width = width;
@@ -52,6 +54,18 @@ public class ImageFile {
 
     public int getHeight() {
         return this.height;
+    }
+
+    public Long getImageId() {
+        return this.id;
+    }
+
+    public void assignSessionId(Long sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    public Long getSessionId() {
+        return this.sessionId;
     }
 
     private void validateImageType(ImageType type) {
@@ -107,9 +121,5 @@ public class ImageFile {
                 ", width=" + width +
                 ", height=" + height +
                 '}';
-    }
-
-    public Long getImageId() {
-        return this.id;
     }
 }

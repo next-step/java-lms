@@ -27,6 +27,6 @@ public class ImageFileRepositoryTest {
     void find() {
         ImageFile imageFile = imageFileRepository.save(new ImageFile(1024 * 1024, "jpg", 300, 200));
 
-        assertThat((imageFileRepository.findById(imageFile.getImageId()))).isEqualTo(new ImageFile(1L,1024 * 1024, "jpg", 300, 200));
+        assertThat((imageFileRepository.findById(imageFile.getImageId()))).isEqualTo(new ImageFile(1L,1L,1024 * 1024, "jpg", 300, 200));
     }
 }

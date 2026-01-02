@@ -5,24 +5,24 @@ import java.util.Objects;
 
 public class Session {
     private final Long id;
-    private final ImageFile imageFile;
+    private final ImageFiles imageFiles;
     private final SessionPeriod period;
     private final SessionProgressStatus progressStatus;
     private final SessionRecruitingStatus recruitingStatus;
     private final EnrollmentRule enrollmentRule;
     private final Enrollments enrollments;
 
-    public Session(Long id, ImageFile imageFile, LocalDateTime startTime, LocalDateTime endTime, String recruitingStatus, String progressStatus, String sessionType ,Integer price, Integer capacity) {
-        this(id, imageFile, new SessionPeriod(startTime, endTime), SessionRecruitingStatus.valueOf(recruitingStatus), SessionProgressStatus.valueOf(progressStatus), allocateEnrollmentRule(sessionType, price, capacity), new Enrollments());
+    public Session(Long id, LocalDateTime startTime, LocalDateTime endTime, String recruitingStatus, String progressStatus, String sessionType ,Integer price, Integer capacity) {
+        this(id,new ImageFiles(), new SessionPeriod(startTime, endTime), SessionRecruitingStatus.valueOf(recruitingStatus), SessionProgressStatus.valueOf(progressStatus), allocateEnrollmentRule(sessionType, price, capacity), new Enrollments());
     }
 
-    public Session(ImageFile imageFile, SessionPeriod period, SessionRecruitingStatus recruitingStatus, SessionProgressStatus progressStatus, EnrollmentRule enrollmentRule) {
-        this(null, imageFile, period, recruitingStatus, progressStatus, enrollmentRule, new Enrollments());
+    public Session( SessionPeriod period, SessionRecruitingStatus recruitingStatus, SessionProgressStatus progressStatus, EnrollmentRule enrollmentRule) {
+        this(null, new ImageFiles(), period, recruitingStatus, progressStatus, enrollmentRule, new Enrollments());
     }
 
-    public Session(Long id, ImageFile imageFile, SessionPeriod period, SessionRecruitingStatus recruitingStatus, SessionProgressStatus progressStatus, EnrollmentRule enrollmentRule, Enrollments enrollments) {
+    public Session(Long id, ImageFiles imageFiles, SessionPeriod period, SessionRecruitingStatus recruitingStatus, SessionProgressStatus progressStatus, EnrollmentRule enrollmentRule, Enrollments enrollments) {
         this.id = id;
-        this.imageFile = imageFile;
+        this.imageFiles = imageFiles;
         this.period = period;
         this.progressStatus = progressStatus;
         this.recruitingStatus = recruitingStatus;
@@ -49,7 +49,7 @@ public class Session {
     }
 
     public Long getImageId() {
-        return this.imageFile.getImageId();
+        return this.imageFiles.getMainImageId();
     }
 
     public String getProgressStatus() {
@@ -61,7 +61,7 @@ public class Session {
     }
 
     public Integer getPrice() {
-        if (enrollmentRule.getType().equals(SessionType.PAID)) {
+        if (enrollmentRule.getType().isPaid()) {
             return ((PaidEnrollmentRule) this.enrollmentRule).getPrice();
         }
 
@@ -69,7 +69,7 @@ public class Session {
     }
 
     public Integer getCapacity() {
-        if (enrollmentRule.getType().equals(SessionType.PAID)) {
+        if (enrollmentRule.getType().isPaid()) {
             return ((PaidEnrollmentRule) this.enrollmentRule).getCapacity();
         }
 
@@ -90,6 +90,15 @@ public class Session {
 
     public String getType() {
         return this.enrollmentRule.getType().toString();
+    }
+
+    public void addImageFile(ImageFile imageFile) {
+        this.imageFiles.addImage(imageFile);
+        imageFile.assignSessionId(this.getId());
+    }
+
+    public ImageFiles getImageFiles() {
+        return this.imageFiles;
     }
 
     private static EnrollmentRule allocateEnrollmentRule(String sessionType, Integer price, Integer capacity) {
@@ -114,19 +123,19 @@ public class Session {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Session session = (Session) o;
-        return Objects.equals(id, session.id) && Objects.equals(imageFile, session.imageFile) && Objects.equals(period, session.period) && progressStatus == session.progressStatus && recruitingStatus == session.recruitingStatus && Objects.equals(enrollmentRule, session.enrollmentRule) && Objects.equals(enrollments, session.enrollments);
+        return Objects.equals(id, session.id) && Objects.equals(imageFiles, session.imageFiles) && Objects.equals(period, session.period) && progressStatus == session.progressStatus && recruitingStatus == session.recruitingStatus && Objects.equals(enrollmentRule, session.enrollmentRule) && Objects.equals(enrollments, session.enrollments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, imageFile, period, progressStatus, recruitingStatus, enrollmentRule, enrollments);
+        return Objects.hash(id, imageFiles, period, progressStatus, recruitingStatus, enrollmentRule, enrollments);
     }
 
     @Override
     public String toString() {
         return "Session{" +
                 "id=" + id +
-                ", imageFile=" + imageFile +
+                ", imageFiles=" + imageFiles +
                 ", period=" + period +
                 ", progressStatus=" + progressStatus +
                 ", recruitingStatus=" + recruitingStatus +

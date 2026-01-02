@@ -133,4 +133,17 @@ public class SessionTest {
         ).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("신청하고자 하는 강의가 아닙니다.");
     }
+
+    @Test
+    void 이미지_파일_추가하기() {
+        Session session = SessionBuilder.builder()
+                .withEnrollmentRule(new PaidEnrollmentRule(50_000,10))
+                .build();
+
+        System.out.println(session);
+
+        session.addImageFile(new ImageFile(1024 * 1024));
+
+        assertThat(session.getImageFiles().getImageFiles()).hasSize(2);
+    }
 }
