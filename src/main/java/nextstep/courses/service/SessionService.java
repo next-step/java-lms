@@ -47,13 +47,46 @@ public class SessionService {
     }
 
     @Transactional
-    public void enroll(Long sessionId, Long memberId, Money money) {
+    public void enroll(Long sessionId, Long studentId, Money money) {
         Session session = findSession(sessionId);
 
-        Enrollment enrollment = new Enrollment(memberId, sessionId);
+        Enrollment enrollment = new Enrollment(studentId, sessionId);
 
         session.enroll(enrollment, money);
 
         enrollmentRepository.save(enrollment);
+    }
+
+    @Transactional
+    public void selectEnrollment(Long sessionId, Long enrollmentId) {
+        Session session = findSession(sessionId);
+
+        Enrollment enrollment = enrollmentRepository.findById(enrollmentId);
+
+        Enrollment updatedEnrollment = session.selectEnrollment(enrollment.getId());
+
+        enrollmentRepository.update(updatedEnrollment);
+    }
+
+    @Transactional
+    public void approveEnrollment(Long sessionId, Long enrollmentId) {
+        Session session = findSession(sessionId);
+
+        Enrollment enrollment = enrollmentRepository.findById(enrollmentId);
+
+        Enrollment updatedEnrollment = session.approveEnrollment(enrollment.getId());
+
+        enrollmentRepository.update(updatedEnrollment);
+    }
+
+    @Transactional
+    public void cancelEnrollment(Long sessionId, Long enrollmentId) {
+        Session session = findSession(sessionId);
+
+        Enrollment enrollment = enrollmentRepository.findById(enrollmentId);
+
+        Enrollment updatedEnrollment = session.cancelEnrollment(enrollment.getId());
+
+        enrollmentRepository.update(updatedEnrollment);
     }
 }

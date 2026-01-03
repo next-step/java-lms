@@ -22,26 +22,38 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
     }
 
     @Override
-    public Long save(Enrollment enrollment) {
-        String sql = "insert into enrollment (student_id, session_id) values (?, ?)";
+    public Enrollment save(Enrollment enrollment) {
+        String sql = "insert into enrollment (enrollment_status, student_id, session_id) values (?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connect -> {
             PreparedStatement ps = connect.prepareStatement(sql, new String[]{"id"});
-            ps.setLong(1, enrollment.getStudentId());
-            ps.setLong(2, enrollment.getSessionId());
+            ps.setString(1, enrollment.getEnrollmentStatus());
+            ps.setLong(2, enrollment.getStudentId());
+            ps.setLong(3, enrollment.getSessionId());
             return ps;
         }, keyHolder);
 
-        return keyHolder.getKey().longValue();
+        long id = keyHolder.getKey().longValue();
+
+
+        return new Enrollment(id, enrollment.getEnrollmentStatus(), enrollment.getStudentId(), enrollment.getSessionId());
     }
 
     @Override
-    public Enrollment findById(Long id) {
+    public void update(Enrollment enrollment) {
+        String sql = "update enrollment set enrollment_status = ? where id = ?";
+
+        jdbcTemplate.update(sql, enrollment.getEnrollmentStatus(), enrollment.getId());
+    }
+
+    @Override
+    public Enrollment findById(long id) {
         String sql = "select * from enrollment where id = ?";
         RowMapper<Enrollment> rowMapper = (rs, rowNum) -> new Enrollment(
             rs.getLong("id"),
+                rs.getString("enrollment_status"),
                 rs.getLong("student_id"),
                 rs.getLong("session_id")
         );
@@ -50,11 +62,12 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
     }
 
     @Override
-    public List<Enrollment> findBySessionId(Long sessionId) {
+    public List<Enrollment> findBySessionId(long sessionId) {
         String sql = "select * from enrollment where session_id = ?";
 
         RowMapper<Enrollment> rowMapper = (rs, rowNum) -> new Enrollment(
                 rs.getLong("id"),
+                rs.getString("enrollment_status"),
                 rs.getLong("student_id"),
                 rs.getLong("session_id")
         );

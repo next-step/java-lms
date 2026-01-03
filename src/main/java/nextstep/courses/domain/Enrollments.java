@@ -28,4 +28,11 @@ public class Enrollments {
             throw new IllegalArgumentException("이미 수강 신청한 강의입니다.");
         }
     }
+
+    public Enrollment findById(Long enrollmentId) {
+        return enrollments.stream()
+                .filter(e -> e.getId().equals(enrollmentId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("수강 신청이 존재하지 않습니다."));
+    }
 }

@@ -18,16 +18,16 @@ public class EnrollmentRepositoryTest {
 
     @Test
     void save() {
-        Long enrollmentId = enrollmentRepository.save(new Enrollment(1L, 1L));
+        Enrollment savedEnrollment = enrollmentRepository.save(new Enrollment(1L, 1L));
 
-        assertThat(enrollmentId).isNotNull();
+        assertThat(savedEnrollment).isNotNull();
     }
 
     @Test
     void find() {
-        Long enrollmentId = enrollmentRepository.save(new Enrollment(1L, 1L));
+        Enrollment saveEnrollment = enrollmentRepository.save(new Enrollment(1L, 1L));
 
-        Enrollment enrollment = enrollmentRepository.findById(enrollmentId);
+        Enrollment enrollment = enrollmentRepository.findById(saveEnrollment.getId());
 
         assertThat(enrollment).isEqualTo(new Enrollment(1L, 1L));
     }

@@ -5,9 +5,11 @@ import nextstep.courses.domain.Enrollment;
 import java.util.List;
 
 public interface EnrollmentRepository {
-    Long save(Enrollment enrollment);
+    Enrollment save(Enrollment enrollment);
 
-    Enrollment findById(Long id);
+    void update(Enrollment enrollment);
 
-    List<Enrollment> findBySessionId(Long sessionId);
+    Enrollment findById(long id);
+
+    List<Enrollment> findBySessionId(long sessionId);
 }

@@ -44,6 +44,21 @@ public class Session {
         enrollments.enroll(enrollment);
     }
 
+    public Enrollment selectEnrollment(Long enrollmentId) {
+        Enrollment enrollment = enrollments.findById(enrollmentId);
+        return enrollment.select();
+    }
+
+    public Enrollment approveEnrollment(Long enrollmentId) {
+        Enrollment enrollment = enrollments.findById(enrollmentId);
+        return enrollment.approve();
+    }
+
+    public Enrollment cancelEnrollment(Long enrollmentId) {
+        Enrollment enrollment = enrollments.findById(enrollmentId);
+        return enrollment.cancel();
+    }
+
     public Long getId() {
         return id;
     }
