@@ -7,6 +7,8 @@ import nextstep.courses.repository.SessionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class SessionService {
 
@@ -43,7 +45,17 @@ public class SessionService {
 
     @Transactional(readOnly = true)
     public Session findSession(Long id) {
-        return sessionRepository.findById(id);
+        Session session = sessionRepository.findById(id);
+
+        List<ImageFile> imageFiles = imageFileRepository.findBySessionId(id);
+
+        session.loadImageFiles(imageFiles);
+
+        List<Enrollment> enrollments = enrollmentRepository.findBySessionId(id);
+
+        session.loadEnrollments(enrollments);
+
+        return session;
     }
 
     @Transactional

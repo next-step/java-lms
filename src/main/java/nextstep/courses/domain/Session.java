@@ -1,16 +1,19 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.repository.EnrollmentRepository;
+
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 public class Session {
     private final Long id;
-    private final ImageFiles imageFiles;
     private final SessionPeriod period;
     private final SessionProgressStatus progressStatus;
     private final SessionRecruitingStatus recruitingStatus;
     private final EnrollmentRule enrollmentRule;
-    private final Enrollments enrollments;
+    private ImageFiles imageFiles;
+    private Enrollments enrollments;
 
     public Session(Long id, LocalDateTime startTime, LocalDateTime endTime, String recruitingStatus, String progressStatus, String sessionType ,Integer price, Integer capacity) {
         this(id,new ImageFiles(), new SessionPeriod(startTime, endTime), SessionRecruitingStatus.valueOf(recruitingStatus), SessionProgressStatus.valueOf(progressStatus), allocateEnrollmentRule(sessionType, price, capacity), new Enrollments());
@@ -114,6 +117,14 @@ public class Session {
 
     public ImageFiles getImageFiles() {
         return this.imageFiles;
+    }
+
+    public void loadImageFiles(List<ImageFile> imageFiles) {
+        this.imageFiles = new ImageFiles(imageFiles);
+    }
+
+    public void loadEnrollments(List<Enrollment> enrollments) {
+        this.enrollments = new Enrollments(enrollments);
     }
 
     private static EnrollmentRule allocateEnrollmentRule(String sessionType, Integer price, Integer capacity) {
