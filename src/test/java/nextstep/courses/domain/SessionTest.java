@@ -140,8 +140,6 @@ public class SessionTest {
                 .withEnrollmentRule(new PaidEnrollmentRule(50_000,10))
                 .build();
 
-        System.out.println(session);
-
         session.addImageFile(new ImageFile(1024 * 1024));
 
         assertThat(session.getImageFiles().getImageFiles()).hasSize(2);
