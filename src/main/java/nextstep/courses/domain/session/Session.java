@@ -16,6 +16,9 @@ public class Session {
     private final EnrollmentPolicy enrollmentPolicy;
     private final SessionState sessionState;
     private final Enrollments enrollments;
+    private final EnrollmentStatus enrollmentStatus;
+    private final SessionProgress sessionProgress;
+    private final EnrollmentAvailabilityPolicy enrollmentAvailabilityPolicy;
 
     public Session(long id
             , long courseId
@@ -27,14 +30,17 @@ public class Session {
             , int height
             , EnrollmentPolicy enrollmentPolicy
             , SessionState sessionState
-            , Enrollments enrollments) {
-
+            , Enrollments enrollments
+            , EnrollmentStatus enrollmentStatus
+            , SessionProgress sessionProgress
+            , EnrollmentAvailabilityPolicy enrollmentAvailabilityPolicy) {
         this(id, courseId, new SessionDuration(startDate, endDate), new CoverImage(size, fileName, width, height)
-                , enrollmentPolicy, sessionState, enrollments);
+                , enrollmentPolicy, sessionState, enrollments, enrollmentStatus, sessionProgress, enrollmentAvailabilityPolicy);
     }
 
     public Session(long id, long courseId, SessionDuration sessionDuration, CoverImage coverImage
-            , EnrollmentPolicy enrollmentPolicy, SessionState sessionState, Enrollments enrollments) {
+            , EnrollmentPolicy enrollmentPolicy, SessionState sessionState, Enrollments enrollments
+            , EnrollmentStatus enrollmentStatus, SessionProgress sessionProgress, EnrollmentAvailabilityPolicy enrollmentAvailabilityPolicy) {
         this.id = id;
         this.courseId = courseId;
         this.sessionDuration = sessionDuration;
@@ -42,10 +48,14 @@ public class Session {
         this.enrollmentPolicy = enrollmentPolicy;
         this.sessionState = sessionState;
         this.enrollments = enrollments;
+        this.enrollmentStatus = enrollmentStatus;
+        this.sessionProgress = sessionProgress;
+        this.enrollmentAvailabilityPolicy = enrollmentAvailabilityPolicy;
     }
 
     public Enrollment enroll(Long userId, Payment payment) {
-        sessionState.validateEnroll();
+        sessionState.validateEnroll(); // 삭제 예정
+        enrollmentAvailabilityPolicy.validate(sessionProgress, enrollmentStatus);
         enrollmentPolicy.validateEnrollment(payment);
         return enrollments.enroll(this.id, userId);
     }
@@ -96,6 +106,14 @@ public class Session {
 
     public int getCapacity() {
         return enrollments.getCapacity();
+    }
+
+    public String getEnrollmentStatus() {
+        return enrollmentStatus.name();
+    }
+
+    public String getSessionProgress() {
+        return sessionProgress.name();
     }
 
     @Override

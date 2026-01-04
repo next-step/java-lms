@@ -1,9 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.enrollment.*;
-import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionDuration;
-import nextstep.courses.domain.session.SessionState;
+import nextstep.courses.domain.session.*;
 import nextstep.courses.domain.session.cover.CoverImage;
 
 import java.time.LocalDateTime;
@@ -26,6 +24,9 @@ public class SessionTestBuilder {
     private SessionState sessionState = SessionState.OPEN;
 
     private Enrollments enrollments = new Enrollments(new Capacity(1));
+    private EnrollmentStatus enrollmentStatus = EnrollmentStatus.OPEN;
+    private SessionProgress sessionProgress = SessionProgress.IN_PROGRESS;
+    private EnrollmentAvailabilityPolicy enrollmentAvailabilityPolicy = new EnrollmentAvailabilityPolicy();
 
     public static SessionTestBuilder aSession() {
         return new SessionTestBuilder();
@@ -46,6 +47,16 @@ public class SessionTestBuilder {
         return this;
     }
 
+    public SessionTestBuilder withClosedEnrollmentStatus() {
+        this.enrollmentStatus = EnrollmentStatus.CLOSED;
+        return this;
+    }
+
+    public SessionTestBuilder withFinishedSession() {
+        this.sessionProgress = SessionProgress.FINISHED;
+        return this;
+    }
+
     public SessionTestBuilder withPaidEnrollment(Money price) {
         this.enrollmentPolicy = new PaidEnrollmentPolicy(price);
         return this;
@@ -63,6 +74,11 @@ public class SessionTestBuilder {
         return this;
     }
 
+    public SessionTestBuilder withAvailabilityPolicy(EnrollmentAvailabilityPolicy policy) {
+        this.enrollmentAvailabilityPolicy = policy;
+        return this;
+    }
+
     public Session build() {
         return new Session(
                 id,
@@ -71,7 +87,10 @@ public class SessionTestBuilder {
                 coverImage,
                 enrollmentPolicy,
                 sessionState,
-                enrollments
+                enrollments,
+                enrollmentStatus,
+                sessionProgress,
+                enrollmentAvailabilityPolicy
         );
     }
 }
