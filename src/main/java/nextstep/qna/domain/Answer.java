@@ -7,7 +7,7 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Answer extends Content{
+public class Answer extends Content {
     private Question question;
 
     public Answer() {
@@ -19,7 +19,7 @@ public class Answer extends Content{
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
         super(id, writer, contents);
-        if(question == null) {
+        if (question == null) {
             throw new NotFoundException();
         }
         this.question = question;

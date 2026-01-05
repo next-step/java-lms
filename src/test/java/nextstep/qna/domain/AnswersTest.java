@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AnswersTest {
     public static final Answers ans1 = new Answers(List.of(AnswerTest.A1, AnswerTest.A2));

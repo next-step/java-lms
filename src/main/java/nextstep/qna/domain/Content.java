@@ -22,13 +22,13 @@ abstract public class Content {
         this.contents = contents;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
     public Content setDeleted(boolean deleted) {
         this.deleted = deleted;
         return this;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
     }
 
     public boolean isOwner(NsUser loginUser) {
@@ -46,7 +46,7 @@ abstract public class Content {
     public String getContents() {
         return contents;
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
