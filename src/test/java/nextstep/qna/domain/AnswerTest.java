@@ -13,7 +13,8 @@ public class AnswerTest {
 
     @Test
     public void delete() throws Exception {
-        assertThat(A1.delete(NsUserTest.JAVAJIGI)).isEqualTo(DeleteHistoryTest.A1DeleteHistory);
+        A1.delete(NsUserTest.JAVAJIGI);
+        assertThat(A1.history()).isEqualTo(DeleteHistoryTest.A1DeleteHistory);
     }
 
     @Test

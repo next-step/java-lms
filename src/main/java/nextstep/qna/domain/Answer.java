@@ -1,6 +1,7 @@
 package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
+import nextstep.qna.ContentNotDeletedException;
 import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
 
@@ -29,13 +30,20 @@ public class Answer extends Content {
         this.question = question;
     }
 
-    public DeleteHistory delete(NsUser writer) throws CannotDeleteException {
+    public void delete(NsUser writer) throws CannotDeleteException {
         if (!isOwner(writer)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
 
-        this.delete2();
-        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
+        info.delete();
+    }
+
+    public DeleteHistory history() throws ContentNotDeletedException {
+        if (!info.isDeleted()) {
+            throw new ContentNotDeletedException("아직 삭제되지 않은 답변입니다.");
+        }
+
+        return new DeleteHistory(ContentType.ANSWER, id, info.getWriter(), LocalDateTime.now());
     }
 
     @Override
