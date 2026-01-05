@@ -2,51 +2,53 @@ package nextstep.qna.domain;
 
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 abstract public class Content {
     protected Long id;
-    protected NsUser writer;
-    protected String contents;
-    protected boolean deleted = false;
-    protected LocalDateTime createdDate = LocalDateTime.now();
-    protected LocalDateTime updatedDate;
+    protected ContentInfo info;
 
     public Content() {
     }
 
     public Content(Long id, NsUser writer, String contents) {
+        this(id, new ContentInfo(writer, contents));
+    }
+
+    public Content(Long id, ContentInfo info) {
         this.id = id;
-        this.writer = writer;
-        this.contents = contents;
+        this.info = info;
     }
 
     public boolean isDeleted() {
-        return deleted;
+        return info.isDeleted();
     }
 
     public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
+        return info.isOwner(loginUser);
     }
 
     public NsUser getWriter() {
-        return writer;
+        return info.getWriter();
     }
 
     public Long getId() {
         return id;
     }
 
+    public void delete2() {
+        info.delete();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Content content = (Content) o;
-        return deleted == content.deleted && Objects.equals(id, content.id) && Objects.equals(writer, content.writer) && Objects.equals(contents, content.contents) && Objects.equals(createdDate, content.createdDate) && Objects.equals(updatedDate, content.updatedDate);
+        return Objects.equals(id, content.id) && Objects.equals(info, content.info);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, writer, contents, deleted, createdDate, updatedDate);
+        return Objects.hash(id, info);
     }
 }

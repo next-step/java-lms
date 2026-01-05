@@ -30,13 +30,15 @@ public class Question extends Content {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
-        this.deleted = true;
-        List<DeleteHistory> deleteHistory = new ArrayList<>(List.of(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now())));
+        delete2();
+        List<DeleteHistory> deleteHistory = new ArrayList<>(List.of(new DeleteHistory(ContentType.QUESTION, id, loginUser, LocalDateTime.now())));
         deleteHistory.addAll(answers.delete(loginUser));
 
         return deleteHistory;
 
     }
+
+
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
@@ -45,7 +47,7 @@ public class Question extends Content {
 
     @Override
     public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+        return "Question [id=" + getId() + ", title=" + title + info + "]";
     }
 
     @Override
