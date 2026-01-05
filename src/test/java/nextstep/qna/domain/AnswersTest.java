@@ -1,6 +1,7 @@
 package nextstep.qna.domain;
 
 import nextstep.users.domain.NsUserTest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -8,13 +9,22 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AnswersTest {
-    public static final Answers ans1 = new Answers(List.of(AnswerTest.A1, AnswerTest.A2));
+    public static Answer A1;
+    public static Answer A2;
+    public static Answers ans1;
+
+    @BeforeEach
+    public void setUp() {
+        A1 = AnswerTest.aAnswer();
+        A2 = AnswerTest.otherAnswer();
+        ans1 = new Answers(List.of(A1, A2));
+    }
 
     @Test
     public void add() {
         Answers answers = new Answers();
-        answers.add(AnswerTest.A1);
-        answers.add(AnswerTest.A2);
+        answers.add(A1);
+        answers.add(A2);
 
         assertThat(answers).isEqualTo(ans1);
     }
@@ -22,7 +32,9 @@ public class AnswersTest {
     @Test
     public void delete() throws Exception {
         Answers answers = new Answers();
-        answers.add(AnswerTest.A2);
+        A2.delete(NsUserTest.SANJIGI);
+        answers.add(A2);
+
         assertThat(answers.history()).isEqualTo(List.of(DeleteHistoryTest.A2DeleteHistory));
     }
 }
