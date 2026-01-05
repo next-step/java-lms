@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Answers {
-    List<Answer> answers;
+    private final List<Answer> answers;
 
     public Answers() {
         this(new ArrayList<>());
