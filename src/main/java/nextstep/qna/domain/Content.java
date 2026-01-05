@@ -36,10 +36,6 @@ abstract public class Content {
         return id;
     }
 
-    public void delete2() {
-        info.delete();
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
