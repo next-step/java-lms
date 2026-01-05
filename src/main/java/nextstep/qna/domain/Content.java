@@ -26,11 +26,6 @@ abstract public class Content {
         return deleted;
     }
 
-    public Content setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
     }
@@ -41,10 +36,6 @@ abstract public class Content {
 
     public Long getId() {
         return id;
-    }
-
-    public String getContents() {
-        return contents;
     }
 
     @Override
