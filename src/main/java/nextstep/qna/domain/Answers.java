@@ -1,6 +1,7 @@
 package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
+import nextstep.qna.ContentNotDeletedException;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
@@ -22,11 +23,17 @@ public class Answers {
         this.answers.add(answer);
     }
 
-    public List<DeleteHistory> delete(NsUser writer) throws CannotDeleteException {
+    public void delete(NsUser writer) throws CannotDeleteException {
+        for (Answer answer : answers) {
+           answer.delete(writer);
+        }
+    }
+
+    public List<DeleteHistory> history() throws ContentNotDeletedException {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
 
         for (Answer answer : answers) {
-            deleteHistories.add(answer.delete(writer));
+            deleteHistories.add(answer.history());
         }
 
         return deleteHistories;
