@@ -25,7 +25,7 @@ public class Answers {
 
     public void delete(NsUser writer) throws CannotDeleteException {
         for (Answer answer : answers) {
-           answer.delete(writer);
+            answer.delete(writer);
         }
     }
 

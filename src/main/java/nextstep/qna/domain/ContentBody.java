@@ -5,8 +5,8 @@ import nextstep.users.domain.NsUser;
 import java.util.Objects;
 
 public class ContentBody {
-    private NsUser writer;
-    private String contents;
+    private final NsUser writer;
+    private final String contents;
 
     public ContentBody(NsUser writer, String contents) {
         this.writer = writer;

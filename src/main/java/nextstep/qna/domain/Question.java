@@ -47,7 +47,6 @@ public class Question extends Content {
     }
 
 
-
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
         answers.add(answer);

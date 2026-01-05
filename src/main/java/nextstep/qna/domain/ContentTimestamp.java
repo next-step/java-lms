@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class ContentTimestamp {
-    private final LocalDateTime createdDate = LocalDateTime.now();;
+    private final LocalDateTime createdDate = LocalDateTime.now();
     private LocalDateTime updatedDate;
 
     @Override

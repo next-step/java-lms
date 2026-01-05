@@ -3,8 +3,8 @@ package nextstep.qna.domain;
 import java.util.Objects;
 
 public class ContentStatus {
-    private boolean deleted;
     private final ContentTimestamp timestamp;
+    private boolean deleted;
 
     public ContentStatus() {
         this.deleted = false;
