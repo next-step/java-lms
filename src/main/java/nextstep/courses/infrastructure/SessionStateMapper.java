@@ -1,21 +1,21 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.session.SessionStstus;
+import nextstep.courses.domain.session.EnrollmentStatus;
 import nextstep.courses.domain.session.SessionProgress;
 
 public class SessionStateMapper {
 
-    public static SessionStstus toEnrollmentStatus(String enrollmentStatus, String legacyState) {
+    public static EnrollmentStatus toEnrollmentStatus(String enrollmentStatus, String legacyState) {
 
         if (enrollmentStatus != null) {
-            return SessionStstus.valueOf(enrollmentStatus);
+            return EnrollmentStatus.valueOf(enrollmentStatus);
         }
 
         if ("OPEN".equals(legacyState)) {
-            return SessionStstus.OPEN;
+            return EnrollmentStatus.OPEN;
         }
 
-        return SessionStstus.CLOSED;
+        return EnrollmentStatus.CLOSED;
     }
 
     public static SessionProgress toProgress(String progressStatus, String legacyState) {

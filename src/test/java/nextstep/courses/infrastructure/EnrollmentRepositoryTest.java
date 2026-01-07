@@ -1,7 +1,6 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.enrollment.Enrollment;
-import nextstep.courses.domain.enrollment.EnrollmentStatus;
 import nextstep.courses.repository.EnrollmentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
