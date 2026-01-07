@@ -3,8 +3,11 @@ package nextstep.courses.domain;
 import nextstep.courses.domain.enrollment.*;
 import nextstep.courses.domain.session.*;
 import nextstep.courses.domain.session.cover.CoverImage;
+import nextstep.courses.domain.session.cover.CoverImages;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SessionTestBuilder {
 
@@ -17,7 +20,7 @@ public class SessionTestBuilder {
                     LocalDateTime.now().plusDays(2)
             );
 
-    private CoverImage coverImage = new CoverImage(100, "test.png", 300, 200);
+    private CoverImages coverImages = new CoverImages(new ArrayList<>(List.of(new CoverImage(100, "test.png", 300, 200))));
 
     private EnrollmentPolicy enrollmentPolicy = new FreeEnrollmentPolicy();
 
@@ -84,7 +87,7 @@ public class SessionTestBuilder {
                 id,
                 courseId,
                 sessionDuration,
-                coverImage,
+                coverImages,
                 enrollmentPolicy,
                 sessionState,
                 enrollments,

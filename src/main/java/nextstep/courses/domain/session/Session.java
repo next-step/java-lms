@@ -4,6 +4,7 @@ import nextstep.courses.domain.enrollment.Enrollment;
 import nextstep.courses.domain.enrollment.EnrollmentPolicy;
 import nextstep.courses.domain.enrollment.Enrollments;
 import nextstep.courses.domain.session.cover.CoverImage;
+import nextstep.courses.domain.session.cover.CoverImages;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;
@@ -12,7 +13,7 @@ public class Session {
     private final long id;
     private final long courseId;
     private final SessionDuration sessionDuration;
-    private final CoverImage coverImage;
+    private final CoverImages coverImages;
     private final EnrollmentPolicy enrollmentPolicy;
     private final SessionState sessionState;
     private final Enrollments enrollments;
@@ -24,27 +25,24 @@ public class Session {
             , long courseId
             , LocalDateTime startDate
             , LocalDateTime endDate
-            , int size
-            , String fileName
-            , int width
-            , int height
+            , CoverImages coverImages
             , EnrollmentPolicy enrollmentPolicy
             , SessionState sessionState
             , Enrollments enrollments
             , EnrollmentStatus enrollmentStatus
             , SessionProgress sessionProgress
             , EnrollmentAvailabilityPolicy enrollmentAvailabilityPolicy) {
-        this(id, courseId, new SessionDuration(startDate, endDate), new CoverImage(size, fileName, width, height)
+        this(id, courseId, new SessionDuration(startDate, endDate), coverImages
                 , enrollmentPolicy, sessionState, enrollments, enrollmentStatus, sessionProgress, enrollmentAvailabilityPolicy);
     }
 
-    public Session(long id, long courseId, SessionDuration sessionDuration, CoverImage coverImage
+    public Session(long id, long courseId, SessionDuration sessionDuration, CoverImages coverImages
             , EnrollmentPolicy enrollmentPolicy, SessionState sessionState, Enrollments enrollments
             , EnrollmentStatus enrollmentStatus, SessionProgress sessionProgress, EnrollmentAvailabilityPolicy enrollmentAvailabilityPolicy) {
         this.id = id;
         this.courseId = courseId;
         this.sessionDuration = sessionDuration;
-        this.coverImage = coverImage;
+        this.coverImages = coverImages;
         this.enrollmentPolicy = enrollmentPolicy;
         this.sessionState = sessionState;
         this.enrollments = enrollments;
@@ -76,20 +74,8 @@ public class Session {
         return sessionDuration.getEndDate();
     }
 
-    public int getCoverImageSize() {
-        return coverImage.getImageSize();
-    }
-
-    public String getCoverImageName() {
-        return coverImage.getImageName();
-    }
-
-    public int getCoverImageWidth() {
-        return coverImage.getCoverImageWidth();
-    }
-
-    public int getCoverImageHeight() {
-        return coverImage.getCoverImageHeight();
+    public CoverImages getCoverImages() {
+        return coverImages;
     }
 
     public String getPolicyType() {
@@ -121,7 +107,7 @@ public class Session {
         return "Session{" +
                 "id=" + id +
                 ", sessionDuration=" + sessionDuration +
-                ", coverImage=" + coverImage +
+                ", coverImages=" + coverImages +
                 ", enrollmentPolicy=" + enrollmentPolicy +
                 ", sessionState=" + sessionState +
                 ", enrollments=" + enrollments +
