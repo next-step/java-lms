@@ -3,7 +3,6 @@ package nextstep.courses.domain.session;
 import nextstep.courses.domain.enrollment.Enrollment;
 import nextstep.courses.domain.enrollment.EnrollmentPolicy;
 import nextstep.courses.domain.enrollment.Enrollments;
-import nextstep.courses.domain.session.cover.CoverImage;
 import nextstep.courses.domain.session.cover.CoverImages;
 import nextstep.payments.domain.Payment;
 
@@ -17,7 +16,7 @@ public class Session {
     private final EnrollmentPolicy enrollmentPolicy;
     private final SessionState sessionState;
     private final Enrollments enrollments;
-    private final EnrollmentStatus enrollmentStatus;
+    private final SessionStstus sessionStstus;
     private final SessionProgress sessionProgress;
     private final EnrollmentAvailabilityPolicy enrollmentAvailabilityPolicy;
 
@@ -29,16 +28,16 @@ public class Session {
             , EnrollmentPolicy enrollmentPolicy
             , SessionState sessionState
             , Enrollments enrollments
-            , EnrollmentStatus enrollmentStatus
+            , SessionStstus sessionStstus
             , SessionProgress sessionProgress
             , EnrollmentAvailabilityPolicy enrollmentAvailabilityPolicy) {
         this(id, courseId, new SessionDuration(startDate, endDate), coverImages
-                , enrollmentPolicy, sessionState, enrollments, enrollmentStatus, sessionProgress, enrollmentAvailabilityPolicy);
+                , enrollmentPolicy, sessionState, enrollments, sessionStstus, sessionProgress, enrollmentAvailabilityPolicy);
     }
 
     public Session(long id, long courseId, SessionDuration sessionDuration, CoverImages coverImages
             , EnrollmentPolicy enrollmentPolicy, SessionState sessionState, Enrollments enrollments
-            , EnrollmentStatus enrollmentStatus, SessionProgress sessionProgress, EnrollmentAvailabilityPolicy enrollmentAvailabilityPolicy) {
+            , SessionStstus sessionStstus, SessionProgress sessionProgress, EnrollmentAvailabilityPolicy enrollmentAvailabilityPolicy) {
         this.id = id;
         this.courseId = courseId;
         this.sessionDuration = sessionDuration;
@@ -46,14 +45,14 @@ public class Session {
         this.enrollmentPolicy = enrollmentPolicy;
         this.sessionState = sessionState;
         this.enrollments = enrollments;
-        this.enrollmentStatus = enrollmentStatus;
+        this.sessionStstus = sessionStstus;
         this.sessionProgress = sessionProgress;
         this.enrollmentAvailabilityPolicy = enrollmentAvailabilityPolicy;
     }
 
     public Enrollment enroll(Long userId, Payment payment) {
         sessionState.validateEnroll(); // 삭제 예정
-        enrollmentAvailabilityPolicy.validate(sessionProgress, enrollmentStatus);
+        enrollmentAvailabilityPolicy.validate(sessionProgress, sessionStstus);
         enrollmentPolicy.validateEnrollment(payment);
         return enrollments.enroll(this.id, userId);
     }
@@ -95,7 +94,7 @@ public class Session {
     }
 
     public String getEnrollmentStatus() {
-        return enrollmentStatus.name();
+        return sessionStstus.name();
     }
 
     public String getSessionProgress() {

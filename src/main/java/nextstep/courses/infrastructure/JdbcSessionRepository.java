@@ -4,9 +4,7 @@ import nextstep.courses.domain.enrollment.Capacity;
 import nextstep.courses.domain.enrollment.Enrollment;
 import nextstep.courses.domain.enrollment.EnrollmentPolicyFactory;
 import nextstep.courses.domain.enrollment.Enrollments;
-import nextstep.courses.domain.session.EnrollmentStatus;
 import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionProgress;
 import nextstep.courses.domain.session.SessionState;
 import nextstep.courses.domain.session.cover.CoverImage;
 import nextstep.courses.domain.session.cover.CoverImages;
@@ -14,7 +12,6 @@ import nextstep.courses.repository.CoverImageRepository;
 import nextstep.courses.repository.EnrollmentRepository;
 import nextstep.courses.repository.SessionRepository;
 import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 

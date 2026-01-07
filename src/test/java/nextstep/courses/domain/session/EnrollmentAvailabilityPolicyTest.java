@@ -13,11 +13,11 @@ class EnrollmentAvailabilityPolicyTest {
     void enroll_success() {
         // 진행중
         EnrollmentAvailabilityPolicy enrollmentAvailabilityPolicy = new EnrollmentAvailabilityPolicy();
-        assertThatCode(() -> enrollmentAvailabilityPolicy.validate(SessionProgress.IN_PROGRESS, EnrollmentStatus.CLOSED))
+        assertThatCode(() -> enrollmentAvailabilityPolicy.validate(SessionProgress.IN_PROGRESS, SessionStstus.CLOSED))
                 .doesNotThrowAnyException();
 
         // 모집중
-        assertThatCode(() -> enrollmentAvailabilityPolicy.validate(SessionProgress.FINISHED, EnrollmentStatus.OPEN))
+        assertThatCode(() -> enrollmentAvailabilityPolicy.validate(SessionProgress.FINISHED, SessionStstus.OPEN))
                 .doesNotThrowAnyException();
     }
 
@@ -25,10 +25,10 @@ class EnrollmentAvailabilityPolicyTest {
     @DisplayName("진행중이거나 모집중이 아니면 등록할 수 없다")
     void enroll_fail() {
         EnrollmentAvailabilityPolicy enrollmentAvailabilityPolicy = new EnrollmentAvailabilityPolicy();
-        assertThatThrownBy(() -> enrollmentAvailabilityPolicy.validate(SessionProgress.READY, EnrollmentStatus.CLOSED))
+        assertThatThrownBy(() -> enrollmentAvailabilityPolicy.validate(SessionProgress.READY, SessionStstus.CLOSED))
                 .isInstanceOf(IllegalStateException.class);
 
-        assertThatThrownBy(() -> enrollmentAvailabilityPolicy.validate(SessionProgress.FINISHED, EnrollmentStatus.CLOSED))
+        assertThatThrownBy(() -> enrollmentAvailabilityPolicy.validate(SessionProgress.FINISHED, SessionStstus.CLOSED))
                 .isInstanceOf(IllegalStateException.class);
     }
 
