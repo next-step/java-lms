@@ -27,7 +27,9 @@ public class SessionRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        sessionRepository = new JdbcSessionRepository(jdbcTemplate);
+        JdbcCoverImageRepository coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
+        JdbcEnrollmentRepository enrollmentRepository = new JdbcEnrollmentRepository(jdbcTemplate);
+        sessionRepository = new JdbcSessionRepository(jdbcTemplate, coverImageRepository, enrollmentRepository);
     }
 
     @Test
