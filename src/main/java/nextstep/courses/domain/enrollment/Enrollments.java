@@ -43,6 +43,27 @@ public class Enrollments {
     public int getCapacity() {
         return capacity.value();
     }
+
+    public Enrollment approve(Long userId) {
+        Enrollment enrollment = findByUserId(userId);
+        enrollment.approve();
+
+        return enrollment;
+    }
+
+    public Enrollment reject(Long userId) {
+        Enrollment enrollment = findByUserId(userId);
+        enrollment.reject();
+
+        return enrollment;
+    }
+
+    private Enrollment findByUserId(Long userId) {
+        return enrollments.stream()
+                .filter(enrollment -> enrollment.getUserId().equals(userId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException());
+    }
 }
 
 

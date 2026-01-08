@@ -25,4 +25,16 @@ public class SessionService {
         Enrollment enrollment = session.enroll(userId, payment);
         enrollmentRepository.save(enrollment);
     }
+
+    public void approve(Long sessionId, Long userId) {
+        Session session = sessionRepository.findById(sessionId);
+        Enrollment enrollment = session.approve(userId);
+        enrollmentRepository.updateStatus(enrollment);
+    }
+
+    public void reject(Long sessionId, Long userId) {
+        Session session = sessionRepository.findById(sessionId);
+        Enrollment enrollment = session.reject(userId);
+        enrollmentRepository.updateStatus(enrollment);
+    }
 }

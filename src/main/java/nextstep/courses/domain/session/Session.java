@@ -113,4 +113,12 @@ public class Session {
                 ", enrollments=" + enrollments +
                 '}';
     }
+
+    public Enrollment approve(Long userId) {
+        return enrollments.approve(userId);
+    }
+
+    public Enrollment reject(Long userId) {
+        return enrollments.reject(userId);
+    }
 }
