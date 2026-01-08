@@ -7,6 +7,7 @@ import nextstep.courses.repository.CoverImageRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -20,16 +21,16 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
 
     @Override
     public int save(CoverImage coverImage, Long sessionId) {
-        String sql = "INSERT INTO coverImage (session_id, cover_image_size, cover_image_name, cover_image_width, cover_image_height )" +
-                " VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO session_cover_image (session_id, cover_image_size, cover_image_name, cover_image_width, cover_image_height, created_at )" +
+                " VALUES (?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql, sessionId, coverImage.getImageSize(), coverImage.getImageName()
-                , coverImage.getCoverImageWidth(), coverImage.getCoverImageHeight());
+                , coverImage.getCoverImageWidth(), coverImage.getCoverImageHeight(), LocalDateTime.now());
     }
 
     @Override
     public CoverImages findBySessionId(Long sessionId) {
         String sql = "SELECT session_id, cover_image_size, cover_image_name, cover_image_width, cover_image_height " +
-                "FROM coverImage WHERE session_id = ?";
+                "FROM session_cover_image WHERE session_id = ?";
 
         List<CoverImage> images = jdbcTemplate.query(sql, (rs, rowNum) ->
                 new CoverImage(
