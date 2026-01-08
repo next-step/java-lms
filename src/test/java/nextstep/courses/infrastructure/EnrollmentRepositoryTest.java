@@ -1,6 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.enrollment.Enrollment;
+import nextstep.courses.domain.enrollment.SelectionStatus;
 import nextstep.courses.repository.EnrollmentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,7 @@ public class EnrollmentRepositoryTest {
 
     @Test
     void crud() {
-        Enrollment enrollment = new Enrollment(1L, 100L, LocalDateTime.now());
+        Enrollment enrollment = new Enrollment(1L, 100L, SelectionStatus.WAITING, LocalDateTime.now());
         enrollmentRepository.save(enrollment);
 
         List<Enrollment> result = enrollmentRepository.findBySessionId(1L);

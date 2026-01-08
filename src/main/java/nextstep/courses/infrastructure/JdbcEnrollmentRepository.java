@@ -1,6 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.enrollment.Enrollment;
+import nextstep.courses.domain.enrollment.SelectionStatus;
 import nextstep.courses.repository.EnrollmentRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
@@ -19,21 +20,28 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
 
     @Override
     public int save(Enrollment enrollment) {
-        String sql = "INSERT INTO enrollment (session_id, user_id, enrolled_at) VALUES (?, ?, ?)";
-        return jdbcTemplate.update(sql, enrollment.getSessionId(), enrollment.getUserId(), enrollment.getEnrollmentDate());
+        String sql = "INSERT INTO enrollment (session_id, user_id, status, enrolled_at) VALUES (?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, enrollment.getSessionId(), enrollment.getUserId(), enrollment.getStatus(), enrollment.getEnrollmentDate());
     }
 
     @Override
     public List<Enrollment> findBySessionId(Long sessionId) {
-        String sql = "SELECT session_id, user_id, enrolled_at FROM enrollment WHERE session_id = ?";
+        String sql = "SELECT session_id, user_id, status, enrolled_at FROM enrollment WHERE session_id = ?";
 
         return jdbcTemplate.query(sql, (rs, rowNum) ->
                 new Enrollment(
                         rs.getLong("session_id"),
                         rs.getLong("user_id"),
+                        SelectionStatus.valueOf(rs.getString("status")),
                         toLocalDateTime(rs.getTimestamp("enrolled_at"))
                 ), sessionId
         );
+    }
+
+    @Override
+    public void updateStatus(Enrollment enrollment) {
+        String sql = "update enrollment set status = ? where session_id = ? and user_id = ?";
+        jdbcTemplate.update(sql, enrollment.getStatus(), enrollment.getSessionId(), enrollment.getUserId());
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
