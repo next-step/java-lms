@@ -1,6 +1,6 @@
 package nextstep.qna.domain;
 
-import nextstep.core.domain.BaseEntity;
+import nextstep.core.domain.SoftDeletableBaseEntity;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Question extends BaseEntity {
+public class Question extends SoftDeletableBaseEntity {
     private String title;
 
     private String contents;
@@ -16,8 +16,6 @@ public class Question extends BaseEntity {
     private NsUser writer;
 
     private Answers answers = new Answers();
-
-    private boolean deleted = false;
 
     public Question() {
     }
@@ -54,10 +52,6 @@ public class Question extends BaseEntity {
         return writer.equals(loginUser);
     }
 
-    public boolean isDeleted() {
-        return deleted;
-    }
-
     public Answers getAnswers() {
         return answers;
     }
@@ -67,13 +61,21 @@ public class Question extends BaseEntity {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+    public void delete(NsUser loginUser) throws CannotDeleteException {
         validateOwner(loginUser);
+        answers.validateOwner(loginUser);
+        answers.delete();
+        deleteQuestion();
+    }
 
-        List<DeleteHistory> answerHistories = answers.delete(loginUser);
+    private void deleteQuestion() {
+        markDeleted();
+    }
+
+    public List<DeleteHistory> deleteHistories() {
         List<DeleteHistory> histories = new ArrayList<>();
-        histories.add(deleteQuestion());
-        histories.addAll(answerHistories);
+        histories.add(deleteHistory());
+        histories.addAll(answers.deleteHistories());
         return histories;
     }
 
@@ -83,8 +85,7 @@ public class Question extends BaseEntity {
         }
     }
 
-    private DeleteHistory deleteQuestion() {
-        this.deleted = true;
+    public DeleteHistory deleteHistory() {
         return new DeleteHistory(ContentType.QUESTION, getId(), this.writer, LocalDateTime.now());
     }
 }

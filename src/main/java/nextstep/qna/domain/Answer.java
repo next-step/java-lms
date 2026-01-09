@@ -1,6 +1,6 @@
 package nextstep.qna.domain;
 
-import nextstep.core.domain.BaseEntity;
+import nextstep.core.domain.SoftDeletableBaseEntity;
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
@@ -8,14 +8,12 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
-public class Answer extends BaseEntity {
+public class Answer extends SoftDeletableBaseEntity {
     private NsUser writer;
 
     private Question question;
 
     private String contents;
-
-    private boolean deleted = false;
 
     public Answer() {
     }
@@ -37,15 +35,6 @@ public class Answer extends BaseEntity {
         this.writer = writer;
         this.question = question;
         this.contents = contents;
-    }
-
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
     }
 
     public boolean isOwner(NsUser writer) {
@@ -75,8 +64,11 @@ public class Answer extends BaseEntity {
         }
     }
 
-    public DeleteHistory delete() {
-        this.deleted = true;
+    public void delete() {
+        markDeleted();
+    }
+
+    public DeleteHistory deleteHistory() {
         return new DeleteHistory(ContentType.ANSWER, getId(), this.writer, LocalDateTime.now());
     }
 }

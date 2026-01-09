@@ -56,7 +56,8 @@ public class QuestionTest {
         Question question = new Question(1L, NsUserTest.JAVAJIGI, "title", "contents");
         question.addAnswer(new Answer(1L, NsUserTest.JAVAJIGI, question, "answers contents1"));
 
-        List<DeleteHistory> deleteHistories = question.delete(NsUserTest.JAVAJIGI);
+        question.delete(NsUserTest.JAVAJIGI);
+        List<DeleteHistory> deleteHistories = question.deleteHistories();
 
         assertThat(deleteHistories).hasSize(2);
     }
