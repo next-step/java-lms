@@ -3,8 +3,8 @@ package nextstep.courses.domain.image;
 import nextstep.courses.ImageDimensionException;
 
 public class ImageSize {
-    public static final int IMAGE_MAX_WIDTH = 300;
-    public static final int IMAGE_MAX_HEIGHT = 200;
+    public static final int IMAGE_MIN_WIDTH = 300;
+    public static final int IMAGE_MIN_HEIGHT = 200;
     private final int width;
     private final int height;
 
@@ -21,13 +21,13 @@ public class ImageSize {
     }
 
     private void validateWidth(int width) {
-        if (width > IMAGE_MAX_WIDTH) {
+        if (width < IMAGE_MIN_WIDTH) {
             throw new ImageDimensionException("이미지의 가로는 300을 넘을 수 없습니다.");
         }
     }
 
     private void validateHeight(int height) {
-        if (height > IMAGE_MAX_HEIGHT) {
+        if (height < IMAGE_MIN_WIDTH) {
             throw new ImageDimensionException("이미지의 세로는 200을 넘을 수 없습니다.");
         }
     }
