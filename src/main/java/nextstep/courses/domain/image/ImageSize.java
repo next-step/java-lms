@@ -22,13 +22,13 @@ public class ImageSize {
 
     private void validateWidth(int width) {
         if (width < IMAGE_MIN_WIDTH) {
-            throw new ImageDimensionException("이미지의 가로는 300을 넘을 수 없습니다.");
+            throw new ImageDimensionException("이미지의 가로는 300을 넘어야합니다.");
         }
     }
 
     private void validateHeight(int height) {
         if (height < IMAGE_MIN_WIDTH) {
-            throw new ImageDimensionException("이미지의 세로는 200을 넘을 수 없습니다.");
+            throw new ImageDimensionException("이미지의 세로는 200을 넘어야합니다.");
         }
     }
 }
