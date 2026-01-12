@@ -2,7 +2,7 @@ package nextstep.courses.domain.image;
 
 import nextstep.courses.ImageDimensionException;
 
-public class ImageSize {
+public class ImageDimension {
     public static final int IMAGE_MIN_WIDTH = 300;
     public static final int IMAGE_MIN_HEIGHT = 200;
     public static final int WIDTH_RATIO = 3;
@@ -11,7 +11,7 @@ public class ImageSize {
     private final int width;
     private final int height;
 
-    public ImageSize(int width, int height) {
+    public ImageDimension(int width, int height) {
         validateDimension(width, height);
 
         this.width = width;
