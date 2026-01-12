@@ -26,19 +26,19 @@ public class ImageSize {
 
     private void validateWidth(int width) {
         if (width < IMAGE_MIN_WIDTH) {
-            throw new ImageDimensionException("이미지의 가로는 300을 넘어야합니다.");
+            throw new ImageDimensionException(String.format("이미지의 가로는 %d을 넘어야합니다.",  IMAGE_MIN_WIDTH));
         }
     }
 
     private void validateHeight(int height) {
         if (height < IMAGE_MIN_HEIGHT) {
-            throw new ImageDimensionException("이미지의 세로는 200을 넘어야합니다.");
+            throw new ImageDimensionException(String.format("이미지의 세로는 %d을 넘어야합니다.", IMAGE_MIN_HEIGHT));
         }
     }
 
     private void validateRatio(int width, int height) {
         if (width * HEIGHT_RATIO != height * WIDTH_RATIO) {
-            throw new ImageDimensionException("이미지의 가로, 세로 비율은 3:2여야합니다.");
+            throw new ImageDimensionException(String.format("이미지의 가로, 세로 비율은 %d:%d여야합니다.", WIDTH_RATIO, HEIGHT_RATIO));
         }
     }
 }
