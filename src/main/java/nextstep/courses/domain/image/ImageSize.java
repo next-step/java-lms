@@ -27,7 +27,7 @@ public class ImageSize {
     }
 
     private void validateHeight(int height) {
-        if (height < IMAGE_MIN_WIDTH) {
+        if (height < IMAGE_MIN_HEIGHT) {
             throw new ImageDimensionException("이미지의 세로는 200을 넘어야합니다.");
         }
     }
