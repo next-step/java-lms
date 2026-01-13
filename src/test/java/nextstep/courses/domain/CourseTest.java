@@ -28,9 +28,9 @@ public class CourseTest {
         Course course = new Course("TDD, 클린 코드 with Java", 1L);
 
         Session session1 = new Session(period, coverImage, SessionStatus.RECRUITING,
-            new EnrollmentPolicy(SessionType.FREE, 15, 0L));
+            EnrollmentPolicy.free());
         Session session2 = new Session(period, coverImage, SessionStatus.PREPARING,
-            new EnrollmentPolicy(SessionType.PAID, 30, 50000L));
+            EnrollmentPolicy.paid(15, 50000L));
 
         course.addSession(session1);
         course.addSession(session2);

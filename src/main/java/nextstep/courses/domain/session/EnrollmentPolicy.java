@@ -7,10 +7,18 @@ public class EnrollmentPolicy {
     private final int capacity;
     private final long fee;
 
-    public EnrollmentPolicy(SessionType sessionType, int capacity, long fee) {
+    private EnrollmentPolicy(SessionType sessionType, int capacity, long fee) {
         this.sessionType = sessionType;
         this.capacity = capacity;
         this.fee = fee;
+    }
+
+    public static EnrollmentPolicy free() {
+        return new EnrollmentPolicy(SessionType.FREE, Integer.MAX_VALUE, 0L);
+    }
+
+    public static EnrollmentPolicy paid(int capacity, long fee) {
+        return new EnrollmentPolicy(SessionType.PAID, capacity, fee);
     }
 
     public void validateEnrollment(Students students, Payment payment) {
@@ -19,6 +27,9 @@ public class EnrollmentPolicy {
     }
 
     private void validateCapacity(Students students) {
+        if (sessionType == SessionType.FREE) {
+            return;
+        }
         if (students.isFull(capacity)) {
             throw new IllegalStateException();
         }

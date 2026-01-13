@@ -29,7 +29,7 @@ public class SessionTest {
                 period,
                 coverImage,
                 SessionStatus.RECRUITING,
-                new EnrollmentPolicy(SessionType.FREE, 15, 50000L)
+                EnrollmentPolicy.free()
             )
         );
     }
@@ -40,7 +40,7 @@ public class SessionTest {
             period,
             coverImage,
             SessionStatus.PREPARING,
-            new EnrollmentPolicy(SessionType.FREE, 15, 50000L)
+            EnrollmentPolicy.free()
         );
 
         assertThatThrownBy(() -> session.enroll(JAVAJIGI))
@@ -53,7 +53,7 @@ public class SessionTest {
             period,
             coverImage,
             SessionStatus.RECRUITING,
-            new EnrollmentPolicy(SessionType.FREE, 15, 50000L)
+            EnrollmentPolicy.free()
         );
 
         session.enroll(JAVAJIGI);
@@ -68,7 +68,7 @@ public class SessionTest {
             period,
             coverImage,
             SessionStatus.RECRUITING,
-            new EnrollmentPolicy(SessionType.FREE, 15, 50000L)
+            EnrollmentPolicy.free()
         );
 
         assertThatNoException().isThrownBy(() -> {
@@ -83,7 +83,7 @@ public class SessionTest {
             period,
             coverImage,
             SessionStatus.RECRUITING,
-            new EnrollmentPolicy(SessionType.PAID, 1, 50000L)
+            EnrollmentPolicy.paid(1, 50000L)
         );
 
         Payment payment = new Payment("1", 1L, 1L, 50000L);
@@ -100,7 +100,7 @@ public class SessionTest {
             period,
             coverImage,
             SessionStatus.RECRUITING,
-            new EnrollmentPolicy(SessionType.PAID, 1, 50000L)
+            EnrollmentPolicy.paid(1, 50000L)
         );
 
         Payment payment = new Payment("1", 1L, 1L, 40000L);
@@ -115,7 +115,7 @@ public class SessionTest {
             period,
             coverImage,
             SessionStatus.RECRUITING,
-            new EnrollmentPolicy(SessionType.PAID, 1, 50000L)
+            EnrollmentPolicy.paid(1, 50000L)
         );
 
         Payment payment = new Payment("1", 1L, 1L, 50000L);
