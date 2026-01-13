@@ -15,4 +15,9 @@ public class MoneyTest {
     public void equal() {
         assertThat(new Money("1000").isEqualTo(new Money(1000))).isTrue();
     }
+
+    @Test
+    public void notEqual() {
+        assertThat(new Money("1000").isEqualTo(new Money(1))).isFalse();
+    }
 }
