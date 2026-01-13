@@ -8,4 +8,9 @@ public class CapacityTest {
     public void create() {
         assertThat(new Capacity("1000")).isEqualTo(new Capacity(1000));
     }
+
+    @Test
+    public void exceedCapacity() {
+        assertThat(new Capacity(1000).exceed(new Capacity(1))).isTrue();
+    }
 }

@@ -13,6 +13,10 @@ public class Capacity {
         this.capacity = capacity;
     }
 
+    public boolean exceed(Capacity other) {
+        return capacity > other.capacity;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
