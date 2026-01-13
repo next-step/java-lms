@@ -19,11 +19,18 @@ public class PaidSessionPolicy implements SessionPolicy {
     @Override
     public void validate(Money paidAmount, Capacity capacity) {
         validatePaidAmount(paidAmount);
+        validateCapacity(capacity);
     }
 
     private void validatePaidAmount(Money paidAmount) {
         if (!sessionFee.isEqualTo(paidAmount)) {
             throw new IllegalArgumentException("결제 금액이 일치하지 않습니다");
+        }
+    }
+
+    private void validateCapacity(Capacity capacity) {
+        if (capacity.exceed(sessionCapacity)) {
+            throw new IllegalArgumentException("수강 인원을 초과했습니다");
         }
     }
 }
