@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class Money {
     private int money;
+    public static final Money FREE = new Money(0);
 
     public Money(String money) {
         this(Integer.parseInt(money));
