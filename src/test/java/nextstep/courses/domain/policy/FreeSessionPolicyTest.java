@@ -11,7 +11,8 @@ public class FreeSessionPolicyTest  {
         assertThatCode(() -> new FreeSessionPolicy().validate(Money.FREE)).doesNotThrowAnyException();
     }
 
-    private void violatePolicy() {
+    @Test
+    public void violatePolicy() {
         assertThatThrownBy(() -> new FreeSessionPolicy().validate(new Money(1000))).isInstanceOf(IllegalArgumentException.class);
     }
 }
