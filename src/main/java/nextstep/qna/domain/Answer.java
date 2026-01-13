@@ -10,9 +10,7 @@ import java.time.LocalDateTime;
 
 public class Answer extends SoftDeletableBaseEntity {
     private NsUser writer;
-
     private Question question;
-
     private String contents;
 
     public Answer() {

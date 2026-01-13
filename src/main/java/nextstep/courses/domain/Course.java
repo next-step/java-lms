@@ -1,16 +1,15 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.Sessions;
 
 public class Course {
+    private final Sessions sessions = new Sessions();
     private Long id;
-
     private String title;
-
     private Long creatorId;
-
     private LocalDateTime createdAt;
-
     private LocalDateTime updatedAt;
 
     public Course() {
@@ -38,6 +37,14 @@ public class Course {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public void addSession(Session session) {
+        sessions.add(session);
+    }
+
+    public int sessionCount() {
+        return sessions.size();
     }
 
     @Override
