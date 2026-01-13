@@ -9,4 +9,10 @@ public class MoneyTest {
     public void create() {
         assertThat(new Money("1000")).isEqualTo(new Money(1000));
     }
+
+
+    @Test
+    public void equal() {
+        assertThat(new Money("1000").isEqualTo(new Money(1000))).isTrue();
+    }
 }

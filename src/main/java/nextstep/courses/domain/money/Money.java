@@ -13,6 +13,10 @@ public class Money {
         this.money = money;
     }
 
+    public boolean isEqualTo(Money other) {
+        return money == other.money;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
