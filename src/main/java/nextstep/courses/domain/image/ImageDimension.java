@@ -2,6 +2,8 @@ package nextstep.courses.domain.image;
 
 import nextstep.courses.ImageDimensionException;
 
+import java.util.Objects;
+
 public class ImageDimension {
     public static final int IMAGE_MIN_WIDTH = 300;
     public static final int IMAGE_MIN_HEIGHT = 200;
@@ -40,5 +42,17 @@ public class ImageDimension {
         if (width * HEIGHT_RATIO != height * WIDTH_RATIO) {
             throw new ImageDimensionException(String.format("이미지의 가로, 세로 비율은 %d:%d여야합니다.", WIDTH_RATIO, HEIGHT_RATIO));
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        ImageDimension that = (ImageDimension) o;
+        return width == that.width && height == that.height;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(width, height);
     }
 }
