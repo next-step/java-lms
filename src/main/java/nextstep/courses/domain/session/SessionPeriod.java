@@ -21,4 +21,8 @@ public class SessionPeriod {
             throw new IllegalArgumentException("수강 종료일이 수강 시작일보다 빠를 수 없습니다.");
         }
     }
+
+    public boolean canRegister(LocalDateTime registerTime) {
+        return start.isBefore(registerTime) && end.isAfter(registerTime);
+    }
 }
