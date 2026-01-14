@@ -3,14 +3,14 @@ package nextstep.courses.domain.money;
 import java.util.Objects;
 
 public class Money {
-    private int money;
+    private Long money;
     public static final Money FREE = new Money(0);
 
     public Money(String money) {
-        this(Integer.parseInt(money));
+        this(Long.parseLong(money));
     }
 
-    public Money(int money) {
+    public Money(long money) {
         this.money = money;
     }
 
