@@ -9,17 +9,11 @@ public class NsUser {
     public static final GuestNsUser GUEST_USER = new GuestNsUser();
 
     private Long id;
-
     private String userId;
-
     private String password;
-
     private String name;
-
     private String email;
-
     private LocalDateTime createdAt;
-
     private LocalDateTime updatedAt;
 
     public NsUser() {

@@ -4,16 +4,9 @@ import java.time.LocalDateTime;
 
 public class Payment {
     private String id;
-
-    // 결제한 강의 아이디
-    private Long sessionId;
-
-    // 결제한 사용자 아이디
-    private Long nsUserId;
-
-    // 결제 금액
-    private Long amount;
-
+    private Long sessionId;    // 결제한 강의 아이디
+    private Long nsUserId;     // 결제한 사용자 아이디
+    private Long amount;       // 결제 금액
     private LocalDateTime createdAt;
 
     public Payment() {
@@ -25,5 +18,13 @@ public class Payment {
         this.nsUserId = nsUserId;
         this.amount = amount;
         this.createdAt = LocalDateTime.now();
+    }
+
+    public Long getAmount() {
+        return amount;
+    }
+
+    public boolean matchesFee(long fee) {
+        return this.amount.equals(fee);
     }
 }
