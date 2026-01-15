@@ -12,10 +12,10 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 
 public class Session {
-    private Long id;
     private final SessionInfo sessionInfo;
     private final CoverImage coverImage;
     private final Enrollments enrollments;
+    private final Long id;
 
     public Session(Long id, SessionStatus sessionStatus, SessionPolicy sessionPolicy, LocalDateTime startDateTime, LocalDateTime endDateTime, int capacity, CoverImage coverImage, Enrollments enrollments) {
         this(id, new SessionInfo(sessionStatus, sessionPolicy, new SessionPeriod(startDateTime, endDateTime), new Capacity(capacity)), coverImage, enrollments);

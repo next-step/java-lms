@@ -3,7 +3,7 @@ package nextstep.courses.domain.capacity;
 import java.util.Objects;
 
 public class Capacity {
-    private int capacity;
+    private final int capacity;
 
     public Capacity(String capacity) {
         this(Integer.parseInt(capacity));

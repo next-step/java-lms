@@ -3,8 +3,8 @@ package nextstep.courses.domain.money;
 import java.util.Objects;
 
 public class Money {
-    private Long money;
     public static final Money FREE = new Money(0);
+    private final Long money;
 
     public Money(String money) {
         this(Long.parseLong(money));

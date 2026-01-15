@@ -28,7 +28,7 @@ public class ImageDimension {
 
     private void validateWidth(int width) {
         if (width < IMAGE_MIN_WIDTH) {
-            throw new ImageDimensionException(String.format("이미지의 가로는 %d을 넘어야합니다.",  IMAGE_MIN_WIDTH));
+            throw new ImageDimensionException(String.format("이미지의 가로는 %d을 넘어야합니다.", IMAGE_MIN_WIDTH));
         }
     }
 

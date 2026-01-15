@@ -12,7 +12,7 @@ public class CoverImage {
         this(fileName, ImageType.extract(fileName), new ImageDimension(width, height), new ImageSize(size));
     }
 
-    public CoverImage(String fileName,ImageType imageType, ImageDimension imageDimension, ImageSize imageSize) {
+    public CoverImage(String fileName, ImageType imageType, ImageDimension imageDimension, ImageSize imageSize) {
         this.fileName = fileName;
         this.imageType = imageType;
         this.imageDimension = imageDimension;

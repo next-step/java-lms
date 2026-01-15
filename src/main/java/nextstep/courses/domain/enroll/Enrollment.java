@@ -3,8 +3,8 @@ package nextstep.courses.domain.enroll;
 import java.util.Objects;
 
 public class Enrollment {
-    private Long userId;
-    private Long sessionId;
+    private final Long userId;
+    private final Long sessionId;
 
     public Enrollment(Long userId, Long sessionId) {
         this.userId = userId;

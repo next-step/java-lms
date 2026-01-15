@@ -3,7 +3,8 @@ package nextstep.courses.domain.policy;
 import nextstep.courses.domain.capacity.Capacity;
 import nextstep.courses.domain.money.Money;
 import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.Assertions.*;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class PaidSessionPolicyTest {
     @Test

@@ -3,7 +3,7 @@ package nextstep.courses.domain.image;
 import nextstep.courses.FileSizeException;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class ImageSizeTest {
     @Test

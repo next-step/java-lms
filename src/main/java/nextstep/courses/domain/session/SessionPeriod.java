@@ -3,8 +3,8 @@ package nextstep.courses.domain.session;
 import java.time.LocalDateTime;
 
 public class SessionPeriod {
-    private LocalDateTime start;
-    private LocalDateTime end;
+    private final LocalDateTime start;
+    private final LocalDateTime end;
 
     public SessionPeriod(String start, String end) {
         this(LocalDateTime.parse(start), LocalDateTime.parse(end));

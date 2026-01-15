@@ -11,7 +11,7 @@ public enum ImageType {
         try {
             String extensionPart = parseExtension(fileName);
             return ImageType.valueOf(extensionPart);
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             return UNKNOWN;
         }
     }
