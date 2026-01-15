@@ -9,7 +9,6 @@ import nextstep.courses.domain.session.EnrollmentPolicy;
 import nextstep.courses.domain.session.Period;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionStatus;
-import nextstep.courses.domain.session.SessionType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +18,7 @@ public class CourseTest {
 
     @BeforeEach
     void setUp() {
-        coverImage = new CoverImage(1_048_576L, ImageType.JPG, 300, 200);
+        coverImage = new CoverImage(1L, 1_048_576L, ImageType.JPG, 300, 200);
         period = new Period(LocalDate.of(2025, 11, 3), LocalDate.of(2025, 12, 18));
     }
 
@@ -27,9 +26,9 @@ public class CourseTest {
     void 과정은_여러_강의를_가질_수_있다() {
         Course course = new Course("TDD, 클린 코드 with Java", 1L);
 
-        Session session1 = new Session(period, coverImage, SessionStatus.RECRUITING,
+        Session session1 = new Session(1L, period, SessionStatus.RECRUITING,
             EnrollmentPolicy.free());
-        Session session2 = new Session(period, coverImage, SessionStatus.PREPARING,
+        Session session2 = new Session(1L, period, SessionStatus.PREPARING,
             EnrollmentPolicy.paid(15, 50000L));
 
         course.addSession(session1);
