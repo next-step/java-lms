@@ -9,15 +9,15 @@ https://edu.nextstep.camp/s/qlBJbqQf/ls/kuQnQbnZ
   - 이미지 타입 체크
   - 비율 체크
 - [ ] 강의 이미지를 삭제할 수 있다. (삭제시 디폴트 이미지)
-- [ ] 강의 이미지를 변경할 수 있다.
+- [X] 강의 이미지를 변경할 수 있다.
   - 이미지 크기 체크
   - 이미지 타입 체크
   - 비율 체크
-- [ ] 강의 신청할 수 있다.
+- [X] 강의 신청할 수 있다.
   - 타입에 따른 인원수 체크
   - 시작일, 종료일 체크
   - 강의 상태 체크
-- [ ] 강의에 결제할 수 있다.(payments만 return)
+- [X] 강의에 결제할 수 있다.(payments만 return)
   - 결제 금액과 수강료가 일치하는지 체크
 
 
@@ -26,8 +26,10 @@ https://edu.nextstep.camp/s/qlBJbqQf/ls/kuQnQbnZ
 - id
 - startDate
 - endDate
+  - 수강 기간 이내에만 수강 신청이 가능하다.
 - Cover Image
 - sessionFee
+- sessionCapacity
 - type
   - free
     - 최대 수강 인원 제한 없음
