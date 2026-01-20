@@ -13,6 +13,23 @@ public class EnrollmentPolicy {
         this.fee = fee;
     }
 
+    public SessionType getSessionType() {
+        return sessionType;
+    }
+
+    public String getSessionTypeName() {
+        return sessionType.name();
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public long getFee() {
+        return fee;
+    }
+
+
     public static EnrollmentPolicy free() {
         return new EnrollmentPolicy(SessionType.FREE, Integer.MAX_VALUE, 0L);
     }
